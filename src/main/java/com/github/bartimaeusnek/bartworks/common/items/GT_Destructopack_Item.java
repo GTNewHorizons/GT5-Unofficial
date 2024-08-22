@@ -34,11 +34,11 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
+import gregtech.api.items.ItemGeneric;
 
-public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithModularUI {
+public class GT_Destructopack_Item extends ItemGeneric implements IItemWithModularUI {
 
     public GT_Destructopack_Item() {
         super("GT2Destructopack", "Destructopack", "Mobile Trash Bin");
@@ -56,7 +56,7 @@ public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithM
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        GT_UIInfos.openPlayerHeldItemUI(aPlayer);
+        UIInfos.openPlayerHeldItemUI(aPlayer);
         return aStack;
     }
 
@@ -81,7 +81,7 @@ public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithM
         }).setBackground(ModularUITextures.ITEM_SLOT, BW_UITextures.OVERLAY_SLOT_CROSS)
             .setPos(79, 16))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
                     .setSize(17, 17)
                     .setPos(152, 63));
 

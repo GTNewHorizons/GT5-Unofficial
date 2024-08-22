@@ -4,8 +4,8 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -14,8 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -29,7 +29,7 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aOreDictName) {
             case "foodCheese" -> {
                 registerSlicerRecipes(aStack);
-                GT_OreDictUnificator.addItemData(aStack, new gregtech.api.objects.ItemData(Materials.Cheese, 3628800L));
+                OreDictUnificator.addItemData(aStack, new gregtech.api.objects.ItemData(Materials.Cheese, 3628800L));
             }
             case "foodDough" -> {
                 GT_ModHandler.removeFurnaceSmelting(aStack);
@@ -60,21 +60,21 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
 
     private void registerMixerRecipes(ItemStack stack) {
         GT_Values.RA.stdBuilder()
-            .itemInputs(stack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+            .itemInputs(stack, OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
             .itemOutputs(ItemList.Food_Dough_Sugar.get(2L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
             .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(stack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .itemInputs(stack, OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
             .itemOutputs(ItemList.Food_Dough_Chocolate.get(2L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
             .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(stack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chocolate, 1L))
+            .itemInputs(stack, OreDictUnificator.get(OrePrefixes.dust, Materials.Chocolate, 1L))
             .itemOutputs(ItemList.Food_Dough_Chocolate.get(2L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)

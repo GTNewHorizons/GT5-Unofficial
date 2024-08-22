@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.BlockGeneric;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
@@ -35,18 +35,18 @@ public class Behaviour_Switch_Metadata extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         if (mShowModeSwitchTooltip) aList.add(GT_Utility.trans("330", "Sneak Rightclick to switch Mode"));
         return aList;
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
         if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && !aWorld.isRemote) {
             if (mCheckTarget) {
                 Block aBlock = aWorld.blockExists(aX, aY, aZ) ? aWorld.getBlock(aX, aY, aZ) : Blocks.air;
-                if (aBlock instanceof GT_Generic_Block) {
+                if (aBlock instanceof BlockGeneric) {
                     Items.feather.setDamage(aStack, (short) mSwitchIndex);
                     GT_Utility.updateItemStack(aStack);
                     return true;

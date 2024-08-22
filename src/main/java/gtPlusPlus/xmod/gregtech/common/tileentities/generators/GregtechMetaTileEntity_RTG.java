@@ -13,7 +13,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.metatileentity.implementations.BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
@@ -26,7 +26,7 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
-public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator {
+public class GregtechMetaTileEntity_RTG extends BasicGenerator {
 
     public int mEfficiency;
     private long mTicksToBurnFor;

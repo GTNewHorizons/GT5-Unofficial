@@ -12,12 +12,12 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.gui.modularui.IDataFollowerWidget;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataControllerWidget<T extends ISerializableObject> extends DataControllerWidget<T> {
 
-    protected final GT_CoverBehaviorBase<T> coverBehavior;
+    protected final CoverBehaviorBase<T> coverBehavior;
 
     /**
      * @param dataGetter    () -> cover data this widget handles
@@ -25,7 +25,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
      * @param coverBehavior cover this widget handles data update
      */
     public CoverDataControllerWidget(Supplier<T> dataGetter, Function<T, Boolean> dataSetter,
-        GT_CoverBehaviorBase<T> coverBehavior) {
+        CoverBehaviorBase<T> coverBehavior) {
         super(dataGetter, dataSetter);
         this.coverBehavior = coverBehavior;
     }
@@ -68,7 +68,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
          * @param dataUpdater       (index of button, current cover data) -> new cover data
          */
         public CoverDataIndexedControllerWidget_ToggleButtons(Supplier<T> coverDataGetter,
-            Function<T, Boolean> coverDataSetter, GT_CoverBehaviorBase<T> coverBehavior,
+            Function<T, Boolean> coverDataSetter, CoverBehaviorBase<T> coverBehavior,
             BiFunction<Integer, T, Boolean> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater) {
             super(coverDataGetter, coverDataSetter, coverBehavior);
             this.dataToStateGetter = dataToStateGetter;
@@ -108,7 +108,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
          * @param dataUpdater       (index of button, current cover data) -> new cover data
          */
         public CoverDataIndexedControllerWidget_CycleButtons(Supplier<T> coverDataGetter,
-            Function<T, Boolean> coverDataSetter, GT_CoverBehaviorBase<T> coverBehavior,
+            Function<T, Boolean> coverDataSetter, CoverBehaviorBase<T> coverBehavior,
             BiFunction<Integer, T, Integer> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater) {
             super(coverDataGetter, coverDataSetter, coverBehavior);
             this.dataToStateGetter = dataToStateGetter;

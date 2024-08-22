@@ -12,19 +12,19 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_Arm extends GT_CoverBehavior {
+public class GT_Cover_Arm extends CoverBehavior {
 
     public final int mTickRate;
     // msb converted, 2nd : direction (1=export)
@@ -277,7 +277,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ArmUIFactory(buildContext).createWindow();
     }
 
@@ -305,7 +305,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
             }
         };
 
-        protected ArmUIFactory(GT_CoverUIBuildContext buildContext) {
+        protected ArmUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -326,7 +326,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                 convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
                         }
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_EXPORT)
                         .addTooltip(GT_Utility.trans("006", "Export"))
                         .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
@@ -341,7 +341,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                     convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
                             }
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_IMPORT)
                             .addTooltip(GT_Utility.trans("007", "Import"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addFollower(

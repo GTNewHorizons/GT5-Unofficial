@@ -2,7 +2,7 @@ package kubatech.api.enums;
 
 import java.util.HashMap;
 
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGIC2Mode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGNormalMode;
@@ -34,7 +34,7 @@ public class EIGModes {
         return Normal;
     }
 
-    public static void addTooltipInfo(GT_Multiblock_Tooltip_Builder tt) {
+    public static void addTooltipInfo(MultiblockTooltipBuilder tt) {
         // maybe make this use the mods list instead
         EIGModes.Normal.addTooltipInfo(tt);
         EIGModes.IC2.addTooltipInfo(tt);

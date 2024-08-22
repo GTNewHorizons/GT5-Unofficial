@@ -26,7 +26,7 @@ import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
@@ -42,7 +42,7 @@ import io.netty.buffer.ByteBuf;
  * method, it will resort to {@link BaseMetaTileEntity#getInfoData()} instead.
  */
 public class GT_Cover_Metrics_Transmitter
-    extends GT_CoverBehaviorBase<GT_Cover_Metrics_Transmitter.MetricsTransmitterData> {
+    extends CoverBehaviorBase<GT_Cover_Metrics_Transmitter.MetricsTransmitterData> {
 
     @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";

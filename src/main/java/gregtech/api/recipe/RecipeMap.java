@@ -1,6 +1,6 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GT_RecipeBuilder.ENABLE_COLLISION_CHECK;
+import static gregtech.api.util.RecipeBuilder.ENABLE_COLLISION_CHECK;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,8 +24,8 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.RecipeBuilder;
 
 /**
  * Manages list of recipes. Its functionalities are split
@@ -176,7 +176,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
 
     @Nonnull
     @Override
-    public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
+    public Collection<GT_Recipe> doAdd(RecipeBuilder builder) {
         return backend.doAdd(builder);
     }
 

@@ -45,7 +45,7 @@ import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
@@ -53,9 +53,9 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * TODO: Implement overlay rendering only with
- * {@link GT_CoverBehaviorBase#getSpecialCoverFGTextureImpl(ForgeDirection, int, ISerializableObject, ICoverable)}
+ * {@link CoverBehaviorBase#getSpecialCoverFGTextureImpl(ForgeDirection, int, ISerializableObject, ICoverable)}
  */
-public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_FluidStorageMonitor.FluidStorageData> {
+public class GT_Cover_FluidStorageMonitor extends CoverBehaviorBase<GT_Cover_FluidStorageMonitor.FluidStorageData> {
 
     private static final IIconContainer[] icons = new IIconContainer[] { OVERLAY_FLUID_STORAGE_MONITOR0,
         OVERLAY_FLUID_STORAGE_MONITOR1, OVERLAY_FLUID_STORAGE_MONITOR2, OVERLAY_FLUID_STORAGE_MONITOR3,

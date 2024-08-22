@@ -31,7 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -39,10 +39,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_BaseModule {
 
@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
@@ -138,11 +138,10 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
                     : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
             .setBackground(() -> {
                 if (isMultiStepPlasmaCapable) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                        UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
                 }
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
@@ -166,7 +165,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16)
             .setPos(174, 80)
-            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
+            .setBackground(UITextures.BACKGROUND_TEXT_FIELD);
     }
 
     protected Widget createTestButton3() {
@@ -180,7 +179,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(70, 16)
             .setPos(174, 60)
-            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
+            .setBackground(UITextures.BACKGROUND_TEXT_FIELD);
     }
 
     @Override
@@ -210,8 +209,8 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Fabricator")
             .addInfo("Controller block of the Plasma Module")
             .addInfo("Uses a Star to to turn Metals into Plasma")

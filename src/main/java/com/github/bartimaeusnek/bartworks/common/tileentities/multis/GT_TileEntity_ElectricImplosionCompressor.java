@@ -21,13 +21,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
@@ -81,20 +81,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class GT_TileEntity_ElectricImplosionCompressor
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor>
-    implements ISurvivalConstructable {
+    extends ExtendedPowerMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor> implements ISurvivalConstructable {
 
     private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
     private Boolean piston = true;
@@ -262,8 +261,8 @@ public class GT_TileEntity_ElectricImplosionCompressor
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
             .addInfo("Explosions are fun")
             .addInfo("Controller block for the Electric Implosion Compressor")
@@ -312,7 +311,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 // For overclocking we'll allow all power to be used
                 return super.createOverclockCalculator(recipe)
                     .setEUt(GT_TileEntity_ElectricImplosionCompressor.this.getMaxInputEu())
@@ -462,8 +461,8 @@ public class GT_TileEntity_ElectricImplosionCompressor
         this.setBlockTier(0);
         boolean isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
 
-        List<GT_MetaTileEntity_Hatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
-        for (GT_MetaTileEntity_Hatch hatch : energyHatches) {
+        List<Hatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
+        for (Hatch hatch : energyHatches) {
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
 
@@ -536,7 +535,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
     @Override

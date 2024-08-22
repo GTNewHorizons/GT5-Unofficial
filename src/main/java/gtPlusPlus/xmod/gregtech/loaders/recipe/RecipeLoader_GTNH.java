@@ -2,9 +2,9 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.FUSION_THRESHOLD;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

@@ -34,7 +34,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
+import gregtech.api.metatileentity.implementations.MetaTileEntity_SpecialFilter;
 import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
@@ -42,7 +42,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 
-public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFilter {
+public class GT_MetaTileEntity_RecipeFilter extends MetaTileEntity_SpecialFilter {
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
     private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";

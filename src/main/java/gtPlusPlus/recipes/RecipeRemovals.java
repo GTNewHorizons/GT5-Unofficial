@@ -12,7 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import advsolar.common.AdvancedSolarPanel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -75,9 +75,9 @@ public class RecipeRemovals {
                                         aType = "Huge ";
                                     }
                                 }
-                                Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
-                                Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);
-                                long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);
+                                Materials aMainMaterial = MetaGeneratedTool.getPrimaryMaterial(aI);
+                                Materials aSecondaryMaterial = MetaGeneratedTool.getSecondaryMaterial(aI);
+                                long rotorDurabilityMax = MetaGeneratedTool.getToolMaxDamage(aI);
                                 if (rotorDurabilityMax < aCutoff) {
                                     Logger.WARNING(
                                         "[Turbine Cleanup] " + getMaterialName(aMainMaterial)

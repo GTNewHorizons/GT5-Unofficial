@@ -3,14 +3,14 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
@@ -62,17 +62,17 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
+import gregtech.api.gui.modularui.UITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -83,8 +83,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
-public abstract class GT_MetaTileEntity_DrillerBase
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase>
+public abstract class GT_MetaTileEntity_DrillerBase extends EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase>
     implements IChunkLoader, ISurvivalConstructable {
 
     private static final ItemStack miningPipe = GT_ModHandler.getIC2Item("miningPipe", 0);
@@ -405,7 +404,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     private boolean isEnergyEnough() {
         long requiredEnergy = 512 + getMaxInputVoltage() * 4;
-        for (GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
+        for (Hatch_Energy energyHatch : mEnergyHatches) {
             requiredEnergy -= energyHatch.getEUVar();
             if (requiredEnergy <= 0) return true;
         }
@@ -707,7 +706,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         return config;
     }
 
-    public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+    public ArrayList<Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
 
     /**
      * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
@@ -726,7 +725,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+        for (Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
             for (int i = 0; i < tHatch.getBaseMetaTileEntity()
                 .getSizeInventory(); i++) {
                 if (tHatch.getBaseMetaTileEntity()
@@ -752,9 +751,9 @@ public abstract class GT_MetaTileEntity_DrillerBase
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture((byte) aBaseCasingIndex);
-            return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_DataAccess) {
+            ((Hatch) aMetaTileEntity).updateTexture((byte) aBaseCasingIndex);
+            return mDataAccessHatches.add((Hatch_DataAccess) aMetaTileEntity);
         }
         return false;
     }
@@ -772,7 +771,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -807,16 +806,15 @@ public abstract class GT_MetaTileEntity_DrillerBase
         final int BUTTON_Y_LEVEL = 91;
 
         builder.widget(
-            new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> mChunkLoadingEnabled = !mChunkLoadingEnabled)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (mChunkLoadingEnabled) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_CHUNK_LOADING };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                            UITextures.OVERLAY_BUTTON_CHUNK_LOADING };
                     }
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF };
                 })
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(
@@ -837,11 +835,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
                     .setPlayClickSound(true)
                     .setBackground(() -> {
                         if (workState == STATE_ABORT) {
-                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                                GT_UITextures.OVERLAY_BUTTON_RETRACT_PIPE, GT_UITextures.OVERLAY_BUTTON_LOCKED };
+                            return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                                UITextures.OVERLAY_BUTTON_RETRACT_PIPE, UITextures.OVERLAY_BUTTON_LOCKED };
                         }
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                            GT_UITextures.OVERLAY_BUTTON_RETRACT_PIPE };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_RETRACT_PIPE };
                     })
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt),
@@ -883,7 +880,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(GT_MetaTileEntity_Hatch_DataAccess.class);
+            return Collections.singletonList(Hatch_DataAccess.class);
         }
 
         @Override

@@ -35,19 +35,19 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
-public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus implements IRecipeProcessingAwareHatch {
+public class MTE_LinkedInputBus extends Hatch_InputBus implements IRecipeProcessingAwareHatch {
 
     public static final int SIZE_INVENTORY = 18;
     private SharedInventory mRealInventory;
@@ -91,15 +91,15 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
                 .setSetter(this::setChannel)
                 .setTextColor(Color.WHITE.dark(1))
                 .setTextAlignment(Alignment.CenterLeft)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                 .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.change_freq_warn"))
                 .setSize(60, 18)
                 .setPos(48, 3))
             .widget(
                 new CycleButtonWidget().setToggle(this::isPrivate, this::setPrivate)
                     .setTextureGetter(
-                        i -> i == 1 ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK : GT_UITextures.OVERLAY_BUTTON_CROSS)
-                    .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                        i -> i == 1 ? UITextures.OVERLAY_BUTTON_CHECKMARK : UITextures.OVERLAY_BUTTON_CROSS)
+                    .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                     .setSynced(true, true)
                     .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.private"))
                     .setSize(18, 18)
@@ -191,7 +191,7 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
     @Override
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < SIZE_INVENTORY; i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
+            if (GT_Utility.areStacksEqual(OreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
                 return i == aIndex - 1;
         return mRealInventory.stacks[aIndex - 1] == null;
     }
@@ -219,7 +219,7 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
     }
 
     @Override
-    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
+    public CheckRecipeResult endRecipeProcessing(MultiBlockBase controller) {
         if (mState == State.Activated) {
             assert mRealInventory != null;
             mRealInventory.used = false;

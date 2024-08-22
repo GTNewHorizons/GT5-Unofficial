@@ -41,8 +41,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -208,7 +208,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         } else if (GT_ModHandler.isLava(equippedContainerFluidStack)) {
             tank = lavaTank;
         } else {
-            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
         returnedItemStack = fillIFluidTankFromItemStack(tank, equippedItemStack);
@@ -451,7 +451,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     @Override
     protected IDrawable[] getAshSlotBackground() {
         return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GT_UITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
+            UITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
     }
 
     @Override

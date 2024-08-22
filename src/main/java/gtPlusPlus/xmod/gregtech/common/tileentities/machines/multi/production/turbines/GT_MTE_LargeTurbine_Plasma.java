@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -141,28 +141,29 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     ItemStack aStack = getFullTurbineAssemblies().get(0)
                         .getTurbine();
                     aTotalBaseEff += GT_Utility.safeInt(
-                        (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                    aTotalOptimalFlow += GT_Utility.safeInt(
-                        (long) Math.max(
-                            Float.MIN_NORMAL,
-                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                * 50));
+                        (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
+                    aTotalOptimalFlow += GT_Utility
+                        .safeInt(
+                            (long) Math.max(
+                                Float.MIN_NORMAL,
+                                ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
+                                    .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed
+                                    * 50));
 
                     // Calculate total EU/t (as shown on turbine tooltip (Fast mode doesn't affect))
                     double aEUPerTurbine = aTotalOptimalFlow * 40
                         * 0.0105
-                        * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier
-                        * (50.0f + (10.0f * ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)));
+                        * MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier
+                        * (50.0f + (10.0f * ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)));
                     aTotalOptimalFlow *= getSpeedMultiplier();
 
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+                    flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(aStack).mSteamMultiplier;
+                    flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(aStack).mGasMultiplier;
+                    flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);

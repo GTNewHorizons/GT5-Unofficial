@@ -3,17 +3,17 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,16 +45,16 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class GT_MetaTileEntity_PurificationUnitPhAdjustment
@@ -126,11 +126,11 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     /**
      * The input hatch for the acidic material
      */
-    private GT_MetaTileEntity_Hatch_Input acidInputHatch;
+    private Hatch_Input acidInputHatch;
     /**
      * The input bus for the alkaline material
      */
-    private GT_MetaTileEntity_Hatch_InputBus alkalineInputBus;
+    private Hatch_InputBus alkalineInputBus;
 
     /**
      * List of all placed sensor hatches in the multi, so we can update them with the proper pH value when it changes.
@@ -243,7 +243,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+    protected void setHatchRecipeMap(Hatch_Input hatch) {
         // Do nothing, we don't want to lock hatches to recipe maps since this can cause
         // them to reject our catalyst fluids
     }
@@ -261,7 +261,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -286,10 +286,10 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            acidInputHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            acidInputHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;
@@ -299,10 +299,10 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;
-            alkalineInputBus = (GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_InputBus) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;
+            alkalineInputBus = (Hatch_InputBus) aMetaTileEntity;
             return true;
         }
         return false;
@@ -312,15 +312,15 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity instanceof GT_MetaTileEntity_pHSensor) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return this.sensorHatches.add((GT_MetaTileEntity_pHSensor) aMetaTileEntity);
         }
         return false;
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
             .addInfo(
                 EnumChatFormatting.AQUA + ""

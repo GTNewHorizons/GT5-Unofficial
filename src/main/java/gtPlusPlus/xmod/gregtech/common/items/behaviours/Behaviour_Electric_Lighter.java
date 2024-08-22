@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import codechicken.lib.math.MathHelper;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_None;
@@ -38,7 +38,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     public Behaviour_Electric_Lighter() {}
 
     @Override
-    public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
+    public boolean onLeftClickEntity(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
         if (!aPlayer.worldObj.isRemote && aStack != null && aStack.stackSize == 1) {
             boolean rOutput = false;
             if (aEntity instanceof EntityCreeper) {
@@ -62,8 +62,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
+        int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -113,7 +113,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
         return false;
     }
 
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
@@ -191,7 +191,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     private void useUp(ItemStack aStack) {}
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         int aUses = 0;
         if (aStack != null) {

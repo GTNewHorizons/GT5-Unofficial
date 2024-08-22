@@ -30,16 +30,16 @@ import net.minecraft.network.PacketBuffer;
 
 import com.kuba6000.mobsinfo.api.utils.ItemID;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 
 public class GTHelper {
 
-    public static long getMaxInputEU(GT_MetaTileEntity_MultiBlockBase mte) {
+    public static long getMaxInputEU(MultiBlockBase mte) {
         if (mte instanceof KubaTechGTMultiBlockBase) return ((KubaTechGTMultiBlockBase<?>) mte).getMaxInputEu();
         long rEU = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mte.mEnergyHatches)
+        for (Hatch_Energy tHatch : mte.mEnergyHatches)
             if (tHatch.isValid()) rEU += tHatch.maxEUInput() * tHatch.maxAmperesIn();
         return rEU;
     }
@@ -48,7 +48,7 @@ public class GTHelper {
         return Math.log((double) voltage / 8L) / ln4;
     }
 
-    public static double getVoltageTierD(GT_MetaTileEntity_MultiBlockBase mte) {
+    public static double getVoltageTierD(MultiBlockBase mte) {
         return Math.log((double) getMaxInputEU(mte) / 8L) / ln4;
     }
 
@@ -56,7 +56,7 @@ public class GTHelper {
         return (int) getVoltageTierD(voltage);
     }
 
-    public static int getVoltageTier(GT_MetaTileEntity_MultiBlockBase mte) {
+    public static int getVoltageTier(MultiBlockBase mte) {
         return (int) getVoltageTierD(mte);
     }
 

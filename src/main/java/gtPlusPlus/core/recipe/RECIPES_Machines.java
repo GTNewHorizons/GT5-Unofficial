@@ -7,14 +7,14 @@ import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
@@ -39,8 +39,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -318,7 +318,7 @@ public class RECIPES_Machines {
                 CI.getPlate(4, 8),
                 CI.getBolt(5, 32),
                 ELEMENT.getInstance().ZIRCONIUM.getFineWire(32),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
             .itemOutputs(GregtechItemList.Controller_IndustrialForgeHammer.get(1))
             .fluidInputs(CI.getTieredFluid(4, 144 * 12))
             .duration(30 * SECONDS)
@@ -957,8 +957,8 @@ public class RECIPES_Machines {
                 ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (1)),
                 ItemList.Cover_Controller.get(1, CI.electricMotor_MV),
                 CI.machineHull_MV,
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer))
             .fluidInputs(ELEMENT.getInstance().IRON.getFluidStack(144 * 4))
             .duration(30 * SECONDS)
@@ -992,7 +992,7 @@ public class RECIPES_Machines {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CI.machineHull_LV,
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 4),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
                 ItemUtils.getSimpleStack(Blocks.jukebox))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox))
@@ -1282,7 +1282,7 @@ public class RECIPES_Machines {
                 .itemInputs(
                     ALLOY.POTIN.getPlate(4),
                     ALLOY.POTIN.getLongRod(3),
-                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Chrome, 1),
+                    OreDictUnificator.get(OrePrefixes.stickLong, Materials.Chrome, 1),
                     ALLOY.POTIN.getFrameBox(1),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RECIPE_IndustrialElectrolyzerFrame)
@@ -1323,7 +1323,7 @@ public class RECIPES_Machines {
                 RECIPE_IndustrialMaterialPressFrame);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
                     ALLOY.TANTALLOY_60.getRod(2),
                     ALLOY.TUMBAGA.getLongRod(2),
                     ALLOY.TUMBAGA.getFrameBox(1),
@@ -1366,9 +1366,9 @@ public class RECIPES_Machines {
                 RECIPE_IndustrialMacerationStackFrame);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 5),
-                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Platinum, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Palladium, 1),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 5),
+                    OreDictUnificator.get(OrePrefixes.stick, Materials.Platinum, 2),
+                    OreDictUnificator.get(OrePrefixes.stickLong, Materials.Palladium, 1),
                     ALLOY.INCONEL_625.getFrameBox(1),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RECIPE_IndustrialMacerationStackFrame)
@@ -1421,9 +1421,9 @@ public class RECIPES_Machines {
                 RECIPE_IndustrialWireFactoryFrame);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 4),
-                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.BlueSteel, 4),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueSteel, 1),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 4),
+                    OreDictUnificator.get(OrePrefixes.stick, Materials.BlueSteel, 4),
+                    OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueSteel, 1),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RECIPE_IndustrialWireFactoryFrame)
                 .duration(2 * SECONDS + 10 * TICKS)
@@ -1554,8 +1554,8 @@ public class RECIPES_Machines {
                 CI.getTieredMachineHull(1, 1),
                 CI.getElectricMotor(1, 2),
                 CI.getElectricPiston(1, 2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Cobalt, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Cobalt, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L),
                 CI.getGear(1, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(144))
@@ -1569,8 +1569,8 @@ public class RECIPES_Machines {
                 CI.getTieredMachineHull(2, 1),
                 CI.getElectricMotor(2, 2),
                 CI.getElectricPiston(2, 2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnnealedCopper, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnnealedCopper, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
                 CI.getGear(2, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(144))
@@ -1584,9 +1584,9 @@ public class RECIPES_Machines {
                 CI.getTieredMachineHull(3, 1),
                 CI.getElectricMotor(3, 2),
                 CI.getElectricPiston(3, 2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 2))
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(144))
             .duration(30 * SECONDS)
@@ -1599,8 +1599,8 @@ public class RECIPES_Machines {
                 CI.getTieredMachineHull(4, 1),
                 CI.getElectricMotor(4, 2),
                 CI.getElectricPiston(4, 2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Titanium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Titanium, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 CI.getGear(4, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(144))
@@ -1614,8 +1614,8 @@ public class RECIPES_Machines {
                 CI.getTieredMachineHull(5, 1),
                 CI.getElectricMotor(5, 2),
                 CI.getElectricPiston(5, 2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
                 CI.getGear(5, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_IV.get(1))
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(144))
@@ -1641,7 +1641,7 @@ public class RECIPES_Machines {
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                 ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold), 'G',
-                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 1) });
+                OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 1) });
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_EV.get(1L),
             CI.bits,
@@ -1759,9 +1759,9 @@ public class RECIPES_Machines {
                 CI.getPlate(8, 1),
                 CI.circuitTier8,
                 CI.getPlate(8, 1),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
+                OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
                 CI.machineCasing_UV,
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
+                OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
                 CI.getPlate(8, 1),
                 CI.circuitTier8,
                 CI.getPlate(8, 1),
@@ -1864,7 +1864,7 @@ public class RECIPES_Machines {
                 RECIPE_IndustrialSieveGrate);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 5),
+                    OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 5),
                     ALLOY.EGLIN_STEEL.getFrameBox(4),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RECIPE_IndustrialSieveGrate)
@@ -1898,7 +1898,7 @@ public class RECIPES_Machines {
                     ItemUtils.getItemStackOfAmountFromOreDict("pipeTinySteel", 1),
                     ItemList.MV_Coil.get(1),
                     ItemList.IC2_Plantball.get(4),
-                    GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 8))
+                    OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 8))
                 .itemOutputs(RECIPE_TreeFarmFrame)
                 .fluidInputs(GT_ModHandler.getDistilledWater(2000))
                 .duration(10 * SECONDS)
@@ -2472,8 +2472,8 @@ public class RECIPES_Machines {
                 GregtechItemList.Casing_ThermalCentrifuge.get(1));
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 6),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 6),
+                    OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(GregtechItemList.Casing_ThermalCentrifuge.get(1L))
                 .duration(2 * SECONDS + 10 * TICKS)
@@ -2751,7 +2751,7 @@ public class RECIPES_Machines {
                     GregtechItemList.Casing_Adv_BlastFurnace.get(1),
                     ALLOY.MARAGING250.getPlate(4),
                     ALLOY.MARAGING300.getGear(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
+                    OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
                 .duration(2 * SECONDS + 10 * TICKS)
@@ -2874,7 +2874,7 @@ public class RECIPES_Machines {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ALLOY.STABALLOY.getPlate(4),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2),
                     ALLOY.ZIRCONIUM_CARBIDE.getFrameBox(1),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(GregtechItemList.Casing_Multi_Use.get(1L))

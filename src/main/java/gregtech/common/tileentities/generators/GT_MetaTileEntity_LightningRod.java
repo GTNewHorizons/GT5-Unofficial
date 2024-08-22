@@ -14,10 +14,10 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_LightningRod extends TieredMachineBlock {
 
     public GT_MetaTileEntity_LightningRod(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");

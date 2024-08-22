@@ -8,10 +8,10 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gtPlusPlus.core.lib.CORE;
 
-public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_InputBus {
+public class GT_MetaTileEntity_SuperBus_Input extends Hatch_InputBus {
 
     public GT_MetaTileEntity_SuperBus_Input(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier) + 1);

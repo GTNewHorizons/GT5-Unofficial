@@ -14,9 +14,9 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -24,7 +24,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 
-public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_Hatch_InputBus {
+public class GT_MetaTileEntity_Hatch_TurbineProvider extends Hatch_InputBus {
 
     public GT_MetaTileEntity_Hatch_TurbineProvider(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
                     continue;
                 }
                 if (aMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine aTurb) {
-                    for (GT_MetaTileEntity_Hatch_InputBus ee : aTurb.mInputBusses) {
+                    for (Hatch_InputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
                             Logger.INFO("Found a Parent to attach to this housing.");
@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack.getItem() instanceof GT_MetaGenerated_Tool) {
+        if (aStack.getItem() instanceof MetaGeneratedTool) {
             if (aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176) {
                 return true;
             }
@@ -123,7 +123,7 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
     }
 
     public boolean isItemStackScrewdriver(ItemStack aStack) {
-        if (aStack.getItem() instanceof GT_MetaGenerated_Tool) {
+        if (aStack.getItem() instanceof MetaGeneratedTool) {
             if (aStack.getItemDamage() == 22 || aStack.getItemDamage() == 150) {
                 return true;
             }

@@ -27,7 +27,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
 
@@ -78,7 +78,7 @@ public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
         } else {
             switch (GT_Mod.gregtechproxy.oreDropSystem) {
                 case Item -> {
-                    rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                    rList.add(OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                 }
                 case FortuneItem -> {
                     // if shouldFortune and isNatural then get fortune drops
@@ -91,10 +91,10 @@ public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
                         if (aFortune > 3) aFortune = 3;
                         long amount = (long) new Random().nextInt(aFortune) + aMinAmount;
                         for (int i = 0; i < amount; i++) {
-                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            rList.add(OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                         }
                     } else {
-                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                        rList.add(OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                     }
                 }
                 case UnifiedBlock -> {

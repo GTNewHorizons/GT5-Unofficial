@@ -52,16 +52,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_TileEntity_LESU extends MultiBlockBase {
 
     private static final byte TEXID_SIDE = 0;
     private static final byte TEXID_CHARGING = 1;
@@ -459,7 +459,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
                 .setSize(17, 17)
                 .setPos(105, 51));
     }
@@ -467,7 +467,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 4)
                 .setSize(118, 67))
             .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 1) {
@@ -479,7 +479,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
             }).setBackground(
                 this.getGUITextureSet()
                     .getItemSlot(),
-                GT_UITextures.OVERLAY_SLOT_IN)
+                UITextures.OVERLAY_SLOT_IN)
                 .setPos(127, 13))
             .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 0) {
 
@@ -490,14 +490,14 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
             }).setBackground(
                 this.getGUITextureSet()
                     .getItemSlot(),
-                GT_UITextures.OVERLAY_SLOT_CHARGER)
+                UITextures.OVERLAY_SLOT_CHARGER)
                 .setPos(127, 49));
         for (int i = 0; i < 4; i++) {
             builder.widget(
                 new SlotWidget(this.circuitsInventoryHandler, i).setBackground(
                     this.getGUITextureSet()
                         .getItemSlot(),
-                    GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                    UITextures.OVERLAY_SLOT_INT_CIRCUIT)
                     .setPos(151, 4 + i * 18));
         }
 

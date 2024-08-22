@@ -4,13 +4,13 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_DataStick extends Behaviour_None {
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         String tString = GT_Utility.ItemNBT.getBookTitle(aStack);
         if (GT_Utility.isStringValid(tString)) {
             aList.add(tString);

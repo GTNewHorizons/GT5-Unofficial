@@ -22,10 +22,10 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.MetaTileEntity_Transformer;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Transformer {
+public class GT_MetaTileEntity_EnergyDistributor extends MetaTileEntity_Transformer {
 
     public GT_MetaTileEntity_EnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, null);

@@ -6,10 +6,10 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.client.GT_TooltipHandler;
 
-public class GT_MetaTileEntity_LensHousing extends GT_MetaTileEntity_Hatch_InputBus {
+public class GT_MetaTileEntity_LensHousing extends Hatch_InputBus {
 
     public GT_MetaTileEntity_LensHousing(int id, String name, String nameRegional) {
         super(

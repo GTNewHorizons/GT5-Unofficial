@@ -64,14 +64,14 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -81,7 +81,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input
+public class GT_MetaTileEntity_Hatch_Input_ME extends Hatch_Input
     implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch, ISmartInputHatch {
 
     private static final int SLOT_COUNT = 16;
@@ -258,7 +258,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
-    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
+    public CheckRecipeResult endRecipeProcessing(MultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
         AENetworkProxy proxy = getProxy();
 
@@ -686,11 +686,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     public IDrawable[] getBackground() {
                         IDrawable slot;
                         if (autoPullFluidList) {
-                            slot = GT_UITextures.SLOT_DARK_GRAY;
+                            slot = UITextures.SLOT_DARK_GRAY;
                         } else {
                             slot = ModularUITextures.FLUID_SLOT;
                         }
-                        return new IDrawable[] { slot, GT_UITextures.OVERLAY_SLOT_ARROW_ME };
+                        return new IDrawable[] { slot, UITextures.OVERLAY_SLOT_ARROW_ME };
                     }
 
                     @Override
@@ -749,7 +749,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                         }
                     }
                 }.setUpdateTooltipEveryTick(true))
-                .background(GT_UITextures.SLOT_DARK_GRAY)
+                .background(UITextures.SLOT_DARK_GRAY)
                 .controlsAmount(true)
                 .build()
                 .setPos(new Pos2d(97, 9)));
@@ -766,11 +766,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (autoPullFluidList) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                            UITextures.OVERLAY_BUTTON_AUTOPULL_ME };
                     } else {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                            GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD,
+                            UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
                     }
                 })
                 .addTooltips(
@@ -783,7 +783,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
 
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_DOUBLE)
                 .setPos(82, 30)
                 .setSize(12, 12))
             .widget(TextWidget.dynamicString(() -> {
@@ -815,7 +815,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -836,7 +836,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(3, 18)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD));
         builder.widget(
             TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
                 .setPos(3, 42)
@@ -850,7 +850,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(3, 58)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD));
         builder.widget(
             TextWidget.localised("GT5U.machines.stocking_bus.force_check")
                 .setPos(3, 88)
@@ -858,9 +858,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             .widget(
                 new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
                     .setTextureGetter(
-                        state -> expediteRecipeCheck ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK
-                            : GT_UITextures.OVERLAY_BUTTON_CROSS)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD)
+                        state -> expediteRecipeCheck ? UITextures.OVERLAY_BUTTON_CHECKMARK
+                            : UITextures.OVERLAY_BUTTON_CROSS)
+                    .setBackground(UITextures.BUTTON_STANDARD)
                     .setPos(53, 87)
                     .setSize(16, 16)
                     .addTooltip(StatCollector.translateToLocal("GT5U.machines.stocking_bus.hatch_warning")));

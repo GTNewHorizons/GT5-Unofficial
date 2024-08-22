@@ -15,7 +15,7 @@ package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.common.items.GT_DepletetCell_Item;
 
 public class LoadItemContainers {
@@ -28,7 +28,7 @@ public class LoadItemContainers {
         BW_NonMeta_MaterialItems.Depleted_Tiberium_4
             .set(new GT_DepletetCell_Item("Quad_TiberiumcellDep", "Quad Fuel Rod (Depleted Tiberium)", 1));
         BW_NonMeta_MaterialItems.TiberiumCell_1.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Tiberiumcell",
                 "Fuel Rod (Tiberium)",
                 1,
@@ -39,7 +39,7 @@ public class LoadItemContainers {
                 BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1),
                 false));
         BW_NonMeta_MaterialItems.TiberiumCell_2.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Double_Tiberiumcell",
                 "Dual Fuel Rod (Tiberium)",
                 2,
@@ -50,7 +50,7 @@ public class LoadItemContainers {
                 BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1),
                 false));
         BW_NonMeta_MaterialItems.TiberiumCell_4.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Quad_Tiberiumcell",
                 "Quad Fuel Rod (Tiberium)",
                 4,
@@ -63,7 +63,7 @@ public class LoadItemContainers {
         BW_NonMeta_MaterialItems.Depleted_TheCoreCell
             .set(new GT_DepletetCell_Item("Core_Reactor_CellDep", "Depleted \"The Core\" Cell", 32));
         BW_NonMeta_MaterialItems.TheCoreCell.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Core_Reactor_Cell",
                 "\"The Core\" Cell",
                 32,

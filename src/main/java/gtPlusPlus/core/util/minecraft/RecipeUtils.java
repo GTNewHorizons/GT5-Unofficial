@@ -17,8 +17,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -294,7 +294,7 @@ public class RecipeUtils {
             boolean rReturn = false;
             ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance()
                 .getRecipeList();
-            aOutput = GT_OreDictUnificator.get(aOutput);
+            aOutput = OreDictUnificator.get(aOutput);
             int tList_sS = tList.size();
 
             for (int i = 0; i < tList_sS; ++i) {
@@ -314,7 +314,7 @@ public class RecipeUtils {
                             }
 
                     ItemStack tStack = tRecipe.getRecipeOutput();
-                    if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
+                    if (GT_Utility.areStacksEqual(OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
                         tList.remove(i--);
                         tList_sS = tList.size();
                         rReturn = true;

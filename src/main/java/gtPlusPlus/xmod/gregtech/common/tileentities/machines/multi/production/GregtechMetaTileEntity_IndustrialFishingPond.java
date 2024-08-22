@@ -3,12 +3,12 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
@@ -40,11 +40,11 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -90,8 +90,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Fishing Pond")
             .addInfo("Can process (Tier + 1) * 2 recipes")
@@ -155,7 +155,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -232,10 +232,10 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
             200,
             16,
             0);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(g.mEUt)
             .setEUt(tEnergy)
             .setDuration(g.mDuration);
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g)
+        ParallelHelper helper = new ParallelHelper().setRecipe(g)
             .setItemInputs(tItemInputs)
             .setFluidInputs(tFluidInputs)
             .setAvailableEUt(tEnergy)

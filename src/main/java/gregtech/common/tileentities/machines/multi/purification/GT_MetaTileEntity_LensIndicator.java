@@ -10,10 +10,10 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_LensIndicator extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_LensIndicator extends Hatch {
 
     private boolean isOn = false;
 

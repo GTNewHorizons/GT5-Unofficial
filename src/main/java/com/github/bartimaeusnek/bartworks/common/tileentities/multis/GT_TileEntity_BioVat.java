@@ -72,19 +72,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 
-public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
+public class GT_TileEntity_BioVat extends EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -149,8 +149,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bacterial Vat")
             .addInfo("Controller block for the Bacterial Vat")
             .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
@@ -183,13 +183,13 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
     private int getInputCapacity() {
         return this.mInputHatches.stream()
-            .mapToInt(GT_MetaTileEntity_Hatch_Input::getCapacity)
+            .mapToInt(Hatch_Input::getCapacity)
             .sum();
     }
 
     private int getOutputCapacity() {
         return this.mOutputHatches.stream()
-            .mapToInt(GT_MetaTileEntity_Hatch_Output::getCapacity)
+            .mapToInt(Hatch_Output::getCapacity)
             .sum();
     }
 
@@ -269,7 +269,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };

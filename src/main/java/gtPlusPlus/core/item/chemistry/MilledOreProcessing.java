@@ -2,10 +2,10 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
 import java.util.HashMap;
@@ -17,8 +17,8 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -720,7 +720,7 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     public boolean addRecipe(ItemStack aInput, ItemStack aOutput1, int[] aChances, int aTime, int aEU) {
-        aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
+        aOutput1 = OreDictUnificator.get(true, aOutput1);
         ItemStack aOutputs[] = new ItemStack[4];
         for (int i = 0; i < aChances.length; i++) {
             aOutputs[i] = aOutput1;

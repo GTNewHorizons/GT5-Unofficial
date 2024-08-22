@@ -32,20 +32,20 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo, IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Param extends Hatch implements IAddGregtechLogo, IAddUIWidgets {
 
     public int pointer = 0;
     public int param = -1;
@@ -214,7 +214,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         } catch (Exception e) {
             clientLocale = "en_US";
         }
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -239,7 +239,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             (shift, columnPointer, secondRow) -> param -= shift ? 16 : 4,
             7,
             4,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
+            UITextures.OVERLAY_BUTTON_MINUS_LARGE,
             TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
@@ -251,7 +251,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value0D -= shift ? 4096 : 256;
             }
-        }, 7, 22, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
+        }, 7, 22, UITextures.OVERLAY_BUTTON_MINUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -262,7 +262,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value1D -= shift ? 4096 : 256;
             }
-        }, 7, 40, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
+        }, 7, 40, UITextures.OVERLAY_BUTTON_MINUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (shift) {
@@ -289,7 +289,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         },
             7,
             58,
-            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_S : GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_S : UITextures.OVERLAY_BUTTON_MINUS_LARGE,
             isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
 
         addChangeParamButton(
@@ -297,7 +297,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             (shift, columnPointer, secondRow) -> param -= shift ? 2 : 1,
             25,
             4,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
+            UITextures.OVERLAY_BUTTON_MINUS_SMALL,
             TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
@@ -309,7 +309,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value0D -= shift ? 16 : 1;
             }
-        }, 25, 22, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
+        }, 25, 22, UITextures.OVERLAY_BUTTON_MINUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -320,7 +320,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value1D -= shift ? 16 : 1;
             }
-        }, 25, 40, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
+        }, 25, 40, UITextures.OVERLAY_BUTTON_MINUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (shift) {
@@ -347,7 +347,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         },
             25,
             58,
-            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_C : GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_C : UITextures.OVERLAY_BUTTON_MINUS_SMALL,
             isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_X);
 
         addChangeParamButton(
@@ -355,7 +355,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             (shift, columnPointer, secondRow) -> param += shift ? 2 : 1,
             133,
             4,
-            GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
+            UITextures.OVERLAY_BUTTON_PLUS_SMALL,
             TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
@@ -367,7 +367,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value0D += shift ? 16 : 1;
             }
-        }, 133, 22, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
+        }, 133, 22, UITextures.OVERLAY_BUTTON_PLUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -378,7 +378,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value1D += shift ? 16 : 1;
             }
-        }, 133, 40, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
+        }, 133, 40, UITextures.OVERLAY_BUTTON_PLUS_SMALL, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (shift) {
@@ -405,7 +405,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         },
             133,
             58,
-            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_T : GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_T : UITextures.OVERLAY_BUTTON_PLUS_SMALL,
             isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
 
         addChangeParamButton(
@@ -413,7 +413,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             (shift, columnPointer, secondRow) -> param += shift ? 16 : 4,
             151,
             4,
-            GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
+            UITextures.OVERLAY_BUTTON_PLUS_LARGE,
             TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
@@ -425,7 +425,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value0D += shift ? 4096 : 256;
             }
-        }, 151, 22, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
+        }, 151, 22, UITextures.OVERLAY_BUTTON_PLUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_0);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -436,7 +436,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else {
                 value1D += shift ? 4096 : 256;
             }
-        }, 151, 40, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
+        }, 151, 40, UITextures.OVERLAY_BUTTON_PLUS_LARGE, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_1);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 value0D = input0D;
@@ -448,7 +448,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         },
             151,
             58,
-            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_IF : GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_IF : UITextures.OVERLAY_BUTTON_PLUS_LARGE,
             isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> pointer, val -> pointer = val))
@@ -540,8 +540,8 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         })
             .setPlayClickSound(false)
             .setBackground(
-                overlay2 != null ? new IDrawable[] { GT_UITextures.BUTTON_STANDARD, overlay1, overlay2 }
-                    : new IDrawable[] { GT_UITextures.BUTTON_STANDARD, overlay1 })
+                overlay2 != null ? new IDrawable[] { UITextures.BUTTON_STANDARD, overlay1, overlay2 }
+                    : new IDrawable[] { UITextures.BUTTON_STANDARD, overlay1 })
             .setSize(18, 18)
             .setPos(xPos, yPos));
     }

@@ -38,7 +38,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -48,10 +47,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
@@ -61,11 +60,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 
@@ -90,10 +89,10 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 .addElement(
                     'I',
                     lazy(
-                        x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
+                        x -> HatchElementBuilder.<LargeFusionComputer>builder()
                             .atLeast(
-                                GT_HatchElement.InputHatch.or(GT_HatchElement.InputBus),
-                                GT_HatchElement.OutputHatch)
+                                gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
+                                gregtech.api.enums.HatchElement.OutputHatch)
                             .adder(LargeFusionComputer::addFluidIO)
                             .casingIndex(x.textureIndex())
                             .dot(1)
@@ -102,8 +101,10 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 .addElement(
                     'E',
                     lazy(
-                        x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
-                            .anyOf(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                        x -> HatchElementBuilder.<LargeFusionComputer>builder()
+                            .anyOf(
+                                com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti
+                                    .or(gregtech.api.enums.HatchElement.Energy))
                             .adder(LargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
@@ -229,7 +230,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
+        return survivalBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
     }
 
     @Override
@@ -297,8 +298,8 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                     }
 
                     long energyLimit = getSingleHatchPower();
-                    List<GT_MetaTileEntity_Hatch> hatches = getExoticAndNormalEnergyHatchList();
-                    for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(hatches)) {
+                    List<Hatch> hatches = getExoticAndNormalEnergyHatchList();
+                    for (Hatch hatch : filterValidMTEs(hatches)) {
                         long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
                         long receivedEnergy = Math
                             .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());
@@ -369,7 +370,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+            for (Hatch_Energy hatch : this.mEnergyHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
@@ -379,12 +380,12 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             }
         }
         if (this.mOutputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (Hatch_Output hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
         if (this.mInputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (Hatch_Input hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
@@ -436,14 +437,14 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
                 // When the fusion first loads and is still processing, it does the recipe check without consuming.
                 return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
             }
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
             }
 
@@ -502,7 +503,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy tHatch) {
+        if (aMetaTileEntity instanceof Hatch_Energy tHatch) {
             if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
@@ -517,16 +518,16 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     private boolean addFluidIO(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch) {
+        if (aMetaTileEntity instanceof Hatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tInput) {
+        if (aMetaTileEntity instanceof Hatch_Input tInput) {
             if (tInput.getTierForStructure() < hatchTier()) return false;
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
+        if (aMetaTileEntity instanceof Hatch_Output tOutput) {
             if (tOutput.getTierForStructure() < hatchTier()) return false;
             return mOutputHatches.add(tOutput);
         }

@@ -8,11 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 
-public class GT_Cover_SolarPanel extends GT_CoverBehavior {
+public class GT_Cover_SolarPanel extends CoverBehavior {
 
     private final int mVoltage;
 

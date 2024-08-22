@@ -7,7 +7,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;
 import gtPlusPlus.api.objects.Logger;
@@ -64,7 +64,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
                     Logger.MATERIALS("Generating Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
-                    final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
+                    final ItemStack plate = OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
 
                     if ((null != plate)) {
                         addRecipe(aMaterial, 1600000L, 3, ItemList.Battery_RE_HV_Lithium.get(1));

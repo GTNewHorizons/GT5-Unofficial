@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.LFTR_OUTPUT_POWER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
 
 import net.minecraftforge.fluids.Fluid;

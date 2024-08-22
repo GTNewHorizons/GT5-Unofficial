@@ -45,13 +45,13 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_DataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.WirelessComputationPacket;
 import gregtech.common.WirelessDataStore;
 
@@ -113,8 +113,8 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.name")) // Machine Type: Data Bank
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
                                                                                            // the Data Bank
@@ -236,14 +236,14 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             return eWirelessStacksDataOutputs.add((GT_MetaTileEntity_Hatch_WirelessOutputDataItems) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputDataItems) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataItems) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess
+        } else if (aMetaTileEntity instanceof Hatch_DataAccess
             && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return eDataAccessHatches.add(aMetaTileEntity);
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 slave = true;
                 return eDataAccessHatches.add(aMetaTileEntity);
             }
@@ -305,7 +305,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
     }
 
     @Override
@@ -320,7 +320,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     private enum DataBankHatches implements IHatchElement<GT_MetaTileEntity_EM_dataBank> {
 
-        DataStick(GT_MetaTileEntity_Hatch_DataAccess.class) {
+        DataStick(Hatch_DataAccess.class) {
 
             @Override
             public long count(GT_MetaTileEntity_EM_dataBank t) {

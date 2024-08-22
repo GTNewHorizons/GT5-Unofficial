@@ -14,14 +14,14 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_NeedMaintainance;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -51,7 +51,7 @@ public class GT_Cover_WirelessMaintenanceDetector
 
         if (tileEntity instanceof IGregTechTileEntity) {
             IMetaTileEntity metaTE = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-            if (metaTE instanceof GT_MetaTileEntity_MultiBlockBase multiTE) {
+            if (metaTE instanceof MultiBlockBase multiTE) {
                 int ideal = multiTE.getIdealStatus();
                 int real = multiTE.getRepairStatus();
 
@@ -62,8 +62,8 @@ public class GT_Cover_WirelessMaintenanceDetector
                     case ROTOR_80, ROTOR_100 -> {
                         ItemStack rotor = multiTE.getRealInventory()[1];
                         if (GT_Cover_NeedMaintainance.isRotor(rotor)) {
-                            long max = GT_MetaGenerated_Tool.getToolMaxDamage(rotor);
-                            long current = GT_MetaGenerated_Tool.getToolDamage(rotor);
+                            long max = MetaGeneratedTool.getToolMaxDamage(rotor);
+                            long current = MetaGeneratedTool.getToolDamage(rotor);
 
                             if (coverVariable.mode == MaintenanceMode.ROTOR_80) {
                                 signal = current >= max * 8 / 10;
@@ -187,13 +187,13 @@ public class GT_Cover_WirelessMaintenanceDetector
         ">= 4 Issues", ">= 5 Issues", "Rotor < 20%", "Rotor ≈ 0%" };
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
     }
 
     private class WirelessMaintenanceDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
-        public WirelessMaintenanceDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+        public WirelessMaintenanceDetectorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -234,7 +234,7 @@ public class GT_Cover_WirelessMaintenanceDetector
                         coverData.mode = MaintenanceMode.values()[index];
                         return coverData;
                     },
-                    widget -> widget.setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
+                    widget -> widget.setToggleTexture(UITextures.OVERLAY_BUTTON_CHECKMARK, UITextures.TRANSPARENT)
                         .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
         }

@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;

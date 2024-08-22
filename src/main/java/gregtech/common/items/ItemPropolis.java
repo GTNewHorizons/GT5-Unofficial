@@ -4,8 +4,8 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class ItemPropolis extends Item {
 
@@ -99,7 +99,7 @@ public class ItemPropolis extends Item {
         tPropolis = getStackForType(PropolisType.Silverfish);
         addProcessEV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "silverfish_blood", 1, 0));
         tPropolis = getStackForType(PropolisType.Endium);
-        addProcessHV(tPropolis, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.HeeEndium, 1));
+        addProcessHV(tPropolis, OreDictUnificator.get(OrePrefixes.dustSmall, Materials.HeeEndium, 1));
         tPropolis = getStackForType(PropolisType.Fireessence);
         addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "essence", 16, 1));
 

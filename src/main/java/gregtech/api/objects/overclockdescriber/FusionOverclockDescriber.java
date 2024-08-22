@@ -5,10 +5,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 
 @ParametersAreNonnullByDefault
@@ -23,7 +23,7 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
     }
 
     @Override
-    public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+    public OverclockCalculator createCalculator(OverclockCalculator template, GT_Recipe recipe) {
         return super.createCalculator(template, recipe)
             .limitOverclockCount(overclock(recipe.mSpecialValue, recipe.mEUt))
             .setEUtIncreasePerOC(getEUtIncreasePerOC())

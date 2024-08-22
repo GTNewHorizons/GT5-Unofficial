@@ -30,9 +30,9 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -40,13 +40,12 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEntity_BasicTank
-    implements IAddGregtechLogo, IAddUIWidgets {
+public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends BasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int mMaxLoss = 50;
@@ -89,7 +88,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         this.hasBlock = checkForBlock();
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -413,7 +412,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
@@ -439,29 +438,15 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                     .setPos(46, 40))
             .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
 
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
+        addChangeNumberButtons(builder, UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
+        addChangeNumberButtons(builder, UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
+        addChangeNumberButtons(builder, UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
+        addChangeNumberButtons(builder, UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
 
-        addChangeNumberButton(
-            builder,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
-            val -> mTargetD += val,
-            -16,
-            -8,
-            7,
-            58);
-        addChangeNumberButton(
-            builder,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
-            val -> mTargetD += val,
-            -4,
-            -1,
-            25,
-            58);
-        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD += val, 4, 1, 133, 58);
-        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD += val, 16, 8, 151, 58);
+        addChangeNumberButton(builder, UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mTargetD += val, -16, -8, 7, 58);
+        addChangeNumberButton(builder, UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mTargetD += val, -4, -1, 25, 58);
+        addChangeNumberButton(builder, UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD += val, 4, 1, 133, 58);
+        addChangeNumberButton(builder, UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD += val, 16, 8, 151, 58);
     }
 
     private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
@@ -476,14 +461,14 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         builder.widget(
             new ButtonWidget()
                 .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
-                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setBackground(UITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));
     }
 
     @Override
     public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
+        return new GUITextureSet().setGregTechLogo(UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
     }
 
     @Override

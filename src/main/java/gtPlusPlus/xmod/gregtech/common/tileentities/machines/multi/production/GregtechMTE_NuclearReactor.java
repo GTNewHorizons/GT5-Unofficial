@@ -4,14 +4,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
+import static gregtech.api.util.RecipeConstants.LFTR_OUTPUT_POWER;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,20 +32,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -87,8 +87,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
             .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
@@ -174,19 +174,16 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+            if (aMetaTileEntity instanceof Hatch_Maintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo dynamo
-                && dynamo.getTierForStructure() >= 4
+            } else if (aMetaTileEntity instanceof Hatch_Dynamo dynamo && dynamo.getTierForStructure() >= 4
                 && dynamo.getTierForStructure() <= 6) {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input hatch
-                    && hatch.getTierForStructure() >= 5) {
-                        return addToMachineList(aTileEntity, aBaseCasingIndex);
-                    } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output hatch
-                        && hatch.getTierForStructure() >= 5) {
-                            return addToMachineList(aTileEntity, aBaseCasingIndex);
-                        }
+                } else if (aMetaTileEntity instanceof Hatch_Input hatch && hatch.getTierForStructure() >= 5) {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                } else if (aMetaTileEntity instanceof Hatch_Output hatch && hatch.getTierForStructure() >= 5) {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
         }
         return false;
     }
@@ -196,7 +193,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler hatch && hatch.getTierForStructure() >= 5) {
+            if (aMetaTileEntity instanceof Hatch_Muffler hatch && hatch.getTierForStructure() >= 5) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             }
         }
@@ -258,7 +255,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -320,27 +317,27 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     public boolean turnCasingActive(final boolean status) {
         // TODO
         if (this.mDynamoHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Dynamo hatch : this.mDynamoHatches) {
+            for (final Hatch_Dynamo hatch : this.mDynamoHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mMufflerHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
+            for (final Hatch_Muffler hatch : this.mMufflerHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mOutputHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (final Hatch_Output hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mInputHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (final Hatch_Input hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mMaintenanceHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
+            for (final Hatch_Maintenance hatch : this.mMaintenanceHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
@@ -353,8 +350,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return OverclockCalculator
                     .ofNoOverclock(recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0) * 4L, recipe.mDuration);
             }
 

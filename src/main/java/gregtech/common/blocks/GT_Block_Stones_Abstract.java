@@ -3,8 +3,8 @@ package gregtech.common.blocks;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.BlockGeneric;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
-public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRecipeRegistrator {
+public class GT_Block_Stones_Abstract extends BlockGeneric implements IOreRecipeRegistrator {
 
     public GT_Block_Stones_Abstract(Class<? extends ItemBlock> aItemClass, String aName) {
         super(aItemClass, aName, Material.rock);

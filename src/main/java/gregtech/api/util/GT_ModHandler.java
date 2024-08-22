@@ -12,8 +12,8 @@ import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,8 +68,8 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.metatileentity.implementations.BasicMachine_Recipe;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
@@ -472,7 +472,7 @@ public class GT_ModHandler {
      * Adds a Scrapbox Drop. Fails at April first for the "suddenly Hoes"-Feature of IC2
      */
     public static boolean addScrapboxDrop(float aChance, ItemStack aOutput) {
-        aOutput = GT_OreDictUnificator.get(true, aOutput);
+        aOutput = OreDictUnificator.get(true, aOutput);
         if (aOutput == null || aChance <= 0) return false;
         aOutput.stackSize = 1;
         if (GT_Config.troll && !GT_Utility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
@@ -516,7 +516,7 @@ public class GT_ModHandler {
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
     public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
-        aOutput = GT_OreDictUnificator.get(true, aOutput);
+        aOutput = OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null) return false;
         FurnaceRecipes.smelting()
             .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
@@ -541,7 +541,7 @@ public class GT_ModHandler {
             || (OrePrefixes.gem.contains(aInput)))) {
             return false;
         }
-        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         if (input2 == null) {
             recipeBuilder.itemInputs(aInput);
         } else {
@@ -795,10 +795,10 @@ public class GT_ModHandler {
         int machineTier) {
         if (aRecipe != null) {
             for (int i = 3; i < aRecipe.length; i++) {
-                if (!(aRecipe[i] instanceof GT_MetaTileEntity_BasicMachine_GT_Recipe.X)) continue;
+                if (!(aRecipe[i] instanceof BasicMachine_Recipe.X)) continue;
 
                 // spotless:off
-                aRecipe[i] = switch ((GT_MetaTileEntity_BasicMachine_GT_Recipe.X) aRecipe[i]) {
+                aRecipe[i] = switch ((BasicMachine_Recipe.X) aRecipe[i]) {
                     case CIRCUIT            -> Tier.ELECTRIC[machineTier].mManagingObject;
                     case BETTER_CIRCUIT     -> Tier.ELECTRIC[machineTier].mBetterManagingObject;
                     case HULL               -> Tier.ELECTRIC[machineTier].mHullObject;
@@ -1062,7 +1062,7 @@ public class GT_ModHandler {
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
 
-        aResult = GT_OreDictUnificator.get(true, aResult);
+        aResult = OreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
@@ -1184,7 +1184,7 @@ public class GT_ModHandler {
                 Object in = aRecipe[idx + 1];
                 if (in instanceof ItemStack is) {
                     tItemStackMap.put(chr, GT_Utility.copyOrNull(is));
-                    tItemDataMap.put(chr, GT_OreDictUnificator.getItemData(is));
+                    tItemDataMap.put(chr, OreDictUnificator.getItemData(is));
                 } else if (in instanceof ItemData) {
                     String tString = in.toString();
                     switch (tString) {
@@ -1194,7 +1194,7 @@ public class GT_ModHandler {
                         case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
                         default -> tItemDataMap.put(chr, (ItemData) in);
                     }
-                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = OreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     in = aRecipe[idx + 1] = in.toString();
@@ -1211,7 +1211,7 @@ public class GT_ModHandler {
                         tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
                         tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = OreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                 } else {
@@ -1224,8 +1224,7 @@ public class GT_ModHandler {
                 int x = -1;
                 for (char chr : shape.toString()
                     .toCharArray()) tData[++x] = tItemDataMap.get(chr);
-                if (GT_Utility.arrayContainsNonNull(tData))
-                    GT_OreDictUnificator.addItemData(aResult, new ItemData(tData));
+                if (GT_Utility.arrayContainsNonNull(tData)) OreDictUnificator.addItemData(aResult, new ItemData(tData));
             }
 
             if (aCheckForCollisions && tRemoveRecipe) {
@@ -1267,7 +1266,7 @@ public class GT_ModHandler {
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GT_Utility.areStacksEqual(OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
                     tList.remove(i--);
                     tList_sS = tList.size();
                     tThereWasARecipe = true;
@@ -1350,7 +1349,7 @@ public class GT_ModHandler {
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
         Object[] aRecipe) {
-        aResult = GT_OreDictUnificator.get(true, aResult);
+        aResult = OreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
@@ -1373,7 +1372,7 @@ public class GT_ModHandler {
                 if (tObject instanceof ItemStack) {
                     tRecipe[i] = (ItemStack) tObject;
                 } else if (tObject instanceof String) {
-                    tRecipe[i] = GT_OreDictUnificator.getFirstOre(tObject, 1);
+                    tRecipe[i] = OreDictUnificator.getFirstOre(tObject, 1);
                     if (tRecipe[i] == null) break;
                 }
                 i++;
@@ -1554,7 +1553,7 @@ public class GT_ModHandler {
         boolean rReturn = false;
         final ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        aOutput = GT_OreDictUnificator.get(aOutput);
+        aOutput = OreDictUnificator.get(aOutput);
         int tList_sS = tList.size();
         for (int i = 0; i < tList_sS; i++) {
             final IRecipe tRecipe = tList.get(i);
@@ -1573,7 +1572,7 @@ public class GT_ModHandler {
             }
             ItemStack tStack = tRecipe.getRecipeOutput();
             if ((!(tRecipe instanceof IGT_CraftingRecipe) || ((IGT_CraftingRecipe) tRecipe).isRemovable())
-                && GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
+                && GT_Utility.areStacksEqual(OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
                 tList.remove(i--);
                 tList_sS = tList.size();
                 rReturn = true;
@@ -1587,7 +1586,7 @@ public class GT_ModHandler {
             .getRecipeList();
 
         Set<ItemStack> setToRemove = toRemove.parallelStream()
-            .map(GT_OreDictUnificator::get_nocopy)
+            .map(OreDictUnificator::get_nocopy)
             .collect(Collectors.toSet());
 
         GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: tList: " + tList.size() + " setToRemove: " + setToRemove.size());
@@ -1600,7 +1599,7 @@ public class GT_ModHandler {
                     tRecipe.getClass()
                         .getName()))
                     return false;
-                final ItemStack tStack = GT_OreDictUnificator.get_nocopy(tRecipe.getRecipeOutput());
+                final ItemStack tStack = OreDictUnificator.get_nocopy(tRecipe.getRecipeOutput());
                 return setToRemove.stream()
                     .anyMatch(aOutput -> GT_Utility.areStacksEqual(tStack, aOutput, true));
             })
@@ -1910,7 +1909,7 @@ public class GT_ModHandler {
      */
     public static ItemStack getSmeltingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GT_OreDictUnificator.get(
+        ItemStack rStack = OreDictUnificator.get(
             FurnaceRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -2300,7 +2299,7 @@ public class GT_ModHandler {
 
         final Item item = aStack.getItem();
 
-        if (item instanceof final GT_MetaBase_Item metaBaseItem) {
+        if (item instanceof final MetaBaseItem metaBaseItem) {
             final Long[] stats = metaBaseItem.getElectricStats(aStack);
             if (stats != null && stats.length > 0) {
                 return Optional.of(new Long[] { metaBaseItem.getRealCharge(aStack), stats[0] });

@@ -6,10 +6,10 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;

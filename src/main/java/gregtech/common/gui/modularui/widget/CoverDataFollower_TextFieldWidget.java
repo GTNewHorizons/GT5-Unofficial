@@ -10,8 +10,8 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> extends TextFieldWidget
@@ -25,7 +25,7 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
         setSynced(false, false);
         setTextColor(Color.WHITE.dark(1));
         setTextAlignment(Alignment.CenterLeft);
-        setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2));
+        setBackground(UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2));
     }
 
     @Override

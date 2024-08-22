@@ -43,14 +43,14 @@ import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.smallNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
 import java.util.List;
@@ -86,8 +86,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class AdditionalRecipes {
@@ -110,7 +110,7 @@ public class AdditionalRecipes {
                         .itemInputs(stack, DNAFlask, Detergent, EthanolCell)
                         .itemOutputs(
                             BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
-                            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                            OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
                         .outputChances(DNA.getChance(), 100_00)
                         .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
                         .special(BioItemList.mBioLabParts[0])
@@ -276,7 +276,7 @@ public class AdditionalRecipes {
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
@@ -346,7 +346,7 @@ public class AdditionalRecipes {
 
         // Prasiolite
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10))
+            .itemInputs(OreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10))
             .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -354,7 +354,7 @@ public class AdditionalRecipes {
             .addTo(blastFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L))
+            .itemInputs(OreDictUnificator.get(dust, Materials.Quartzite, 40L))
             .itemOutputs(Materials.Amethyst.getDust(10))
             .duration(40 * SECONDS)
             .eut(0)
@@ -384,7 +384,7 @@ public class AdditionalRecipes {
 
         // Tellurium
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(crushed, Materials.Lead, 10L), GT_Utility.getIntegratedCircuit(17))
+            .itemInputs(OreDictUnificator.get(crushed, Materials.Lead, 10L), GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(Materials.Lead.getIngots(10), Materials.Tellurium.getNuggets(20))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -677,7 +677,7 @@ public class AdditionalRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L),
-                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+                OreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
             .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L))
             .duration(5 * SECONDS)
             .eut(400)
@@ -685,7 +685,7 @@ public class AdditionalRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
+                OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
             .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
@@ -693,7 +693,7 @@ public class AdditionalRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L),
-                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+                OreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
             .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L))
             .duration(5 * SECONDS)
             .eut(400)
@@ -702,9 +702,9 @@ public class AdditionalRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.NaquadahCell_1.get(32L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
                 WerkstoffLoader.Tiberium.get(dust, 64),
                 WerkstoffLoader.Tiberium.get(dust, 64))
             .itemOutputs(BW_NonMeta_MaterialItems.TheCoreCell.get(1L))

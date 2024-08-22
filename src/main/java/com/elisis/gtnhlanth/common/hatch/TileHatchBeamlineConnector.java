@@ -17,10 +17,9 @@ import com.github.technus.tectech.util.TT_Utility;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 
-public abstract class TileHatchBeamlineConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
-    implements IConnectsToBeamline {
+public abstract class TileHatchBeamlineConnector<T extends DataPacket> extends Hatch implements IConnectsToBeamline {
 
     private String clientLocale = "en_US";
 

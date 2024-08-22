@@ -34,14 +34,13 @@ import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockB
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -49,9 +48,9 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -60,8 +59,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
 
     public static double penalty_per_config = 0.015d;
     protected int casingAmount = 0;
-    protected GT_MetaTileEntity_Hatch_Input mHotFluidHatch;
-    protected GT_MetaTileEntity_Hatch_Output mCooledFluidHatch;
+    protected Hatch_Input mHotFluidHatch;
+    protected Hatch_Output mCooledFluidHatch;
     private boolean transformed = false;
     private String hotName;
     private ExtremeHeatExchangerRecipe tRunningRecipe;
@@ -95,7 +94,9 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                     'B',
                     ofChain(
                         buildHatchAdder(ExtremeHeatExchanger.class)
-                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.Maintenance)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.InputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
                             .dot(1)
                             .build(),
@@ -104,7 +105,9 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                     'T',
                     ofChain(
                         buildHatchAdder(ExtremeHeatExchanger.class)
-                            .atLeast(GT_HatchElement.OutputHatch, GT_HatchElement.Maintenance)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.OutputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
                             .dot(2)
                             .build(),
@@ -114,7 +117,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(ExtremeHeatExchanger.class).atLeast(GT_HatchElement.Maintenance)
+                        buildHatchAdder(ExtremeHeatExchanger.class).atLeast(gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
                             .dot(5)
                             .build(),
@@ -131,9 +134,9 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            mHotFluidHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            mHotFluidHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;
@@ -143,9 +146,9 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            mCooledFluidHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Output) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            mCooledFluidHatch = (Hatch_Output) aMetaTileEntity;
             return true;
         }
         return false;
@@ -196,8 +199,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
             .addInfo("Controller block for the Extreme Heat Exchanger.")
             .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
@@ -374,12 +377,12 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, env, false, true);
     }
 
     private enum EHEHatches implements IHatchElement<ExtremeHeatExchanger> {
 
-        HotInputHatch(ExtremeHeatExchanger::addHotFluidInputToMachineList, GT_MetaTileEntity_Hatch_Input.class) {
+        HotInputHatch(ExtremeHeatExchanger::addHotFluidInputToMachineList, Hatch_Input.class) {
 
             @Override
             public long count(ExtremeHeatExchanger t) {
@@ -387,7 +390,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                 return 1;
             }
         },
-        ColdOutputHatch(ExtremeHeatExchanger::addColdFluidOutputToMachineList, GT_MetaTileEntity_Hatch_Output.class) {
+        ColdOutputHatch(ExtremeHeatExchanger::addColdFluidOutputToMachineList, Hatch_Output.class) {
 
             @Override
             public long count(ExtremeHeatExchanger t) {

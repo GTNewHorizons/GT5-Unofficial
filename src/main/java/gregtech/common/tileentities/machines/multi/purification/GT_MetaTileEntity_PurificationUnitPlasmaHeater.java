@@ -5,16 +5,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,14 +46,14 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitPlasmaHeater>
@@ -113,8 +113,8 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     private static final Materials plasmaMaterial = Materials.Helium;
     private static final Materials coolantMaterial = Materials.SuperCoolant;
 
-    private GT_MetaTileEntity_Hatch_Input plasmaInputHatch;
-    private GT_MetaTileEntity_Hatch_Input coolantInputHatch;
+    private Hatch_Input plasmaInputHatch;
+    private Hatch_Input coolantInputHatch;
 
     private static final String[][] structure = new String[][] {
         // spotless:off
@@ -211,7 +211,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+    protected void setHatchRecipeMap(Hatch_Input hatch) {
         // Do nothing, we don't want to lock hatches to recipe maps since this can cause
         // them to reject our catalyst fluids
     }
@@ -257,7 +257,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -279,8 +279,8 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -421,7 +421,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     }
 
     // Drains up to maxAmount of a fluid if it is the same fluid as given, returns the amount drained
-    private long drainFluidLimited(GT_MetaTileEntity_Hatch_Input inputHatch, FluidStack fluid, long maxAmount) {
+    private long drainFluidLimited(Hatch_Input inputHatch, FluidStack fluid, long maxAmount) {
         FluidStack hatchStack = inputHatch.getDrainableStack();
         if (hatchStack == null) return 0;
         if (hatchStack.isFluidEqual(fluid)) {
@@ -486,10 +486,10 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            coolantInputHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            coolantInputHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;
@@ -499,10 +499,10 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            plasmaInputHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            plasmaInputHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;

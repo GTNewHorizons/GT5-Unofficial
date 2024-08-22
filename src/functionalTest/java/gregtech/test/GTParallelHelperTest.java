@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ParallelHelper;
 import gregtech.test.mock.MockIVoidableMachine;
 
 public class GTParallelHelperTest {
@@ -46,7 +46,7 @@ public class GTParallelHelperTest {
 
     @Test
     void OutputsIntegerOverflow() {
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(4_000_000)
@@ -64,7 +64,7 @@ public class GTParallelHelperTest {
     @Test
     void parallelIntegerOverflow() {
         // Without batch mode
-        GT_ParallelHelper helperWithoutBatchMode = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helperWithoutBatchMode = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(Integer.MAX_VALUE)
@@ -74,7 +74,7 @@ public class GTParallelHelperTest {
         assertEquals(Integer.MAX_VALUE, helperWithoutBatchMode.getCurrentParallel());
 
         // With batch mode
-        GT_ParallelHelper helperWithBatchMode = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helperWithBatchMode = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(Integer.MAX_VALUE / 50)
@@ -87,7 +87,7 @@ public class GTParallelHelperTest {
 
     @Test
     void chanceMultiplier() {
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(10)
@@ -106,7 +106,7 @@ public class GTParallelHelperTest {
 
     @Test
     void outputMultiplier() {
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(1)

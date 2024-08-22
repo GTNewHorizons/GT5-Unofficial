@@ -1,9 +1,9 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GT_RecipeBuilder.ENABLE_COLLISION_CHECK;
-import static gregtech.api.util.GT_RecipeBuilder.handleInvalidRecipe;
-import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
+import static gregtech.api.util.RecipeBuilder.ENABLE_COLLISION_CHECK;
+import static gregtech.api.util.RecipeBuilder.handleInvalidRecipe;
+import static gregtech.api.util.RecipeBuilder.handleRecipeCollision;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,11 +31,11 @@ import com.google.common.collect.SetMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_StreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -168,7 +168,7 @@ public class RecipeMapBackend {
     /**
      * Builds recipe from supplied recipe builder and adds it.
      */
-    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
+    protected Collection<GT_Recipe> doAdd(RecipeBuilder builder) {
         Iterable<? extends GT_Recipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (GT_Recipe recipe : recipes) {
@@ -277,8 +277,8 @@ public class RecipeMapBackend {
     public void reInit() {
         itemIndex.clear();
         for (GT_Recipe recipe : allRecipes()) {
-            GT_OreDictUnificator.setStackArray(true, recipe.mInputs);
-            GT_OreDictUnificator.setStackArray(true, recipe.mOutputs);
+            OreDictUnificator.setStackArray(true, recipe.mInputs);
+            OreDictUnificator.setStackArray(true, recipe.mOutputs);
             addToItemMap(recipe);
         }
     }
@@ -393,7 +393,7 @@ public class RecipeMapBackend {
         ItemStack[] items;
         // Unification happens here in case the item input isn't already unificated.
         if (notUnificated) {
-            items = GT_OreDictUnificator.getStackArray(true, (Object[]) rawItems);
+            items = OreDictUnificator.getStackArray(true, (Object[]) rawItems);
         } else {
             items = rawItems;
         }

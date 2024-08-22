@@ -10,7 +10,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import util.Util;
 
 public class Crafting implements Runnable {
@@ -20,25 +20,25 @@ public class Crafting implements Runnable {
         // TFFT Controller
         GT_ModHandler.addCraftingRecipe(
             TileEntities.tfft.getStackForm(1),
-            new Object[] { "ESE", "FTF", "CVC", 'E', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.EnderEye, 1),
+            new Object[] { "ESE", "FTF", "CVC", 'E', OreDictUnificator.get(OrePrefixes.screw, Materials.EnderEye, 1),
                 'S', ItemList.Cover_Screen.get(1), 'F', ItemList.Field_Generator_LV.get(1), 'T',
                 new ItemStack(Blocks.tfftStorageField, 1), 'C', "circuitData", 'V',
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 1), });
+                OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 1), });
 
         // SOFC Controller mk1
         final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
             ItemList.Electric_Pump_HV.get(1L), 'H', ItemList.Hull_HV.get(1L), 'F',
-            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1), 'B',
-            GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1), 'L',
-            GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1) };
+            OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1), 'B',
+            OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1), 'L',
+            OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1) };
         GT_ModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 
         // SOFC Controller mk2
         final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.LuV), 'P',
             ItemList.Electric_Pump_IV.get(1L), 'H', ItemList.Hull_IV.get(1L), 'F',
-            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1), 'B',
+            OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1), 'B',
             Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1), 'L',
-            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1) };
+            OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1) };
         GT_ModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
 
         // LSC Controller

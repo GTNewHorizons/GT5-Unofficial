@@ -1,8 +1,8 @@
 package gregtech.api.recipe.maps;
 
 import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.util.GT_RecipeConstants.EXPLODE;
-import static gregtech.api.util.GT_RecipeConstants.ON_FIRE;
+import static gregtech.api.util.RecipeConstants.EXPLODE;
+import static gregtech.api.util.RecipeConstants.ON_FIRE;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -21,11 +21,11 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 
 /**
  * Special Class for Microwave Recipe handling.
@@ -74,26 +74,26 @@ public class MicrowaveBackend extends NonGTBackend {
                 || GT_Utility.areStacksEqual(item, new ItemStack(Items.fire_charge, 1, W), true)) {
                 GT_Log.exp
                     .println("Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE");
-                return GT_RecipeBuilder.empty()
+                return RecipeBuilder.empty()
                     .metadata(EXPLODE, true)
                     .build()
                     .orElse(null);
             }
 
-            ItemData itemData = GT_OreDictUnificator.getItemData(item);
+            ItemData itemData = OreDictUnificator.getItemData(item);
             if (itemData != null) {
                 if (itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
                     if (itemData.mMaterial.mMaterial.contains(SubTag.METAL)
                         || itemData.mMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
                         GT_Log.exp.println("Microwave Explosion due to METAL insertion");
-                        return GT_RecipeBuilder.empty()
+                        return RecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
                     if (itemData.mMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
                         GT_Log.exp.println("Microwave INFLAMMATION due to FLAMMABLE insertion");
-                        return GT_RecipeBuilder.empty()
+                        return RecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
                             .build()
                             .orElse(null);
@@ -104,14 +104,14 @@ public class MicrowaveBackend extends NonGTBackend {
                     if (materialStack.mMaterial.contains(SubTag.METAL)
                         || materialStack.mMaterial.contains(SubTag.EXPLOSIVE)) {
                         GT_Log.exp.println("Microwave Explosion due to METAL insertion");
-                        return GT_RecipeBuilder.empty()
+                        return RecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
                     if (materialStack.mMaterial.contains(SubTag.FLAMMABLE)) {
                         GT_Log.exp.println("Microwave INFLAMMATION due to FLAMMABLE insertion");
-                        return GT_RecipeBuilder.empty()
+                        return RecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
                             .build()
                             .orElse(null);
@@ -120,7 +120,7 @@ public class MicrowaveBackend extends NonGTBackend {
             }
             if (TileEntityFurnace.getItemBurnTime(item) > 0) {
                 GT_Log.exp.println("Microwave INFLAMMATION due to BURNABLE insertion");
-                return GT_RecipeBuilder.empty()
+                return RecipeBuilder.empty()
                     .metadata(ON_FIRE, true)
                     .build()
                     .orElse(null);

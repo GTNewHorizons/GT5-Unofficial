@@ -9,11 +9,11 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.objects.GT_ItemStack;
 import gtPlusPlus.core.lib.CORE;
 
-public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class GT_MetaTileEntity_RedstoneBase extends TieredMachineBlock {
 
     protected int mOpenerCount;
 

@@ -1,9 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,9 +12,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 
 public class CropProcessingRecipes implements Runnable {
 
@@ -123,17 +123,17 @@ public class CropProcessingRecipes implements Runnable {
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance,
         boolean aMainOutput) {
-        if (tCrop == null || aMaterial == null || GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1) == null)
+        if (tCrop == null || aMaterial == null || OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1) == null)
             return;
 
         FluidStack fluidOutputChemReactor = aMaterialOut.mOreByProducts.isEmpty() ? null
             : aMaterialOut.mOreByProducts.get(0)
                 .getMolten(144);
 
-        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         recipeBuilder
-            .itemInputs(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
+            .itemInputs(GT_Utility.copyAmount(9, tCrop), OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
             .fluidInputs(Materials.Water.getFluid(1000));
         if (fluidOutputChemReactor != null) {
             recipeBuilder.fluidOutputs(fluidOutputChemReactor);
@@ -144,7 +144,7 @@ public class CropProcessingRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16, tCrop))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
             .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
             .duration((int) (aMaterial.getMass() * 128))
             .eut(384)

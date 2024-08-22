@@ -15,7 +15,7 @@ package com.github.bartimaeusnek.bartworks.API;
 
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.awt.Color;
 

@@ -1,12 +1,12 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
 import static gregtech.api.enums.Mods.GalactiGreg;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -20,7 +20,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class AssemblyLine implements Runnable {
 
@@ -34,9 +34,9 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 1 * HOURS)
             .itemInputs(
                 ItemList.Pump_IV.get(16),
-                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L),
-                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
+                OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L),
+                OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
+                OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
                 ItemList.Field_Generator_LuV.get(8))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 32 * 144),
@@ -52,12 +52,12 @@ public class AssemblyLine implements Runnable {
                 .metadata(RESEARCH_TIME, 25 * MINUTES + 36 * SECONDS)
                 .itemInputs(
                     ItemList.OreDrill4.get(1L),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
+                    OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
                     Materials.Europium.getPlates(3),
                     ItemList.Electric_Motor_LuV.get(9L),
                     ItemList.Sensor_LuV.get(9L),
                     ItemList.Field_Generator_LuV.get(9L),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
+                    OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
                 .fluidInputs(new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Neon.getFluidOrGas(20000))
                 .itemOutputs(ItemRegistry.voidminer[0].copy())
                 .eut(TierEU.RECIPE_LuV)

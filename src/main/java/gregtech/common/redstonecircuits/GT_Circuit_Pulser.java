@@ -1,9 +1,9 @@
 package gregtech.common.redstonecircuits;
 
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
-import gregtech.api.util.GT_CircuitryBehavior;
+import gregtech.api.util.CircuitryBehavior;
 
-public class GT_Circuit_Pulser extends GT_CircuitryBehavior {
+public class GT_Circuit_Pulser extends CircuitryBehavior {
 
     public GT_Circuit_Pulser(int aIndex) {
         super(aIndex);

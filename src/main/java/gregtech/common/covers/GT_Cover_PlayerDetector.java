@@ -8,17 +8,17 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
+public class GT_Cover_PlayerDetector extends CoverBehavior {
 
     private String placer = "";
     private int range = 8;
@@ -146,7 +146,7 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new PlayerDetectorUIFactory(buildContext).createWindow();
     }
 
@@ -157,7 +157,7 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public PlayerDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+        public PlayerDetectorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

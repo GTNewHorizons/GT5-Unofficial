@@ -11,14 +11,14 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
@@ -44,8 +44,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeConstants;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeConstants;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
@@ -256,7 +256,7 @@ public class BioRecipes {
             .metadata(FUEL_TYPE, 0)
             .duration(0)
             .eut(0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
     }
 
     private static void recipeGreenAlgae() {
@@ -484,9 +484,9 @@ public class BioRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 getBioChip(20),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tin, 6L))
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 4L),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.Tin, 6L))
             .itemOutputs(CI.getEmptyCatalyst(1))
             .duration(5 * MINUTES)
             .eut(16)
@@ -499,8 +499,8 @@ public class BioRecipes {
             .itemInputs(
                 getBioChip(4),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 4L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 4L))
             .itemOutputs(CI.getGreenCatalyst(10))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -906,8 +906,8 @@ public class BioRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
             .fluidOutputs(Materials.CarbonDioxide.getGas(3000L))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
@@ -918,15 +918,15 @@ public class BioRecipes {
     private static void recipeLithiumChloride() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RockSalt, 8),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.RockSalt, 8),
                 ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 10))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 3),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 3),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 5),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Potassium, 5))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 3),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 3),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 5),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 2),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Potassium, 5))
             .outputChances(7500, 8000, 8500, 9000, 7500, 8500)
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mAir, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mChlorine, 500))
@@ -936,15 +936,15 @@ public class BioRecipes {
         if (OreDictUtils.containsValidEntries("dustPotash")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potash, 10),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Potash, 10),
                     ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 16))
                 .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3),
-                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 5),
-                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 5),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 7),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 2))
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3),
+                    OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 5),
+                    OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lithium, 5),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 7),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 2),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 2))
                 .outputChances(7500, 8000, 8500, 9000, 9000, 9000)
                 .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000))
                 .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mChlorine, 250))

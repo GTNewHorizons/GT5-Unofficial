@@ -3,11 +3,11 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.c
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
@@ -46,21 +46,21 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
@@ -133,8 +133,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Chemical Plant")
             .addInfo("Heavy Industry, now right at your doorstep!")
@@ -350,7 +350,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -385,14 +385,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     }
 
     public void updateHatchTexture() {
-        for (GT_MetaTileEntity_Hatch h : mCatalystBuses) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mCatalystBuses) h.updateTexture(getCasingTextureID());
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mOutputBusses) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mInputHatches) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mInputBusses) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mEnergyHatches) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mOutputBusses) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mInputHatches) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
     }
 
     public final boolean addChemicalPlantList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -402,22 +402,22 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Catalysts) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier);
+            } else if (aMetaTileEntity instanceof Hatch_InputBus) {
+                maxTierOfHatch = Math.max(maxTierOfHatch, ((Hatch_InputBus) aMetaTileEntity).mTier);
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+            } else if (aMetaTileEntity instanceof Hatch_Maintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier);
+            } else if (aMetaTileEntity instanceof Hatch_Energy) {
+                maxTierOfHatch = Math.max(maxTierOfHatch, ((Hatch_Energy) aMetaTileEntity).mTier);
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity).mTier);
+            } else if (aMetaTileEntity instanceof Hatch_OutputBus) {
+                maxTierOfHatch = Math.max(maxTierOfHatch, ((Hatch_OutputBus) aMetaTileEntity).mTier);
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier);
+            } else if (aMetaTileEntity instanceof Hatch_Input) {
+                maxTierOfHatch = Math.max(maxTierOfHatch, ((Hatch_Input) aMetaTileEntity).mTier);
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier);
+            } else if (aMetaTileEntity instanceof Hatch_Output) {
+                maxTierOfHatch = Math.max(maxTierOfHatch, ((Hatch_Output) aMetaTileEntity).mTier);
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             }
         }
@@ -475,7 +475,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     public boolean addToMachineList(IGregTechTileEntity aTileEntity) {
         int aMaxTier = getMachineCasingTier();
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock aMachineBlock) {
+        if (aMetaTileEntity instanceof TieredMachineBlock aMachineBlock) {
             int aTileTier = aMachineBlock.mTier;
             if (aTileTier > aMaxTier) {
                 log("Hatch tier too high.");

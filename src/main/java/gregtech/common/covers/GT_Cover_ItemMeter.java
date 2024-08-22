@@ -18,12 +18,12 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -34,7 +34,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_M
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.ItemMeterData> {
+public class GT_Cover_ItemMeter extends CoverBehaviorBase<GT_Cover_ItemMeter.ItemMeterData> {
 
     // Legacy data format
     private static final int SLOT_MASK = 0x3FFFFFFF; // 0 = all, 1 = 0 ...
@@ -190,7 +190,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ItemMeterUIFactory(buildContext).createWindow();
     }
 
@@ -219,7 +219,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private int maxSlot;
         private int maxThreshold;
 
-        public ItemMeterUIFactory(GT_CoverUIBuildContext buildContext) {
+        public ItemMeterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

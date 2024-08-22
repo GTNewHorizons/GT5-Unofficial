@@ -7,8 +7,8 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.MagicBees;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.RecipeBuilder;
 
 public class ItemDrop extends Item {
 
@@ -227,7 +227,7 @@ public class ItemDrop extends Item {
     }
 
     public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
-        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         recipeBuilder.itemInputs(tDrop);
         if (aOutput2 != GT_Values.NI) {
             recipeBuilder.itemOutputs(aOutput2)

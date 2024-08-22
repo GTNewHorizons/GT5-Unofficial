@@ -7,9 +7,9 @@ import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -23,11 +23,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 
 public class CrackRecipeAdder {
 
@@ -134,7 +134,7 @@ public class CrackRecipeAdder {
     public static void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
         FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, long aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
+            RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
             if (aOutput2 != GT_Values.NI) {
                 buildDistillation.itemOutputs(aOutput2);
@@ -145,7 +145,7 @@ public class CrackRecipeAdder {
                 .eut(aEUt / 4)
                 .addTo(distilleryRecipes);
         }
-        GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
+        RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .itemInputs(aCircuit);
         if (aOutput2 != GT_Values.NI) {
             buildDT.itemOutputs(aOutput2);
@@ -160,7 +160,7 @@ public class CrackRecipeAdder {
     public static void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
         int aDuration, long aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
+            RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
             if (aOutput2 != GT_Values.NI) {
                 buildDistillation.itemOutputs(aOutput2);
@@ -171,7 +171,7 @@ public class CrackRecipeAdder {
                 .eut(aEUt / 4)
                 .addTo(distilleryRecipes);
         }
-        GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder();
+        RecipeBuilder buildDT = GT_Values.RA.stdBuilder();
         if (aOutput2 != GT_Values.NI) {
             buildDT.itemOutputs(aOutput2);
         }
@@ -191,9 +191,9 @@ public class CrackRecipeAdder {
         String unName = material.getDefaultName()
             .replace(" ", "_");
         String Name = material.getDefaultName();
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material.getBridgeMaterial()),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 ID,
                 "GT_Pipe_" + unName + "_Tiny",
                 "Tiny " + Name + " Fluid Pipe",
@@ -202,9 +202,9 @@ public class CrackRecipeAdder {
                 flow / 6,
                 temp,
                 gas).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material.getBridgeMaterial()),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 ID + 1,
                 "GT_Pipe_" + unName + "_Small",
                 "Small " + Name + " Fluid Pipe",
@@ -213,9 +213,9 @@ public class CrackRecipeAdder {
                 flow / 3,
                 temp,
                 gas).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material.getBridgeMaterial()),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 ID + 2,
                 "GT_Pipe_" + unName,
                 Name + " Fluid Pipe",
@@ -224,9 +224,9 @@ public class CrackRecipeAdder {
                 flow,
                 temp,
                 gas).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material.getBridgeMaterial()),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 ID + 3,
                 "GT_Pipe_" + unName + "_Large",
                 "Large " + Name + " Fluid Pipe",
@@ -235,9 +235,9 @@ public class CrackRecipeAdder {
                 flow * 2,
                 temp,
                 gas).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material.getBridgeMaterial()),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 ID + 4,
                 "GT_Pipe_" + unName + "_Huge",
                 "Huge " + Name + " Fluid Pipe",
@@ -351,10 +351,10 @@ public class CrackRecipeAdder {
         String aTextWire2 = " Wire";
         String aTextCable2 = " Cable";
         int aLossInsulated = aLoss / 4;
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
             material.getBridgeMaterial(),
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 ID + 0,
                 aTextWire1 + unName + ".01",
                 "1x " + Name + aTextWire2,
@@ -365,10 +365,10 @@ public class CrackRecipeAdder {
                 aVoltage,
                 false,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt02,
             material.getBridgeMaterial(),
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 ID + 1,
                 aTextWire1 + unName + ".02",
                 "2x " + Name + aTextWire2,
@@ -379,10 +379,10 @@ public class CrackRecipeAdder {
                 aVoltage,
                 false,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt04,
             material.getBridgeMaterial(),
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 ID + 2,
                 aTextWire1 + unName + ".04",
                 "4x " + Name + aTextWire2,
@@ -393,10 +393,10 @@ public class CrackRecipeAdder {
                 aVoltage,
                 false,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt08,
             material.getBridgeMaterial(),
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 ID + 3,
                 aTextWire1 + unName + ".08",
                 "8x " + Name + aTextWire2,
@@ -407,10 +407,10 @@ public class CrackRecipeAdder {
                 aVoltage,
                 false,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt12,
             material.getBridgeMaterial(),
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 ID + 4,
                 aTextWire1 + unName + ".12",
                 "12x " + Name + aTextWire2,
@@ -421,10 +421,10 @@ public class CrackRecipeAdder {
                 aVoltage,
                 false,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt16,
             material.getBridgeMaterial(),
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 ID + 5,
                 aTextWire1 + unName + ".16",
                 "16x " + Name + aTextWire2,
@@ -436,10 +436,10 @@ public class CrackRecipeAdder {
                 false,
                 true).getStackForm(1L));
         if (cover) {
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt01,
                 material.getBridgeMaterial(),
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     ID + 6,
                     aTextCable1 + unName + ".01",
                     "1x " + Name + aTextCable2,
@@ -450,10 +450,10 @@ public class CrackRecipeAdder {
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt02,
                 material.getBridgeMaterial(),
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     ID + 7,
                     aTextCable1 + unName + ".02",
                     "2x " + Name + aTextCable2,
@@ -464,10 +464,10 @@ public class CrackRecipeAdder {
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt04,
                 material.getBridgeMaterial(),
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     ID + 8,
                     aTextCable1 + unName + ".04",
                     "4x " + Name + aTextCable2,
@@ -478,10 +478,10 @@ public class CrackRecipeAdder {
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt08,
                 material.getBridgeMaterial(),
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     ID + 9,
                     aTextCable1 + unName + ".08",
                     "8x " + Name + aTextCable2,
@@ -492,10 +492,10 @@ public class CrackRecipeAdder {
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt12,
                 material.getBridgeMaterial(),
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     ID + 10,
                     aTextCable1 + unName + ".12",
                     "12x " + Name + aTextCable2,
@@ -506,10 +506,10 @@ public class CrackRecipeAdder {
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt16,
                 material.getBridgeMaterial(),
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     ID + 11,
                     aTextCable1 + unName + ".16",
                     "16x " + Name + aTextCable2,

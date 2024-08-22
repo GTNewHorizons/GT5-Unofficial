@@ -4,8 +4,8 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,8 +14,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
@@ -26,7 +26,7 @@ public class PyrolyseRecipes implements Runnable {
         if (Railcraft.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
+                    OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
                 .fluidOutputs(Materials.Creosote.getFluid(8000))
@@ -36,7 +36,7 @@ public class PyrolyseRecipes implements Runnable {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
+                    OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
                     GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
                 .fluidInputs(Materials.Nitrogen.getGas(1000))
@@ -47,7 +47,7 @@ public class PyrolyseRecipes implements Runnable {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
+                    OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
                 .fluidOutputs(Materials.Creosote.getFluid(32000))
@@ -57,7 +57,7 @@ public class PyrolyseRecipes implements Runnable {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
+                    OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
                     GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
                 .fluidInputs(Materials.Nitrogen.getGas(1000))

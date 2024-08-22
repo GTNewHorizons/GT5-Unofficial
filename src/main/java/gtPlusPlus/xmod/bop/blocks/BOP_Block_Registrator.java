@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.bop.blocks;
 
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gregtech.loaders.oreprocessing.ProcessingLog.addPyrolyeOvenRecipes;
 
 import net.minecraft.block.Block;
@@ -15,8 +15,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -84,7 +84,7 @@ public class BOP_Block_Registrator {
             null,
             ItemUtils.getSimpleStack(Item.getItemFromBlock(Blocks.planks), 4));
         GT_ModHandler.addCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
+            OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
             GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "sLf", 'L', GT_Utility.copyAmount(1L, aStack) });
 
@@ -118,7 +118,7 @@ public class BOP_Block_Registrator {
                                 GT_Mod.gregtechproxy.mNerfedWoodPlank ? ((long) tStack.stackSize)
                                     : (((long) tStack.stackSize) * 5L / 4),
                                 tStack),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .duration(10 * SECONDS)
                         .eut(8)
                         .addTo(cutterRecipes);
@@ -147,7 +147,7 @@ public class BOP_Block_Registrator {
                             GT_Mod.gregtechproxy.mNerfedWoodPlank ? ((long) tStack2.stackSize)
                                 : (((long) tStack2.stackSize) * 5L / 4),
                             tStack2),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                     .duration(10 * SECONDS)
                     .eut(8)
                     .addTo(cutterRecipes);

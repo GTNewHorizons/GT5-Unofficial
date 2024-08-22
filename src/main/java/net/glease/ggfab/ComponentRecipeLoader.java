@@ -1,12 +1,12 @@
 package net.glease.ggfab;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -16,8 +16,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 class ComponentRecipeLoader implements Runnable {
 
@@ -45,7 +45,7 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_IV.get(1L),
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L),
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L),
                 GT_Utility.getIntegratedCircuit(12))
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(144L))

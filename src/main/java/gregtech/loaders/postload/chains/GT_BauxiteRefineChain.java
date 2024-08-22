@@ -5,8 +5,8 @@ import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,8 +16,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class GT_BauxiteRefineChain {
 
@@ -25,7 +25,7 @@ public class GT_BauxiteRefineChain {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 32),
+                OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 32),
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GT_Utility.getIntegratedCircuit(8))
@@ -37,7 +37,7 @@ public class GT_BauxiteRefineChain {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 32),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 32),
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GT_Utility.getIntegratedCircuit(8))
@@ -84,7 +84,7 @@ public class GT_BauxiteRefineChain {
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
             .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
             .outputChances(10000, 3000)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
@@ -94,7 +94,7 @@ public class GT_BauxiteRefineChain {
             .addTo(chemicalBathRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1))
             .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
             .outputChances(10000, 6000)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
@@ -122,8 +122,8 @@ public class GT_BauxiteRefineChain {
         for (OrePrefixes ore : washable) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(ore, Materials.Sapphire, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    OreDictUnificator.get(ore, Materials.Sapphire, 1),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
@@ -133,8 +133,8 @@ public class GT_BauxiteRefineChain {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
@@ -144,8 +144,8 @@ public class GT_BauxiteRefineChain {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(ore, Materials.Ruby, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    OreDictUnificator.get(ore, Materials.Ruby, 1),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1000))

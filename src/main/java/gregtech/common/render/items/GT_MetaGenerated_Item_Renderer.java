@@ -9,8 +9,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.render.GT_RenderUtil;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
@@ -61,7 +61,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
             // Handle fluid rendering.
             if (aMaterialRenderer == null) {
-                ItemData itemData = GT_OreDictUnificator.getAssociation(aStack);
+                ItemData itemData = OreDictUnificator.getAssociation(aStack);
                 if (itemData != null) {
                     Materials material = itemData.mMaterial.mMaterial;
                     if (material.renderer != null) {

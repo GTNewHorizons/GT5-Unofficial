@@ -13,9 +13,9 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.WILDCARD;
 import static gregtech.common.items.ID_MetaItem_02.Bottle_Alcopops;
 import static gregtech.common.items.ID_MetaItem_02.Bottle_Apple_Juice;
 import static gregtech.common.items.ID_MetaItem_02.Bottle_Beer;
@@ -234,14 +234,14 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TierEU;
-import gregtech.api.items.GT_MetaGenerated_Item_X32;
+import gregtech.api.items.MetaGeneratedItem_X32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
@@ -253,7 +253,7 @@ import gregtech.common.covers.redstone.GT_Cover_WirelessMaintenanceDetector;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 
-public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
+public class GT_MetaGenerated_Item_02 extends MetaGeneratedItem_X32 {
 
     public static GT_MetaGenerated_Item_02 INSTANCE;
     private static final String aTextCover = "Usable as Cover";
@@ -1493,7 +1493,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L),
                     false,
                     true,
                     false),
@@ -1539,7 +1539,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
+                    OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
                     false,
                     true,
                     false),
@@ -1556,7 +1556,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                     7,
                     0.6F,
                     EnumAction.eat,
-                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
+                    OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
                     false,
                     true,
                     false),
@@ -2531,7 +2531,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
@@ -2540,7 +2540,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
@@ -2686,13 +2686,13 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Plumbilia.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Argentia.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
@@ -2704,19 +2704,19 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Coppon.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
@@ -2812,21 +2812,21 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
     public void initMaceratorRecipes() {
         RA.stdBuilder()
             .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -2847,14 +2847,14 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.stick, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -2869,7 +2869,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);

@@ -22,10 +22,10 @@ import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.Packet_New;
 import io.netty.buffer.ByteBuf;
 
-public class RendererPacket extends GT_Packet_New {
+public class RendererPacket extends Packet_New {
 
     private Coords coords;
     private int integer;
@@ -69,7 +69,7 @@ public class RendererPacket extends GT_Packet_New {
     }
 
     @Override
-    public GT_Packet_New decode(ByteArrayDataInput dataInput) {
+    public Packet_New decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
         this.integer = BW_ColorUtil
             .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });

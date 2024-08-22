@@ -7,7 +7,7 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -26,7 +26,7 @@ public class TecTechRecipeMaps {
             EyeOfHarmonyFrontend.maxFluidInputs,
             EyeOfHarmonyFrontend.maxFluidOutputs)
         .minInputs(1, 0)
-        .progressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+        .progressBar(UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
         .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
@@ -41,12 +41,12 @@ public class TecTechRecipeMaps {
         .useSpecialSlot()
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isSpecial) {
-                return GT_UITextures.OVERLAY_SLOT_DATA_ORB;
+                return UITextures.OVERLAY_SLOT_DATA_ORB;
             }
             if (isOutput) {
                 return TecTechUITextures.OVERLAY_SLOT_MESH;
             }
-            return GT_UITextures.OVERLAY_SLOT_MICROSCOPE;
+            return UITextures.OVERLAY_SLOT_MICROSCOPE;
         })
         .addSpecialTexture(19, 12, 84, 60, TecTechUITextures.PICTURE_HEAT_SINK)
         .addSpecialTexture(41, 22, 40, 40, TecTechUITextures.PICTURE_RACK_LARGE)

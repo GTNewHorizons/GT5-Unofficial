@@ -5,13 +5,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -78,24 +78,24 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_AssemblyLineUtils;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
@@ -105,8 +105,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
-public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTE_AdvAssLine>
-    implements ISurvivalConstructable {
+public class MTE_AdvAssLine extends ExtendedPowerMultiBlockBase<MTE_AdvAssLine> implements ISurvivalConstructable {
 
     private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
     private static final String STRUCTURE_PIECE_FIRST = "first";
@@ -195,7 +194,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private long baseEUt;
     private boolean stuck;
 
-    private final List<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+    private final List<Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
     private Map<GT_Utility.ItemId, ItemStack> curBatchItemsFromME;
     private Map<Fluid, FluidStack> curBatchFluidsFromME;
     private int currentInputLength;
@@ -222,9 +221,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_DataAccess) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDataAccessHatches.add((Hatch_DataAccess) aMetaTileEntity);
         }
         return false;
     }
@@ -257,14 +256,14 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int tLength = Math.min(stackSize.stackSize + 3, 16); // render 4 slices at minimal
         for (int i = 1; i < tLength - 1; i++) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
+            build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -343,8 +342,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembling Line")
             .addInfo("Controller block for the Advanced Assembling Line")
             .addInfo("Built exactly the same as standard Assembling Line")
@@ -437,7 +436,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
         if (aNBT.hasKey(TAG_KEY_CURRENT_STICK, Constants.NBT.TAG_COMPOUND)) {
             loadedStack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK));
-            GT_AssemblyLineUtils.LookupResult lookupResult = GT_AssemblyLineUtils
+            AssemblyLineUtils.LookupResult lookupResult = AssemblyLineUtils
                 .findAssemblyLineRecipeFromDataStick(loadedStack, false);
             switch (lookupResult.getType()) {
                 case VALID_STACK_AND_VALID_HASH:
@@ -512,7 +511,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
     }
 
-    private void recordEnergySupplier(GT_MetaTileEntity_Hatch hatch) {
+    private void recordEnergySupplier(Hatch hatch) {
         if (!hatch.isValid()) return;
         inputEUt += hatch.maxEUInput() * hatch.maxWorkingAmperesIn();
         inputVoltage = Math.min(inputVoltage, hatch.maxEUInput());
@@ -589,7 +588,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             criticalStopMachine("ggfab.gui.advassline.shutdown.recipe_null");
             return false;
         }
-        for (GT_MetaTileEntity_Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
+        for (Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
             hatch_dataAccess.setActive(true);
         }
 
@@ -650,7 +649,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     private ItemStack getInputBusContent(int index) {
         if (index < 0 || index >= mInputBusses.size()) return null;
-        GT_MetaTileEntity_Hatch_InputBus inputBus = mInputBusses.get(index);
+        Hatch_InputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
             ItemStack item = meBus.getShadowItemStack(0);
@@ -665,7 +664,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     private FluidStack getInputHatchContent(int index) {
         if (index < 0 || index >= mInputHatches.size()) return null;
-        GT_MetaTileEntity_Hatch_Input inputHatch = mInputHatches.get(index);
+        Hatch_Input inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
             FluidStack fluid = meHatch.getShadowFluidStack(0);
@@ -673,23 +672,23 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());
         }
-        if (inputHatch instanceof GT_MetaTileEntity_Hatch_MultiInput multiHatch) {
+        if (inputHatch instanceof Hatch_MultiInput multiHatch) {
             return multiHatch.getFluid(0);
         }
         return inputHatch.getFillableStack();
     }
 
     private GT_Recipe.GT_Recipe_AssemblyLine findRecipe(ItemStack tDataStick) {
-        GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
+        AssemblyLineUtils.LookupResult tLookupResult = AssemblyLineUtils
             .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
-        if (tLookupResult.getType() == GT_AssemblyLineUtils.LookupResultType.INVALID_STICK) return null;
+        if (tLookupResult.getType() == AssemblyLineUtils.LookupResultType.INVALID_STICK) return null;
 
         GT_Recipe.GT_Recipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
         // Check if the recipe on the data stick is the current recipe for it's given output, if not we update it
         // and continue to next.
-        if (tLookupResult.getType() != GT_AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
-            tRecipe = GT_AssemblyLineUtils.processDataStick(tDataStick);
+        if (tLookupResult.getType() != AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
+            tRecipe = AssemblyLineUtils.processDataStick(tDataStick);
             if (tRecipe == null) {
                 return null;
             }
@@ -752,7 +751,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
+        for (Hatch_DataAccess tHatch : mDataAccessHatches) {
             if (tHatch.isValid()) {
                 for (int i = 0; i < tHatch.getBaseMetaTileEntity()
                     .getSizeInventory(); i++) {
@@ -807,7 +806,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             // we use the new oc calculator instead
             // calculateOverclockedNessMulti from super class has a mysterious 5% cable loss thing at the moment
             // of writing
-            GT_OverclockCalculator ocCalc = new GT_OverclockCalculator().setRecipeEUt(currentRecipe.mEUt)
+            OverclockCalculator ocCalc = new OverclockCalculator().setRecipeEUt(currentRecipe.mEUt)
                 .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1))
                 .setEUt(inputVoltage)
                 .calculate();
@@ -990,7 +989,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe, int parallel) {
         GT_Recipe.GT_Recipe_AssemblyLine
             .consumeInputFluids(mInputHatches, parallel, recipe.mFluidInputs, curBatchFluidsFromME);
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) tHatch.updateSlots();
+        for (Hatch_Input tHatch : filterValidMTEs(mInputHatches)) tHatch.updateSlots();
     }
 
     @Override
@@ -1132,7 +1131,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(GT_MetaTileEntity_Hatch_DataAccess.class);
+            return Collections.singletonList(Hatch_DataAccess.class);
         }
 
         @Override

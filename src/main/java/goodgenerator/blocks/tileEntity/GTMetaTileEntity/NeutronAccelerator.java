@@ -5,9 +5,9 @@ import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 
-public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
+public class NeutronAccelerator extends Hatch_Energy {
 
     public NeutronAccelerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

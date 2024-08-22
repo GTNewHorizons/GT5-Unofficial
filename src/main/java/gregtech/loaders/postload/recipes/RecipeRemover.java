@@ -16,8 +16,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
 
@@ -74,17 +74,17 @@ public class RecipeRemover implements Runnable {
         GT_Utility.removeSimpleIC2MachineRecipe(
             new ItemStack(Blocks.cobblestone),
             GT_ModHandler.getMaceratorRecipeList(),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
+            OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
             GT_ModHandler.getMaceratorRecipeList(),
             ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
             GT_ModHandler.getMaceratorRecipeList(),
             ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
             GT_ModHandler.getMaceratorRecipeList(),
             ItemList.IC2_Plantball.get(1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
@@ -153,14 +153,11 @@ public class RecipeRemover implements Runnable {
     }
 
     public void removeSmelting() {
-        GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
-        GT_ModHandler
-            .removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
-        GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
-        GT_ModHandler
-            .removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
-        GT_ModHandler
-            .removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(OreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(ItemList.IC2_Resin.get(1L));
     }
 }

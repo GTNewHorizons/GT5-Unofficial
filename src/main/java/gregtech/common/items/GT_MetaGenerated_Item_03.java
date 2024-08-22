@@ -257,13 +257,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
-import gregtech.api.items.GT_MetaGenerated_Item_X32;
+import gregtech.api.items.MetaGeneratedItem_X32;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.covers.GT_Cover_Metrics_Transmitter;
 import gregtech.common.covers.GT_Cover_SolarPanel;
 
-public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
+public class GT_MetaGenerated_Item_03 extends MetaGeneratedItem_X32 {
 
     public static GT_MetaGenerated_Item_03 INSTANCE;
 
@@ -1380,36 +1380,36 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void initOreDictUnificatorEntries() {
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
-        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
-        GT_OreDictUnificator
+        OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
+        OreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Transistor, ItemList.Circuit_Parts_Transistor.get(1L));
-        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
-        GT_OreDictUnificator
+        OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
+        OreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
 
-        GT_OreDictUnificator.addAssociation(
+        OreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             Materials.Resistor,
             ItemList.Circuit_Parts_ResistorSMD.get(1L),
             true);
-        GT_OreDictUnificator.addAssociation(
+        OreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             Materials.Diode,
             ItemList.Circuit_Parts_DiodeSMD.get(1L),
             true);
-        GT_OreDictUnificator.addAssociation(
+        OreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             Materials.Transistor,
             ItemList.Circuit_Parts_TransistorSMD.get(1L),
             true);
-        GT_OreDictUnificator.addAssociation(
+        OreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             Materials.Capacitor,
             ItemList.Circuit_Parts_CapacitorSMD.get(1L),
             true);
-        GT_OreDictUnificator.addAssociation(
+        OreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             Materials.Inductor,
             ItemList.Circuit_Parts_InductorSMD.get(1L),

@@ -30,7 +30,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -112,10 +112,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                             e.mLinkedMaterials = new ArrayList<>();
                             e.mLinkedMaterials.add(werkstoffBridgeMaterial);
                             if (werkstoff.hasItemType(dust)) {
-                                GT_OreDictUnificator
+                                OreDictUnificator
                                     .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
-                                GT_OreDictUnificator
-                                    .set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
+                                OreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                             }
                             ElementSet = true;
                             break;

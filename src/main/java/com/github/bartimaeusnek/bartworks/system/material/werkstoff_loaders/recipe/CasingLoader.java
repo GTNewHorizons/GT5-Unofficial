@@ -22,7 +22,7 @@ import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.enums.OrePrefixes.screw;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;

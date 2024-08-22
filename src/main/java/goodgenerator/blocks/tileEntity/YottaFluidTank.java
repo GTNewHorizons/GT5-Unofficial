@@ -52,19 +52,18 @@ import goodgenerator.client.GUI.GG_UITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -324,19 +323,19 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement(
                     'I',
-                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.InputHatch)
+                    buildHatchAdder(YottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.InputHatch)
                         .casingIndex(1537)
                         .dot(1)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'M',
-                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.Maintenance)
+                    buildHatchAdder(YottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.Maintenance)
                         .casingIndex(1537)
                         .dot(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'O',
-                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.OutputHatch)
+                    buildHatchAdder(YottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.OutputHatch)
                         .adder(YottaFluidTank::addOutput)
                         .casingIndex(1537)
                         .dot(1)
@@ -366,13 +365,13 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             if (aMetaTileEntity == null) {
                 return false;
             } else {
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+                if (aMetaTileEntity instanceof Hatch_Output) {
+                    ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    return this.mOutputHatches.add((Hatch_Output) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof YOTTAHatch) {
                     // only one yothatch allowed
                     if (!this.mYottaHatch.isEmpty()) return false;
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                     ((YOTTAHatch) aMetaTileEntity).setTank(this);
                     return this.mYottaHatch.add((YOTTAHatch) aMetaTileEntity);
                 }
@@ -417,8 +416,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("Controller block for the YOTTank.")
             .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
@@ -514,7 +513,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
                 final int originalOutputAmount = outputAmount;
 
-                for (final GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
+                for (final Hatch outputHatch : mOutputHatches) {
                     final FluidStack fluidInHatch = outputHatch.mFluid;
 
                     final int remainingHatchSpace;
@@ -629,12 +628,12 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built = 0;
-        built += survivialBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        built += survivalBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         int height = stackSize.stackSize;
         if (height > 15) height = 15;
-        built += survivialBuildPiece(YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, env, false, true);
+        built += survivalBuildPiece(YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, env, false, true);
         while (height > 0) {
-            built += survivialBuildPiece(YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, env, false, true);
+            built += survivalBuildPiece(YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, env, false, true);
             height--;
         }
         return built;

@@ -20,12 +20,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -41,8 +41,8 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("Galaxy Collapse.")
             .addInfo("Controller block for the Compact Fusion Reactor MK-IV Prototype.")
@@ -179,7 +179,7 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
     @Override
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+            for (Hatch_Energy hatch : this.mEnergyHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }
@@ -189,12 +189,12 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
             }
         }
         if (this.mOutputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (Hatch_Output hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }
         if (this.mInputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (Hatch_Input hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }

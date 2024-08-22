@@ -33,14 +33,14 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.BlockGeneric;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.render.GT_Renderer_Block;
 
-public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
+public abstract class GT_Block_Ores_Abstract extends BlockGeneric implements ITileEntityProvider {
 
     private static final String DOT_NAME = ".name";
     private static final String DOT_TOOLTIP = ".tooltip";
@@ -82,7 +82,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
                         GregTech_API.sGeneratedMaterials[i].getToolTip());
                     if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0
                         && !aBlockedOres.contains(GregTech_API.sGeneratedMaterials[i])) {
-                        GT_OreDictUnificator.registerOre(
+                        OreDictUnificator.registerOre(
                             this.getProcessingPrefix()[j] != null
                                 ? this.getProcessingPrefix()[j].get(GregTech_API.sGeneratedMaterials[i])
                                 : "",

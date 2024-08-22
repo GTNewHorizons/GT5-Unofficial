@@ -39,16 +39,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import ic2.core.Ic2Items;
 
-public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_AdvSeismicProspector extends BasicMachine {
 
     boolean ready = false;
     final int radius;
@@ -291,7 +291,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
             int tMetaID = getBaseMetaTileEntity().getWorld()
                 .getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);
-            ItemData association = GT_OreDictUnificator.getAssociation(is);
+            ItemData association = OreDictUnificator.getAssociation(is);
             if ((association != null) && (association.mPrefix.toString()
                 .startsWith("ore"))) return association.mMaterial.mMaterial.mDefaultLocalName;
             else if (GT_Utility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();

@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.*;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -41,13 +41,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
@@ -131,10 +131,10 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     }
 
     protected void updateHatchTexture() {
-        for (GT_MetaTileEntity_Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
+        for (Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
     }
 
     private int getCasingTextureID() {
@@ -235,7 +235,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTUR_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -299,8 +299,8 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
             @Override
             @Nonnull
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe)
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.33F)
                     .setSpeedBoost(1.5F);
             }
@@ -308,8 +308,8 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Centrifuge")
             .addInfo("Runs recipes up to MV tier")

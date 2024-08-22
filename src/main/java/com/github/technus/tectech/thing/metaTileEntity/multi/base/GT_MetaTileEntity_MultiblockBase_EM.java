@@ -7,14 +7,14 @@ import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.CommonValues.RECIPE_AT;
 import static com.github.technus.tectech.util.CommonValues.TEC_MARK_GENERAL;
 import static com.github.technus.tectech.util.TT_Utility.getTier;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;
@@ -78,7 +78,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -86,22 +86,22 @@ import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_OutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -111,9 +111,8 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class GT_MetaTileEntity_MultiblockBase_EM
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiblockBase_EM>
-    implements IAlignment, IBindPlayerInventoryUI {
+public abstract class GT_MetaTileEntity_MultiblockBase_EM extends
+    ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiblockBase_EM> implements IAlignment, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
@@ -390,8 +389,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addInfo("Nothing special just override me")
             .toolTipFinisher(TEC_MARK_GENERAL);
         return tt;
@@ -404,7 +403,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     public String[] getInfoData() { // TODO Do it
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -1298,7 +1297,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             maxEUinputMax = V[0];
             maxEUoutputMin = V[15];
             maxEUoutputMax = V[0];
-            for (GT_MetaTileEntity_Hatch_Energy hatch : filterValidMTEs(mEnergyHatches)) {
+            for (Hatch_Energy hatch : filterValidMTEs(mEnergyHatches)) {
                 if (hatch.maxEUInput() < maxEUinputMin) {
                     maxEUinputMin = hatch.maxEUInput();
                 }
@@ -1314,7 +1313,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                     maxEUinputMax = hatch.maxEUInput();
                 }
             }
-            for (GT_MetaTileEntity_Hatch_Dynamo hatch : filterValidMTEs(mDynamoHatches)) {
+            for (Hatch_Dynamo hatch : filterValidMTEs(mDynamoHatches)) {
                 if (hatch.maxEUOutput() < maxEUoutputMin) {
                     maxEUoutputMin = hatch.maxEUOutput();
                 }
@@ -1333,13 +1332,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             eMaxAmpereFlow = 0;
             eMaxAmpereGen = 0;
             // counts only full amps
-            for (GT_MetaTileEntity_Hatch_Energy hatch : filterValidMTEs(mEnergyHatches)) {
+            for (Hatch_Energy hatch : filterValidMTEs(mEnergyHatches)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin;
             }
             for (GT_MetaTileEntity_Hatch_EnergyMulti hatch : filterValidMTEs(eEnergyMulti)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.Amperes;
             }
-            for (GT_MetaTileEntity_Hatch_Dynamo hatch : filterValidMTEs(mDynamoHatches)) {
+            for (Hatch_Dynamo hatch : filterValidMTEs(mDynamoHatches)) {
                 eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin;
             }
             for (GT_MetaTileEntity_Hatch_DynamoMulti hatch : filterValidMTEs(eDynamoMulti)) {
@@ -1363,7 +1362,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     protected final void powerPass(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1389,7 +1388,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     protected final void powerPass_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1418,7 +1417,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     protected final void powerInput() {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1442,7 +1441,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     protected final void powerInput_EM() {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1560,7 +1559,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         }
         long euVar = EU * Amperes;
         long diff;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             if (tHatch.maxEUOutput() < EU) {
                 explodeMultiblock();
             }
@@ -1732,16 +1731,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     }
 
     @Override
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> list = new ArrayList<>();
+    public List<Hatch> getExoticAndNormalEnergyHatchList() {
+        List<Hatch> list = new ArrayList<>();
         list.addAll(mEnergyHatches);
         list.addAll(eEnergyMulti);
         return list;
     }
 
     @Override
-    public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
-        List<GT_MetaTileEntity_Hatch> list = new ArrayList<>();
+    public List<Hatch> getExoticEnergyHatches() {
+        List<Hatch> list = new ArrayList<>();
         list.addAll(eEnergyMulti);
         return list;
     }
@@ -1826,35 +1825,35 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof Hatch) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            return mInputHatches.add((Hatch_Input) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_InputBus) {
+            return mInputBusses.add((Hatch_InputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Output) {
+            return mOutputHatches.add((Hatch_Output) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_OutputBus) {
+            return mOutputBusses.add((Hatch_OutputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Energy) {
+            return mEnergyHatches.add((Hatch_Energy) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Dynamo) {
+            return mDynamoHatches.add((Hatch_Dynamo) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Maintenance) {
+            return mMaintenanceHatches.add((Hatch_Maintenance) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Muffler) {
+            return mMufflerHatches.add((Hatch_Muffler) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
@@ -1885,35 +1884,35 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof Hatch) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            return mInputHatches.add((Hatch_Input) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_InputBus) {
+            return mInputBusses.add((Hatch_InputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Output) {
+            return mOutputHatches.add((Hatch_Output) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_OutputBus) {
+            return mOutputBusses.add((Hatch_OutputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Energy) {
+            return mEnergyHatches.add((Hatch_Energy) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Dynamo) {
+            return mDynamoHatches.add((Hatch_Dynamo) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Maintenance) {
+            return mMaintenanceHatches.add((Hatch_Maintenance) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Muffler) {
+            return mMufflerHatches.add((Hatch_Muffler) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
@@ -1944,8 +1943,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof Hatch) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
 
         return false;
@@ -1972,9 +1971,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Muffler) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMufflerHatches.add((Hatch_Muffler) aMetaTileEntity);
         }
 
         return false;
@@ -1993,15 +1992,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             ((IDualInputHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputHatches.add((Hatch_Input) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_InputBus) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputBusses.add((Hatch_InputBus) aMetaTileEntity);
         }
 
         return false;
@@ -2016,13 +2015,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Output) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputHatches.add((Hatch_Output) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_OutputBus) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputBusses.add((Hatch_OutputBus) aMetaTileEntity);
         }
 
         return false;
@@ -2038,12 +2037,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Energy) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mEnergyHatches.add((Hatch_Energy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
         }
         return false;
@@ -2059,12 +2058,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Dynamo) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((Hatch_Dynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         }
         return false;
@@ -2079,20 +2078,20 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Energy) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mEnergyHatches.add((Hatch_Energy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Dynamo) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((Hatch_Dynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         }
         return false;
@@ -2134,7 +2133,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         return false;
@@ -2150,7 +2149,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Uncertainty) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eUncertainHatches.add((GT_MetaTileEntity_Hatch_Uncertainty) aMetaTileEntity);
         }
         return false;
@@ -2165,16 +2164,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Maintenance) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMaintenanceHatches.add((Hatch_Maintenance) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Uncertainty) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eUncertainHatches.add((GT_MetaTileEntity_Hatch_Uncertainty) aMetaTileEntity);
         }
         return false;
@@ -2189,9 +2188,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Maintenance) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMaintenanceHatches.add((Hatch_Maintenance) aMetaTileEntity);
         }
         return false;
     }
@@ -2206,11 +2205,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eInputData.add((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputData) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eOutputData.add((GT_MetaTileEntity_Hatch_OutputData) aMetaTileEntity);
         }
         return false;
@@ -2219,7 +2218,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     protected static <T extends GT_MetaTileEntity_MultiblockBase_EM> IStructureElement<T> classicHatches(
         int casingIndex, int dot, Block casingBlock, int casingMeta) {
-        return GT_HatchElementBuilder.<T>builder()
+        return HatchElementBuilder.<T>builder()
             .atLeast(
                 InputBus,
                 InputHatch,
@@ -2239,7 +2238,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     protected static <T extends GT_MetaTileEntity_MultiblockBase_EM> IStructureElement<T> allHatches(int casingIndex,
         int dot, Block casingBlock, int casingMeta) {
-        return GT_HatchElementBuilder.<T>builder()
+        return HatchElementBuilder.<T>builder()
             .atLeast(
                 InputBus,
                 InputHatch,
@@ -2617,7 +2616,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                     .setTextColor(Color.LIGHT_BLUE.normal)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                     .setPos(5, 20)
                     .setSize(90, 15))
             .widget(

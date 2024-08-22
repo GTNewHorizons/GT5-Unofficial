@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
@@ -23,7 +23,7 @@ public class Behaviour_Screwdriver extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;

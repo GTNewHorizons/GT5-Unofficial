@@ -26,14 +26,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
+import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -181,9 +181,9 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput) {
             log("Adding Steam Output Bus");
             aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+        } else if (aMetaTileEntity instanceof Hatch_Input)
             aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output);
+        else if (aMetaTileEntity instanceof Hatch_Output);
 
         return aDidAdd;
     }
@@ -254,7 +254,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
                 rList.add(tHatch.getFillableStack());
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
+        for (Hatch_Input hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
             rList.add(hatch.getFillableStack());
         }
         return rList;
@@ -294,7 +294,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
                     }
                 }
             }
-            for (GT_MetaTileEntity_Hatch_Output tHatch : filterValidMTEs(mOutputHatches)) {
+            for (Hatch_Output tHatch : filterValidMTEs(mOutputHatches)) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
                         .addStackToSlot(1, single)) outputSuccess = true;
@@ -321,7 +321,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
-        for (final GT_MetaTileEntity_Hatch tBus : filterValidMTEs(mSteamOutputs)) {
+        for (final Hatch tBus : filterValidMTEs(mSteamOutputs)) {
             final IInventory tBusInv = tBus.getBaseMetaTileEntity();
             for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                 ret.add(tBus.getStackInSlot(i));
@@ -358,7 +358,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
                 ret = true;
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+        for (Hatch_Input g : this.mInputHatches) {
             if (resetRecipeMapForHatch(g, aMap)) {
                 ret = true;
             }
@@ -400,7 +400,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }
 
-    protected static <T extends GregtechMeta_SteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(
+    protected static <T extends GregtechMeta_SteamMultiBase<T>> HatchElementBuilder<T> buildSteamInput(
         Class<T> typeToken) {
         return buildHatchAdder(typeToken).adder(GregtechMeta_SteamMultiBase::addToMachineList)
             .hatchIds(31040)

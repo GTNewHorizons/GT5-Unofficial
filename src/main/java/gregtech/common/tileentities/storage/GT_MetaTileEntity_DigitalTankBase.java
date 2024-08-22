@@ -36,14 +36,14 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -51,7 +51,7 @@ import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank
+public abstract class GT_MetaTileEntity_DigitalTankBase extends BasicTank
     implements IFluidLockable, IAddUIWidgets, IAddGregtechLogo {
 
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
@@ -307,7 +307,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -548,20 +548,20 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
         FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTank);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 16)
                 .setSize(71, 45))
             .widget(
                 new SlotWidget(inventoryHandler, getInputSlot())
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_IN)
                     .setPos(79, 16))
             .widget(
                 new SlotWidget(inventoryHandler, getOutputSlot()).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_OUT)
                     .setPos(79, 43))
             .widget(
                 fluidSlotWidget.setOnClickContainer(widget -> onEmptyingContainerWhenEmpty())
-                    .setBackground(GT_UITextures.TRANSPARENT)
+                    .setBackground(UITextures.TRANSPARENT)
                     .setPos(58, 41))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.fluid.amount"))
@@ -572,7 +572,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                     .setPos(98, 16)
                     .setSize(71, 45))
             .widget(new FluidLockWidget(this).setPos(149, 41))
@@ -601,8 +601,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         GT_Utility.trans("263", "Fluid Auto Output Enabled"));
                 }
             })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(7, 63)
@@ -634,8 +634,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 }
                 fluidSlotWidget.notifyTooltipChange();
             })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_LOCK)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_LOCK)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.lockfluid.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(25, 63)
@@ -648,8 +648,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     GT_Utility.sendChatToPlayer(buildContext.getPlayer(), GT_Utility.getTrans("095"));
                 }
             })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.inputfromoutput.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(43, 63)
@@ -667,8 +667,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         GT_Utility.trans("268", "Overflow Voiding Mode Enabled"));
                 }
             })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(98, 63)
@@ -684,8 +684,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         .sendChatToPlayer(buildContext.getPlayer(), GT_Utility.trans("270", "Void Full Mode Enabled"));
                 }
             })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(116, 63)

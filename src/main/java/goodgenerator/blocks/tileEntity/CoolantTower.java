@@ -22,19 +22,18 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -88,7 +87,10 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 .addElement('C', ofFrame(Materials.TungstenCarbide))
                 .addElement(
                     'H',
-                    buildHatchAdder(CoolantTower.class).atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
+                    buildHatchAdder(CoolantTower.class)
+                        .atLeast(
+                            gregtech.api.enums.HatchElement.InputHatch,
+                            gregtech.api.enums.HatchElement.OutputHatch)
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
@@ -103,8 +105,8 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Controller block for the Coolant Tower.")
             .addInfo("Turn Steam back to Distilled Water.")
@@ -147,17 +149,17 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         this.mMaxProgresstime = 20;
         int steam = 0;
 
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+        for (Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
         addOutput(GT_ModHandler.getDistilledWater(steam / 160));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int maybeDrainHatch(GT_MetaTileEntity_Hatch_Input tHatch) {
-        if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+    private int maybeDrainHatch(Hatch_Input tHatch) {
+        if (tHatch instanceof Hatch_MultiInput) {
             int drained = 0;
-            for (FluidStack maybeSteam : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+            for (FluidStack maybeSteam : ((Hatch_MultiInput) tHatch).getStoredFluid()) {
                 drained += maybeDrainSteam(tHatch, maybeSteam);
             }
             return drained;
@@ -165,7 +167,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return maybeDrainSteam(tHatch, tHatch.getFillableStack());
     }
 
-    private int maybeDrainSteam(GT_MetaTileEntity_Hatch_Input tHatch, FluidStack maybeSteam) {
+    private int maybeDrainSteam(Hatch_Input tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
         if (!GT_Utility.areFluidsEqual(maybeSteam, GT_ModHandler.getSteam(1))) return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
@@ -201,7 +203,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 
     @Override

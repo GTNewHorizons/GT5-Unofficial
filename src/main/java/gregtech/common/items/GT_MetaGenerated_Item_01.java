@@ -79,8 +79,8 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Item_X32;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedItem_X32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
@@ -88,9 +88,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Chest;
 import gregtech.common.covers.GT_Cover_ControlsWork;
@@ -131,7 +131,7 @@ import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator.MagnetTiers;
 
-public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
+public class GT_MetaGenerated_Item_01 extends MetaGeneratedItem_X32 {
 
     public static GT_MetaGenerated_Item_01 INSTANCE;
     private final String mToolTipPurify = GT_LanguageManager
@@ -239,7 +239,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     1,
                     0.1F,
                     EnumAction.eat,
-                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L),
+                    OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L),
                     true,
                     false,
                     false,
@@ -291,10 +291,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.stick.get(Materials.Steel) });
 
         ItemList.CompressedFireclay.set(addItem(Compressed_Fireclay.ID, "Compressed Fireclay", "Brick-shaped"));
-        GT_OreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
+        OreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Firebrick.set(addItem(Firebrick.ID, "Firebrick", "Heat resistant"));
-        GT_OreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
+        OreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Shape_Empty.set(
             addItem(
@@ -2985,8 +2985,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         aMaterial = cauldronRemap.getOrDefault(aMaterial, aMaterial);
 
                         aItemEntity.setEntityItemStack(
-                            GT_OreDictUnificator
-                                .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            OreDictUnificator.get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -2995,7 +2994,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(
-                            GT_OreDictUnificator
+                            OreDictUnificator
                                 .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
@@ -3101,7 +3100,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void oredictBlacklistEntries() {
-        GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
+        OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
     }
 
     private void registerCovers() {
@@ -4025,7 +4024,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void registerBehaviors() {
-        IItemBehaviour<GT_MetaBase_Item> behaviourSprayColorRemover = new Behaviour_Spray_Color_Remover(
+        IItemBehaviour<MetaBaseItem> behaviourSprayColorRemover = new Behaviour_Spray_Color_Remover(
             ItemList.Spray_Empty.get(1L),
             ItemList.Spray_Color_Used_Remover.get(1L),
             ItemList.Spray_Color_Remover.get(1L),
@@ -4033,13 +4032,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         addItemBehavior(32000 + Spray_Color_Remover.ID, behaviourSprayColorRemover);
         addItemBehavior(32000 + Spray_Color_Used_Remover.ID, behaviourSprayColorRemover);
 
-        IItemBehaviour<GT_MetaBase_Item> behaviourMatches = new Behaviour_Lighter(
+        IItemBehaviour<MetaBaseItem> behaviourMatches = new Behaviour_Lighter(
             null,
             ItemList.Tool_Matches.get(1L),
             ItemList.Tool_Matches.get(1L),
             1L);
         addItemBehavior(32000 + Tool_Matches.ID, behaviourMatches);
-        IItemBehaviour<GT_MetaBase_Item> behaviourMatchBox = new Behaviour_Lighter(
+        IItemBehaviour<MetaBaseItem> behaviourMatchBox = new Behaviour_Lighter(
             null,
             ItemList.Tool_MatchBox_Used.get(1L),
             ItemList.Tool_MatchBox_Full.get(1L),
@@ -4047,7 +4046,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         addItemBehavior(32000 + Tool_MatchBox_Used.ID, behaviourMatchBox);
         addItemBehavior(32000 + Tool_MatchBox_Full.ID, behaviourMatchBox);
 
-        IItemBehaviour<GT_MetaBase_Item> behaviourLighterInvar = new Behaviour_Lighter(
+        IItemBehaviour<MetaBaseItem> behaviourLighterInvar = new Behaviour_Lighter(
             ItemList.Tool_Lighter_Invar_Empty.get(1L),
             ItemList.Tool_Lighter_Invar_Used.get(1L),
             ItemList.Tool_Lighter_Invar_Full.get(1L),
@@ -4055,7 +4054,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         addItemBehavior(32000 + Tool_Lighter_Invar_Used.ID, behaviourLighterInvar);
         addItemBehavior(32000 + Tool_Lighter_Invar_Full.ID, behaviourLighterInvar);
 
-        IItemBehaviour<GT_MetaBase_Item> behaviourLighterPlatinum = new Behaviour_Lighter(
+        IItemBehaviour<MetaBaseItem> behaviourLighterPlatinum = new Behaviour_Lighter(
             ItemList.Tool_Lighter_Platinum_Empty.get(1L),
             ItemList.Tool_Lighter_Platinum_Used.get(1L),
             ItemList.Tool_Lighter_Platinum_Full.get(1L),
@@ -4064,7 +4063,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         addItemBehavior(32000 + Tool_Lighter_Platinum_Full.ID, behaviourLighterPlatinum);
 
         for (int i = 0; i < 16; i++) {
-            IItemBehaviour<GT_MetaBase_Item> behaviourSprayColor = new Behaviour_Spray_Color(
+            IItemBehaviour<MetaBaseItem> behaviourSprayColor = new Behaviour_Spray_Color(
                 ItemList.Spray_Empty.get(1L),
                 ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
                 ItemList.SPRAY_CAN_DYES[i].get(1L),

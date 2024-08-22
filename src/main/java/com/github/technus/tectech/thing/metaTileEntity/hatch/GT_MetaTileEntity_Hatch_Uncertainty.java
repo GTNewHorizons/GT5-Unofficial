@@ -38,21 +38,20 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
-    implements IAddGregtechLogo, IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Uncertainty extends Hatch implements IAddGregtechLogo, IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -200,7 +199,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         } catch (Exception e) {
             clientLocale = "en_US";
         }
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -378,7 +377,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                     compute();
                 })
                     .setPlayClickSound(false)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
+                    .setBackground(UITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
                     .setPos(xPositions[i], 4 + j * 18)
                     .setSize(18, 18))
                     .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));

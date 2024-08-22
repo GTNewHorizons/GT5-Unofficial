@@ -26,8 +26,8 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -36,8 +36,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_CircuitryBehavior;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CircuitryBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -141,7 +141,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -221,7 +221,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     private void switchGate() {
         resetRedstone();
         Arrays.fill(mGateData, 0);
-        GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
+        CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.initParameters(mGateData, this);
         } catch (Throwable e) {
@@ -231,7 +231,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     private void validateGateData() {
-        GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
+        CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.validateParameters(mGateData, this);
         } catch (Throwable e) {
@@ -254,7 +254,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
             mInventory[0] = mInventory[1] = mInventory[2] = mInventory[3] = mInventory[4] = null;
             if (getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()) {
                 if (getBaseMetaTileEntity().isActive()) {
-                    GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
+                    CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
                     if (tBehaviour != null) {
                         try {
                             tBehaviour.onTick(mGateData, this);
@@ -398,8 +398,8 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     @Override
-    public GT_CoverBehavior getCover(ForgeDirection side) {
-        return (GT_CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+    public CoverBehavior getCover(ForgeDirection side) {
+        return (CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
     }
 
     @Override
@@ -502,7 +502,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                     stackGateData(index, tStack);
                 }
             })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_PLUS_MINUS)
+                .setBackground(UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_PLUS_MINUS)
                 .setPos(7, 5 + i * 18)
                 .setSize(18, 18))
                 .widget(
@@ -512,15 +512,15 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
         }
         builder.widget(
             new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
                 .addTooltip("Toggle EU Output")
                 .setPos(151, 5)
                 .setSize(18, 18))
             .widget(
                 new CycleButtonWidget()
                     .setToggle(() -> getBaseMetaTileEntity().isActive(), val -> getBaseMetaTileEntity().setActive(val))
-                    .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                    .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                     .setStaticTexture(GTPP_UITextures.OVERLAY_BUTTON_ACTIVE_STATE)
                     .addTooltip("Toggle Active State")
                     .setPos(151, 23)
@@ -529,7 +529,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 if (clickData.mouseButton == 0) switchGateForward(clickData.shift);
                 else switchGateBackward(clickData.shift);
             })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_CHANGE_MODE)
+                .setBackground(UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_CHANGE_MODE)
                 .addTooltip("Change Redstone Circuit")
                 .setPos(151, 41)
                 .setSize(18, 18));
@@ -559,7 +559,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                     val -> getBaseMetaTileEntity().setErrorDisplayID(val)));
 
         builder.widget(TextWidget.dynamicString(() -> {
-            GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+            CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
             if (tCircuit != null) return tCircuit.getName();
             return "";
         })
@@ -567,7 +567,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
             .setDefaultColor(COLOR_TEXT_WHITE.get())
             .setPos(46, 8))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDescription();
                 return "";
             })
@@ -575,7 +575,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 19))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 0);
                 return "";
             })
@@ -583,7 +583,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 33))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 1);
                 return "";
             })
@@ -591,7 +591,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 44))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 2);
                 return "";
             })
@@ -599,7 +599,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 55))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 3);
                 return "";
             })
@@ -607,7 +607,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 66))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 0);
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[0]) : tString;
@@ -618,7 +618,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(99, 33))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 1);
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[1]) : tString;
@@ -629,7 +629,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(99, 44))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 2);
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[2]) : tString;
@@ -640,7 +640,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(99, 55))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 3);
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[3]) : tString;

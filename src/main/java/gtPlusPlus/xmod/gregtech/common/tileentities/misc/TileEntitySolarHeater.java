@@ -11,14 +11,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_SolarTower;
 
-public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock {
+public class TileEntitySolarHeater extends TieredMachineBlock {
 
     public boolean mHasTower = false;
     private GregtechMetaTileEntity_SolarTower mTower = null;

@@ -41,15 +41,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
-public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_BioLab extends BasicMachine {
 
     private static final int DNA_EXTRACTION_MODULE = 0;
     private static final int PCR_THERMOCYCLE_MODULE = 1;
@@ -188,7 +188,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
 
                         if (this.mTier < rTier + cultureDNABioData.getTier())
-                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
                         for (int i = 0; i < 4; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -201,12 +201,12 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             this.mOutputItems[0] = BioItemList
                                 .getDNASampleFlask(BioDNA.convertDataToDNA(cultureDNABioData));
                         }
-                        this.mOutputItems[1] = GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
+                        this.mOutputItems[1] = OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
                         this.calculateOverclockedNess(
                             BW_Util.getMachineVoltageFromTier(rTier + cultureDNABioData.getTier()),
                             500);
 
-                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                     break;
                 case PCR_THERMOCYCLE_MODULE: {
@@ -233,7 +233,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
 
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
-                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
                         for (int i = 0; i < 4; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -255,7 +255,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             BW_Util.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
                             500);
 
-                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
                     break;
@@ -292,7 +292,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             Behaviour_DataOrb.getDataName(this.mInventory[this.getInputSlot() + 2]));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
-                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 2; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
@@ -306,7 +306,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.calculateOverclockedNess(
                             BW_Util.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
                             500);
-                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
                     break;
@@ -333,7 +333,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             .getBioCultureFromNBTTag(this.mInventory[this.getInputSlot()].getTagCompound());
                         if (cultureDNABioData == null || bioCulture == null) return super.checkRecipe(skipOC);
                         if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
-                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 3; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
@@ -347,7 +347,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.calculateOverclockedNess(
                             BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()),
                             500);
-                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
                     break;
@@ -377,7 +377,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             Behaviour_DataOrb.getDataName(this.mInventory[this.getInputSlot() + 3]));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
                         if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
-                            return GT_MetaTileEntity_BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            return BasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 3; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
@@ -385,14 +385,14 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.mFluid.amount -= 8000;
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             BioCulture out = BioCulture.getBioCulture(BioDNA.convertDataToDNA(cultureDNABioData));
-                            if (out == null) return GT_MetaTileEntity_BasicMachine.DID_NOT_FIND_RECIPE;
+                            if (out == null) return BasicMachine.DID_NOT_FIND_RECIPE;
                             out = out.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(
                             BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()),
                             500);
-                        return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                        return BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
                     break;

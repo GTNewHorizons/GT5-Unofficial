@@ -11,15 +11,15 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_WrittenBook extends Behaviour_None {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
+        int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if ((GT_Utility.isStringValid(GT_Utility.ItemNBT.getBookTitle(aStack)))
             && ((aPlayer instanceof EntityPlayerSP))) {
             Minecraft.getMinecraft()
@@ -29,7 +29,7 @@ public class Behaviour_WrittenBook extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         String tTitle = GT_Utility.ItemNBT.getBookTitle(aStack);
         if (GT_Utility.isStringValid(tTitle)) {
             aList.add(tTitle);

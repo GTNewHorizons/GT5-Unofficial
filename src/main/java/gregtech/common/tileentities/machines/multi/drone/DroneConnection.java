@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
@@ -22,14 +22,14 @@ public class DroneConnection {
 
     String customName;
     String unlocalizedName;
-    GT_MetaTileEntity_MultiBlockBase machine;
+    MultiBlockBase machine;
     ItemStack machineItem;
     ChunkCoordinates machineCoord;
     GT_MetaTileEntity_DroneCentre centre;
     ChunkCoordinates centreCoord;
     World world;
 
-    public DroneConnection(GT_MetaTileEntity_MultiBlockBase machine, GT_MetaTileEntity_DroneCentre centre) {
+    public DroneConnection(MultiBlockBase machine, GT_MetaTileEntity_DroneCentre centre) {
         this.machine = machine;
         this.machineItem = machine.getStackForm(1);
         machineCoord = machine.getBaseMetaTileEntity()
@@ -67,7 +67,7 @@ public class DroneConnection {
         this.unlocalizedName = aNBT.getString("unlocalizedName");
     }
 
-    public GT_MetaTileEntity_MultiBlockBase getMachine() {
+    public MultiBlockBase getMachine() {
         return machine;
     }
 
@@ -122,11 +122,10 @@ public class DroneConnection {
         return aNBT;
     }
 
-    public GT_MetaTileEntity_MultiBlockBase getLoadedGT_BaseMachineAt(ChunkCoordinates coords, World world,
-        boolean isLoaded) {
+    public MultiBlockBase getLoadedGT_BaseMachineAt(ChunkCoordinates coords, World world, boolean isLoaded) {
         TileEntity te = GT_Util.getTileEntity(world, coords, isLoaded);
         if (te == null) return null;
-        return (GT_MetaTileEntity_MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
+        return (MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
     private NBTTagCompound transCoordsToNBT(ChunkCoordinates coord) {

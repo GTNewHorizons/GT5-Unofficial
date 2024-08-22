@@ -14,12 +14,12 @@ import net.minecraftforge.fluids.IFluidBlock;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.behaviors.Behaviour_Prospecting;
@@ -36,7 +36,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
     }
 
     @Override
-    public boolean onItemUseFirst(final GT_MetaBase_Item aItem, final ItemStack aStack, final EntityPlayer aPlayer,
+    public boolean onItemUseFirst(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
         final World aWorld, final int aX, final int aY, final int aZ, final ForgeDirection side, final float hitX,
         final float hitY, final float hitZ) {
         if (aWorld.isRemote) {
@@ -48,7 +48,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
         }
         final byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
 
-        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
+        ItemData tAssotiation = OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
             .startsWith("ore"))) {
             GT_Utility
@@ -68,8 +68,8 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
                 int tY = aY;
                 int tZ = aZ;
                 int tMetaID = 0;
-                final int tQuality = ((aItem instanceof GT_MetaGenerated_Tool)
-                    ? ((GT_MetaGenerated_Tool) aItem).getHarvestLevel(aStack, "")
+                final int tQuality = ((aItem instanceof MetaGeneratedTool)
+                    ? ((MetaGeneratedTool) aItem).getHarvestLevel(aStack, "")
                     : 0) * 3;
 
                 int i = 0;
@@ -121,7 +121,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
                         }
                     } else {
                         tMetaID = aWorld.getBlockMetadata(tX, tY, tZ);
-                        tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                        tAssotiation = OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
                             .startsWith("ore"))) {
                             GT_Utility.sendChatToPlayer(

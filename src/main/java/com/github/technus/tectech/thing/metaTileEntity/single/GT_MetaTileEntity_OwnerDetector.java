@@ -25,14 +25,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 
 /**
  * Created by Tec on 23.03.2017.
  */
-public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_OwnerDetector extends TieredMachineBlock {
 
     private static GT_RenderedTexture OWNER_ONLINE, OWNER_OFFLINE;
     private String uuid;

@@ -13,9 +13,9 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.RecipeBuilder;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -28,7 +28,7 @@ public class FuelBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
+    protected Collection<GT_Recipe> doAdd(RecipeBuilder builder) {
         if (builder.getDuration() == -1) {
             builder.duration(0);
         }

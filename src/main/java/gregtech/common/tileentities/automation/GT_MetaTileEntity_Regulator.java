@@ -18,15 +18,15 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
+import gregtech.api.metatileentity.implementations.Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_Regulator extends Buffer {
 
     public int[] mTargetSlots = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     private boolean charge = false, decharge = false;
@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
         super.addUIWidgets(builder, buildContext);
         builder.widget(createChargerSlot(43, 62));
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(84, true))
+            new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_22_RED.apply(84, true))
                 .setPos(65, 60)
                 .setSize(84, 22))
             .widget(
@@ -185,7 +185,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
                     .build()
                     .setPos(7, 5))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_SLOTS_HOLO_3BY3)
                     .setPos(62, 5)
                     .setSize(54, 54))
             .widget(
@@ -195,11 +195,11 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
                     .endAtSlot(17)
                     .applyForWidget(
                         widget -> widget.setControlsAmount(true)
-                            .setBackground(GT_UITextures.TRANSPARENT))
+                            .setBackground(UITextures.TRANSPARENT))
                     .build()
                     .setPos(62, 5))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_SLOTS_HOLO_3BY3)
                     .setPos(117, 5)
                     .setSize(54, 54));
 
@@ -217,7 +217,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
                             0,
                             mTargetSlots[index] + (clickData.mouseButton == 0 ? -1 : 1) * (clickData.shift ? 16 : 1)));
                 }
-            }.setBackground(GT_UITextures.TRANSPARENT)
+            }.setBackground(UITextures.TRANSPARENT)
                 .setPos(xPos, yPos))
                 .widget(
                     TextWidget.dynamicString(() -> String.valueOf(mTargetSlots[index]))

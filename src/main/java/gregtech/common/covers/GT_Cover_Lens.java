@@ -4,9 +4,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 
-public class GT_Cover_Lens extends GT_CoverBehavior {
+public class GT_Cover_Lens extends CoverBehavior {
 
     private final byte mColor;
 

@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
@@ -11,8 +11,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -45,7 +45,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
         if (aMaterial != null) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
                 .duration(10)
                 .eut(16)
                 .addTo(hammerRecipes);
@@ -53,12 +53,12 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
-                    GT_OreDictUnificator.get(
+                    OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
+                    OreDictUnificator.get(
                         OrePrefixes.dustTiny,
                         GT_Utility.selectItemInList(0, aMaterial, aMaterial.mOreByProducts),
                         1L),
-                    GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
+                    OreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
                 .outputChances(10000, 100 * 5 * aMultiplier, 10000)
                 .duration(20 * SECONDS)
                 .eut(2)
@@ -66,7 +66,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
 
             if (aMaterial.contains(SubTag.NO_SMELTING)) GT_ModHandler.addSmeltingRecipe(
                 GT_Utility.copyAmount(1, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
+                OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
         }
     }
 }

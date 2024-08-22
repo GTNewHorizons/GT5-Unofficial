@@ -20,7 +20,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
 import ic2.api.energy.tile.IEnergySink;
 
 // node map generator for power distribution
@@ -33,7 +33,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     @Override
     protected boolean isPipe(TileEntity aTileEntity) {
         return super.isPipe(aTileEntity)
-            && ((BaseMetaPipeEntity) aTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable;
+            && ((BaseMetaPipeEntity) aTileEntity).getMetaTileEntity() instanceof MetaPipeEntity_Cable;
     }
 
     @Override

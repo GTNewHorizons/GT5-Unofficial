@@ -131,8 +131,8 @@ import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
-import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
+import gregtech.api.damagesources.DamageSources;
+import gregtech.api.damagesources.DamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
@@ -156,17 +156,17 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.interfaces.tileentity.IUpgradableMachine;
-import gregtech.api.items.GT_EnergyArmor_Item;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.ItemEnergyArmor;
+import gregtech.api.items.ItemGeneric;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.net.GT_Packet_Sound;
+import gregtech.api.net.Packet_Sound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.threads.GT_Runnable_Sound;
+import gregtech.api.threads.Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
@@ -217,7 +217,7 @@ public class GT_Utility {
         // 1 is the magic index to get the cobblestone block.
         // See: GT_Block_Stones.java, GT_Block_Granites.java
         Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
-            () -> GT_OreDictUnificator.getOres(OrePrefixes.stone, m)
+            () -> OreDictUnificator.getOres(OrePrefixes.stone, m)
                 .get(1))::get;
         sOreToCobble.put(OrePrefixes.oreBlackgranite, materialToCobble.apply(Materials.GraniteBlack));
         sOreToCobble.put(OrePrefixes.oreRedgranite, materialToCobble.apply(Materials.GraniteRed));
@@ -463,8 +463,8 @@ public class GT_Utility {
             if (aPlayer.isInvisible()) {
                 for (int i = 0; i < 4; i++) {
                     if (aPlayer.inventory.armorInventory[i] != null) {
-                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof GT_EnergyArmor_Item) {
-                            if ((((GT_EnergyArmor_Item) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512)
+                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof ItemEnergyArmor) {
+                            if ((((ItemEnergyArmor) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512)
                                 != 0) {
                                 if (GT_ModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
                                     return true;
@@ -1819,10 +1819,7 @@ public class GT_Utility {
     }
 
     public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return areStacksEqual(
-            GT_OreDictUnificator.get_nocopy(aStack1),
-            GT_OreDictUnificator.get_nocopy(aStack2),
-            aIgnoreNBT);
+        return areStacksEqual(OreDictUnificator.get_nocopy(aStack1), OreDictUnificator.get_nocopy(aStack2), aIgnoreNBT);
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
@@ -2060,14 +2057,14 @@ public class GT_Utility {
         Iterator<Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList
             .entrySet()
             .iterator();
-        aOutput = GT_OreDictUnificator.get(aOutput);
+        aOutput = OreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
             Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aContainer, aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
                 if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)) {
+                    if (aOutput == null || areStacksEqual(OreDictUnificator.get(tOutput), aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -2083,14 +2080,14 @@ public class GT_Utility {
         boolean rReturn = false;
         Iterator<Map.Entry<IRecipeInput, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
-        aOutput = GT_OreDictUnificator.get(aOutput);
+        aOutput = OreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
             Map.Entry<IRecipeInput, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
                 if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)) {
+                    if (aOutput == null || areStacksEqual(OreDictUnificator.get(tOutput), aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -2105,8 +2102,7 @@ public class GT_Utility {
         if (aRecipeList == null || aRecipeList.isEmpty()) return;
         toRemove.entrySet()
             .removeIf(aEntry -> (isStackInvalid(aEntry.getKey()) && isStackInvalid(aEntry.getValue())));
-        final Map<ItemStack, ItemStack> finalToRemove = Maps
-            .transformValues(toRemove, GT_OreDictUnificator::get_nocopy);
+        final Map<ItemStack, ItemStack> finalToRemove = Maps.transformValues(toRemove, OreDictUnificator::get_nocopy);
 
         aRecipeList.entrySet()
             .removeIf(
@@ -2123,21 +2119,21 @@ public class GT_Utility {
                         return tList.stream()
                             .anyMatch(
                                 tOutput -> (aOutput == null
-                                    || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)));
+                                    || areStacksEqual(OreDictUnificator.get(tOutput), aOutput)));
                     }));
     }
 
     public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList,
         NBTTagCompound aNBT, Object... aOutput) {
         if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
-        ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
+        ItemData tOreName = OreDictUnificator.getAssociation(aInput);
         for (Object o : aOutput) {
             if (o == null) {
                 GT_FML_LOGGER.info("EmptyIC2Output!" + aInput.getUnlocalizedName());
                 return false;
             }
         }
-        ItemStack[] tStack = GT_OreDictUnificator.getStackArray(true, aOutput);
+        ItemStack[] tStack = OreDictUnificator.getStackArray(true, aOutput);
         if (tStack.length > 0 && areStacksEqual(aInput, tStack[0])) return false;
         if (tOreName != null) {
             if (tOreName.toString()
@@ -2290,7 +2286,7 @@ public class GT_Utility {
             .getEffectiveSide()
             .isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote) return false;
         if (GregTech_API.sMultiThreadedSounds) new Thread(
-            new GT_Runnable_Sound(
+            new Runnable_Sound(
                 GT.getThePlayer().worldObj,
                 aX,
                 aY,
@@ -2300,7 +2296,7 @@ public class GT_Utility {
                 aSoundStrength,
                 aSoundModulation),
             "Sound Effect").start();
-        else new GT_Runnable_Sound(
+        else new Runnable_Sound(
             GT.getThePlayer().worldObj,
             aX,
             aY,
@@ -2317,7 +2313,7 @@ public class GT_Utility {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(
             aWorld,
-            new GT_Packet_Sound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
+            new Packet_Sound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
             aX,
             aZ);
         return true;
@@ -2328,13 +2324,7 @@ public class GT_Utility {
         if (aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(
             aWorld,
-            new GT_Packet_Sound(
-                sound.resourceLocation.toString(),
-                aSoundStrength,
-                aSoundModulation,
-                aX,
-                (short) aY,
-                aZ),
+            new Packet_Sound(sound.resourceLocation.toString(), aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
             aX,
             aZ);
         return true;
@@ -2459,8 +2449,8 @@ public class GT_Utility {
     }
 
     public static ItemStack updateItemStack(ItemStack aStack) {
-        if (isStackValid(aStack) && aStack.getItem() instanceof GT_Generic_Item)
-            ((GT_Generic_Item) aStack.getItem()).isItemStackUsable(aStack);
+        if (isStackValid(aStack) && aStack.getItem() instanceof ItemGeneric)
+            ((ItemGeneric) aStack.getItem()).isItemStackUsable(aStack);
         return aStack;
     }
 
@@ -2750,14 +2740,14 @@ public class GT_Utility {
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {
-        ItemData tData = GT_OreDictUnificator.getItemData(aStack);
+        ItemData tData = OreDictUnificator.getItemData(aStack);
         return tData == null ? 0
             : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
                 + (tData.hasValidMaterialData() ? tData.mMaterial.mMaterial.mHeatDamage : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {
-        ItemData tData = GT_OreDictUnificator.getItemData(aStack);
+        ItemData tData = OreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
             if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof Enchantment_Radioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
@@ -2772,7 +2762,7 @@ public class GT_Utility {
     }
 
     public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
-        return applyHeatDamage(entity, damage, GT_DamageSources.getHeatDamage());
+        return applyHeatDamage(entity, damage, DamageSources.getHeatDamage());
     }
 
     public static boolean applyHeatDamageFromItem(EntityLivingBase entity, float damage, ItemStack item) {
@@ -2788,7 +2778,7 @@ public class GT_Utility {
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
         if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
-            return aEntity.attackEntityFrom(GT_DamageSources.getFrostDamage(), aDamage);
+            return aEntity.attackEntityFrom(DamageSources.getFrostDamage(), aDamage);
         }
         return false;
     }
@@ -2796,7 +2786,7 @@ public class GT_Utility {
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
         if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
-            return aEntity.attackEntityFrom(GT_DamageSources.getElectricDamage(), aDamage);
+            return aEntity.attackEntityFrom(DamageSources.getElectricDamage(), aDamage);
         }
         return false;
     }
@@ -3019,7 +3009,7 @@ public class GT_Utility {
         } else if (tRawStack != null) {
             tRealStackSize = tRawStack.stackSize;
         }
-        ItemStack tRet = GT_OreDictUnificator.get(true, tRawStack);
+        ItemStack tRet = OreDictUnificator.get(true, tRawStack);
         if (tRet != null) tRet.stackSize = tRealStackSize;
         return tRet;
     }
@@ -3925,7 +3915,7 @@ public class GT_Utility {
      */
     public static boolean consumeItems(EntityPlayer player, ItemStack stack, gregtech.api.enums.Materials mat,
         int count) {
-        if (stack != null && GT_OreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
+        if (stack != null && OreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
             && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
             return true;
@@ -4361,13 +4351,13 @@ public class GT_Utility {
     }
 
     public static boolean isPartOfMaterials(ItemStack aStack, Materials aMaterials) {
-        return GT_OreDictUnificator.getAssociation(aStack) != null
-            && GT_OreDictUnificator.getAssociation(aStack).mMaterial.mMaterial.equals(aMaterials);
+        return OreDictUnificator.getAssociation(aStack) != null
+            && OreDictUnificator.getAssociation(aStack).mMaterial.mMaterial.equals(aMaterials);
     }
 
     public static boolean isPartOfOrePrefix(ItemStack aStack, OrePrefixes aPrefix) {
-        return GT_OreDictUnificator.getAssociation(aStack) != null
-            && GT_OreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
+        return OreDictUnificator.getAssociation(aStack) != null
+            && OreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
     public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
@@ -4407,7 +4397,7 @@ public class GT_Utility {
         // We take the modulus of the metadata by 16000 because that is the magic number to convert small ores to
         // regular ores.
         // See: GT_TileEntity_Ores.java
-        ItemData association = GT_OreDictUnificator
+        ItemData association = OreDictUnificator
             .getAssociation(new ItemStack(Item.getItemFromBlock(ore), 1, metaData % 16000));
         if (association != null) {
             Supplier<ItemStack> supplier = sOreToCobble.get(association.mPrefix);
@@ -4430,7 +4420,7 @@ public class GT_Utility {
                 ItemStack toAdd = ((ItemStack) o).copy();
                 inputs.add(toAdd);
             } else if (o instanceof String) {
-                ItemStack stack = GT_OreDictUnificator.get(o, 1);
+                ItemStack stack = OreDictUnificator.get(o, 1);
                 if (stack == null) {
                     Optional<ItemStack> oStack = OreDictionary.getOres((String) o)
                         .stream()
@@ -4449,7 +4439,7 @@ public class GT_Utility {
             else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
         }
 
-        inputs.removeIf(x -> x.getItem() instanceof GT_MetaGenerated_Tool);
+        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
 
         return Optional.of(
             new GT_Recipe(
@@ -4499,7 +4489,7 @@ public class GT_Utility {
             } else if (o.getKey() instanceof String dictName) {
                 // Do not register tools dictName in inputs
                 if (ToolDictNames.contains(dictName)) continue;
-                ItemStack stack = GT_OreDictUnificator.get(dictName, null, amount, false, true);
+                ItemStack stack = OreDictUnificator.get(dictName, null, amount, false, true);
                 if (stack == null) {
                     Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
                         .stream()
@@ -4521,7 +4511,7 @@ public class GT_Utility {
         }
 
         // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
-        inputs.removeIf(x -> x.getItem() instanceof GT_MetaGenerated_Tool);
+        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
 
         return Optional.of(
             new GT_Recipe(

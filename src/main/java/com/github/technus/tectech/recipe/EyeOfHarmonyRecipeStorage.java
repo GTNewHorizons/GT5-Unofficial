@@ -22,7 +22,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
@@ -134,13 +134,13 @@ public class EyeOfHarmonyRecipeStorage {
 
         for (Materials material : Materials.values()) {
 
-            ItemStack normalOre = GT_OreDictUnificator.get(OrePrefixes.ore, material, 1);
+            ItemStack normalOre = OreDictUnificator.get(OrePrefixes.ore, material, 1);
 
             if ((normalOre != null)) {
                 validMaterialSet.add(material);
             }
 
-            ItemStack smallOre = GT_OreDictUnificator.get(OrePrefixes.oreSmall, material, 1);
+            ItemStack smallOre = OreDictUnificator.get(OrePrefixes.oreSmall, material, 1);
 
             if ((smallOre != null)) {
                 validMaterialSet.add(material);

@@ -9,21 +9,21 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergySink;
 
 public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     private final IGregTechTileEntity myMeta;
-    private GT_MetaPipeEntity_Cable cableMeta = null;
+    private MetaPipeEntity_Cable cableMeta = null;
 
     public TileIC2EnergySink(IGregTechTileEntity meta) {
         if (meta == null) throw new NullPointerException("no null metas");
         myMeta = meta;
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
         if (metaTile instanceof IMetaTileEntityCable) {
-            cableMeta = (GT_MetaPipeEntity_Cable) metaTile;
+            cableMeta = (MetaPipeEntity_Cable) metaTile;
         }
         setWorldObj(meta.getWorld());
         xCoord = meta.getXCoord();

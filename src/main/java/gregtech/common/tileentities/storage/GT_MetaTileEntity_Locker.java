@@ -21,7 +21,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
@@ -29,7 +29,7 @@ import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_Locker extends TieredMachineBlock {
 
     private static final String CHARGE_SLOT_WAILA_TAG = "charge_slot_";
     public byte mType = 0;

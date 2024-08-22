@@ -57,24 +57,24 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.registries.LHECoolantRegistry;
-import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
-import gregtech.api.util.GT_Assemblyline_Server;
+import gregtech.api.threads.Runnable_MachineBlockUpdate;
+import gregtech.api.util.Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.item.ItemHolder;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
@@ -286,7 +286,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Preload-Phase finished!");
         GT_Log.ore.println("GT_Mod: Preload-Phase finished!");
 
-        GT_UIInfos.init();
+        UIInfos.init();
 
         for (Runnable tRunnable : GregTech_API.sAfterGTPreload) {
             try {
@@ -298,7 +298,7 @@ public class GT_Mod implements IGT_Mod {
 
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isServer()) GT_Assemblyline_Server.fillMap(aEvent);
+            .isServer()) Assemblyline_Server.fillMap(aEvent);
     }
 
     @Mod.EventHandler
@@ -414,14 +414,14 @@ public class GT_Mod implements IGT_Mod {
             new ItemStack(Blocks.stone, 1),
             new ItemStack(Items.leather, 1));
 
-        GT_OreDictUnificator.addItemData(
+        OreDictUnificator.addItemData(
             GT_ModHandler.getRecipeOutput(
                 null,
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
                 null,
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
                 null,
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
                 null,
                 null,
                 null),
@@ -723,7 +723,7 @@ public class GT_Mod implements IGT_Mod {
         }
         for (ItemStack tOutput : tStacks) {
             if (!gregtechproxy.mRegisteredOres.contains(tOutput)) {
-                GT_OreDictUnificator.setStack(tOutput);
+                OreDictUnificator.setStack(tOutput);
             } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
                 tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
@@ -746,7 +746,7 @@ public class GT_Mod implements IGT_Mod {
         aEvent.registerServerCommand(new SPM_Command());
         aEvent.registerServerCommand(new SpaceProject_Command());
         // Sets a new Machine Block Update Thread everytime a world is loaded
-        GT_Runnable_MachineBlockUpdate.initExecutorService();
+        Runnable_MachineBlockUpdate.initExecutorService();
     }
 
     public boolean isServerSide() {
@@ -809,7 +809,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         // Interrupt IDLE Threads to close down cleanly
-        GT_Runnable_MachineBlockUpdate.shutdownExecutorService();
+        Runnable_MachineBlockUpdate.shutdownExecutorService();
     }
 
     public static void logStackTrace(Throwable t) {

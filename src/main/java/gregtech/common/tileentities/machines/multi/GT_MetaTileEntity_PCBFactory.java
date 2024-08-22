@@ -2,14 +2,14 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.AuthorBlueWeabo;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -63,16 +63,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -85,18 +85,18 @@ import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.GT_Block_Casings8;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class GT_MetaTileEntity_PCBFactory extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_PCBFactory extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory>
+    implements ISurvivalConstructable {
 
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_PCBFactory extends
     private final int[] mBioOffsets = new int[] { -5, -1 };
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
     private final int[] mOCTier2Offsets = new int[] { 2, -11 };
-    private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
+    private Hatch_Input mCoolantInputHatch;
     private static final int mBioRotateBitMap = 0b1000000;
     private static final int mOCTier2BitMap = 0b100000;
     private static final int mOCTier1BitMap = 0b10000;
@@ -252,7 +252,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
         .addElement(
             'M',
-            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class).hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class).hatchClass(Hatch_Input.class)
                 .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
                 .dot(2)
@@ -261,7 +261,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         .addElement('O', ofBlock(GregTech_API.sBlockCasings8, 4))
         .addElement(
             'S',
-            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class).hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class).hatchClass(Hatch_Input.class)
                 .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
                 .dot(2)
@@ -317,22 +317,22 @@ public class GT_MetaTileEntity_PCBFactory extends
         int built = 0;
         if (Loader.isModLoaded("blockrenderer6343") && env.getActor() instanceof ClientFakePlayer) {
             if (stackSize.stackSize < 3) {
-                built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, false);
+                built += survivalBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, false);
                 if (stackSize.stackSize == 2) {
-                    built += survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, false);
+                    built += survivalBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, false);
                 }
             } else {
-                built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, false);
+                built += survivalBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, false);
             }
             return built;
         }
         if (mSetTier < 3) {
-            built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
+            built += survivalBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
             if (mSetTier == 2) {
-                built += survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
+                built += survivalBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
             }
         } else {
-            built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
+            built += survivalBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
         }
 
         if (mBioUpgrade) {
@@ -354,7 +354,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                     env,
                     false);
             } else {
-                built += survivialBuildPiece(
+                built += survivalBuildPiece(
                     bioUpgrade,
                     stackSize,
                     mBioOffsets[0],
@@ -368,7 +368,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         }
 
         if (mOCTier1 && !mOCTier2) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 ocTier1Upgrade,
                 stackSize,
                 mOCTier1Offsets[0],
@@ -380,7 +380,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 true);
         }
         if (!mOCTier1 && mOCTier2) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 ocTier2Upgrade,
                 stackSize,
                 mOCTier2Offsets[0],
@@ -547,7 +547,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
                 ItemStack aNanite = recipe.getRepresentativeInput(1);
-                ItemData naniteData = GT_OreDictUnificator.getAssociation(aNanite);
+                ItemData naniteData = OreDictUnificator.getAssociation(aNanite);
                 if (naniteData != null && naniteData.mPrefix != null && naniteData.mPrefix.equals(OrePrefixes.nanite)) {
                     for (ItemStack aItem : inputItems) {
                         if (aItem != null && aItem.isItemEqual(aNanite)) {
@@ -570,7 +570,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
@@ -579,7 +579,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
             @Nonnull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setChanceMultiplier(mRoughnessMultiplier);
@@ -734,10 +734,10 @@ public class GT_MetaTileEntity_PCBFactory extends
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            mCoolantInputHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            mCoolantInputHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;
@@ -759,13 +759,13 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
+        for (Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -835,8 +835,8 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Board Fabricator")
             .addInfo("Controller for the PCB Factory")
             .addInfo(
@@ -1046,8 +1046,8 @@ public class GT_MetaTileEntity_PCBFactory extends
                 .setSize(16, 16)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_CYCLIC);
+                    ret.add(UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.OVERLAY_BUTTON_CYCLIC);
                     return ret.toArray(new IDrawable[0]);
                 })
                 .addTooltip("Configuration Menu")
@@ -1064,17 +1064,17 @@ public class GT_MetaTileEntity_PCBFactory extends
                     .setTextColor(Color.WHITE.normal)
                     .setTextAlignment(Alignment.Center)
                     .addTooltip("PCB Factory Tier")
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                     .setSize(18, 18)
                     .setPos(173, 110));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 160);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+            new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
             .widget(new TextWidget("Configuration Menu").setPos(25, 9))
@@ -1094,12 +1094,12 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .sendChatToPlayer(player, GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
                             }
                         })
-                            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                            .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                             .setSize(90, 18)
                             .addTooltip(
                                 "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
                             .addChild(
-                                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                                     .setSize(18, 18))
                             .addChild(
                                 new TextWidget("Biochamber").setTextAlignment(Alignment.Center)
@@ -1114,11 +1114,11 @@ public class GT_MetaTileEntity_PCBFactory extends
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("340", "Rotated biochamber enabled"));
                         }
                     })
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                        .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
                         .addTooltip("Rotates the biochamber by 90 degrees."))
                         .addChild(
-                            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                            new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
                             new TextWidget("Bio Rotation").setTextAlignment(Alignment.Center)
@@ -1133,12 +1133,12 @@ public class GT_MetaTileEntity_PCBFactory extends
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341", "Tier 1 cooling enabled"));
                         }
                     })
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                        .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
                         .addTooltip(
                             "Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive."))
                         .addChild(
-                            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                            new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
                             new TextWidget("Liquid Cooling").setTextAlignment(Alignment.Center)
@@ -1153,12 +1153,12 @@ public class GT_MetaTileEntity_PCBFactory extends
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342", "Tier 2 cooling enabled"));
                         }
                     })
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                        .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
                         .addTooltip(
                             "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant."))
                         .addChild(
-                            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                            new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
                             new TextWidget("Thermosink").setTextAlignment(Alignment.Center)
@@ -1176,10 +1176,10 @@ public class GT_MetaTileEntity_PCBFactory extends
                             .setTextAlignment(Alignment.Center)
                             .addTooltip(
                                 "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
-                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                            .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                             .setSize(90, 16))
                     .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CROSS)
                             .setSize(18, 18)
                             .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
                             .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
@@ -1198,7 +1198,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("X Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
                                 new NumericWidget().setGetter(() -> mBioOffsets[1])
@@ -1207,7 +1207,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("Z Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
@@ -1222,7 +1222,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("X Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
                                 new NumericWidget().setGetter(() -> mOCTier1Offsets[1])
@@ -1231,7 +1231,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("Z Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
@@ -1246,7 +1246,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("X Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
                                 new NumericWidget().setGetter(() -> mOCTier2Offsets[1])
@@ -1255,7 +1255,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("Z Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .setPos(110, 25));

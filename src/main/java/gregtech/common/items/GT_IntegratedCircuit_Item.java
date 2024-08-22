@@ -36,8 +36,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.net.GT_Packet_UpdateItem;
+import gregtech.api.items.ItemGeneric;
+import gregtech.api.net.Packet_UpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
@@ -46,7 +46,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 
-public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetworkUpdatableItem {
+public class GT_IntegratedCircuit_Item extends ItemGeneric implements INetworkUpdatableItem {
 
     private static final String aTextEmptyRow = "   ";
     private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
@@ -307,7 +307,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     private static void onConfigured(ItemStack stack) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setByte("meta", (byte) stack.getItemDamage());
-        GT_Values.NW.sendToServer(new GT_Packet_UpdateItem(tag));
+        GT_Values.NW.sendToServer(new Packet_UpdateItem(tag));
     }
 
     private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(

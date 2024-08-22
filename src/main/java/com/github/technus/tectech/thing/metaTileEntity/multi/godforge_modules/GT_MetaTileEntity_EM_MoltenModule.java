@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules;
 
-import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
-import static gregtech.api.util.GT_ParallelHelper.addFluidsLong;
-import static gregtech.api.util.GT_ParallelHelper.addItemsLong;
-import static gregtech.api.util.GT_RecipeBuilder.BUCKETS;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.OreDictUnificator.getAssociation;
+import static gregtech.api.util.ParallelHelper.addFluidsLong;
+import static gregtech.api.util.ParallelHelper.addItemsLong;
+import static gregtech.api.util.RecipeBuilder.BUCKETS;
+import static gregtech.api.util.RecipeBuilder.INGOTS;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -34,11 +34,11 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 
 public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_BaseModule {
 
@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
 
             @Nonnull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe).setCustomItemOutputCalculation(currentParallel -> {
                     ArrayList<ItemStack> outputItems = new ArrayList<>();
                     for (int i = 0; i < recipe.mOutputs.length; i++) {
@@ -211,8 +211,8 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace")
             .addInfo("Controller block of the Molten Module")
             .addInfo("Uses a Star to to melt Metals")

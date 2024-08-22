@@ -16,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 
@@ -33,7 +33,7 @@ public final class CoverInfo {
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
     private int coverID = 0;
-    private GT_CoverBehaviorBase<?> coverBehavior;
+    private CoverBehaviorBase<?> coverBehavior;
     private ISerializableObject coverData;
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
@@ -89,7 +89,7 @@ public final class CoverInfo {
         needsUpdate = aUpdate;
     }
 
-    public GT_CoverBehaviorBase<?> getCoverBehavior() {
+    public CoverBehaviorBase<?> getCoverBehavior() {
         return coverBehavior;
     }
 
@@ -176,7 +176,7 @@ public final class CoverInfo {
     }
 
     public ModularWindow createWindow(EntityPlayer player) {
-        final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
+        final CoverUIBuildContext buildContext = new CoverUIBuildContext(
             player,
             coverID,
             coverSide,

@@ -13,17 +13,17 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.GT_Mod;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
-public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_CustomFluidBase extends Hatch {
 
     public final Fluid mLockedFluid;
     public final int mFluidCapacity;
@@ -96,7 +96,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

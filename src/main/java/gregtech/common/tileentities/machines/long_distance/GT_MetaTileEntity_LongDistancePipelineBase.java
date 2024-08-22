@@ -49,14 +49,14 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_Block_LongDistancePipe;
+import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
+import gregtech.api.metatileentity.implementations.BasicHull_NonElectric;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
+public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends BasicHull_NonElectric {
 
     protected static final int INPUT_INDEX = 0;
     protected static final int OUTPUT_INDEX = 1;
@@ -217,7 +217,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         // Start scanning from the output side
         Block aBlock = gtTile.getBlockAtSide(gtTile.getBackFacing());
 
-        if (aBlock instanceof GT_Block_LongDistancePipe) {
+        if (aBlock instanceof BlockLongDistancePipe) {
             byte aMetaData = gtTile.getMetaIDAtSide(gtTile.getBackFacing());
             if (aMetaData != getPipeMeta()) return;
 

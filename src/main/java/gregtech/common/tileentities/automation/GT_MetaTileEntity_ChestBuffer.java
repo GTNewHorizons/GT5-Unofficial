@@ -7,14 +7,14 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
+import gregtech.api.metatileentity.implementations.Buffer;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_ChestBuffer extends Buffer {
 
     private static final int[] tickRate = { 400, 200, 100, 20, 4, 1, 1, 1, 1, 1, 1, 1, 1 };
     private static final int[] maxStacks = { 1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128 };
@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
         addInvertRedstoneButton(builder);
         addStockingModeButton(builder);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
+            new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_22_RED.apply(69, true))
                 .setPos(98, 60)
                 .setSize(51, 22));
         addMainUI(builder);

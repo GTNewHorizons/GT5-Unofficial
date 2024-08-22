@@ -5,10 +5,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
+import gregtech.api.metatileentity.implementations.BasicHull_NonElectric;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_BasicHull_BronzeBricks extends GT_MetaTileEntity_BasicHull_NonElectric {
+public class GT_MetaTileEntity_BasicHull_BronzeBricks extends BasicHull_NonElectric {
 
     public GT_MetaTileEntity_BasicHull_BronzeBricks(int aID, String aName, String aNameRegional, int aTier,
         String aDescription) {

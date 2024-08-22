@@ -33,8 +33,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 
@@ -188,7 +188,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             this.mProcessingEnergy += burnTime / 10;
             boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
                 .equals(Blocks.air);
-            combustFuel(burnTime, isABlock).map(dustSize -> GT_OreDictUnificator.get(dustSize, ashMaterial, 1L))
+            combustFuel(burnTime, isABlock).map(dustSize -> OreDictUnificator.get(dustSize, ashMaterial, 1L))
                 .ifPresent(ashes -> aBaseMetaTileEntity.addStackToSlot(3, ashes));
         });
     }
@@ -221,7 +221,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
                 .anyMatch(lowerCaseBlockName::matches))
             || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
-                .anyMatch(name -> GT_OreDictUnificator.isItemStackInstanceOf(fuel, name))
+                .anyMatch(name -> OreDictUnificator.isItemStackInstanceOf(fuel, name))
             || burnTime >= 2000;
     }
 

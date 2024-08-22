@@ -8,8 +8,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDrillBase {
 
@@ -22,11 +22,11 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+    protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Pump")
             .addInfo("Controller Block for the Infinite Oil/Gas/Fluid Drilling Rig ")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")

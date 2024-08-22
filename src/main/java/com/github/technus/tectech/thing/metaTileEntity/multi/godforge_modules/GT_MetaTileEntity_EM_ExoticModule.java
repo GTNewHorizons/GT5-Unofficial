@@ -6,9 +6,9 @@ import static com.github.technus.tectech.loader.recipe.Godforge.exoticModulePlas
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.RecipeBuilder.INGOTS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -50,7 +50,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -60,10 +60,10 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_BaseModule {
 
@@ -236,7 +236,7 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
@@ -450,22 +450,22 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isMagmatterModeOn()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(UITextures.BUTTON_STANDARD_PRESSED);
                     if (isMagmatterCapable) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
+                        ret.add(UITextures.OVERLAY_BUTTON_CHECKMARK);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                        ret.add(UITextures.OVERLAY_BUTTON_DISABLE);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     if (isMagmatterCapable) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
+                        ret.add(UITextures.OVERLAY_BUTTON_CROSS);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                        ret.add(UITextures.OVERLAY_BUTTON_DISABLE);
                     }
                 }
                 if (!isMagmatterCapable) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                    ret.add(UITextures.OVERLAY_BUTTON_DISABLE);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -492,8 +492,8 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Exotic Matter Producer")
             .addInfo("Controller block of the Quark Gluon Plasma Module")
             .addInfo("Uses a Star to to turn Items into Quark Gluon Plasma")

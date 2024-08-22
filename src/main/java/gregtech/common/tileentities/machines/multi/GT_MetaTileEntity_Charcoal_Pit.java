@@ -28,17 +28,16 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
+import gregtech.api.metatileentity.implementations.TooltipMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
 
-public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMultiBlockBase
-    implements ISecondaryDescribable {
+public class GT_MetaTileEntity_Charcoal_Pit extends TooltipMultiBlockBase implements ISecondaryDescribable {
 
     private boolean running = false;
 
@@ -243,8 +242,8 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         return new GT_MetaTileEntity_Charcoal_Pit(mName);
     }
 
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Charcoal Pile Igniter")
             .addInfo("Controller for the Charcoal Pit")
             .addInfo("Converts Logs into Brittle Charcoal blocks")

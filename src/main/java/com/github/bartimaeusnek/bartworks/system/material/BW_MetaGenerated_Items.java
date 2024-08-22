@@ -43,13 +43,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import ic2.core.IC2Potion;
 
-public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRadMaterial {
+public class BW_MetaGenerated_Items extends MetaGeneratedItem implements IRadMaterial {
 
     public static final CreativeTabs metaTab = new CreativeTabs("bartworksMetaMaterials") {
 
@@ -80,7 +80,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         for (Werkstoff w : werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
             if (!w.hasItemType(this.orePrefixes)) continue;
-            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
+            OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
         }
     }
 

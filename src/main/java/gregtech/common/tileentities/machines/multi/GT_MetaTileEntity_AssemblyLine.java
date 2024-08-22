@@ -4,11 +4,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -45,25 +45,25 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_DataAccess;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_AssemblyLineUtils;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_MetaTileEntity_AssemblyLine extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_AssemblyLine extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_AssemblyLine>
+    implements ISurvivalConstructable {
 
-    public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+    public ArrayList<Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -128,8 +128,8 @@ public class GT_MetaTileEntity_AssemblyLine extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembling Line")
             .addInfo("Controller block for the Assembling Line")
             .addInfo("Used to make complex machine parts (LuV+)")
@@ -217,10 +217,10 @@ public class GT_MetaTileEntity_AssemblyLine extends
         Map<Fluid, FluidStack> fluidsFromME = getStoredFluidsFromME();
 
         for (ItemStack tDataStick : tDataStickList) {
-            GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
+            AssemblyLineUtils.LookupResult tLookupResult = AssemblyLineUtils
                 .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
-            if (tLookupResult.getType() == GT_AssemblyLineUtils.LookupResultType.INVALID_STICK) {
+            if (tLookupResult.getType() == AssemblyLineUtils.LookupResultType.INVALID_STICK) {
                 result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
@@ -228,8 +228,8 @@ public class GT_MetaTileEntity_AssemblyLine extends
             GT_Recipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
             // Check if the recipe on the data stick is the current recipe for it's given output, if not we update it
             // and continue to next.
-            if (tLookupResult.getType() != GT_AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
-                tRecipe = GT_AssemblyLineUtils.processDataStick(tDataStick);
+            if (tLookupResult.getType() != AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
+                tRecipe = AssemblyLineUtils.processDataStick(tDataStick);
                 if (tRecipe == null) {
                     result = CheckRecipeResultRegistry.NO_RECIPE;
                     continue;
@@ -365,7 +365,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        for (GT_MetaTileEntity_Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
+        for (Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
             hatch_dataAccess.setActive(true);
         }
         return super.onRunningTick(aStack);
@@ -409,7 +409,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
         if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+        for (Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
             rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
         }
         return rList;
@@ -419,9 +419,9 @@ public class GT_MetaTileEntity_AssemblyLine extends
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_DataAccess) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDataAccessHatches.add((Hatch_DataAccess) aMetaTileEntity);
         }
         return false;
     }
@@ -453,14 +453,14 @@ public class GT_MetaTileEntity_AssemblyLine extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int tLength = Math.min(stackSize.stackSize + 1, 16);
         for (int i = 1; i < tLength - 1; i++) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
+            build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -479,7 +479,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(GT_MetaTileEntity_Hatch_DataAccess.class);
+            return Collections.singletonList(Hatch_DataAccess.class);
         }
 
         @Override

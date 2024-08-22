@@ -3,7 +3,7 @@ package goodgenerator.loader;
 import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
-import static gregtech.api.util.GT_RecipeConstants.COAL_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.COAL_CASING_TIER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +29,9 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 
 public class ComponentAssemblyLineRecipeLoader {
@@ -158,12 +158,12 @@ public class ComponentAssemblyLineRecipeLoader {
                             // Mulitplies the input by its multiplier, and adjusts the stacks accordingly
                             if (!(input.getItem() instanceof GT_IntegratedCircuit_Item)) {
 
-                                ItemData data = GT_OreDictUnificator.getAssociation(input);
+                                ItemData data = OreDictUnificator.getAssociation(input);
                                 // trying to fix some circuit oredicting issues
 
                                 if (data != null && data.mPrefix == OrePrefixes.circuit) fixedInputs.addAll(
                                     multiplyAndSplitIntoStacks(
-                                        GT_OreDictUnificator.get(data.mPrefix, data.mMaterial.mMaterial, count),
+                                        OreDictUnificator.get(data.mPrefix, data.mMaterial.mMaterial, count),
                                         INPUT_MULTIPLIER));
                                 else fixedInputs.addAll(multiplyAndSplitIntoStacks(input, INPUT_MULTIPLIER));
                             }
@@ -225,15 +225,15 @@ public class ComponentAssemblyLineRecipeLoader {
             if (OreDictionary.getOreIDs(input).length > 0 && count > threshold) {
                 FluidStack foundFluidStack = tryConvertItemStackToFluidMaterial(input);
 
-                ItemData data = GT_OreDictUnificator.getAssociation(input);
+                ItemData data = OreDictUnificator.getAssociation(input);
 
                 // Prevents the uncraftable molten magnetic samarium from being converted into fluid during auto
                 // generation
                 if (data != null && data.mMaterial.mMaterial == Materials.SamariumMagnetic) {
-                    input = GT_OreDictUnificator.get(data.mPrefix, Materials.Samarium, 1);
+                    input = OreDictUnificator.get(data.mPrefix, Materials.Samarium, 1);
                     foundFluidStack = tryConvertItemStackToFluidMaterial(input);
                 } else if (data != null && data.mMaterial.mMaterial == Materials.TengamAttuned) {
-                    input = GT_OreDictUnificator.get(data.mPrefix, Materials.TengamPurified, 1);
+                    input = OreDictUnificator.get(data.mPrefix, Materials.TengamPurified, 1);
                     foundFluidStack = tryConvertItemStackToFluidMaterial(input);
                 }
 
@@ -341,7 +341,7 @@ public class ComponentAssemblyLineRecipeLoader {
         HashMap<ItemStack, Integer> totals = getTotalItems(items);
         for (ItemStack itemstack : totals.keySet()) {
             int totalItems = totals.get(itemstack);
-            ItemData data = GT_OreDictUnificator.getAssociation(itemstack);
+            ItemData data = OreDictUnificator.getAssociation(itemstack);
             boolean isCompacted = false;
 
             for (String dict : Arrays.stream(OreDictionary.getOreIDs(itemstack))
@@ -361,7 +361,7 @@ public class ComponentAssemblyLineRecipeLoader {
 
             if (data != null && !isCompacted) {
                 OrePrefixes goInto = conversion.get(data.mPrefix);
-                if (goInto != null && GT_OreDictUnificator.get(goInto, data.mMaterial.mMaterial, 1) != null) {
+                if (goInto != null && OreDictUnificator.get(goInto, data.mMaterial.mMaterial, 1) != null) {
                     compactorHelper(data, goInto, stacks, totalItems);
                     isCompacted = true;
                 }
@@ -371,10 +371,10 @@ public class ComponentAssemblyLineRecipeLoader {
                 isCompacted = true;
             }
             if (GT_Utility
-                .areStacksEqual(itemstack, GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))) {
+                .areStacksEqual(itemstack, OreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))) {
                 stacks.addAll(
                     multiplyAndSplitIntoStacks(
-                        GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
+                        OreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
                         totalItems / 16));
                 isCompacted = true;
             }
@@ -390,7 +390,7 @@ public class ComponentAssemblyLineRecipeLoader {
         int materialRatio = (int) ((double) compactInto.mMaterialAmount / data.mPrefix.mMaterialAmount);
         output.addAll(
             multiplyAndSplitIntoStacks(
-                GT_OreDictUnificator.get(compactInto, data.mMaterial.mMaterial, 1),
+                OreDictUnificator.get(compactInto, data.mMaterial.mMaterial, 1),
                 total / materialRatio));
     }
 
@@ -440,7 +440,7 @@ public class ComponentAssemblyLineRecipeLoader {
 
     private static List<ItemStack> getMagnetoConversion(ItemStack item, int total) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
-        ItemData data = GT_OreDictUnificator.getAssociation(item);
+        ItemData data = OreDictUnificator.getAssociation(item);
         if (data == null) {
             return stacks;
         }
@@ -448,7 +448,7 @@ public class ComponentAssemblyLineRecipeLoader {
             double multiplier = magnetoConversionMultipliers.get(data.mPrefix);
             stacks.addAll(
                 getWrappedCircuits(
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
+                    OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
                     (int) (total * multiplier),
                     "circuitInfinite"));
         }

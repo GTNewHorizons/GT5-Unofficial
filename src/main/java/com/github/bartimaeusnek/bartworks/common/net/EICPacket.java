@@ -10,10 +10,10 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.Packet_New;
 import io.netty.buffer.ByteBuf;
 
-public class EICPacket extends GT_Packet_New {
+public class EICPacket extends Packet_New {
 
     private Coords coords;
     private boolean bool;
@@ -42,7 +42,7 @@ public class EICPacket extends GT_Packet_New {
     }
 
     @Override
-    public GT_Packet_New decode(ByteArrayDataInput aData) {
+    public Packet_New decode(ByteArrayDataInput aData) {
         return new EICPacket(new Coords(aData.readInt(), aData.readInt(), aData.readInt()), aData.readBoolean());
     }
 

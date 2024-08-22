@@ -16,8 +16,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -68,9 +68,9 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
                     this.getUnlocalizedName(tStack) + ".tooltip",
                     tMaterial.getToolTip(tPrefix.mMaterialAmount / GT_Values.M));
                 if (tPrefix.mIsUnificatable) {
-                    GT_OreDictUnificator.set(tPrefix, tMaterial, tStack);
+                    OreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
-                    GT_OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
+                    OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
                 if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
                     && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)

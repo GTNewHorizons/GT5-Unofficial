@@ -6,10 +6,10 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IFoodStat;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 
 public class GT_FoodStat implements IFoodStat {
 
@@ -55,19 +55,19 @@ public class GT_FoodStat implements IFoodStat {
     }
 
     @Override
-    public int getFoodLevel(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+    public int getFoodLevel(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer) {
         return mFoodLevel;
     }
 
     @Override
-    public float getSaturation(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+    public float getSaturation(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer) {
         return mSaturation;
     }
 
     @Override
-    public void onEaten(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+    public void onEaten(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer) {
         aStack.stackSize--;
-        ItemStack tStack = GT_OreDictUnificator.get(GT_Utility.copyOrNull(mEmptyContainer));
+        ItemStack tStack = OreDictUnificator.get(GT_Utility.copyOrNull(mEmptyContainer));
         if (tStack != null && !aPlayer.inventory.addItemStackToInventory(tStack))
             aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
 
@@ -100,23 +100,23 @@ public class GT_FoodStat implements IFoodStat {
                     .setEntity(aPlayer)
                     .setWorld(aPlayer.worldObj)
                     .run();
-                aPlayer.attackEntityFrom(GT_DamageSources.getExplodingDamage(), Float.MAX_VALUE);
+                aPlayer.attackEntityFrom(DamageSources.getExplodingDamage(), Float.MAX_VALUE);
             }
         }
     }
 
     @Override
-    public EnumAction getFoodAction(GT_MetaBase_Item aItem, ItemStack aStack) {
+    public EnumAction getFoodAction(MetaBaseItem aItem, ItemStack aStack) {
         return mAction;
     }
 
     @Override
-    public boolean alwaysEdible(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+    public boolean alwaysEdible(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer) {
         return mAlwaysEdible;
     }
 
     @Override
-    public boolean isRotten(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+    public boolean isRotten(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer) {
         return mIsRotten;
     }
 }

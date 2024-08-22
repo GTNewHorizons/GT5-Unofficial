@@ -46,7 +46,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -302,13 +302,13 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85));
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
         builder.widget(
             inventorySlot.setPos(173, 167)
-                .setBackground(GT_UITextures.SLOT_DARK_GRAY));
+                .setBackground(UITextures.SLOT_DARK_GRAY));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
@@ -342,7 +342,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
             .setPlayClickSound(isVoltageConfigUnlocked)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(UITextures.BUTTON_STANDARD);
                 if (isVoltageConfigUnlocked) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
                 } else {
@@ -369,7 +369,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -392,7 +392,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
                     .setTextColor(Color.WHITE.normal)
                     .setSize(150, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
                         builder));

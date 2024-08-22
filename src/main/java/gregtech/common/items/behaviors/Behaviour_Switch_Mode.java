@@ -8,9 +8,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.net.GT_Packet_ToolSwitchMode;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.net.Packet_ToolSwitchMode;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_Switch_Mode extends Behaviour_None {
@@ -18,10 +18,10 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
     public Behaviour_Switch_Mode() {}
 
     @Override
-    public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && aWorld.isRemote) {
 
-            GT_MetaGenerated_Tool itemTool = (GT_MetaGenerated_Tool) aItem;
+            MetaGeneratedTool itemTool = (MetaGeneratedTool) aItem;
             final byte maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode == 1) {
                 return aStack;
@@ -29,7 +29,7 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
 
             MovingObjectPosition mop = GT_Utility.getPlayerLookingTarget(aPlayer);
             if (mop == null) {
-                GT_Values.NW.sendToServer(new GT_Packet_ToolSwitchMode());
+                GT_Values.NW.sendToServer(new Packet_ToolSwitchMode());
             }
             return aStack;
         }
@@ -37,10 +37,10 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         super.getAdditionalToolTips(aItem, aList, aStack);
-        if ((aItem instanceof GT_MetaGenerated_Tool)) {
-            GT_MetaGenerated_Tool itemTool = (GT_MetaGenerated_Tool) aItem;
+        if ((aItem instanceof MetaGeneratedTool)) {
+            MetaGeneratedTool itemTool = (MetaGeneratedTool) aItem;
             final int maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode > 1) {
                 aList.add("Shift+Rclick to change mode");

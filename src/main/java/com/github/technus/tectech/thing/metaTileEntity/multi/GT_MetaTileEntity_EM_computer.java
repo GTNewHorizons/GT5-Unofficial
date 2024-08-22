@@ -9,9 +9,9 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -59,13 +59,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.WirelessComputationPacket;
 
@@ -354,8 +354,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum
                                                                                               // Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
@@ -496,7 +496,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Rack) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eRacks.add((GT_MetaTileEntity_Hatch_Rack) aMetaTileEntity);
         }
         return false;
@@ -511,7 +511,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_WirelessComputation_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             // Add to wireless computation outputs, so we can detect these and turn on wireless mode,
             // but also add to regular outputs, so they are used as output data hatches by the quantum computer
             return eWirelessComputationOutputs.add((GT_MetaTileEntity_Hatch_WirelessComputation_Output) aMetaTileEntity)
@@ -538,19 +538,19 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         int built;
-        built = survivialBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            built = survivialBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+            built = survivalBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
             if (built >= 0) return built;
         }
-        built = survivialBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        return survivialBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
     }
 
     @Override

@@ -25,14 +25,14 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_Boxinator extends BasicMachine {
 
     ItemStack aInputCache;
     ItemStack aOutputCache;

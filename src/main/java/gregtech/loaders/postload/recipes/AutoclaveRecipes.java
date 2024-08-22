@@ -3,9 +3,9 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -13,8 +13,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class AutoclaveRecipes implements Runnable {
 
@@ -120,7 +120,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 32))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 32))
             .itemOutputs(GT_ModHandler.getIC2Item("carbonFiber", 64L))
             .outputChances(10000)
             .fluidInputs(Materials.Polybenzimidazole.getMolten(36L))
@@ -129,7 +129,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
             .itemOutputs(GT_ModHandler.getIC2Item("carbonFiber", 64L))
             .outputChances(10000)
             .fluidInputs(Materials.Epoxid.getMolten(144L))
@@ -138,7 +138,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
             .itemOutputs(GT_ModHandler.getIC2Item("carbonFiber", 32L))
             .outputChances(10000)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(288L))
@@ -147,7 +147,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
             .itemOutputs(GT_ModHandler.getIC2Item("carbonFiber", 16L))
             .outputChances(10000)
             .fluidInputs(Materials.Plastic.getMolten(576L))
@@ -156,8 +156,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
             .outputChances(3333)
             .fluidInputs(Materials.UUMatter.getFluid(576L))
             .duration(60 * MINUTES)
@@ -165,7 +165,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)))
+            .itemInputs(OreDictUnificator.get(ItemList.QuantumStar.get(1L)))
             .itemOutputs(ItemList.Gravistar.get(1L))
             .outputChances(10000)
             .fluidInputs(Materials.Neutronium.getMolten(288))
@@ -174,7 +174,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(ItemList.Gravistar.get(16L)))
+            .itemInputs(OreDictUnificator.get(ItemList.Gravistar.get(16L)))
             .itemOutputs(ItemList.NuclearStar.get(1L))
             .outputChances(10000)
             .fluidInputs(Materials.Infinity.getMolten(288))
@@ -211,9 +211,9 @@ public class AutoclaveRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
             .fluidInputs(Materials.Water.getFluid(1000L))
             .duration(60 * SECONDS)
@@ -222,9 +222,9 @@ public class AutoclaveRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
             .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
             .duration(60 * SECONDS)

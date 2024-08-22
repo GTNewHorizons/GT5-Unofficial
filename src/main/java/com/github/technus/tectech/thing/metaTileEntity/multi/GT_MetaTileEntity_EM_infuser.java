@@ -30,10 +30,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -159,7 +159,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
-        for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
+        for (Hatch_InputBus inputBus : mInputBusses) {
             if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME) continue;
             for (int i = 0; i < inputBus.getSizeInventory(); i++) {
                 ItemStack itemStackInBus = inputBus.getStackInSlot(i);
@@ -184,7 +184,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     public void outputAfterRecipe_EM() {
         boolean itemProcessed = false;
         startRecipeProcessing();
-        for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
+        for (Hatch_InputBus inputBus : mInputBusses) {
             if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME) continue;
             for (int i = 0; i < inputBus.getSizeInventory(); i++) {
                 ItemStack itemStackInBus = inputBus.getStackInSlot(i);
@@ -234,8 +234,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // Machine Type: Energy Infuser
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.infuser.name"))
             // Controller block of the Energy Infuser

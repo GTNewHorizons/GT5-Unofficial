@@ -30,8 +30,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;
 import ic2.core.Ic2Items;
@@ -138,28 +138,28 @@ public class GT_Achievements {
             "crushed",
             0,
             6,
-            GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 1L),
+            OreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 1L),
             "tools",
             false);
         registerAchievement(
             "cleandust",
             0,
             10,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
             "crushed",
             false);
         registerAchievement(
             "washing",
             -2,
             6,
-            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Iron, 1L),
+            OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Iron, 1L),
             "crushed",
             false);
         registerAchievement(
             "spinit",
             -4,
             6,
-            GT_OreDictUnificator.get(OrePrefixes.crushedCentrifuged, Materials.Redstone, 1L),
+            OreDictUnificator.get(OrePrefixes.crushedCentrifuged, Materials.Redstone, 1L),
             "crushed",
             false);
 
@@ -168,7 +168,7 @@ public class GT_Achievements {
             "newmetal",
             -4,
             10,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
             "newfuel",
             false);
         registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1), "newfuel", false);
@@ -177,7 +177,7 @@ public class GT_Achievements {
             "bronze",
             2,
             0,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1L),
             "flintpick",
             false);
         registerAchievement(
@@ -230,7 +230,7 @@ public class GT_Achievements {
             "steel",
             4,
             0,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L),
             "bronze",
             false);
         registerAchievement("highpressure", 4, 2, ItemList.Machine_Steel_Boiler.get(1), "steel", false);
@@ -246,7 +246,7 @@ public class GT_Achievements {
             "complexalloys",
             6,
             3,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.BlueSteel, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.BlueSteel, 1L),
             "cheapermac",
             false);
 
@@ -254,7 +254,7 @@ public class GT_Achievements {
             "magneticiron",
             4,
             -2,
-            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L),
+            OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L),
             "steel",
             false);
         registerAchievement("lvmotor", 4, -6, ItemList.Electric_Motor_LV.get(1), "magneticiron", false);
@@ -279,7 +279,7 @@ public class GT_Achievements {
             "gtaluminium",
             8,
             0,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 1L),
             "steel",
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
@@ -293,7 +293,7 @@ public class GT_Achievements {
             "titan",
             14,
             0,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L),
             "upgrade",
             false);
         registerAchievement("magic", 14, 3, ItemList.MagicEnergyConverter_LV.get(1), "titan", false);
@@ -307,14 +307,14 @@ public class GT_Achievements {
             "tungsten",
             16,
             2,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tungsten, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Tungsten, 1L),
             "upgrade2",
             false);
         registerAchievement(
             "osmium",
             16,
             -2,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 1L),
             "upgrade2",
             false);
         registerAchievement("hightech", 15, -3, ItemList.Field_Generator_LV.get(1), "osmium", false);
@@ -328,7 +328,7 @@ public class GT_Achievements {
             "tungstensteel",
             16,
             4,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L),
             "tungsten",
             false);
         registerAchievement("upgrade3", 15, 5, ItemList.Casing_Coil_TungstenSteel.get(1), "tungstensteel", false);
@@ -336,7 +336,7 @@ public class GT_Achievements {
             "hssg",
             13,
             5,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 1L),
             "upgrade3",
             false);
         registerAchievement("upgrade4", 11, 5, ItemList.Casing_Coil_HSSG.get(1), "hssg", false);
@@ -344,7 +344,7 @@ public class GT_Achievements {
             "stargatematerial",
             11,
             7,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1L),
             "upgrade4",
             false);
         registerAchievement("conducting", 14, 6, ItemList.Casing_Coil_Superconductor.get(1), "upgrade3", false);
@@ -360,7 +360,7 @@ public class GT_Achievements {
             "alienmetallurgy",
             9,
             7,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahAlloy, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahAlloy, 1L),
             "upgrade5",
             false);
         registerAchievement("over9000", 7, 7, ItemList.Casing_Coil_NaquadahAlloy.get(1), "alienmetallurgy", false);
@@ -368,7 +368,7 @@ public class GT_Achievements {
             "finalpreparations",
             7,
             9,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 1L),
             "over9000",
             false);
         registerAchievement("denseaspossible", 6, 10, ItemList.FusionComputer_UV.get(1), "finalpreparations", false);
@@ -487,7 +487,7 @@ public class GT_Achievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GT_OreDictUnificator.getItemData(stack);
+        ItemData data = OreDictUnificator.getItemData(stack);
 
         if ((data != null) && (data.mPrefix == OrePrefixes.ingot)) {
             if (data.mMaterial.mMaterial == Materials.Aluminium) {
@@ -541,7 +541,7 @@ public class GT_Achievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GT_OreDictUnificator.getItemData(stack);
+        ItemData data = OreDictUnificator.getItemData(stack);
         if (data != null) {
             if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials.Bronze) {
                 issueAchievement(player, "bronze");
@@ -710,7 +710,7 @@ public class GT_Achievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GT_OreDictUnificator.getItemData(stack);
+        ItemData data = OreDictUnificator.getItemData(stack);
         if (data != null && data.mPrefix != null) {
             if (data.mPrefix == OrePrefixes.dust) {
                 if (data.mMaterial.mMaterial == Materials.Lutetium) {

@@ -6,11 +6,11 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
 @SuppressWarnings("unused") // Legacy from GT4. TODO: Consider re-enable registration
-public class GT_Cover_RedstoneConductor extends GT_CoverBehavior {
+public class GT_Cover_RedstoneConductor extends CoverBehavior {
 
     GT_Cover_RedstoneConductor(ITexture coverTexture) {
         super(coverTexture);

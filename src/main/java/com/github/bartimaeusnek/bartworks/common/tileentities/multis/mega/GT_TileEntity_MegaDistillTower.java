@@ -17,7 +17,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -51,12 +51,12 @@ import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 
 public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaDistillTower>
@@ -179,7 +179,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
             .build();
     }
 
-    protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
+    protected final List<List<Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
     protected int mCasing;
     protected boolean mTopLayerFound;
@@ -211,10 +211,10 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null || aTileEntity.isDead()
-            || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output)) return false;
+        if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof Hatch_Output))
+            return false;
         while (this.mOutputHatchesByLayer.size() < this.mHeight) this.mOutputHatchesByLayer.add(new ArrayList<>());
-        GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
+        Hatch_Output tHatch = (Hatch_Output) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
         return this.mOutputHatchesByLayer.get(this.mHeight - 1)
             .add(tHatch);
@@ -263,8 +263,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery")
             .addInfo("Controller block for the Distillation Tower")
             .addInfo("Fluids are only put out at the correct height")
@@ -339,12 +339,12 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         this.mHeight = 0;
         int built = this
-            .survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, source, actor, false, true);
+            .survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, source, actor, false, true);
         if (built >= 0) return built;
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             this.mHeight = i;
-            built = this.survivialBuildPiece(
+            built = this.survivalBuildPiece(
                 STRUCTURE_PIECE_LAYER,
                 stackSize,
                 7,
@@ -358,7 +358,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
             if (built >= 0) return built;
         }
         this.mHeight = tTotalHeight - 1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_TOP_HINT,
             stackSize,
             7,
@@ -403,7 +403,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     public boolean canDumpFluidToME() {
 
         // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        for (List<GT_MetaTileEntity_Hatch_Output> tLayerOutputHatches : this.mOutputHatchesByLayer) {
+        for (List<Hatch_Output> tLayerOutputHatches : this.mOutputHatchesByLayer) {
 
             boolean foundMEHatch = false;
 

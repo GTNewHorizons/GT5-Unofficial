@@ -12,9 +12,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
@@ -29,7 +29,7 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
@@ -39,7 +39,7 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 if (((IFluidHandler) aTileEntity).drain(tDirection, 1000, false) != null) {
                     if ((aPlayer.capabilities.isCreativeMode)
-                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                        || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IFluidHandler) aTileEntity).drain(tDirection, 1000, true);
                         GT_Utility.sendSoundToPlayers(
                             aWorld,
@@ -56,7 +56,7 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
         }
         if (aTileEntity instanceof IGregTechTileEntity tTileEntity) {
             IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-            if (mTileEntity instanceof GT_MetaTileEntity_BasicTank machine) {
+            if (mTileEntity instanceof BasicTank machine) {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
                     machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
                 GT_Utility
@@ -68,7 +68,7 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }

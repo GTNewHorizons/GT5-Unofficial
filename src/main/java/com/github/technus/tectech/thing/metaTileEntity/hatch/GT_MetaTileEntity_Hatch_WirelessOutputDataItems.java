@@ -20,11 +20,11 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.WirelessDataStore;
 
-public class GT_MetaTileEntity_Hatch_WirelessOutputDataItems extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_WirelessOutputDataItems extends Hatch {
 
     public InventoryDataPacket dataPacket = null;
 

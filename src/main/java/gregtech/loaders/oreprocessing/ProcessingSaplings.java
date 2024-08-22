@@ -3,8 +3,8 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -12,8 +12,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -26,7 +26,7 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
         ItemStack aStack) {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -41,8 +41,8 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L))
+                OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L))
             .duration(16 * TICKS)
             .eut(8)
             .addTo(latheRecipes);

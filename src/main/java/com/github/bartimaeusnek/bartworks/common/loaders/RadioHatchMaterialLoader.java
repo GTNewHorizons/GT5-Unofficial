@@ -3,7 +3,7 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.radioHatchRecipes;
 import static com.github.bartimaeusnek.bartworks.util.BWRecipes.calcDecayTicks;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.util.GT_RecipeConstants.DECAY_TICKS;
+import static gregtech.api.util.RecipeConstants.DECAY_TICKS;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
@@ -14,7 +14,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 // cursed way of using a recipe map...
 public class RadioHatchMaterialLoader {
@@ -51,18 +51,18 @@ public class RadioHatchMaterialLoader {
                 && !material.equals(Materials.Naquadah); // Naquadah needs spacial value
             if (validProton) {
                 int level = (int) material.getProtons();
-                if (GT_OreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
+                if (OreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, material, 1))
+                        .itemInputs(OreDictUnificator.get(OrePrefixes.stick, material, 1))
                         .duration(1)
                         .eut(level)
                         .metadata(DECAY_TICKS, (int) calcDecayTicks(level))
                         .noOptimize()
                         .addTo(radioHatchRecipes);
                 }
-                if (GT_OreDictUnificator.get(OrePrefixes.stickLong, material, 1) != null) {
+                if (OreDictUnificator.get(OrePrefixes.stickLong, material, 1) != null) {
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, material, 1))
+                        .itemInputs(OreDictUnificator.get(OrePrefixes.stickLong, material, 1))
                         .duration(2)
                         .eut(level)
                         .metadata(DECAY_TICKS, (int) calcDecayTicks(level))
@@ -76,9 +76,9 @@ public class RadioHatchMaterialLoader {
         int[] spacialValue = { 130, 140, 150 };
 
         for (int i = 0; i < spacialMaterial.length; i++) {
-            if (GT_OreDictUnificator.get(OrePrefixes.stick, spacialMaterial[i], 1) != null) {
+            if (OreDictUnificator.get(OrePrefixes.stick, spacialMaterial[i], 1) != null) {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, spacialMaterial[i], 1))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.stick, spacialMaterial[i], 1))
                     .duration(1)
                     .eut(spacialValue[i])
                     .metadata(DECAY_TICKS, (int) calcDecayTicks(spacialValue[i]))
@@ -86,9 +86,9 @@ public class RadioHatchMaterialLoader {
                     .addTo(radioHatchRecipes);
             }
 
-            if (GT_OreDictUnificator.get(OrePrefixes.stickLong, spacialMaterial[i], 1) != null) {
+            if (OreDictUnificator.get(OrePrefixes.stickLong, spacialMaterial[i], 1) != null) {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, spacialMaterial[i], 1))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.stickLong, spacialMaterial[i], 1))
                     .duration(2)
                     .eut(spacialValue[i])
                     .metadata(DECAY_TICKS, (int) calcDecayTicks(spacialValue[i]))

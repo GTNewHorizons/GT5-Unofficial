@@ -64,25 +64,25 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
-import gregtech.api.net.GT_Packet_ClientPreference;
+import gregtech.api.net.Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_MusicSystem;
@@ -362,7 +362,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 }
             } else if (tTile instanceof BaseMetaTileEntity baseMetaTile && baseMetaTile.getAlignment() == null) {
                 if (!aIsSneaking) tConnections |= baseMetaTile.getFrontFacing().flag;
-                else if (baseMetaTile.getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine basicMachine) {
+                else if (baseMetaTile.getMetaTileEntity() instanceof BasicMachine basicMachine) {
                     tConnections |= basicMachine.mMainFacing.flag;
                 }
             } else if (tTile instanceof BaseMetaPipeEntity pipeEntity) tConnections = pipeEntity.mConnections;
@@ -633,7 +633,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_WormholeRenderer();
 
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
-        for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
+        for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
         }
         if (Forestry.isModLoaded()) {
@@ -674,10 +674,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
                 @Override
                 public void onResourceManagerReload(IResourceManager l) {
-                    GT_GUIColorOverride.onResourceManagerReload();
+                    GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
                     GregTech_API.sCoverBehaviors.values()
-                        .forEach(GT_CoverBehaviorBase::reloadColorOverride);
+                        .forEach(CoverBehaviorBase::reloadColorOverride);
                 }
             });
     }
@@ -767,7 +767,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if ((aEvent.side.isClient()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
             if (mFirstTick) {
                 mFirstTick = false;
-                GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
+                GT_Values.NW.sendToServer(new Packet_ClientPreference(mPreference));
 
                 if (!Minecraft.getMinecraft()
                     .isSingleplayer()) {
@@ -828,7 +828,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
             GT_PreLoad.loadClientConfig();
-            if (e.isWorldRunning) GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
+            if (e.isWorldRunning) GT_Values.NW.sendToServer(new Packet_ClientPreference(mPreference));
         }
     }
 

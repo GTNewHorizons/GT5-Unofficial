@@ -21,11 +21,11 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -33,7 +33,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_SlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfilter.FluidFilterData> {
+public class GT_Cover_Fluidfilter extends CoverBehaviorBase<GT_Cover_Fluidfilter.FluidFilterData> {
 
     // Uses the lower 3 bits of the cover variable, so we have 8 options to work with (0-7)
     private final int FILTER_INPUT_DENY_OUTPUT = 0; // 000
@@ -219,7 +219,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new FluidFilterUIFactory(buildContext).createWindow();
     }
 
@@ -230,7 +230,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public FluidFilterUIFactory(GT_CoverUIBuildContext buildContext) {
+        public FluidFilterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -249,37 +249,37 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                     }).addToggleButton(
                         0,
                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_IMPORT)
                             .addTooltip(GT_Utility.trans("232", "Filter Input"))
                             .setPos(spaceX * 0, spaceY * 0))
                         .addToggleButton(
                             1,
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                            widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_EXPORT)
                                 .addTooltip(GT_Utility.trans("233", "Filter Output"))
                                 .setPos(spaceX * 1, spaceY * 0))
                         .addToggleButton(
                             2,
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                            widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
                                 .addTooltip(GT_Utility.trans("234", "Block Output"))
                                 .setPos(spaceX * 0, spaceY * 2))
                         .addToggleButton(
                             3,
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                            widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
                                 .addTooltip(GT_Utility.trans("235", "Allow Output"))
                                 .setPos(spaceX * 1, spaceY * 2))
                         .addToggleButton(
                             4,
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                            widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_WHITELIST)
                                 .addTooltip(GT_Utility.trans("236", "Whitelist Fluid"))
                                 .setPos(spaceX * 0, spaceY * 1))
                         .addToggleButton(
                             5,
                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                            widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_BLACKLIST)
                                 .addTooltip(GT_Utility.trans("237", "Blacklist Fluid"))
                                 .setPos(spaceX * 1, spaceY * 1))
                         .addFollower(

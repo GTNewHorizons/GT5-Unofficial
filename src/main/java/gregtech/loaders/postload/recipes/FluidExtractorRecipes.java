@@ -7,8 +7,8 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 import static gregtech.loaders.misc.GT_Bees.combs;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -23,7 +23,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class FluidExtractorRecipes implements Runnable {
 
@@ -53,7 +53,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
             .outputChances(1000)
             .fluidOutputs(GT_ModHandler.getMilk(150L))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -111,7 +111,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.coal, 1, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L))
             .outputChances(1000)
             .fluidOutputs(Materials.WoodTar.getFluid(100L))
             .duration(1 * SECONDS + 10 * TICKS)
@@ -119,7 +119,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
             .itemOutputs(ItemList.IC2_Plantball.get(1L))
             .outputChances(100)
             .fluidOutputs(Materials.Creosote.getFluid(5L))
@@ -128,8 +128,8 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
             .outputChances(10000)
             .fluidOutputs(Materials.Water.getFluid(100L))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -144,14 +144,14 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
             .fluidOutputs(Materials.Mercury.getFluid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Monazite, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Monazite, 1L))
             .fluidOutputs(Materials.Helium.getGas(200L))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(64)
@@ -188,7 +188,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Item.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 7L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 7L))
             .outputChances(10000)
             .fluidOutputs(Materials.Tin.getMolten(12 * 144))
             .duration(20 * SECONDS)
@@ -206,7 +206,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(16L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 3L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 3L))
             .outputChances(10000)
             .fluidOutputs(Materials.Steel.getMolten(324))
             .duration(20 * SECONDS)
@@ -224,7 +224,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quartzite, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Quartzite, 1L))
             .fluidOutputs(Materials.Glass.getMolten(72))
             .duration(30 * SECONDS)
             .eut(28)
@@ -248,7 +248,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 6))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 6))
             .outputChances(10000)
             .fluidOutputs(Materials.Bronze.getMolten(1728))
             .duration(15 * SECONDS)
@@ -298,7 +298,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 12L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 12L))
             .outputChances(10000)
             .fluidOutputs(Materials.Aluminium.getMolten(108L))
             .duration(25 * SECONDS)
@@ -396,7 +396,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 14))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Chrome, 6L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.nugget, Materials.Chrome, 6L))
             .outputChances(10000)
             .fluidOutputs(Materials.NiobiumTitanium.getMolten(1728))
             .duration(45 * SECONDS)
@@ -422,7 +422,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iridium, 6L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.nugget, Materials.Iridium, 6L))
             .outputChances(10000)
             .fluidOutputs(Materials.Enderium.getMolten(1728))
             .duration(50 * SECONDS)
@@ -448,7 +448,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 5))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Osmium, 6L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.nugget, Materials.Osmium, 6L))
             .outputChances(10000)
             .fluidOutputs(Materials.Naquadah.getMolten(1728))
             .duration(55 * SECONDS)
@@ -523,7 +523,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L))
             .fluidOutputs(Materials.Ice.getSolid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
@@ -531,7 +531,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Forestry.ID, "phosphor", 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L))
             .outputChances(1000)
             .fluidOutputs(Materials.Lava.getFluid(800L))
             .duration(12 * SECONDS + 16 * TICKS)

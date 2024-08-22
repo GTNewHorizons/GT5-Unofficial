@@ -16,11 +16,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_SpawnEventHandler;
 
-public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_MonsterRepellent extends TieredMachineBlock {
 
     public int mRange = 16;
 

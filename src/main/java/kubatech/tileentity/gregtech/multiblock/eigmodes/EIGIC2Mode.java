@@ -3,7 +3,7 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 
@@ -62,7 +62,7 @@ public class EIGIC2Mode extends EIGMode {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder addTooltipInfo(GT_Multiblock_Tooltip_Builder builder) {
+    public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
         String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
         String minGlassTier = voltageTooltipFormatted(this.getMinGlassTier());
 

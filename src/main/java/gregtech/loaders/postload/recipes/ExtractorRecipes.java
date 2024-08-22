@@ -2,8 +2,8 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.util.GT_ModHandler.getIC2Item;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,7 +13,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class ExtractorRecipes implements Runnable {
 
@@ -22,16 +22,16 @@ public class ExtractorRecipes implements Runnable {
         addExtractionRecipe(new ItemStack(Blocks.bookshelf, 1, WILDCARD), new ItemStack(Items.book, 3, 0));
         addExtractionRecipe(
             new ItemStack(Items.slime_ball, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 2L));
+            OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 2L));
         addExtractionRecipe(
             ItemList.IC2_Resin.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L));
+            OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L));
         addExtractionRecipe(
             getIC2Item("rubberSapling", 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
+            OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
         addExtractionRecipe(
             getIC2Item("rubberLeaves", 16L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
+            OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
 
         addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
 
@@ -189,7 +189,7 @@ public class ExtractorRecipes implements Runnable {
     }
 
     public void addExtractionRecipe(ItemStack input, ItemStack output) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictUnificator.get(true, output);
         GT_Values.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(output)

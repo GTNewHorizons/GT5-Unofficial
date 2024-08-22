@@ -4,8 +4,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
@@ -44,8 +44,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.blocks.GT_Block_Casings9;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
@@ -168,7 +168,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
         int built = 0;
         if (stackSize.stackSize == 1) {
             mSetTier = 1;
-            built += this.survivialBuildPiece(
+            built += this.survivalBuildPiece(
                 tier1,
                 stackSize,
                 HORIZONTAL_OFF_SET,
@@ -180,7 +180,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
                 true);
         } else {
             mSetTier = 2;
-            built += this.survivialBuildPiece(
+            built += this.survivalBuildPiece(
                 tier2,
                 stackSize,
                 HORIZONTAL_OFF_SET,
@@ -232,8 +232,8 @@ public class GregtechMetaTileEntity_SteamWaterPump
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Water Pump")
             .addInfo("Pumps Water based on humidity")

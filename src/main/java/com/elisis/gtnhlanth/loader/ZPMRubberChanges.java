@@ -33,11 +33,11 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ZPMRubberChanges implements Runnable {
 
@@ -140,12 +140,12 @@ public class ZPMRubberChanges implements Runnable {
             Consumer recipeAction = (obj) -> {
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     ((GT_Shaped_Recipe) obj).getInput(),
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     ((GT_Shaped_Recipe) obj).getInput(),
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
             };
@@ -172,23 +172,23 @@ public class ZPMRubberChanges implements Runnable {
             for (OrePrefixes prefixes : RubberGenerated) {
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mOutputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicon, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicon, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
 
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mOutputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
             }
@@ -222,23 +222,23 @@ public class ZPMRubberChanges implements Runnable {
             for (OrePrefixes prefixes : RubberGenerated) {
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mOutputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
 
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mOutputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
             }
@@ -279,46 +279,46 @@ public class ZPMRubberChanges implements Runnable {
 
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     new Object[] { recipe.mOutput },
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
 
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     new Object[] { recipe.mOutput },
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
             }
             if (ZPMRubberChanges.doStacksCointainAndReplace(new Object[] { recipe.mOutput }, stack, false)) {
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     new Object[] { recipe.mOutput },
-                    GT_OreDictUnificator.get(prefixes, Materials.Silicone, 1),
+                    OreDictUnificator.get(prefixes, Materials.Silicone, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
 
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     recipe.mInputs,
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
                 ZPMRubberChanges.doStacksCointainAndReplace(
                     new Object[] { recipe.mOutput },
-                    GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
+                    OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1),
                     true,
                     WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
             }
@@ -358,7 +358,7 @@ public class ZPMRubberChanges implements Runnable {
     }
 
     private static ItemStack replaceStackWith(ItemStack stack, Materials source, Werkstoff target) {
-        ItemData ass = GT_OreDictUnificator.getAssociation(stack);
+        ItemData ass = OreDictUnificator.getAssociation(stack);
         if (ass.mMaterial.mMaterial.equals(source))
             if (target.hasItemType(ass.mPrefix)) stack = target.get(ass.mPrefix, stack.stackSize);
         return stack;

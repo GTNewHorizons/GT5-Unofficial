@@ -3,8 +3,8 @@ package gregtech.common.tileentities.machines.multi.drone;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_Values.AuthorSilverMoon;
+import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.multitileentity.multiblock.casing.Glasses.chainAllGlasses;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -69,19 +69,19 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
@@ -89,8 +89,8 @@ import gregtech.common.items.GT_TierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_DroneCentre extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_DroneCentre> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_DroneCentre extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_DroneCentre>
+    implements ISurvivalConstructable {
 
     private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
@@ -178,8 +178,8 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Drone Centre")
             .addInfo("Drone Center Controller")
             .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
@@ -215,7 +215,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     @Override
     public int survivalConstruct(ItemStack stack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stack, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stack, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -502,8 +502,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .setSize(16, 16)
                 .setBackground(() -> {
                     List<UITexture> UI = new ArrayList<>();
-                    UI.add(GT_UITextures.BUTTON_STANDARD);
-                    UI.add(GT_UITextures.OVERLAY_BUTTON_WHITELIST);
+                    UI.add(UITextures.BUTTON_STANDARD);
+                    UI.add(UITextures.OVERLAY_BUTTON_WHITELIST);
                     return UI.toArray(new IDrawable[0]);
                 })
                 .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_open_list"))
@@ -534,8 +534,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     .setSize(16, 16)
                     .setBackground(() -> {
                         List<UITexture> UI = new ArrayList<>();
-                        UI.add(GT_UITextures.BUTTON_STANDARD);
-                        UI.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                        UI.add(UITextures.BUTTON_STANDARD);
+                        UI.add(UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                         return UI.toArray(new IDrawable[0]);
                     })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweron_all"))
@@ -566,8 +566,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     .setSize(16, 16)
                     .setBackground(() -> {
                         List<UITexture> UI = new ArrayList<>();
-                        UI.add(GT_UITextures.BUTTON_STANDARD);
-                        UI.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                        UI.add(UITextures.BUTTON_STANDARD);
+                        UI.add(UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
                         return UI.toArray(new IDrawable[0]);
                     })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweroff_all"))
@@ -596,7 +596,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         int heightCoff = getBaseMetaTileEntity().isServerSide() ? 0
             : Minecraft.getMinecraft().currentScreen.height - 40;
         ModularWindow.Builder builder = ModularWindow.builder(260, heightCoff);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
             ButtonWidget.closeWindowButton(true)
@@ -632,7 +632,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setTextAlignment(Alignment.CenterLeft)
             .setTextColor(Color.WHITE.dark(1))
             .setFocusOnGuiOpen(false)
-            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+            .setBackground(UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
             .setPos(50, 30)
             .setSize(200, 16))
@@ -665,7 +665,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             })
                 .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sort))
                 .setBackground(
-                    () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_SORTING_MODE })
+                    () -> new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_SORTING_MODE })
                 .setPos(10, 30)
                 .setSize(16, 16))
             .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1))
@@ -693,8 +693,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_showLocalName"))
                 .setBackground(
                     () -> new IDrawable[] {
-                        showLocalizedName ? GT_UITextures.BUTTON_STANDARD_PRESSED : GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_CYCLIC })
+                        showLocalizedName ? UITextures.BUTTON_STANDARD_PRESSED : UITextures.BUTTON_STANDARD,
+                        UITextures.OVERLAY_BUTTON_CYCLIC })
                 .setPos(30, 30)
                 .setSize(16, 16));
         // Sort first
@@ -724,7 +724,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             ItemStackHandler drawitem = new ItemStackHandler(1);
             drawitem.setStackInSlot(0, connection.machineItem);
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            GT_MetaTileEntity_MultiBlockBase coreMachine = connection.machine;
+            MultiBlockBase coreMachine = connection.machine;
             int finalI = i;
             row.widget(
                 SlotWidget.phantom(drawitem, 0)
@@ -737,7 +737,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname"))
                     .setBackground(
-                        () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PRINT })
+                        () -> new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_PRINT })
                     .setSize(16, 16));
             // Client can't handle unloaded machines
             row.widget(
@@ -757,22 +757,22 @@ public class GT_MetaTileEntity_DroneCentre extends
                         }))
                     .setPlayClickSoundResource(
                         () -> Optional.ofNullable(coreMachine)
-                            .filter(GT_MetaTileEntity_MultiBlockBase::isAllowedToWork)
+                            .filter(MultiBlockBase::isAllowedToWork)
                             .map(var -> SoundResource.GUI_BUTTON_UP.resourceLocation)
                             .orElse(SoundResource.GUI_BUTTON_DOWN.resourceLocation))
                     .setBackground(
                         () -> Optional.ofNullable(coreMachine)
                             .map(
                                 machine -> machine.isAllowedToWork()
-                                    ? new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
-                                    : new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
-                            .orElse(new IDrawable[] { GT_UITextures.OVERLAY_BUTTON_CROSS }))
+                                    ? new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                                        UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
+                                    : new IDrawable[] { UITextures.BUTTON_STANDARD,
+                                        UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
+                            .orElse(new IDrawable[] { UITextures.OVERLAY_BUTTON_CROSS }))
                     .attachSyncer(
                         new FakeSyncWidget.BooleanSyncer(
                             () -> Optional.ofNullable(coreMachine)
-                                .map(GT_MetaTileEntity_MultiBlockBase::isAllowedToWork)
+                                .map(MultiBlockBase::isAllowedToWork)
                                 .orElse(false),
                             var -> Optional.ofNullable(coreMachine)
                                 .ifPresent(machine -> {
@@ -792,7 +792,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
                     .setBackground(
-                        new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
+                        new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
                     .setSize(16, 16));
             // Show the reason why the machine shutdown
             row.widget(
@@ -804,7 +804,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                                     .getLastShutDownReason()
                                     .getDisplayString())
                             .orElse("")))
-                    .setBackground(GT_UITextures.PICTURE_STALLED_ELECTRICITY)
+                    .setBackground(UITextures.PICTURE_STALLED_ELECTRICITY)
                     .setSize(16, 16)
                     .setEnabled(
                         var -> coreMachine != null && coreMachine.shouldDisplayShutDownReason()
@@ -860,7 +860,7 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     protected ModularWindow createCustomNameWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(150, 40);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         return builder.widget(
             ButtonWidget.closeWindowButton(true)
@@ -887,7 +887,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .setTextAlignment(Alignment.CenterLeft)
                 .setTextColor(Color.WHITE.dark(1))
                 .setFocusOnGuiOpen(true)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .setBackground(UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
                 .setPos(10, 16)
                 .setSize(130, 16))
             .build();

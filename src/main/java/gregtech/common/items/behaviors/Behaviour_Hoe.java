@@ -11,8 +11,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 
 import cpw.mods.fml.common.eventhandler.Event;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
@@ -27,8 +27,8 @@ public class Behaviour_Hoe extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
+        int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
             return false;
         }
@@ -38,7 +38,7 @@ public class Behaviour_Hoe extends Behaviour_None {
         }
         if (event.getResult() == Event.Result.ALLOW) {
             if (!aPlayer.capabilities.isCreativeMode) {
-                ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
+                ((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts);
             }
             return true;
         }
@@ -57,7 +57,7 @@ public class Behaviour_Hoe extends Behaviour_None {
             }
             aWorld.setBlock(aX, aY, aZ, Blocks.farmland);
             if (!aPlayer.capabilities.isCreativeMode) {
-                ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
+                ((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts);
             }
             return true;
         }
@@ -65,7 +65,7 @@ public class Behaviour_Hoe extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }

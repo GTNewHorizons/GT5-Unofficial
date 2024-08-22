@@ -16,14 +16,14 @@ import net.minecraftforge.fluids.IFluidBlock;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 
@@ -40,7 +40,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
@@ -51,7 +51,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
         }
         byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
 
-        ItemData tAssociation = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
+        ItemData tAssociation = OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
         if (tAssociation != null && tAssociation.mPrefix != null
             && tAssociation.mMaterial != null
             && tAssociation.mPrefix.toString()
@@ -76,7 +76,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
             if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
                 int tMetaID;
-                int tQuality = aItem instanceof GT_MetaGenerated_Tool ? aItem.getHarvestLevel(aStack, "") : 0;
+                int tQuality = aItem instanceof MetaGeneratedTool ? aItem.getHarvestLevel(aStack, "") : 0;
                 int tX = aX, tY = aY, tZ = aZ;
                 Block tBlock;
                 for (int i = 0, j = 6 + tQuality; i < j; i++) {
@@ -130,7 +130,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
                         }
                     } else {
                         tMetaID = aWorld.getBlockMetadata(tX, tY, tZ);
-                        tAssociation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                        tAssociation = OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                         if (tAssociation != null && tAssociation.mPrefix != null
                             && tAssociation.mMaterial != null
                             && tAssociation.mPrefix.toString()
@@ -152,7 +152,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }

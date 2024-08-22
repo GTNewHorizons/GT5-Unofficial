@@ -11,7 +11,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -28,7 +28,7 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
         super(
             80,
             uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_CLARIFIER))
+                .progressBarTexture(new FallbackableUITexture(UITextures.PROGRESSBAR_CLARIFIER))
                 .logoPos(new Pos2d(152, 90)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }

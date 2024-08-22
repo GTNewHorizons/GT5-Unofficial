@@ -32,8 +32,8 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
@@ -3367,39 +3367,39 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ItemStack getCells(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.cell, this, amount);
+        return OreDictUnificator.get(OrePrefixes.cell, this, amount);
     }
 
     public ItemStack getDust(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.dust, this, amount);
+        return OreDictUnificator.get(OrePrefixes.dust, this, amount);
     }
 
     public ItemStack getDustSmall(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.dustSmall, this, amount);
+        return OreDictUnificator.get(OrePrefixes.dustSmall, this, amount);
     }
 
     public ItemStack getDustTiny(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.dustTiny, this, amount);
+        return OreDictUnificator.get(OrePrefixes.dustTiny, this, amount);
     }
 
     public ItemStack getGems(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.gem, this, amount);
+        return OreDictUnificator.get(OrePrefixes.gem, this, amount);
     }
 
     public ItemStack getIngots(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.ingot, this, amount);
+        return OreDictUnificator.get(OrePrefixes.ingot, this, amount);
     }
 
     public ItemStack getNuggets(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.nugget, this, amount);
+        return OreDictUnificator.get(OrePrefixes.nugget, this, amount);
     }
 
     public ItemStack getBlocks(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.block, this, amount);
+        return OreDictUnificator.get(OrePrefixes.block, this, amount);
     }
 
     public ItemStack getPlates(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.plate, this, amount);
+        return OreDictUnificator.get(OrePrefixes.plate, this, amount);
     }
 
     public static Materials getGtMaterialFromFluid(Fluid fluid) {
@@ -3407,6 +3407,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ItemStack getNanite(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.nanite, this, amount);
+        return OreDictUnificator.get(OrePrefixes.nanite, this, amount);
     }
 }

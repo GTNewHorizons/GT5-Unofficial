@@ -20,10 +20,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.RecipeBuilder;
+import gregtech.api.util.RecipeConstants;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 @ParametersAreNonnullByDefault
@@ -39,7 +39,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
     @Override
     public GT_Recipe compileRecipe(GT_Recipe recipe) {
         super.compileRecipe(recipe);
-        Materials material = recipe.getMetadata(GT_RecipeConstants.MATERIAL);
+        Materials material = recipe.getMetadata(RecipeConstants.MATERIAL);
         assert material != null; // checked by replicatorRecipeEmitter
         recipesByMaterial.put(material, recipe);
         return recipe;
@@ -74,8 +74,8 @@ public class ReplicatorBackend extends RecipeMapBackend {
         return null;
     }
 
-    private static Collection<GT_Recipe> replicatorRecipeEmitter(GT_RecipeBuilder builder) {
-        Materials material = builder.getMetadata(GT_RecipeConstants.MATERIAL);
+    private static Collection<GT_Recipe> replicatorRecipeEmitter(RecipeBuilder builder) {
+        Materials material = builder.getMetadata(RecipeConstants.MATERIAL);
         if (material == null) {
             throw new IllegalStateException("GT_RecipeConstants.MATERIAL must be set for replicator recipe");
         }

@@ -43,14 +43,14 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
@@ -91,7 +91,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
      */
     public final ItemStackHandler inventoryHandler;
 
-    protected GT_GUIColorOverride colorOverride;
+    protected GUIColorOverride colorOverride;
     protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
 
     @Override
@@ -152,7 +152,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
         inventoryHandler = new ItemStackHandler(mInventory);
-        colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
+        colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
     @Override
@@ -256,7 +256,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity gtTE)
-            && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+            && (gtTE.getMetaTileEntity() instanceof MetaPipeEntity_Cable)) {
 
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
@@ -278,7 +278,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity gtTE)
-            && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+            && (gtTE.getMetaTileEntity() instanceof MetaPipeEntity_Cable)) {
 
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()

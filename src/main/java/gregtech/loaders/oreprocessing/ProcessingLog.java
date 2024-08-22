@@ -9,8 +9,8 @@ import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,8 +22,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -40,8 +40,8 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .itemOutputs(
                     ItemList.IC2_Resin.get(1L),
                     GT_ModHandler.getIC2Item("plantBall", 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(5000, 3750, 2500, 2500)
                 .fluidOutputs(Materials.Methane.getGas(60L))
                 .duration(10 * SECONDS)
@@ -50,14 +50,14 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L))
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(extractorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
                 .outputChances(10000, 3300)
                 .duration(20 * SECONDS)
                 .eut(2)
@@ -73,8 +73,8 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(10000, 8000)
                 .duration(20 * SECONDS)
                 .eut(2)
@@ -82,7 +82,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         }
 
         GT_ModHandler.addCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
+            OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
             gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "sLf", 'L', GT_Utility.copyAmount(1, aStack) });
@@ -90,8 +90,8 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
             .duration(8 * SECONDS)
             .eut(7)
             .addTo(latheRecipes);
@@ -149,7 +149,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GT_Utility.copyOrNull(tPlanks),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                                OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                             .fluidInputs(Materials.Lubricant.getFluid(1L))
                             .duration(10 * SECONDS)
                             .eut(8)
@@ -160,7 +160,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GT_Utility.copyAmount(
                                     GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                                OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
                             .duration(20 * SECONDS)
                             .eut(8)
@@ -171,7 +171,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GT_Utility.copyAmount(
                                     GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                                OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(GT_ModHandler.getDistilledWater(3))
                             .duration(20 * SECONDS)
                             .eut(8)
@@ -182,7 +182,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GT_Utility.copyAmount(
                                     GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                                OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Lubricant.getFluid(1))
                             .duration(10 * SECONDS)
                             .eut(8)
@@ -218,7 +218,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_Utility.copyOrNull(tPlanks),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                            OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                         .fluidInputs(Materials.Lubricant.getFluid(1L))
                         .duration(10 * SECONDS)
                         .eut(8)
@@ -229,7 +229,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GT_Utility.copyAmount(
                                 GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
                         .duration(20 * SECONDS)
                         .eut(8)
@@ -240,7 +240,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GT_Utility.copyAmount(
                                 GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(GT_ModHandler.getDistilledWater(3))
                         .duration(20 * SECONDS)
                         .eut(8)
@@ -251,7 +251,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GT_Utility.copyAmount(
                                 GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Lubricant.getFluid(1))
                         .duration(10 * SECONDS)
                         .eut(8)

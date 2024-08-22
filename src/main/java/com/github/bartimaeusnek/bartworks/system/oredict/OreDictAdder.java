@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class OreDictAdder {
 
@@ -37,7 +37,7 @@ public class OreDictAdder {
 
     public static void addToOreDict() {
         for (Map.Entry<String, ItemStack> entry : OreDictAdder.toAddMap.entrySet()) {
-            GT_OreDictUnificator.registerOre(entry.getKey(), entry.getValue());
+            OreDictUnificator.registerOre(entry.getKey(), entry.getValue());
         }
     }
 }

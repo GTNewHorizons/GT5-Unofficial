@@ -15,7 +15,7 @@ package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +31,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class GTMetaItemEnhancer {
 
@@ -56,7 +56,7 @@ public class GTMetaItemEnhancer {
         Materials[] values = Materials.values();
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
             Materials m = values[i];
-            if (m.mStandardMoltenFluid != null && GT_OreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
+            if (m.mStandardMoltenFluid != null && OreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
                 final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
                     m.getMolten(144),
                     new ItemStack(moltenCapsuls, 1, i),

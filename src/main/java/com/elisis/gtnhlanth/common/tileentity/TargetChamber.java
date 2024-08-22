@@ -4,11 +4,11 @@ import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
@@ -44,16 +44,15 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<TargetChamber>
-    implements ISurvivalConstructable {
+public class TargetChamber extends EnhancedMultiBlockBase<TargetChamber> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<TargetChamber> STRUCTURE_DEFINITION;
 
@@ -82,19 +81,19 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     						{"csssc", "s---s", "s---s", "s---s", "ccccc"},
     						{"cstsc", "s-u-s", "suius", "s-u-s", "ccccc"},
     						{"ggggg", "gjjjg", "gjojg", "gjjjg", "ggggg"}})
-    			
+
     			.addElement('g', ofBlock(GregTech_API.sBlockCasings3, 10)) //Grate casing
     			.addElement(
-    					'f', 
+    					'f',
     					buildHatchAdder(TargetChamber.class).atLeast(Maintenance, Energy)
     					.casingIndex(CASING_INDEX_FRONT).dot(2).buildAndChain(ofBlock(GregTech_API.sBlockCasings3, 10)))
-    			
+
     			.addElement('j', ofBlockAdder(TargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
     			.addElement('b', buildHatchAdder(TargetChamber.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(TargetChamber::addBeamLineInputHatch).build())
     			.addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-    			
+
     			.addElement('l', buildHatchAdder(TargetChamber.class).hatchClass(TileBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(TargetChamber::addFocusInputHatch).build())
-    			
+
     			.addElement('t', buildHatchAdder(TargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).dot(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
     			.addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
@@ -102,7 +101,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
     			.addElement('o', buildHatchAdder(TargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
-    			
+
     			.build();
     }
     //spotless:on
@@ -182,8 +181,8 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Collision Chamber")
             .addInfo("Controller block for the Target Chamber")
             .addInfo("Hitting things with other things")
@@ -220,7 +219,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -394,7 +393,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for (Hatch_Energy tHatch : mEnergyHatches) {
             if (tHatch.isValid()) {
                 storedEnergy += tHatch.getBaseMetaTileEntity()
                     .getStoredEU();

@@ -18,8 +18,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static java.lang.Math.floor;
 import static java.lang.Math.log;
 import static java.lang.Math.max;
@@ -93,16 +93,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OreDictUnificator;
 
 public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_MultiblockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -160,7 +160,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     protected static final String STRUCTURE_PIECE_THIRD_RING = "third_ring";
     private static final String TOOLTIP_BAR = EnumChatFormatting.BLUE + "--------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GT_OreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
+        : OreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
 
     private final boolean debugMode = true;
 
@@ -168,9 +168,9 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         if (mMachine) return -1;
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         // 1000 blocks max per placement.
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 20, 1, realBudget, env, false, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 20, 1, realBudget, env, false, true);
         if (isUpgradeActive(26) && stackSize.stackSize > 1) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 STRUCTURE_PIECE_SECOND_RING,
                 stackSize,
                 55,
@@ -182,7 +182,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 true);
         }
         if (isUpgradeActive(29) && stackSize.stackSize > 2) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 STRUCTURE_PIECE_THIRD_RING,
                 stackSize,
                 47,
@@ -217,7 +217,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         .addElement('I', ofBlock(GodforgeCasings, 7))
         .addElement(
             'J',
-            GT_HatchElementBuilder.<GT_MetaTileEntity_EM_ForgeOfGods>builder()
+            HatchElementBuilder.<GT_MetaTileEntity_EM_ForgeOfGods>builder()
                 .atLeast(moduleElement.Module)
                 .casingIndex(TEXTURE_INDEX)
                 .dot(3)
@@ -685,7 +685,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -708,7 +708,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD));
         return builder.build();
     }
 
@@ -718,7 +718,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -740,7 +740,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(4, 35)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD))
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD))
             .widget(
                 new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
                     .setPos(64, 24)
@@ -1498,7 +1498,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .addChild(
                         new ButtonWidget().setOnClick((clickData, widget) -> upgrades = new boolean[31])
                             .setSize(40, 15)
-                            .setBackground(GT_UITextures.BUTTON_STANDARD)
+                            .setBackground(UITextures.BUTTON_STANDARD)
                             .addTooltip(translateToLocal("fog.debug.resetbutton.tooltip"))
                             .setTooltipShowUpDelay(TOOLTIP_DELAY))
                     .addChild(
@@ -1519,11 +1519,11 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                             .setPos(4, 16)
                             .addTooltip(translateToLocal("fog.debug.gravitonshardsetter.tooltip"))
                             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD))
+                            .setBackground(UITextures.BACKGROUND_TEXT_FIELD))
                     .addChild(
                         new ButtonWidget().setOnClick((clickData, widget) -> Arrays.fill(upgrades, true))
                             .setSize(40, 15)
-                            .setBackground(GT_UITextures.BUTTON_STANDARD)
+                            .setBackground(UITextures.BUTTON_STANDARD)
                             .addTooltip(translateToLocal("fog.debug.unlockall.text"))
                             .setTooltipShowUpDelay(TOOLTIP_DELAY)
                             .setPos(0, 35))
@@ -1694,9 +1694,9 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 .setSize(40, 15)
                 .setBackground(() -> {
                     if (upgrades[currentUpgradeID]) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED };
                     } else {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD };
                     }
                 })
                 .addTooltip(translateToLocal("fog.upgrade.confirm"))
@@ -1754,9 +1754,9 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             .setSize(40, 15)
             .setBackground(() -> {
                 if (upgrades[upgradeID]) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD };
                 }
             })
             .addTooltip(translateToLocal("fog.upgrade.tt." + upgradeID))
@@ -1794,7 +1794,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         final DynamicPositionedColumn column3 = new DynamicPositionedColumn();
         List<DynamicPositionedColumn> columnList = Arrays.asList(column1, column2, column3);
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -1814,7 +1814,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             int index = i;
             int cleanDiv4 = index / 4;
             builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD_PRESSED)
+                new DrawableWidget().setDrawable(UITextures.BUTTON_STANDARD_PRESSED)
                     .setPos(6 + cleanDiv4 * 36, 6 + index % 4 * 18)
                     .setSize(18, 18));
             columnList.get(cleanDiv4)
@@ -1853,8 +1853,8 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Material Manipulator") // Machine Type:
             .addInfo("Controller block for the Forge of Gods") // Controller
             .addInfo("Uses a Star to to manipulate metals")
@@ -2287,7 +2287,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {}
+    protected void setHatchRecipeMap(Hatch_Input hatch) {}
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {

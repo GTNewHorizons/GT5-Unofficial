@@ -20,11 +20,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
-public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
+public class GT_MetaGenerated_Item_99 extends MetaGeneratedItem {
 
     public static GT_MetaGenerated_Item_99 INSTANCE;
 
@@ -92,9 +92,9 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
             tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
 
         if (cellMolten.mIsUnificatable) {
-            GT_OreDictUnificator.set(cellMolten, tMaterial, tStack);
+            OreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
-            GT_OreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
+            OreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
         }
     }
 
@@ -112,9 +112,9 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
                 tMaterial.getToolTip(prefix.mMaterialAmount / M));
 
             if (prefix.mIsUnificatable) {
-                GT_OreDictUnificator.set(prefix, tMaterial, tStack);
+                OreDictUnificator.set(prefix, tMaterial, tStack);
             } else {
-                GT_OreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
+                OreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
             }
 
             offset += 1_000;

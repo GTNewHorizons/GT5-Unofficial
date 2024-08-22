@@ -17,13 +17,13 @@ import static gregtech.api.recipe.RecipeMaps.purificationParticleExtractionRecip
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitParticleExtractor.BARYONIC_MATTER_OUTPUT;
 
 import net.minecraft.init.Items;
@@ -40,8 +40,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitUVTreatment;
 import gtPlusPlus.core.material.Particle;
@@ -92,14 +92,14 @@ public class GT_PurifiedWaterRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 Materials.ActivatedCarbon.getDust(64),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16))
+                OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16))
             .itemOutputs(ItemList.ActivatedCarbonFilterMesh.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
         // Grade 2 - Ozonation
-        for (ItemStack lens : GT_OreDictUnificator.getOres("craftingLensBlue")) {
+        for (ItemStack lens : OreDictUnificator.getOres("craftingLensBlue")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(0, lens))
                 .noOptimize()
@@ -184,20 +184,20 @@ public class GT_PurifiedWaterRecipes {
 
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS.add(MyMaterial.orundum.get(OrePrefixes.lens, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS.add(FluorBuergerit.get(OrePrefixes.lens, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
-            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1));
+            .add(OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1));
 
         // Grade 6 - UV treatment
         GT_Values.RA.stdBuilder()
@@ -271,16 +271,16 @@ public class GT_PurifiedWaterRecipes {
             .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Tengam.get(1))
             .metadata(RESEARCH_TIME, 1 * HOURS)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 16),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 16),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 16),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 16),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
                 ItemList.Field_Generator_UEV.get(4))
             .fluidInputs(
                 Materials.Neutronium.getMolten(16 * 144),

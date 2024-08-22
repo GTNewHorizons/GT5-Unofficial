@@ -4,12 +4,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.ItemList.Circuit_Integrated;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE;
@@ -41,7 +41,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -50,13 +50,13 @@ import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OreDictUnificator;
 
-public abstract class GT_MetaTileEntity_LargeBoiler
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> implements ISurvivalConstructable {
+public abstract class GT_MetaTileEntity_LargeBoiler extends EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -113,8 +113,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         tt.addMachineType("Boiler")
             .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler");
@@ -305,7 +305,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         if (!tInputList.isEmpty()) {
             if (isSuperheated()) {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
+                    if (tInput != OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
                         if (GT_Utility.getFluidForFilledItem(tInput, true) == null
                             && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
                             this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
@@ -327,7 +327,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                 }
             } else {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
+                    if (tInput != OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
                         // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also
                         // those with very high fuel values that would cause an overflow error.
                         if (GT_Utility.getFluidForFilledItem(tInput, true) == null
@@ -499,6 +499,6 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 }

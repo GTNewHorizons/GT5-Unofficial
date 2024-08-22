@@ -13,8 +13,8 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -42,13 +42,13 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
     // GUI stuff
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
     }
 
     private class AdvancedRedstoneReceiverBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
 
-        public AdvancedRedstoneReceiverBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+        public AdvancedRedstoneReceiverBaseUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -86,7 +86,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                     coverData.mode = GateMode.AND;
                     return coverData;
                 },
-                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_AND)
+                widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_GATE_AND)
                     .addTooltip(GT_Utility.trans("331", "AND Gate"))
                     .setPos(spaceX * 0, spaceY * 2))
                 .addFollower(
@@ -96,7 +96,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                         coverData.mode = GateMode.NAND;
                         return coverData;
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NAND)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_GATE_NAND)
                         .addTooltip(GT_Utility.trans("332", "NAND Gate"))
                         .setPos(spaceX * 1, spaceY * 2))
                 .addFollower(
@@ -106,7 +106,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                         coverData.mode = GateMode.OR;
                         return coverData;
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_OR)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_GATE_OR)
                         .addTooltip(GT_Utility.trans("333", "OR Gate"))
                         .setPos(spaceX * 2, spaceY * 2))
                 .addFollower(
@@ -116,7 +116,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                         coverData.mode = GateMode.NOR;
                         return coverData;
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NOR)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_GATE_NOR)
                         .addTooltip(GT_Utility.trans("334", "NOR Gate"))
                         .setPos(spaceX * 3, spaceY * 2))
                 .addFollower(
@@ -126,7 +126,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                         coverData.mode = GateMode.SINGLE_SOURCE;
                         return coverData;
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ANALOG)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_ANALOG)
                         .addTooltips(
                             Arrays.asList(
                                 "ANALOG Mode",

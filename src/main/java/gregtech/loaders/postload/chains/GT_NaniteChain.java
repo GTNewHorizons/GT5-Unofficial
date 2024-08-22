@@ -4,13 +4,13 @@ import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.NANO_FORGE_TIER;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.NANO_FORGE_TIER;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
 import static gtPlusPlus.core.block.ModBlocks.blockCompressedObsidian;
 
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GT_NaniteChain {
@@ -37,7 +37,7 @@ public class GT_NaniteChain {
         ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0);
         ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
-        ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
+        ItemStack aUMVTierLens = OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
         // Carbon Nanite Recipe Before Nano Forge
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
@@ -54,7 +54,7 @@ public class GT_NaniteChain {
                 ItemList.Conveyor_Module_UV.get(16),
                 ItemList.Electric_Motor_UV.get(32),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
-                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32))
+                OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 144 * 32),
                 Materials.HSSS.getMolten(144L * 32),
@@ -71,8 +71,8 @@ public class GT_NaniteChain {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                 ItemList.Robot_Arm_UV.get(16),
                 ItemList.Circuit_Chip_Stemcell.get(32),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
+                OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
+                OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                 Materials.Carbon.getDust(64))
             .fluidInputs(Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32))
             .itemOutputs(Materials.Carbon.getNanite(2))
@@ -229,7 +229,7 @@ public class GT_NaniteChain {
         // Eternity nanites
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
+                OreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1),

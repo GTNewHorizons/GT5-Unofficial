@@ -25,7 +25,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -71,11 +71,11 @@ public class BaseItemComponent extends Item {
 
         // if (componentType != ComponentTypes.DUST)
 
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             componentType.getOreDictName() + material.getUnlocalizedName(),
             ItemUtils.getSimpleStack(this));
         if (componentType == ComponentTypes.GEAR) {
-            GT_OreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            OreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
         }
         registerComponent();
 
@@ -109,7 +109,7 @@ public class BaseItemComponent extends Item {
 
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
         GameRegistry.registerItem(this, aFormattedNameForFluids);
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
             ItemUtils.getSimpleStack(this));
         registerComponent();

@@ -4,14 +4,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
@@ -42,23 +42,22 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GregTechMetaTileEntity_MegaAlloyBlastSmelter>
-    implements ISurvivalConstructable {
+public class GregTechMetaTileEntity_MegaAlloyBlastSmelter extends
+    ExtendedPowerMultiBlockBase<GregTechMetaTileEntity_MegaAlloyBlastSmelter> implements ISurvivalConstructable {
 
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
@@ -179,7 +178,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 calculateEnergyDiscount(coilLevel, recipe);
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus)
                     .setEUtDiscount(energyDiscount);
@@ -208,7 +207,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         if (mMaintenanceHatches.size() != 1) return false;
         if (mMufflerHatches.size() != 1) return false;
         if (this.glassTier < 10 && !getExoticAndNormalEnergyHatchList().isEmpty()) {
-            for (GT_MetaTileEntity_Hatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
+            for (Hatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
                     return false;
                 }
@@ -216,8 +215,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         }
         // Disallow lasers if the glass is below UV tier
         if (glassTier < 8) {
-            for (GT_MetaTileEntity_Hatch hatchEnergy : getExoticEnergyHatches()) {
-                if (hatchEnergy.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
+            for (Hatch hatchEnergy : getExoticEnergyHatches()) {
+                if (hatchEnergy.getConnectionType() == Hatch.ConnectionType.LASER) {
                     return false;
                 }
             }
@@ -266,8 +265,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
+    public List<Hatch> getExoticAndNormalEnergyHatchList() {
+        List<Hatch> tHatches = new ArrayList<>();
         tHatches.addAll(mExoticEnergyHatches);
         tHatches.addAll(mEnergyHatches);
         return tHatches;
@@ -284,8 +283,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker")
             .addInfo("Controller block for the Mega Alloy Blast Smelter")
             .addInfo(
@@ -338,7 +337,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         int paras = getBaseMetaTileEntity().isActive() ? processingLogic.getCurrentParallels() : 0;
         int moreSpeed = (int) ((1 - speedBonus) * 100);
         int lessEnergy = (int) ((1 - energyDiscount) * 100);
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -462,7 +461,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece("main", stackSize, 5, 16, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stackSize, 5, 16, 0, elementBudget, env, false, true);
     }
 
     @Override

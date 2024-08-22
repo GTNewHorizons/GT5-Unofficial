@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.List;
 

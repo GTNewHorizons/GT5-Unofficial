@@ -8,10 +8,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.ISerializableObject;
 
-public class GT_Cover_None extends GT_CoverBehavior {
+public class GT_Cover_None extends CoverBehavior {
 
     /**
      * This is the Dummy, if there is no Cover

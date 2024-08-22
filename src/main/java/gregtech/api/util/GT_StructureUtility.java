@@ -45,8 +45,8 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Frame;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
 import gregtech.common.blocks.GT_Item_Machines;
 
@@ -77,8 +77,8 @@ public class GT_StructureUtility {
                 TileEntity tBase = world.getTileEntity(x, y, z);
                 if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
                     if (tPipeBase.isInvalidTileEntity()) return false;
-                    if (tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame)
-                        return aFrameMaterial == ((GT_MetaPipeEntity_Frame) tPipeBase.getMetaTileEntity()).mMaterial;
+                    if (tPipeBase.getMetaTileEntity() instanceof MetaPipeEntity_Frame)
+                        return aFrameMaterial == ((MetaPipeEntity_Frame) tPipeBase.getMetaTileEntity()).mMaterial;
                 }
                 return false;
             }
@@ -103,7 +103,7 @@ public class GT_StructureUtility {
             }
 
             private ItemStack getFrameStack() {
-                return GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
+                return OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
             }
 
             @Override
@@ -151,16 +151,16 @@ public class GT_StructureUtility {
         };
     }
 
-    public static <T> GT_HatchElementBuilder<T> buildHatchAdder() {
-        return GT_HatchElementBuilder.builder();
+    public static <T> HatchElementBuilder<T> buildHatchAdder() {
+        return HatchElementBuilder.builder();
     }
 
     /**
      * Completely equivalent to {@link #buildHatchAdder()}, except it plays nicer with type inference when statically
      * imported
      */
-    public static <T> GT_HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
-        return GT_HatchElementBuilder.builder();
+    public static <T> HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
+        return HatchElementBuilder.builder();
     }
 
     public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex,
@@ -504,9 +504,8 @@ public class GT_StructureUtility {
     public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
         return is -> {
             IMetaTileEntity tile = GT_Item_Machines.getMetaTileEntity(is);
-            return tile instanceof GT_MetaTileEntity_TieredMachineBlock
-                && ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier <= aMaxTier
-                && ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier >= aMinTier;
+            return tile instanceof TieredMachineBlock && ((TieredMachineBlock) tile).mTier <= aMaxTier
+                && ((TieredMachineBlock) tile).mTier >= aMinTier;
         };
     }
 }

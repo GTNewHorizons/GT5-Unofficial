@@ -18,7 +18,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
@@ -27,7 +27,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
-public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_TesseractTerminal extends BasicTank {
 
     public int mFrequency = 0;
     public UUID mOwner;

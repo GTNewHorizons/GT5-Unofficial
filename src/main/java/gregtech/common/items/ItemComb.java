@@ -15,9 +15,9 @@ import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.CLEANROOM;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,9 +47,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.loaders.misc.GT_Bees;
 
@@ -189,12 +189,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         addCentrifugeToItemStack(
             CombType.LIGNIE,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1), ItemList.FR_Wax.get(1) },
+            new ItemStack[] { OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1), ItemList.FR_Wax.get(1) },
             new int[] { 90 * 100, 50 * 100 },
             Voltage.ULV);
         addCentrifugeToItemStack(
             CombType.COAL,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1), ItemList.FR_Wax.get(1) },
+            new ItemStack[] { OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1), ItemList.FR_Wax.get(1) },
             new int[] { 5 * 100, 50 * 100 },
             Voltage.ULV);
         addCentrifugeToItemStack(
@@ -258,8 +258,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
             CombType.ENDERIUM,
             new ItemStack[] { ItemList.FR_RefractoryWax.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.EnderiumBase, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Enderium, 1) },
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.EnderiumBase, 1),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Enderium, 1) },
             new int[] { 50 * 100, 30 * 100, 50 * 100 },
             Voltage.HV);
 
@@ -388,7 +388,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
             CombType.THAUMINITE,
             new ItemStack[] { GT_ModHandler.getModItem(ThaumicBases.ID, "resource", 1, 0),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Thaumium, 1),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Thaumium, 1),
                 GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 0) },
             new int[] { 20 * 100, 10 * 100, 50 * 100 },
             Voltage.HV);
@@ -406,8 +406,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.DIVIDED,
             new ItemStack[] { GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
                 GT_ModHandler.getModItem(ExtraUtilities.ID, "unstableingot", 1, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Diamond, 1) },
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Diamond, 1) },
             new int[] { 50 * 100, 20 * 100, 10 * 100, 5 * 100 },
             Voltage.HV);
         addProcessGT(CombType.SPARKELING, new Materials[] { Materials.NetherStar }, Voltage.EV);
@@ -415,7 +415,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.SPARKELING,
             new ItemStack[] { GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
                 GT_ModHandler.getModItem(MagicBees.ID, "miscResources", 2, 5),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherStar, 1) },
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherStar, 1) },
             new int[] { 50 * 100, 10 * 100, 10 * 100 },
             Voltage.EV);
 
@@ -587,9 +587,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         addCentrifugeToItemStack(
             CombType.SALT,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 6),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RockSalt, 6), ItemList.FR_Wax.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 6) },
+            new ItemStack[] { OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 6),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.RockSalt, 6), ItemList.FR_Wax.get(1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 6) },
             new int[] { 100 * 100, 100 * 100, 50 * 100, 25 * 100 },
             Voltage.MV,
             160);
@@ -788,7 +788,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EuropaStoneDust", 1L, 0),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.GanymedeStoneDust", 1L, 0),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CallistoStoneDust", 1L, 0),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CallistoIce, 1L), ItemList.FR_Wax.get(1L) },
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CallistoIce, 1L), ItemList.FR_Wax.get(1L) },
             new int[] { 30 * 100, 30 * 100, 30 * 100, 30 * 100, 30 * 100, 5 * 100, 50 * 100 },
             Voltage.HV,
             300);
@@ -927,13 +927,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
      *
      **/
     public void addAutoclaveProcess(CombType comb, Materials aMaterial, Voltage volt, int circuitNumber) {
-        if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4) == NI) {
+        if (OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4) == NI) {
             return;
         }
-        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         recipeBuilder
             .itemInputs(GT_Utility.copyAmount(9, getStackForType(comb)), GT_Utility.getIntegratedCircuit(circuitNumber))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
             .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
             .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
             .eut(volt.getAutoClaveEnergy());
@@ -975,7 +975,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
     public void addProcessGT(CombType comb, Materials[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
         for (Materials materials : aMaterial) {
-            if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != null) {
+            if (OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != null) {
                 ItemStack combInput;
                 ItemStack combOutput;
                 FluidStack fluidInput;
@@ -1022,7 +1022,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                     }
                     default -> {
                         combInput = GT_Utility.copyAmount(4, tComb);
-                        combOutput = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4);
+                        combOutput = OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4);
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = null;
                         durationTicks = volt.getComplexTime();
@@ -1030,7 +1030,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
                     }
                 }
-                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                 recipeBuilder.itemInputs(combInput)
                     .itemOutputs(combOutput)
                     .fluidInputs(fluidInput);
@@ -1079,11 +1079,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 continue;
             }
             if (Math.max(1, stackSize[i]) % 9 == 0) {
-                aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i]) / 9));
+                aOutPut[i] = OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i]) / 9));
             } else if (Math.max(1, stackSize[i]) % 4 == 0) {
-                aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i]) / 4));
+                aOutPut[i] = OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i]) / 4));
             } else {
-                aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]));
+                aOutPut[i] = OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]));
             }
         }
         if (beeWax != NI) {
@@ -1129,9 +1129,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
     public void registerOreDict() {
         for (CombType comb : CombType.values()) {
             ItemStack tComb = getStackForType(comb);
-            GT_OreDictUnificator.registerOre(OrePrefixes.beeComb.name(), tComb);
+            OreDictUnificator.registerOre(OrePrefixes.beeComb.name(), tComb);
             OrePrefixes.beeComb.add(tComb);
-            if (comb.voltage != null) GT_OreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
+            if (comb.voltage != null) OreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
         }
     }
 

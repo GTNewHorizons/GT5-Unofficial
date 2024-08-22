@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.ItemGeneric;
 import gregtech.api.util.GT_LanguageManager;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
@@ -26,7 +26,7 @@ import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
-public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor, IPanelDataSource {
+public class GT_SensorCard_Item extends ItemGeneric implements IRemoteSensor, IPanelDataSource {
 
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
 

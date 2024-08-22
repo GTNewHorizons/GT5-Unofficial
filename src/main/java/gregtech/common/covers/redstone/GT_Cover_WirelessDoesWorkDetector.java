@@ -13,14 +13,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.redstone.GT_Cover_WirelessDoesWorkDetector.ActivityMode;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -159,13 +158,13 @@ public class GT_Cover_WirelessDoesWorkDetector
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new WirelessActivityDetectorUIFactory(buildContext).createWindow();
     }
 
     private class WirelessActivityDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
-        public WirelessActivityDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+        public WirelessActivityDetectorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -216,7 +215,7 @@ public class GT_Cover_WirelessDoesWorkDetector
                     coverData.mode = ActivityMode.RECIPE_PROGRESS;
                     return coverData;
                 },
-                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_PROGRESS)
+                widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_PROGRESS)
                     .addTooltip(GT_Utility.trans("241", "Recipe progress"))
                     .setPos(spaceX * 0, spaceY * 2))
                 .addFollower(
@@ -226,7 +225,7 @@ public class GT_Cover_WirelessDoesWorkDetector
                         coverData.mode = ActivityMode.MACHINE_IDLE;
                         return coverData;
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_CHECKMARK)
                         .addTooltip(GT_Utility.trans("242", "Machine idle"))
                         .setPos(spaceX * 1, spaceY * 2))
                 .addFollower(
@@ -236,7 +235,7 @@ public class GT_Cover_WirelessDoesWorkDetector
                         coverData.mode = ActivityMode.MACHINE_ENABLED;
                         return coverData;
                     },
-                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                         .addTooltip(GT_Utility.trans("271", "Machine enabled"))
                         .setPos(spaceX * 2, spaceY * 2));
         }

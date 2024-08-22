@@ -2,10 +2,10 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -17,9 +17,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 
 public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -39,19 +39,19 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
                 if (aMaterial.mBlastFurnaceTemp < 1000 && aMaterial.mDirectSmelting.mBlastFurnaceTemp < 1000)
                     if (aMaterial.mAutoGenerateBlastFurnaceRecipes
-                        && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
-                            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                        && OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+                            RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                             recipeBuilder
                                 .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(1));
                             if (aMaterial.mBlastFurnaceTemp > 1750) {
                                 recipeBuilder.itemOutputs(
-                                    GT_OreDictUnificator.get(
+                                    OreDictUnificator.get(
                                         OrePrefixes.ingotHot,
                                         aMaterial,
-                                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                        OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                                         1L));
                             } else {
-                                recipeBuilder.itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L));
+                                recipeBuilder.itemOutputs(OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L));
                             }
                             recipeBuilder
                                 .duration(Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp * TICKS)
@@ -180,13 +180,13 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                         outputSize = 1;
                         break;
                 }
-                ItemStack tStack = GT_OreDictUnificator.get(outputPrefix, aMaterial.mDirectSmelting, outputSize);
-                if (tStack == null) tStack = GT_OreDictUnificator.get(
+                ItemStack tStack = OreDictUnificator.get(outputPrefix, aMaterial.mDirectSmelting, outputSize);
+                if (tStack == null) tStack = OreDictUnificator.get(
                     aMaterial.contains(SubTag.SMELTING_TO_GEM) ? OrePrefixes.gem : OrePrefixes.ingot,
                     aMaterial.mDirectSmelting,
                     1L);
                 if ((tStack == null) && (!aMaterial.contains(SubTag.SMELTING_TO_GEM)))
-                    tStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
+                    tStack = OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
                 GT_ModHandler.addSmeltingRecipe(aStack, tStack);
             }
         }

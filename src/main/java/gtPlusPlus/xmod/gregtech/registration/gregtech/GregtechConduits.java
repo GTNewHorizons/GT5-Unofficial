@@ -6,8 +6,8 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -20,9 +20,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
@@ -60,8 +60,8 @@ public class GregtechConduits {
     private static void run3() {
 
         try {
-            Class<GT_MetaPipeEntity_Fluid> aPipeEntity = GT_MetaPipeEntity_Fluid.class;
-            Constructor<GT_MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(
+            Class<MetaPipeEntity_Fluid> aPipeEntity = MetaPipeEntity_Fluid.class;
+            Constructor<MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(
                 int.class,
                 String.class,
                 String.class,
@@ -159,9 +159,9 @@ public class GregtechConduits {
         }
     }
 
-    private static void generateFluidMultiPipes(Constructor<GT_MetaPipeEntity_Fluid> aClazz, Materials aMaterial,
+    private static void generateFluidMultiPipes(Constructor<MetaPipeEntity_Fluid> aClazz, Materials aMaterial,
         String name, String displayName, int startID, int transferRatePerSec, int heatCapacity, boolean gasProof) {
-        GT_MetaPipeEntity_Fluid aPipe;
+        MetaPipeEntity_Fluid aPipe;
         final int transferRatePerTick = transferRatePerSec / 20;
         try {
             aPipe = aClazz.newInstance(
@@ -178,7 +178,7 @@ public class GregtechConduits {
                 Logger.INFO("Failed to Generate " + aMaterial + " Hexadecuple pipes.");
             } else {
                 Logger.INFO("Generated " + aMaterial + " Hexadecuple pipes.");
-                GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
+                OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
             }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
             | InvocationTargetException e) {
@@ -243,7 +243,7 @@ public class GregtechConduits {
         final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable,
         final boolean aAutoInsulated, final short[] aRGB) {
         Logger.WARNING("Gregtech5u Content | Registered " + aMaterial.mName + " as a new material for Wire & Cable.");
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
             new GregtechMetaPipeEntity_Cable(
@@ -258,7 +258,7 @@ public class GregtechConduits {
                 false,
                 !aAutoInsulated,
                 aRGB).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt02,
             aMaterial,
             new GregtechMetaPipeEntity_Cable(
@@ -273,7 +273,7 @@ public class GregtechConduits {
                 false,
                 !aAutoInsulated,
                 aRGB).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt04,
             aMaterial,
             new GregtechMetaPipeEntity_Cable(
@@ -288,7 +288,7 @@ public class GregtechConduits {
                 false,
                 !aAutoInsulated,
                 aRGB).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt08,
             aMaterial,
             new GregtechMetaPipeEntity_Cable(
@@ -303,7 +303,7 @@ public class GregtechConduits {
                 false,
                 !aAutoInsulated,
                 aRGB).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt12,
             aMaterial,
             new GregtechMetaPipeEntity_Cable(
@@ -318,7 +318,7 @@ public class GregtechConduits {
                 false,
                 !aAutoInsulated,
                 aRGB).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt16,
             aMaterial,
             new GregtechMetaPipeEntity_Cable(
@@ -334,7 +334,7 @@ public class GregtechConduits {
                 !aAutoInsulated,
                 aRGB).getStackForm(1L));
         if (aInsulatable) {
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt01,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
@@ -349,7 +349,7 @@ public class GregtechConduits {
                     true,
                     false,
                     aRGB).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt02,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
@@ -364,7 +364,7 @@ public class GregtechConduits {
                     true,
                     false,
                     aRGB).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt04,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
@@ -379,7 +379,7 @@ public class GregtechConduits {
                     true,
                     false,
                     aRGB).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt08,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
@@ -394,7 +394,7 @@ public class GregtechConduits {
                     true,
                     false,
                     aRGB).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt12,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
@@ -409,7 +409,7 @@ public class GregtechConduits {
                     true,
                     false,
                     aRGB).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt16,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
@@ -632,9 +632,9 @@ public class GregtechConduits {
         final int transferRatePerTick = transferRatePerSec / 20;
         final long mass = material.getMass();
         final long voltage = material.mMeltingPoint >= 2800 ? 64 : 16;
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
                 "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
@@ -643,9 +643,9 @@ public class GregtechConduits {
                 transferRatePerTick * 2,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
                 "Small " + material.mDefaultLocalName + " Fluid Pipe",
@@ -654,9 +654,9 @@ public class GregtechConduits {
                 transferRatePerTick * 4,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName + "",
                 "" + material.mDefaultLocalName + " Fluid Pipe",
@@ -665,9 +665,9 @@ public class GregtechConduits {
                 transferRatePerTick * 12,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
                 "Large " + material.mDefaultLocalName + " Fluid Pipe",
@@ -676,9 +676,9 @@ public class GregtechConduits {
                 transferRatePerTick * 24,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
                 "Huge " + material.mDefaultLocalName + " Fluid Pipe",
@@ -693,7 +693,7 @@ public class GregtechConduits {
         final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof) {
         final int transferRatePerTick = transferRatePerSec / 20;
 
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
             new GregtechMetaPipeEntityFluid(
                 startID,
@@ -704,7 +704,7 @@ public class GregtechConduits {
                 transferRatePerTick * 2,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
             new GregtechMetaPipeEntityFluid(
                 startID + 1,
@@ -715,7 +715,7 @@ public class GregtechConduits {
                 transferRatePerTick * 4,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
             new GregtechMetaPipeEntityFluid(
                 startID + 2,
@@ -726,7 +726,7 @@ public class GregtechConduits {
                 transferRatePerTick * 12,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
             new GregtechMetaPipeEntityFluid(
                 startID + 3,
@@ -737,7 +737,7 @@ public class GregtechConduits {
                 transferRatePerTick * 24,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
             new GregtechMetaPipeEntityFluid(
                 startID + 4,
@@ -914,7 +914,7 @@ public class GregtechConduits {
         if ((aName == null) || (GT_Utility.isStackInvalid(aStack))) return false;
         String tName = aName.toString();
         if (GT_Utility.isStringInvalid(tName)) return false;
-        ArrayList<ItemStack> tList = GT_OreDictUnificator.getOres(tName);
+        ArrayList<ItemStack> tList = OreDictUnificator.getOres(tName);
         for (ItemStack itemStack : tList)
             if (GT_Utility.areStacksEqual((ItemStack) itemStack, aStack, true)) return false;
         OreDictionary.registerOre(tName, GT_Utility.copyAmount(1L, new Object[] { aStack }));

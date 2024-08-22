@@ -6,9 +6,9 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
@@ -27,8 +27,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -600,10 +600,10 @@ public class AgriculturalChem extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getSimpleStack(aManureByprod, 4), GT_Utility.getIntegratedCircuit(20))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                 ItemUtils.getSimpleStack(dustDirt, 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1))
             .outputChances(2500, 2500, 750, 1000, 5000, 250)
@@ -639,12 +639,12 @@ public class AgriculturalChem extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(CI.getNumberedBioCircuit(10))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tin, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tin, 1L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 1000))
             .fluidOutputs(Materials.Water.getFluid(500))

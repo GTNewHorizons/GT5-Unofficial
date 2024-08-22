@@ -4,7 +4,7 @@ import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_T
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR.HTGRMaterials.sHTGR_Fuel;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -19,8 +19,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class Mixer implements Runnable {
 
@@ -52,7 +52,7 @@ public class Mixer implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.getIntegratedCircuit(17),
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
+                    OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(FluidRegistry.getFluidStack("liquiddna", 1000))
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2000))

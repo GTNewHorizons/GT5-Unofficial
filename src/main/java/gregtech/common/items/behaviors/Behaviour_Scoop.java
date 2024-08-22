@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import forestry.api.lepidopterology.EnumFlutterType;
 import forestry.api.lepidopterology.IButterfly;
 import forestry.api.lepidopterology.IEntityButterfly;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_LanguageManager;
 
 public class Behaviour_Scoop extends Behaviour_None {
@@ -25,13 +25,12 @@ public class Behaviour_Scoop extends Behaviour_None {
     }
 
     @Override
-    public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
+    public boolean onLeftClickEntity(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
         if ((aEntity instanceof IEntityButterfly)) {
             if (aPlayer.worldObj.isRemote) {
                 return true;
             }
-            if ((aPlayer.capabilities.isCreativeMode)
-                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+            if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 IButterfly tButterfly = ((IEntityButterfly) aEntity).getButterfly();
                 tButterfly.getGenome()
                     .getPrimary()
@@ -56,7 +55,7 @@ public class Behaviour_Scoop extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }

@@ -3,8 +3,8 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import static advsolar.utils.MTRecipeManager.transformerRecipes;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.molecularTransformerRecipes;
 
 import advsolar.utils.MTRecipeRecord;
@@ -13,7 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -47,7 +47,7 @@ public class RecipeLoader_MolecularTransformer {
         if (AdvancedSolarPanel.isModLoaded() && GalaxySpace.isModLoaded()) {
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
                 .itemOutputs(GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_EV)

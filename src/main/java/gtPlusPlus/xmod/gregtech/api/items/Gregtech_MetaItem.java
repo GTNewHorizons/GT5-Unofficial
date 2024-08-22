@@ -29,8 +29,8 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
 
@@ -105,7 +105,7 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
                         continue;
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GT_OreDictUnificator.addToBlacklist(rStack);
+                        OreDictUnificator.addToBlacklist(rStack);
                         continue;
                     }
                 }
@@ -134,14 +134,14 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
                     }
                     if (tRandomData instanceof ItemData) {
                         if (GT_Utility.isStringValid(tRandomData)) {
-                            GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                            OreDictUnificator.registerOre(tRandomData, rStack);
                         } else {
-                            GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }
                     if (tUseOreDict) {
-                        GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                        OreDictUnificator.registerOre(tRandomData, rStack);
                         continue;
                     }
                 }

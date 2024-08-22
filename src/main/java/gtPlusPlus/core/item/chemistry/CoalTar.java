@@ -3,11 +3,11 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
@@ -19,9 +19,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeConstants;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -111,7 +111,7 @@ public class CoalTar extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(8),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32L))
+                OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32L))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
             .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 800))
             .duration(18 * SECONDS)
@@ -122,7 +122,7 @@ public class CoalTar extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(8),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L))
+                OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2))
             .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 800))
             .duration(54 * SECONDS)
@@ -131,9 +131,7 @@ public class CoalTar extends ItemPackage {
 
         // Coal
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(8),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L))
+            .itemInputs(GT_Utility.getIntegratedCircuit(8), OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2))
             .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 2200))
             .duration(36 * SECONDS)
@@ -237,10 +235,10 @@ public class CoalTar extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1))
             .metadata(FUEL_VALUE, 96)
-            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.GasTurbine.ordinal())
+            .metadata(FUEL_TYPE, RecipeConstants.FuelType.GasTurbine.ordinal())
             .duration(0)
             .eut(0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(

@@ -24,7 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
             .addIcon(BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
             .glow()
             .build() };
-    private GT_Multiblock_Tooltip_Builder tooltipBuilder;
+    private MultiblockTooltipBuilder tooltipBuilder;
 
     public GT_MetaTileEntity_BrickedBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -67,9 +67,9 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
         return getTooltip().getStructureInformation();
     }
 
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+    protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
-            tooltipBuilder = new GT_Multiblock_Tooltip_Builder();
+            tooltipBuilder = new MultiblockTooltipBuilder();
             tooltipBuilder.addMachineType("Blast Furnace")
                 .addInfo("Controller Block for the Bricked Blast Furnace")
                 .addInfo("Usable for Steel and general Pyrometallurgy")

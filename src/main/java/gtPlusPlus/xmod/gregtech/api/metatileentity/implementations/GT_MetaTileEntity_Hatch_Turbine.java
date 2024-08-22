@@ -17,12 +17,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -35,7 +35,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 
 @SuppressWarnings("deprecation")
-public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Turbine extends Hatch {
 
     public boolean mHasController = false;
     public boolean mUsingAnimation = true;
@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -164,7 +164,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
-            ((GT_MetaGenerated_Tool) aTurbine.getItem()).doDamage(
+            ((MetaGeneratedTool) aTurbine.getItem()).doDamage(
                 aTurbine,
                 (long) getDamageToComponent(aTurbine)
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
@@ -335,7 +335,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
                     .isActive());
             PlayerUtils.messagePlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
-                Materials aMat = GT_MetaGenerated_Tool.getPrimaryMaterial(getTurbine());
+                Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
                 String aSize = GregtechMetaTileEntity_LargerTurbineBase
                     .getTurbineSizeString(GregtechMetaTileEntity_LargerTurbineBase.getTurbineSize(getTurbine()));
                 PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
@@ -357,7 +357,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
             .isServerSide() && !aPlayer.isSneaking()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof GT_MetaGenerated_Tool) {
+                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
                     return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
                 }
             }
@@ -372,7 +372,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
             .isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof GT_MetaGenerated_Tool) {
+                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
                     return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
                 }
             }

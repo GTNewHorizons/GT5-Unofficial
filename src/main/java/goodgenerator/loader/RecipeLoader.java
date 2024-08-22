@@ -14,20 +14,20 @@ import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GT_RecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.RecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
 
 import net.minecraft.item.ItemStack;
@@ -50,9 +50,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeConstants;
 
 public class RecipeLoader {
 
@@ -61,8 +61,8 @@ public class RecipeLoader {
         // Radiation Protection Plate
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Iridium, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8L),
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.Iridium, 8L),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8L),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Lead.getMolten(1152))
             .itemOutputs(ItemRefer.Radiation_Protection_Plate.get(1))
@@ -72,8 +72,8 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lanthanum, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8L),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Lanthanum, 4L),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8L),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Lead.getMolten(1152))
             .itemOutputs(ItemRefer.Radiation_Protection_Plate.get(1))
@@ -93,15 +93,15 @@ public class RecipeLoader {
                     .copy())
             .metadata(RESEARCH_TIME, 1 * HOURS + 24 * MINUTES)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Adamantium, 8),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.Adamantium, 8),
                 ItemRefer.Radiation_Protection_Plate.get(16),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Electric_Pump_ZPM.get(8),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
-                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
-                GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 16))
+                OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
+                OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 16))
             .fluidInputs(
                 Materials.Trinium.getMolten(576),
                 new FluidStack(solderIndalloy, 4608),
@@ -115,7 +115,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(6),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1),
                 ItemList.Field_Generator_MV.get(1),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemRefer.Field_Restriction_Casing.get(1))
@@ -126,8 +126,8 @@ public class RecipeLoader {
         // LNR Frame
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 4),
+                OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 4),
                 GT_Utility.getIntegratedCircuit(24))
             .itemOutputs(ItemRefer.Radiation_Proof_Steel_Frame_Box.get(1))
             .duration(16 * SECONDS)
@@ -138,7 +138,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.graphiteUraniumMixture.get(OrePrefixes.dust, 4),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.TungstenCarbide, 2),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.TungstenCarbide, 2),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemRefer.Wrapped_Uranium_Ingot.get(1))
             .duration(1 * MINUTES + 10 * SECONDS)
@@ -149,7 +149,7 @@ public class RecipeLoader {
             .itemInputs(ItemRefer.Wrapped_Uranium_Ingot.get(4))
             .itemOutputs(
                 ItemRefer.High_Density_Uranium_Nugget.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenCarbide, 8))
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenCarbide, 8))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, 8)
@@ -165,8 +165,8 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.High_Density_Uranium.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 8),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quantium, 4),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 8),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Quantium, 4),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Radon.getGas(1000L))
             .fluidOutputs(MyMaterial.uraniumBasedLiquidFuel.getFluidOrGas(1000))
@@ -186,7 +186,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.uraniumCarbideThoriumMixture.get(OrePrefixes.dust, 64),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.TungstenSteel, 4),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.TungstenSteel, 4),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemRefer.Wrapped_Thorium_Ingot.get(1))
             .duration(15 * SECONDS)
@@ -197,7 +197,7 @@ public class RecipeLoader {
             .itemInputs(ItemRefer.Wrapped_Thorium_Ingot.get(1))
             .itemOutputs(
                 ItemRefer.High_Density_Thorium_Nugget.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 8))
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 8))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, 4)
@@ -213,8 +213,8 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.High_Density_Thorium.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Draconium, 2),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 4),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Draconium, 2),
                 GT_Utility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Mercury.getFluid(1000L))
             .fluidOutputs(MyMaterial.thoriumBasedLiquidFuel.getFluidOrGas(4000))
@@ -234,7 +234,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.plutoniumOxideUraniumMixture.get(OrePrefixes.dust, 8),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 4),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 4),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemRefer.Wrapped_Plutonium_Ingot.get(1))
             .duration(1 * MINUTES + 30 * SECONDS)
@@ -245,7 +245,7 @@ public class RecipeLoader {
             .itemInputs(ItemRefer.Wrapped_Plutonium_Ingot.get(2))
             .itemOutputs(
                 ItemRefer.High_Density_Plutonium_Nugget.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.HSSS, 8))
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.HSSS, 8))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, 16)
@@ -261,9 +261,9 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.High_Density_Plutonium.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 8),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 8),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 16),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidOutputs(MyMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000))
             .duration(18 * SECONDS)
@@ -281,7 +281,7 @@ public class RecipeLoader {
         // Th-232
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 24),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 24),
                 MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 0),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(FluidRegistry.getFluidStack("nitricacid", 6000))
@@ -292,7 +292,7 @@ public class RecipeLoader {
 
         // Th + 2O = ThO2
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1))
             .fluidInputs(Materials.Oxygen.getGas(2000))
             .itemOutputs(WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 3))
             .duration(5 * SECONDS)
@@ -341,9 +341,7 @@ public class RecipeLoader {
 
         // Zn + 2Cl = ZnCl2
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
-                GT_Utility.getIntegratedCircuit(1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1), GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Chlorine.getGas(2000))
             .itemOutputs(MyMaterial.zincChloride.get(OrePrefixes.dust, 3))
             .duration(5 * SECONDS)
@@ -376,7 +374,7 @@ public class RecipeLoader {
         // 2V + 5O = V2O5
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 2),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 2),
                 GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(Materials.Oxygen.getGas(5000))
             .itemOutputs(MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 7))
@@ -386,12 +384,12 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         // Atomic Separation Catalyst
-        ItemStack[] mat1 = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 32),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 4) };
-        ItemStack[] mat2 = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Draconium, 4),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quantium, 4), };
-        ItemStack[] mat3 = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ardite, 4),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Manyullyn, 4) };
+        ItemStack[] mat1 = new ItemStack[] { OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 32),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 4) };
+        ItemStack[] mat2 = new ItemStack[] { OreDictUnificator.get(OrePrefixes.dust, Materials.Draconium, 4),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Quantium, 4), };
+        ItemStack[] mat3 = new ItemStack[] { OreDictUnificator.get(OrePrefixes.dust, Materials.Ardite, 4),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Manyullyn, 4) };
 
         for (ItemStack m1 : mat1) {
             for (ItemStack m2 : mat2) {
@@ -410,7 +408,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.Tiberium.get(OrePrefixes.plate, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 8))
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 8))
             .itemOutputs(MyMaterial.orundum.get(OrePrefixes.plate, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
@@ -438,7 +436,7 @@ public class RecipeLoader {
             new FluidStack[] { Materials.Helium.getGas(300), WerkstoffLoader.Neon.getFluidOrGas(50),
                 Materials.Argon.getGas(80), WerkstoffLoader.Krypton.getFluidOrGas(20),
                 WerkstoffLoader.Xenon.getFluidOrGas(40), Materials.Radon.getGas(14000) },
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadah, 1),
+            OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadah, 1),
             6,
             4020,
             300);
@@ -449,7 +447,7 @@ public class RecipeLoader {
             new FluidStack[] { Materials.Radon.getGas(1400), MyMaterial.naquadahGas.getFluidOrGas(400),
                 Materials.Uranium.getMolten(648), MyMaterial.heavyNaquadahFuel.getFluidOrGas(280),
                 Materials.Plutonium.getMolten(576), MyMaterial.naquadahAsphalt.getFluidOrGas(140) },
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1),
+            OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1),
             6,
             4020,
             450);
@@ -460,7 +458,7 @@ public class RecipeLoader {
             new FluidStack[] { Materials.Radon.getGas(1000), MyMaterial.naquadahGas.getFluidOrGas(450),
                 MyMaterial.lightNaquadahFuel.getFluidOrGas(560), Materials.Uranium.getMolten(720),
                 Materials.Lutetium.getMolten(648), MyMaterial.naquadahAsphalt.getFluidOrGas(240) },
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1),
+            OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1),
             6,
             4020,
             500);
@@ -471,7 +469,7 @@ public class RecipeLoader {
             new FluidStack[] { MyMaterial.lightNaquadahFuel.getFluidOrGas(600), Materials.Uranium.getMolten(1152),
                 Materials.Thorium.getMolten(864), Materials.Plutonium.getMolten(792), Materials.Thulium.getMolten(216),
                 MyMaterial.heavyNaquadahFuel.getFluidOrGas(350) },
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 1),
+            OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 1),
             6,
             4020,
             800);
@@ -496,38 +494,38 @@ public class RecipeLoader {
             .itemInputs(MyMaterial.ether.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 537)
             .metadata(FUEL_TYPE, 0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.ether.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 537)
             .metadata(FUEL_TYPE, 1)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.ethanolGasoline.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 1100)
             .metadata(FUEL_TYPE, 0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.cyclopentadiene.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 70)
             .metadata(FUEL_TYPE, 1)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.ironedFuel.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 2248)
             .metadata(FUEL_TYPE, 0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.ironedKerosene.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 1824)
             .metadata(FUEL_TYPE, 0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
 
         // Sb + 3Cl = SbCl3
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 1))
             .fluidInputs(MyMaterial.ether.getFluidOrGas(1000), Materials.Chlorine.getGas(3000))
             .fluidOutputs(MyMaterial.antimonyTrichloride.getFluidOrGas(1000))
             .duration(3 * SECONDS)
@@ -577,7 +575,7 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 16),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 16),
                 GT_Utility.getIntegratedCircuit(16))
             .fluidInputs(Materials.HydrofluoricAcid.getFluid(3000))
             .fluidOutputs(MyMaterial.acidNaquadahEmulsion.getFluidOrGas(2000))
@@ -590,11 +588,11 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 8))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 8))
             .fluidInputs(MyMaterial.acidNaquadahEmulsion.getFluidOrGas(1000))
             .fluidOutputs(MyMaterial.naquadahEmulsion.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.AntimonyTrioxide, 1),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.AntimonyTrioxide, 1),
                 WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 4))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -613,7 +611,7 @@ public class RecipeLoader {
             .itemInputs(MyMaterial.naquadahGas.get(OrePrefixes.cell))
             .metadata(FUEL_VALUE, 1024)
             .metadata(FUEL_TYPE, 1)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(
@@ -628,8 +626,8 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 4),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 32))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 4),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 32))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(100), MyMaterial.naquadahGas.getFluidOrGas(1500))
             .fluidOutputs(MyMaterial.naquadahBasedFuelMkII.getFluidOrGas(100))
             .duration(25 * SECONDS)
@@ -638,7 +636,7 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 32),
                 GT_Utility.getIntegratedCircuit(16))
             .fluidInputs(MyMaterial.fluoroantimonicAcid.getFluidOrGas(4000))
             .fluidOutputs(MyMaterial.acidNaquadahEmulsion.getFluidOrGas(8000))
@@ -655,16 +653,16 @@ public class RecipeLoader {
                     .copy())
             .metadata(RESEARCH_TIME, 7 * HOURS)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 8),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 8),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(64),
                 ItemList.Field_Generator_UV.get(8),
                 ItemList.Electric_Pump_UHV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
-                GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.MysteriousCrystal, 8),
+                OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.MysteriousCrystal, 8),
                 ItemList.Circuit_Wafer_NPIC.get(16),
                 ItemList.UHV_Coil.get(64),
                 new Object[] { "craftingLensYellow", 16 },
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Thulium, 64))
+                OreDictUnificator.get(OrePrefixes.screw, Materials.Thulium, 64))
             .fluidInputs(
                 Materials.Quantium.getMolten(9216L),
                 Materials.DraconiumAwakened.getMolten(4608L),
@@ -680,11 +678,11 @@ public class RecipeLoader {
             .metadata(RESEARCH_TIME, 1 * HOURS + 7 * MINUTES)
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
                 ItemRefer.Radiation_Protection_Plate.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, 1152))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
@@ -696,14 +694,14 @@ public class RecipeLoader {
             .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Casing.get(1))
             .metadata(RESEARCH_TIME, 3 * HOURS + 30 * MINUTES)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Thulium, 1),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.Thulium, 1),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
                 ItemList.Field_Generator_IV.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
+                OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
                 MyMaterial.orundum.get(OrePrefixes.plate, 4))
             .fluidInputs(Materials.TungstenSteel.getMolten(1152), new FluidStack(solderIndalloy, 2304))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1))
@@ -716,13 +714,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot))
                 .metadata(RESEARCH_TIME, 4 * HOURS + 10 * MINUTES)
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
+                    OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Electric_Pump_UV.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.BlackPlutonium, 16),
+                    OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
+                    OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
+                    OreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 8),
+                    OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.BlackPlutonium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(32),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L })
                 .fluidInputs(
@@ -738,13 +736,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T1.get(1))
                 .metadata(RESEARCH_TIME, 4 * HOURS + 50 * MINUTES)
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
+                    OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
                     ItemList.Field_Generator_UHV.get(2),
                     ItemList.Electric_Pump_UHV.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 16),
+                    OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 64),
+                    OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 64),
+                    OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8),
+                    OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(48),
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L })
                 .fluidInputs(
@@ -760,13 +758,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T2.get(1))
                 .metadata(RESEARCH_TIME, 5 * HOURS + 30 * MINUTES)
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                    OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                     ItemList.Field_Generator_UEV.get(2),
                     ItemList.Electric_Pump_UEV.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 16),
+                    OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
+                    OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
+                    OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
+                    OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L })
                 .fluidInputs(
@@ -782,15 +780,15 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
                 .metadata(RESEARCH_TIME, 7 * HOURS)
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
+                    OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
                     ItemList.Field_Generator_UIV.get(2),
                     ItemList.Electric_Pump_UIV.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, MaterialsUEVplus.SpaceTime, 16),
+                    OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
+                    OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
+                    OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8),
+                    OreDictUnificator.get(OrePrefixes.pipeMedium, MaterialsUEVplus.SpaceTime, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1))
+                    OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1))
                 .fluidInputs(
                     MyMaterial.metastableOganesson.getMolten(1000),
                     MaterialsUEVplus.TranscendentMetal.getMolten(9216),
@@ -803,9 +801,9 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BorosilicateGlass, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforceGlass, 6),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.BorosilicateGlass, 1),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforceGlass, 6),
+                OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 ItemList.Field_Generator_HV.get(4),
                 GT_Utility.getIntegratedCircuit(6))
             .fluidInputs(Materials.Naquadria.getMolten(288))
@@ -818,9 +816,9 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1))
             .fluidInputs(Materials.Oxygen.getGas(1000))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 2))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 2))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -828,7 +826,7 @@ public class RecipeLoader {
         // AlN = Al + N
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1))
             .fluidOutputs(Materials.Nitrogen.getGas(1000L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -848,7 +846,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 5),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 5),
                 GT_Utility.getIntegratedCircuit(9))
             .fluidInputs(FluidRegistry.getFluidStack("advancedglue", 1000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
@@ -867,14 +865,14 @@ public class RecipeLoader {
             ItemRefer.Raw_Cylinder.get(1),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PPP", "PFP", "PPP", 'P', ItemRefer.Special_Ceramics_Plate.get(1), 'F',
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Raw_Cylinder.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Titanium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6),
+                OreDictUnificator.get(OrePrefixes.gearGt, Materials.Titanium, 1),
+                OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6),
                 GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemRefer.Titanium_Plated_Cylinder.get(1))
             .duration(15 * SECONDS)
@@ -884,7 +882,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(16),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2))
             .fluidInputs(FluidRegistry.getFluidStack("liquidoxygen", 1000), Materials.NitrogenDioxide.getGas(1000))
             .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 500))
             .duration(10 * SECONDS)
@@ -902,7 +900,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(16),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2))
             .fluidInputs(
                 FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
                 Materials.NitrogenDioxide.getGas(1000))
@@ -924,16 +922,16 @@ public class RecipeLoader {
             ItemRefer.Universal_Chemical_Fuel_Engine.get(1),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "TZT", "ALB", "WGW", 'T',
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
                 ItemList.Machine_Multi_DieselEngine.get(1), 'B', ItemList.Machine_Multi_ExtremeDieselEngine.get(1), 'L',
-                ItemList.Hull_LuV, 'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
-                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium, 1), });
+                ItemList.Hull_LuV, 'W', OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
+                OreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium, 1), });
 
         // neutron activator
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
+                OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
+                OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
                 GT_Utility.getIntegratedCircuit(8))
             .fluidInputs(FluidRegistry.getFluidStack("dye.chemical.dyecyan", 144))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -943,8 +941,8 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
+                OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
+                OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
                 GT_Utility.getIntegratedCircuit(8))
             .fluidInputs(FluidRegistry.getFluidStack("dye.watermixed.dyecyan", 144))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -955,8 +953,8 @@ public class RecipeLoader {
         GT_ModHandler.addCraftingRecipe(
             ItemRefer.Plastic_Case.get(1),
             new Object[] { "PCP", "CDC", "PCP", 'P',
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
+                OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
+                OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -974,8 +972,8 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 4))
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 4))
             .fluidInputs(Materials.Water.getFluid(1000))
             .itemOutputs(ItemRefer.Quartz_Wafer.get(1))
             .outputChances(3333)
@@ -986,8 +984,8 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 4))
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 4))
             .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
             .itemOutputs(ItemRefer.Quartz_Wafer.get(1))
             .requiresCleanRoom()
@@ -1017,10 +1015,10 @@ public class RecipeLoader {
                 .itemInputs(
                     ItemRefer.Quartz_Crystal_Resonator.get(2),
                     ItemRefer.Plastic_Case.get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
+                    OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     ItemList.Cover_Screen.get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.componentCircuit, Materials.Diode, 16L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
+                    OreDictUnificator.get(OrePrefixes.componentCircuit, Materials.Diode, 16L),
+                    OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
                 .fluidInputs(tMat.getMolten(144 * tMultiplier))
                 .itemOutputs(ItemRefer.Inverter.get(1))
                 .duration(12 * SECONDS)
@@ -1031,10 +1029,10 @@ public class RecipeLoader {
                 .itemInputs(
                     ItemRefer.Quartz_Crystal_Resonator.get(2),
                     ItemRefer.Plastic_Case.get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
+                    OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     ItemList.Cover_Screen.get(1),
                     ItemList.Circuit_Parts_DiodeASMD.get(4),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
+                    OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
                 .fluidInputs(tMat.getMolten(144 * tMultiplier))
                 .itemOutputs(ItemRefer.Inverter.get(1))
                 .duration(12 * SECONDS)
@@ -1048,7 +1046,7 @@ public class RecipeLoader {
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         MyMaterial.signalium.get(OrePrefixes.bolt, 32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                        OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
                         GT_ModHandler.getIC2Item("reactorVent", 1L, 1))
                     .fluidInputs(tMat.getMolten(288 * tMultiplier))
                     .itemOutputs(ItemRefer.HiC_T1.get(1))
@@ -1063,8 +1061,8 @@ public class RecipeLoader {
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         MyMaterial.signalium.get(OrePrefixes.bolt, 32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TinAlloy, 1))
+                        OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                        OreDictUnificator.get(OrePrefixes.rotor, Materials.TinAlloy, 1))
                     .fluidInputs(tMat.getMolten(288 * tMultiplier))
                     .itemOutputs(ItemRefer.HiC_T1.get(1))
                     .duration(1 * MINUTES)
@@ -1076,27 +1074,26 @@ public class RecipeLoader {
         GT_ModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[0].copy(),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "WPM", "CHI", "WPM", 'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 1),
-                'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lead, 1), 'M',
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Lead, 1), 'C',
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1), 'H', ItemList.Hull_ULV, 'I',
+            new Object[] { "WPM", "CHI", "WPM", 'W', OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 1),
+                'P', OreDictUnificator.get(OrePrefixes.plate, Materials.Lead, 1), 'M',
+                OreDictUnificator.get(OrePrefixes.rotor, Materials.Lead, 1), 'C',
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1), 'H', ItemList.Hull_ULV, 'I',
                 ItemRefer.Inverter.get(1), });
 
         GT_ModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[1].copy(),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "WPM", "CHI", "WPM", 'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1),
-                'P', GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1), 'M',
-                ItemList.Electric_Motor_LV, 'C', "plateAnyRubber", 'H', ItemList.Hull_LV, 'I',
-                ItemRefer.Inverter.get(1), });
+            new Object[] { "WPM", "CHI", "WPM", 'W', OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1),
+                'P', OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1), 'M', ItemList.Electric_Motor_LV,
+                'C', "plateAnyRubber", 'H', ItemList.Hull_LV, 'I', ItemRefer.Inverter.get(1), });
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_MV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnyCopper, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 2),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnyCopper, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 1),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 2),
                 ItemList.Electric_Motor_MV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[2].copy())
             .duration(15 * SECONDS)
@@ -1107,9 +1104,9 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_HV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PolyvinylChloride, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 2),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.PolyvinylChloride, 1),
+                OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 2),
                 ItemList.Electric_Motor_HV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[3].copy())
             .duration(15 * SECONDS)
@@ -1122,13 +1119,13 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_LuV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic, 4),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 1),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic, 4),
                 ItemList.Electric_Motor_LuV.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorMV, 4))
+                OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorMV, 4))
             .fluidInputs(Materials.Argon.getGas(3000))
             .itemOutputs(Loaders.NeutronAccelerators[6].copy())
             .eut(TierEU.RECIPE_LuV)
@@ -1141,13 +1138,13 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_ZPM.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polybenzimidazole, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic, 4),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 1),
+                OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polybenzimidazole, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic, 4),
                 ItemList.Electric_Motor_ZPM.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorEV, 4))
+                OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorEV, 4))
             .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(3000))
             .itemOutputs(Loaders.NeutronAccelerators[7].copy())
             .eut(TierEU.RECIPE_ZPM)
@@ -1160,14 +1157,14 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(4),
                 ItemList.Hull_UV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Polybenzimidazole, 4),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 2),
+                OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Polybenzimidazole, 4),
                 ItemList.ZPM_Coil.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NickelZincFerrite, 16),
+                OreDictUnificator.get(OrePrefixes.stickLong, Materials.NickelZincFerrite, 16),
                 ItemList.ZPM_Coil.get(4),
                 ItemList.Electric_Motor_UV.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4))
+                OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4))
             .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(3000))
             .itemOutputs(Loaders.NeutronAccelerators[8].copy())
             .eut(TierEU.RECIPE_UV)
@@ -1179,8 +1176,8 @@ public class RecipeLoader {
                 ItemList.Casing_IV.get(1L),
                 ItemList.Cover_ActivityDetector.get(1L),
                 ItemList.Cover_Screen.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1),
                 ItemList.Sensor_HV.get(2),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Helium.getGas(1000))
@@ -1192,9 +1189,8 @@ public class RecipeLoader {
         GT_ModHandler.addCraftingRecipe(
             ItemRefer.Neutron_Source.get(1),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { " P ", "PUP", " P ", 'P',
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1), 'U',
-                ItemRefer.High_Density_Uranium.get(1) });
+            new Object[] { " P ", "PUP", " P ", 'P', OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1),
+                'U', ItemRefer.High_Density_Uranium.get(1) });
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemRefer.HiC_T2.get(2), ItemList.Emitter_EV.get(2), ItemRefer.Neutron_Source.get(1))
@@ -1213,10 +1209,10 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.IronMagnetic, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide, 2),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber, 1),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.IronMagnetic, 4),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide, 2),
                 ItemList.Electric_Motor_EV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[4].copy())
             .duration(15 * SECONDS)
@@ -1227,10 +1223,10 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_IV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SteelMagnetic, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 2),
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Silicone, 1),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.SteelMagnetic, 4),
+                OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 2),
                 ItemList.Electric_Motor_IV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[5].copy())
             .duration(15 * SECONDS)
@@ -1240,8 +1236,8 @@ public class RecipeLoader {
         // Al2O3 + 2N + 3C = 2AlN + 3CO
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sapphire, 5),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sapphire, 5),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3))
             .fluidInputs(FluidRegistry.getFluidStack("liquidnitrogen", 2000))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(3000))
             .itemOutputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
@@ -1252,8 +1248,8 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GreenSapphire, 5),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.GreenSapphire, 5),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3))
             .fluidInputs(FluidRegistry.getFluidStack("liquidnitrogen", 2000))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(3000))
             .itemOutputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
@@ -1264,8 +1260,8 @@ public class RecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 5),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 5),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3))
             .fluidInputs(FluidRegistry.getFluidStack("liquidnitrogen", 2000))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(3000))
             .itemOutputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
@@ -1295,12 +1291,12 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1))
             .outputChances(1000, 500, 400, 50, 20, 5)
             .fluidOutputs(MyMaterial.metastableOganesson.getMolten(122))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -1311,12 +1307,12 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1))
             .outputChances(1000, 500, 400, 50, 20, 5)
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(182))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -1327,12 +1323,12 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkIVDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32))
             .outputChances(9900, 9500, 9000, 8000, 5000, 3000)
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(864))
             .duration(2 * MINUTES + 5 * SECONDS)
@@ -1343,12 +1339,12 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkIIIDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32))
             .outputChances(9500, 9000, 8000, 7000, 5000, 4000)
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -1359,10 +1355,10 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Americium, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Americium, 32),
                 WerkstoffLoader.Californium.get(OrePrefixes.dust, 32))
             .outputChances(9000, 8500, 5000, 4000, 2000)
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(144))
@@ -1374,9 +1370,9 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bismuth, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Barium, 6L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 16L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Bismuth, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Barium, 6L))
             .outputChances(6000, 1000, 5000)
             .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(10))
             .duration(50 * SECONDS)
@@ -1389,10 +1385,10 @@ public class RecipeLoader {
             .itemOutputs(
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 16),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 4))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 2),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 4))
             .outputChances(10000, 8000, 10000, 8000, 3000, 5000)
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
@@ -1402,9 +1398,9 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 9),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 2))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 9),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 4),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 2))
             .outputChances(5000, 8000, 7500)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(144))
             .duration(2 * MINUTES + 5 * SECONDS)
@@ -1414,7 +1410,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 1))
             .fluidOutputs(MyMaterial.thorium232Tetrafluoride.getFluidOrGas(750))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1440,11 +1436,11 @@ public class RecipeLoader {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(1000))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 48),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 32),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 32))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 48),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 32))
             .outputChances(9000, 8500, 5000, 4000, 2000)
             .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(144))
             .duration(5 * MINUTES)
@@ -1454,11 +1450,11 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.radioactiveSludge.get(OrePrefixes.dust, 4))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 2),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1),
                 WerkstoffLoader.Tiberium.get(OrePrefixes.dust, 1))
             .outputChances(10000, 9500, 8000, 2500, 2000, 2000)
             .fluidOutputs(Materials.Radon.getGas(20))

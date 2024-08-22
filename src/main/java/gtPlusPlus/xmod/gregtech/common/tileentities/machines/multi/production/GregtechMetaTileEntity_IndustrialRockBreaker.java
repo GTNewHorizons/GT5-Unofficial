@@ -3,12 +3,12 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -38,12 +38,12 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -80,8 +80,8 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     private static final String anyBaseCasing = "Any " + casingBaseName;
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Industrial Rock Breaker")
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
@@ -134,7 +134,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -212,7 +212,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         sRecipe_Redstone = new GT_Recipe(
             false,
             new ItemStack[] { GT_Utility.getIntegratedCircuit(3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
             null,
             new int[] { 10000 },
@@ -243,8 +243,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         boolean aHasRedstone = false;
         if (!aItems.isEmpty()) {
             for (ItemStack aItem : aItems) {
-                if (GT_Utility
-                    .areStacksEqual(aItem, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                if (GT_Utility.areStacksEqual(aItem, OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                     aHasRedstone = true;
                     break;
                 }
@@ -290,7 +289,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
 
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(tRecipe)
             .setItemInputs(aItemInputs)
             .setFluidInputs(aFluidInputs)
             .setAvailableEUt(tEnergy)
@@ -313,7 +312,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
             .setEUt(tEnergy)
             .setDuration(tRecipe.mDuration)
             .setEUtDiscount(0.75F)

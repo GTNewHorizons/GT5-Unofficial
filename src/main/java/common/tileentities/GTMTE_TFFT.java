@@ -6,10 +6,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -51,15 +51,15 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 
-public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_TFFT> implements ISurvivalConstructable {
+public class GTMTE_TFFT extends EnhancedMultiBlockBase<GTMTE_TFFT> implements ISurvivalConstructable {
 
     public enum Field {
 
@@ -325,8 +325,8 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
             .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
@@ -369,14 +369,14 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
         for (int i = -1; i >= 1 - layer; i--) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
     }
 
     @Override
@@ -460,7 +460,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             boolean isFluidSelected = this.fluidSelector != -1;
 
             if (!isFluidSelected || !sFluid.isEmpty()) {
-                for (GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
+                for (Hatch_Output tHatch : this.mOutputHatches) {
                     int hatchCapacity = tHatch.getCapacity();
                     int hatchAmount = tHatch.getFluidAmount();
                     int remaining = hatchCapacity - hatchAmount;

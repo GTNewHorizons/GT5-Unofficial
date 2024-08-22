@@ -28,7 +28,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.task.tasks.PollutionTask;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
 public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
@@ -73,8 +73,8 @@ public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
             .addInfo("Used for charcoal")
             .beginStructureBlock(3, 3, 3, true)

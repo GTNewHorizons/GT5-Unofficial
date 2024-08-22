@@ -37,19 +37,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo, IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Rack extends Hatch implements IAddGregtechLogo, IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon EM_R;
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
@@ -168,7 +168,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         // else if(heat>0)
         // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         // else
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

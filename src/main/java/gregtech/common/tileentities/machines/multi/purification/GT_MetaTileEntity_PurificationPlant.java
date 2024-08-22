@@ -4,16 +4,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
 
@@ -56,24 +56,23 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.modularui.widget.TextButtonWidget;
 
 public class GT_MetaTileEntity_PurificationPlant
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant>
-    implements ISurvivalConstructable {
+    extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
@@ -146,7 +145,7 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
         if (built == -1) {
             GT_Utility.sendChatToPlayer(
                 env.getActor(),
@@ -162,8 +161,8 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Plant")
             .addInfo("Main controller block for the Water Purification Plant.")
             .addInfo(
@@ -610,7 +609,7 @@ public class GT_MetaTileEntity_PurificationPlant
         final int windowWidth = 260;
         final int windowHeight = 200;
         ModularWindow.Builder builder = ModularWindow.builder(windowWidth, windowHeight);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
             ButtonWidget.closeWindowButton(true)
                 .setPos(windowWidth - 15, 3));
@@ -645,7 +644,7 @@ public class GT_MetaTileEntity_PurificationPlant
                     if (!w.isClient()) w.getContext()
                         .openSyncedWindow(STATUS_WINDOW_ID);
                 })
-            .setBackground(GT_UITextures.BUTTON_STANDARD);
+            .setBackground(UITextures.BUTTON_STANDARD);
         widget.text()
             .setTextAlignment(Alignment.CenterLeft)
             .setDefaultColor(EnumChatFormatting.BLACK);

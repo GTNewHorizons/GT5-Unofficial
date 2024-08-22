@@ -46,15 +46,15 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
+import gregtech.api.items.ItemGeneric;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
-public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem, IItemWithModularUI {
+public class Circuit_Programmer extends ItemGeneric implements IElectricItem, IItemWithModularUI {
 
     private static final int COST_PER_USE = 100;
 
@@ -86,7 +86,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (ElectricItem.manager.use(aStack, COST_PER_USE, aPlayer)) {
-            GT_UIInfos.openPlayerHeldItemUI(aPlayer);
+            UIInfos.openPlayerHeldItemUI(aPlayer);
         }
         return aStack;
     }
@@ -197,7 +197,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
             heldItem.setTagCompound(tag2);
         })
             .setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
-            .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+            .setBackground(ModularUITextures.ITEM_SLOT, UITextures.OVERLAY_SLOT_INT_CIRCUIT)
             .setPos(122, 60));
 
         for (int i = 0; i < 24; i++) {
@@ -232,7 +232,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
 
     private boolean isLVCircuit(ItemStack stack) {
         return BW_Util.checkStackAndPrefix(stack)
-            && OrePrefixes.circuit.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-            && GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.LV);
+            && OrePrefixes.circuit.equals(OreDictUnificator.getAssociation(stack).mPrefix)
+            && OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.LV);
     }
 }

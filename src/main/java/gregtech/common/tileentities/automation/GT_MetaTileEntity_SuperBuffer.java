@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
     @Override
     protected void addMainUI(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SUPER_BUFFER)
                 .setPos(61, 4)
                 .setSize(54, 54));
     }

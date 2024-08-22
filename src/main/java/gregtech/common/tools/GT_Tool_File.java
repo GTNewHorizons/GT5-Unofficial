@@ -9,7 +9,7 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 
 public class GT_Tool_File extends GT_Tool {
@@ -97,19 +97,19 @@ public class GT_Tool_File extends GT_Tool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+            ? MetaGeneratedTool.getPrimaryMaterial(
                 aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex]
             : Textures.ItemIcons.HANDLE_FILE;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {}
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

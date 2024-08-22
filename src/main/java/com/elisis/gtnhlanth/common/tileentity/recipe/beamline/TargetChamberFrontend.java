@@ -13,8 +13,8 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
@@ -85,15 +85,15 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         return posList;
     }
 
-    private String getEUtDisplay(GT_OverclockCalculator calculator) {
+    private String getEUtDisplay(OverclockCalculator calculator) {
         return getEUtWithoutTier(calculator);
     }
 
-    private String getEUtWithoutTier(GT_OverclockCalculator calculator) {
+    private String getEUtWithoutTier(OverclockCalculator calculator) {
         return GT_Utility.formatNumbers(calculator.getConsumption()) + " EU/t";
     }
 
-    private String getVoltageString(GT_OverclockCalculator calculator) {
+    private String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
         return GT_Utility.formatNumbers(voltage) + " EU/t" + GT_Utility.getTierNameWithParentheses(voltage);
     }
@@ -102,7 +102,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         return euPerTick;
     }
 
-    private String getAmperageString(GT_OverclockCalculator calculator) {
+    private String getAmperageString(OverclockCalculator calculator) {
         return GT_Utility.formatNumbers(1);
     }
 

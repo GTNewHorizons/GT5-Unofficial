@@ -20,7 +20,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 
@@ -59,11 +59,10 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
                     : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
             .setBackground(() -> {
                 if (isAllowedToWork()) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                        UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
                 }
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
@@ -96,7 +95,7 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
                 ret.add(getVoidingMode().buttonTexture);
                 ret.add(getVoidingMode().buttonOverlay);
                 if (!supportsVoidProtection()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(UITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -185,7 +184,7 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (supportsMachineModeSwitch()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     ret.add(getMachineModeIcon(getMachineMode()));
                 } else return null;
                 return ret.toArray(new IDrawable[0]);
@@ -227,22 +226,22 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isInputSeparationEnabled()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(UITextures.BUTTON_STANDARD_PRESSED);
                     if (supportsInputSeparation()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
+                        ret.add(UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
+                        ret.add(UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     if (supportsInputSeparation()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
+                        ret.add(UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
+                        ret.add(UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
                     }
                 }
                 if (!supportsInputSeparation()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(UITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -287,22 +286,22 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isBatchModeEnabled()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(UITextures.BUTTON_STANDARD_PRESSED);
                     if (supportsBatchMode()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                        ret.add(UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                        ret.add(UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     if (supportsBatchMode()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+                        ret.add(UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                        ret.add(UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
                     }
                 }
                 if (!supportsBatchMode()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(UITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -329,22 +328,22 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isRecipeLockingEnabled()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(UITextures.BUTTON_STANDARD_PRESSED);
                     if (supportsSingleRecipeLocking()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
+                        ret.add(UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
+                        ret.add(UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     if (supportsSingleRecipeLocking()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
+                        ret.add(UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
+                        ret.add(UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
                     }
                 }
                 if (!supportsSingleRecipeLocking()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(UITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })

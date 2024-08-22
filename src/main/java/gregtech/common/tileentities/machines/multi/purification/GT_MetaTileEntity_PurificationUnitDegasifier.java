@@ -4,9 +4,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -43,16 +43,16 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class GT_MetaTileEntity_PurificationUnitDegasifier
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitDegasifier>
@@ -226,7 +226,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+    protected void setHatchRecipeMap(Hatch_Input hatch) {
         // Do nothing, we don't want to lock hatches to recipe maps since this can cause
         // them to reject our catalyst fluids
     }
@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -289,8 +289,8 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -648,10 +648,10 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         this.controlHatch.updateOutputSignal(this.controlSignal.getSignal());
     }
 
-    private static ArrayList<FluidStack> getDrainableFluidsFromHatch(GT_MetaTileEntity_Hatch_Input hatch) {
+    private static ArrayList<FluidStack> getDrainableFluidsFromHatch(Hatch_Input hatch) {
         // Need special handling for quad input hatches, otherwise it only returns the first fluid in the hatch
-        if (hatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-            return new ArrayList<>(Arrays.asList(((GT_MetaTileEntity_Hatch_MultiInput) hatch).getStoredFluid()));
+        if (hatch instanceof Hatch_MultiInput) {
+            return new ArrayList<>(Arrays.asList(((Hatch_MultiInput) hatch).getStoredFluid()));
         }
         return new ArrayList<>(Collections.singletonList(hatch.getFluid()));
     }
@@ -663,7 +663,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         // If machine is running, continuously consume all valid inputs
         if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             // For each hatch, check if each fluid inside is one of the valid fluids. If so, consume it all.
-            for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+            for (Hatch_Input hatch : mInputHatches) {
                 ArrayList<FluidStack> drainableFluids = getDrainableFluidsFromHatch(hatch);
                 for (FluidStack fluid : drainableFluids) {
                     if (fluid != null && isValidFluid(fluid)) {
@@ -727,7 +727,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DegasifierControlHatch) {
             // Only allow a single control hatch, so fail structure check if there is already one
             if (this.controlHatch == null) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 this.controlHatch = (GT_MetaTileEntity_Hatch_DegasifierControlHatch) aMetaTileEntity;
                 return true;
             }

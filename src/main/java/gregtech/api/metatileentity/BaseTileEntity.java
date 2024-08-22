@@ -50,8 +50,8 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
@@ -60,8 +60,8 @@ import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
+import gregtech.api.net.Packet_BlockEvent;
+import gregtech.api.net.Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
@@ -540,7 +540,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final void sendBlockEvent(byte aID, byte aValue) {
         NW.sendPacketToAllPlayersInRange(
             worldObj,
-            new GT_Packet_Block_Event(xCoord, (short) yCoord, zCoord, aID, aValue),
+            new Packet_BlockEvent(xCoord, (short) yCoord, zCoord, aID, aValue),
             xCoord,
             zCoord);
     }
@@ -894,7 +894,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         })
             .disableShiftInsert()
             .setHandlePhantomActionClient(true)
-            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+            .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_INT_CIRCUIT)
             .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
@@ -926,7 +926,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(this, selected));
+        GT_Values.NW.sendToServer(new Packet_SetConfigurationCircuit(this, selected));
         // we will not do any validation on client side
         // it doesn't get to actually decide what inventory contains anyway
         inv.setInventorySlotContents(ccs.getCircuitSlot(), selected);

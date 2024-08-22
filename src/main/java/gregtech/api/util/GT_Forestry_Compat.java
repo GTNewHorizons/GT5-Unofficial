@@ -3,8 +3,8 @@ package gregtech.api.util;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.Map;
 
@@ -172,7 +172,7 @@ public class GT_Forestry_Compat {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
                 if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)
                     && (tRecipe.getResources()[0] != null)) {
-                    GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                    RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                     recipeBuilder.itemInputs(tRecipe.getResources()[0]);
                     if (tRecipe.getRemnants() != null) {
                         recipeBuilder.itemOutputs(tRecipe.getRemnants())

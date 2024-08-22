@@ -16,7 +16,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
@@ -123,7 +123,7 @@ public class GT_Cover_WirelessFluidDetector
     // GUI stuff
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
     }
 
@@ -131,7 +131,7 @@ public class GT_Cover_WirelessFluidDetector
 
         private int maxCapacity;
 
-        public WirelessFluidDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+        public WirelessFluidDetectorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

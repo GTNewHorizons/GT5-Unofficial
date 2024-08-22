@@ -2,10 +2,10 @@ package gregtech.common.items;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.items.ItemRadioactiveCellIC;
 import ic2.api.reactor.IReactor;
 
-public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
+public class GT_DepletetCell_Item extends ItemRadioactiveCellIC {
 
     public GT_DepletetCell_Item(String aUnlocalized, String aEnglish, int aRadiation) {
         super(aUnlocalized, aEnglish, 1, 1, 0, aRadiation, 0, null, false);

@@ -13,9 +13,9 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
@@ -42,16 +42,16 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GT_FluidFactory;
-import gregtech.api.items.GT_Block_LongDistancePipe;
-import gregtech.api.items.GT_BreederCell_Item;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.items.BlockLongDistancePipe;
+import gregtech.api.items.ItemBreederCell;
+import gregtech.api.items.ItemGeneric;
+import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings11;
@@ -166,11 +166,11 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         // Tiered recipe materials actually appear to be set in GT_MetaTileEntity_BasicMachine_GT_Recipe, making these
         // unused
-        ItemList.Rotor_LV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Tin, 1L));
-        ItemList.Rotor_MV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Bronze, 1L));
-        ItemList.Rotor_HV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1L));
-        ItemList.Rotor_EV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L));
-        ItemList.Rotor_IV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L));
+        ItemList.Rotor_LV.set(OreDictUnificator.get(OrePrefixes.rotor, Materials.Tin, 1L));
+        ItemList.Rotor_MV.set(OreDictUnificator.get(OrePrefixes.rotor, Materials.Bronze, 1L));
+        ItemList.Rotor_HV.set(OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1L));
+        ItemList.Rotor_EV.set(OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L));
+        ItemList.Rotor_IV.set(OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L));
 
         ItemList.VOLUMETRIC_FLASK.set(new GT_VolumetricFlask("Volumetric_Flask", "Volumetric flask", 1000));
 
@@ -181,14 +181,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             false,
             new Object[] { "sensorcard", "GregTech Sensor Card" });
         ItemList.NC_SensorCard.set(
-            tItem == null ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed")
+            tItem == null ? new ItemGeneric("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed")
                 : tItem);
 
         Item advSensorCard = (Item) GT_Utility
             .callConstructor("gregtech.common.items.GT_AdvancedSensorCard_Item", 0, null, false);
         ItemList.NC_AdvancedSensorCard.set(
             advSensorCard == null
-                ? new GT_Generic_Item(
+                ? new ItemGeneric(
                     "advancedsensorcard",
                     "GregTech Advanced Sensor Card",
                     "Nuclear Control not installed")
@@ -222,7 +222,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .set(GregTech_API.constructCoolantCellItem("1080k_Space_Coolantcell", "1080k Sp Coolant Cell", 1080000));
 
         ItemList.GlowstoneCell.set(
-            new GT_BreederCell_Item(
+            new ItemBreederCell(
                 "glowstoneCell",
                 "Glowstone Fuel Rod",
                 "Source of sunnarium",
@@ -246,7 +246,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                                                                                                           // CHECK
                                                                                                           // num
         ItemList.ThoriumCell_1.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Thoriumcell",
                 "Fuel Rod (Thorium)",
                 1,
@@ -257,7 +257,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.Depleted_Thorium_1.get(1),
                 false));
         ItemList.ThoriumCell_2.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Double_Thoriumcell",
                 "Dual Fuel Rod (Thorium)",
                 2,
@@ -268,7 +268,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.Depleted_Thorium_2.get(1),
                 false));
         ItemList.ThoriumCell_4.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Quad_Thoriumcell",
                 "Quad Fuel Rod (Thorium)",
                 4,
@@ -282,9 +282,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Thorium_1.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
@@ -292,9 +292,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Thorium_2.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
@@ -302,9 +302,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Thorium_4.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
@@ -316,7 +316,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         ItemList.Depleted_Naquadah_4
             .set(new GT_DepletetCell_Item("Quad_NaquadahcellDep", "Quad Fuel Rod (Depleted Naquadah)", 1));
         ItemList.NaquadahCell_1.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Naquadahcell",
                 "Fuel Rod (Naquadah)",
                 1,
@@ -327,7 +327,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.Depleted_Naquadah_1.get(1),
                 false));
         ItemList.NaquadahCell_2.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Double_Naquadahcell",
                 "Dual Fuel Rod (Naquadah)",
                 2,
@@ -338,7 +338,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.Depleted_Naquadah_2.get(1),
                 false));
         ItemList.NaquadahCell_4.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Quad_Naquadahcell",
                 "Quad Fuel Rod (Naquadah)",
                 4,
@@ -352,12 +352,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Naquadah_1.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Naquadria, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Naquadria, 2L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -366,12 +366,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Naquadah_2.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -380,12 +380,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Naquadah_4.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 2L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 8L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -395,7 +395,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         ItemList.Depleted_MNq_2.set(new GT_DepletetCell_Item("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
         ItemList.Depleted_MNq_4.set(new GT_DepletetCell_Item("Quad_MNqCellDep", "Quad Fuel Rod (Depleted Nq*)", 1));
         ItemList.MNqCell_1.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "MNqCell",
                 "Fuel Rod (Nq* - MOX like behaviour)",
                 1,
@@ -406,7 +406,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.Depleted_MNq_1.get(1),
                 true));
         ItemList.MNqCell_2.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Double_MNqCell",
                 "Dual Fuel Rod (Nq* - MOX like behaviour)",
                 2,
@@ -417,7 +417,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.Depleted_MNq_2.get(1),
                 true));
         ItemList.MNqCell_4.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "Quad_MNqCell",
                 "Quad Fuel Rod (Nq* - MOX like behaviour)",
                 4,
@@ -431,12 +431,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_MNq_1.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.NaquadahEnriched, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                OreDictUnificator.get(OrePrefixes.dustSmall, Materials.NaquadahEnriched, 2L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -445,12 +445,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_MNq_2.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -459,19 +459,19 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_MNq_4.get(1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 2L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 8L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Uraniumcell_1.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "reactorUraniumSimple",
                 "Fuel Rod (Uranium)",
                 1,
@@ -482,7 +482,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_ModHandler.getIC2Item("reactorDepletedUraniumSimple", 1),
                 false));
         ItemList.Uraniumcell_2.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "reactorUraniumDual",
                 "Dual Fuel Rod (Uranium)",
                 2,
@@ -493,7 +493,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_ModHandler.getIC2Item("reactorDepletedUraniumDual", 1),
                 false));
         ItemList.Uraniumcell_4.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "reactorUraniumQuad",
                 "Quad Fuel Rod (Uranium)",
                 4,
@@ -504,7 +504,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_ModHandler.getIC2Item("reactorDepletedUraniumQuad", 1),
                 false));
         ItemList.Moxcell_1.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "reactorMOXSimple",
                 "Fuel Rod (Mox)",
                 1,
@@ -515,7 +515,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_ModHandler.getIC2Item("reactorDepletedMOXSimple", 1),
                 true));
         ItemList.Moxcell_2.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "reactorMOXDual",
                 "Dual Fuel Rod (Mox)",
                 2,
@@ -526,7 +526,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_ModHandler.getIC2Item("reactorDepletedMOXDual", 1),
                 true));
         ItemList.Moxcell_4.set(
-            new GT_RadioactiveCellIC_Item(
+            new ItemRadioactiveCellIC(
                 "reactorMOXQuad",
                 "Quad Fuel Rod (Mox)",
                 4,
@@ -550,7 +550,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockCasings10 = new GT_Block_Casings10();
         GregTech_API.sBlockCasings11 = new GT_Block_Casings11();
         GregTech_API.sBlockGranites = new GT_Block_Granites();
-        GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
+        GregTech_API.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
@@ -719,7 +719,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.LiquidOxygen)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("LiquidNitrogen")
             .withLocalizedName("Liquid Nitrogen")
@@ -727,7 +727,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.LiquidNitrogen)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("LiquidAir")
             .withLocalizedName("Liquid Air")
@@ -735,7 +735,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.LiquidAir)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Oxygen")
             .withLocalizedName("Oxygen")
@@ -743,7 +743,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Oxygen)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Hydrogen")
             .withLocalizedName("Hydrogen")
@@ -751,7 +751,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Hydrogen)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Deuterium")
             .withLocalizedName("Deuterium")
@@ -759,7 +759,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Deuterium)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Deuterium, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Deuterium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Tritium")
             .withLocalizedName("Tritium")
@@ -767,7 +767,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Tritium)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Tritium, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Tritium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Helium")
             .withLocalizedName("Helium")
@@ -775,7 +775,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Helium)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Argon")
             .withLocalizedName("Argon")
@@ -783,7 +783,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Argon)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Argon, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Argon, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Radon")
             .withLocalizedName("Radon")
@@ -791,7 +791,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Radon)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("Fluorine")
@@ -800,7 +800,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Fluorine)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Titaniumtetrachloride")
             .withLocalizedName("Titaniumtetrachloride")
@@ -808,7 +808,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Titaniumtetrachloride)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Helium-3")
             .withLocalizedName("Helium-3")
@@ -816,7 +816,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Helium_3)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Methane")
             .withLocalizedName("Methane")
@@ -824,7 +824,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Methane)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Nitrogen")
             .withLocalizedName("Nitrogen")
@@ -832,7 +832,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Nitrogen)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("NitrogenDioxide")
             .withLocalizedName("Nitrogen Dioxide")
@@ -840,7 +840,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.NitrogenDioxide)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Steam")
             .withLocalizedName("Steam")
@@ -891,7 +891,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.OilHeavy)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_medium_oil")
             .withLocalizedName("Raw Oil")
@@ -899,7 +899,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.OilMedium)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_light_oil")
             .withLocalizedName("Light Oil")
@@ -907,7 +907,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.OilLight)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("gas_natural_gas")
             .withLocalizedName("Natural Gas")
@@ -915,7 +915,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.NatruralGas)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         ItemList.sHydricSulfur = GT_FluidFactory.builder("liquid_hydricsulfur")
             .withLocalizedName("Hydrogen Sulfide")
@@ -923,7 +923,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.HydricSulfide)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1L),
                 ItemList.Cell_Empty.get(1L))
             .asFluid();
         GT_FluidFactory.builder("gas_sulfuricgas")
@@ -932,7 +932,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricGas)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("gas_gas")
             .withLocalizedName("Refinery Gas")
@@ -940,7 +940,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Gas)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_sulfuricnaphtha")
             .withLocalizedName("Sulfuric Naphtha")
@@ -948,7 +948,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricNaphtha)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_sufluriclight_fuel")
             .withLocalizedName("Sulfuric Light Fuel")
@@ -956,7 +956,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricLightFuel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_sulfuricheavy_fuel")
             .withLocalizedName("Sulfuric Heavy Fuel")
@@ -964,7 +964,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricHeavyFuel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_naphtha")
             .withLocalizedName("Naphtha")
@@ -972,7 +972,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Naphtha)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_light_fuel")
             .withLocalizedName("Light Fuel")
@@ -980,7 +980,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.LightFuel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_heavy_fuel")
             .withLocalizedName("Heavy Fuel")
@@ -988,7 +988,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.HeavyFuel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("liquid_lpg")
             .withLocalizedName("LPG")
@@ -996,7 +996,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.LPG)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LPG, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.LPG, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("charcoal_byproducts")
             .withTextureName("molten.autogenerated")
@@ -1006,7 +1006,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.CharcoalByproducts)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CharcoalByproducts, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.CharcoalByproducts, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("molten.bisphenol_a")
             .withTextureName("molten.autogenerated")
@@ -1016,7 +1016,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.BisphenolA)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.BisphenolA, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.BisphenolA, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("UUAmplifier")
@@ -1025,7 +1025,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.UUAmplifier)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.UUAmplifier, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.UUAmplifier, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Chlorine")
             .withLocalizedName("Chlorine")
@@ -1033,7 +1033,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Chlorine)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Mercury")
             .withLocalizedName("Mercury")
@@ -1041,7 +1041,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Mercury)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("NitroFuel")
             .withLocalizedName("Cetane-Boosted Diesel")
@@ -1049,7 +1049,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.NitroFuel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitroFuel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.NitroFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("SodiumPersulfate")
             .withLocalizedName("Sodium Persulfate")
@@ -1057,7 +1057,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SodiumPersulfate)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPersulfate, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPersulfate, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("Glyceryl")
             .withLocalizedName("Glyceryl Trinitrate")
@@ -1065,7 +1065,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Glyceryl)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glyceryl, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Glyceryl, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("lubricant")
@@ -1074,7 +1074,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Lubricant)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("creosote")
             .withLocalizedName("Creosote Oil")
@@ -1082,7 +1082,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Creosote)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("seedoil")
             .withLocalizedName("Seed Oil")
@@ -1090,7 +1090,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SeedOil)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("fishoil")
             .withLocalizedName("Fish Oil")
@@ -1098,7 +1098,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.FishOil)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("oil")
             .withLocalizedName("Oil")
@@ -1106,7 +1106,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Oil)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("fuel")
             .withLocalizedName("Diesel")
@@ -1114,7 +1114,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Fuel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("for.honey")
             .withLocalizedName("Honey")
@@ -1122,7 +1122,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Honey)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("biomass")
             .withLocalizedName("Biomass")
@@ -1130,7 +1130,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Biomass)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("bioethanol")
             .withLocalizedName("Bio Ethanol")
@@ -1138,7 +1138,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Ethanol)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("sulfuricacid")
             .withLocalizedName("Sulfuric Acid")
@@ -1146,7 +1146,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricAcid)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("milk")
             .withLocalizedName("Milk")
@@ -1154,7 +1154,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Milk)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Milk, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Milk, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("mcguffium")
             .withLocalizedName("Mc Guffium 239")
@@ -1162,7 +1162,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.McGuffium239)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("refinedGlue")
             .withLocalizedName("Refined Glue")
@@ -1170,7 +1170,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Glue)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("hotfryingoil")
             .withLocalizedName("Hot Frying Oil")
@@ -1178,7 +1178,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.FryingOilHot)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("DimensionallyTranscendentResidue")
@@ -1187,7 +1187,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.DimensionallyTranscendentResidue)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.DimensionallyTranscendentResidue, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.DimensionallyTranscendentResidue, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("ExcitedDTCC")
             .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")
@@ -1195,7 +1195,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.ExcitedDTCC)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTCC, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTCC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("ExcitedDTPC")
             .withLocalizedName("Excited Dimensionally Transcendent Prosaic Catalyst")
@@ -1203,7 +1203,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.ExcitedDTPC)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTPC, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTPC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("ExcitedDTRC")
             .withLocalizedName("Excited Dimensionally Transcendent Resplendent Catalyst")
@@ -1211,7 +1211,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.ExcitedDTRC)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTRC, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTRC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("ExcitedDTEC")
             .withLocalizedName("Excited Dimensionally Transcendent Exotic Catalyst")
@@ -1219,7 +1219,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.ExcitedDTEC)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTEC, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTEC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GT_FluidFactory.builder("ExcitedDTSC")
             .withLocalizedName("Excited Dimensionally Transcendent Stellar Catalyst")
@@ -1227,7 +1227,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.ExcitedDTSC)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTSC, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTSC, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder(MaterialsUEVplus.RawStarMatter.mName)
@@ -1236,7 +1236,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.RawStarMatter)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.RawStarMatter, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.RawStarMatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder(MaterialsUEVplus.Space.mName)
@@ -1245,7 +1245,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.Space)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Space, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Space, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder(MaterialsUEVplus.Time.mName)
@@ -1254,7 +1254,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.Time)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Time, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Time, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("PrimordialMatter")
@@ -1263,7 +1263,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.PrimordialMatter)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("QuarkGluonPlasma")
@@ -1272,7 +1272,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.QuarkGluonPlasma)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("fieryblood")
@@ -1281,7 +1281,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.FierySteel)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("holywater")
@@ -1290,7 +1290,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.HolyWater)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L),
                 ItemList.Cell_Empty.get(1L));
         if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(
@@ -1303,8 +1303,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 Materials.Milk.getFluid(1000L),
-                GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
+                OreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
+                OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 Materials.Milk.getFluid(250L),
@@ -1363,7 +1363,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Ice)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L),
                 ItemList.Cell_Empty.get(1L));
         Materials.Water.mSolid = Materials.Ice.mSolid;
 
@@ -1373,7 +1373,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Glass)
             .registerContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
+                OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
                 ItemList.Cell_Empty.get(1L),
                 144);
         GT_FluidFactory.builder("molten.redstone")
@@ -1382,7 +1382,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Redstone)
             .registerContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
+                OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
                 ItemList.Cell_Empty.get(1L),
                 144);
         GT_FluidFactory.builder("molten.blaze")
@@ -1391,7 +1391,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Blaze)
             .registerContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
+                OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
                 ItemList.Cell_Empty.get(1L),
                 144);
         GT_FluidFactory.builder("wet.concrete")
@@ -1400,7 +1400,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Concrete)
             .registerContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
+                OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
                 ItemList.Cell_Empty.get(1L),
                 144);
 
@@ -1961,7 +1961,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Sodium)
             .registerBContainers(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
+                OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         FluidContainerRegistry.registerFluidContainer(
@@ -1984,14 +1984,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1, WILDCARD))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
             .eut(2)
@@ -1999,72 +1999,72 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
-        GT_OreDictUnificator.set(
+        OreDictUnificator.set(
             OrePrefixes.ingot,
             Materials.FierySteel,
             GT_ModHandler.getModItem(TwilightForest.ID, "item.fieryIngot", 1L, 0));
-        GT_OreDictUnificator.set(
+        OreDictUnificator.set(
             OrePrefixes.ingot,
             Materials.Knightmetal,
             GT_ModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 1L, 0));
-        GT_OreDictUnificator.set(
+        OreDictUnificator.set(
             OrePrefixes.ingot,
             Materials.Steeleaf,
             GT_ModHandler.getModItem(TwilightForest.ID, "item.steeleafIngot", 1L, 0));
-        GT_OreDictUnificator.set(
+        OreDictUnificator.set(
             OrePrefixes.ingot,
             Materials.IronWood,
             GT_ModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.InfusedAir, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.InfusedFire, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.InfusedWater, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.InfusedEarth, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.InfusedOrder, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
-        GT_OreDictUnificator.set(
+        OreDictUnificator.set(
             OrePrefixes.gem,
             Materials.InfusedEntropy,
             GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.nugget, Materials.Mercury, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 5));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.nugget, Materials.Thaumium, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 6));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Thaumium, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 2));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.Mercury, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 3));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.Amber, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.gem, Materials.Firestone, GT_ModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
 
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.nugget, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
-        GT_OreDictUnificator
+        OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
-            GT_OreDictUnificator
+            OreDictUnificator
                 .set(OrePrefixes.plate, Materials.Iron, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0));
         } else {
-            GT_OreDictUnificator.set(
+            OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.Iron,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
@@ -2074,10 +2074,10 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateSteel", true)) {
-            GT_OreDictUnificator
+            OreDictUnificator
                 .set(OrePrefixes.plate, Materials.Steel, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1));
         } else {
-            GT_OreDictUnificator.set(
+            OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.Steel,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
@@ -2087,12 +2087,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateTinAlloy", true)) {
-            GT_OreDictUnificator.set(
+            OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.TinAlloy,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2));
         } else {
-            GT_OreDictUnificator.set(
+            OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.TinAlloy,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
@@ -2102,10 +2102,10 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)) {
-            GT_OreDictUnificator
+            OreDictUnificator
                 .set(OrePrefixes.plate, Materials.Copper, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3));
         } else {
-            GT_OreDictUnificator.set(
+            OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.Copper,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
@@ -2113,11 +2113,11 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 false);
         }
 
-        GT_OreDictUnificator.set(
+        OreDictUnificator.set(
             OrePrefixes.dust,
             Materials.Cocoa,
             GT_ModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
-        GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L));
+        OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L));
 
         GregTech_API
             .registerMachineBlock(GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);

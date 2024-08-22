@@ -43,13 +43,13 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.BasicTank;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -645,7 +645,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                         continue;
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GT_OreDictUnificator.addToBlacklist(rStack);
+                        OreDictUnificator.addToBlacklist(rStack);
                         continue;
                     }
                 }
@@ -671,14 +671,14 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                     }
                     if (tRandomData instanceof ItemData) {
                         if (GT_Utility.isStringValid(tRandomData)) {
-                            GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                            OreDictUnificator.registerOre(tRandomData, rStack);
                         } else {
-                            GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }
                     if (tUseOreDict) {
-                        GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                        OreDictUnificator.registerOre(tRandomData, rStack);
                         continue;
                     }
                 }
@@ -1236,19 +1236,19 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
             return null;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
-        if (aMetaTileEntity == null || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+        if (aMetaTileEntity == null || aMetaTileEntity instanceof Hatch_MultiInput) {
             // blacklist multiinput hatch as it's too complex
             return null;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
+        if (aMetaTileEntity instanceof BasicTank) {
             Logger.INFO("Tile Was Instanceof BasicTank.");
-            return getStoredFluidOfGTMachine((GT_MetaTileEntity_BasicTank) aMetaTileEntity);
+            return getStoredFluidOfGTMachine((BasicTank) aMetaTileEntity);
         } else {
             return null;
         }
     }
 
-    public FluidStack getStoredFluidOfGTMachine(GT_MetaTileEntity_BasicTank aTileEntity) {
+    public FluidStack getStoredFluidOfGTMachine(BasicTank aTileEntity) {
         FluidStack f = aTileEntity.mFluid;
 
         // Let's see if this machine has output fluid too
@@ -1278,15 +1278,15 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
+        if (aMetaTileEntity instanceof BasicTank) {
             Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [2]");
-            return setStoredFluidOfGTMachine((GT_MetaTileEntity_BasicTank) aMetaTileEntity, aSetFluid);
+            return setStoredFluidOfGTMachine((BasicTank) aMetaTileEntity, aSetFluid);
         } else {
             return false;
         }
     }
 
-    public boolean setStoredFluidOfGTMachine(GT_MetaTileEntity_BasicTank aTileEntity, FluidStack aSetFluid) {
+    public boolean setStoredFluidOfGTMachine(BasicTank aTileEntity, FluidStack aSetFluid) {
         try {
 
             // Try Handle Outputs First

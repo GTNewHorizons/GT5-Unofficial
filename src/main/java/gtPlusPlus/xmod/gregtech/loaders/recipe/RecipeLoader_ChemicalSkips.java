@@ -7,11 +7,11 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GT_RecipeConstants.QFT_FOCUS_TIER;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.RecipeConstants.QFT_FOCUS_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import net.minecraft.item.ItemStack;
@@ -31,8 +31,8 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -423,7 +423,7 @@ public class RecipeLoader_ChemicalSkips {
                 .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get("cropSeaweed", 64),
+                    OreDictUnificator.get("cropSeaweed", 64),
                     Materials.Mytryl.getDust(16),
                     ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 0))
                 .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16))
@@ -644,7 +644,7 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                GT_OreDictUnificator.get("blockShirabon", 16),
+                OreDictUnificator.get("blockShirabon", 16),
                 MaterialsUEVplus.Universium.getNanite(1),
                 ItemList.Timepiece.get(1))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.TemporalHarmonyCatalyst, 1))
@@ -658,7 +658,7 @@ public class RecipeLoader_ChemicalSkips {
                 GT_Utility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
                 getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 64),
-                GT_OreDictUnificator.get("dustIodine", 64),
+                OreDictUnificator.get("dustIodine", 64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 1))
             .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92_160))
@@ -675,8 +675,7 @@ public class RecipeLoader_ChemicalSkips {
             (int) TierEU.RECIPE_ZPM,
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(1), Materials.Carbon.getNanite(4),
-                ItemList.Emitter_UV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 8),
+                ItemList.Emitter_UV.get(4), OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 2) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 10), MaterialsUEVplus.ExcitedDTCC.getFluid(5000),
                 new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 500),
@@ -693,7 +692,7 @@ public class RecipeLoader_ChemicalSkips {
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(2), Materials.Carbon.getNanite(8),
                 ItemList.Emitter_UEV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 8),
+                OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 4),
                 ItemList.StableAdhesive.get(4) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 12), MaterialsUEVplus.ExcitedDTPC.getFluid(5000),
@@ -711,7 +710,7 @@ public class RecipeLoader_ChemicalSkips {
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(4), Materials.Carbon.getNanite(16),
                 ItemList.Emitter_UIV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 8),
+                OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 8),
                 ItemList.SuperconductorComposite.get(4) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 15), MaterialsUEVplus.ExcitedDTRC.getFluid(5000),
@@ -728,7 +727,7 @@ public class RecipeLoader_ChemicalSkips {
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(8), Materials.Carbon.getNanite(32),
                 ItemList.Emitter_UMV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 8),
+                OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 16),
                 ItemList.NaquadriaSupersolid.get(4) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 20), MaterialsUEVplus.ExcitedDTEC.getFluid(5000),
@@ -744,9 +743,8 @@ public class RecipeLoader_ChemicalSkips {
             1024,
             (int) TierEU.RECIPE_ZPM,
             32,
-            new ItemStack[] { ALLOY.QUANTUM.getFrameBox(1),
-                GT_OreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 16),
+            new ItemStack[] { ALLOY.QUANTUM.getFrameBox(1), OreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 16),
                 ItemList.Field_Generator_UV.get(1), ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getScrew(16) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 10), },
             GregtechItemList.NeutronShieldingCore.get(1),
@@ -759,12 +757,11 @@ public class RecipeLoader_ChemicalSkips {
             2048,
             (int) TierEU.RECIPE_UV,
             32,
-            new ItemStack[] { ALLOY.QUANTUM.getFrameBox(2),
-                GT_OreDictUnificator.get("plateDenseEnrichedNaquadahAlloy", 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
+            new ItemStack[] { ALLOY.QUANTUM.getFrameBox(2), OreDictUnificator.get("plateDenseEnrichedNaquadahAlloy", 4),
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
                 ItemList.Field_Generator_UEV.get(1),
                 // Radox polymer screw.
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.get("RadoxPoly"), 16),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.get("RadoxPoly"), 16),
                 ItemList.StableAdhesive.get(4) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 20), },
             GregtechItemList.CosmicFabricShieldingCore.get(1),
@@ -778,8 +775,8 @@ public class RecipeLoader_ChemicalSkips {
             (int) TierEU.RECIPE_UHV,
             32,
             new ItemStack[] { ALLOY.QUANTUM.getFrameBox(4), ELEMENT.STANDALONE.HYPOGEN.getPlateDense(4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 16),
-                ItemList.Field_Generator_UIV.get(1), GT_OreDictUnificator.get("screwMetastableOganesson", 16),
+                OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 16),
+                ItemList.Field_Generator_UIV.get(1), OreDictUnificator.get("screwMetastableOganesson", 16),
                 ItemList.SuperconductorComposite.get(4) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 40), },
             GregtechItemList.InfinityInfusedShieldingCore.get(1),
@@ -792,10 +789,9 @@ public class RecipeLoader_ChemicalSkips {
             8192,
             (int) TierEU.RECIPE_UEV,
             32,
-            new ItemStack[] { ALLOY.QUANTUM.getFrameBox(8), GT_OreDictUnificator.get("plateDenseShirabon", 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 16),
-                ItemList.Field_Generator_UMV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Dilithium, 16),
+            new ItemStack[] { ALLOY.QUANTUM.getFrameBox(8), OreDictUnificator.get("plateDenseShirabon", 4),
+                OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 16),
+                ItemList.Field_Generator_UMV.get(1), OreDictUnificator.get(OrePrefixes.screw, Materials.Dilithium, 16),
                 ItemList.NaquadriaSupersolid.get(4) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 80), },
             GregtechItemList.SpaceTimeBendingCore.get(1),

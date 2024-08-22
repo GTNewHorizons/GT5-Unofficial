@@ -24,10 +24,10 @@ import net.minecraftforge.common.DimensionManager;
 import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.Packet_New;
 import io.netty.buffer.ByteBuf;
 
-public class CircuitProgrammerPacket extends GT_Packet_New {
+public class CircuitProgrammerPacket extends Packet_New {
 
     private int dimID, playerID;
     private byte chipCfg;
@@ -58,7 +58,7 @@ public class CircuitProgrammerPacket extends GT_Packet_New {
     }
 
     @Override
-    public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
+    public Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
         return new CircuitProgrammerPacket(
             byteArrayDataInput.readInt(),
             byteArrayDataInput.readInt(),

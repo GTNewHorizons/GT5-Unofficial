@@ -21,10 +21,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Hatch_Input {
+public class GT_MetaTileEntity_CompressedFluidHatch extends Hatch_Input {
 
     public GT_MetaTileEntity_CompressedFluidHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);

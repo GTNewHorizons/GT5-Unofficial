@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_DataOrb extends Behaviour_None {
@@ -95,7 +95,7 @@ public class Behaviour_DataOrb extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         if (!(getDataTitle(aStack).length() == 0)) {
             aList.add(getDataTitle(aStack));
             aList.add(getDataName(aStack));

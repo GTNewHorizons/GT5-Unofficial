@@ -7,15 +7,15 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.gui.widgets.GT_PhantomItemButton;
+import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.Hatch_OutputBus;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 
-public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_OutputBus {
+public class GT_MetaTileEntity_SuperBus_Output extends Hatch_OutputBus {
 
     public GT_MetaTileEntity_SuperBus_Output(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, getSlots(tier));
@@ -106,8 +106,8 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
 
         if (acceptsItemLock()) {
             builder.widget(
-                new GT_PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
-                    .setBackground(GT_PhantomItemButton.FILTER_BACKGROUND));
+                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
 }

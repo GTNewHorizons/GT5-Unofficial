@@ -46,20 +46,19 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.p2p.PartP2PSound;
 import gregtech.api.enums.GTVoltageIndex;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_MusicSystem;
 import gregtech.common.gui.modularui.UIHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
-public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMachine
-    implements IAddUIWidgets, ISoundP2PHandler {
+public class GT_MetaTileEntity_BetterJukebox extends BasicMachine implements IAddUIWidgets, ISoundP2PHandler {
 
     // Stored state
     public UUID jukeboxUuid = UNSET_UUID;
@@ -490,7 +489,7 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
             .itemOutputPositionsGetter(count -> UIHelper.getGridPositions(count, 153, 24, 1))
             .specialItemPositionGetter(() -> new Pos2d(115, 62))
             .progressBarPos(Pos2d.cartesian(133, 24))
-            .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_ARROW))
+            .progressBarTexture(new FallbackableUITexture(UITextures.PROGRESSBAR_ARROW))
             .build();
     }
 
@@ -530,8 +529,8 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
         // Loop
         builder.widget(
             new CycleButtonWidget().setToggle(() -> loopMode, val -> loopMode = val)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(UITextures.OVERLAY_BUTTON_CYCLIC)
+                .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.loop.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(153, 6)
@@ -545,8 +544,8 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
                 playbackSlot = 0;
             }
         })
-            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_SHUFFLE)
-            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+            .setStaticTexture(UITextures.OVERLAY_BUTTON_SHUFFLE)
+            .setVariableBackground(UITextures.BUTTON_STANDARD_TOGGLE)
             .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.shuffle.tooltip"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(153, 42)

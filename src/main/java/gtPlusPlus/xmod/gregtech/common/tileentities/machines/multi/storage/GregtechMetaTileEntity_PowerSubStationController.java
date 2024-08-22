@@ -6,9 +6,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
@@ -52,21 +52,21 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -118,8 +118,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
             .addInfo("Does not require maintenance")
@@ -160,7 +160,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // if (mBatteryCapacity <= 0) return false;
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -386,13 +386,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         if (mMachine) return -1;
         int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 18);
         int built;
-        built = survivialBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
+        built = survivalBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         for (int i = 1; i < layer - 1; i++) {
-            built = survivialBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -434,13 +434,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         }
         int tier = getMaxHatchTier(level);
         long volSum = 0;
-        for (GT_MetaTileEntity_Hatch hatch : mAllDynamoHatches) {
+        for (Hatch hatch : mAllDynamoHatches) {
             if (hatch.mTier > tier || hatch.mTier < 3) {
                 return false;
             }
             volSum += (8L << (hatch.mTier * 2));
         }
-        for (GT_MetaTileEntity_Hatch hatch : mAllEnergyHatches) {
+        for (Hatch hatch : mAllEnergyHatches) {
             if (hatch.mTier > tier || hatch.mTier < 3) {
                 return false;
             }
@@ -458,11 +458,11 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+            if (aMetaTileEntity instanceof Hatch_Energy) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+            } else if (aMetaTileEntity instanceof Hatch_Dynamo) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+            } else if (aMetaTileEntity instanceof Hatch_Maintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             } else {
                 if (isThisHatchMultiDynamo(aMetaTileEntity)) {
@@ -626,18 +626,18 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         long aInputAverage = 0;
         long aOutputAverage = 0;
         // Input Power
-        for (GT_MetaTileEntity_Hatch THatch : filterValidMTEs(this.mDischargeHatches)) {
+        for (Hatch THatch : filterValidMTEs(this.mDischargeHatches)) {
             aInputAverage += drawEnergyFromHatch(THatch);
         }
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(this.mAllEnergyHatches)) {
+        for (Hatch tHatch : filterValidMTEs(this.mAllEnergyHatches)) {
             aInputAverage += drawEnergyFromHatch(tHatch);
         }
 
         // Output Power
-        for (GT_MetaTileEntity_Hatch THatch : filterValidMTEs(this.mChargeHatches)) {
+        for (Hatch THatch : filterValidMTEs(this.mChargeHatches)) {
             aOutputAverage += addEnergyToHatch(THatch);
         }
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(this.mAllDynamoHatches)) {
+        for (Hatch tHatch : filterValidMTEs(this.mAllDynamoHatches)) {
             aOutputAverage += addEnergyToHatch(tHatch);
         }
         // reset progress time
@@ -846,7 +846,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(149, 149))
             .widget(new SlotWidget(inventoryHandler, 0).setPos(154, 4))

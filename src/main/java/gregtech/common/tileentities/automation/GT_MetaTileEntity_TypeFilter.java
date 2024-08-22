@@ -22,13 +22,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
+import gregtech.api.metatileentity.implementations.MetaTileEntity_SpecialFilter;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
-public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilter {
+public class GT_MetaTileEntity_TypeFilter extends MetaTileEntity_SpecialFilter {
 
     private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.type_filter.representation_slot.tooltip";
     public int mRotationIndex = 0;
@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     }
 
     private void copyHeldItemPrefix(ItemStack handStack) {
-        ItemData data = GT_OreDictUnificator.getAssociation(handStack);
+        ItemData data = OreDictUnificator.getAssociation(handStack);
         if (data != null && data.hasValidPrefixData()) {
             this.mPrefix = data.mPrefix;
             this.mRotationIndex = -1;
@@ -165,7 +165,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         if (this.mPrefix == OrePrefixes.ore) {
-            ItemData data = GT_OreDictUnificator.getItemData(aStack);
+            ItemData data = OreDictUnificator.getItemData(aStack);
             if (data != null && data.mPrefix != null && OREBLOCK_PREFIXES.contains(data.mPrefix)) {
                 return true;
             }

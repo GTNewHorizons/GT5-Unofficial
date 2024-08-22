@@ -23,7 +23,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
@@ -60,7 +60,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 this,
                 ItemBlockOre.class,
                 Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 "ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()),
                 ItemUtils.getSimpleStack(this));
         } catch (Throwable t) {

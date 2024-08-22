@@ -8,8 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_LanguageManager;
 import ic2.api.crops.ICropTile;
 
@@ -24,7 +24,7 @@ public class Behaviour_Sense extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
@@ -38,7 +38,7 @@ public class Behaviour_Sense extends Behaviour_None {
                             && (((tTileEntity = aWorld.getTileEntity(aX + i, aY + j, aZ + k)) instanceof ICropTile))
                             && (((ICropTile) tTileEntity).harvest(true))
                             && (!aPlayer.capabilities.isCreativeMode)) {
-                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts / 20);
+                            ((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts / 20);
                         }
                     }
                 }
@@ -49,7 +49,7 @@ public class Behaviour_Sense extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }

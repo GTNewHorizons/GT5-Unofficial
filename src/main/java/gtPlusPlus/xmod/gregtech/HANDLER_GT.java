@@ -7,7 +7,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.recipe.common.CI;
@@ -33,7 +33,7 @@ public class HANDLER_GT {
     public static GT_Config mMaterialProperties = null;
     public static GTPP_Config sCustomWorldgenFile = null;
     public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
-    public static GT_MetaGenerated_Tool sMetaGeneratedToolInstance;
+    public static MetaGeneratedTool sMetaGeneratedToolInstance;
 
     public static void preInit() {
 

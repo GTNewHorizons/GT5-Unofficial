@@ -15,7 +15,7 @@ import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class CokeOvenProcessingLogic extends MuTEProcessingLogic<CokeOvenProcessingLogic> {
 
@@ -48,20 +48,20 @@ public class CokeOvenProcessingLogic extends MuTEProcessingLogic<CokeOvenProcess
     private ItemStack findRecipe(@Nonnull ItemStack input) {
         for (int oreId : getOreIDs(input)) {
             if (oreId == COAL_ORE_ID) {
-                return GT_OreDictUnificator.get("fuelCoke", null, 1);
+                return OreDictUnificator.get("fuelCoke", null, 1);
             } else if (oreId == COAL_BLOCK_ORE_ID) {
                 timeMultiplier = 9;
                 return GT_ModHandler.getModItem(Railcraft.ID, "cube", 1, 0);
             } else if (oreId == WOOD_ORE_ID) {
                 return new ItemStack(Items.coal, 1, 1);
             } else if (oreId == SUGARCANE_ORE_ID) {
-                return GT_OreDictUnificator.get("itemCharcoalSugar", null, 1);
+                return OreDictUnificator.get("itemCharcoalSugar", null, 1);
             } else if (oreId == SUGAR_CHARCOAL_ORE_ID) {
-                return GT_OreDictUnificator.get("itemCokeSugar", null, 1);
+                return OreDictUnificator.get("itemCokeSugar", null, 1);
             } else if (oreId == CACTUS_ORE_ID) {
-                return GT_OreDictUnificator.get("itemCharcoalCactus", null, 1);
+                return OreDictUnificator.get("itemCharcoalCactus", null, 1);
             } else if (oreId == CACTUS_CHARCOAL_ORE_ID) {
-                return GT_OreDictUnificator.get("itemCokeCactus", null, 1);
+                return OreDictUnificator.get("itemCokeCactus", null, 1);
             }
         }
         return null;

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
 
@@ -61,7 +62,7 @@ public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(
+            ? MetaGeneratedTool.getPrimaryMaterial(
                 aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex]
             : Textures.ItemIcons.POWER_UNIT_HV;
     }

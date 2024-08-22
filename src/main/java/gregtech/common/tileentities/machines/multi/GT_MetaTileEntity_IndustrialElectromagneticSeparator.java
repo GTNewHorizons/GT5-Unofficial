@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
@@ -36,13 +36,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Magnet;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -50,9 +50,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -60,7 +60,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
+    extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
 
     public enum MagnetTiers {
@@ -105,7 +105,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     final int MIN_CASING = 64;
-    private GT_MetaTileEntity_MagHatch mMagHatch = null;
+    private Hatch_Magnet mMagHatch = null;
     private MagnetTiers magnetTier = null;
 
     private static final int MACHINEMODE_SEPARATOR = 0;
@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             'E',
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                 .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
-                .hatchClass(GT_MetaTileEntity_MagHatch.class)
+                .hatchClass(Hatch_Magnet.class)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                 .dot(2)
                 .build())
@@ -210,8 +210,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Electromagnetic Separator/Polarizer")
             .addInfo("Controller Block for the Magnetic Flux Exhibitor")
             .addInfo("Use screwdriver to switch mode")
@@ -248,7 +248,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 5, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 5, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -346,8 +346,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
     }
 
     @Override
@@ -449,10 +449,10 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_MagHatch) {
-                ((GT_MetaTileEntity_MagHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            if (aMetaTileEntity instanceof Hatch_Magnet) {
+                ((Hatch_Magnet) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 if (mMagHatch == null) {
-                    mMagHatch = (GT_MetaTileEntity_MagHatch) aMetaTileEntity;
+                    mMagHatch = (Hatch_Magnet) aMetaTileEntity;
                     return true;
                 }
             }

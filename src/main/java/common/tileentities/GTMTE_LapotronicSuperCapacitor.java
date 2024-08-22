@@ -18,7 +18,7 @@ import static common.itemBlocks.IB_LapotronicEnergyUnit.UMV_cap_storage;
 import static common.itemBlocks.IB_LapotronicEnergyUnit.UMV_wireless_eu_cap;
 import static common.itemBlocks.IB_LapotronicEnergyUnit.UV_cap_storage;
 import static common.itemBlocks.IB_LapotronicEnergyUnit.ZPM_cap_storage;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
@@ -77,24 +77,24 @@ import client.gui.KT_UITextures;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.WirelessNetworkManager;
 
-public class GTMTE_LapotronicSuperCapacitor
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor> implements ISurvivalConstructable {
+public class GTMTE_LapotronicSuperCapacitor extends EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor>
+    implements ISurvivalConstructable {
 
     private enum TopState {
         MayBeTop,
@@ -330,12 +330,12 @@ public class GTMTE_LapotronicSuperCapacitor
         return STRUCTURE_DEFINITION;
     }
 
-    private void processInputHatch(GT_MetaTileEntity_Hatch aHatch, int aBaseCasingIndex) {
+    private void processInputHatch(Hatch aHatch, int aBaseCasingIndex) {
         mMaxEUIn += aHatch.maxEUInput() * aHatch.maxAmperesIn();
         aHatch.updateTexture(aBaseCasingIndex);
     }
 
-    private void processOutputHatch(GT_MetaTileEntity_Hatch aHatch, int aBaseCasingIndex) {
+    private void processOutputHatch(Hatch aHatch, int aBaseCasingIndex) {
         mMaxEUOut += aHatch.maxEUOutput() * aHatch.maxAmperesOut();
         aHatch.updateTexture(aBaseCasingIndex);
     }
@@ -343,14 +343,13 @@ public class GTMTE_LapotronicSuperCapacitor
     private boolean addBottomHatches(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return GTMTE_LapotronicSuperCapacitor.this.mMaintenanceHatches
-                .add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+        if (!(aMetaTileEntity instanceof Hatch)) return false;
+        if (aMetaTileEntity instanceof Hatch_Maintenance) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return GTMTE_LapotronicSuperCapacitor.this.mMaintenanceHatches.add((Hatch_Maintenance) aMetaTileEntity);
+        } else if (aMetaTileEntity instanceof Hatch_Energy) {
             // Add GT hatches
-            final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+            final Hatch_Energy tHatch = ((Hatch_Energy) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel) {
@@ -363,9 +362,9 @@ public class GTMTE_LapotronicSuperCapacitor
             final GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity;
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatchesTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+        } else if (aMetaTileEntity instanceof Hatch_Dynamo) {
             // Add GT hatches
-            final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity;
+            final Hatch_Dynamo tDynamo = (Hatch_Dynamo) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoHatches.add(tDynamo);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
@@ -403,8 +402,8 @@ public class GTMTE_LapotronicSuperCapacitor
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Energy Storage")
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
             .addInfo(
@@ -637,19 +636,9 @@ public class GTMTE_LapotronicSuperCapacitor
         if (mMachine) return -1;
         int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 50);
         int built;
-        built = survivialBuildPiece(
-            STRUCTURE_PIECE_BASE,
-            stackSize,
-            2,
-            1,
-            0,
-            elementBudget,
-            source,
-            actor,
-            false,
-            true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        for (int i = 2; i < layer - 1; i++) built = survivialBuildPiece(
+        for (int i = 2; i < layer - 1; i++) built = survivalBuildPiece(
             STRUCTURE_PIECE_MID,
             stackSize,
             2,
@@ -661,7 +650,7 @@ public class GTMTE_LapotronicSuperCapacitor
             false,
             true);
         if (built >= 0) return built;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_TOP,
             stackSize,
             2,
@@ -683,7 +672,7 @@ public class GTMTE_LapotronicSuperCapacitor
         long temp_stored = 0L;
 
         // Draw energy from GT hatches
-        for (GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
+        for (Hatch_Energy eHatch : super.mEnergyHatches) {
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
@@ -696,7 +685,7 @@ public class GTMTE_LapotronicSuperCapacitor
         }
 
         // Output energy to GT hatches
-        for (GT_MetaTileEntity_Hatch_Dynamo eDynamo : super.mDynamoHatches) {
+        for (Hatch_Dynamo eDynamo : super.mDynamoHatches) {
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
@@ -1140,7 +1129,7 @@ public class GTMTE_LapotronicSuperCapacitor
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(UITextures.BUTTON_STANDARD);
                 if (canUseWireless) {
                     if (wireless_mode) {
                         ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_ON);
@@ -1166,7 +1155,7 @@ public class GTMTE_LapotronicSuperCapacitor
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_REBALANCE);
                     return ret.toArray(new IDrawable[0]);
                 })
@@ -1179,14 +1168,14 @@ public class GTMTE_LapotronicSuperCapacitor
 
     private enum LSCHatchElement implements IHatchElement<GTMTE_LapotronicSuperCapacitor> {
 
-        Energy(GT_MetaTileEntity_Hatch_EnergyMulti.class, GT_MetaTileEntity_Hatch_Energy.class) {
+        Energy(GT_MetaTileEntity_Hatch_EnergyMulti.class, Hatch_Energy.class) {
 
             @Override
             public long count(GTMTE_LapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo(GT_MetaTileEntity_Hatch_DynamoMulti.class, GT_MetaTileEntity_Hatch_Dynamo.class) {
+        Dynamo(GT_MetaTileEntity_Hatch_DynamoMulti.class, Hatch_Dynamo.class) {
 
             @Override
             public long count(GTMTE_LapotronicSuperCapacitor t) {

@@ -3,22 +3,22 @@ package gtPlusPlus.xmod.gregtech.common.items;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngleGrinder;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricSnips;
 
-public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
+public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
 
     public static final short ANGLE_GRINDER = 7834;
     public static final short ELECTRIC_SNIPS = 7934;
-    public static GT_MetaGenerated_Tool INSTANCE;
+    public static MetaGeneratedTool INSTANCE;
 
     static {
         INSTANCE = new MetaGeneratedGregtechTools();
     }
 
-    public static GT_MetaGenerated_Tool getInstance() {
+    public static MetaGeneratedTool getInstance() {
         return INSTANCE;
     }
 

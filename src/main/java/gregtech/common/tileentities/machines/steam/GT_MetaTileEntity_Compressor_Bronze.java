@@ -21,13 +21,13 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
+import gregtech.api.metatileentity.implementations.BasicMachine_Bronze;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Compressor_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
+public class GT_MetaTileEntity_Compressor_Bronze extends BasicMachine_Bronze {
 
     public GT_MetaTileEntity_Compressor_Bronze(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, "Compressing Items", 1, 1, false);

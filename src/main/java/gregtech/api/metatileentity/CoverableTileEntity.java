@@ -56,11 +56,11 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
-import gregtech.api.net.GT_Packet_RequestCoverData;
-import gregtech.api.net.GT_Packet_SendCoverData;
+import gregtech.api.net.Packet_RequestCoverData;
+import gregtech.api.net.Packet_SendCoverData;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
@@ -152,7 +152,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             if (coverIDs[ordinalSide] == 0) continue;
 
             final CoverInfo coverInfo = new CoverInfo(side, coverIDs[ordinalSide], this, null);
-            final GT_CoverBehaviorBase<?> coverBehavior = coverInfo.getCoverBehavior();
+            final CoverBehaviorBase<?> coverBehavior = coverInfo.getCoverBehavior();
             if (coverBehavior == GregTech_API.sNoBehavior) continue;
 
             ISerializableObject coverData = null;
@@ -269,7 +269,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (worldObj == null || !worldObj.isRemote) return;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
-            if (coverInfo.isDataNeededOnClient()) NW.sendToServer(new GT_Packet_RequestCoverData(coverInfo, this));
+            if (coverInfo.isDataNeededOnClient()) NW.sendToServer(new Packet_RequestCoverData(coverInfo, this));
         }
     }
 
@@ -318,9 +318,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     @Deprecated
-    public GT_CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
-        final GT_CoverBehaviorBase<?> behavior = getCoverInfoAtSide(side).getCoverBehavior();
-        if (behavior instanceof GT_CoverBehavior) return (GT_CoverBehavior) behavior;
+    public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
+        final CoverBehaviorBase<?> behavior = getCoverInfoAtSide(side).getCoverBehavior();
+        if (behavior instanceof CoverBehavior) return (CoverBehavior) behavior;
         return GregTech_API.sNoBehavior;
     }
 
@@ -366,7 +366,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
+    public CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
         return getCoverInfoAtSide(side).getCoverBehavior();
     }
 
@@ -546,11 +546,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
             if (coverInfo.needsUpdate()) {
-                NW.sendPacketToAllPlayersInRange(
-                    worldObj,
-                    new GT_Packet_SendCoverData(coverInfo, this),
-                    xCoord,
-                    zCoord);
+                NW.sendPacketToAllPlayersInRange(worldObj, new Packet_SendCoverData(coverInfo, this), xCoord, zCoord);
                 coverInfo.setNeedsUpdate(false);
             }
         }
@@ -633,7 +629,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     final int i = tSide.ordinal();
                     final int coverId = mCoverSides[i];
                     if (coverId == 0) continue;
-                    final GT_CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
+                    final CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
                     if (behavior == null || behavior == GregTech_API.sNoBehavior) continue;
                     if (!aNBT.hasKey(CoverableTileEntity.COVER_DATA_NBT_KEYS[i])) continue;
                     final ISerializableObject dataObject = behavior

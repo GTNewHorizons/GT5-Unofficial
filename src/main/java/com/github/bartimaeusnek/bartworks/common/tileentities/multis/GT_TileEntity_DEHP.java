@@ -33,11 +33,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 
@@ -92,8 +92,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String casings = this.getCasingBlockItem()
             .get(0)
             .getDisplayName();
@@ -161,7 +161,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     private long getFluidFromHatches(Fluid f) {
         long ret = 0;
-        for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+        for (Hatch_Input ih : this.mInputHatches) {
             if (ih.getFluid()
                 .getFluid()
                 .equals(f)) ret += ih.getFluidAmount();
@@ -175,7 +175,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             .getFluid();
         if (onlyDistilled) toConsume1 = toConsume2;
         long ret = 0;
-        for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+        for (Hatch_Input ih : this.mInputHatches) {
             if (ih.getFluid()
                 .getFluid()
                 .equals(toConsume1)
@@ -283,7 +283,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
-                for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+                for (Hatch_Input ih : this.mInputHatches) {
                     if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
                         .getFluid()
                         .equals(fluid)
@@ -304,7 +304,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
         }
 
         long tmp = ammount;
-        for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+        for (Hatch_Input ih : this.mInputHatches) {
             if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
                 .getFluid()
                 .equals(fluid)

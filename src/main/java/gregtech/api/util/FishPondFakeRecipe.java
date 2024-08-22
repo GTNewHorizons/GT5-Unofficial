@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fishPondRecipes;
 
 import java.util.ArrayList;

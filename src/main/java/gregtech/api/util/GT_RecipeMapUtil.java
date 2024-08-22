@@ -59,16 +59,16 @@ public class GT_RecipeMapUtil {
         return new GT_RecipeTemplate(r, includeTemplate);
     }
 
-    public static List<GT_Recipe> buildRecipeForMultiblock(GT_RecipeBuilder b) {
+    public static List<GT_Recipe> buildRecipeForMultiblock(RecipeBuilder b) {
         return buildOrEmpty(convertCellToFluid(b, true));
 
     }
 
-    public static List<GT_Recipe> buildRecipeForMultiblockNoCircuit(GT_RecipeBuilder b) {
+    public static List<GT_Recipe> buildRecipeForMultiblockNoCircuit(RecipeBuilder b) {
         return buildOrEmpty(convertCellToFluid(b, false));
     }
 
-    public static GT_RecipeBuilder convertCellToFluid(GT_RecipeBuilder b, boolean removeIntegratedCircuit) {
+    public static RecipeBuilder convertCellToFluid(RecipeBuilder b, boolean removeIntegratedCircuit) {
         List<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(b.getItemInputsBasic()));
         List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
         List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
@@ -102,7 +102,7 @@ public class GT_RecipeMapUtil {
         }
     }
 
-    public static List<GT_Recipe> buildOrEmpty(GT_RecipeBuilder builder) {
+    public static List<GT_Recipe> buildOrEmpty(RecipeBuilder builder) {
         return builder.build()
             .map(Collections::singletonList)
             .orElse(Collections.emptyList());
@@ -134,7 +134,7 @@ public class GT_RecipeMapUtil {
     /**
      * Use this to register recipes for a recipe map in addon not present at compile time.
      * <p>
-     * Do not use this for recipes maps already in {@link GT_RecipeConstants}. None of them will be available via this
+     * Do not use this for recipes maps already in {@link RecipeConstants}. None of them will be available via this
      * interface!
      *
      * @param identifier     recipe map id

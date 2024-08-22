@@ -14,7 +14,7 @@
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -48,14 +48,14 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class BW_Meta_Items {
 
@@ -148,7 +148,7 @@ public class BW_Meta_Items {
 
         ItemStack tStack = BW_Meta_Items.NEWCIRCUITS.addCircuit(aID, aName, tooltip, aTier);
 
-        GT_OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replace(" ", ""), tStack);
+        OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replace(" ", ""), tStack);
     }
 
     public static class BW_GT_MetaGenCircuits extends BW_Meta_Items.BW_GT_MetaGen_Item_Hook {
@@ -252,7 +252,7 @@ public class BW_Meta_Items {
         }
     }
 
-    public static class BW_GT_MetaGen_Item_Hook extends GT_MetaBase_Item {
+    public static class BW_GT_MetaGen_Item_Hook extends MetaBaseItem {
 
         public static final HashSet<BW_Meta_Items.BW_GT_MetaGen_Item_Hook> sInstances = new HashSet<>();
         public final IIcon[] mIconList;
@@ -306,7 +306,7 @@ public class BW_Meta_Items {
             for (var9 = 0; var9 < var8; ++var9) {
                 tRandomData = var7[var9];
                 if (tRandomData instanceof SubTag && tRandomData == SubTag.NO_UNIFICATION) {
-                    GT_OreDictUnificator.addToBlacklist(rStack);
+                    OreDictUnificator.addToBlacklist(rStack);
                 }
             }
 
@@ -333,12 +333,12 @@ public class BW_Meta_Items {
                             ((TC_Aspects.TC_AspectStack) tRandomData).addToAspectList(tAspects);
                         } else if (tRandomData instanceof ItemData) {
                             if (GT_Utility.isStringValid(tRandomData)) {
-                                GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                                OreDictUnificator.registerOre(tRandomData, rStack);
                             } else {
-                                GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                                OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                             }
                         } else if (tUseOreDict) {
-                            GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                            OreDictUnificator.registerOre(tRandomData, rStack);
                         }
                     }
                 }

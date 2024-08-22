@@ -11,14 +11,14 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GT_Mod;
-import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.common.GT_Pollution;
@@ -28,7 +28,7 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch_Muffler implements IAddGregtechLogo {
+public class GT_MetaTileEntity_Hatch_Muffler_Adv extends Hatch_Muffler implements IAddGregtechLogo {
 
     protected int SLOT_FILTER = 0;
 
@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -200,7 +200,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         if (mInventory[SLOT_FILTER] != null) return false; // Has a non-filter item in inventory.
         if (parentTileEntity == null) return false; // Unknown parent multiblock.
 
-        if (parentTileEntity instanceof GT_MetaTileEntity_MultiBlockBase GTMultiBase) {
+        if (parentTileEntity instanceof MultiBlockBase GTMultiBase) {
             for (var inputBus : GTMultiBase.mInputBusses) {
                 for (ItemStack stack : inputBus.mInventory) {
                     if (isAirFilter(stack)) {

@@ -21,7 +21,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,9 +47,9 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class CellLoader implements IWerkstoffRunnable {
@@ -311,7 +311,7 @@ public class CellLoader implements IWerkstoffRunnable {
             }
             if (!ElementSet) return;
 
-            GT_OreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
+            OreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
 
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");

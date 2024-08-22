@@ -1,7 +1,7 @@
 package net.glease.ggfab;
 
 import static gregtech.api.enums.ToolDictNames.*;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.glease.ggfab.api.GGFabRecipeMaps;
 import net.glease.ggfab.api.GigaGramFabAPI;

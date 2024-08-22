@@ -7,7 +7,7 @@ import net.minecraft.util.StatCollector;
 
 import com.elisis.gtnhlanth.common.beamline.Particle;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -22,7 +22,7 @@ public class BeamlineRecipeAdder2 {
         .maxIO(1, 2, 0, 0)
         .amperage(1)
         .frontend(SourceChamberFrontend::new)
-        .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
+        .progressBar(UITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .neiSpecialInfoFormatter((recipeInfo) -> {
 
             RecipeSC recipe = (RecipeSC) recipeInfo.recipe;
@@ -86,7 +86,7 @@ public class BeamlineRecipeAdder2 {
         );
         }))
         // .slotOverlays(null)
-        .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
+        .progressBar(UITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)
         .build();

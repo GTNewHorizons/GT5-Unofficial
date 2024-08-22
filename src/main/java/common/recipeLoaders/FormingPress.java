@@ -1,7 +1,7 @@
 package common.recipeLoaders;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import common.items.MetaItem_CraftingComponent;
 

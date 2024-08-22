@@ -2,7 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.stream.Collectors;
@@ -35,18 +35,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
-public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<ComponentAssemblyLine>
+public class ComponentAssemblyLine extends ExtendedPowerMultiBlockBase<ComponentAssemblyLine>
     implements ISurvivalConstructable {
 
     private int casingTier;
@@ -211,8 +211,8 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High-Capacity Component Assembler")
             .addInfo("Controller block for the Component Assembly Line.")
             .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
@@ -320,7 +320,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 speedBonus = (float) (1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue));
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus);
             }
@@ -337,7 +337,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
     }
 
     @Override

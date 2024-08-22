@@ -71,16 +71,16 @@ import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.net.GT_Packet_TileEntity;
+import gregtech.api.metatileentity.implementations.BasicMachine;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.net.Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.GT_Pollution;
@@ -580,8 +580,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         tData = mMetaTileEntity.getUpdateData();
                         if (tData != oUpdateData)
                             sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oUpdateData = tData);
-                        if (mMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-                            tData = ((GT_MetaTileEntity_Hatch) mMetaTileEntity).getTexturePage();
+                        if (mMetaTileEntity instanceof Hatch) {
+                            tData = ((Hatch) mMetaTileEntity).getTexturePage();
                             if (tData != oTexturePage) sendBlockEvent(
                                 GregTechTileClientEvents.CHANGE_CUSTOM_DATA,
                                 (byte) ((oTexturePage = tData) | 0x80)); // set last bit as a flag for page
@@ -673,7 +673,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         if (mSendClientData) {
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
-                new GT_Packet_TileEntity(
+                new Packet_TileEntity(
                     xCoord,
                     (short) yCoord,
                     zCoord,
@@ -688,8 +688,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         | (mRedstone ? 16 : 0)
                         | (mLockUpgrade ? 32 : 0)
                         | (mWorks ? 64 : 0)),
-                    oTexturePage = (hasValidMetaTileEntity() && mMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
-                        ? ((GT_MetaTileEntity_Hatch) mMetaTileEntity).getTexturePage()
+                    oTexturePage = (hasValidMetaTileEntity() && mMetaTileEntity instanceof Hatch)
+                        ? ((Hatch) mMetaTileEntity).getTexturePage()
                         : 0,
                     oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
                     oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
@@ -757,8 +757,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     if (hasValidMetaTileEntity()) {
                         if ((aValue & 0x80) == 0) // Is texture index
                             mMetaTileEntity.onValueUpdate((byte) (aValue & 0x7F));
-                        else if (mMetaTileEntity instanceof GT_MetaTileEntity_Hatch) // is texture page and hatch
-                            ((GT_MetaTileEntity_Hatch) mMetaTileEntity).onTexturePageUpdate((byte) (aValue & 0x7F));
+                        else if (mMetaTileEntity instanceof Hatch) // is texture page and hatch
+                            ((Hatch) mMetaTileEntity).onTexturePageUpdate((byte) (aValue & 0x7F));
                     }
                 }
                 case GregTechTileClientEvents.CHANGE_COLOR -> {
@@ -923,7 +923,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             markDirty();
             mMetaTileEntity.setInventorySlotContents(
                 aIndex,
-                worldObj.isRemote ? aStack : GT_OreDictUnificator.setStack(true, aStack));
+                worldObj.isRemote ? aStack : OreDictUnificator.setStack(true, aStack));
         }
     }
 
@@ -1497,8 +1497,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         return true;
                     }
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
-                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof GT_MetaTileEntity_BasicMachine
-                            && ((GT_MetaTileEntity_BasicMachine) mMetaTileEntity)
+                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof BasicMachine
+                            && ((BasicMachine) mMetaTileEntity)
                                 .setMainFacing(GT_Utility.determineWrenchingSide(side, aX, aY, aZ))) {
                             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             GT_Utility.sendSoundToPlayers(
@@ -1663,8 +1663,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                            final GT_CoverBehaviorBase<?> coverBehavior = GregTech_API
-                                .getCoverBehaviorNew(tCurrentItem);
+                            final CoverBehaviorBase<?> coverBehavior = GregTech_API.getCoverBehaviorNew(tCurrentItem);
                             if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
 
@@ -1703,7 +1702,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 final CoverInfo info = getCoverInfoAtSide(coverSide);
                                 if (info != CoverInfo.EMPTY_INFO) {
-                                    final GT_CoverBehaviorBase<?> behavior = info.getCoverBehavior();
+                                    final CoverBehaviorBase<?> behavior = info.getCoverBehavior();
                                     if (behavior.allowsTickRateAddition()) {
                                         info.onCoverJackhammer(aPlayer);
                                         GT_Utility.sendSoundToPlayers(
@@ -2241,7 +2240,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             setInventorySlotContents(slotIndex, stack);
             return true;
         }
-        final ItemStack fromStack = GT_OreDictUnificator.get(stack);
+        final ItemStack fromStack = OreDictUnificator.get(stack);
         if (GT_Utility.areStacksEqual(toStack, fromStack) && toStack.stackSize + fromStack.stackSize
             <= Math.min(fromStack.getMaxStackSize(), getInventoryStackLimit())) {
             toStack.stackSize += fromStack.stackSize;
@@ -2338,8 +2337,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         final int disassemblerRemoveVersion = GT_Mod.calculateTotalGTVersion(509, 42, 44);
         if (nbtVersion < 1000000) nbtVersion *= 1000;
         // 4 is old GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT
-        if (nbtVersion < configCircuitAdditionVersion && getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine
-            && slotIndex >= 4) slotIndex += 1;
+        if (nbtVersion < configCircuitAdditionVersion && getMetaTileEntity() instanceof BasicMachine && slotIndex >= 4)
+            slotIndex += 1;
         if (mID >= 211 && mID <= 218) { // Assembler
             if (nbtVersion < chemistryUpdateVersion) {
                 oldInputSize = 2;
@@ -2404,10 +2403,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         }
 
         int indexShift = 0;
-        if (slotIndex >= GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT + oldInputSize) {
+        if (slotIndex >= BasicMachine.OTHER_SLOT_COUNT + oldInputSize) {
             indexShift += newInputSize - oldInputSize;
         }
-        if (slotIndex >= GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT + oldInputSize + oldOutputSize) {
+        if (slotIndex >= BasicMachine.OTHER_SLOT_COUNT + oldInputSize + oldOutputSize) {
             indexShift += newOutputSize - oldOutputSize;
         }
         return slotIndex + indexShift;

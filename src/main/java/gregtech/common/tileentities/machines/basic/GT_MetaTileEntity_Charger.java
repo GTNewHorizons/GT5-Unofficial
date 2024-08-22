@@ -7,11 +7,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import gregtech.api.metatileentity.implementations.BasicBatteryBuffer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Charger extends GT_MetaTileEntity_BasicBatteryBuffer {
+public class GT_MetaTileEntity_Charger extends BasicBatteryBuffer {
 
     public GT_MetaTileEntity_Charger(int aID, String aName, String aNameRegional, int aTier, String aDescription,
         int aSlotCount) {

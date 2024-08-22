@@ -27,11 +27,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.render.TextureFactory;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
-public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonitor<IAEFluidStack> {
+public class GTMTE_TFFTHatch extends Hatch implements IMEMonitor<IAEFluidStack> {
 
     @Optional.Interface(
         iface = "appeng.api.storage.IExternalStorageHandler",

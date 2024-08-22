@@ -6,9 +6,9 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.INGOTS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -27,8 +27,8 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class FluidSolidifierRecipes implements Runnable {
 
@@ -82,7 +82,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
             .fluidInputs(Materials.Mercury.getFluid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
@@ -154,7 +154,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Glass, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, Materials.Glass, 1L))
             .fluidInputs(Materials.Glass.getMolten(144L))
             .duration(12 * TICKS)
             .eut(4)
@@ -282,7 +282,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(16))
             .duration(16 * TICKS)
             .eut(4)
@@ -290,7 +290,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
@@ -298,7 +298,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(1296))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(8)
@@ -306,7 +306,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L))
             .fluidInputs(Materials.WroughtIron.getMolten(16))
             .duration(16 * TICKS)
             .eut(4)
@@ -314,7 +314,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L))
             .fluidInputs(Materials.WroughtIron.getMolten(144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
@@ -322,7 +322,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L))
             .fluidInputs(Materials.WroughtIron.getMolten(1296))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(8)

@@ -3,8 +3,8 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -14,8 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -29,14 +29,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         if (aOreDictName.startsWith("plankWood")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
                 .duration(10 * TICKS)
                 .eut(8)
                 .addTo(latheRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L))
+                    OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L))
                 .itemOutputs(ItemList.Crate_Empty.get(1L))
                 .duration(10 * SECONDS)
                 .eut(1)
@@ -44,7 +44,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.WroughtIron, 1L))
+                    OreDictUnificator.get(OrePrefixes.screw, Materials.WroughtIron, 1L))
                 .itemOutputs(ItemList.Crate_Empty.get(1L))
                 .duration(10 * SECONDS)
                 .eut(1)
@@ -52,7 +52,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L))
+                    OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L))
                 .itemOutputs(ItemList.Crate_Empty.get(1L))
                 .duration(10 * SECONDS)
                 .eut(1)

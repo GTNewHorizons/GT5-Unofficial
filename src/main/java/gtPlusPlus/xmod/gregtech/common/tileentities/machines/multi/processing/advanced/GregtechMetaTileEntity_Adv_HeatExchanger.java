@@ -25,16 +25,16 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -97,8 +97,8 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
         .build();
     public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
 
-    private GT_MetaTileEntity_Hatch_Input mInputHotFluidHatch;
-    private GT_MetaTileEntity_Hatch_Output mOutputColdFluidHatch;
+    private Hatch_Input mInputHotFluidHatch;
+    private Hatch_Output mOutputColdFluidHatch;
     private boolean superheated = false;
     private int superheated_threshold = 0;
     private float water;
@@ -113,8 +113,8 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the XL Heat Exchanger")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
@@ -295,9 +295,9 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            mOutputColdFluidHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Output) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            mOutputColdFluidHatch = (Hatch_Output) aMetaTileEntity;
             return true;
         }
         return false;
@@ -307,10 +307,10 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            mInputHotFluidHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            mInputHotFluidHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;

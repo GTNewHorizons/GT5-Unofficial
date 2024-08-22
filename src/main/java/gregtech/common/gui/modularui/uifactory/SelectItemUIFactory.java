@@ -23,8 +23,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.gui.GT_GUIColorOverride;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.GUIColorOverride;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
@@ -47,7 +47,7 @@ public class SelectItemUIFactory {
     private int guiTint = GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
     private Supplier<ItemStack> currentGetter;
 
-    private final GT_GUIColorOverride colorOverride = GT_GUIColorOverride.get("SelectItemUIFactory");
+    private final GUIColorOverride colorOverride = GUIColorOverride.get("SelectItemUIFactory");
 
     private int getTextColorOrDefault(String textType, int defaultColor) {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
@@ -142,7 +142,7 @@ public class SelectItemUIFactory {
                     selected = GT_Utility.findMatchingStackInList(stacks, current);
                 }
             }
-        }.setDrawable(GT_UITextures.SLOT_DARK_GRAY)
+        }.setDrawable(UITextures.SLOT_DARK_GRAY)
             .setPos(currentSlotX, currentSlotY)
             .setSize(18, 18))
             .widget(
@@ -178,7 +178,7 @@ public class SelectItemUIFactory {
                 .setUpdateTooltipEveryTick(true)
                 .setBackground(
                     () -> new IDrawable[] {
-                        index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT, })
+                        index == selected ? UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT, })
                 .setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols))
                 .setSize(18, 18));
         }

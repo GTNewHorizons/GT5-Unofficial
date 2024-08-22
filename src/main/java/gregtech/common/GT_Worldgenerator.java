@@ -29,7 +29,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.net.GT_Packet_SendOregenPattern;
+import gregtech.api.net.Packet_SendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
@@ -182,7 +182,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         @SubscribeEvent
         public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
             if (event.player instanceof EntityPlayerMP player) {
-                GT_Values.NW.sendToPlayer(new GT_Packet_SendOregenPattern(oregenPattern), player);
+                GT_Values.NW.sendToPlayer(new Packet_SendOregenPattern(oregenPattern), player);
             }
         }
 

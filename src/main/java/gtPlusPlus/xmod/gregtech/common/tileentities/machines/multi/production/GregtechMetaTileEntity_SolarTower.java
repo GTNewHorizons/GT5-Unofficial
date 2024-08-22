@@ -3,9 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -37,8 +37,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -80,8 +80,8 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
     }
 
     @Override
-    protected final GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected final MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Contributing Green Energy towards the future")
             .addInfo("Surround with rings of Solar Reflectors")
@@ -362,28 +362,28 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         int built;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
         // Tower
-        built = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, realBudget, env, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece(STRUCTURE_PIECE_TOWER, stackSize, 1, 1, -7, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_TOWER, stackSize, 1, 1, -7, realBudget, env, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 5, 5, -22, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 5, 5, -22, realBudget, env, false, true);
         if (built >= 0) return built;
 
         // Solar Heaters
         if (stackSize.stackSize < 1) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 2) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 3) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 4) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 5) return -1;
-        return survivialBuildPiece(SOLAR_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, env, false, true);
+        return survivalBuildPiece(SOLAR_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, env, false, true);
     }
 
     @Override

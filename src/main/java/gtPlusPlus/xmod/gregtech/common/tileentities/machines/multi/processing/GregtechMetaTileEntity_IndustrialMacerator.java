@@ -4,11 +4,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.List;
@@ -40,11 +40,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -94,8 +94,8 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller block for the Industrial Maceration Stack")
             .addInfo("60% faster than using single block machines of the same voltage")
@@ -170,7 +170,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -194,12 +194,12 @@ public class GregtechMetaTileEntity_IndustrialMacerator
 
     protected void updateHatchTexture() {
         int textureID = getCasingTextureId();
-        for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(textureID);
+        for (Hatch h : mInputBusses) h.updateTexture(textureID);
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mOutputBusses) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mMufflerHatches) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(textureID);
+        for (Hatch h : mOutputBusses) h.updateTexture(textureID);
+        for (Hatch h : mMaintenanceHatches) h.updateTexture(textureID);
+        for (Hatch h : mMufflerHatches) h.updateTexture(textureID);
+        for (Hatch h : mEnergyHatches) h.updateTexture(textureID);
     }
 
     @Override

@@ -16,9 +16,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.RecipeBuilder.HOURS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,16 +49,16 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_OutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_HTGR> {
+public class GT_TileEntity_HTGR extends EnhancedMultiBlockBase<GT_TileEntity_HTGR> {
 
     private static final int BASECASINGINDEX = 181;
 
@@ -140,8 +140,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor")
             .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
             .addInfo(AuthorKuba)
@@ -325,7 +325,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     this.fuelsupply,
                     HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
-                for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
                     if (tHatch.storeAll(iStack)) {
                         storedAll = true;
                         break;
@@ -355,7 +355,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             int takecoolant = this.coolanttaking;
             int drainedamount = 0;
 
-            for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            for (Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
                 FluidStack tLiquid = tHatch.getFluid();
                 if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                     FluidStack drained = tHatch.drain(takecoolant, true);

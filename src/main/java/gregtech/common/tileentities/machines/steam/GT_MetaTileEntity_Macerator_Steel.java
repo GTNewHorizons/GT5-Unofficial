@@ -28,7 +28,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Steel;
+import gregtech.api.metatileentity.implementations.BasicMachine_Steel;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -36,7 +36,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 
-public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
+public class GT_MetaTileEntity_Macerator_Steel extends BasicMachine_Steel {
 
     public GT_MetaTileEntity_Macerator_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, "Macerating your Ores", 1, 1, true);

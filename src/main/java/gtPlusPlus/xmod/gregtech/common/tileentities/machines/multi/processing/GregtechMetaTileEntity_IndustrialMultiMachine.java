@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
@@ -39,22 +39,22 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -119,13 +119,13 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+    protected MultiblockTooltipBuilder createTooltip() {
         String[] aBuiltStrings = new String[3];
         aBuiltStrings[0] = aToolTipNames[0] + ", " + aToolTipNames[1] + ", " + aToolTipNames[2];
         aBuiltStrings[1] = aToolTipNames[3] + ", " + aToolTipNames[4] + ", " + aToolTipNames[5];
         aBuiltStrings[2] = aToolTipNames[6] + ", " + aToolTipNames[7] + ", " + aToolTipNames[8];
 
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Industrial Multi-Machine")
             .addInfo("250% faster than using single block machines of the same voltage")
@@ -182,7 +182,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -400,7 +400,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             }
 
             // Logic for GT_MetaTileEntity_Hatch_Solidifier
-            for (GT_MetaTileEntity_Hatch_Input solidifierHatch : mInputHatches) {
+            for (Hatch_Input solidifierHatch : mInputHatches) {
                 if (solidifierHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
                     ItemStack mold = ((GT_MetaTileEntity_Hatch_Solidifier) solidifierHatch).getMold();
                     FluidStack fluid = solidifierHatch.getFluid();
@@ -427,7 +427,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             processingLogic.clear();
             processingLogic.setInputFluids(getStoredFluids());
             // Default logic
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+            for (Hatch_InputBus bus : mInputBusses) {
                 if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
                     continue;
                 }
@@ -459,14 +459,14 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+        for (Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
                 continue;
             }
 
             setHatchRecipeMap(tHatch);
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+            if (tHatch instanceof Hatch_MultiInput) {
+                for (FluidStack tFluid : ((Hatch_MultiInput) tHatch).getStoredFluid()) {
                     if (tFluid != null) {
                         rList.add(tFluid);
                     }
@@ -534,8 +534,8 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
     }
 }

@@ -21,7 +21,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import kekztech.KekzCore;
 import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
@@ -58,14 +58,14 @@ public class Recipes {
         // Thaumium Reinforced Jar
         final ItemStack[] recipe_jarthaumiumreinforced = {
             GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 1, null),
-            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+            OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+            OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+            OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
+            OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
+            OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane), };
         final AspectList aspects_jarthaumiumreinforced = new AspectList().add(Aspect.ARMOR, 64)
             .add(Aspect.ORDER, 32)
@@ -84,9 +84,9 @@ public class Recipes {
                 recipe_jarthaumiumreinforced));
         // Thaumium Reinforced Void Jar
         final ItemStack[] recipe_voidjarupgrade = {
-            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderEye, 1), ItemApi.getItem("itemNugget", 5) };
+            OreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+            OreDictUnificator.get(OrePrefixes.plate, Materials.EnderEye, 1), ItemApi.getItem("itemNugget", 5) };
         final AspectList aspects_voidjarupgrade = new AspectList().add(Aspect.VOID, 14)
             .add(Aspect.MAGIC, 14)
             .add(Aspect.ENTROPY, 14)
@@ -102,16 +102,16 @@ public class Recipes {
                 recipe_voidjarupgrade));
 
         final ItemStack[] recipe_jarichor = { GT_ModHandler.getModItem(ThaumicTinkerer.ID, "kamiResource", 1, 0),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+            OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+            OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
+            OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+            OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 1),
+            OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+            OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
+            OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane), };
         final AspectList aspects_jarichor = new AspectList().add(Aspect.ARMOR, 256)
             .add(Aspect.ELDRITCH, 128)

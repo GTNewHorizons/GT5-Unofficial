@@ -10,12 +10,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_Sonictron extends Behaviour_None {
 
-    public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Sonictron();
+    public static final IItemBehaviour<MetaBaseItem> INSTANCE = new Behaviour_Sonictron();
 
     public static int getCurrentIndex(ItemStack aStack) {
         NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
@@ -99,20 +99,20 @@ public class Behaviour_Sonictron extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         setCurrentIndex(aStack, -1);
         return false;
     }
 
     @Override
-    public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         setCurrentIndex(aStack, 0);
         return aStack;
     }
 
     @Override
-    public void onUpdate(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer,
+    public void onUpdate(MetaBaseItem aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer,
         boolean aIsInHand) {
         int tTickTimer = getTickTimer(aStack);
         int tCurrentIndex = getCurrentIndex(aStack);

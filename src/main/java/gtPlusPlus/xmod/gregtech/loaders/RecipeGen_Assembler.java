@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.HashSet;
 import java.util.Set;

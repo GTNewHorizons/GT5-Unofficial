@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -114,7 +114,7 @@ public class COMPAT_HANDLER {
         // In-house
 
         for (int i = 1; i <= 10; i++) {
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 "bufferCore_" + GT_Values.VN[i - 1],
                 new ItemStack(ItemUtils.getItemFromFQRN("miscutils:item.itemBufferCore" + i)));
         }

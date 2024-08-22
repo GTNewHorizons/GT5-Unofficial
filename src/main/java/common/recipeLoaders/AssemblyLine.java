@@ -6,12 +6,12 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.UniversalSingularities;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.AssemblyLine;
+import static gregtech.api.util.RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.RecipeConstants.RESEARCH_TIME;
 import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class AssemblyLine implements Runnable {
 
@@ -48,10 +48,10 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 ItemList.Casing_Tank_7.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.CrystallinePinkSlime, 6),
-                GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Naquadah, 3),
+                OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.CrystallinePinkSlime, 6),
+                OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Naquadah, 3),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ChromeBars", 6),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Quantium, 6),
+                OreDictUnificator.get(OrePrefixes.rotor, Materials.Quantium, 6),
                 ItemList.Field_Generator_EV.get(8),
                 ItemList.FluidRegulator_LuV.get(1),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 4))
@@ -67,10 +67,10 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 ItemList.Casing_Tank_10.get(16),
-                GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.MelodicAlloy, 6),
-                GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.NetherStar, 3),
+                OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.MelodicAlloy, 6),
+                OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.NetherStar, 3),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumBars", 6),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.MysteriousCrystal, 6),
+                OreDictUnificator.get(OrePrefixes.rotor, Materials.MysteriousCrystal, 6),
                 ItemList.Field_Generator_IV.get(16),
                 ItemList.Field_Generator_LuV.get(4),
                 ItemList.FluidRegulator_UV.get(1),
@@ -88,11 +88,11 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(1),
                 GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
-                GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
+                OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumBars", 6),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.InfinityCatalyst, 6),
+                OreDictUnificator.get(OrePrefixes.rotor, Materials.InfinityCatalyst, 6),
                 ItemList.Field_Generator_ZPM.get(16),
                 ItemList.Field_Generator_UV.get(4),
                 new ItemStack(huiCircuit, 4, 2),
@@ -109,9 +109,9 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(4),
                 GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
-                GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
+                OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
+                OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
+                OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
                 HYPOGEN.getRotor(6),
                 ItemList.Field_Generator_UHV.get(16),
@@ -131,11 +131,11 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(16),
                 GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
-                GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, MaterialsUEVplus.SpaceTime, 3),
+                OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
+                OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
+                OreDictUnificator.get(OrePrefixes.pipeNonuple, MaterialsUEVplus.SpaceTime, 3),
                 ItemList.EnergisedTesseract.get(6),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SpaceTime, 6),
+                OreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SpaceTime, 6),
                 ItemList.Field_Generator_UEV.get(16),
                 ItemList.Field_Generator_UIV.get(4),
                 new ItemStack(huiCircuit, 4, 4),
@@ -153,10 +153,10 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
                 ItemList.Circuit_Board_Elite.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahAlloy, 64),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahAlloy, 64),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
                 ItemList.Circuit_Parts_Crystal_Chip_Master.get(36),
                 ItemList.Circuit_Parts_Crystal_Chip_Master.get(36),
@@ -165,7 +165,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_CapacitorASMD.get(8),
                 ItemList.Circuit_Parts_ResistorASMD.get(8),
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64))
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64))
             .fluidInputs(new FluidStack(solderIndalloy, 720))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(50 * SECONDS)
@@ -177,9 +177,9 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16L),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
@@ -189,7 +189,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 2880),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
@@ -203,9 +203,9 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
@@ -215,7 +215,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 2880),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))

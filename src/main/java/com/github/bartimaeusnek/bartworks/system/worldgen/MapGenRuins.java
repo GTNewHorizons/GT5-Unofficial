@@ -37,7 +37,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
-import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
+import gregtech.api.threads.Runnable_MachineBlockUpdate;
 
 public abstract class MapGenRuins extends WorldGenerator {
 
@@ -106,7 +106,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     private TileEntity setGTMachineBlock(World worldObj, int x, int y, int z, int meta) {
         boolean isEnabled = true;
         try {
-            isEnabled = GT_Runnable_MachineBlockUpdate.isEnabled();
+            isEnabled = Runnable_MachineBlockUpdate.isEnabled();
         } catch (Throwable ignored) {
             isEnabled = false;
         }
@@ -145,7 +145,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setGTMachine(World worldObj, int x, int y, int z, int meta, String ownerName,
         ForgeDirection facing) {
         try {
-            GT_Runnable_MachineBlockUpdate.setDisabled();
+            Runnable_MachineBlockUpdate.setDisabled();
         } catch (Throwable ignored) {}
         this.setGTMachineBlock(worldObj, x, y, z, meta);
         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
@@ -154,7 +154,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
         this.checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, 0);
         try {
-            GT_Runnable_MachineBlockUpdate.setEnabled();
+            Runnable_MachineBlockUpdate.setEnabled();
         } catch (Throwable ignored) {}
     }
 
@@ -182,7 +182,7 @@ public abstract class MapGenRuins extends WorldGenerator {
 
     protected void setGTCable(World worldObj, int x, int y, int z, int meta) {
         try {
-            GT_Runnable_MachineBlockUpdate.setDisabled();
+            Runnable_MachineBlockUpdate.setDisabled();
         } catch (Throwable ignored) {}
         BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) this.setGTMachineBlock(worldObj, x, y, z, meta);
         MetaPipeEntity MPE = (MetaPipeEntity) BTE.getMetaTileEntity();
@@ -196,7 +196,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
         MPE.mConnections = BTE.mConnections;
         try {
-            GT_Runnable_MachineBlockUpdate.setEnabled();
+            Runnable_MachineBlockUpdate.setEnabled();
         } catch (Throwable ignored) {}
     }
 

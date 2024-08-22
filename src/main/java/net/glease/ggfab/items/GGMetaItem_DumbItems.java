@@ -22,14 +22,14 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 // mostly stolen from gt5 itself.
-public class GGMetaItem_DumbItems extends GT_MetaBase_Item {
+public class GGMetaItem_DumbItems extends MetaBaseItem {
 
     public static final int MAX_ID = 32766;
     private final BitSet mEnabledItems = new BitSet();
@@ -67,7 +67,7 @@ public class GGMetaItem_DumbItems extends GT_MetaBase_Item {
                 continue;
             }
             if (tRandomData == SubTag.NO_UNIFICATION) {
-                GT_OreDictUnificator.addToBlacklist(rStack);
+                OreDictUnificator.addToBlacklist(rStack);
             }
         }
         // now check for the rest
@@ -75,7 +75,7 @@ public class GGMetaItem_DumbItems extends GT_MetaBase_Item {
             boolean tUseOreDict = true;
             if (tRandomData instanceof IItemBehaviour) {
                 @SuppressWarnings("unchecked")
-                IItemBehaviour<GT_MetaBase_Item> behavior = (IItemBehaviour<GT_MetaBase_Item>) tRandomData;
+                IItemBehaviour<MetaBaseItem> behavior = (IItemBehaviour<MetaBaseItem>) tRandomData;
                 addItemBehavior(aID, behavior);
                 tUseOreDict = false;
             }
@@ -92,12 +92,12 @@ public class GGMetaItem_DumbItems extends GT_MetaBase_Item {
                 ((TC_Aspects.TC_AspectStack) tRandomData).addToAspectList(tAspects);
             } else if (tRandomData instanceof ItemData) {
                 if (GT_Utility.isStringValid(tRandomData)) {
-                    GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                    OreDictUnificator.registerOre(tRandomData, rStack);
                 } else {
-                    GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                    OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                 }
             } else if (tUseOreDict) {
-                GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                OreDictUnificator.registerOre(tRandomData, rStack);
             }
         }
         if (GregTech_API.sThaumcraftCompat != null)

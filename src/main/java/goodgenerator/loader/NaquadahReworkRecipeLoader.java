@@ -45,13 +45,13 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.NKE_RANGE;
-import static gregtech.api.util.GT_RecipeConstants.QFT_FOCUS_TIER;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.NKE_RANGE;
+import static gregtech.api.util.RecipeConstants.QFT_FOCUS_TIER;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
@@ -79,9 +79,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMutableAccess;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -206,7 +206,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(titaniumTrifluoride.get(OrePrefixes.dust, 4), GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Hydrogen.getGas(3000))
             .fluidOutputs(Materials.HydrofluoricAcid.getFluid(3000))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Titanium, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Titanium, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 2000)
@@ -214,7 +214,7 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1)),
+                GT_Utility.copyAmount(0, OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1)),
                 Materials.Hydrogen.getCells(8))
             .fluidInputs(FluidRegistry.getFluidStack("seedoil", 3000))
             .itemOutputs(ItemList.Cell_Empty.get(8))
@@ -225,7 +225,7 @@ public class NaquadahReworkRecipeLoader {
 
         // 2C8H18O + H3PO4 =Na,C2H6O= C16H35O3P + 2H2O
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2))
             .fluidInputs(
                 towEthyl1Hexanol.getFluidOrGas(2000),
                 Materials.PhosphoricAcid.getFluid(1000),
@@ -251,7 +251,7 @@ public class NaquadahReworkRecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 40))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 40))
             .fluidInputs(fluorineRichWasteLiquid.getFluidOrGas(1500))
             .fluidOutputs(wasteLiquid.getFluidOrGas(1000))
             .itemOutputs(WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 60))
@@ -263,7 +263,7 @@ public class NaquadahReworkRecipeLoader {
             wasteLiquid.getFluidOrGas(10000),
             new FluidStack[] { Materials.SaltWater.getFluid(3000), FluidRegistry.getFluidStack("phenol", 2000),
                 Materials.HydrochloricAcid.getFluid(5000) },
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 3),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 3),
             15 * SECONDS,
             TierEU.RECIPE_HV);
 
@@ -281,7 +281,7 @@ public class NaquadahReworkRecipeLoader {
             .addTo(neutronActivatorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
             .fluidInputs(naquadahRichSolution.getFluidOrGas(5000))
             .itemOutputs(naquadahine.get(OrePrefixes.dust, 30))
             .fluidOutputs(P507.getFluidOrGas(1000))
@@ -293,9 +293,9 @@ public class NaquadahReworkRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 naquadahine.get(OrePrefixes.dust, 3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 5000)
@@ -303,13 +303,13 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(lowQualityNaquadahEmulsion.getFluidOrGas(10000))
             .itemOutputs(
                 galliumHydroxide.get(OrePrefixes.dust, 64),
                 galliumHydroxide.get(OrePrefixes.dust, 48),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 15))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 15))
             .outputChances(6250, 6250, 10000)
             .fluidOutputs(lowQualityNaquadahSolution.getFluidOrGas(9000))
             .duration(50 * SECONDS)
@@ -336,7 +336,7 @@ public class NaquadahReworkRecipeLoader {
             .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 60))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 60))
             .fluidInputs(enrichedNaquadahRichSolution.getFluidOrGas(10000))
             .itemOutputs(concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 8))
             .fluidOutputs(P507.getFluidOrGas(2500))
@@ -364,9 +364,9 @@ public class NaquadahReworkRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 enrichedNaquadahSulphate.get(OrePrefixes.dust, 11),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 2))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 2))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.NaquadahEnriched, 1),
+                OreDictUnificator.get(OrePrefixes.ingotHot, Materials.NaquadahEnriched, 1),
                 WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 12))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -378,7 +378,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(triniumSulphate.get(OrePrefixes.dust, 6))
             .fluidInputs(Materials.Hydrogen.getGas(2000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(1000))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -398,10 +398,10 @@ public class NaquadahReworkRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 galliumHydroxide.get(OrePrefixes.dust, 7),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 3))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 3))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 9))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 9))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -410,10 +410,10 @@ public class NaquadahReworkRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 indiumPhosphate.get(OrePrefixes.dust, 12),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 3))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 3))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 2),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 5))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 2),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 5))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -421,7 +421,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 10), Materials.SulfuricAcid.getCells(30))
             .fluidOutputs(naquadriaRichSolution.getFluidOrGas(9000))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Barite, 1), ItemList.Cell_Empty.get(30))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Barite, 1), ItemList.Cell_Empty.get(30))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(UniversalChemical);
@@ -458,9 +458,9 @@ public class NaquadahReworkRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 naquadriaSulphate.get(OrePrefixes.dust, 11),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadria, 1),
+                OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadria, 1),
                 magnesiumSulphate.get(OrePrefixes.dust, 12))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -473,7 +473,7 @@ public class NaquadahReworkRecipeLoader {
                 indiumPhosphate.get(OrePrefixes.dust, 6),
                 galliumHydroxide.get(OrePrefixes.dust, 7),
                 GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 3))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 3))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -528,7 +528,7 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
+                OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
                 naquadahine.get(OrePrefixes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
             .fluidInputs(Materials.Argon.getGas(8000))
@@ -573,8 +573,8 @@ public class NaquadahReworkRecipeLoader {
             .addTo(chemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(vacuumFreezerRecipes);
@@ -589,13 +589,13 @@ public class NaquadahReworkRecipeLoader {
             false,
             1 << 30,
             new FluidStack[] { Materials.SulfuricAcid.getFluid(500) },
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
+            OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
             ItemList.Empty_Board_Elite.get(2));
         if (tRecipe != null) {
             RecipeMaps.chemicalReactorRecipes.getBackend()
                 .removeRecipe(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
+            tRecipe2.mInputs = new ItemStack[] { OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
                 ItemList.Empty_Board_Elite.get(2) };
             RecipeMaps.chemicalReactorRecipes.add(tRecipe2);
             RecipeMaps.chemicalReactorRecipes.getBackend()
@@ -607,13 +607,13 @@ public class NaquadahReworkRecipeLoader {
             false,
             1 << 30,
             new FluidStack[] { Materials.SulfuricAcid.getFluid(500) },
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
+            OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
             ItemList.Empty_Board_Elite.get(2));
         if (tRecipe != null) {
             RecipeMaps.multiblockChemicalReactorRecipes.getBackend()
                 .removeRecipe(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
+            tRecipe2.mInputs = new ItemStack[] { OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
                 ItemList.Empty_Board_Elite.get(2) };
             RecipeMaps.multiblockChemicalReactorRecipes.add(tRecipe2);
             RecipeMaps.multiblockChemicalReactorRecipes.getBackend()
@@ -625,16 +625,16 @@ public class NaquadahReworkRecipeLoader {
             false,
             1 << 30,
             new FluidStack[] { Materials.Polybenzimidazole.getMolten(36) },
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 1),
+            OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
+            OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 1),
             GT_Utility.getIntegratedCircuit(1));
         if (tRecipe != null) {
             RecipeMaps.assemblerRecipes.getBackend()
                 .removeRecipe(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
             tRecipe2.mInputs = new ItemStack[] {
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahEnriched, 1) };
+                OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahEnriched, 1) };
             RecipeMaps.assemblerRecipes.add(tRecipe2);
             RecipeMaps.assemblerRecipes.getBackend()
                 .reInit();

@@ -8,17 +8,17 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.fluid.IFluidStore;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 
 /**
  * Wrapper for output hatch to allow multiblocks to apply specific filter.
  */
 public class OutputHatchWrapper implements IFluidStore {
 
-    private final GT_MetaTileEntity_Hatch_Output outputHatch;
+    private final Hatch_Output outputHatch;
     private final Predicate<FluidStack> filter;
 
-    public OutputHatchWrapper(GT_MetaTileEntity_Hatch_Output outputHatch, Predicate<FluidStack> filter) {
+    public OutputHatchWrapper(Hatch_Output outputHatch, Predicate<FluidStack> filter) {
         this.outputHatch = outputHatch;
         this.filter = filter;
     }

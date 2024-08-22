@@ -1,15 +1,15 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
@@ -66,30 +66,30 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 
-public class GT_MetaTileEntity_PlasmaForge extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PlasmaForge> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_PlasmaForge extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PlasmaForge>
+    implements ISurvivalConstructable {
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
     private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
@@ -145,7 +145,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private long running_time = 0;
     private boolean convergence = false;
     private HeatingCoilLevel mCoilLevel;
-    private GT_OverclockCalculator overclockCalculator;
+    private OverclockCalculator overclockCalculator;
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String[][] structure_string = new String[][] { { "                                 ",
@@ -580,8 +580,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Forge, DTPF")
             .addInfo("Transcending Dimensional Boundaries.")
             .addInfo(
@@ -769,7 +769,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 overclockCalculator = super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
                 if (discount == maximum_discount && convergence) {
@@ -780,7 +780,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipeAfterAdjustments(recipe));
             }
 
@@ -864,7 +864,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
             // Check will also fail if energy hatches are not of the same tier.
             byte tier_of_hatch = mEnergyHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
+            for (Hatch_Energy energyHatch : mEnergyHatches) {
                 if (energyHatch.mTier != tier_of_hatch) {
                     return false;
                 }
@@ -910,7 +910,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         long storedEnergy = 0;
         long maxEnergy = 0;
 
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -1111,7 +1111,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 21, 16, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 21, 16, realBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1163,10 +1163,10 @@ public class GT_MetaTileEntity_PlasmaForge extends
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (convergence) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(UITextures.BUTTON_STANDARD_PRESSED);
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.BUTTON_STANDARD);
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
                 }
                 return ret.toArray(new IDrawable[0]);
@@ -1187,7 +1187,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -1210,7 +1210,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     .setTextColor(Color.WHITE.normal)
                     .setSize(50, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                     .addTooltip(translateToLocal("GT5U.DTPF.catalystinfotooltip"))
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(

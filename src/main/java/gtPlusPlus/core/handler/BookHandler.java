@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -450,8 +450,8 @@ public class BookHandler {
 
         for (int i = 0; i < mBookKeeperCount; i++) {
             ItemStack bookstack = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, i, 1);
-            GT_OreDictUnificator.registerOre("bookWritten", bookstack);
-            GT_OreDictUnificator.registerOre("craftingBook", bookstack);
+            OreDictUnificator.registerOre("bookWritten", bookstack);
+            OreDictUnificator.registerOre("craftingBook", bookstack);
         }
     }
 

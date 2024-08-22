@@ -24,8 +24,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedTileEntity {
 
@@ -326,7 +326,7 @@ public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedT
             } else {
                 switch (GT_Mod.gregtechproxy.oreDropSystem) {
                     case Item -> {
-                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                        rList.add(OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
                     }
                     // TODO: Test
                     case FortuneItem -> {
@@ -341,11 +341,11 @@ public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedT
                             int amount = aMinAmount
                                 + Math.max(worldObj.rand.nextInt(aFortune * (tIsRich ? 2 : 1) + 2) - 1, 0);
                             for (int i = 0; i < amount; i++) {
-                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                                rList.add(OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                             }
                         } else {
                             for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
-                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                                rList.add(OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                             }
                         }
                     }
@@ -383,53 +383,50 @@ public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedT
 
             Materials aMaterial = aOreMaterial.mOreReplacement;
 
-            ItemStack tStack = GT_OreDictUnificator
-                .get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
+            ItemStack tStack = OreDictUnificator
+                .get(OrePrefixes.gemExquisite, aMaterial, OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 1; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator
-                .get(OrePrefixes.gemFlawless, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
+            tStack = OreDictUnificator
+                .get(OrePrefixes.gemFlawless, aMaterial, OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 2; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
+            tStack = OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
             if (tStack != null) {
                 for (int i = 0; i < 12; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(
-                OrePrefixes.gemFlawed,
-                aMaterial,
-                GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L),
-                1L);
+            tStack = OreDictUnificator
+                .get(OrePrefixes.gemFlawed, aMaterial, OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 5; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L);
+            tStack = OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L);
             if (tStack != null) {
                 for (int i = 0; i < 10; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(
+            tStack = OreDictUnificator.get(
                 OrePrefixes.gemChipped,
                 aMaterial,
-                GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
+                OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
                 1L);
             if (tStack != null) {
                 for (int i = 0; i < 5; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L);
+            tStack = OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L);
             if (tStack != null) {
                 for (int i = 0; i < 10; i++) {
                     tSelector.add(tStack);
@@ -449,7 +446,7 @@ public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedT
                 Materials dustMat = ((GT_Block_Ores_Abstract) aDroppedOre).getDroppedDusts()[this.mMetaData / 1000
                     % 16];
                 if (dustMat != null) rList.add(
-                    GT_OreDictUnificator
+                    OreDictUnificator
                         .get(tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, dustMat, 1L));
             }
         }

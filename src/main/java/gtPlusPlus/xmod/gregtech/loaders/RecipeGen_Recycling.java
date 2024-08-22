@@ -4,7 +4,7 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,8 +19,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -304,7 +304,7 @@ public class RecipeGen_Recycling implements Runnable {
         Map<String, ItemStack> tempMap;
         try {
             tempMap = (Map<String, ItemStack>) FieldUtils
-                .readStaticField(GT_OreDictUnificator.class, "sName2StackMap", true);
+                .readStaticField(OreDictUnificator.class, "sName2StackMap", true);
             if (tempMap != null) {
                 Logger.WARNING("Found 'sName2StackMap' in GT_OreDictUnificator.class.");
                 return tempMap;

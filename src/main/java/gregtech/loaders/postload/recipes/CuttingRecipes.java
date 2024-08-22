@@ -5,9 +5,9 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class CuttingRecipes implements Runnable {
 
@@ -29,7 +29,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer.get(16),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4) },
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4) },
                 20 * SECONDS,
                 TierEU.RECIPE_LV,
                 false);
@@ -37,7 +37,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot2.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer2.get(32),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8) },
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8) },
                 40 * SECONDS,
                 TierEU.RECIPE_MV,
                 true);
@@ -45,7 +45,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
                 1 * MINUTES + 20 * SECONDS,
                 TierEU.RECIPE_HV,
                 true);
@@ -53,7 +53,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(128),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
                 Materials.Grade1PurifiedWater,
                 Materials.Grade2PurifiedWater,
                 (int) ((1 * MINUTES + 20 * SECONDS) * 0.75),
@@ -63,7 +63,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot4.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer4.get(64), ItemList.Circuit_Silicon_Wafer4.get(32),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32) },
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32) },
                 Materials.Grade3PurifiedWater,
                 Materials.Grade4PurifiedWater,
                 2 * MINUTES,
@@ -73,7 +73,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot5.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64) },
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64) },
                 Materials.Grade5PurifiedWater,
                 Materials.Grade6PurifiedWater,
                 2 * MINUTES + 40 * SECONDS,
@@ -166,7 +166,7 @@ public class CuttingRecipes implements Runnable {
 
         recipeWithClassicFluids(
             new ItemStack[] { new ItemStack(Blocks.glowstone, 1, 0) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Glowstone, 4) },
+            new ItemStack[] { OreDictUnificator.get(OrePrefixes.plate, Materials.Glowstone, 4) },
             5 * SECONDS,
             16,
             false);

@@ -13,12 +13,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
 
     public GT_MetaGenerated_Tool_Renderer() {
-        for (GT_MetaGenerated_Tool tItem : GT_MetaGenerated_Tool.sInstances.values()) {
+        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
             if (tItem != null) {
                 MinecraftForgeClient.registerItemRenderer(tItem, this);
             }
@@ -40,7 +40,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
-        GT_MetaGenerated_Tool item = (GT_MetaGenerated_Tool) stack.getItem();
+        MetaGeneratedTool item = (MetaGeneratedTool) stack.getItem();
         GL11.glEnable(GL11.GL_BLEND);
         GT_RenderUtil.applyStandardItemTransform(type);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
@@ -51,11 +51,11 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
             renderToolPart(type, stack, toolStats, true);
 
             if ((type == ItemRenderType.INVENTORY)
-                && (GT_MetaGenerated_Tool.getPrimaryMaterial(stack) != Materials._NULL)) {
+                && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
                 if (GT_Mod.gregtechproxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
-                    long damage = GT_MetaGenerated_Tool.getToolDamage(stack);
-                    long maxDamage = GT_MetaGenerated_Tool.getToolMaxDamage(stack);
+                    long damage = MetaGeneratedTool.getToolDamage(stack);
+                    long maxDamage = MetaGeneratedTool.getToolMaxDamage(stack);
                     if (damage <= 0L) {
                         iconContainer = Textures.ItemIcons.DURABILITY_BAR[8];
                     } else if (damage >= maxDamage) {

@@ -58,7 +58,7 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.metatileentity.implementations.BasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -78,8 +78,7 @@ interface MagicalEnergyBBListener {
     void onMagicalEnergyBBUpdate();
 }
 
-public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_BasicGenerator
-    implements MagicalEnergyBBListener {
+public class GT_MetaTileEntity_MagicalEnergyAbsorber extends BasicGenerator implements MagicalEnergyBBListener {
 
     private static final boolean THAUMCRAFT_LOADED = Thaumcraft.isModLoaded();
     private static final ConcurrentHashMap<UUID, GT_MetaTileEntity_MagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(

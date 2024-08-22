@@ -41,9 +41,9 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
@@ -950,7 +950,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return (mConnections & sideDirection.flag) != 0;
     }
 
-    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return false;
     }
@@ -959,7 +959,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return false;
     }
 
-    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return false;
     }
@@ -968,12 +968,12 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return false;
     }
 
-    public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
+    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
-    public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
+    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }

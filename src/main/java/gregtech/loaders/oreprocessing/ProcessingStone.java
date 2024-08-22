@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -16,8 +16,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingStone implements IOreRecipeRegistrator {
 
@@ -51,8 +51,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Endstone, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tungstate, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Endstone, 1L),
+                        OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tungstate, 1L))
                     .outputChances(10000, 500)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -62,8 +62,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Netherrack, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Netherrack, 1L),
+                        OreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
                     .outputChances(10000, 500)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -83,7 +83,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "Concrete":
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, 200 * 30 / 320))))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -91,7 +91,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, 200 * 30 / 426))))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -99,7 +99,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 100 * 30 / 1280))))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -107,7 +107,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
                     .duration(20 * SECONDS)
                     .eut(2)
                     .addTo(maceratorRecipes);
@@ -116,8 +116,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumFeldspar, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quartz, 1L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumFeldspar, 1L),
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Quartz, 1L))
                     .outputChances(10000, 2000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -127,8 +127,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Biotite, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Biotite, 1L),
+                        OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1L))
                     .outputChances(10000, 500)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -139,8 +139,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
                     .outputChances(10000, 2000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -150,8 +150,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumFeldspar, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Pyrite, 1L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumFeldspar, 1L),
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Pyrite, 1L))
                     .outputChances(10000, 2000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -161,8 +161,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rutile, 1L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
+                        OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rutile, 1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -172,8 +172,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Talc, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Chromite, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Talc, 1L),
+                        OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Chromite, 1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -184,8 +184,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glauconite, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glauconite, 2L),
+                        OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -196,8 +196,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 1L))
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
+                        OreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 1L))
                     .outputChances(10000, 5000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -207,7 +207,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "Marble":
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, 400 * 30 / 320))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -215,7 +215,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, 400 * 30 / 426))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -223,7 +223,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -231,7 +231,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "Basalt":
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, 400 * 30 / 320))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -239,7 +239,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, 400 * 30 / 426))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -247,7 +247,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -256,8 +256,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
+                        OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -267,7 +267,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 2L),
+                        OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 2L),
                         new ItemStack(Items.flint, 1))
                     .outputChances(10000, 5000)
                     .duration(20 * SECONDS)
@@ -277,7 +277,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "GraniteBlack":
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, 400 * 30 / 320))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -285,7 +285,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, 400 * 30 / 426))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -293,7 +293,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -302,8 +302,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L))
                     .outputChances(10000, 100)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -312,7 +312,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "GraniteRed":
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, 400 * 30 / 320))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -320,7 +320,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, 400 * 30 / 426))))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -328,7 +328,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -337,8 +337,8 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1L))
+                        OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
+                        OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1L))
                     .outputChances(10000, 100)
                     .duration(20 * SECONDS)
                     .eut(2)

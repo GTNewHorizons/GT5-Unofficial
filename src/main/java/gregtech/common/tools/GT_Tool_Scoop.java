@@ -12,7 +12,7 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.items.behaviors.Behaviour_Scoop;
@@ -104,12 +104,12 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         if (Forestry.isModLoaded()) {
             aItem.addItemBehavior(aID, new Behaviour_Scoop(200));
         } else {

@@ -11,8 +11,8 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Plunger_Fluid;
@@ -57,13 +57,13 @@ public class GT_Tool_Plunger extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     @SuppressWarnings("unchecked") // the IItemBehaviour cast cannot be expressed strictly via generics
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Item(getToolDamagePerDropConversion()));
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion()));
         try {
@@ -74,7 +74,7 @@ public class GT_Tool_Plunger extends GT_Tool {
                 false,
                 getToolDamagePerDropConversion());
             if ((tObject instanceof IItemBehaviour)) {
-                aItem.addItemBehavior(aID, (IItemBehaviour<GT_MetaBase_Item>) tObject);
+                aItem.addItemBehavior(aID, (IItemBehaviour<MetaBaseItem>) tObject);
             }
         } catch (Throwable ignored) {}
     }

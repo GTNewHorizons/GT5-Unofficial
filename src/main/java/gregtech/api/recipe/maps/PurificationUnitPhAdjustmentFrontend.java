@@ -15,7 +15,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.GT_Utility;
@@ -32,7 +32,7 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
         super(
             80,
             uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_PH_NEUTRALIZATION))
+                .progressBarTexture(new FallbackableUITexture(UITextures.PROGRESSBAR_PH_NEUTRALIZATION))
                 .logoPos(new Pos2d(152, 90)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }

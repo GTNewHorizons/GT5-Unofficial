@@ -31,25 +31,24 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -104,13 +103,13 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
                             { "               ", "      CCC      ", "               " } }))
                 .addElement(
                     'X',
-                    buildHatchAdder(FuelRefineFactory.class)
-                        .atLeast(
-                            GT_HatchElement.Maintenance,
-                            GT_HatchElement.InputHatch,
-                            GT_HatchElement.InputBus,
-                            GT_HatchElement.OutputHatch,
-                            HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                    buildHatchAdder(FuelRefineFactory.class).atLeast(
+                        gregtech.api.enums.HatchElement.Maintenance,
+                        gregtech.api.enums.HatchElement.InputHatch,
+                        gregtech.api.enums.HatchElement.InputBus,
+                        gregtech.api.enums.HatchElement.OutputHatch,
+                        com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti
+                            .or(gregtech.api.enums.HatchElement.Energy))
                         .casingIndex(179)
                         .dot(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
@@ -179,8 +178,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Fuel Refinery")
             .addInfo("Controller block for the Naquadah Fuel Refinery")
             .addInfo("But at what cost?")
@@ -256,7 +255,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 int overclockAmount = Tier - recipe.mSpecialValue;
                 return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
             }
@@ -277,17 +276,17 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
             if (aMetaTileEntity == null) {
                 return false;
             } else {
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                if (aMetaTileEntity instanceof Hatch) {
+                    ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 }
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                    return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-                    return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-                    return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+                if (aMetaTileEntity instanceof Hatch_Input) {
+                    return this.mInputHatches.add((Hatch_Input) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof Hatch_Output) {
+                    return this.mOutputHatches.add((Hatch_Output) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof Hatch_InputBus) {
+                    return this.mInputBusses.add((Hatch_InputBus) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof Hatch_Energy) {
+                    return this.mEnergyHatches.add((Hatch_Energy) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
                     return this.eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
                 } else {
@@ -367,7 +366,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, env, false, true);
     }
 
     @Override

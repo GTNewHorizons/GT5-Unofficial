@@ -1,10 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
@@ -31,13 +31,13 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
+import gregtech.api.gui.modularui.UITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTileEntity_DrillerBase {
@@ -87,11 +87,11 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
         if (aNBT.hasKey("liquidenabled")) mLiquidEnabled = aNBT.getBoolean("liquidenabled");
     }
 
-    protected GT_Multiblock_Tooltip_Builder createTooltip(String aStructureName) {
+    protected MultiblockTooltipBuilder createTooltip(String aStructureName) {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Concrete Backfiller")
             .addInfo("Controller Block for the " + aStructureName)
             .addInfo("Will fill in areas below it with light concrete. This goes through walls")
@@ -231,16 +231,15 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
         final int BUTTON_Y_LEVEL = 91;
 
         builder.widget(
-            new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> mLiquidEnabled = !mLiquidEnabled)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (mLiquidEnabled) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                            UITextures.OVERLAY_BUTTON_LIQUIDMODE };
                     }
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
                 })
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(() -> mLiquidEnabled, newBoolean -> mLiquidEnabled = newBoolean),

@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -84,7 +84,7 @@ public class BaseItemDustUnique extends Item {
             Logger.WARNING("Generating OreDict Name: " + temp);
         }
         if ((temp != null) && !temp.equals("")) {
-            GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+            OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
         }
         registerComponent();
     }

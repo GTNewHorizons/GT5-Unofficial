@@ -32,8 +32,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import codechicken.nei.PositionedStack;
 import gregtech.GT_Mod;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.GT_GUIColorOverride;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.GUIColorOverride;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -60,8 +60,8 @@ public class RecipeMapFrontend {
      */
     protected final NEIRecipeProperties neiProperties;
 
-    protected final GT_GUIColorOverride colorOverride = GT_GUIColorOverride
-        .get(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
+    protected final GUIColorOverride colorOverride = GUIColorOverride
+        .get(UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
 
     public RecipeMapFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
@@ -96,7 +96,7 @@ public class RecipeMapFrontend {
         IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
         Supplier<Float> progressSupplier, Pos2d windowOffset) {
         ModularWindow.Builder builder = ModularWindow.builder(neiProperties.recipeBackgroundSize)
-            .setBackground(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE);
+            .setBackground(UITextures.BACKGROUND_NEI_SINGLE_RECIPE);
 
         UIHelper.forEachSlots(
             (i, backgrounds, pos) -> builder.widget(

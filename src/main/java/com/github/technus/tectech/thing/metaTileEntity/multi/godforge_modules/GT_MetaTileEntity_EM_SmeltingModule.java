@@ -32,7 +32,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -40,10 +40,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_BaseModule {
 
@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
@@ -151,11 +151,11 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isFurnaceModeOn()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
+                    ret.add(UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(UITextures.OVERLAY_BUTTON_CHECKMARK);
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
+                    ret.add(UITextures.BUTTON_STANDARD);
+                    ret.add(UITextures.OVERLAY_BUTTON_CROSS);
 
                 }
                 return ret.toArray(new IDrawable[0]);
@@ -212,8 +212,8 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, Furnace")
             .addInfo("Controller block of the Smelting Module")
             .addInfo("Uses a Star to Smelt Metals")

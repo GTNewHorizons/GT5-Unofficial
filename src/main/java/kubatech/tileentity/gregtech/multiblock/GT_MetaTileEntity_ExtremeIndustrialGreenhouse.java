@@ -99,18 +99,18 @@ import gregtech.api.enums.GTVoltageIndex;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_OutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import ic2.core.init.BlocksItems;
@@ -276,8 +276,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) return false;
 
         if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
-            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
-                if (this.glassTier < hatchEnergy.mTier) return false;
+            for (Hatch_Energy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
 
         boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
 
@@ -301,8 +300,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     // region tooltip
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
         tt.addMachineType("Crop Farm")
             .addInfo("Controller block for the Extreme Industrial Greenhouse")
@@ -704,7 +703,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         if (bucket.getSeedCount() <= 0) return true;
 
         // check if we have an ME output bus to output to.
-        for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+        for (Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
             if (!(tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) continue;
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
                 ((GT_MetaTileEntity_Hatch_OutputBus_ME) tHatch).store(stack);
@@ -720,7 +719,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .build();
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
-                for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
                     if (tHatch.storeAll(toOutput)) break;
                 }
             }
@@ -971,7 +970,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                     if (!widget.isClient()) widget.getContext()
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_CYCLIC)
                 .addTooltip("Configuration")
                 .setSize(16, 16));
     }
@@ -1015,7 +1014,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
@@ -1027,7 +1026,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
                 .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(UITextures.BUTTON_STANDARD)
                 .setPos(140, 4)
                 .setSize(55, 16));
 
@@ -1054,7 +1053,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         ModularWindow.Builder builder = ModularWindow.builder(200, 100);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+            new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
             .widget(new TextWidget("Configuration").setPos(25, 9))
@@ -1081,7 +1080,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
-                            GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                            UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
                         .addTooltip("Setup mode"))
                     .widget(
@@ -1100,7 +1099,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("IC2 mode"))
                     .widget(
@@ -1119,7 +1118,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("No Humidity mode"))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
@@ -1131,7 +1130,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CROSS)
                     .setSize(18, 18)
                     .setPos(10, 30)
                     .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))

@@ -32,8 +32,8 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -47,7 +47,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;
@@ -77,7 +77,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new Object[] { "XX ", "XXS", "XX ", 'X', gem.get(werkstoff.getBridgeMaterial()), 'S',
                         stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
+                OreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
                 GT_Proxy.tBits,
                 new Object[] { "GGf", 'G', gem.get(werkstoff.getBridgeMaterial()) });
         }
@@ -98,7 +98,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 new Object[] { " fS", " Sh", "W  ", 'S', stick.get(werkstoff.getBridgeMaterial()), 'W',
                     stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(toolHeadWrench, werkstoff.getBridgeMaterial(), 1L),
+                OreDictUnificator.get(toolHeadWrench, werkstoff.getBridgeMaterial(), 1L),
                 GT_Proxy.tBits,
                 new Object[] { "hXW", "XRX", "WXd", 'X', plate.get(werkstoff.getBridgeMaterial()), 'S',
                     plate.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'R',
@@ -417,13 +417,13 @@ public class ToolLoader implements IWerkstoffRunnable {
                 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
 
         GT_ModHandler.addCraftingRecipe(
-            GT_OreDictUnificator.get(toolHeadHammer, werkstoff.getBridgeMaterial(), 1L),
+            OreDictUnificator.get(toolHeadHammer, werkstoff.getBridgeMaterial(), 1L),
             GT_Proxy.tBits,
             new Object[] { "II ", "IIh", "II ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I',
                 ingot.get(werkstoff.getBridgeMaterial()) });
         if (werkstoff.hasItemType(plateDouble) && werkstoff.hasItemType(cellMolten)) {
             GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(turbineBlade, werkstoff.getBridgeMaterial(), 1L),
+                OreDictUnificator.get(turbineBlade, werkstoff.getBridgeMaterial(), 1L),
                 GT_Proxy.tBits,
                 new Object[] { "fPd", "SPS", " P ", 'P', plateDouble.get(werkstoff.getBridgeMaterial()), 'S',
                     screw.get(werkstoff.getBridgeMaterial()) });
@@ -457,7 +457,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 4), GT_OreDictUnificator.get(stickLong, Materials.Magnalium, 1))
+                .itemInputs(werkstoff.get(turbineBlade, 4), OreDictUnificator.get(stickLong, Materials.Magnalium, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                         ID_MetaTool_01.TURBINE_SMALL.ID,
@@ -470,7 +470,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 8), GT_OreDictUnificator.get(stickLong, Materials.Titanium, 1))
+                .itemInputs(werkstoff.get(turbineBlade, 8), OreDictUnificator.get(stickLong, Materials.Titanium, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                         ID_MetaTool_01.TURBINE.ID,
@@ -485,7 +485,7 @@ public class ToolLoader implements IWerkstoffRunnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     werkstoff.get(turbineBlade, 12),
-                    GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 1))
+                    OreDictUnificator.get(stickLong, Materials.TungstenSteel, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                         ID_MetaTool_01.TURBINE_LARGE.ID,
@@ -498,9 +498,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    werkstoff.get(turbineBlade, 16),
-                    GT_OreDictUnificator.get(stickLong, Materials.Americium, 1))
+                .itemInputs(werkstoff.get(turbineBlade, 16), OreDictUnificator.get(stickLong, Materials.Americium, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                         ID_MetaTool_01.TURBINE_HUGE.ID,
@@ -515,7 +513,7 @@ public class ToolLoader implements IWerkstoffRunnable {
 
         if (!werkstoff.hasItemType(gem)) {
             GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
+                OreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
                 GT_Proxy.tBits,
                 new Object[] { "PP ", "fh ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I',
                     ingot.get(werkstoff.getBridgeMaterial()) });

@@ -1,9 +1,9 @@
 package gtPlusPlus.core.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
@@ -13,8 +13,8 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
@@ -31,7 +31,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
+                    OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
                     GT_Utility.copyAmount(0L, aStack))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 1))
                 .duration(4 * MINUTES)
@@ -39,7 +39,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
                 .addTo(laserEngraverRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
                     GT_Utility.copyAmount(0L, aStack))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1))
                 .duration(2 * MINUTES)

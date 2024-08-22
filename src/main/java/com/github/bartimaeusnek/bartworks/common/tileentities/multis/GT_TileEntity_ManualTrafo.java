@@ -42,15 +42,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_ManualTrafo> {
+public class GT_TileEntity_ManualTrafo extends EnhancedMultiBlockBase<GT_TileEntity_ManualTrafo> {
 
     private byte mode;
     private int mTiers;
@@ -101,10 +101,9 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
                 IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-                if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo || mte instanceof GT_MetaTileEntity_Hatch_Energy) {
+                if (mte instanceof Hatch_Dynamo || mte instanceof Hatch_Energy) {
                     int intier = te.mEnergyHatches.get(0).mTier;
-                    if (((GT_MetaTileEntity_TieredMachineBlock) mte).mTier
-                        == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
+                    if (((TieredMachineBlock) mte).mTier == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
                         te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
                         return true;
                     }
@@ -128,8 +127,8 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transformer")
             .addInfo("Controller block for the Manual Trafo")
             .addInfo("Operates in 4 diffrent modes:")
@@ -191,8 +190,8 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
 
     public boolean onRunningTickTabbedMode() {
         boolean ret = false;
-        for (GT_MetaTileEntity_Hatch_Dynamo E : this.mDynamoHatches) {
-            for (GT_MetaTileEntity_Hatch_Energy I : this.mEnergyHatches) {
+        for (Hatch_Dynamo E : this.mDynamoHatches) {
+            for (Hatch_Energy I : this.mEnergyHatches) {
 
                 long vtt = I.getEUVar() >= V[E.mTier] / 2 && E.getEUVar() < E.maxEUStore() ? I.getEUVar() : 0;
 
@@ -258,7 +257,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.size() == 0) return false;
 
         byte intier = this.mEnergyHatches.get(0).mTier;
-        for (GT_MetaTileEntity_Hatch_Energy in : this.mEnergyHatches) if (in.mTier != intier) return false;
+        for (Hatch_Energy in : this.mEnergyHatches) if (in.mTier != intier) return false;
 
         int mHeight;
         for (mHeight = 1; mHeight <= 8; mHeight++) {
@@ -273,7 +272,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         if (this.mDynamoHatches.size() == 0 || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
-        for (GT_MetaTileEntity_Hatch_Dynamo out : this.mDynamoHatches) {
+        for (Hatch_Dynamo out : this.mDynamoHatches) {
             if (out.mTier != outtier) return false;
         }
 

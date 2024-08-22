@@ -10,11 +10,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.MetaTileEntity_Transformer;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer {
+public class GregtechMetaTransformerHiAmp extends MetaTileEntity_Transformer {
 
     private boolean mHalfMode = false;
 

@@ -16,10 +16,10 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -29,7 +29,7 @@ import io.netty.buffer.ByteBuf;
 /***
  * @author TrainerSnow#5086
  */
-public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLimiter.FluidLimiterData> {
+public class GT_Cover_FluidLimiter extends CoverBehaviorBase<GT_Cover_FluidLimiter.FluidLimiterData> {
 
     public GT_Cover_FluidLimiter(ITexture coverTexture) {
         super(FluidLimiterData.class, coverTexture);
@@ -164,7 +164,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new FluidLimiterUIFactory(buildContext).createWindow();
     }
 
@@ -175,7 +175,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public FluidLimiterUIFactory(GT_CoverUIBuildContext buildContext) {
+        public FluidLimiterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

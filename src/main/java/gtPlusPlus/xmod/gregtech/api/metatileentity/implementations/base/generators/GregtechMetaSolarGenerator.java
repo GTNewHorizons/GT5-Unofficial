@@ -8,12 +8,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 
-public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_BasicTank {
+public abstract class GregtechMetaSolarGenerator extends BasicTank {
 
     public int mEfficiency;
     public int mProcessingEnergy = 0;
@@ -67,7 +67,7 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

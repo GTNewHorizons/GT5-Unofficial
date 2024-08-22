@@ -17,8 +17,8 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
@@ -54,14 +54,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
@@ -231,8 +231,8 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         .build();
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer")
             .addInfo("Controller Block for the Mega Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
@@ -347,9 +347,9 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         if (stackSize.stackSize == 1) {
             return this
-                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+                .survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
         } else {
-            return this.survivialBuildPiece(
+            return this.survivalBuildPiece(
                 STRUCTURE_PIECE_MAIN_T2,
                 stackSize,
                 7,
@@ -398,7 +398,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     public SubspaceCoolingFluid findSubspaceCoolingFluid() {
         // Loop over all hatches and find the first match with a valid fluid
-        for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+        for (Hatch_Input hatch : mInputHatches) {
             Optional<SubspaceCoolingFluid> fluid = SUBSPACE_COOLING_FLUIDS.stream()
                 .filter(candidate -> drain(hatch, candidate.getStack(), false))
                 .findFirst();
@@ -413,7 +413,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 // Check if the freezer is T2
                 if (mTier == 1) return super.createOverclockCalculator(recipe);
 
@@ -439,7 +439,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
                 // Try to drain the coolant fluid if it exists. If failed, stop the machine with an error
                 if (this.currentCoolingFluid != null) {
                     FluidStack fluid = this.currentCoolingFluid.getStack();
-                    for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+                    for (Hatch_Input hatch : mInputHatches) {
                         if (drain(hatch, fluid, false)) {
                             drain(hatch, fluid, true);
                             return;

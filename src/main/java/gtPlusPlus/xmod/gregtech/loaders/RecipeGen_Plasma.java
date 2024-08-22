@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RecipeConstants;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -52,29 +52,29 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
                             .itemInputs(GT_Utility.copyAmount(1L, aPlasmaCell))
                             .itemOutputs(aContainerItem)
                             .metadata(FUEL_VALUE, 350_000)
-                            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                            .metadata(FUEL_TYPE, RecipeConstants.FuelType.PlasmaTurbine.ordinal())
                             .duration(0)
                             .eut(0)
-                            .addTo(GT_RecipeConstants.Fuel);
+                            .addTo(RecipeConstants.Fuel);
                     case "CelestialTungsten":
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aPlasmaCell))
                             .itemOutputs(aContainerItem)
                             .metadata(FUEL_VALUE, 720_000)
-                            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                            .metadata(FUEL_TYPE, RecipeConstants.FuelType.PlasmaTurbine.ordinal())
                             .duration(0)
                             .eut(0)
-                            .addTo(GT_RecipeConstants.Fuel);
+                            .addTo(RecipeConstants.Fuel);
 
                     default:
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aPlasmaCell))
                             .itemOutputs(aContainerItem)
                             .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * material.getMass()))
-                            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                            .metadata(FUEL_TYPE, RecipeConstants.FuelType.PlasmaTurbine.ordinal())
                             .duration(0)
                             .eut(0)
-                            .addTo(GT_RecipeConstants.Fuel);
+                            .addTo(RecipeConstants.Fuel);
                 }
             }
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCell, aPlasmaCell })) {

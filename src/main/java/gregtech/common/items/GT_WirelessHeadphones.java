@@ -16,11 +16,11 @@ import net.minecraftforge.common.util.Constants;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import gregtech.api.enums.ItemList;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.ItemGeneric;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_BetterJukebox;
 
-public class GT_WirelessHeadphones extends GT_Generic_Item implements IBauble {
+public class GT_WirelessHeadphones extends ItemGeneric implements IBauble {
 
     public static final String NBTKEY_JUKEBOX_COORDINATES = "jukeboxCoords";
 

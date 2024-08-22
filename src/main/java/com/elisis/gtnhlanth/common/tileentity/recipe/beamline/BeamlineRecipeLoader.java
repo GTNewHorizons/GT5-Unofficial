@@ -16,8 +16,8 @@ import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.material.ELEMENT;
 
 public class BeamlineRecipeLoader {
@@ -55,7 +55,7 @@ public class BeamlineRecipeLoader {
          * ELECTRON
          */
         BeamlineRecipeAdder2.instance.addSourceChamberRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Tungsten, 1) },
+            new ItemStack[] { OreDictUnificator.get(OrePrefixes.stick, Materials.Tungsten, 1) },
             null,
             Particle.ELECTRON.ordinal(),
             20,

@@ -15,7 +15,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
@@ -128,13 +128,13 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     // GUI stuff
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new AdvancedRedstoneTransmitterBaseUIFactory(buildContext).createWindow();
     }
 
     protected class AdvancedRedstoneTransmitterBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
 
-        public AdvancedRedstoneTransmitterBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+        public AdvancedRedstoneTransmitterBaseUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

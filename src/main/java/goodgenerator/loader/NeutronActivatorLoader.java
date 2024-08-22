@@ -8,15 +8,15 @@ import static goodgenerator.items.MyMaterial.thoriumBasedLiquidFuelExcited;
 import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuel;
 import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuelExcited;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.NKE_RANGE;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.NKE_RANGE;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class NeutronActivatorLoader {
 
@@ -30,7 +30,7 @@ public class NeutronActivatorLoader {
             .noOptimize()
             .addTo(neutronActivatorRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
+            .itemInputs(GT_Utility.copyAmount(0, OreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
             .fluidInputs(uraniumBasedLiquidFuel.getFluidOrGas(100))
             .fluidOutputs(uraniumBasedLiquidFuelExcited.getFluidOrGas(100))
             .duration(4 * SECONDS)
@@ -39,7 +39,7 @@ public class NeutronActivatorLoader {
             .noOptimize()
             .addTo(neutronActivatorRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
+            .itemInputs(GT_Utility.copyAmount(0, OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
             .fluidInputs(plutoniumBasedLiquidFuel.getFluidOrGas(100))
             .fluidOutputs(plutoniumBasedLiquidFuelExcited.getFluidOrGas(100))
             .duration(4 * SECONDS)

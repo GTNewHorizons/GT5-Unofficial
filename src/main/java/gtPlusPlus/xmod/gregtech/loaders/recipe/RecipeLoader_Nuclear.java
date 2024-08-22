@@ -13,12 +13,12 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraft.item.ItemStack;
@@ -29,8 +29,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.ALLOY;
@@ -108,11 +108,11 @@ public class RecipeLoader_Nuclear {
                 .itemInputs(depletedRod, GT_Utility.getIntegratedCircuit(20))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
                     ELEMENT.getInstance().URANIUM232.getSmallDust(1),
                     ELEMENT.getInstance().URANIUM233.getSmallDust(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                    OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
                 .outputChances(10000, 10000, 1000, 1000, 1000, 500)
                 .fluidOutputs(FluidUtils.getFluidStack("krypton", 60))
                 .duration(4 * MINUTES + 10 * SECONDS)
@@ -129,11 +129,11 @@ public class RecipeLoader_Nuclear {
                 .itemInputs(depletedRod, GT_Utility.getIntegratedCircuit(20))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
                     ELEMENT.getInstance().PLUTONIUM238.getTinyDust(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                    OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
                 .outputChances(10000, 10000, 500, 500, 500, 500)
                 .fluidOutputs(FluidUtils.getFluidStack("krypton", 90))
                 .duration(6 * MINUTES + 15 * SECONDS)
@@ -148,9 +148,9 @@ public class RecipeLoader_Nuclear {
                 .itemInputs(depletedRod, GT_Utility.getIntegratedCircuit(20))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
                     ELEMENT.getInstance().THORIUM232.getDust(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
+                    OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
                     ELEMENT.getInstance().POLONIUM.getSmallDust(1),
                     ELEMENT.getInstance().THALLIUM.getTinyDust(1))
                 .outputChances(10000, 10000, 5000, 5000, 5000, 2500)
@@ -331,7 +331,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3))

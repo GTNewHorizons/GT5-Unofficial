@@ -14,15 +14,15 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
+import gregtech.api.metatileentity.implementations.Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_ItemDistributor extends Buffer {
 
     private byte[] itemsPerSide = new byte[6];
     private ForgeDirection currentSide = ForgeDirection.DOWN;
@@ -196,7 +196,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         addEmitRedstoneIfFullButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
+            new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_22_RED.apply(87, true))
                 .setPos(62, 60)
                 .setSize(87, 22));
         addInventorySlots(builder);

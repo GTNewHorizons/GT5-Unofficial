@@ -57,7 +57,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import thaumcraft.api.aspects.Aspect;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -494,7 +494,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         if (o == null || o.equals(Werkstoff.default_null_Werkstoff) || o.equals(Materials._NULL))
             return this.get(prefixes);
         if (o instanceof Werkstoff) return WerkstoffLoader.getCorrespondingItemStack(prefixes, (Werkstoff) o);
-        if (o instanceof Materials) return GT_OreDictUnificator.get(prefixes, o, 1L);
+        if (o instanceof Materials) return OreDictUnificator.get(prefixes, o, 1L);
         return null;
     }
 

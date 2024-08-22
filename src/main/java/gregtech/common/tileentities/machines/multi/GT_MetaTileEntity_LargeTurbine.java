@@ -3,13 +3,13 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
@@ -43,10 +43,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Utility;
@@ -55,8 +55,8 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.render.GT_RenderUtil;
 
-public abstract class GT_MetaTileEntity_LargeTurbine
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbine> implements ISurvivalConstructable {
+public abstract class GT_MetaTileEntity_LargeTurbine extends EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbine>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbine>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -259,10 +259,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     @NotNull
     public CheckRecipeResult checkProcessing() {
         ItemStack controllerSlot = getControllerSlot();
-        if ((counter & 7) == 0
-            && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
-                || controllerSlot.getItemDamage() < 170
-                || controllerSlot.getItemDamage() > 179)) {
+        if ((counter & 7) == 0 && (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool)
+            || controllerSlot.getItemDamage() < 170
+            || controllerSlot.getItemDamage() > 179)) {
             stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
@@ -277,21 +276,20 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                     .hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
-                    (long) ((5F
-                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
+                    (long) ((5F + ((MetaGeneratedTool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
                         * 1000F));
                 optFlow = GT_Utility.safeInt(
                     (long) Math.max(
                         Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
+                        ((MetaGeneratedTool) controllerSlot.getItem()).getToolStats(controllerSlot)
+                            .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mToolSpeed
                             * 50));
 
                 overflowMultiplier = getOverflowMultiplier(controllerSlot);
 
-                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
-                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
-                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
+                flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
+                flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
+                flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
 
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
@@ -339,7 +337,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
     public long getMaximumOutput() {
         long aTotal = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             aTotal = aDynamo.maxAmperesOut() * aVoltage;
         }
@@ -348,7 +346,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
 
     public int getOverflowMultiplier(ItemStack aStack) {
         int aOverflowMultiplier = 0;
-        int toolQualityLevel = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality;
+        int toolQualityLevel = MetaGeneratedTool.getPrimaryMaterial(aStack).mToolQuality;
         if (toolQualityLevel >= 6) {
             aOverflowMultiplier = 3;
         } else if (toolQualityLevel >= 3) {
@@ -383,7 +381,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -401,13 +399,13 @@ public abstract class GT_MetaTileEntity_LargeTurbine
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
             tDura = GT_Utility.safeInt(
-                (long) (100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1])
-                    * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1])) + 1));
+                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(mInventory[1])
+                    * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -487,6 +485,6 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
     }
 }

@@ -5,20 +5,20 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
+import static gregtech.api.metatileentity.implementations.BasicMachine.isValidForLowGravity;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.List;
@@ -54,35 +54,35 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.GT_Item_Machines;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @Deprecated
-public class GT_MetaTileEntity_ProcessingArray extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_ProcessingArray> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_ProcessingArray extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_ProcessingArray>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_ProcessingArray> STRUCTURE_DEFINITION = StructureDefinition
@@ -124,8 +124,8 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Processing Array")
             .addInfo("Runs supplied machines as if placed in the world")
             .addInfo("Place up to 64 singleblock GT machines into the controller")
@@ -271,8 +271,8 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
     private void setTierAndMult() {
         IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(getControllerSlot());
-        if (aMachine instanceof GT_MetaTileEntity_TieredMachineBlock) {
-            tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
+        if (aMachine instanceof TieredMachineBlock) {
+            tTier = ((TieredMachineBlock) aMachine).mTier;
         } else {
             tTier = 0;
         }
@@ -294,10 +294,10 @@ public class GT_MetaTileEntity_ProcessingArray extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (mMachine && aTick % 20 == 0) {
-            for (GT_MetaTileEntity_Hatch_InputBus tInputBus : mInputBusses) {
+            for (Hatch_InputBus tInputBus : mInputBusses) {
                 tInputBus.mRecipeMap = mLastRecipeMap;
             }
-            for (GT_MetaTileEntity_Hatch_Input tInputHatch : mInputHatches) {
+            for (Hatch_Input tInputHatch : mInputHatches) {
                 tInputHatch.mRecipeMap = mLastRecipeMap;
             }
         }
@@ -316,7 +316,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     private boolean checkHatches() {
@@ -403,7 +403,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -436,18 +436,18 @@ public class GT_MetaTileEntity_ProcessingArray extends
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(
-                    GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
+                + GT_Utility
+                    .formatNumbers(ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + GT_Utility
-                    .formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
+                    .formatNumbers(ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
                 + "A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[GT_Utility
-                    .getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))]
+                    .getTier(ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))]
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED
@@ -513,11 +513,10 @@ public class GT_MetaTileEntity_ProcessingArray extends
             .setPlayClickSound(true)
             .setBackground(() -> {
                 if (downtierUEV) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                        GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                        UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF };
                 }
             })
             .setPos(80, 91)

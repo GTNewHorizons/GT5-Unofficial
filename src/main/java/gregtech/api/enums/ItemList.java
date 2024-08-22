@@ -14,8 +14,8 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -2643,28 +2643,28 @@ public enum ItemList implements IItemContainer {
             new NullPointerException().printStackTrace(GT_Log.out);
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmount(aAmount, OreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, W, OreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, 0, OreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, OreDictUnificator.get(mStack));
     }
 
     @Override
@@ -2707,20 +2707,20 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         sanityCheck();
         if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, OreDictUnificator.get(mStack));
     }
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) OreDictUnificator.registerOre(tOreName, get(1));
         return this;
     }
 
     @Override
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictUnificator.registerOre(tOreName, getWildcard(1));
         return this;
     }
 

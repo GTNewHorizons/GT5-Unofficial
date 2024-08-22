@@ -9,7 +9,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
@@ -63,8 +63,8 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
                     Logger.MATERIALS("Generating Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
-                    final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
-                    final ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
+                    final ItemStack plate = OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
+                    final ItemStack longrod = OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
 
                     if ((null != plate && longrod != null)) {
                         addRecipe(aMaterial, 1600000L, 3, ItemList.Battery_RE_HV_Lithium.get(1));

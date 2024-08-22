@@ -42,7 +42,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_Pollution;
+import gregtech.api.net.Packet_Pollution;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_PollutionRenderer;
@@ -233,7 +233,7 @@ public class GT_Pollution {
                     64,
                     (actualPos.chunkZPos << 4),
                     256);
-                GT_Values.NW.sendToAllAround(new GT_Packet_Pollution(actualPos, tPollution), point);
+                GT_Values.NW.sendToAllAround(new Packet_Pollution(actualPos, tPollution), point);
             }
         }
     }
@@ -423,7 +423,7 @@ public class GT_Pollution {
                 int pollution = STORAGE.get(world, event.chunk)
                     .getAmount();
                 if (pollution > POLLUTIONPACKET_MINVALUE)
-                    GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(event.chunk, pollution), event.player);
+                    GT_Values.NW.sendToPlayer(new Packet_Pollution(event.chunk, pollution), event.player);
             }
         }
 

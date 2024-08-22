@@ -16,10 +16,10 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
 import static gregtech.api.enums.Mods.CropsPlusPlus;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.SIEVERTS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.SIEVERTS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -33,8 +33,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class BioRecipeLoader {
 
@@ -152,7 +152,7 @@ public class BioRecipeLoader {
                 .itemInputs(
                     new ItemStack(Items.sugar, 4),
                     ItemList.IC2_Hops.get(16L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L))
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L))
                 .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
                 .fluidInputs(new FluidStack(fluidStack, 100))
                 .fluidOutputs(FluidRegistry.getFluidStack("potion.beer", 5))
@@ -162,9 +162,7 @@ public class BioRecipeLoader {
                 .addTo(bacterialVatRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.IC2_Hops.get(32L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L))
+                .itemInputs(ItemList.IC2_Hops.get(32L), OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L))
                 .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
                 .fluidInputs(new FluidStack(fluidStack, 100))
                 .fluidOutputs(FluidRegistry.getFluidStack("potion.darkbeer", 10))

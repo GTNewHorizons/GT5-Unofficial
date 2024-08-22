@@ -17,7 +17,7 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -143,7 +143,7 @@ public class GT_Cover_WirelessItemDetector
     // GUI stuff
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new WirelessItemDetectorUIFactory(buildContext).createWindow();
     }
 
@@ -166,7 +166,7 @@ public class GT_Cover_WirelessItemDetector
             }
         };
 
-        public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+        public WirelessItemDetectorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

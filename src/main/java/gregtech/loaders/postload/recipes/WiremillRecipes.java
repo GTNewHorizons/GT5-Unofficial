@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeRegistrator.registerWiremillRecipes;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class WiremillRecipes implements Runnable {
 
@@ -25,14 +25,14 @@ public class WiremillRecipes implements Runnable {
         registerWiremillRecipes(MaterialsUEVplus.SpaceTime, 20 * SECONDS, (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
             .itemOutputs(new ItemStack(Items.string, 32))
             .duration(4 * SECONDS)
             .eut(48)
             .addTo(wiremillRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("miningPipe", 1))
             .duration(10 * SECONDS)
             .eut(16)

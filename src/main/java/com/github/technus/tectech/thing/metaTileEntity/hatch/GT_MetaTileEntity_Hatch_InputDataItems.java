@@ -34,11 +34,10 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.Hatch_DataAccess;
 import gregtech.api.objects.GT_RenderedTexture;
 
-public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Hatch_DataAccess
-    implements IConnectsToDataPipe {
+public class GT_MetaTileEntity_Hatch_InputDataItems extends Hatch_DataAccess implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
     private ItemStack[] stacks;

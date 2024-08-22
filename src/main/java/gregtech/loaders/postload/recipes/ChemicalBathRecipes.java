@@ -3,9 +3,9 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,7 +20,7 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class ChemicalBathRecipes implements Runnable {
 
@@ -43,7 +43,7 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("reinforcedStone", 1))
             .fluidInputs(Materials.Concrete.getMolten(144))
             .duration(10 * SECONDS)
@@ -51,16 +51,16 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1))
             .fluidInputs(Materials.Water.getFluid(125))
             .duration(12 * TICKS)
             .eut(4)
             .addTo(chemicalBathRecipes);
 
         // paper creation recipes
-        ItemStack[] paperSources = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Paper, 1L), new ItemStack(Items.reeds, 1, 32767) };
+        ItemStack[] paperSources = new ItemStack[] { OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Paper, 1L), new ItemStack(Items.reeds, 1, 32767) };
         for (ItemStack paperSource : paperSources) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(paperSource)
@@ -80,8 +80,8 @@ public class ChemicalBathRecipes implements Runnable {
         }
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1))
             .fluidInputs(GT_ModHandler.getDistilledWater(125))
             .duration(12 * TICKS)
             .eut(4)
@@ -156,7 +156,7 @@ public class ChemicalBathRecipes implements Runnable {
         // reinforced blocks
         {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
                 .itemOutputs(ItemList.Block_BronzePlate.get(1))
                 .fluidInputs(Materials.Concrete.getMolten(144))
                 .duration(10 * SECONDS)
@@ -164,7 +164,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
                 .itemOutputs(ItemList.Block_SteelPlate.get(1))
                 .fluidInputs(Materials.Steel.getMolten(288))
                 .duration(12 * SECONDS + 10 * TICKS)
@@ -172,7 +172,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1))
                 .itemOutputs(ItemList.Block_TitaniumPlate.get(1))
                 .fluidInputs(Materials.Titanium.getMolten(144))
                 .duration(15 * SECONDS)
@@ -180,7 +180,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
                 .fluidInputs(Materials.TungstenSteel.getMolten(144))
                 .duration(17 * SECONDS + 10 * TICKS)
@@ -188,7 +188,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1))
                 .itemOutputs(ItemList.Block_IridiumTungstensteel.get(1))
                 .fluidInputs(Materials.Iridium.getMolten(144))
                 .duration(20 * SECONDS)
@@ -196,7 +196,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
                 .itemOutputs(ItemList.Block_NaquadahPlate.get(1))
                 .fluidInputs(Materials.Osmium.getMolten(144))
                 .duration(22 * SECONDS + 10 * TICKS)
@@ -204,7 +204,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
                 .itemOutputs(ItemList.Block_NeutroniumPlate.get(1))
                 .fluidInputs(Materials.Naquadria.getMolten(144))
                 .duration(25 * SECONDS)
@@ -212,7 +212,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
                 .fluidInputs(Materials.Concrete.getMolten(144))
                 .duration(10 * SECONDS)
@@ -222,7 +222,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         for (int j = 0; j < Dyes.dyeRed.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 0))
                 .fluidInputs(Dyes.dyeRed.getFluidDye(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -231,7 +231,7 @@ public class ChemicalBathRecipes implements Runnable {
         }
         for (int j = 0; j < Dyes.dyeBlue.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 1))
                 .fluidInputs(Dyes.dyeBlue.getFluidDye(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -240,7 +240,7 @@ public class ChemicalBathRecipes implements Runnable {
         }
         for (int j = 0; j < Dyes.dyeGreen.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 2))
                 .fluidInputs(Dyes.dyeGreen.getFluidDye(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -249,7 +249,7 @@ public class ChemicalBathRecipes implements Runnable {
         }
         for (int j = 0; j < Dyes.dyeYellow.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 3))
                 .fluidInputs(Dyes.dyeYellow.getFluidDye(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -288,7 +288,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         // Rn relate quantum recipe
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnderEye, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.gem, Materials.EnderEye, 1))
             .itemOutputs(ItemList.QuantumEye.get(1))
             .fluidInputs(Materials.Radon.getGas(250))
             .duration(24 * SECONDS)
@@ -296,7 +296,7 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
             .itemOutputs(ItemList.QuantumStar.get(1))
             .fluidInputs(Materials.Radon.getGas(1250))
             .duration(1 * MINUTES + 36 * SECONDS)
@@ -324,77 +324,77 @@ public class ChemicalBathRecipes implements Runnable {
         // Custom Sodium Persulfate Ore Processing Recipes
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Tantalite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Tantalite, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Tantalite, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Tantalite, 1),
                 Materials.Tantalum.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 3000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(chemicalBathRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Pyrolusite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Pyrolusite, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrolusite, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrolusite, 1),
                 Materials.Manganese.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 7000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(chemicalBathRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Quartzite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Quartzite, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Quartzite, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Quartzite, 1),
                 Materials.CertusQuartz.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 3000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(chemicalBathRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.CertusQuartz, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.CertusQuartz, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.CertusQuartz, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.CertusQuartz, 1),
                 Materials.Barium.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 7000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(chemicalBathRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 1),
                 Materials.Rutile.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 5000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(chemicalBathRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Thorium, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Thorium, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Thorium, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Thorium, 1),
                 Materials.Uranium.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 3000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(chemicalBathRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Stibnite, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.crushed, Materials.Stibnite, 1))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Stibnite, 1),
+                OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Stibnite, 1),
                 Materials.Antimony.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .outputChances(10000, 5000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)

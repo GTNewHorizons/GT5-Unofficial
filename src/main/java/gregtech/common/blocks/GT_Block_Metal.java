@@ -13,7 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class GT_Block_Metal extends GT_Block_Storage {
 
@@ -35,7 +35,7 @@ public class GT_Block_Metal extends GT_Block_Storage {
                 GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + i + ".name",
                     "Block of " + (GT_LanguageManager.i18nPlaceholder ? "%material" : aMats[i].mDefaultLocalName));
-                GT_OreDictUnificator.registerOre(aPrefix, aMats[i], new ItemStack(this, 1, i));
+                OreDictUnificator.registerOre(aPrefix, aMats[i], new ItemStack(this, 1, i));
             }
         }
         if (aMats.length < 16 && mNEIisLoaded) {

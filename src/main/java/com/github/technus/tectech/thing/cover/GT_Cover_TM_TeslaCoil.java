@@ -10,10 +10,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.github.technus.tectech.mechanics.tesla.TeslaCoverConnection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
-public class GT_Cover_TM_TeslaCoil extends GT_CoverBehavior {
+public class GT_Cover_TM_TeslaCoil extends CoverBehavior {
 
     public GT_Cover_TM_TeslaCoil() {}
 

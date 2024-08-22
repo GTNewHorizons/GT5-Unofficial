@@ -38,7 +38,6 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -47,17 +46,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -103,8 +102,8 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe)
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
                     .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
                     .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
             }
@@ -181,8 +180,8 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return GoodGeneratorRecipeMaps.neutronActivatorRecipes;
     }
 
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator")
             .addInfo("Controller block for the Neutron Activator")
             .addInfo("Superluminal-velocity Motion.")
@@ -230,7 +229,10 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     'C',
                     ofChain(
                         buildHatchAdder(NeutronActivator.class)
-                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.InputBus, GT_HatchElement.Maintenance)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.InputHatch,
+                                gregtech.api.enums.HatchElement.InputBus,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(49)
                             .dot(1)
                             .build(),
@@ -244,9 +246,9 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     ofChain(
                         buildHatchAdder(NeutronActivator.class)
                             .atLeast(
-                                GT_HatchElement.OutputHatch,
-                                GT_HatchElement.OutputBus,
-                                GT_HatchElement.Maintenance,
+                                gregtech.api.enums.HatchElement.OutputHatch,
+                                gregtech.api.enums.HatchElement.OutputBus,
+                                gregtech.api.enums.HatchElement.Maintenance,
                                 NeutronHatchElement.NeutronAccelerator,
                                 NeutronHatchElement.NeutronSensor)
                             .casingIndex(49)
@@ -283,10 +285,10 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof NeutronAccelerator) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mNeutronAccelerator.add((NeutronAccelerator) aMetaTileEntity);
             } else if (aMetaTileEntity instanceof NeutronSensor) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mNeutronSensor.add((NeutronSensor) aMetaTileEntity);
             }
         }
@@ -448,14 +450,14 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
 
-        int built = survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int heights = stackSize.stackSize + 3;
         for (int i = 1; i <= heights; i++) {
-            built = survivialBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
     }
 
     protected void onCasingFound() {

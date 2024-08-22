@@ -2,7 +2,7 @@ package com.github.technus.tectech.recipe;
 
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.researchStationFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_STATION_DATA;
+import static gregtech.api.util.RecipeConstants.RESEARCH_STATION_DATA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,10 +19,10 @@ import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.GT_RecipeAdder;
 
 public class TT_recipeAdder extends GT_RecipeAdder {
@@ -139,7 +139,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
                 }
             } else if (obj instanceof Object[]objs) {
                 List<ItemStack> tList;
-                if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
+                if (objs.length >= 2 && !(tList = OreDictUnificator.getOres(objs[0])).isEmpty()) {
                     try {
                         // sort the output, so the hash code is stable across launches
                         tList.sort(

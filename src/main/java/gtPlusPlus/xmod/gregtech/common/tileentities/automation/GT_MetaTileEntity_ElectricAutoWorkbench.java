@@ -19,23 +19,23 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_BasicTank implements IAddGregtechLogo {
+public class GT_MetaTileEntity_ElectricAutoWorkbench extends BasicTank implements IAddGregtechLogo {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
     public boolean mLastCraftSuccessful = false;
@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -394,7 +394,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                             tTempStack = GT_Utility.copy(mInventory[mCurrentSlot]);
                             tTempStack.stackSize = 1;
                             tRecipe[0] = tTempStack;
-                            tOutput = GT_OreDictUnificator.get(true, tTempStack);
+                            tOutput = OreDictUnificator.get(true, tTempStack);
                             if (tOutput != null && GT_Utility.areStacksEqual(tOutput, tTempStack)) tOutput = null;
                             if (tOutput == null) {
                                 tRecipe[0] = null;
@@ -549,7 +549,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                 if (tOutput == null) {
                     mLastCraftSuccessful = false;
                 } else {
-                    if ((tTempStack = GT_OreDictUnificator.get(true, tOutput)) != null) {
+                    if ((tTempStack = OreDictUnificator.get(true, tOutput)) != null) {
                         tTempStack.stackSize = tOutput.stackSize;
                         tOutput = tTempStack;
                     }
@@ -807,16 +807,16 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                     .startFromSlot(9)
                     .endAtSlot(17)
                     .canInsert(false)
-                    .background(GT_UITextures.SLOT_DARK_GRAY)
+                    .background(UITextures.SLOT_DARK_GRAY)
                     .applyForWidget(SlotWidget::disableShiftInsert)
                     .build()
                     .setPos(7, 59))
             .widget(
                 new SlotWidget(inventoryHandler, 18).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_OUT)
                     .setPos(151, 40))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_SLOTS_HOLO_3BY3)
                     .setPos(62, 4)
                     .setSize(54, 54))
             .widget(
@@ -824,7 +824,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                     .startFromSlot(19)
                     .endAtSlot(27)
                     .phantom(true)
-                    .background(GT_UITextures.TRANSPARENT)
+                    .background(UITextures.TRANSPARENT)
                     .build()
                     .setPos(62, 4))
             .widget(
@@ -837,7 +837,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                 .setSetter(val -> mThroughPut = val)
                 .setLength(MAX_THROUGHPUT)
                 .setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_THROUGHPUT[i])
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(UITextures.BUTTON_STANDARD)
                 .setPos(120, 4)
                 .setSize(18, 18));
         String[] mModeText = new String[] { "Normal Crafting Table", "???", "1x1", "2x2", "3x3", "Unifier", "Dust",
@@ -853,7 +853,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
             modeButton.addTooltip(i, "Mode: " + mModeText[i]);
         }
         builder.widget(
-            modeButton.setBackground(GT_UITextures.BUTTON_STANDARD)
+            modeButton.setBackground(UITextures.BUTTON_STANDARD)
                 .setPos(120, 40)
                 .setSize(18, 18));
         builder.widget(

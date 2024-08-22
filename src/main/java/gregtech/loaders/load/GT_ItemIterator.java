@@ -2,10 +2,10 @@ package gregtech.loaders.load;
 
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.WILDCARD;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -22,13 +22,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.ItemGeneric;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
+import gregtech.api.util.RecipeConstants;
 import mods.railcraft.api.core.items.IToolCrowbar;
 
 public class GT_ItemIterator implements Runnable {
@@ -36,44 +36,44 @@ public class GT_ItemIterator implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
-        ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L);
+        ItemStack tStack2 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L);
         ItemStack tStack = GT_ModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
 
-            GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GT_ModHandler.addSmeltingRecipe(tStack, OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
-        tStack2 = GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L);
+        tStack2 = OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L);
         tStack = GT_ModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
-            GT_OreDictUnificator.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
+            OreDictUnificator.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
-            GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GT_ModHandler.addSmeltingRecipe(tStack, OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
-        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L);
+        tStack2 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L);
         tStack = GT_ModHandler.getRecipeOutput(
             tStack2,
             tStack3,
             tStack2,
             tStack3,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
             tStack3,
             tStack2,
             tStack3,
@@ -83,22 +83,22 @@ public class GT_ItemIterator implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
         }
 
-        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L);
+        tStack2 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L);
         tStack3 = new ItemStack(Blocks.glass, 1, 0);
         tStack = GT_ModHandler.getRecipeOutput(
             tStack2,
             tStack3,
             tStack2,
             tStack3,
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
             tStack3,
             tStack2,
             tStack3,
@@ -107,8 +107,8 @@ public class GT_ItemIterator implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
+                    OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
@@ -162,7 +162,7 @@ public class GT_ItemIterator implements Runnable {
             for (Object o : Item.itemRegistry) {
                 Object tObject;
 
-                if (!(((tObject = o) instanceof Item) && (!(tObject instanceof GT_Generic_Item)))) {
+                if (!(((tObject = o) instanceof Item) && (!(tObject instanceof ItemGeneric)))) {
                     continue;
                 }
 
@@ -204,7 +204,7 @@ public class GT_ItemIterator implements Runnable {
                     && (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
                     int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
                     if (tFoodValue > 0) {
-                        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                        RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                         recipeBuilder
                             .itemInputs(new ItemStack(tItem, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(tFoodValue));
                         if (GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
@@ -220,7 +220,7 @@ public class GT_ItemIterator implements Runnable {
                     }
                 }
                 if ((tItem instanceof IFluidContainerItem)) {
-                    GT_OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, WILDCARD));
+                    OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, WILDCARD));
                 }
 
                 switch (tName) {
@@ -229,7 +229,7 @@ public class GT_ItemIterator implements Runnable {
                         .itemInputs(new ItemStack(tItem, 1, 0))
                         .metadata(FUEL_VALUE, 2048)
                         .metadata(FUEL_TYPE, 5)
-                        .addTo(GT_RecipeConstants.Fuel);
+                        .addTo(RecipeConstants.Fuel);
 
                     // twilight forest
                     case "tile.TFRoots" -> {
@@ -245,55 +245,52 @@ public class GT_ItemIterator implements Runnable {
                             .itemOutputs(new ItemStack(Items.stick, 4))
                             .metadata(FUEL_VALUE, 32)
                             .metadata(FUEL_TYPE, 5)
-                            .addTo(GT_RecipeConstants.Fuel);
+                            .addTo(RecipeConstants.Fuel);
                     }
 
                     // tinker construct
-                    case "item.tconstruct.manual" -> GT_OreDictUnificator
+                    case "item.tconstruct.manual" -> OreDictUnificator
                         .registerOre("bookTinkersManual", new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "item.blueprintItem" -> GT_OreDictUnificator
+                    case "item.blueprintItem" -> OreDictUnificator
                         .registerOre("paperBlueprint", new ItemStack(tItem, 1, WILDCARD));
 
                     // Thaumcraft
-                    case "item.ItemThaumonomicon" -> GT_OreDictUnificator
+                    case "item.ItemThaumonomicon" -> OreDictUnificator
                         .registerOre("bookThaumonomicon", new ItemStack(tItem, 1, WILDCARD));
 
                     // BoP
                     case "tile.bop.redRocks" -> {
-                        GT_OreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
-                        GT_OreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
-                        GT_OreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
+                        OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
+                        OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
+                        OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
                     }
 
                     // Thaumcraft
                     case "tile.blockCosmeticSolid" -> {
-                        GT_OreDictUnificator
+                        OreDictUnificator
                             .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
-                        GT_OreDictUnificator
+                        OreDictUnificator
                             .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
-                        GT_OreDictUnificator
+                        OreDictUnificator
                             .registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
                     }
 
                     // minecraft
-                    case "tile.enderchest" -> GT_OreDictUnificator
+                    case "tile.enderchest" -> OreDictUnificator
                         .registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "tile.autoWorkbenchBlock" -> GT_OreDictUnificator
+                    case "tile.autoWorkbenchBlock" -> OreDictUnificator
                         .registerOre(OreDictNames.craftingWorkBench, new ItemStack(tItem, 1, 0));
 
                     // buildcraft
-                    case "tile.pumpBlock" -> GT_OreDictUnificator
+                    case "tile.pumpBlock" -> OreDictUnificator
                         .registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
 
                     // buildcraft
-                    case "tile.tankBlock" -> GT_OreDictUnificator
+                    case "tile.tankBlock" -> OreDictUnificator
                         .registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
 
                 }

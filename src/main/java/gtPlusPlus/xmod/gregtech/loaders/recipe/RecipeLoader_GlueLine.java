@@ -8,11 +8,11 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
@@ -25,8 +25,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -264,7 +264,7 @@ public class RecipeLoader_GlueLine {
         // Braintech Tape recipe, PBI and superglue make 16 tape at once
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L),
                 GT_ModHandler.getIC2Item("carbonMesh", 1L),
                 GT_Utility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.Duct_Tape.get(16L))
@@ -304,9 +304,9 @@ public class RecipeLoader_GlueLine {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.SFMixture.get(32))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100))
@@ -317,8 +317,8 @@ public class RecipeLoader_GlueLine {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.GelledToluene.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polybenzimidazole, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
+                OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polybenzimidazole, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.SFMixture.get(64))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100))
@@ -328,8 +328,8 @@ public class RecipeLoader_GlueLine {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 8),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 32))
+                OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 8),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 32))
             .itemOutputs(new ItemStack(Items.book, 64, 0))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(200))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -337,8 +337,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18))
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32505", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(144))
             .duration(15 * SECONDS)
@@ -346,8 +346,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6))
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32506", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(288))
             .duration(10 * SECONDS)
@@ -355,8 +355,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18))
+                OreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32507", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(576))
             .duration(15 * SECONDS)
@@ -364,8 +364,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24))
+                OreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32561", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(1152))
             .duration(5 * SECONDS)
@@ -373,8 +373,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36))
+                OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32562", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(2304))
             .duration(10 * SECONDS)
@@ -382,8 +382,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48))
+                OreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32563", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(4608))
             .duration(15 * SECONDS)
@@ -391,8 +391,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56))
+                OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32564", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(9216))
             .duration(30 * SECONDS)
@@ -400,8 +400,8 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 64))
+                OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
+                OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 64))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32565", 1))
             .fluidInputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(18432))
             .duration(60 * SECONDS)
@@ -412,7 +412,7 @@ public class RecipeLoader_GlueLine {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemUtils.getItemStackFromFQRN("GalacticraftMars:item.itemBasicAsteroids:7", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
+                    OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
                     ItemUtils.getItemStackFromFQRN("dreamcraft:item.TungstenString", 8),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(ItemUtils.getItemStackFromFQRN("GalaxySpace:item.ThermalClothT2", 1))

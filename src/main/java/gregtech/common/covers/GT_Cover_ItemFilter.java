@@ -24,11 +24,11 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -36,7 +36,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_SlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
+public class GT_Cover_ItemFilter extends CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
 
     private final boolean mExport;
 
@@ -181,7 +181,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ItemFilterUIFactory(buildContext).createWindow();
     }
 
@@ -192,7 +192,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public ItemFilterUIFactory(GT_CoverUIBuildContext buildContext) {
+        public ItemFilterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -213,9 +213,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                             return coverData;
                         },
                         widget -> widget
-                            .setToggleTexture(
-                                GT_UITextures.OVERLAY_BUTTON_BLACKLIST,
-                                GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                            .setToggleTexture(UITextures.OVERLAY_BUTTON_BLACKLIST, UITextures.OVERLAY_BUTTON_WHITELIST)
                             .addTooltip(0, GT_Utility.trans("125.1", "Whitelist Mode"))
                             .addTooltip(1, GT_Utility.trans("124.1", "Blacklist Mode"))
                             .setPos(spaceX * 0, spaceY * 0))
@@ -226,7 +224,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                             coverData.mFilter = setStackSize1(stack);
                             return coverData;
                         },
-                        widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
+                        widget -> widget.setBackground(UITextures.SLOT_DARK_GRAY)
                             .setPos(spaceX * 0, spaceY * 2))
                     .setPos(startX, startY))
                 .widget(

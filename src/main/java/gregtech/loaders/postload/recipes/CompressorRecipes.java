@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator.sapling_Rainforest;
 
 import net.minecraft.init.Blocks;
@@ -16,7 +16,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
@@ -25,8 +25,8 @@ public class CompressorRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -46,35 +46,35 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("Uran238", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("Uran235", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("Plutonium", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("smallUran235", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("smallPlutonium", 1))
             .duration(15 * SECONDS)
             .eut(2)
@@ -88,14 +88,14 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1))
             .itemOutputs(new ItemStack(Blocks.ice, 1, 0))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 4))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 4))
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "tile.BlockQuartz", 1))
             .duration(15 * SECONDS)
             .eut(2)
@@ -136,7 +136,7 @@ public class CompressorRecipes implements Runnable {
          */
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4))
             .itemOutputs(new ItemStack(Blocks.glowstone, 1))
             .duration(15 * SECONDS)
             .eut(2)

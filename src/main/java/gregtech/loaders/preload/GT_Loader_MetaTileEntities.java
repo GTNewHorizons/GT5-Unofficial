@@ -54,33 +54,33 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_QuadrupleHumongous;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_WetTransformer;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Hatch;
+import gregtech.api.metatileentity.implementations.BasicBatteryBuffer;
+import gregtech.api.metatileentity.implementations.BasicHull;
+import gregtech.api.metatileentity.implementations.BasicMachine_Recipe;
+import gregtech.api.metatileentity.implementations.Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_Magnet;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.Hatch_QuadrupleHumongous;
+import gregtech.api.metatileentity.implementations.Hatch_WirelessDynamo;
+import gregtech.api.metatileentity.implementations.Hatch_WirelessEnergy;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Fluid;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Frame;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Item;
+import gregtech.api.metatileentity.implementations.MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.WetTransformer;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ItemDistributor;
@@ -756,7 +756,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerUnpackager() {
         ItemList.Machine_LV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_LV.ID,
                 "basicmachine.unboxinator.tier.01",
                 "Basic Unpackager",
@@ -767,12 +767,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_MV.ID,
                 "basicmachine.unboxinator.tier.02",
                 "Advanced Unpackager",
@@ -783,12 +783,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_HV.ID,
                 "basicmachine.unboxinator.tier.03",
                 "Advanced Unpackager II",
@@ -799,12 +799,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_EV.ID,
                 "basicmachine.unboxinator.tier.04",
                 "Advanced Unpackager III",
@@ -815,12 +815,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_IV.ID,
                 "basicmachine.unboxinator.tier.05",
                 "Unboxinator",
@@ -831,12 +831,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_LuV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_LuV.ID,
                 "basicmachine.unboxinator.tier.06",
                 "Unboxinator",
@@ -847,12 +847,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_ZPM_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_ZPM.ID,
                 "basicmachine.unboxinator.tier.07",
                 "Unboxinator",
@@ -863,12 +863,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_UV_Unboxinator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 UNPACKAGER_UV.ID,
                 "basicmachine.unboxinator.tier.08",
                 "Unboxinator",
@@ -879,7 +879,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "UNBOXINATOR",
                 null).getStackForm(1L));
     }
@@ -887,7 +887,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static void registerAssemblingMachine() {
 
         ItemList.Machine_LV_Assembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLER_LV.ID,
                 "basicmachine.assembler.tier.01",
                 "Basic Assembling Machine",
@@ -898,12 +898,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Assembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLER_MV.ID,
                 "basicmachine.assembler.tier.02",
                 "Advanced Assembling Machine",
@@ -914,12 +914,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Assembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLER_HV.ID,
                 "basicmachine.assembler.tier.03",
                 "Advanced Assembling Machine II",
@@ -930,12 +930,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Assembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLER_EV.ID,
                 "basicmachine.assembler.tier.04",
                 "Advanced Assembling Machine III",
@@ -946,12 +946,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Assembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLER_IV.ID,
                 "basicmachine.assembler.tier.05",
                 "Advanced Assembling Machine IV",
@@ -962,12 +962,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_LuV.ID,
                 "basicmachine.assembler.tier.06",
                 "Elite Assembling Machine",
@@ -978,12 +978,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_ZPM.ID,
                 "basicmachine.assembler.tier.07",
                 "Elite Assembling Machine II",
@@ -994,12 +994,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_UV.ID,
                 "basicmachine.assembler.tier.08",
                 "Ultimate Assembly Constructor",
@@ -1010,12 +1010,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_UHV.ID,
                 "basicmachine.assembler.tier.09",
                 "Epic Assembly Constructor",
@@ -1026,12 +1026,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_UEV.ID,
                 "basicmachine.assembler.tier.10",
                 "Epic Assembly Constructor II",
@@ -1042,12 +1042,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_UIV.ID,
                 "basicmachine.assembler.tier.11",
                 "Epic Assembly Constructor III",
@@ -1058,12 +1058,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.AssemblingMachineUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ASSEMBLING_MACHINE_UMV.ID,
                 "basicmachine.assembler.tier.12",
                 "Epic Assembly Constructor IV",
@@ -1074,14 +1074,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ASSEMBLER",
                 null).getStackForm(1L));
     }
 
     private static void registerMatterAmplifier() {
         ItemList.Machine_LV_Amplifab.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_LV.ID,
                 "basicmachine.amplifab.tier.01",
                 "Basic Amplifabricator",
@@ -1092,12 +1092,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Amplifab.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_MV.ID,
                 "basicmachine.amplifab.tier.02",
                 "Advanced Amplifabricator",
@@ -1108,12 +1108,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Amplifab.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_HV.ID,
                 "basicmachine.amplifab.tier.03",
                 "Advanced Amplifabricator II",
@@ -1124,12 +1124,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Amplifab.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_EV.ID,
                 "basicmachine.amplifab.tier.04",
                 "Advanced Amplifabricator III",
@@ -1140,12 +1140,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Amplifab.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_IV.ID,
                 "basicmachine.amplifab.tier.05",
                 "Advanced Amplifabricator IV",
@@ -1156,12 +1156,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_LuV.ID,
                 "basicmachine.amplifab.tier.06",
                 "Elite Amplifabricator",
@@ -1172,12 +1172,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_ZPM.ID,
                 "basicmachine.amplifab.tier.07",
                 "Elite Amplifabricator II",
@@ -1188,12 +1188,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_UV.ID,
                 "basicmachine.amplifab.tier.08",
                 "Ultimate Amplicreator",
@@ -1204,12 +1204,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_UHV.ID,
                 "basicmachine.amplifab.tier.09",
                 "Epic Amplicreator",
@@ -1220,12 +1220,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_UEV.ID,
                 "basicmachine.amplifab.tier.10",
                 "Epic Amplicreator II",
@@ -1236,12 +1236,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_UIV.ID,
                 "basicmachine.amplifab.tier.11",
                 "Epic Amplicreator III",
@@ -1252,12 +1252,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
 
         ItemList.AmplifabricatorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MATTER_AMPLIFIER_UMV.ID,
                 "basicmachine.amplifab.tier.12",
                 "Epic Amplicreator IV",
@@ -1268,14 +1268,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AMPLIFAB",
                 null).getStackForm(1L));
     }
 
     private static void registerAlloySmelter() {
         ItemList.Machine_LV_AlloySmelter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_LV.ID,
                 "basicmachine.alloysmelter.tier.01",
                 "Basic Alloy Smelter",
@@ -1286,12 +1286,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_AlloySmelter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_MV.ID,
                 "basicmachine.alloysmelter.tier.02",
                 "Advanced Alloy Smelter",
@@ -1302,12 +1302,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_AlloySmelter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_HV.ID,
                 "basicmachine.alloysmelter.tier.03",
                 "Advanced Alloy Smelter II",
@@ -1318,12 +1318,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_AlloySmelter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_EV.ID,
                 "basicmachine.alloysmelter.tier.04",
                 "Advanced Alloy Smelter III",
@@ -1334,12 +1334,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_AlloySmelter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_IV.ID,
                 "basicmachine.alloysmelter.tier.05",
                 "Advanced Alloy Smelter IV",
@@ -1350,12 +1350,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_LuV.ID,
                 "basicmachine.alloysmelter.tier.06",
                 "Elite Alloy Smelter",
@@ -1366,12 +1366,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_ZPM.ID,
                 "basicmachine.alloysmelter.tier.07",
                 "Elite Alloy Smelter II",
@@ -1382,12 +1382,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_UV.ID,
                 "basicmachine.alloysmelter.tier.08",
                 "Ultimate Alloy Integrator",
@@ -1398,12 +1398,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_UHV.ID,
                 "basicmachine.alloysmelter.tier.09",
                 "Epic Alloy Integrator",
@@ -1414,12 +1414,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_UEV.ID,
                 "basicmachine.alloysmelter.tier.10",
                 "Epic Alloy Integrator II",
@@ -1430,12 +1430,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_UIV.ID,
                 "basicmachine.alloysmelter.tier.11",
                 "Epic Alloy Integrator III",
@@ -1446,12 +1446,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
 
         ItemList.AlloySmelterUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ALLOY_SMELTER_UMV.ID,
                 "basicmachine.alloysmelter.tier.12",
                 "Epic Alloy Integrator IV",
@@ -1462,7 +1462,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ALLOY_SMELTER",
                 null).getStackForm(1L));
     }
@@ -2584,144 +2584,114 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 "For improved Steam Machines").getStackForm(1L));
 
-        ItemList.Hull_ULV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_LV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_MV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_HV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_EV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_IV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_LuV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_ZPM.set(
-            new GT_MetaTileEntity_BasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_UV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8, imagination)
-                .getStackForm(1L));
-        ItemList.Hull_MAX.set(
-            new GT_MetaTileEntity_BasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination)
-                .getStackForm(1L));
+        ItemList.Hull_ULV
+            .set(new BasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0, imagination).getStackForm(1L));
+        ItemList.Hull_LV
+            .set(new BasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1, imagination).getStackForm(1L));
+        ItemList.Hull_MV
+            .set(new BasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2, imagination).getStackForm(1L));
+        ItemList.Hull_HV
+            .set(new BasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3, imagination).getStackForm(1L));
+        ItemList.Hull_EV
+            .set(new BasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4, imagination).getStackForm(1L));
+        ItemList.Hull_IV
+            .set(new BasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5, imagination).getStackForm(1L));
+        ItemList.Hull_LuV
+            .set(new BasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6, imagination).getStackForm(1L));
+        ItemList.Hull_ZPM
+            .set(new BasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7, imagination).getStackForm(1L));
+        ItemList.Hull_UV
+            .set(new BasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8, imagination).getStackForm(1L));
+        ItemList.Hull_MAX
+            .set(new BasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination).getStackForm(1L));
 
         ItemList.Hull_UEV.set(
-            new GT_MetaTileEntity_BasicHull(
-                HULL_UEV.ID,
-                "hull.tier.10",
-                "UEV Machine Hull",
-                10,
-                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+            new BasicHull(HULL_UEV.ID, "hull.tier.10", "UEV Machine Hull", 10, GT_Loader_MetaTileEntities.imagination)
+                .getStackForm(1L));
 
         ItemList.Hull_UIV.set(
-            new GT_MetaTileEntity_BasicHull(
-                HULL_UIV.ID,
-                "hull.tier.11",
-                "UIV Machine Hull",
-                11,
-                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+            new BasicHull(HULL_UIV.ID, "hull.tier.11", "UIV Machine Hull", 11, GT_Loader_MetaTileEntities.imagination)
+                .getStackForm(1L));
 
         ItemList.Hull_UMV.set(
-            new GT_MetaTileEntity_BasicHull(
-                HULL_UMV.ID,
-                "hull.tier.12",
-                "UMV Machine Hull",
-                12,
-                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+            new BasicHull(HULL_UMV.ID, "hull.tier.12", "UMV Machine Hull", 12, GT_Loader_MetaTileEntities.imagination)
+                .getStackForm(1L));
 
         ItemList.Hull_UXV.set(
-            new GT_MetaTileEntity_BasicHull(
-                HULL_UXV.ID,
-                "hull.tier.13",
-                "UXV Machine Hull",
-                13,
-                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+            new BasicHull(HULL_UXV.ID, "hull.tier.13", "UXV Machine Hull", 13, GT_Loader_MetaTileEntities.imagination)
+                .getStackForm(1L));
 
         ItemList.Hull_MAXV.set(
-            new GT_MetaTileEntity_BasicHull(
-                HULL_MAX.ID,
-                "hull.tier.14",
-                "MAX Machine Hull",
-                14,
-                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+            new BasicHull(HULL_MAX.ID, "hull.tier.14", "MAX Machine Hull", 14, GT_Loader_MetaTileEntities.imagination)
+                .getStackForm(1L));
     }
 
     private static void registerTransformer() {
         ItemList.Transformer_LV_ULV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_LV_ULV.ID,
                 "transformer.tier.00",
                 "Ultra Low Voltage Transformer",
                 0,
                 "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_MV_LV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_MV_LV.ID,
                 "transformer.tier.01",
                 "Low Voltage Transformer",
                 1,
                 "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_HV_MV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_HV_MV.ID,
                 "transformer.tier.02",
                 "Medium Voltage Transformer",
                 2,
                 "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_EV_HV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_EV_HV.ID,
                 "transformer.tier.03",
                 "High Voltage Transformer",
                 3,
                 "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_IV_EV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_IV_EV.ID,
                 "transformer.tier.04",
                 "Extreme Transformer",
                 4,
                 "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_LuV_IV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_LuV_IV.ID,
                 "transformer.tier.05",
                 "Insane Transformer",
                 5,
                 "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_ZPM_LuV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_ZPM_LuV.ID,
                 "transformer.tier.06",
                 "Ludicrous Transformer",
                 6,
                 "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_UV_ZPM.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_UV_ZPM.ID,
                 "transformer.tier.07",
                 "ZPM Voltage Transformer",
                 7,
                 "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_MAX_UV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 transformer_UHV_UV.ID,
                 "transformer.tier.08",
                 "Ultimate Transformer",
                 8,
                 "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_UEV_UHV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 TRANSFORMER_UEV_UHV.ID,
                 "transformer.tier.09",
                 "Highly Ultimate Transformer",
@@ -2729,7 +2699,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.Transformer_UIV_UEV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 TRANSFORMER_UIV_UEV.ID,
                 "transformer.tier.10",
                 "Extremely Ultimate Transformer",
@@ -2737,7 +2707,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.Transformer_UMV_UIV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 TRANSFORMER_UMV_UIV.ID,
                 "transformer.tier.11",
                 "Insanely Ultimate Transformer",
@@ -2745,7 +2715,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.Transformer_UXV_UMV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 TRANSFORMER_UXV_UMV.ID,
                 "transformer.tier.12",
                 "Mega Ultimate Transformer",
@@ -2753,7 +2723,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.Transformer_MAX_UXV.set(
-            new GT_MetaTileEntity_Transformer(
+            new MetaTileEntity_Transformer(
                 TRANSFORMER_MAX_UXV.ID,
                 "transformer.tier.13",
                 "Extended Mega Ultimate Transformer",
@@ -2763,7 +2733,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerChemicalBath() {
         ItemList.Machine_LV_ChemicalBath.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_LV.ID,
                 "basicmachine.chemicalbath.tier.01",
                 "Basic Chemical Bath",
@@ -2774,12 +2744,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_ChemicalBath.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_MV.ID,
                 "basicmachine.chemicalbath.tier.02",
                 "Advanced Chemical Bath",
@@ -2790,12 +2760,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_ChemicalBath.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_HV.ID,
                 "basicmachine.chemicalbath.tier.03",
                 "Advanced Chemical Bath II",
@@ -2806,12 +2776,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_ChemicalBath.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_EV.ID,
                 "basicmachine.chemicalbath.tier.04",
                 "Advanced Chemical Bath III",
@@ -2822,12 +2792,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_ChemicalBath.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_IV.ID,
                 "basicmachine.chemicalbath.tier.05",
                 "Advanced Chemical Bath IV",
@@ -2838,12 +2808,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_LuV.ID,
                 "basicmachine.chemicalbath.tier.06",
                 "Elite Chemical Bath",
@@ -2854,12 +2824,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_ZPM.ID,
                 "basicmachine.chemicalbath.tier.07",
                 "Elite Chemical Bath II",
@@ -2870,12 +2840,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_UV.ID,
                 "basicmachine.chemicalbath.tier.08",
                 "Ultimate Chemical Dunktron",
@@ -2886,12 +2856,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_UHV.ID,
                 "basicmachine.chemicalbath.tier.09",
                 "Epic Chemical Dunktron",
@@ -2902,12 +2872,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_UEV.ID,
                 "basicmachine.chemicalbath.tier.10",
                 "Epic Chemical Dunktron II",
@@ -2918,12 +2888,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_UIV.ID,
                 "basicmachine.chemicalbath.tier.11",
                 "Epic Chemical Dunktron III",
@@ -2934,12 +2904,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
 
         ItemList.ChemicalBathUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_BATH_UMV.ID,
                 "basicmachine.chemicalbath.tier.12",
                 "Epic Chemical Dunktron IV",
@@ -2950,14 +2920,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_BATH",
                 null).getStackForm(1L));
     }
 
     private void registerChemicalReactor() {
         ItemList.Machine_LV_ChemicalReactor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_LV.ID,
                 "basicmachine.chemicalreactor.tier.01",
                 "Basic Chemical Reactor",
@@ -2968,12 +2938,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_ChemicalReactor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_MV.ID,
                 "basicmachine.chemicalreactor.tier.02",
                 "Advanced Chemical Reactor",
@@ -2984,12 +2954,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_ChemicalReactor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_HV.ID,
                 "basicmachine.chemicalreactor.tier.03",
                 "Advanced Chemical Reactor II",
@@ -3000,12 +2970,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_ChemicalReactor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_EV.ID,
                 "basicmachine.chemicalreactor.tier.04",
                 "Advanced Chemical Reactor III",
@@ -3016,12 +2986,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_ChemicalReactor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_IV.ID,
                 "basicmachine.chemicalreactor.tier.05",
                 "Advanced Chemical Reactor IV",
@@ -3032,12 +3002,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_LuV.ID,
                 "basicmachine.chemicalreactor.tier.06",
                 "Elite Chemical Reactor",
@@ -3048,12 +3018,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_ZPM.ID,
                 "basicmachine.chemicalreactor.tier.07",
                 "Elite Chemical Reactor II",
@@ -3064,12 +3034,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_UV.ID,
                 "basicmachine.chemicalreactor.tier.08",
                 "Ultimate Chemical Perforer",
@@ -3080,12 +3050,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_UHV.ID,
                 "basicmachine.chemicalreactor.tier.09",
                 "Epic Chemical Performer",
@@ -3096,12 +3066,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_UEV.ID,
                 "basicmachine.chemicalreactor.tier.10",
                 "Epic Chemical Performer II",
@@ -3112,12 +3082,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_UIV.ID,
                 "basicmachine.chemicalreactor.tier.11",
                 "Epic Chemical Performer III",
@@ -3128,12 +3098,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
         ItemList.ChemicalReactorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CHEMICAL_REACTOR_UMV.ID,
                 "basicmachine.chemicalreactor.tier.12",
                 "Epic Chemical Performer IV",
@@ -3144,7 +3114,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
                 null).getStackForm(1L));
 
@@ -3152,7 +3122,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerFermenter() {
         ItemList.Machine_LV_Fermenter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_LV.ID,
                 "basicmachine.fermenter.tier.01",
                 "Basic Fermenter",
@@ -3163,12 +3133,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Fermenter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_MV.ID,
                 "basicmachine.fermenter.tier.02",
                 "Advanced Fermenter",
@@ -3179,12 +3149,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Fermenter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_HV.ID,
                 "basicmachine.fermenter.tier.03",
                 "Advanced Fermenter II",
@@ -3195,12 +3165,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Fermenter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_EV.ID,
                 "basicmachine.fermenter.tier.04",
                 "Advanced Fermenter III",
@@ -3211,12 +3181,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Fermenter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_IV.ID,
                 "basicmachine.fermenter.tier.05",
                 "Advanced Fermenter IV",
@@ -3227,12 +3197,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_LuV.ID,
                 "basicmachine.fermenter.tier.06",
                 "Elite Fermenter",
@@ -3243,12 +3213,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_ZPM.ID,
                 "basicmachine.fermenter.tier.07",
                 "Elite Fermenter II",
@@ -3259,12 +3229,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_UV.ID,
                 "basicmachine.fermenter.tier.08",
                 "Ultimate Fermentation Hastener",
@@ -3275,12 +3245,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_UHV.ID,
                 "basicmachine.fermenter.tier.09",
                 "Epic Fermentation Hastener",
@@ -3291,12 +3261,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_UEV.ID,
                 "basicmachine.fermenter.tier.10",
                 "Epic Fermentation Hastener II",
@@ -3307,12 +3277,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_UIV.ID,
                 "basicmachine.fermenter.tier.11",
                 "Epic Fermentation Hastener III",
@@ -3323,12 +3293,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
 
         ItemList.FermenterUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FERMENTER_UMV.ID,
                 "basicmachine.fermenter.tier.12",
                 "Epic Fermentation Hastener IV",
@@ -3339,14 +3309,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FERMENTER",
                 null).getStackForm(1L));
     }
 
     private void registerFluidCanner() {
         ItemList.Machine_LV_FluidCanner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_LV.ID,
                 "basicmachine.fluidcanner.tier.01",
                 "Basic Fluid Canner",
@@ -3357,12 +3327,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_FluidCanner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_MV.ID,
                 "basicmachine.fluidcanner.tier.02",
                 "Advanced Fluid Canner",
@@ -3373,12 +3343,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_FluidCanner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_HV.ID,
                 "basicmachine.fluidcanner.tier.03",
                 "Quick Fluid Canner",
@@ -3389,12 +3359,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_FluidCanner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_EV.ID,
                 "basicmachine.fluidcanner.tier.04",
                 "Turbo Fluid Canner",
@@ -3405,12 +3375,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_FluidCanner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_IV.ID,
                 "basicmachine.fluidcanner.tier.05",
                 "Instant Fluid Canner",
@@ -3421,12 +3391,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_LuV.ID,
                 "basicmachine.fluidcanner.tier.06",
                 "Elite Fluid Canner",
@@ -3437,12 +3407,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_ZPM.ID,
                 "basicmachine.fluidcanner.tier.07",
                 "Elite Fluid Canner II",
@@ -3453,12 +3423,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_UV.ID,
                 "basicmachine.fluidcanner.tier.08",
                 "Ultimate Liquid Can Actuator",
@@ -3469,12 +3439,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_UHV.ID,
                 "basicmachine.fluidcanner.tier.09",
                 "Epic Liquid Can Actuator",
@@ -3485,12 +3455,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_UEV.ID,
                 "basicmachine.fluidcanner.tier.10",
                 "Epic Liquid Can Actuator II",
@@ -3501,12 +3471,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_UIV.ID,
                 "basicmachine.fluidcanner.tier.11",
                 "Epic Liquid Can Actuator III",
@@ -3517,12 +3487,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
 
         ItemList.FluidCannerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_CANNER_UMV.ID,
                 "basicmachine.fluidcanner.tier.12",
                 "Epic Liquid Can Actuator IV",
@@ -3533,14 +3503,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_CANNER",
                 null).getStackForm(1L));
     }
 
     private void registerFluidExtractor() {
         ItemList.Machine_LV_FluidExtractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_LV.ID,
                 "basicmachine.fluidextractor.tier.01",
                 "Basic Fluid Extractor",
@@ -3551,12 +3521,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_FluidExtractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_MV.ID,
                 "basicmachine.fluidextractor.tier.02",
                 "Advanced Fluid Extractor",
@@ -3567,12 +3537,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_FluidExtractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_HV.ID,
                 "basicmachine.fluidextractor.tier.03",
                 "Advanced Fluid Extractor II",
@@ -3583,12 +3553,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_FluidExtractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_EV.ID,
                 "basicmachine.fluidextractor.tier.04",
                 "Advanced Fluid Extractor III",
@@ -3599,12 +3569,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_FluidExtractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_IV.ID,
                 "basicmachine.fluidextractor.tier.05",
                 "Advanced Fluid Extractor IV",
@@ -3615,12 +3585,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_LuV.ID,
                 "basicmachine.fluidextractor.tier.06",
                 "Elite Fluid Extractor",
@@ -3631,12 +3601,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_ZPM.ID,
                 "basicmachine.fluidextractor.tier.07",
                 "Elite Fluid Extractor II",
@@ -3647,12 +3617,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_UV.ID,
                 "basicmachine.fluidextractor.tier.08",
                 "Ultimate Liquefying Sucker",
@@ -3663,12 +3633,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_UHV.ID,
                 "basicmachine.fluidextractor.tier.09",
                 "Epic Liquefying Sucker",
@@ -3679,12 +3649,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_UEV.ID,
                 "basicmachine.fluidextractor.tier.10",
                 "Epic Liquefying Sucker II",
@@ -3695,12 +3665,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_UIV.ID,
                 "basicmachine.fluidextractor.tier.11",
                 "Epic Liquefying Sucker III",
@@ -3711,12 +3681,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.FluidExtractorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_EXTRACTOR_UMV.ID,
                 "basicmachine.fluidextractor.tier.12",
                 "Epic Liquefying Sucker IV",
@@ -3727,14 +3697,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_EXTRACTOR",
                 null).getStackForm(1L));
     }
 
     private void registerFluidHeater() {
         ItemList.Machine_LV_FluidHeater.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_LV.ID,
                 "basicmachine.fluidheater.tier.01",
                 "Basic Fluid Heater",
@@ -3745,12 +3715,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_FluidHeater.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_MV.ID,
                 "basicmachine.fluidheater.tier.02",
                 "Advanced Fluid Heater",
@@ -3761,12 +3731,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_FluidHeater.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_HV.ID,
                 "basicmachine.fluidheater.tier.03",
                 "Advanced Fluid Heater II",
@@ -3777,12 +3747,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_FluidHeater.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_EV.ID,
                 "basicmachine.fluidheater.tier.04",
                 "Advanced Fluid Heater III",
@@ -3793,12 +3763,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_FluidHeater.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_IV.ID,
                 "basicmachine.fluidheater.tier.05",
                 "Advanced Fluid Heater IV",
@@ -3809,12 +3779,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_LuV.ID,
                 "basicmachine.fluidheater.tier.06",
                 "Elite Fluid Heater",
@@ -3825,12 +3795,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_ZPM.ID,
                 "basicmachine.fluidheater.tier.07",
                 "Elite Fluid Heater II",
@@ -3841,12 +3811,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_UV.ID,
                 "basicmachine.fluidheater.tier.08",
                 "Ultimate Heat Infuser",
@@ -3857,12 +3827,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_UHV.ID,
                 "basicmachine.fluidheater.tier.09",
                 "Epic Heat Infuser",
@@ -3873,12 +3843,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_UEV.ID,
                 "basicmachine.fluidheater.tier.10",
                 "Epic Heat Infuser II",
@@ -3889,12 +3859,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_UIV.ID,
                 "basicmachine.fluidheater.tier.11",
                 "Epic Heat Infuser III",
@@ -3905,12 +3875,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
 
         ItemList.FluidHeaterUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_HEATER_UMV.ID,
                 "basicmachine.fluidheater.tier.12",
                 "Epic Heat Infuser IV",
@@ -3921,14 +3891,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_HEATER",
                 null).getStackForm(1L));
     }
 
     private void registerMixer() {
         ItemList.Machine_LV_Mixer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_LV.ID,
                 "basicmachine.mixer.tier.01",
                 "Basic Mixer",
@@ -3939,12 +3909,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Mixer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_MV.ID,
                 "basicmachine.mixer.tier.02",
                 "Advanced Mixer",
@@ -3955,12 +3925,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Mixer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_HV.ID,
                 "basicmachine.mixer.tier.03",
                 "Advanced Mixer II",
@@ -3971,12 +3941,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Mixer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_EV.ID,
                 "basicmachine.mixer.tier.04",
                 "Advanced Mixer III",
@@ -3987,12 +3957,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Mixer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_IV.ID,
                 "basicmachine.mixer.tier.05",
                 "Advanced Mixer IV",
@@ -4003,12 +3973,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_LuV.ID,
                 "basicmachine.mixer.tier.06",
                 "Elite Mixer",
@@ -4019,12 +3989,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_ZPM.ID,
                 "basicmachine.mixer.tier.07",
                 "Elite Mixer II",
@@ -4035,12 +4005,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_UV.ID,
                 "basicmachine.mixer.tier.08",
                 "Ultimate Matter Organizer",
@@ -4051,12 +4021,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_UHV.ID,
                 "basicmachine.mixer.tier.09",
                 "Epic Matter Organizer",
@@ -4067,12 +4037,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_UEV.ID,
                 "basicmachine.mixer.tier.10",
                 "Epic Matter Organizer II",
@@ -4083,12 +4053,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_UIV.ID,
                 "basicmachine.mixer.tier.11",
                 "Epic Matter Organizer III",
@@ -4099,12 +4069,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
 
         ItemList.MixerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MIXER_UMV.ID,
                 "basicmachine.mixer.tier.12",
                 "Epic Matter Organizer IV",
@@ -4115,14 +4085,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MIXER",
                 null).getStackForm(1L));
     }
 
     private void registerAutoclave() {
         ItemList.Machine_LV_Autoclave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_LV.ID,
                 "basicmachine.autoclave.tier.01",
                 "Basic Autoclave",
@@ -4133,12 +4103,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Autoclave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_MV.ID,
                 "basicmachine.autoclave.tier.02",
                 "Advanced Autoclave",
@@ -4149,12 +4119,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Autoclave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_HV.ID,
                 "basicmachine.autoclave.tier.03",
                 "Advanced Autoclave II",
@@ -4165,12 +4135,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Autoclave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_EV.ID,
                 "basicmachine.autoclave.tier.04",
                 "Advanced Autoclave III",
@@ -4181,12 +4151,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Autoclave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_IV.ID,
                 "basicmachine.autoclave.tier.05",
                 "Advanced Autoclave IV",
@@ -4197,12 +4167,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_LuV.ID,
                 "basicmachine.autoclave.tier.06",
                 "Elite Autoclave",
@@ -4213,12 +4183,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_ZPM.ID,
                 "basicmachine.autoclave.tier.07",
                 "Elite Autoclave II",
@@ -4229,12 +4199,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_UV.ID,
                 "basicmachine.autoclave.tier.08",
                 "Ultimate Pressure Cooker",
@@ -4245,12 +4215,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_UHV.ID,
                 "basicmachine.autoclave.tier.09",
                 "Epic Pressure Cooker",
@@ -4261,12 +4231,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_UEV.ID,
                 "basicmachine.autoclave.tier.10",
                 "Epic Pressure Cooker II",
@@ -4277,12 +4247,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_UIV.ID,
                 "basicmachine.autoclave.tier.11",
                 "Epic Pressure Cooker III",
@@ -4293,12 +4263,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
         ItemList.AutoclaveUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 AUTOCLAVE_UMV.ID,
                 "basicmachine.autoclave.tier.12",
                 "Epic Pressure Cooker IV",
@@ -4309,7 +4279,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "AUTOCLAVE",
                 null).getStackForm(1L));
 
@@ -4317,7 +4287,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerBendingMachine() {
         ItemList.Machine_LV_Bender.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_LV.ID,
                 "basicmachine.bender.tier.01",
                 "Basic Bending Machine",
@@ -4328,12 +4298,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Bender.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_MV.ID,
                 "basicmachine.bender.tier.02",
                 "Advanced Bending Machine",
@@ -4344,12 +4314,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Bender.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_HV.ID,
                 "basicmachine.bender.tier.03",
                 "Advanced Bending Machine II",
@@ -4360,12 +4330,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Bender.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_EV.ID,
                 "basicmachine.bender.tier.04",
                 "Advanced Bending Machine III",
@@ -4376,12 +4346,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Bender.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_IV.ID,
                 "basicmachine.bender.tier.05",
                 "Advanced Bending Machine IV",
@@ -4392,12 +4362,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_LuV.ID,
                 "basicmachine.bender.tier.06",
                 "Elite Bending Machine",
@@ -4408,12 +4378,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_ZPM.ID,
                 "basicmachine.bender.tier.07",
                 "Elite Bending Machine II",
@@ -4424,12 +4394,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_UV.ID,
                 "basicmachine.bender.tier.08",
                 "Ultimate Bending Unit",
@@ -4440,12 +4410,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_UHV.ID,
                 "basicmachine.bender.tier.09",
                 "Epic Bending Unit",
@@ -4456,12 +4426,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_UEV.ID,
                 "basicmachine.bender.tier.10",
                 "Epic Bending Unit II",
@@ -4472,12 +4442,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_UIV.ID,
                 "basicmachine.bender.tier.11",
                 "Epic Bending Unit III",
@@ -4488,12 +4458,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
 
         ItemList.BendingMachineUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 BENDING_MACHINE_UMV.ID,
                 "basicmachine.bender.tier.12",
                 "Epic Bending Unit IV",
@@ -4504,14 +4474,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "BENDER",
                 null).getStackForm(1L));
     }
 
     private void registerCompressor() {
         ItemList.Machine_LV_Compressor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_LV.ID,
                 "basicmachine.compressor.tier.01",
                 "Basic Compressor",
@@ -4522,12 +4492,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Compressor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_MV.ID,
                 "basicmachine.compressor.tier.02",
                 "Advanced Compressor",
@@ -4538,12 +4508,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Compressor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_HV.ID,
                 "basicmachine.compressor.tier.03",
                 "Advanced Compressor II",
@@ -4554,12 +4524,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Compressor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_EV.ID,
                 "basicmachine.compressor.tier.04",
                 "Advanced Compressor III",
@@ -4570,12 +4540,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Compressor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_IV.ID,
                 "basicmachine.compressor.tier.05",
                 "Singularity Compressor",
@@ -4586,12 +4556,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_LuV.ID,
                 "basicmachine.compressor.tier.06",
                 "Elite Compressor",
@@ -4602,12 +4572,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_ZPM.ID,
                 "basicmachine.compressor.tier.07",
                 "Elite Compressor II",
@@ -4618,12 +4588,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_UV.ID,
                 "basicmachine.compressor.tier.08",
                 "Ultimate Matter Constrictor",
@@ -4634,12 +4604,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_UHV.ID,
                 "basicmachine.compressor.tier.09",
                 "Epic Matter Constrictor",
@@ -4650,12 +4620,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_UEV.ID,
                 "basicmachine.compressor.tier.10",
                 "Epic Matter Constrictor II",
@@ -4666,12 +4636,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_UIV.ID,
                 "basicmachine.compressor.tier.11",
                 "Epic Matter Constrictor III",
@@ -4682,12 +4652,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
         ItemList.CompressorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 COMPRESSOR_UMV.ID,
                 "basicmachine.compressor.tier.12",
                 "Epic Matter Constrictor IV",
@@ -4698,7 +4668,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "COMPRESSOR",
                 null).getStackForm(1L));
 
@@ -4706,7 +4676,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerCuttingMachine() {
         ItemList.Machine_LV_Cutter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_LV.ID,
                 "basicmachine.cutter.tier.01",
                 "Basic Cutting Machine",
@@ -4717,12 +4687,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Cutter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_MV.ID,
                 "basicmachine.cutter.tier.02",
                 "Advanced Cutting Machine",
@@ -4733,12 +4703,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Cutter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_HV.ID,
                 "basicmachine.cutter.tier.03",
                 "Advanced Cutting Machine II",
@@ -4749,12 +4719,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Cutter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_EV.ID,
                 "basicmachine.cutter.tier.04",
                 "Advanced Cutting Machine III",
@@ -4765,12 +4735,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Cutter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_IV.ID,
                 "basicmachine.cutter.tier.05",
                 "Advanced Cutting Machine IV",
@@ -4781,12 +4751,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_LuV.ID,
                 "basicmachine.cutter.tier.06",
                 "Elite Cutting Machine",
@@ -4797,12 +4767,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_ZPM.ID,
                 "basicmachine.cutter.tier.07",
                 "Elite Cutting Machine II",
@@ -4813,12 +4783,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_UV.ID,
                 "basicmachine.cutter.tier.08",
                 "Ultimate Object Divider",
@@ -4829,12 +4799,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_UHV.ID,
                 "basicmachine.cutter.tier.09",
                 "Epic Object Divider",
@@ -4845,12 +4815,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_UEV.ID,
                 "basicmachine.cutter.tier.10",
                 "Epic Object Divider II",
@@ -4861,12 +4831,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_UIV.ID,
                 "basicmachine.cutter.tier.11",
                 "Epic Object Divider III",
@@ -4877,12 +4847,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
         ItemList.CuttingMachineUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CUTTING_MACHINE_UMV.ID,
                 "basicmachine.cutter.tier.12",
                 "Epic Object Divider IV",
@@ -4893,7 +4863,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CUTTER",
                 null).getStackForm(1L));
 
@@ -4901,7 +4871,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerDistillery() {
         ItemList.Machine_LV_Distillery.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_LV.ID,
                 "basicmachine.distillery.tier.01",
                 "Basic Distillery",
@@ -4912,12 +4882,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Distillery.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_MV.ID,
                 "basicmachine.distillery.tier.02",
                 "Advanced Distillery",
@@ -4928,12 +4898,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Distillery.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_HV.ID,
                 "basicmachine.distillery.tier.03",
                 "Advanced Distillery II",
@@ -4944,12 +4914,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Distillery.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_EV.ID,
                 "basicmachine.distillery.tier.04",
                 "Advanced Distillery III",
@@ -4960,12 +4930,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Distillery.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_IV.ID,
                 "basicmachine.distillery.tier.05",
                 "Advanced Distillery IV",
@@ -4976,12 +4946,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.GT_MACHINES_DISTILLERY_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_LuV.ID,
                 "basicmachine.distillery.tier.06",
                 "Elite Distillery",
@@ -4992,12 +4962,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_ZPM.ID,
                 "basicmachine.distillery.tier.07",
                 "Elite Distillery II",
@@ -5008,12 +4978,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_UV.ID,
                 "basicmachine.distillery.tier.08",
                 "Ultimate Fraction Splitter",
@@ -5024,12 +4994,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_UHV.ID,
                 "basicmachine.distillery.tier.09",
                 "Epic Fraction Splitter",
@@ -5040,12 +5010,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_UEV.ID,
                 "basicmachine.distillery.tier.10",
                 "Epic Fraction Splitter II",
@@ -5056,12 +5026,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_UIV.ID,
                 "basicmachine.distillery.tier.11",
                 "Epic Fraction Splitter III",
@@ -5072,12 +5042,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
         ItemList.DistilleryUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 DISTILLERY_UMV.ID,
                 "basicmachine.distillery.tier.12",
                 "Epic Fraction Splitter IV",
@@ -5088,7 +5058,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "DISTILLERY",
                 null).getStackForm(1L));
 
@@ -5096,7 +5066,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerElectricFurnace() {
         ItemList.Machine_LV_E_Furnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_LV.ID,
                 "basicmachine.e_furnace.tier.01",
                 "Basic Electric Furnace",
@@ -5107,13 +5077,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
                     .getStackForm(1L));
 
         ItemList.Machine_MV_E_Furnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_MV.ID,
                 "basicmachine.e_furnace.tier.02",
                 "Advanced Electric Furnace",
@@ -5124,13 +5094,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
                     .getStackForm(1L));
 
         ItemList.Machine_HV_E_Furnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_HV.ID,
                 "basicmachine.e_furnace.tier.03",
                 "Advanced Electric Furnace II",
@@ -5141,13 +5111,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
                     .getStackForm(1L));
 
         ItemList.Machine_EV_E_Furnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_EV.ID,
                 "basicmachine.e_furnace.tier.04",
                 "Advanced Electric Furnace III",
@@ -5158,13 +5128,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
                     .getStackForm(1L));
 
         ItemList.Machine_IV_E_Furnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_IV.ID,
                 "basicmachine.e_furnace.tier.05",
                 "Electron Exitement Processor",
@@ -5175,13 +5145,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
                     .getStackForm(1L));
 
         ItemList.ElectricFurnaceLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_LuV.ID,
                 "basicmachine.e_furnace.tier.06",
                 "Elite Electric Furnace",
@@ -5192,12 +5162,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ElectricFurnaceZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_ZPM.ID,
                 "basicmachine.e_furnace.tier.07",
                 "Elite Electric Furnace II",
@@ -5208,12 +5178,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ElectricFurnaceUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_UV.ID,
                 "basicmachine.e_furnace.tier.08",
                 "Ultimate Atom Stimulator",
@@ -5224,12 +5194,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ElectricFurnaceUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_UHV.ID,
                 "basicmachine.e_furnace.tier.09",
                 "Epic Atom Stimulator",
@@ -5240,12 +5210,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ElectricFurnaceUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_UEV.ID,
                 "basicmachine.e_furnace.tier.10",
                 "Epic Atom Stimulator II",
@@ -5256,12 +5226,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ElectricFurnaceUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_UIV.ID,
                 "basicmachine.e_furnace.tier.11",
                 "Epic Atom Stimulator III",
@@ -5272,12 +5242,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ElectricFurnaceUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTRIC_FURNACE_UMV.ID,
                 "basicmachine.e_furnace.tier.12",
                 "Epic Atom Stimulator IV",
@@ -5288,14 +5258,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).getStackForm(1L));
     }
 
     private void registerElectrolyzer() {
         ItemList.Machine_LV_Electrolyzer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYSER_LV.ID,
                 "basicmachine.electrolyzer.tier.01",
                 "Basic Electrolyzer",
@@ -5306,12 +5276,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Electrolyzer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYSER_MV.ID,
                 "basicmachine.electrolyzer.tier.02",
                 "Advanced Electrolyzer",
@@ -5322,12 +5292,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Electrolyzer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYSER_HV.ID,
                 "basicmachine.electrolyzer.tier.03",
                 "Advanced Electrolyzer II",
@@ -5338,12 +5308,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Electrolyzer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYSER_EV.ID,
                 "basicmachine.electrolyzer.tier.04",
                 "Advanced Electrolyzer III",
@@ -5354,12 +5324,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Electrolyzer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYSER_IV.ID,
                 "basicmachine.electrolyzer.tier.05",
                 "Molecular Disintegrator E-4908",
@@ -5370,12 +5340,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_LuV.ID,
                 "basicmachine.electrolyzer.tier.06",
                 "Elite Electrolyzer",
@@ -5386,12 +5356,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_ZPM.ID,
                 "basicmachine.electrolyzer.tier.07",
                 "Elite Electrolyzer II",
@@ -5402,12 +5372,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_UV.ID,
                 "basicmachine.electrolyzer.tier.08",
                 "Ultimate Ionizer",
@@ -5418,12 +5388,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_UHV.ID,
                 "basicmachine.electrolyzer.tier.09",
                 "Epic Ionizer",
@@ -5434,12 +5404,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_UEV.ID,
                 "basicmachine.electrolyzer.tier.10",
                 "Epic Ionizer II",
@@ -5450,12 +5420,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_UIV.ID,
                 "basicmachine.electrolyzer.tier.11",
                 "Epic Ionizer III",
@@ -5466,12 +5436,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
         ItemList.ElectrolyzerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROLYZER_UMV.ID,
                 "basicmachine.electrolyzer.tier.12",
                 "Epic Ionizer IV",
@@ -5482,7 +5452,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROLYZER",
                 null).getStackForm(1L));
 
@@ -5490,7 +5460,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerElectromagneticSeparator() {
         ItemList.Machine_LV_ElectromagneticSeparator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_LV.ID,
                 "basicmachine.electromagneticseparator.tier.01",
                 "Basic Electromagnetic Separator",
@@ -5501,12 +5471,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_ElectromagneticSeparator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_MV.ID,
                 "basicmachine.electromagneticseparator.tier.02",
                 "Advanced Electromagnetic Separator",
@@ -5517,12 +5487,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_ElectromagneticSeparator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_HV.ID,
                 "basicmachine.electromagneticseparator.tier.03",
                 "Advanced Electromagnetic Separator II",
@@ -5533,12 +5503,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_ElectromagneticSeparator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_EV.ID,
                 "basicmachine.electromagneticseparator.tier.04",
                 "Advanced Electromagnetic Separator III",
@@ -5549,12 +5519,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_ElectromagneticSeparator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_IV.ID,
                 "basicmachine.electromagneticseparator.tier.05",
                 "Advanced Electromagnetic Separator IV",
@@ -5565,12 +5535,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_LuV.ID,
                 "basicmachine.electromagneticseparator.tier.06",
                 "Elite Electromagnetic Separator",
@@ -5581,12 +5551,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_ZPM.ID,
                 "basicmachine.electromagneticseparator.tier.07",
                 "Elite Electromagnetic Separator II",
@@ -5597,12 +5567,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_UV.ID,
                 "basicmachine.electromagneticseparator.tier.08",
                 "Ultimate Magnetar Separator",
@@ -5613,12 +5583,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_UHV.ID,
                 "basicmachine.electromagneticseparator.tier.09",
                 "Epic Magnetar Separator",
@@ -5629,12 +5599,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_UEV.ID,
                 "basicmachine.electromagneticseparator.tier.10",
                 "Epic Magnetar Separator II",
@@ -5645,12 +5615,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_UIV.ID,
                 "basicmachine.electromagneticseparator.tier.11",
                 "Epic Magnetar Separator III",
@@ -5661,12 +5631,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
         ItemList.ElectromagneticSeparatorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ELECTROMAGNETIC_SEPARATOR_UMV.ID,
                 "basicmachine.electromagneticseparator.tier.12",
                 "Epic Magnetar Separator IV",
@@ -5677,7 +5647,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTROMAGNETIC_SEPARATOR",
                 null).getStackForm(1L));
 
@@ -5685,7 +5655,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerExtractor() {
         ItemList.Machine_LV_Extractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_LV.ID,
                 "basicmachine.extractor.tier.01",
                 "Basic Extractor",
@@ -5696,12 +5666,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Extractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_MV.ID,
                 "basicmachine.extractor.tier.02",
                 "Advanced Extractor",
@@ -5712,12 +5682,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Extractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_HV.ID,
                 "basicmachine.extractor.tier.03",
                 "Advanced Extractor II",
@@ -5728,12 +5698,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Extractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_EV.ID,
                 "basicmachine.extractor.tier.04",
                 "Advanced Extractor III",
@@ -5744,12 +5714,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Extractor.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_IV.ID,
                 "basicmachine.extractor.tier.05",
                 "Vacuum Extractor",
@@ -5760,12 +5730,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_LuV.ID,
                 "basicmachine.extractor.tier.06",
                 "Elite Extractor",
@@ -5776,12 +5746,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_ZPM.ID,
                 "basicmachine.extractor.tier.07",
                 "Elite Extractor II",
@@ -5792,12 +5762,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_UV.ID,
                 "basicmachine.extractor.tier.08",
                 "Ultimate Extractinator",
@@ -5808,12 +5778,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_UHV.ID,
                 "basicmachine.extractor.tier.09",
                 "Epic Extractinator",
@@ -5824,12 +5794,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_UEV.ID,
                 "basicmachine.extractor.tier.10",
                 "Epic Extractinator II",
@@ -5840,12 +5810,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_UIV.ID,
                 "basicmachine.extractor.tier.11",
                 "Epic Extractinator III",
@@ -5856,12 +5826,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
         ItemList.ExtractorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRACTOR_UMV.ID,
                 "basicmachine.extractor.tier.12",
                 "Epic Extractinator IV",
@@ -5872,7 +5842,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRACTOR",
                 null).getStackForm(1L));
 
@@ -5880,7 +5850,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerExtruder() {
         ItemList.Machine_LV_Extruder.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_LV.ID,
                 "basicmachine.extruder.tier.01",
                 "Basic Extruder",
@@ -5891,12 +5861,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Extruder.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_MV.ID,
                 "basicmachine.extruder.tier.02",
                 "Advanced Extruder",
@@ -5907,12 +5877,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Extruder.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_HV.ID,
                 "basicmachine.extruder.tier.03",
                 "Advanced Extruder II",
@@ -5923,12 +5893,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Extruder.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_EV.ID,
                 "basicmachine.extruder.tier.04",
                 "Advanced Extruder III",
@@ -5939,12 +5909,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Extruder.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_IV.ID,
                 "basicmachine.extruder.tier.05",
                 "Advanced Extruder IV",
@@ -5955,12 +5925,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_LuV.ID,
                 "basicmachine.extruder.tier.06",
                 "Elite Extruder",
@@ -5971,12 +5941,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_ZPM.ID,
                 "basicmachine.extruder.tier.07",
                 "Elite Extruder II",
@@ -5987,12 +5957,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_UV.ID,
                 "basicmachine.extruder.tier.08",
                 "Ultimate Shape Driver",
@@ -6003,12 +5973,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_UHV.ID,
                 "basicmachine.extruder.tier.09",
                 "Epic Shape Driver",
@@ -6019,12 +5989,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_UEV.ID,
                 "basicmachine.extruder.tier.10",
                 "Epic Shape Driver II",
@@ -6035,12 +6005,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_UIV.ID,
                 "basicmachine.extruder.tier.11",
                 "Epic Shape Driver III",
@@ -6051,12 +6021,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
         ItemList.ExtruderUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 EXTRUDER_UMV.ID,
                 "basicmachine.extruder.tier.12",
                 "Epic Shape Driver IV",
@@ -6067,7 +6037,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "EXTRUDER",
                 null).getStackForm(1L));
 
@@ -6075,7 +6045,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerFluidSolidifier() {
         ItemList.Machine_LV_FluidSolidifier.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_LV.ID,
                 "basicmachine.fluidsolidifier.tier.01",
                 "Basic Fluid Solidifier",
@@ -6086,12 +6056,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_FluidSolidifier.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_MV.ID,
                 "basicmachine.fluidsolidifier.tier.02",
                 "Advanced Fluid Solidifier",
@@ -6102,12 +6072,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_FluidSolidifier.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_HV.ID,
                 "basicmachine.fluidsolidifier.tier.03",
                 "Advanced Fluid Solidifier II",
@@ -6118,12 +6088,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_FluidSolidifier.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_EV.ID,
                 "basicmachine.fluidsolidifier.tier.04",
                 "Advanced Fluid Solidifier III",
@@ -6134,12 +6104,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_FluidSolidifier.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_IV.ID,
                 "basicmachine.fluidsolidifier.tier.05",
                 "Advanced Fluid Solidifier IV",
@@ -6150,12 +6120,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_LuV.ID,
                 "basicmachine.fluidsolidifier.tier.06",
                 "Elite Fluid Solidifier",
@@ -6166,12 +6136,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_ZPM.ID,
                 "basicmachine.fluidsolidifier.tier.07",
                 "Elite Fluid Solidifier II",
@@ -6182,12 +6152,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_UV.ID,
                 "basicmachine.fluidsolidifier.tier.08",
                 "Ultimate Fluid Petrificator",
@@ -6198,12 +6168,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_UHV.ID,
                 "basicmachine.fluidsolidifier.tier.09",
                 "Epic Fluid Petrificator",
@@ -6214,12 +6184,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_UEV.ID,
                 "basicmachine.fluidsolidifier.tier.10",
                 "Epic Fluid Petrificator II",
@@ -6230,12 +6200,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_UIV.ID,
                 "basicmachine.fluidsolidifier.tier.11",
                 "Epic Fluid Petrificator III",
@@ -6246,12 +6216,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
         ItemList.FluidSolidifierUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FLUID_SOLIDIFIER_UMV.ID,
                 "basicmachine.fluidsolidifier.tier.12",
                 "Epic Fluid Petrificator IV",
@@ -6262,7 +6232,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
                 null).getStackForm(1L));
 
@@ -6270,7 +6240,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerFormingPress() {
         ItemList.Machine_LV_Press.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_LV.ID,
                 "basicmachine.press.tier.01",
                 "Basic Forming Press",
@@ -6281,12 +6251,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Press.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_MV.ID,
                 "basicmachine.press.tier.02",
                 "Advanced Forming Press",
@@ -6297,12 +6267,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Press.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_HV.ID,
                 "basicmachine.press.tier.03",
                 "Advanced Forming Press II",
@@ -6313,12 +6283,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Press.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_EV.ID,
                 "basicmachine.press.tier.04",
                 "Advanced Forming Press III",
@@ -6329,12 +6299,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Press.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_IV.ID,
                 "basicmachine.press.tier.05",
                 "Advanced Forming Press IV",
@@ -6345,12 +6315,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_LuV.ID,
                 "basicmachine.press.tier.06",
                 "Elite Forming Press",
@@ -6361,12 +6331,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_ZPM.ID,
                 "basicmachine.press.tier.07",
                 "Elite Forming Press II",
@@ -6377,12 +6347,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_UV.ID,
                 "basicmachine.press.tier.08",
                 "Ultimate Surface Shifter",
@@ -6393,12 +6363,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_UHV.ID,
                 "basicmachine.press.tier.09",
                 "Epic Surface Shifter",
@@ -6409,12 +6379,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_UEV.ID,
                 "basicmachine.press.tier.10",
                 "Epic Surface Shifter II",
@@ -6425,12 +6395,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_UIV.ID,
                 "basicmachine.press.tier.11",
                 "Epic Surface Shifter III",
@@ -6441,12 +6411,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
         ItemList.FormingPressUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORMING_PRESS_UMV.ID,
                 "basicmachine.press.tier.12",
                 "Epic Surface Shifter IV",
@@ -6457,7 +6427,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PRESS",
                 null).getStackForm(1L));
 
@@ -6465,7 +6435,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerForgeHammer() {
         ItemList.Machine_LV_Hammer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_LV.ID,
                 "basicmachine.hammer.tier.01",
                 "Basic Forge Hammer",
@@ -6476,12 +6446,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                BasicMachine_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Hammer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_MV.ID,
                 "basicmachine.hammer.tier.02",
                 "Advanced Forge Hammer",
@@ -6492,12 +6462,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                BasicMachine_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Hammer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_HV.ID,
                 "basicmachine.hammer.tier.03",
                 "Advanced Forge Hammer II",
@@ -6508,12 +6478,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                BasicMachine_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Hammer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_EV.ID,
                 "basicmachine.hammer.tier.04",
                 "Advanced Forge Hammer III",
@@ -6524,12 +6494,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                BasicMachine_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Hammer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_IV.ID,
                 "basicmachine.hammer.tier.05",
                 "Advanced Forge Hammer IV",
@@ -6540,12 +6510,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                BasicMachine_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_LuV.ID,
                 "basicmachine.hammer.tier.06",
                 "Elite Forge Hammer",
@@ -6556,12 +6526,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_ZPM.ID,
                 "basicmachine.hammer.tier.07",
                 "Elite Forge Hammer II",
@@ -6572,12 +6542,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_UV.ID,
                 "basicmachine.hammer.tier.08",
                 "Ultimate Impact Modulator",
@@ -6588,12 +6558,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_UHV.ID,
                 "basicmachine.hammer.tier.09",
                 "Epic Impact Modulator",
@@ -6604,12 +6574,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_UEV.ID,
                 "basicmachine.hammer.tier.10",
                 "Epic Impact Modulator II",
@@ -6620,12 +6590,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_UIV.ID,
                 "basicmachine.hammer.tier.11",
                 "Epic Impact Modulator III",
@@ -6636,12 +6606,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
         ItemList.ForgeHammerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 FORGE_HAMMER_UMV.ID,
                 "basicmachine.hammer.tier.12",
                 "Epic Impact Modulator IV",
@@ -6652,7 +6622,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.RANDOM_ANVIL_USE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "HAMMER",
                 null).getStackForm(1L));
 
@@ -6660,7 +6630,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerLathe() {
         ItemList.Machine_LV_Lathe.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_LV.ID,
                 "basicmachine.lathe.tier.01",
                 "Basic Lathe",
@@ -6671,12 +6641,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Lathe.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_MV.ID,
                 "basicmachine.lathe.tier.02",
                 "Advanced Lathe",
@@ -6687,12 +6657,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Lathe.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_HV.ID,
                 "basicmachine.lathe.tier.03",
                 "Advanced Lathe II",
@@ -6703,12 +6673,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Lathe.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_EV.ID,
                 "basicmachine.lathe.tier.04",
                 "Advanced Lathe III",
@@ -6719,12 +6689,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Lathe.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_IV.ID,
                 "basicmachine.lathe.tier.05",
                 "Advanced Lathe IV",
@@ -6735,12 +6705,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_LuV.ID,
                 "basicmachine.lathe.tier.06",
                 "Elite Lathe",
@@ -6751,12 +6721,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_ZPM.ID,
                 "basicmachine.lathe.tier.07",
                 "Elite Lathe II",
@@ -6767,12 +6737,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_UV.ID,
                 "basicmachine.lathe.tier.08",
                 "Ultimate Turn-O-Matic",
@@ -6783,12 +6753,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_UHV.ID,
                 "basicmachine.lathe.tier.09",
                 "Epic Turn-O-Matic",
@@ -6799,12 +6769,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_UEV.ID,
                 "basicmachine.lathe.tier.10",
                 "Epic Turn-O-Matic II",
@@ -6815,12 +6785,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_UIV.ID,
                 "basicmachine.lathe.tier.11",
                 "Epic Turn-O-Matic III",
@@ -6831,12 +6801,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
         ItemList.LatheUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LATHE_UMV.ID,
                 "basicmachine.lathe.tier.12",
                 "Epic Turn-O-Matic IV",
@@ -6847,7 +6817,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LATHE",
                 null).getStackForm(1L));
 
@@ -6855,7 +6825,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerPrecisionLaserEngraver() {
         ItemList.Machine_LV_LaserEngraver.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LASER_ENGRAVER_LV.ID,
                 "basicmachine.laserengraver.tier.01",
                 "Basic Precision Laser Engraver",
@@ -6866,12 +6836,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_LaserEngraver.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LASER_ENGRAVER_MV.ID,
                 "basicmachine.laserengraver.tier.02",
                 "Advanced Precision Laser Engraver",
@@ -6882,12 +6852,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_LaserEngraver.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LASER_ENGRAVER_HV.ID,
                 "basicmachine.laserengraver.tier.03",
                 "Advanced Precision Laser Engraver II",
@@ -6898,12 +6868,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_LaserEngraver.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LASER_ENGRAVER_EV.ID,
                 "basicmachine.laserengraver.tier.04",
                 "Advanced Precision Laser Engraver III",
@@ -6914,12 +6884,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_LaserEngraver.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 LASER_ENGRAVER_IV.ID,
                 "basicmachine.laserengraver.tier.05",
                 "Advanced Precision Laser Engraver IV",
@@ -6930,12 +6900,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_LuV.ID,
                 "basicmachine.laserengraver.tier.06",
                 "Elite Precision Laser Engraver",
@@ -6946,12 +6916,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_ZPM.ID,
                 "basicmachine.laserengraver.tier.07",
                 "Elite Precision Laser Engraver II",
@@ -6962,12 +6932,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_UV.ID,
                 "basicmachine.laserengraver.tier.08",
                 "Ultimate Exact Photon Cannon",
@@ -6978,12 +6948,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_UHV.ID,
                 "basicmachine.laserengraver.tier.09",
                 "Epic Exact Photon Cannon",
@@ -6994,12 +6964,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_UEV.ID,
                 "basicmachine.laserengraver.tier.10",
                 "Epic Exact Photon Cannon II",
@@ -7010,12 +6980,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_UIV.ID,
                 "basicmachine.laserengraver.tier.11",
                 "Epic Exact Photon Cannon III",
@@ -7026,12 +6996,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
         ItemList.PrecisionLaserEngraverUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRECISION_LASER_ENGRAVER_UMV.ID,
                 "basicmachine.laserengraver.tier.12",
                 "Epic Exact Photon Cannon IV",
@@ -7042,7 +7012,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "LASER_ENGRAVER",
                 null).getStackForm(1L));
 
@@ -7050,7 +7020,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerMacerator() {
         ItemList.Machine_LV_Macerator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_LV.ID,
                 "basicmachine.macerator.tier.01",
                 "Basic Macerator",
@@ -7061,12 +7031,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "MACERATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Macerator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_MV.ID,
                 "basicmachine.macerator.tier.02",
                 "Advanced Macerator",
@@ -7077,12 +7047,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "MACERATOR",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Macerator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_HV.ID,
                 "basicmachine.macerator.tier.03",
                 "Universal Macerator",
@@ -7093,12 +7063,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Macerator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_EV.ID,
                 "basicmachine.macerator.tier.04",
                 "Universal Pulverizer",
@@ -7109,12 +7079,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Macerator.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_IV.ID,
                 "basicmachine.macerator.tier.05",
                 "Blend-O-Matic 9001",
@@ -7125,12 +7095,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_LuV.ID,
                 "basicmachine.macerator.tier.06",
                 "Elite Pulverizer",
@@ -7141,12 +7111,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_ZPM.ID,
                 "basicmachine.macerator.tier.07",
                 "Elite Pulverizer II",
@@ -7157,12 +7127,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_UV.ID,
                 "basicmachine.macerator.tier.08",
                 "Ultimate Shape Eliminator",
@@ -7173,12 +7143,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_UHV.ID,
                 "basicmachine.macerator.tier.09",
                 "Epic Shape Eliminator",
@@ -7189,12 +7159,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_UEV.ID,
                 "basicmachine.macerator.tier.10",
                 "Epic Shape Eliminator II",
@@ -7205,12 +7175,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_UIV.ID,
                 "basicmachine.macerator.tier.11",
                 "Epic Shape Eliminator III",
@@ -7221,12 +7191,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
         ItemList.MaceratorUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MACERATOR_UMV.ID,
                 "basicmachine.macerator.tier.12",
                 "Epic Shape Eliminator IV",
@@ -7237,7 +7207,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 false,
                 SoundResource.IC2_MACHINES_MACERATOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PULVERIZER",
                 null).getStackForm(1L));
 
@@ -7291,7 +7261,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerMicrowave() {
         ItemList.Machine_LV_Microwave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_OVEN_LV.ID,
                 "basicmachine.microwave.tier.01",
                 "Basic Microwave",
@@ -7302,12 +7272,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Microwave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_OVEN_MV.ID,
                 "basicmachine.microwave.tier.02",
                 "Advanced Microwave",
@@ -7318,12 +7288,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Microwave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_OVEN_HV.ID,
                 "basicmachine.microwave.tier.03",
                 "Advanced Microwave II",
@@ -7334,12 +7304,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Microwave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_OVEN_EV.ID,
                 "basicmachine.microwave.tier.04",
                 "Advanced Microwave III",
@@ -7350,12 +7320,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Microwave.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_OVEN_IV.ID,
                 "basicmachine.microwave.tier.05",
                 "Advanced Microwave IV",
@@ -7366,12 +7336,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_LuV.ID,
                 "basicmachine.microwave.tier.06",
                 "Elite Microwave",
@@ -7382,12 +7352,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_ZPM.ID,
                 "basicmachine.microwave.tier.07",
                 "Elite Microwave II",
@@ -7398,12 +7368,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_UV.ID,
                 "basicmachine.microwave.tier.08",
                 "Ultimate UFO Engine",
@@ -7414,12 +7384,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_UHV.ID,
                 "basicmachine.microwave.tier.09",
                 "Epic UFO Engine",
@@ -7430,12 +7400,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_UEV.ID,
                 "basicmachine.microwave.tier.10",
                 "Epic UFO Engine II",
@@ -7446,12 +7416,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_UIV.ID,
                 "basicmachine.microwave.tier.11",
                 "Epic UFO Engine III",
@@ -7462,12 +7432,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
         ItemList.MicrowaveUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 MICROWAVE_UMV.ID,
                 "basicmachine.microwave.tier.12",
                 "Epic UFO Engine IV",
@@ -7478,7 +7448,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "MICROWAVE",
                 null).getStackForm(1L));
 
@@ -7486,7 +7456,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerOven() {
         ItemList.Machine_LV_Oven.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 OVEN_LV.ID,
                 "basicmachine.e_oven.tier.01",
                 "Basic Electric Oven",
@@ -7497,13 +7467,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
                     .getStackForm(1L));
 
         ItemList.Machine_MV_Oven.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 OVEN_MV.ID,
                 "basicmachine.e_oven.tier.02",
                 "Advanced Electric Oven",
@@ -7514,13 +7484,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
                     .getStackForm(1L));
 
         ItemList.Machine_HV_Oven.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 OVEN_HV.ID,
                 "basicmachine.e_oven.tier.03",
                 "Advanced Electric Oven II",
@@ -7531,13 +7501,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
                     .getStackForm(1L));
 
         ItemList.Machine_EV_Oven.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 OVEN_EV.ID,
                 "basicmachine.e_oven.tier.04",
                 "Advanced Electric Oven III",
@@ -7548,13 +7518,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
                     .getStackForm(1L));
 
         ItemList.Machine_IV_Oven.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 OVEN_IV.ID,
                 "basicmachine.e_oven.tier.05",
                 "Advanced Electric Oven IV",
@@ -7565,7 +7535,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
                     .getStackForm(1L));
@@ -7573,7 +7543,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerOreWashingPlant() {
         ItemList.Machine_LV_OreWasher.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHER_LV.ID,
                 "basicmachine.orewasher.tier.01",
                 "Basic Ore Washing Plant",
@@ -7584,12 +7554,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_OreWasher.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHER_MV.ID,
                 "basicmachine.orewasher.tier.02",
                 "Advanced Ore Washing Plant",
@@ -7600,12 +7570,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_OreWasher.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHER_HV.ID,
                 "basicmachine.orewasher.tier.03",
                 "Advanced Ore Washing Plant II",
@@ -7616,12 +7586,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_OreWasher.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHER_EV.ID,
                 "basicmachine.orewasher.tier.04",
                 "Advanced Ore Washing Plant III",
@@ -7632,12 +7602,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_OreWasher.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHER_IV.ID,
                 "basicmachine.orewasher.tier.05",
                 "Repurposed Laundry-Washer I-360",
@@ -7648,12 +7618,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_LuV.ID,
                 "basicmachine.orewasher.tier.06",
                 "Elite Ore Washing Plant",
@@ -7664,12 +7634,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_ZPM.ID,
                 "basicmachine.orewasher.tier.07",
                 "Elite Ore Washing Plant II",
@@ -7680,12 +7650,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_UV.ID,
                 "basicmachine.orewasher.tier.08",
                 "Ultimate Ore Washing Machine",
@@ -7696,12 +7666,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_UHV.ID,
                 "basicmachine.orewasher.tier.09",
                 "Epic Ore Washing Machine",
@@ -7712,12 +7682,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_UEV.ID,
                 "basicmachine.orewasher.tier.10",
                 "Epic Ore Washing Machine II",
@@ -7728,12 +7698,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_UIV.ID,
                 "basicmachine.orewasher.tier.11",
                 "Epic Ore Washing Machine III",
@@ -7744,12 +7714,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
         ItemList.OreWashingPlantUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ORE_WASHING_PLANT_UMV.ID,
                 "basicmachine.orewasher.tier.12",
                 "Epic Ore Washing Machine IV",
@@ -7760,7 +7730,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ORE_WASHER",
                 null).getStackForm(1L));
 
@@ -7768,7 +7738,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerPolarizer() {
         ItemList.Machine_LV_Polarizer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_LV.ID,
                 "basicmachine.polarizer.tier.01",
                 "Basic Polarizer",
@@ -7779,12 +7749,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Polarizer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_MV.ID,
                 "basicmachine.polarizer.tier.02",
                 "Advanced Polarizer",
@@ -7795,12 +7765,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Polarizer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_HV.ID,
                 "basicmachine.polarizer.tier.03",
                 "Advanced Polarizer II",
@@ -7811,12 +7781,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Polarizer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_EV.ID,
                 "basicmachine.polarizer.tier.04",
                 "Advanced Polarizer III",
@@ -7827,12 +7797,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Polarizer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_IV.ID,
                 "basicmachine.polarizer.tier.05",
                 "Advanced Polarizer IV",
@@ -7843,12 +7813,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_LuV.ID,
                 "basicmachine.polarizer.tier.06",
                 "Elite Polarizer",
@@ -7859,12 +7829,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_ZPM.ID,
                 "basicmachine.polarizer.tier.07",
                 "Elite Polarizer II",
@@ -7875,12 +7845,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_UV.ID,
                 "basicmachine.polarizer.tier.08",
                 "Ultimate Magnetism Inducer",
@@ -7891,12 +7861,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_UHV.ID,
                 "basicmachine.polarizer.tier.09",
                 "Epic Magnetism Inducer",
@@ -7907,12 +7877,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_UEV.ID,
                 "basicmachine.polarizer.tier.10",
                 "Epic Magnetism Inducer II",
@@ -7923,12 +7893,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_UIV.ID,
                 "basicmachine.polarizer.tier.11",
                 "Epic Magnetism Inducer III",
@@ -7939,12 +7909,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
         ItemList.PolarizerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 POLARIZER_UMV.ID,
                 "basicmachine.polarizer.tier.12",
                 "Epic Magnetism Inducer IV",
@@ -7955,7 +7925,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "POLARIZER",
                 null).getStackForm(1L));
 
@@ -7963,7 +7933,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerPrinter() {
         ItemList.Machine_LV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_LV.ID,
                 "basicmachine.printer.tier.01",
                 "Basic Printer",
@@ -7974,12 +7944,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_MV.ID,
                 "basicmachine.printer.tier.02",
                 "Advanced Printer",
@@ -7990,12 +7960,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_HV.ID,
                 "basicmachine.printer.tier.03",
                 "Advanced Printer II",
@@ -8006,12 +7976,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_EV.ID,
                 "basicmachine.printer.tier.04",
                 "Advanced Printer III",
@@ -8022,12 +7992,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_IV.ID,
                 "basicmachine.printer.tier.05",
                 "Advanced Printer IV",
@@ -8038,12 +8008,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_LuV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_LuV.ID,
                 "basicmachine.printer.tier.06",
                 "Advanced Printer V",
@@ -8054,12 +8024,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_ZPM_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_ZPM.ID,
                 "basicmachine.printer.tier.07",
                 "Advanced Printer VI",
@@ -8070,12 +8040,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_UV_Printer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PRINTER_UV.ID,
                 "basicmachine.printer.tier.08",
                 "Advanced Printer VII",
@@ -8086,14 +8056,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                BasicMachine_Recipe.SpecialEffects.TOP_SMOKE,
                 "PRINTER",
                 null).getStackForm(1L));
     }
 
     private void registerRecycler() {
         ItemList.Machine_LV_Recycler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_LV.ID,
                 "basicmachine.recycler.tier.01",
                 "Basic Recycler",
@@ -8104,12 +8074,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Recycler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_MV.ID,
                 "basicmachine.recycler.tier.02",
                 "Advanced Recycler",
@@ -8120,12 +8090,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Recycler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_HV.ID,
                 "basicmachine.recycler.tier.03",
                 "Advanced Recycler II",
@@ -8136,12 +8106,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Recycler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_EV.ID,
                 "basicmachine.recycler.tier.04",
                 "Advanced Recycler III",
@@ -8152,12 +8122,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Recycler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_IV.ID,
                 "basicmachine.recycler.tier.05",
                 "The Oblitterator",
@@ -8168,12 +8138,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_LuV.ID,
                 "basicmachine.recycler.tier.06",
                 "Elite Recycler",
@@ -8184,12 +8154,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_ZPM.ID,
                 "basicmachine.recycler.tier.07",
                 "Elite Recycler II",
@@ -8200,12 +8170,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_UV.ID,
                 "basicmachine.recycler.tier.08",
                 "Ultimate Scrap-O-Matic",
@@ -8216,12 +8186,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_UHV.ID,
                 "basicmachine.recycler.tier.09",
                 "Epic Scrap-O-Matic",
@@ -8232,12 +8202,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_UEV.ID,
                 "basicmachine.recycler.tier.10",
                 "Epic Scrap-O-Matic II",
@@ -8248,12 +8218,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_UIV.ID,
                 "basicmachine.recycler.tier.11",
                 "Epic Scrap-O-Matic III",
@@ -8264,12 +8234,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
         ItemList.RecyclerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 RECYCLER_UMV.ID,
                 "basicmachine.recycler.tier.12",
                 "Epic Scrap-O-Matic IV",
@@ -8280,7 +8250,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "RECYCLER",
                 null).getStackForm(1L));
 
@@ -8288,7 +8258,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerSiftingMachine() {
         ItemList.Machine_LV_Sifter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTER_LV.ID,
                 "basicmachine.sifter.tier.01",
                 "Basic Sifting Machine",
@@ -8299,12 +8269,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Sifter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTER_MV.ID,
                 "basicmachine.sifter.tier.02",
                 "Advanced Sifting Machine",
@@ -8315,12 +8285,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Sifter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTER_HV.ID,
                 "basicmachine.sifter.tier.03",
                 "Advanced Sifting Machine II",
@@ -8331,12 +8301,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Sifter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTER_EV.ID,
                 "basicmachine.sifter.tier.04",
                 "Advanced Sifting Machine III",
@@ -8347,12 +8317,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Sifter.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTER_IV.ID,
                 "basicmachine.sifter.tier.05",
                 "Advanced Sifting Machine IV",
@@ -8363,12 +8333,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_LuV.ID,
                 "basicmachine.sifter.tier.06",
                 "Elite Sifting Machine",
@@ -8379,12 +8349,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_ZPM.ID,
                 "basicmachine.sifter.tier.07",
                 "Elite Sifting Machine II",
@@ -8395,12 +8365,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_UV.ID,
                 "basicmachine.sifter.tier.08",
                 "Ultimate Pulsation Filter",
@@ -8411,12 +8381,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_UHV.ID,
                 "basicmachine.sifter.tier.09",
                 "Epic Pulsation Filter",
@@ -8427,12 +8397,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_UEV.ID,
                 "basicmachine.sifter.tier.10",
                 "Epic Pulsation Filter II",
@@ -8443,12 +8413,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_UIV.ID,
                 "basicmachine.sifter.tier.11",
                 "Epic Pulsation Filter III",
@@ -8459,12 +8429,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
         ItemList.SiftingMachineUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SIFTING_MACHINE_UMV.ID,
                 "basicmachine.sifter.tier.12",
                 "Epic Pulsation Filter IV",
@@ -8475,7 +8445,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SIFTER",
                 null).getStackForm(1L));
 
@@ -8483,7 +8453,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerSlicingMachine() {
         ItemList.Machine_LV_Slicer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICER_LV.ID,
                 "basicmachine.slicer.tier.01",
                 "Basic Slicing Machine",
@@ -8494,12 +8464,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Slicer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICER_MV.ID,
                 "basicmachine.slicer.tier.02",
                 "Advanced Slicing Machine",
@@ -8510,12 +8480,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Slicer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICER_HV.ID,
                 "basicmachine.slicer.tier.03",
                 "Advanced Slicing Machine II",
@@ -8526,12 +8496,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Slicer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICER_EV.ID,
                 "basicmachine.slicer.tier.04",
                 "Advanced Slicing Machine III",
@@ -8542,12 +8512,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Slicer.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICER_IV.ID,
                 "basicmachine.slicer.tier.05",
                 "Advanced Slicing Machine IV",
@@ -8558,12 +8528,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_LuV.ID,
                 "basicmachine.slicer.tier.06",
                 "Elite Slicing Machine",
@@ -8574,12 +8544,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_ZPM.ID,
                 "basicmachine.slicer.tier.07",
                 "Elite Slicing Machine II",
@@ -8590,12 +8560,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_UV.ID,
                 "basicmachine.slicer.tier.08",
                 "Ultimate Quantum Slicer",
@@ -8606,12 +8576,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_UHV.ID,
                 "basicmachine.slicer.tier.09",
                 "Epic Quantum Slicer",
@@ -8622,12 +8592,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_UEV.ID,
                 "basicmachine.slicer.tier.10",
                 "Epic Quantum Slicer II",
@@ -8638,12 +8608,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_UIV.ID,
                 "basicmachine.slicer.tier.11",
                 "Epic Quantum Slicer III",
@@ -8654,12 +8624,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
         ItemList.SlicingMachineUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 SLICING_MACHINE_UMV.ID,
                 "basicmachine.slicer.tier.12",
                 "Epic Quantum Slicer IV",
@@ -8670,7 +8640,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "SLICER",
                 null).getStackForm(1L));
 
@@ -8678,7 +8648,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerThermalCentrifuge() {
         ItemList.Machine_LV_ThermalCentrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_LV.ID,
                 "basicmachine.thermalcentrifuge.tier.01",
                 "Basic Thermal Centrifuge",
@@ -8689,12 +8659,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_ThermalCentrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_MV.ID,
                 "basicmachine.thermalcentrifuge.tier.02",
                 "Advanced Thermal Centrifuge",
@@ -8705,12 +8675,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_ThermalCentrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_HV.ID,
                 "basicmachine.thermalcentrifuge.tier.03",
                 "Advanced Thermal Centrifuge II",
@@ -8721,12 +8691,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_ThermalCentrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_EV.ID,
                 "basicmachine.thermalcentrifuge.tier.04",
                 "Advanced Thermal Centrifuge III",
@@ -8737,12 +8707,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_ThermalCentrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_IV.ID,
                 "basicmachine.thermalcentrifuge.tier.05",
                 "Blaze Sweatshop T-6350",
@@ -8753,12 +8723,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_LuV.ID,
                 "basicmachine.thermalcentrifuge.tier.06",
                 "Elite Thermal Centrifuge",
@@ -8769,12 +8739,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_ZPM.ID,
                 "basicmachine.thermalcentrifuge.tier.07",
                 "Elite Thermal Centrifuge II",
@@ -8785,12 +8755,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_UV.ID,
                 "basicmachine.thermalcentrifuge.tier.08",
                 "Ultimate Fire Cyclone",
@@ -8801,12 +8771,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_UHV.ID,
                 "basicmachine.thermalcentrifuge.tier.09",
                 "Epic Fire Cyclone",
@@ -8817,12 +8787,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_UEV.ID,
                 "basicmachine.thermalcentrifuge.tier.10",
                 "Epic Fire Cyclone II",
@@ -8833,12 +8803,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_UIV.ID,
                 "basicmachine.thermalcentrifuge.tier.11",
                 "Epic Fire Cyclone III",
@@ -8849,12 +8819,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.ThermalCentrifugeUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 THERMAL_CENTRIFUGE_UMV.ID,
                 "basicmachine.thermalcentrifuge.tier.12",
                 "Epic Fire Cyclone IV",
@@ -8865,14 +8835,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 3,
                 false,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "THERMAL_CENTRIFUGE",
                 null).getStackForm(1L));
     }
 
     private void registerWiremill() {
         ItemList.Machine_LV_Wiremill.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_LV.ID,
                 "basicmachine.wiremill.tier.01",
                 "Basic Wiremill",
@@ -8883,12 +8853,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Wiremill.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_MV.ID,
                 "basicmachine.wiremill.tier.02",
                 "Advanced Wiremill",
@@ -8899,12 +8869,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Wiremill.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_HV.ID,
                 "basicmachine.wiremill.tier.03",
                 "Advanced Wiremill II",
@@ -8915,12 +8885,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Wiremill.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_EV.ID,
                 "basicmachine.wiremill.tier.04",
                 "Advanced Wiremill III",
@@ -8931,12 +8901,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Wiremill.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_IV.ID,
                 "basicmachine.wiremill.tier.05",
                 "Advanced Wiremill IV",
@@ -8947,12 +8917,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_LuV.ID,
                 "basicmachine.wiremill.tier.06",
                 "Elite Wiremill",
@@ -8963,12 +8933,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_ZPM.ID,
                 "basicmachine.wiremill.tier.07",
                 "Elite Wiremill II",
@@ -8979,12 +8949,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_UV.ID,
                 "basicmachine.wiremill.tier.08",
                 "Ultimate Wire Transfigurator",
@@ -8995,12 +8965,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_UHV.ID,
                 "basicmachine.wiremill.tier.09",
                 "Epic Wire Transfigurator",
@@ -9011,12 +8981,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_UEV.ID,
                 "basicmachine.wiremill.tier.10",
                 "Epic Wire Transfigurator II",
@@ -9027,12 +8997,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_UIV.ID,
                 "basicmachine.wiremill.tier.11",
                 "Epic Wire Transfigurator III",
@@ -9043,12 +9013,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
         ItemList.WiremillUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 WIREMILL_UMV.ID,
                 "basicmachine.wiremill.tier.12",
                 "Epic Wire Transfigurator IV",
@@ -9059,7 +9029,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 false,
                 SoundResource.IC2_MACHINES_RECYCLER_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "WIREMILL",
                 null).getStackForm(1L));
 
@@ -9067,7 +9037,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerArcFurnace() {
         ItemList.Machine_LV_ArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_LV.ID,
                 "basicmachine.arcfurnace.tier.01",
                 "Basic Arc Furnace",
@@ -9078,12 +9048,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_ArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_MV.ID,
                 "basicmachine.arcfurnace.tier.02",
                 "Advanced Arc Furnace",
@@ -9094,12 +9064,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_ArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_HV.ID,
                 "basicmachine.arcfurnace.tier.03",
                 "Advanced Arc Furnace II",
@@ -9110,12 +9080,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_ArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_EV.ID,
                 "basicmachine.arcfurnace.tier.04",
                 "Advanced Arc Furnace III",
@@ -9126,12 +9096,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_ArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_IV.ID,
                 "basicmachine.arcfurnace.tier.05",
                 "Advanced Arc Furnace IV",
@@ -9142,12 +9112,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_LuV.ID,
                 "basicmachine.arcfurnace.tier.06",
                 "Elite Arc Furnace",
@@ -9158,12 +9128,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_ZPM.ID,
                 "basicmachine.arcfurnace.tier.07",
                 "Elite Arc Furnace II",
@@ -9174,12 +9144,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_UV.ID,
                 "basicmachine.arcfurnace.tier.08",
                 "Ultimate Short Circuit Heater",
@@ -9190,12 +9160,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_UHV.ID,
                 "basicmachine.arcfurnace.tier.09",
                 "Epic Short Circuit Heater",
@@ -9206,12 +9176,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_UEV.ID,
                 "basicmachine.arcfurnace.tier.10",
                 "Epic Short Circuit Heater II",
@@ -9222,12 +9192,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_UIV.ID,
                 "basicmachine.arcfurnace.tier.11",
                 "Epic Short Circuit Heater III",
@@ -9238,12 +9208,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.ArcFurnaceUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 ARC_FURNACE_UMV.ID,
                 "basicmachine.arcfurnace.tier.12",
                 "Epic Short Circuit Heater IV",
@@ -9254,7 +9224,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "ARC_FURNACE",
                 null).getStackForm(1L));
 
@@ -9262,7 +9232,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerCentrifuge() {
         ItemList.Machine_LV_Centrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_LV.ID,
                 "basicmachine.centrifuge.tier.01",
                 "Basic Centrifuge",
@@ -9273,12 +9243,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Centrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_MV.ID,
                 "basicmachine.centrifuge.tier.02",
                 "Advanced Centrifuge",
@@ -9289,12 +9259,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Centrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_HV.ID,
                 "basicmachine.centrifuge.tier.03",
                 "Turbo Centrifuge",
@@ -9305,12 +9275,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Centrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_EV.ID,
                 "basicmachine.centrifuge.tier.04",
                 "Molecular Separator",
@@ -9321,12 +9291,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Centrifuge.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_IV.ID,
                 "basicmachine.centrifuge.tier.05",
                 "Molecular Cyclone",
@@ -9337,12 +9307,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_LuV.ID,
                 "basicmachine.centrifuge.tier.06",
                 "Elite Centrifuge",
@@ -9353,12 +9323,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_ZPM.ID,
                 "basicmachine.centrifuge.tier.07",
                 "Elite Centrifuge II",
@@ -9369,12 +9339,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_UV.ID,
                 "basicmachine.centrifuge.tier.08",
                 "Ultimate Molecular Tornado",
@@ -9385,12 +9355,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_UHV.ID,
                 "basicmachine.centrifuge.tier.09",
                 "Epic Molecular Tornado",
@@ -9401,12 +9371,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_UEV.ID,
                 "basicmachine.centrifuge.tier.10",
                 "Epic Molecular Tornado II",
@@ -9417,12 +9387,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_UIV.ID,
                 "basicmachine.centrifuge.tier.11",
                 "Epic Molecular Tornado III",
@@ -9433,12 +9403,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
         ItemList.CentrifugeUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CENTRIFUGE_UMV.ID,
                 "basicmachine.centrifuge.tier.12",
                 "Epic Molecular Tornado IV",
@@ -9449,7 +9419,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 6,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CENTRIFUGE",
                 null).getStackForm(1L));
 
@@ -9457,7 +9427,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_LV.ID,
                 "basicmachine.plasmaarcfurnace.tier.01",
                 "Basic Plasma Arc Furnace",
@@ -9468,12 +9438,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_PlasmaArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_MV.ID,
                 "basicmachine.plasmaarcfurnace.tier.02",
                 "Advanced Plasma Arc Furnace",
@@ -9484,12 +9454,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_PlasmaArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_HV.ID,
                 "basicmachine.plasmaarcfurnace.tier.03",
                 "Advanced Plasma Arc Furnace II",
@@ -9500,12 +9470,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_PlasmaArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_EV.ID,
                 "basicmachine.plasmaarcfurnace.tier.04",
                 "Advanced Plasma Arc Furnace III",
@@ -9516,12 +9486,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_PlasmaArcFurnace.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_IV.ID,
                 "basicmachine.plasmaarcfurnace.tier.05",
                 "Advanced Plasma Arc Furnace IV",
@@ -9532,12 +9502,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_LuV.ID,
                 "basicmachine.plasmaarcfurnace.tier.06",
                 "Elite Plasma Arc Furnace",
@@ -9548,12 +9518,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_ZPM.ID,
                 "basicmachine.plasmaarcfurnace.tier.07",
                 "Elite Plasma Arc Furnace II",
@@ -9564,12 +9534,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_UV.ID,
                 "basicmachine.plasmaarcfurnace.tier.08",
                 "Ultimate Plasma Discharge Heater",
@@ -9580,12 +9550,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_UHV.ID,
                 "basicmachine.plasmaarcfurnace.tier.09",
                 "Epic Plasma Discharge Heater",
@@ -9596,12 +9566,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_UEV.ID,
                 "basicmachine.plasmaarcfurnace.tier.10",
                 "Epic Plasma Discharge Heater II",
@@ -9612,12 +9582,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_UIV.ID,
                 "basicmachine.plasmaarcfurnace.tier.11",
                 "Epic Plasma Discharge Heater III",
@@ -9628,12 +9598,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 PLASMA_ARC_FURNACE_UMV.ID,
                 "basicmachine.plasmaarcfurnace.tier.12",
                 "Epic Plasma Discharge Heater IV",
@@ -9644,14 +9614,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 true,
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
                 null).getStackForm(1L));
     }
 
     private void registerCanningMachine() {
         ItemList.Machine_LV_Canner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNER_LV.ID,
                 "basicmachine.canner.tier.01",
                 "Basic Canning Machine",
@@ -9662,12 +9632,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_Canner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNER_MV.ID,
                 "basicmachine.canner.tier.02",
                 "Advanced Canning Machine",
@@ -9678,12 +9648,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_Canner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNER_HV.ID,
                 "basicmachine.canner.tier.03",
                 "Advanced Canning Machine II",
@@ -9694,12 +9664,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_Canner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNER_EV.ID,
                 "basicmachine.canner.tier.04",
                 "Advanced Canning Machine III",
@@ -9710,12 +9680,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_Canner.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNER_IV.ID,
                 "basicmachine.canner.tier.05",
                 "Advanced Canning Machine IV",
@@ -9726,12 +9696,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineLuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_LuV.ID,
                 "basicmachine.canner.tier.06",
                 "Elite Canning Machine",
@@ -9742,12 +9712,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_ZPM.ID,
                 "basicmachine.canner.tier.07",
                 "Elite Canning Machine II",
@@ -9758,12 +9728,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineUV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_UV.ID,
                 "basicmachine.canner.tier.08",
                 "Ultimate Can Operator",
@@ -9774,12 +9744,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_UHV.ID,
                 "basicmachine.canner.tier.09",
                 "Epic Can Operator",
@@ -9790,12 +9760,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_UEV.ID,
                 "basicmachine.canner.tier.10",
                 "Epic Can Operator II",
@@ -9806,12 +9776,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_UIV.ID,
                 "basicmachine.canner.tier.11",
                 "Epic Can Operator III",
@@ -9822,12 +9792,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
 
         ItemList.CanningMachineUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CANNING_MACHINE_UMV.ID,
                 "basicmachine.canner.tier.12",
                 "Epic Can Operator IV",
@@ -9838,221 +9808,178 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 2,
                 false,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CANNER",
                 null).getStackForm(1L));
     }
 
     private static void registerDynamoHatch() {
-        ItemList.Hatch_Dynamo_ULV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_LV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_MV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "MV Dynamo Hatch", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_HV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "HV Dynamo Hatch", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_EV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "EV Dynamo Hatch", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_IV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "IV Dynamo Hatch", 5)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_LuV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "LuV Dynamo Hatch", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "ZPM Dynamo Hatch", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_UV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8)
-                .getStackForm(1L));
-        ItemList.Hatch_Dynamo_UHV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9)
-                .getStackForm(1L));
+        ItemList.Hatch_Dynamo_ULV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Dynamo_LV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1).getStackForm(1L));
+        ItemList.Hatch_Dynamo_MV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "MV Dynamo Hatch", 2).getStackForm(1L));
+        ItemList.Hatch_Dynamo_HV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "HV Dynamo Hatch", 3).getStackForm(1L));
+        ItemList.Hatch_Dynamo_EV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "EV Dynamo Hatch", 4).getStackForm(1L));
+        ItemList.Hatch_Dynamo_IV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "IV Dynamo Hatch", 5).getStackForm(1L));
+        ItemList.Hatch_Dynamo_LuV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "LuV Dynamo Hatch", 6).getStackForm(1L));
+        ItemList.Hatch_Dynamo_ZPM
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "ZPM Dynamo Hatch", 7).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UHV
+            .set(new Hatch_Dynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
         ItemList.Hatch_Dynamo_UEV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "UEV Dynamo Hatch", 10)
-                .getStackForm(1L));
+            new Hatch_Dynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "UEV Dynamo Hatch", 10).getStackForm(1L));
 
         ItemList.Hatch_Dynamo_UIV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "UIV Dynamo Hatch", 11)
-                .getStackForm(1L));
+            new Hatch_Dynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "UIV Dynamo Hatch", 11).getStackForm(1L));
 
         ItemList.Hatch_Dynamo_UMV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "UMV Dynamo Hatch", 12)
-                .getStackForm(1L));
+            new Hatch_Dynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "UMV Dynamo Hatch", 12).getStackForm(1L));
 
         ItemList.Hatch_Dynamo_UXV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "UXV Dynamo Hatch", 13)
-                .getStackForm(1L));
+            new Hatch_Dynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "UXV Dynamo Hatch", 13).getStackForm(1L));
     }
 
     private static void registerEnergyHatch() {
-        ItemList.Hatch_Energy_ULV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "ULV Energy Hatch", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_LV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "LV Energy Hatch", 1)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_MV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "MV Energy Hatch", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_HV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "HV Energy Hatch", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_EV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "EV Energy Hatch", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_IV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "IV Energy Hatch", 5)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_LuV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "LuV Energy Hatch", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "ZPM Energy Hatch", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_UV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8)
-                .getStackForm(1L));
-        ItemList.Hatch_Energy_UHV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9)
-                .getStackForm(1L));
+        ItemList.Hatch_Energy_ULV
+            .set(new Hatch_Energy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Energy_LV
+            .set(new Hatch_Energy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "LV Energy Hatch", 1).getStackForm(1L));
+        ItemList.Hatch_Energy_MV
+            .set(new Hatch_Energy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "MV Energy Hatch", 2).getStackForm(1L));
+        ItemList.Hatch_Energy_HV
+            .set(new Hatch_Energy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "HV Energy Hatch", 3).getStackForm(1L));
+        ItemList.Hatch_Energy_EV
+            .set(new Hatch_Energy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "EV Energy Hatch", 4).getStackForm(1L));
+        ItemList.Hatch_Energy_IV
+            .set(new Hatch_Energy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "IV Energy Hatch", 5).getStackForm(1L));
+        ItemList.Hatch_Energy_LuV
+            .set(new Hatch_Energy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "LuV Energy Hatch", 6).getStackForm(1L));
+        ItemList.Hatch_Energy_ZPM
+            .set(new Hatch_Energy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "ZPM Energy Hatch", 7).getStackForm(1L));
+        ItemList.Hatch_Energy_UV
+            .set(new Hatch_Energy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8).getStackForm(1L));
+        ItemList.Hatch_Energy_UHV
+            .set(new Hatch_Energy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9).getStackForm(1L));
         ItemList.Hatch_Energy_UEV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "UEV Energy Hatch", 10)
-                .getStackForm(1L));
+            new Hatch_Energy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "UEV Energy Hatch", 10).getStackForm(1L));
 
         ItemList.Hatch_Energy_UIV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "UIV Energy Hatch", 11)
-                .getStackForm(1L));
+            new Hatch_Energy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "UIV Energy Hatch", 11).getStackForm(1L));
 
         ItemList.Hatch_Energy_UMV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "UMV Energy Hatch", 12)
-                .getStackForm(1L));
+            new Hatch_Energy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "UMV Energy Hatch", 12).getStackForm(1L));
 
         ItemList.Hatch_Energy_UXV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13)
-                .getStackForm(1L));
+            new Hatch_Energy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
     }
 
     private static void registerInputHatch() {
-        ItemList.Hatch_Input_ULV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_LV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_MV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_HV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_EV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "Input Hatch (EV)", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_IV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "Input Hatch (IV)", 5)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_LuV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "Input Hatch (LuV)", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "Input Hatch (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_UV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_UHV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_UEV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "Input Hatch (UEV)", 10)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_UIV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "Input Hatch (UIV)", 11)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_UMV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "Input Hatch (UMV)", 12)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_UXV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_MAX.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14)
-                .getStackForm(1L));
+        ItemList.Hatch_Input_ULV
+            .set(new Hatch_Input(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
+        ItemList.Hatch_Input_LV
+            .set(new Hatch_Input(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1).getStackForm(1L));
+        ItemList.Hatch_Input_MV
+            .set(new Hatch_Input(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2).getStackForm(1L));
+        ItemList.Hatch_Input_HV
+            .set(new Hatch_Input(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3).getStackForm(1L));
+        ItemList.Hatch_Input_EV
+            .set(new Hatch_Input(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "Input Hatch (EV)", 4).getStackForm(1L));
+        ItemList.Hatch_Input_IV
+            .set(new Hatch_Input(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "Input Hatch (IV)", 5).getStackForm(1L));
+        ItemList.Hatch_Input_LuV
+            .set(new Hatch_Input(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "Input Hatch (LuV)", 6).getStackForm(1L));
+        ItemList.Hatch_Input_ZPM
+            .set(new Hatch_Input(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "Input Hatch (ZPM)", 7).getStackForm(1L));
+        ItemList.Hatch_Input_UV
+            .set(new Hatch_Input(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8).getStackForm(1L));
+        ItemList.Hatch_Input_UHV
+            .set(new Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
+        ItemList.Hatch_Input_UEV
+            .set(new Hatch_Input(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "Input Hatch (UEV)", 10).getStackForm(1L));
+        ItemList.Hatch_Input_UIV
+            .set(new Hatch_Input(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "Input Hatch (UIV)", 11).getStackForm(1L));
+        ItemList.Hatch_Input_UMV
+            .set(new Hatch_Input(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "Input Hatch (UMV)", 12).getStackForm(1L));
+        ItemList.Hatch_Input_UXV
+            .set(new Hatch_Input(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13).getStackForm(1L));
+        ItemList.Hatch_Input_MAX
+            .set(new Hatch_Input(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14).getStackForm(1L));
     }
 
     private static void registerQuadrupleInputHatch() {
         ItemList.Hatch_Input_Multi_2x2_EV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_EV.ID,
                 4,
                 "hatch.multi.input.tier.01",
                 "Quadruple Input Hatch (EV)",
                 4).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_IV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_IV.ID,
                 4,
                 "hatch.multi.input.tier.02",
                 "Quadruple Input Hatch (IV)",
                 5).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_LuV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_LuV.ID,
                 4,
                 "hatch.multi.input.tier.03",
                 "Quadruple Input Hatch (LuV)",
                 6).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_ZPM.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_ZPM.ID,
                 4,
                 "hatch.multi.input.tier.04",
                 "Quadruple Input Hatch (ZPM)",
                 7).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UV.ID,
                 4,
                 "hatch.multi.input.tier.05",
                 "Quadruple Input Hatch (UV)",
                 8).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UHV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UHV.ID,
                 4,
                 "hatch.multi.input.tier.06",
                 "Quadruple Input Hatch (UHV)",
                 9).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UEV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UEV.ID,
                 4,
                 "hatch.multi.input.tier.07",
                 "Quadruple Input Hatch (UEV)",
                 10).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UIV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UIV.ID,
                 4,
                 "hatch.multi.input.tier.08",
                 "Quadruple Input Hatch (UIV)",
                 11).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UMV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UMV.ID,
                 4,
                 "hatch.multi.input.tier.09",
                 "Quadruple Input Hatch (UMV)",
                 12).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UXV.set(
-            new GT_MetaTileEntity_Hatch_MultiInput(
+            new Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UXV.ID,
                 4,
                 "hatch.multi.input.tier.10",
@@ -10060,7 +9987,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 13).getStackForm(1L));
 
         ItemList.Hatch_Input_Multi_2x2_Humongous.set(
-            new GT_MetaTileEntity_Hatch_QuadrupleHumongous(
+            new Hatch_QuadrupleHumongous(
                 QUADRUPLE_INPUT_HATCHES_MAX.ID,
                 4,
                 "hatch.multi.input.tier.11",
@@ -10069,50 +9996,35 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerOutputHatch() {
         ItemList.Hatch_Output_ULV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_LV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_MV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_HV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_EV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "Output Hatch (EV)", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_IV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "Output Hatch (IV)", 5)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
+        ItemList.Hatch_Output_LV
+            .set(new Hatch_Output(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1).getStackForm(1L));
+        ItemList.Hatch_Output_MV
+            .set(new Hatch_Output(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2).getStackForm(1L));
+        ItemList.Hatch_Output_HV
+            .set(new Hatch_Output(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3).getStackForm(1L));
+        ItemList.Hatch_Output_EV
+            .set(new Hatch_Output(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "Output Hatch (EV)", 4).getStackForm(1L));
+        ItemList.Hatch_Output_IV
+            .set(new Hatch_Output(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "Output Hatch (IV)", 5).getStackForm(1L));
         ItemList.Hatch_Output_LuV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "Output Hatch (LuV)", 6)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "Output Hatch (LuV)", 6).getStackForm(1L));
         ItemList.Hatch_Output_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "Output Hatch (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_UV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "Output Hatch (ZPM)", 7).getStackForm(1L));
+        ItemList.Hatch_Output_UV
+            .set(new Hatch_Output(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Output_UHV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
         ItemList.Hatch_Output_UEV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "Output Hatch (UEV)", 10)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "Output Hatch (UEV)", 10).getStackForm(1L));
         ItemList.Hatch_Output_UIV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "Output Hatch (UIV)", 11)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "Output Hatch (UIV)", 11).getStackForm(1L));
         ItemList.Hatch_Output_UMV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "Output Hatch (UMV)", 12)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "Output Hatch (UMV)", 12).getStackForm(1L));
         ItemList.Hatch_Output_UXV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "Output Hatch (UXV)", 13)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "Output Hatch (UXV)", 13).getStackForm(1L));
         ItemList.Hatch_Output_MAX.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "Output Hatch (MAX)", 14)
-                .getStackForm(1L));
+            new Hatch_Output(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "Output Hatch (MAX)", 14).getStackForm(1L));
     }
 
     private static void registerQuantumTank() {
@@ -10253,103 +10165,77 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerMagHatch() {
-        ItemList.Hatch_Electromagnet.set(
-            new GT_MetaTileEntity_MagHatch(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing").getStackForm(1L));
+        ItemList.Hatch_Electromagnet
+            .set(new Hatch_Magnet(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing").getStackForm(1L));
     }
 
     private static void registerInputBus() {
         ItemList.Hatch_Input_Bus_ULV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_Bus_LV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "Input Bus (LV)", 1)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_Bus_MV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "Input Bus (MV)", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_Bus_HV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "Input Bus (HV)", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_Bus_EV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "Input Bus (EV)", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_Bus_IV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "Input Bus (IV)", 5)
-                .getStackForm(1L));
+            new Hatch_InputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_LV
+            .set(new Hatch_InputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "Input Bus (LV)", 1).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_MV
+            .set(new Hatch_InputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "Input Bus (MV)", 2).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_HV
+            .set(new Hatch_InputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "Input Bus (HV)", 3).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_EV
+            .set(new Hatch_InputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "Input Bus (EV)", 4).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_IV
+            .set(new Hatch_InputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "Input Bus (IV)", 5).getStackForm(1L));
         ItemList.Hatch_Input_Bus_LuV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "Input Bus (LuV)", 6)
-                .getStackForm(1L));
+            new Hatch_InputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "Input Bus (LuV)", 6).getStackForm(1L));
         ItemList.Hatch_Input_Bus_ZPM.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "Input Bus (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Input_Bus_UV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8)
-                .getStackForm(1L));
+            new Hatch_InputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "Input Bus (ZPM)", 7).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_UV
+            .set(new Hatch_InputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_Bus_MAX.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9)
-                .getStackForm(1L));
+            new Hatch_InputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
     }
 
     private static void registerOutputBus() {
         ItemList.Hatch_Output_Bus_ULV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_ULV.ID, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_ULV.ID, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Output_Bus_LV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_LV.ID, "hatch.output_bus.tier.01", "Output Bus (LV)", 1)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_LV.ID, "hatch.output_bus.tier.01", "Output Bus (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Output_Bus_MV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_MV.ID, "hatch.output_bus.tier.02", "Output Bus (MV)", 2)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_MV.ID, "hatch.output_bus.tier.02", "Output Bus (MV)", 2).getStackForm(1L));
         ItemList.Hatch_Output_Bus_HV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_HV.ID, "hatch.output_bus.tier.03", "Output Bus (HV)", 3)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_HV.ID, "hatch.output_bus.tier.03", "Output Bus (HV)", 3).getStackForm(1L));
         ItemList.Hatch_Output_Bus_EV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_EV.ID, "hatch.output_bus.tier.04", "Output Bus (EV)", 4)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_EV.ID, "hatch.output_bus.tier.04", "Output Bus (EV)", 4).getStackForm(1L));
         ItemList.Hatch_Output_Bus_IV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_IV.ID, "hatch.output_bus.tier.05", "Output Bus (IV)", 5)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_IV.ID, "hatch.output_bus.tier.05", "Output Bus (IV)", 5).getStackForm(1L));
         ItemList.Hatch_Output_Bus_LuV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_LuV.ID, "hatch.output_bus.tier.06", "Output Bus (LuV)", 6)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_LuV.ID, "hatch.output_bus.tier.06", "Output Bus (LuV)", 6).getStackForm(1L));
         ItemList.Hatch_Output_Bus_ZPM.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_ZPM.ID, "hatch.output_bus.tier.07", "Output Bus (ZPM)", 7)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_ZPM.ID, "hatch.output_bus.tier.07", "Output Bus (ZPM)", 7).getStackForm(1L));
         ItemList.Hatch_Output_Bus_UV.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_UV.ID, "hatch.output_bus.tier.08", "Output Bus (UV)", 8)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_UV.ID, "hatch.output_bus.tier.08", "Output Bus (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Output_Bus_MAX.set(
-            new GT_MetaTileEntity_Hatch_OutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
-                .getStackForm(1L));
+            new Hatch_OutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9).getStackForm(1L));
     }
 
     private static void registerMufflerHatch() {
         ItemList.Hatch_Muffler_LV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1)
-                .getStackForm(1L));
+            new Hatch_Muffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Muffler_MV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2)
-                .getStackForm(1L));
+            new Hatch_Muffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2).getStackForm(1L));
         ItemList.Hatch_Muffler_HV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "Muffler Hatch (HV)", 3)
-                .getStackForm(1L));
+            new Hatch_Muffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "Muffler Hatch (HV)", 3).getStackForm(1L));
         ItemList.Hatch_Muffler_EV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "Muffler Hatch (EV)", 4)
-                .getStackForm(1L));
+            new Hatch_Muffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "Muffler Hatch (EV)", 4).getStackForm(1L));
         ItemList.Hatch_Muffler_IV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "Muffler Hatch (IV)", 5)
-                .getStackForm(1L));
+            new Hatch_Muffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "Muffler Hatch (IV)", 5).getStackForm(1L));
         ItemList.Hatch_Muffler_LuV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "Muffler Hatch (LuV)", 6)
+            new Hatch_Muffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "Muffler Hatch (LuV)", 6)
                 .getStackForm(1L));
         ItemList.Hatch_Muffler_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "Muffler Hatch (ZPM)", 7)
+            new Hatch_Muffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "Muffler Hatch (ZPM)", 7)
                 .getStackForm(1L));
         ItemList.Hatch_Muffler_UV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "Muffler Hatch (UV)", 8)
-                .getStackForm(1L));
+            new Hatch_Muffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "Muffler Hatch (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Muffler_MAX.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
+            new Hatch_Muffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
                 .getStackForm(1L));
     }
 
@@ -10377,7 +10263,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerBatteryBuffer1x1() {
         ItemList.Battery_Buffer_1by1_ULV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_ULV.ID,
                 "batterybuffer.01.tier.00",
                 "Ultra Low Voltage Battery Buffer",
@@ -10385,7 +10271,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_LV.ID,
                 "batterybuffer.01.tier.01",
                 "Low Voltage Battery Buffer",
@@ -10393,7 +10279,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_MV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_MV.ID,
                 "batterybuffer.01.tier.02",
                 "Medium Voltage Battery Buffer",
@@ -10401,7 +10287,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_HV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_HV.ID,
                 "batterybuffer.01.tier.03",
                 "High Voltage Battery Buffer",
@@ -10409,7 +10295,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_EV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_EV.ID,
                 "batterybuffer.01.tier.04",
                 "Extreme Voltage Battery Buffer",
@@ -10417,7 +10303,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_IV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_IV.ID,
                 "batterybuffer.01.tier.05",
                 "Insane Voltage Battery Buffer",
@@ -10425,7 +10311,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LuV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_LuV.ID,
                 "batterybuffer.01.tier.06",
                 "Ludicrous Voltage Battery Buffer",
@@ -10433,7 +10319,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_ZPM.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_ZPM.ID,
                 "batterybuffer.01.tier.07",
                 "ZPM Voltage Battery Buffer",
@@ -10441,7 +10327,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UV.ID,
                 "batterybuffer.01.tier.08",
                 "Ultimate Voltage Battery Buffer",
@@ -10449,7 +10335,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UHV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UHV.ID,
                 "batterybuffer.01.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
@@ -10458,7 +10344,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UEV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UEV.ID,
                 "batterybuffer.01.tier.10",
                 "Extremely Ultimate Battery Buffer",
@@ -10467,7 +10353,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UIV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UIV.ID,
                 "batterybuffer.01.tier.11",
                 "Insanely Ultimate Battery Buffer",
@@ -10476,7 +10362,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UMV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UMV.ID,
                 "batterybuffer.01.tier.12",
                 "Mega Ultimate Battery Buffer",
@@ -10485,7 +10371,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UXV.ID,
                 "batterybuffer.01.tier.13",
                 "Extended Mega Ultimate Battery Buffer",
@@ -10494,7 +10380,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_MAXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_MAX.ID,
                 "batterybuffer.01.tier.14",
                 "Maximum Battery Buffer",
@@ -10505,7 +10391,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerBatteryBuffer2x2() {
         ItemList.Battery_Buffer_2by2_ULV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_ULV.ID,
                 "batterybuffer.04.tier.00",
                 "Ultra Low Voltage Battery Buffer",
@@ -10513,7 +10399,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_LV.ID,
                 "batterybuffer.04.tier.01",
                 "Low Voltage Battery Buffer",
@@ -10521,7 +10407,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_MV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_MV.ID,
                 "batterybuffer.04.tier.02",
                 "Medium Voltage Battery Buffer",
@@ -10529,7 +10415,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_HV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_HV.ID,
                 "batterybuffer.04.tier.03",
                 "High Voltage Battery Buffer",
@@ -10537,7 +10423,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_EV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_EV.ID,
                 "batterybuffer.04.tier.04",
                 "Extreme Voltage Battery Buffer",
@@ -10545,7 +10431,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_IV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_IV.ID,
                 "batterybuffer.04.tier.05",
                 "Insane Voltage Battery Buffer",
@@ -10553,7 +10439,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LuV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_LuV.ID,
                 "batterybuffer.04.tier.06",
                 "Ludicrous Voltage Battery Buffer",
@@ -10561,7 +10447,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_ZPM.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_ZPM.ID,
                 "batterybuffer.04.tier.07",
                 "ZPM Voltage Battery Buffer",
@@ -10569,7 +10455,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UV.ID,
                 "batterybuffer.04.tier.08",
                 "Ultimate Voltage Battery Buffer",
@@ -10577,7 +10463,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UHV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UHV.ID,
                 "batterybuffer.04.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
@@ -10586,7 +10472,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UEV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UEV.ID,
                 "batterybuffer.04.tier.10",
                 "Extremely Ultimate Battery Buffer",
@@ -10595,7 +10481,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UIV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UIV.ID,
                 "batterybuffer.04.tier.11",
                 "Insanely Ultimate Battery Buffer",
@@ -10604,7 +10490,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UMV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UMV.ID,
                 "batterybuffer.04.tier.12",
                 "Mega Ultimate Battery Buffer",
@@ -10613,7 +10499,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UXV.ID,
                 "batterybuffer.04.tier.13",
                 "Extended Mega Ultimate Battery Buffer",
@@ -10622,7 +10508,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_MAXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_MAX.ID,
                 "batterybuffer.04.tier.14",
                 "Maximum Battery Buffer",
@@ -10633,7 +10519,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerBatteryBuffer3x3() {
         ItemList.Battery_Buffer_3by3_ULV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_ULV.ID,
                 "batterybuffer.09.tier.00",
                 "Ultra Low Voltage Battery Buffer",
@@ -10641,7 +10527,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_LV.ID,
                 "batterybuffer.09.tier.01",
                 "Low Voltage Battery Buffer",
@@ -10649,7 +10535,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_MV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_MV.ID,
                 "batterybuffer.09.tier.02",
                 "Medium Voltage Battery Buffer",
@@ -10657,7 +10543,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_HV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_HV.ID,
                 "batterybuffer.09.tier.03",
                 "High Voltage Battery Buffer",
@@ -10665,7 +10551,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_EV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_EV.ID,
                 "batterybuffer.09.tier.04",
                 "Extreme Voltage Battery Buffer",
@@ -10673,7 +10559,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_IV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_IV.ID,
                 "batterybuffer.09.tier.05",
                 "Insane Voltage Battery Buffer",
@@ -10681,7 +10567,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LuV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_LuV.ID,
                 "batterybuffer.09.tier.06",
                 "Ludicrous Voltage Battery Buffer",
@@ -10689,7 +10575,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_ZPM.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_ZPM.ID,
                 "batterybuffer.09.tier.07",
                 "ZPM Voltage Battery Buffer",
@@ -10697,7 +10583,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UV.ID,
                 "batterybuffer.09.tier.08",
                 "Ultimate Voltage Battery Buffer",
@@ -10705,7 +10591,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UHV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UHV.ID,
                 "batterybuffer.09.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
@@ -10714,7 +10600,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UEV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UEV.ID,
                 "batterybuffer.09.tier.10",
                 "Extremely Ultimate Battery Buffer",
@@ -10723,7 +10609,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UIV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UIV.ID,
                 "batterybuffer.09.tier.11",
                 "Insanely Ultimate Battery Buffer",
@@ -10732,7 +10618,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UMV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UMV.ID,
                 "batterybuffer.09.tier.12",
                 "Mega Ultimate Battery Buffer",
@@ -10741,7 +10627,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UXV.ID,
                 "batterybuffer.09.tier.13",
                 "Extended Mega Ultimate Battery Buffer",
@@ -10750,7 +10636,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_MAXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_MAX.ID,
                 "batterybuffer.09.tier.14",
                 "Maximum Battery Buffer",
@@ -10761,7 +10647,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerBatteryBuffer4x4() {
         ItemList.Battery_Buffer_4by4_ULV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_ULV.ID,
                 "batterybuffer.16.tier.00",
                 "Ultra Low Voltage Battery Buffer",
@@ -10769,7 +10655,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_LV.ID,
                 "batterybuffer.16.tier.01",
                 "Low Voltage Battery Buffer",
@@ -10777,7 +10663,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_MV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_MV.ID,
                 "batterybuffer.16.tier.02",
                 "Medium Voltage Battery Buffer",
@@ -10785,7 +10671,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_HV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_HV.ID,
                 "batterybuffer.16.tier.03",
                 "High Voltage Battery Buffer",
@@ -10793,7 +10679,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_EV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_EV.ID,
                 "batterybuffer.16.tier.04",
                 "Extreme Voltage Battery Buffer",
@@ -10801,7 +10687,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_IV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_IV.ID,
                 "batterybuffer.16.tier.05",
                 "Insane Voltage Battery Buffer",
@@ -10809,7 +10695,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LuV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_LuV.ID,
                 "batterybuffer.16.tier.06",
                 "Ludicrous Voltage Battery Buffer",
@@ -10817,7 +10703,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_ZPM.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_ZPM.ID,
                 "batterybuffer.16.tier.07",
                 "ZPM Voltage Battery Buffer",
@@ -10825,7 +10711,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UV.ID,
                 "batterybuffer.16.tier.08",
                 "Ultimate Voltage Battery Buffer",
@@ -10833,7 +10719,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UHV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UHV.ID,
                 "batterybuffer.16.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
@@ -10841,7 +10727,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UEV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UEV.ID,
                 "batterybuffer.16.tier.10",
                 "Extremely Ultimate Battery Buffer",
@@ -10850,7 +10736,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 16).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UIV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UIV.ID,
                 "batterybuffer.16.tier.11",
                 "Insanely Ultimate Battery Buffer",
@@ -10859,7 +10745,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 16).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UMV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UMV.ID,
                 "batterybuffer.16.tier.12",
                 "Mega Ultimate Battery Buffer",
@@ -10868,7 +10754,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 16).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UXV.ID,
                 "batterybuffer.16.tier.13",
                 "Extended Mega Ultimate Battery Buffer",
@@ -10877,7 +10763,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 16).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_MAXV.set(
-            new GT_MetaTileEntity_BasicBatteryBuffer(
+            new BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_MAX.ID,
                 "batterybuffer.16.tier.14",
                 "Maximum Battery Buffer",
@@ -11007,7 +10893,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerCircuitAssembler() {
         ItemList.Machine_LV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_LV.ID,
                 "basicmachine.circuitassembler.tier.01",
                 "Basic Circuit Assembler",
@@ -11018,12 +10904,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_MV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_MV.ID,
                 "basicmachine.circuitassembler.tier.02",
                 "Advanced Circuit Assembler",
@@ -11034,12 +10920,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_HV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_HV.ID,
                 "basicmachine.circuitassembler.tier.03",
                 "Advanced Circuit Assembler II",
@@ -11050,12 +10936,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_EV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_EV.ID,
                 "basicmachine.circuitassembler.tier.04",
                 "Advanced Circuit Assembler III",
@@ -11066,12 +10952,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_IV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_IV.ID,
                 "basicmachine.circuitassembler.tier.05",
                 "Advanced Circuit Assembler IV",
@@ -11082,12 +10968,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_LuV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_LuV.ID,
                 "basicmachine.circuitassembler.tier.06",
                 "Advanced Circuit Assembler V",
@@ -11098,12 +10984,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_ZPM_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_ZPM.ID,
                 "basicmachine.circuitassembler.tier.07",
                 "Advanced Circuit Assembler VI",
@@ -11114,12 +11000,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.Machine_UV_CircuitAssembler.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_UV.ID,
                 "basicmachine.circuitassembler.tier.08",
                 "Advanced Circuit Assembler VII",
@@ -11130,12 +11016,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.CircuitAssemblerUHV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_UHV.ID,
                 "basicmachine.circuitassembler.tier.09",
                 "Ultimate Circuit Assembling Machine",
@@ -11146,12 +11032,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.CircuitAssemblerUEV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_UEV.ID,
                 "basicmachine.circuitassembler.tier.10",
                 "Ultimate Circuit Assembling Machine II",
@@ -11162,12 +11048,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.CircuitAssemblerUIV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_UIV.ID,
                 "basicmachine.circuitassembler.tier.11",
                 "Ultimate Circuit Assembling Machine III",
@@ -11178,12 +11064,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.CircuitAssemblerUMV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_UMV.ID,
                 "basicmachine.circuitassembler.tier.12",
                 "Ultimate Circuit Assembling Machine IV",
@@ -11194,12 +11080,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.CircuitAssemblerUXV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_UXV.ID,
                 "basicmachine.circuitassembler.tier.13",
                 "Ultimate Circuit Assembling Machine V",
@@ -11210,12 +11096,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
 
         ItemList.CircuitAssemblerMAX.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new BasicMachine_Recipe(
                 CIRCUIT_ASSEMBLER_MAX.ID,
                 "basicmachine.circuitassembler.tier.14",
                 "MAX Circuit Assembling Machine",
@@ -11226,14 +11112,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1,
                 true,
                 SoundResource.NONE,
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                BasicMachine_Recipe.SpecialEffects.NONE,
                 "CIRCUITASSEMBLER",
                 null).getStackForm(1L));
     }
 
     private void registerWetTransformer() {
         ItemList.WetTransformer_LV_ULV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_LV_ULV.ID,
                 "wettransformer.tier.00",
                 "Ultra Low Voltage Power Transformer",
@@ -11241,7 +11127,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_MV_LV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_MV_LV.ID,
                 "wetransformer.tier.01",
                 "Low Voltage Power Transformer",
@@ -11249,7 +11135,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_HV_MV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_HV_MV.ID,
                 "wettransformer.tier.02",
                 "Medium Voltage Power Transformer",
@@ -11257,7 +11143,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_EV_HV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_EV_HV.ID,
                 "wettransformer.tier.03",
                 "High Voltage Power Transformer",
@@ -11265,7 +11151,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_IV_EV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_IV_EV.ID,
                 "wettransformer.tier.04",
                 "Extreme Power Transformer",
@@ -11273,7 +11159,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_LuV_IV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_LuV_IV.ID,
                 "wettransformer.tier.05",
                 "Insane Power Transformer",
@@ -11281,7 +11167,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_ZPM_LuV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_ZPM_LuV.ID,
                 "wettransformer.tier.06",
                 "Ludicrous Power Transformer",
@@ -11289,7 +11175,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_UV_ZPM.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_UV_ZPM.ID,
                 "wettransformer.tier.07",
                 "ZPM Voltage Power Transformer",
@@ -11297,7 +11183,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_UHV_UV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_UHV_UV.ID,
                 "wettransformer.tier.08",
                 "Ultimate Power Transformer",
@@ -11305,7 +11191,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_UEV_UHV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_UEV_UHV.ID,
                 "wettransformer.tier.09",
                 "Highly Ultimate Power Transformer",
@@ -11313,7 +11199,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_UIV_UEV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_UIV_UEV.ID,
                 "wettransformer.tier.10",
                 "Extremely Ultimate Power Transformer",
@@ -11321,7 +11207,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_UMV_UIV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_UMV_UIV.ID,
                 "wettransformer.tier.11",
                 "Insanely Ultimate Power Transformer",
@@ -11329,7 +11215,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_UXV_UMV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_UXV_UMV.ID,
                 "wettransformer.tier.12",
                 "Mega Ultimate Power Transformer",
@@ -11337,7 +11223,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
 
         ItemList.WetTransformer_MAX_UXV.set(
-            new GT_MetaTileEntity_WetTransformer(
+            new WetTransformer(
                 WET_TRANSFORMER_MAX_UXV.ID,
                 "wettransformer.tier.13",
                 "Extended Mega Ultimate Power Transformer",
@@ -11479,91 +11365,91 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerWirelessEnergyHatch() {
         ItemList.Wireless_Hatch_Energy_ULV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_ULV.ID,
                 "hatch.wireless.receiver.tier.00",
                 "ULV Wireless Energy Hatch",
                 0).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_LV.ID,
                 "hatch.wireless.receiver.tier.01",
                 "LV Wireless Energy Hatch",
                 1).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_MV.ID,
                 "hatch.wireless.receiver.tier.02",
                 "MV Wireless Energy Hatch",
                 2).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_HV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_HV.ID,
                 "hatch.wireless.receiver.tier.03",
                 "HV Wireless Energy Hatch",
                 3).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_EV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_EV.ID,
                 "hatch.wireless.receiver.tier.04",
                 "EV Wireless Energy Hatch",
                 4).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_IV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_IV.ID,
                 "hatch.wireless.receiver.tier.05",
                 "IV Wireless Energy Hatch",
                 5).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LuV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_LuV.ID,
                 "hatch.wireless.receiver.tier.06",
                 "LuV Wireless Energy Hatch",
                 6).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_ZPM.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_ZPM.ID,
                 "hatch.wireless.receiver.tier.07",
                 "ZPM Wireless Energy Hatch",
                 7).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_UV.ID,
                 "hatch.wireless.receiver.tier.08",
                 "UV Wireless Energy Hatch",
                 8).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UHV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_UHV.ID,
                 "hatch.wireless.receiver.tier.09",
                 "UHV Wireless Energy Hatch",
                 9).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UEV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_UEV.ID,
                 "hatch.wireless.receiver.tier.10",
                 "UEV Wireless Energy Hatch",
                 10).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UIV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_UIV.ID,
                 "hatch.wireless.receiver.tier.11",
                 "UIV Wireless Energy Hatch",
                 11).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UMV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_UMV.ID,
                 "hatch.wireless.receiver.tier.12",
                 "UMV Wireless Energy Hatch",
                 12).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UXV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_UXV.ID,
                 "hatch.wireless.receiver.tier.13",
                 "UXV Wireless Energy Hatch",
                 13).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MAX.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
+            new Hatch_WirelessEnergy(
                 WIRELESS_HATCH_ENERGY_MAX.ID,
                 "hatch.wireless.receiver.tier.14",
                 "MAX Wireless Energy Hatch",
@@ -11572,91 +11458,91 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerWirelessDynamoHatch() {
         ItemList.Wireless_Dynamo_Energy_ULV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_ULV.ID,
                 "hatch.wireless.transmitter.tier.00",
                 "ULV Wireless Energy Dynamo",
                 0).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_LV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_LV.ID,
                 "hatch.wireless.transmitter.tier.01",
                 "LV Wireless Energy Dynamo",
                 1).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_MV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_MV.ID,
                 "hatch.wireless.transmitter.tier.02",
                 "MV Wireless Energy Dynamo",
                 2).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_HV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_HV.ID,
                 "hatch.wireless.transmitter.tier.03",
                 "HV Wireless Energy Dynamo",
                 3).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_EV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_EV.ID,
                 "hatch.wireless.transmitter.tier.04",
                 "EV Wireless Energy Dynamo",
                 4).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_IV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_IV.ID,
                 "hatch.wireless.transmitter.tier.05",
                 "IV Wireless Energy Dynamo",
                 5).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_LuV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_LuV.ID,
                 "hatch.wireless.transmitter.tier.06",
                 "LuV Wireless Energy Dynamo",
                 6).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_ZPM.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_ZPM.ID,
                 "hatch.wireless.transmitter.tier.07",
                 "ZPM Wireless Energy Dynamo",
                 7).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_UV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_UV.ID,
                 "hatch.wireless.transmitter.tier.08",
                 "UV Wireless Energy Dynamo",
                 8).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_UHV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_UHV.ID,
                 "hatch.wireless.transmitter.tier.09",
                 "UHV Wireless Energy Dynamo",
                 9).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_UEV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_UEV.ID,
                 "hatch.wireless.transmitter.tier.10",
                 "UEV Wireless Energy Dynamo",
                 10).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_UIV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_UIV.ID,
                 "hatch.wireless.transmitter.tier.11",
                 "UIV Wireless Energy Dynamo",
                 11).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_UMV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_UMV.ID,
                 "hatch.wireless.transmitter.tier.12",
                 "UMV Wireless Energy Dynamo",
                 12).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_UXV.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_UXV.ID,
                 "hatch.wireless.transmitter.tier.13",
                 "UXV Wireless Energy Dynamo",
                 13).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_MAX.set(
-            new GT_MetaTileEntity_Wireless_Dynamo(
+            new Hatch_WirelessDynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_MAX.ID,
                 "hatch.wireless.transmitter.tier.14",
                 "MAX Wireless Energy Dynamo",
@@ -11890,7 +11776,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             if (((GregTech_API.sGeneratedMaterials[i] != null)
                 && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))
                 || (GregTech_API.sGeneratedMaterials[i] == Materials.Wood)) {
-                new GT_MetaPipeEntity_Frame(
+                new MetaPipeEntity_Frame(
                     4096 + i,
                     "GT_Frame_" + GregTech_API.sGeneratedMaterials[i],
                     (GT_LanguageManager.i18nPlaceholder ? "%material"
@@ -12039,9 +11925,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         makeWires(Materials.Ichorium, 2600, 2L, 2L, 12L, GT_Values.V[9], false, true);
         makeWires(MaterialsUEVplus.SpaceTime, 2606, 0L, 0L, 1_000_000L, GT_Values.V[14], false, true);
 
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Wood),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 5101,
                 "GT_Pipe_Wood_Small",
                 "Small Wooden Fluid Pipe",
@@ -12050,13 +11936,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 10,
                 350,
                 false).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(Materials.Wood),
-            new GT_MetaPipeEntity_Fluid(5102, "GT_Pipe_Wood", "Wooden Fluid Pipe", 0.5F, Materials.Wood, 30, 350, false)
+            new MetaPipeEntity_Fluid(5102, "GT_Pipe_Wood", "Wooden Fluid Pipe", 0.5F, Materials.Wood, 30, 350, false)
                 .getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(Materials.Wood),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 5103,
                 "GT_Pipe_Wood_Large",
                 "Large Wooden Fluid Pipe",
@@ -12094,9 +11980,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             600,
             1000,
             true);
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Ultimate),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 5165,
                 "GT_Pipe_HighPressure_Small",
                 "Small High Pressure Fluid Pipe",
@@ -12105,9 +11991,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4800,
                 1500,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(Materials.Ultimate),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 5166,
                 "GT_Pipe_HighPressure",
                 "High Pressure Fluid Pipe",
@@ -12116,9 +12002,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 7200,
                 1500,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(Materials.Ultimate),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 5167,
                 "GT_Pipe_HighPressure_Large",
                 "Large High Pressure Fluid Pipe",
@@ -12221,10 +12107,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage,
         long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
         String name = GT_LanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 aStartID + 0,
                 aTextWire1 + aMaterial.mName.toLowerCase() + ".01",
                 "1x " + name + aTextWire2,
@@ -12235,10 +12121,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 aVoltage,
                 false,
                 !aAutoInsulated).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt02,
             aMaterial,
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 aStartID + 1,
                 aTextWire1 + aMaterial.mName.toLowerCase() + ".02",
                 "2x " + name + aTextWire2,
@@ -12249,10 +12135,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 aVoltage,
                 false,
                 !aAutoInsulated).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt04,
             aMaterial,
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 aStartID + 2,
                 aTextWire1 + aMaterial.mName.toLowerCase() + ".04",
                 "4x " + name + aTextWire2,
@@ -12263,10 +12149,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 aVoltage,
                 false,
                 !aAutoInsulated).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt08,
             aMaterial,
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 aStartID + 3,
                 aTextWire1 + aMaterial.mName.toLowerCase() + ".08",
                 "8x " + name + aTextWire2,
@@ -12277,10 +12163,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 aVoltage,
                 false,
                 !aAutoInsulated).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt12,
             aMaterial,
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 aStartID + 4,
                 aTextWire1 + aMaterial.mName.toLowerCase() + ".12",
                 "12x " + name + aTextWire2,
@@ -12291,10 +12177,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 aVoltage,
                 false,
                 !aAutoInsulated).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.wireGt16,
             aMaterial,
-            new GT_MetaPipeEntity_Cable(
+            new MetaPipeEntity_Cable(
                 aStartID + 5,
                 aTextWire1 + aMaterial.mName.toLowerCase() + ".16",
                 "16x " + name + aTextWire2,
@@ -12306,10 +12192,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 false,
                 !aAutoInsulated).getStackForm(1L));
         if (aInsulatable) {
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt01,
                 aMaterial,
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     aStartID + 6,
                     aTextCable1 + aMaterial.mName.toLowerCase() + ".01",
                     "1x " + name + aTextCable2,
@@ -12320,10 +12206,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt02,
                 aMaterial,
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     aStartID + 7,
                     aTextCable1 + aMaterial.mName.toLowerCase() + ".02",
                     "2x " + name + aTextCable2,
@@ -12334,10 +12220,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt04,
                 aMaterial,
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     aStartID + 8,
                     aTextCable1 + aMaterial.mName.toLowerCase() + ".04",
                     "4x " + name + aTextCable2,
@@ -12348,10 +12234,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt08,
                 aMaterial,
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     aStartID + 9,
                     aTextCable1 + aMaterial.mName.toLowerCase() + ".08",
                     "8x " + name + aTextCable2,
@@ -12362,10 +12248,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt12,
                 aMaterial,
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     aStartID + 10,
                     aTextCable1 + aMaterial.mName.toLowerCase() + ".12",
                     "12x " + name + aTextCable2,
@@ -12376,10 +12262,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     aVoltage,
                     true,
                     false).getStackForm(1L));
-            GT_OreDictUnificator.registerOre(
+            OreDictUnificator.registerOre(
                 OrePrefixes.cableGt16,
                 aMaterial,
-                new GT_MetaPipeEntity_Cable(
+                new MetaPipeEntity_Cable(
                     aStartID + 11,
                     aTextCable1 + aMaterial.mName.toLowerCase() + ".16",
                     "16x " + name + aTextCable2,
@@ -12509,10 +12395,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Advanced Debug Structure Writer",
                 5).getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
-            new GT_MetaTileEntity_Hatch_Maintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1)
-                .getStackForm(1L));
+            new Hatch_Maintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
         ItemList.Hatch_AutoMaintenance.set(
-            new GT_MetaTileEntity_Hatch_Maintenance(
+            new Hatch_Maintenance(
                 AUTO_MAINTENANCE_HATCH.ID,
                 "hatch.maintenance.auto",
                 "Auto Maintenance Hatch",
@@ -12525,16 +12410,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Drone DownLink Module",
                 5).getStackForm(1));
         ItemList.Hatch_DataAccess_EV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4)
-                .getStackForm(1L));
+            new Hatch_DataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
         ItemList.Hatch_DataAccess_LuV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(
-                ADVANCED_DATA_ACCESS_HATCH.ID,
-                "hatch.dataaccess.adv",
-                "Advanced Data Access Hatch",
-                6).getStackForm(1L));
+            new Hatch_DataAccess(ADVANCED_DATA_ACCESS_HATCH.ID, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6)
+                .getStackForm(1L));
         ItemList.Hatch_DataAccess_UV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(
+            new Hatch_DataAccess(
                 AUTOMATABLE_DATA_ACCESS_HATCH.ID,
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
@@ -12564,9 +12445,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void generateItemPipes(Materials aMaterial, String name, String displayName, int startID,
         int baseInvSlots) {
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
-            new GT_MetaPipeEntity_Item(
+            new MetaPipeEntity_Item(
                 startID,
                 "GT_Pipe_" + name,
                 displayName + " Item Pipe",
@@ -12575,9 +12456,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseInvSlots,
                 32768 / baseInvSlots,
                 false).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(aMaterial),
-            new GT_MetaPipeEntity_Item(
+            new MetaPipeEntity_Item(
                 startID + 1,
                 "GT_Pipe_" + name + "_Large",
                 "Large " + displayName + " Item Pipe",
@@ -12586,9 +12467,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseInvSlots * 2,
                 16384 / baseInvSlots,
                 false).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(aMaterial),
-            new GT_MetaPipeEntity_Item(
+            new MetaPipeEntity_Item(
                 startID + 2,
                 "GT_Pipe_" + name + "_Huge",
                 "Huge " + displayName + " Item Pipe",
@@ -12597,9 +12478,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseInvSlots * 4,
                 8192 / baseInvSlots,
                 false).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeRestrictiveMedium.get(aMaterial),
-            new GT_MetaPipeEntity_Item(
+            new MetaPipeEntity_Item(
                 startID + 3,
                 "GT_Pipe_Restrictive_" + name,
                 "Restrictive " + displayName + " Item Pipe",
@@ -12608,9 +12489,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseInvSlots,
                 3276800 / baseInvSlots,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeRestrictiveLarge.get(aMaterial),
-            new GT_MetaPipeEntity_Item(
+            new MetaPipeEntity_Item(
                 startID + 4,
                 "GT_Pipe_Restrictive_" + name + "_Large",
                 "Large Restrictive " + displayName + " Item Pipe",
@@ -12619,9 +12500,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseInvSlots * 2,
                 1638400 / baseInvSlots,
                 true).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeRestrictiveHuge.get(aMaterial),
-            new GT_MetaPipeEntity_Item(
+            new MetaPipeEntity_Item(
                 startID + 5,
                 "GT_Pipe_Restrictive_" + name + "_Huge",
                 "Huge Restrictive " + displayName + " Item Pipe",
@@ -12647,9 +12528,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void generateFluidPipes(Materials aMaterial, String name, String displayName, int startID,
         int baseCapacity, int heatCapacity, boolean gasProof) {
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID,
                 "GT_Pipe_" + name + "_Tiny",
                 "Tiny " + displayName + " Fluid Pipe",
@@ -12658,9 +12539,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseCapacity / 6,
                 heatCapacity,
                 gasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 1,
                 "GT_Pipe_" + name + "_Small",
                 "Small " + displayName + " Fluid Pipe",
@@ -12669,9 +12550,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseCapacity / 3,
                 heatCapacity,
                 gasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 2,
                 "GT_Pipe_" + name,
                 displayName + " Fluid Pipe",
@@ -12680,9 +12561,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseCapacity,
                 heatCapacity,
                 gasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 3,
                 "GT_Pipe_" + name + "_Large",
                 "Large " + displayName + " Fluid Pipe",
@@ -12691,9 +12572,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 baseCapacity * 2,
                 heatCapacity,
                 gasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 4,
                 "GT_Pipe_" + name + "_Huge",
                 "Huge " + displayName + " Fluid Pipe",
@@ -12712,9 +12593,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
         int baseCapacity, int heatCapacity, boolean gasProof) {
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeQuadruple.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID,
                 "GT_Pipe_" + name + "_Quadruple",
                 "Quadruple " + displayName + " Fluid Pipe",
@@ -12724,9 +12605,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 heatCapacity,
                 gasProof,
                 4).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(
+        OreDictUnificator.registerOre(
             OrePrefixes.pipeNonuple.get(aMaterial),
-            new GT_MetaPipeEntity_Fluid(
+            new MetaPipeEntity_Fluid(
                 startID + 1,
                 "GT_Pipe_" + name + "_Nonuple",
                 "Nonuple " + displayName + " Fluid Pipe",

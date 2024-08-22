@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
@@ -32,24 +32,24 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_MultiCanner extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_MultiCanner extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiCanner>
+    implements ISurvivalConstructable {
 
     private static final int MACHINEMODE_CANNER = 0;
     private static final int MACHINEMODE_FLUIDCANNER = 1;
@@ -141,8 +141,8 @@ public class GT_MetaTileEntity_MultiCanner extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Canner/Fluid Canner")
             .addInfo("Controller Block for the TurboCan Pro")
             .addInfo("Use screwdriver to switch mode")
@@ -173,7 +173,7 @@ public class GT_MetaTileEntity_MultiCanner extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 2, 2, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 2, 2, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -243,8 +243,8 @@ public class GT_MetaTileEntity_MultiCanner extends
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
+        machineModeIcons.add(UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 
     @Override

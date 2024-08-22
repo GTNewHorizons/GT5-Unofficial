@@ -10,14 +10,14 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Hatch_Solidifier extends GT_MetaTileEntity_Hatch_Input {
+public class GT_MetaTileEntity_Hatch_Solidifier extends Hatch_Input {
 
     static final int moldSlot = 2;
     static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1), ItemList.Shape_Mold_Plate.get(1),
@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_Hatch_Solidifier extends GT_MetaTileEntity_Hatch_
         super.addUIWidgets(builder, buildContext);
         builder.widget(
             new SlotWidget(new MoldSlot(inventoryHandler, moldSlot)).setPos(125, 35)
-                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_MOLD)
+                .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_MOLD)
                 .setSize(18, 18));
     }
 

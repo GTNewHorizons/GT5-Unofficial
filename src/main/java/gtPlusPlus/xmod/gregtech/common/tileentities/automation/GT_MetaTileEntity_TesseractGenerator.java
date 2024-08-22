@@ -27,7 +27,7 @@ import gregtech.api.interfaces.tileentity.IDigitalChest;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
@@ -37,7 +37,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
-public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_TesseractGenerator extends BasicTank {
 
     public static int TESSERACT_ENERGY_COST_DIMENSIONAL = 512;
     public static int TESSERACT_ENERGY_COST = 128;

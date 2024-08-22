@@ -4,8 +4,8 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
@@ -15,8 +15,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class MaterialFix {
 
@@ -102,7 +102,7 @@ public class MaterialFix {
         if (material.hasItemType(OrePrefixes.cableGt01)) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(material.get(OrePrefixes.cableGt01))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 2))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 2))
                 .fluidOutputs(material.getMolten(72))
                 .duration(16 * TICKS)
                 .eut(8)
@@ -384,8 +384,8 @@ public class MaterialFix {
         }
         Materials tUHV = Materials.Longasssuperconductornameforuhvwire;
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, tUHV, 2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, tUHV, 1))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.stick, tUHV, 2))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.stickLong, tUHV, 1))
             .duration(Math.max(tUHV.getMass(), 1L) * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);

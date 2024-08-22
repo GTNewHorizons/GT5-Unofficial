@@ -64,9 +64,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.tools.GT_Tool_Axe;
 import gregtech.common.tools.GT_Tool_BranchCutter;
 import gregtech.common.tools.GT_Tool_ButcheryKnife;
@@ -115,7 +115,7 @@ import gregtech.common.tools.pocket.GT_Tool_Pocket_Saw;
 import gregtech.common.tools.pocket.GT_Tool_Pocket_Screwdriver;
 import gregtech.common.tools.pocket.GT_Tool_Pocket_WireCutter;
 
-public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
+public class GT_MetaGenerated_Tool_01 extends MetaGeneratedTool {
 
     public static GT_MetaGenerated_Tool_01 INSTANCE;
 
@@ -623,15 +623,15 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
         }
 
         GT_ModHandler.addShapelessCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
         GT_ModHandler.addShapelessCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
         GT_ModHandler.addShapelessCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
         GT_ModHandler.addShapelessCraftingRecipe(

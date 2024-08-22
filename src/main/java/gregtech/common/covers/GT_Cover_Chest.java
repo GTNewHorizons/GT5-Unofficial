@@ -20,15 +20,15 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInventory> {
+public class GT_Cover_Chest extends CoverBehaviorBase<GT_Cover_Chest.ChestInventory> {
 
     private final int slots;
     private final int stackSizeLimit = 1;
@@ -109,7 +109,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
@@ -118,7 +118,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public ChestUIFactory(GT_CoverUIBuildContext buildContext) {
+        public ChestUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

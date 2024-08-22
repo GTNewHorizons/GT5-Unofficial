@@ -3,11 +3,11 @@ package com.elisis.gtnhlanth.common.tileentity;
 import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
@@ -41,16 +41,15 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
-public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<SourceChamber>
-    implements ISurvivalConstructable {
+public class SourceChamber extends EnhancedMultiBlockBase<SourceChamber> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<SourceChamber> STRUCTURE_DEFINITION;
 
@@ -114,7 +113,7 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -123,8 +122,8 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Source")
             .addInfo("Controller block for the Source Chamber")
             .addInfo(BLUEPRINT_INFO)
@@ -263,7 +262,7 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for (Hatch_Energy tHatch : mEnergyHatches) {
             if (tHatch.isValid()) {
                 storedEnergy += tHatch.getBaseMetaTileEntity()
                     .getStoredEU();

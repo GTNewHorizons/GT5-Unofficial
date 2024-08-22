@@ -30,17 +30,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GTMTE_SOFuelCellMK1 extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK1> {
+public class GTMTE_SOFuelCellMK1 extends EnhancedMultiBlockBase<GTMTE_SOFuelCellMK1> {
 
     private final int OXYGEN_PER_SEC = 100;
     private final int EU_PER_TICK = 2048;
@@ -88,8 +88,8 @@ public class GTMTE_SOFuelCellMK1 extends GT_MetaTileEntity_EnhancedMultiBlockBas
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(

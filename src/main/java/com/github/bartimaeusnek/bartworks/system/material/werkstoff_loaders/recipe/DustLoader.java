@@ -27,9 +27,9 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,8 +52,8 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RecipeConstants;
 
 public class DustLoader implements IWerkstoffRunnable {
 
@@ -287,7 +287,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .getValue()
                                     .size())
                                 * 30)
-                        .addTo(GT_RecipeConstants.UniversalChemical);
+                        .addTo(RecipeConstants.UniversalChemical);
                 }
                 if (werkstoff.getGenerationFeatures()
                     .hasMixerRecipes()) {

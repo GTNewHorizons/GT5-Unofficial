@@ -19,8 +19,8 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.DistillationTowerProcessingLogic;
 
 public class DistillationTower extends StackableController<DistillationTower, DistillationTowerProcessingLogic> {
@@ -45,8 +45,8 @@ public class DistillationTower extends StackableController<DistillationTower, Di
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillation Tower")
             .addInfo("Controller block for the Distillation Tower")
             .addInfo("Can be specialised to be a mega structure")

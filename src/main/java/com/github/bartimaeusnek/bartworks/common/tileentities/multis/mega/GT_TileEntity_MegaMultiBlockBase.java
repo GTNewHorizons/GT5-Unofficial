@@ -17,14 +17,14 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
 import gregtech.api.util.GT_Utility;
 
 public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_MegaMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+    extends ExtendedPowerMultiBlockBase<T> {
 
     protected GT_TileEntity_MegaMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -40,7 +40,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     protected long[] getCurrentInfoData() {
         long storedEnergy = 0, maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch hatch : this.getExoticAndNormalEnergyHatchList()) {
+        for (Hatch hatch : this.getExoticAndNormalEnergyHatchList()) {
             storedEnergy += hatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += hatch.getBaseMetaTileEntity()
@@ -53,7 +53,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     public String[] getInfoData() {
         int mPollutionReduction = 0;
 
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -61,7 +61,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         long storedEnergy = ttHatches[0];
         long maxEnergy = ttHatches[1];
 
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

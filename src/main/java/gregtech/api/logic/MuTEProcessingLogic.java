@@ -24,10 +24,10 @@ import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 
 /**
  * Processing logic class, dedicated for MultiTileEntities.
@@ -86,8 +86,8 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
         CheckRecipeResult result = CheckRecipeResultRegistry.INTERNAL_ERROR;
         for (GT_Recipe recipe : recipes) {
             Objects.requireNonNull(recipe);
-            GT_ParallelHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
-            GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+            ParallelHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
+            OverclockCalculator calculator = createOverclockCalculator(recipe);
             helper.setCalculator(calculator);
             helper.build();
             result = helper.getResult();
@@ -112,9 +112,9 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
     }
 
     @Nonnull
-    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe, @Nonnull ItemInventoryLogic itemInput,
+    protected ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe, @Nonnull ItemInventoryLogic itemInput,
         @Nonnull FluidInventoryLogic fluidInput) {
-        return new GT_ParallelHelper().setRecipe(recipe)
+        return new ParallelHelper().setRecipe(recipe)
             .setItemInputInventory(itemInput)
             .setFluidInputInventory(fluidInput)
             .setAvailableEUt(availableVoltage * availableAmperage)

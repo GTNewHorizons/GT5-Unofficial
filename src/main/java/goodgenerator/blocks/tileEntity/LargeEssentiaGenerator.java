@@ -31,22 +31,21 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
@@ -100,10 +99,10 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     public boolean checkHatchTier() {
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+        for (Hatch_Input tHatch : mInputHatches) {
             if (tHatch.mTier > mTierLimit) return false;
         }
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+        for (Hatch_Dynamo tHatch : mDynamoHatches) {
             if (tHatch.mTier > mTierLimit) return false;
         }
         for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
@@ -193,11 +192,11 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                 .addElement(
                     'X',
                     ofChain(
-                        buildHatchAdder(LargeEssentiaGenerator.class)
-                            .atLeast(
-                                HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
-                                GT_HatchElement.Maintenance,
-                                GT_HatchElement.InputHatch)
+                        buildHatchAdder(LargeEssentiaGenerator.class).atLeast(
+                            com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.DynamoMulti
+                                .or(gregtech.api.enums.HatchElement.Dynamo),
+                            gregtech.api.enums.HatchElement.Maintenance,
+                            gregtech.api.enums.HatchElement.InputHatch)
                             .casingIndex(1536)
                             .dot(1)
                             .build(),
@@ -226,10 +225,10 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
 
     public int getVoltageLimit() {
         long voltage = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+        for (Hatch tHatch : this.eDynamoMulti) {
             voltage += tHatch.maxEUOutput();
         }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+        for (Hatch tHatch : this.mDynamoHatches) {
             voltage += tHatch.maxEUOutput();
         }
         if (voltage > Integer.MAX_VALUE) voltage = Integer.MAX_VALUE;
@@ -238,10 +237,10 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
 
     public int getAmpLimit() {
         long amp = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+        for (Hatch tHatch : this.eDynamoMulti) {
             amp += tHatch.maxAmperesOut();
         }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+        for (Hatch tHatch : this.mDynamoHatches) {
             amp += tHatch.maxAmperesOut();
         }
         if (amp > Integer.MAX_VALUE) amp = Integer.MAX_VALUE;
@@ -463,8 +462,8 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Generator")
             .addInfo("Controller block for the Large Essentia Generator")
             .addInfo("Maybe some Thaumaturges are upset by it. . .")
@@ -507,6 +506,6 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, env, false, true);
     }
 }

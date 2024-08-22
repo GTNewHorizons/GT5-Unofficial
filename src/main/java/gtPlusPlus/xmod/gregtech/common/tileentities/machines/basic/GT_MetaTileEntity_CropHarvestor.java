@@ -25,12 +25,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
@@ -44,7 +44,7 @@ import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
 import ic2.core.item.DamageHandler;
 
-public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_CropHarvestor extends BasicTank {
 
     private static final int SLOT_WEEDEX_1 = 1;
     private static final int SLOT_WEEDEX_2 = 2;
@@ -137,7 +137,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -653,7 +653,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 .setTexture(GTPP_UITextures.OVERLAY_BUTTON_HARVESTER_MODE)
                 .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
                 .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(UITextures.BUTTON_STANDARD)
                 .setPos(47, 63)
                 .setSize(18, 18));
         builder.widget(
@@ -661,7 +661,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 .setTexture(GTPP_UITextures.OVERLAY_BUTTON_HARVESTER_TOGGLE)
                 .addTooltip(0, "Enable Harvest")
                 .addTooltip(1, "Disable Harvest")
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(UITextures.BUTTON_STANDARD)
                 .setPos(67, 63)
                 .setSize(18, 18));
         builder.widget(
@@ -698,7 +698,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
         builder
             .widget(
                 new ProgressBar()
-                    .setTexture(GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_WATER, 54)
+                    .setTexture(GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, UITextures.PROGRESSBAR_BOILER_WATER, 54)
                     .setDirection(ProgressBar.Direction.UP)
                     .setProgress(() -> (float) getFluidAmount() / getCapacity())
                     .setSynced(false, false)

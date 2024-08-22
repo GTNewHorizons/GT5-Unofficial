@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.TIER_COLORS;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
@@ -45,18 +45,18 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
+import gregtech.api.gui.modularui.UITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.crossmod.visualprospecting.GT_VisualProspecting_Database;
@@ -519,7 +519,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
-        ItemData itemData = GT_OreDictUnificator.getItemData(currentItem);
+        ItemData itemData = OreDictUnificator.getItemData(currentItem);
         return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
             && itemData.mPrefix != OrePrefixes.dust
             && itemData.mPrefix != OrePrefixes.gem
@@ -600,11 +600,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     protected abstract int getBaseProgressTime();
 
-    protected GT_Multiblock_Tooltip_Builder createTooltip(String tierSuffix) {
+    protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier());
         tt.addMachineType("Miner")
             .addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
@@ -690,10 +690,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
         return ImmutableList.of(
-            (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
                 .setPlayClickSound(true)
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WORK_AREA)
+                .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_WORK_AREA)
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> chunkRadiusConfig, (val) -> chunkRadiusConfig = val),
                     builder,
@@ -706,16 +706,15 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                         StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16),
-            (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> replaceWithCobblestone = !replaceWithCobblestone)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (replaceWithCobblestone) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON };
+                        return new IDrawable[] { UITextures.BUTTON_STANDARD_PRESSED,
+                            UITextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON };
                     }
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF };
+                    return new IDrawable[] { UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF };
                 })
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(

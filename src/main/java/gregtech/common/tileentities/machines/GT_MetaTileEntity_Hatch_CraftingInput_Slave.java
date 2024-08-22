@@ -23,13 +23,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEntity_Hatch_InputBus
-    implements IDualInputHatch {
+public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends Hatch_InputBus implements IDualInputHatch {
 
     private GT_MetaTileEntity_Hatch_CraftingInput_ME master; // use getMaster() to access
     private int masterX, masterY, masterZ;

@@ -2,15 +2,15 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -25,7 +25,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack aStack) {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(16)
             .addTo(hammerRecipes);
@@ -33,12 +33,12 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
-                GT_OreDictUnificator.get(
+                OreDictUnificator.get(
                     OrePrefixes.dustPure,
                     aMaterial.mMacerateInto,
-                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                    OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                     1L),
-                GT_OreDictUnificator.get(
+                OreDictUnificator.get(
                     OrePrefixes.dust,
                     GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                     1L))

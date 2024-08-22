@@ -3,8 +3,8 @@ package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR.HTGRMaterials.MATERIALS_PER_FUEL;
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR.HTGRMaterials.sHTGR_Fuel;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.Arrays;
 
@@ -22,8 +22,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RecipeBuilder;
 
 public class Centrifuge implements Runnable {
 
@@ -96,7 +96,7 @@ public class Centrifuge implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
 
-            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder()
+            RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6))
                 .itemOutputs(
                     fuel.recycledItems[0],

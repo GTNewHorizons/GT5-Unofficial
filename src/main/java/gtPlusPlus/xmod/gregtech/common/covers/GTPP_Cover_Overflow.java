@@ -11,15 +11,15 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 
-public class GTPP_Cover_Overflow extends GT_CoverBehavior {
+public class GTPP_Cover_Overflow extends CoverBehavior {
 
     public final int mTransferRate;
     public final int mInitialTransferRate;
@@ -158,7 +158,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new OverflowUIFactory(buildContext).createWindow();
     }
 
@@ -169,7 +169,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public OverflowUIFactory(GT_CoverUIBuildContext buildContext) {
+        public OverflowUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

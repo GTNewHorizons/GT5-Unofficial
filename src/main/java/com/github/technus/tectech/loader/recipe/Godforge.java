@@ -3,9 +3,9 @@ package com.github.technus.tectech.loader.recipe;
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
 import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.FOG_EXOTIC_TIER;
-import static gregtech.api.util.GT_RecipeConstants.FOG_PLASMA_TIER;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.FOG_EXOTIC_TIER;
+import static gregtech.api.util.RecipeConstants.FOG_PLASMA_TIER;
 
 import java.util.ArrayList;
 import java.util.Arrays;

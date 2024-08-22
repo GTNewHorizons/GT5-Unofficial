@@ -27,14 +27,14 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
-public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_RockBreaker extends BasicMachine {
 
     public GT_MetaTileEntity_RockBreaker(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                 if (GT_Utility.areStacksEqual(getStackInSlot(getCircuitSlot()), GT_Utility.getIntegratedCircuit(1))) {
                     if (GT_Utility.areStacksEqual(
                         getInputAt(0),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                        OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                         tOutput = new ItemStack(Blocks.obsidian, 1);
                         if (canOutput(tOutput)) {
                             getInputAt(0).stackSize -= 1;

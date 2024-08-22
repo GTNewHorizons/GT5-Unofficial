@@ -42,7 +42,7 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.BlockGeneric;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -56,7 +56,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneBase;
 
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider, IFacade {
+public class GT_Block_Machines extends BlockGeneric implements IDebugableBlock, ITileEntityProvider, IFacade {
 
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
     private boolean renderAsNormalBlock;

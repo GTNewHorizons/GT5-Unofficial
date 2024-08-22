@@ -3,8 +3,8 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -15,8 +15,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.GT_Proxy;
 
 public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -30,14 +30,14 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack aStack) {
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING)) {
-            ItemStack tPlate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L);
-            ItemStack tRing = GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);
+            ItemStack tPlate = OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L);
+            ItemStack tRing = OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);
             if (GT_Utility.isStackValid(tPlate) && GT_Utility.isStackValid(tRing)) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
+                        OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
                         GT_Proxy.tBits,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
@@ -47,7 +47,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.Tin.getMolten(32))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
@@ -55,7 +55,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.Lead.getMolten(48))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
@@ -63,19 +63,19 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.SolderingAlloy.getMolten(16))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
                     .addTo(assemblerRecipes);
             }
 
-            if (GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+            if (OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
+                        OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
                         ItemList.Shape_Extruder_Rotor.get(0L))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
                     .addTo(extruderRecipes);
@@ -85,7 +85,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                     GT_Values.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
-                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                        .itemOutputs(OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                         .fluidInputs(aMaterial.getMolten(612L))
                         .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 24))

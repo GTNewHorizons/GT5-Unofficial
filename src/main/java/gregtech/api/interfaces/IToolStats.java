@@ -16,7 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
@@ -33,7 +33,7 @@ public interface IToolStats {
     /**
      * Called when this gets added to a Tool Item
      */
-    void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID);
+    void onStatsAddedToTool(MetaGeneratedTool aItem, int aID);
 
     /**
      * @implNote if you are only modifying drops, override

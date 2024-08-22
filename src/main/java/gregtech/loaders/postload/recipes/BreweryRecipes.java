@@ -4,8 +4,8 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -21,15 +21,15 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class BreweryRecipes implements Runnable {
 
     @Override
     public void run() {
-        ItemStack[] brewingItems = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) };
+        ItemStack[] brewingItems = new ItemStack[] { OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+            OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) };
 
         for (ItemStack item : brewingItems) {
             // creosote to lubricant recipes
@@ -102,7 +102,7 @@ public class BreweryRecipes implements Runnable {
             }
             for (Fluid tFluid : waterArray) {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("milk", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -110,7 +110,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.wheatyjuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -118,7 +118,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -126,7 +126,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -134,7 +134,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -142,7 +142,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -150,7 +150,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.thick", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -158,7 +158,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -166,7 +166,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -174,7 +174,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -294,7 +294,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.darkcoffee", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -302,7 +302,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
+                    .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.chillysauce", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -315,7 +315,7 @@ public class BreweryRecipes implements Runnable {
         // potion brewing 1
         {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
                 .fluidInputs(getFluidStack("potion.chillysauce", 750))
                 .fluidOutputs(getFluidStack("potion.hotsauce", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -323,7 +323,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
                 .fluidInputs(getFluidStack("potion.hotsauce", 750))
                 .fluidOutputs(getFluidStack("potion.diabolosauce", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -331,7 +331,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
                 .fluidInputs(getFluidStack("potion.diabolosauce", 750))
                 .fluidOutputs(getFluidStack("potion.diablosauce", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -339,7 +339,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
                 .fluidInputs(getFluidStack("milk", 750))
                 .fluidOutputs(getFluidStack("potion.coffee", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -347,7 +347,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
                 .fluidInputs(getFluidStack("milk", 750))
                 .fluidOutputs(getFluidStack("potion.darkchocolatemilk", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -363,7 +363,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
                 .fluidInputs(getFluidStack("potion.hopsjuice", 750))
                 .fluidOutputs(getFluidStack("potion.wheatyhopsjuice", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -371,7 +371,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.tea", 750))
                 .fluidOutputs(getFluidStack("potion.sweettea", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -379,7 +379,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.coffee", 750))
                 .fluidOutputs(getFluidStack("potion.cafeaulait", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -387,7 +387,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.cafeaulait", 750))
                 .fluidOutputs(getFluidStack("potion.laitaucafe", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -395,7 +395,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.lemonjuice", 750))
                 .fluidOutputs(getFluidStack("potion.lemonade", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -403,7 +403,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.darkcoffee", 750))
                 .fluidOutputs(getFluidStack("potion.darkcafeaulait", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -411,7 +411,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.darkchocolatemilk", 750))
                 .fluidOutputs(getFluidStack("potion.chocolatemilk", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -419,7 +419,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L))
                 .fluidInputs(getFluidStack("potion.tea", 750))
                 .fluidOutputs(getFluidStack("potion.icetea", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -427,7 +427,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L))
                 .fluidInputs(getFluidStack("potion.lemonade", 750))
                 .fluidOutputs(getFluidStack("potion.cavejohnsonsgrenadejuice", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -435,7 +435,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                 .fluidInputs(getFluidStack("potion.mundane", 750))
                 .fluidOutputs(getFluidStack("potion.purpledrink", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -517,8 +517,8 @@ public class BreweryRecipes implements Runnable {
             this.addPotionRecipes("poison", new ItemStack(Items.spider_eye, 1, 0));
             this.addPotionRecipes("health", new ItemStack(Items.speckled_melon, 1, 0));
             this.addPotionRecipes("regen", new ItemStack(Items.ghast_tear, 1, 0));
-            this.addPotionRecipes("speed", GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L));
-            this.addPotionRecipes("strength", GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L));
+            this.addPotionRecipes("speed", OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L));
+            this.addPotionRecipes("strength", OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L));
         }
     }
 
@@ -549,7 +549,7 @@ public class BreweryRecipes implements Runnable {
         // long
         if (!aName.equals("health")) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
                 .fluidInputs(getFluidStack("potion." + aName, 750))
                 .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
                 .duration(6 * SECONDS + 8 * TICKS)

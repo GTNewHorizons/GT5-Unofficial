@@ -13,14 +13,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
-public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTileEntity_Hatch_Input {
+public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends Hatch_Input {
 
     protected static XSTR floatGen = new XSTR();
     public int mProgresstime = 0, mMaxProgresstime = 0;

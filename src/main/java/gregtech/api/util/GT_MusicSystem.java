@@ -36,7 +36,7 @@ import baubles.api.BaublesApi;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.net.GT_Packet_MusicSystemData;
+import gregtech.api.net.Packet_MusicSystemData;
 import gregtech.client.ElectricJukeboxSound;
 import gregtech.common.items.GT_WirelessHeadphones;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_BetterJukebox;
@@ -293,7 +293,7 @@ public final class GT_MusicSystem {
             });
             if (tickAnyDirty || musicSourcesDirty) {
                 musicSourcesDirty = false;
-                GT_Values.NW.sendToAll(new GT_Packet_MusicSystemData(serialize()));
+                GT_Values.NW.sendToAll(new Packet_MusicSystemData(serialize()));
             }
         }
 

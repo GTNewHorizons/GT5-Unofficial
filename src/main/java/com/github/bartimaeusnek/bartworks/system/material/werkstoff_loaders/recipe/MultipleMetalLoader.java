@@ -18,7 +18,7 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 

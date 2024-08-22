@@ -21,12 +21,12 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;
@@ -97,19 +97,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Frame;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.blocks.GT_Item_Machines;
 
@@ -254,7 +254,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 TileEntity tBase = world.getTileEntity(x, y, z);
                 if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
                     if (tPipeBase.isInvalidTileEntity()) return false;
-                    return tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
+                    return tPipeBase.getMetaTileEntity() instanceof MetaPipeEntity_Frame;
                 }
                 return false;
             }
@@ -274,7 +274,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             @Override
             public boolean placeBlock(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z,
                 ItemStack trigger) {
-                ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1);
+                ItemStack tFrameStack = OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1);
                 if (!GT_Utility.isStackValid(tFrameStack)
                     || !(tFrameStack.getItem() instanceof ItemBlock tFrameStackItem)) return false;
                 return tFrameStackItem
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 ItemStack trigger, IItemSource source, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                 ItemStack tFrameStack = source
-                    .takeOne(s -> GT_Item_Machines.getMetaTileEntity(s) instanceof GT_MetaPipeEntity_Frame, true);
+                    .takeOne(s -> GT_Item_Machines.getMetaTileEntity(s) instanceof MetaPipeEntity_Frame, true);
                 if (tFrameStack == null) return PlaceResult.REJECT;
                 return StructureUtility.survivalPlaceBlock(
                     tFrameStack,
@@ -510,7 +510,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             mOutputFluidsQueue = null;
         }
 
-        for (GT_MetaTileEntity_Hatch_Input fluidHatch : mInputHatches) {
+        for (Hatch_Input fluidHatch : mInputHatches) {
             if (fluidHatch.mFluid != null) {
                 if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1))
                     && fluidHatch.mFluid.amount >= heliumUse) {
@@ -651,8 +651,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
                                                                                                // Tower
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0")) // Controller block of
@@ -906,40 +906,40 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Capacitor) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eCapacitorHatches.add((GT_MetaTileEntity_Hatch_Capacitor) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Maintenance) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMaintenanceHatches.add((Hatch_Maintenance) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Energy) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mEnergyHatches.add((Hatch_Energy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Dynamo) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((Hatch_Dynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mInputHatches.add((Hatch_Input) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof Hatch_Output) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputHatches.add((Hatch_Output) aMetaTileEntity);
         }
         return false;
     }
@@ -957,7 +957,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
     }
 
     @Override

@@ -5,14 +5,14 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class OreDictUnification implements Runnable {
 
     @Override
     public void run() {
         if (HardcoreEnderExpansion.isModLoaded()) {
-            GT_OreDictUnificator.set(
+            OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.HeeEndium,
                 getModItem(HardcoreEnderExpansion.ID, "endium_ingot", 1),

@@ -270,7 +270,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
         if (!this.needsBlockBelow()) return true;
 
         // get material from stack
-        ItemData tAssociation = GT_OreDictUnificator.getAssociation(aItem);
+        ItemData tAssociation = OreDictUnificator.getAssociation(aItem);
         if (tAssociation == null) return false;
 
         // return true if it's an ore of the material

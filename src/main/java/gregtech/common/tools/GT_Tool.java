@@ -15,10 +15,10 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 
 public abstract class GT_Tool implements IToolStats {
 
@@ -129,7 +129,7 @@ public abstract class GT_Tool implements IToolStats {
 
     @Override
     public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
-        return GT_DamageSources.getCombatDamage(
+        return DamageSources.getCombatDamage(
             (aPlayer instanceof EntityPlayer) ? "player" : "mob",
             aPlayer,
             (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
@@ -169,7 +169,7 @@ public abstract class GT_Tool implements IToolStats {
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {}
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,

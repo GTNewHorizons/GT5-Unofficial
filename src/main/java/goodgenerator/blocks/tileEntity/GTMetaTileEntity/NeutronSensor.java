@@ -18,18 +18,18 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import crazypants.enderio.Log;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
-public class NeutronSensor extends GT_MetaTileEntity_Hatch {
+public class NeutronSensor extends Hatch {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = new Textures.BlockIcons.CustomIcon(
@@ -172,7 +172,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -242,8 +242,8 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
                 .setTextureGetter(
-                    (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
-                        : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    (state) -> state == 1 ? UITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
                 .addTooltip(0, NORMAL)
                 .addTooltip(1, INVERTED)
                 .setPos(10, 8))
@@ -260,7 +260,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
                     .setTextColor(Color.WHITE.dark(1))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                     .setPos(10, 28)
                     .setSize(77, 12))
             .widget(

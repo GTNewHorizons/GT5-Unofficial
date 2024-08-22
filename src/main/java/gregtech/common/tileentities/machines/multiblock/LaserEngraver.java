@@ -28,12 +28,12 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.LaserEngraverProcessingLogic;
 
 public class LaserEngraver extends ComplexParallelController<LaserEngraver, LaserEngraverProcessingLogic> {
@@ -244,7 +244,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                             if (!widget.isClient()) widget.getContext()
                                 .openSyncedWindow(PROCESS_WINDOW_BASE_ID + processIndex);
                         })
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                    .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_WHITELIST)
                     .setSize(18, 18)
                     .setEnabled((widget -> processIndex < maxComplexParallels))
                     .setPos(20 * (i % 4) + 18, 18 + (i / 4) * 20));
@@ -256,7 +256,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                 .setTextColor(Color.WHITE.normal)
                 .setTextAlignment(Alignment.Center)
                 .addTooltip("Tier")
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                 .setSize(18, 18)
                 .setPos(130, 85));
         return child;
@@ -285,8 +285,8 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver")
             .addInfo("Used for Engraving")
             .addSeparator()

@@ -38,13 +38,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
-import gregtech.api.net.GT_Packet_TileEntity;
+import gregtech.api.net.Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -296,7 +296,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (mSendClientData) {
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
-                new GT_Packet_TileEntity(
+                new Packet_TileEntity(
                     xCoord,
                     (short) yCoord,
                     zCoord,
@@ -491,7 +491,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         markDirty();
         mInventoryChanged = true;
         if (canAccessData()) mMetaTileEntity
-            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GT_OreDictUnificator.setStack(true, aStack));
+            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : OreDictUnificator.setStack(true, aStack));
     }
 
     @Override
@@ -955,7 +955,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
                 if (coverInfo.getCoverID() == 0) {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                        final GT_CoverBehaviorBase<?> coverBehavior = GregTech_API.getCoverBehaviorNew(tCurrentItem);
+                        final CoverBehaviorBase<?> coverBehavior = GregTech_API.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
 
@@ -1283,7 +1283,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             setInventorySlotContents(aIndex, aStack);
             return true;
         }
-        aStack = GT_OreDictUnificator.get(aStack);
+        aStack = OreDictUnificator.get(aStack);
         if (GT_Utility.areStacksEqual(tStack, aStack)
             && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             markDirty();

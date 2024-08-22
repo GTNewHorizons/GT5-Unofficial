@@ -10,8 +10,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.google.common.collect.Iterables;
 
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.RecipeBuilder;
 
 /**
  * Builder class for {@link RecipeMapBackendProperties}.
@@ -28,7 +28,7 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     private boolean disableOptimize;
 
-    private Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter = this::defaultBuildRecipe;
+    private Function<? super RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter = this::defaultBuildRecipe;
 
     @Nullable
     private Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer;
@@ -66,15 +66,15 @@ public final class RecipeMapBackendPropertiesBuilder {
     }
 
     public RecipeMapBackendPropertiesBuilder recipeEmitter(
-        Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter) {
+        Function<? super RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter) {
         this.recipeEmitter = recipeEmitter;
         return this;
     }
 
     public RecipeMapBackendPropertiesBuilder combineRecipeEmitter(
-        Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> func) {
+        Function<? super RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> func) {
         // move recipeEmitter to local variable, so lambda capture the function itself instead of this
-        Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> cur = this.recipeEmitter;
+        Function<? super RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> cur = this.recipeEmitter;
         return recipeEmitter(b -> Iterables.concat(cur.apply(b), func.apply(b)));
     }
 
@@ -90,16 +90,16 @@ public final class RecipeMapBackendPropertiesBuilder {
         return this;
     }
 
-    private Iterable<? extends GT_Recipe> defaultBuildRecipe(GT_RecipeBuilder builder) {
+    private Iterable<? extends GT_Recipe> defaultBuildRecipe(RecipeBuilder builder) {
         // TODO sensible validation
-        GT_RecipeBuilder b = builder;
+        RecipeBuilder b = builder;
         if (disableOptimize && builder.isOptimize()) {
             b = copy(builder, b).noOptimize();
         }
         return buildOrEmpty(b);
     }
 
-    private static GT_RecipeBuilder copy(GT_RecipeBuilder original, GT_RecipeBuilder b) {
+    private static RecipeBuilder copy(RecipeBuilder original, RecipeBuilder b) {
         return b == original ? b.copy() : b;
     }
 }

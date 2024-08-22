@@ -20,12 +20,12 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import codechicken.nei.recipe.HandlerInfo;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.RecipeBuilder;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
 // spotless:off spotless likes formatting @code to &#64;code
@@ -84,7 +84,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         this.unlocalizedName = unlocalizedName;
         this.backendCreator = backendCreator;
         this.uiPropertiesBuilder = BasicUIProperties.builder()
-            .progressBarTexture(GT_UITextures.fallbackableProgressbar(unlocalizedName, GT_UITextures.PROGRESSBAR_ARROW))
+            .progressBarTexture(UITextures.fallbackableProgressbar(unlocalizedName, UITextures.PROGRESSBAR_ARROW))
             .neiTransferRectId(unlocalizedName);
     }
 
@@ -119,7 +119,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Changes how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
      */
     public RecipeMapBuilder<B> recipeEmitter(
-        Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter) {
+        Function<? super RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter) {
         backendPropertiesBuilder.recipeEmitter(recipeEmitter);
         return this;
     }
@@ -129,8 +129,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * <p>
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      */
-    public RecipeMapBuilder<B> recipeEmitterSingle(
-        Function<? super GT_RecipeBuilder, ? extends GT_Recipe> recipeEmitter) {
+    public RecipeMapBuilder<B> recipeEmitterSingle(Function<? super RecipeBuilder, ? extends GT_Recipe> recipeEmitter) {
         return recipeEmitter(recipeEmitter.andThen(Collections::singletonList));
     }
 
@@ -142,7 +141,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unlike {@link #recipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
      */
     public RecipeMapBuilder<B> combineRecipeEmitter(
-        Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter) {
+        Function<? super RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter) {
         backendPropertiesBuilder.combineRecipeEmitter(recipeEmitter);
         return this;
     }
@@ -156,7 +155,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unlike {@link #recipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
      */
     public RecipeMapBuilder<B> combineRecipeEmitterSingle(
-        Function<? super GT_RecipeBuilder, ? extends GT_Recipe> recipeEmitter) {
+        Function<? super RecipeBuilder, ? extends GT_Recipe> recipeEmitter) {
         return combineRecipeEmitter(recipeEmitter.andThen(Collections::singletonList));
     }
 
@@ -250,7 +249,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * By default, it's set to {@code GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT}.
      */
     public RecipeMapBuilder<B> progressBar(UITexture texture, ProgressBar.Direction direction) {
-        return progressBarWithFallback(GT_UITextures.fallbackableProgressbar(unlocalizedName, texture), direction);
+        return progressBarWithFallback(UITextures.fallbackableProgressbar(unlocalizedName, texture), direction);
     }
 
     /**

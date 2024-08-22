@@ -28,14 +28,14 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -43,8 +43,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 
-public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank
-    implements IGetTitleColor, IAddUIWidgets {
+public abstract class GT_MetaTileEntity_Boiler extends BasicTank implements IGetTitleColor, IAddUIWidgets {
 
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
@@ -132,7 +131,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                         .func_150996_a(Items.bucket);
                 }
             } else {
-                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             }
         }
         return true;
@@ -424,12 +423,12 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     protected IDrawable[] getFuelSlotBackground() {
         return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
+            UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
     }
 
     protected IDrawable[] getAshSlotBackground() {
         return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
+            UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
     }
 
     @Override
@@ -446,19 +445,19 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             .widget(createAshSlot())
             .widget(
                 new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
+                    .setTexture(getProgressbarEmpty(), UITextures.PROGRESSBAR_BOILER_STEAM, 10)
                     .setDirection(ProgressBar.Direction.UP)
                     .setPos(70, 25)
                     .setSize(10, 54))
             .widget(
                 new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
+                    .setTexture(getProgressbarEmpty(), UITextures.PROGRESSBAR_BOILER_WATER, 10)
                     .setDirection(ProgressBar.Direction.UP)
                     .setPos(83, 25)
                     .setSize(10, 54))
             .widget(
                 new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
+                    .setTexture(getProgressbarEmpty(), UITextures.PROGRESSBAR_BOILER_HEAT, 10)
                     .setDirection(ProgressBar.Direction.UP)
                     .setPos(96, 25)
                     .setSize(10, 54))
@@ -509,22 +508,22 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     // for GT++
 
     protected IDrawable getOverlaySlotIn() {
-        return GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
+        return UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
     }
 
     protected IDrawable getOverlaySlotOut() {
-        return GT_UITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
+        return UITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
     }
 
     protected IDrawable getOverlaySlotCanister() {
-        return GT_UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
+        return UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
     }
 
     protected UITexture getProgressbarEmpty() {
-        return GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
+        return UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
     }
 
     protected UITexture getProgressbarFuel() {
-        return GT_UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
+        return UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
     }
 }

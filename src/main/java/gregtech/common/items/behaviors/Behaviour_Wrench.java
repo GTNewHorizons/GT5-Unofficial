@@ -17,8 +17,8 @@ import appeng.api.parts.IPartHost;
 import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import ic2.api.tile.IWrenchable;
@@ -34,7 +34,7 @@ public class Behaviour_Wrench extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock == null) {
@@ -56,7 +56,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             aY,
             aZ,
             aStack,
-            (GT_MetaGenerated_Tool) aItem,
+            (MetaGeneratedTool) aItem,
             mCosts);
 
         try {
@@ -191,11 +191,11 @@ public class Behaviour_Wrench extends Behaviour_None {
         private final int x, y, z, meta;
         private final ItemStack stack;
 
-        private final GT_MetaGenerated_Tool item;
+        private final MetaGeneratedTool item;
         private final int costs;
 
         public WrenchHandler(Block block, int meta, short targetSideOrdinal, TileEntity tileEntity, EntityPlayer player,
-            World world, int x, int y, int z, ItemStack stack, GT_MetaGenerated_Tool item, int costs) {
+            World world, int x, int y, int z, ItemStack stack, MetaGeneratedTool item, int costs) {
             this.block = block;
             this.meta = meta;
             this.targetSideOrdinal = targetSideOrdinal;
@@ -212,7 +212,7 @@ public class Behaviour_Wrench extends Behaviour_None {
 
         /**
          * this will run the operation, damage the tool and play the sound if possible (creative mode or
-         * {@link GT_MetaGenerated_Tool#canWrench(EntityPlayer, int, int, int)})
+         * {@link MetaGeneratedTool#canWrench(EntityPlayer, int, int, int)})
          *
          * @param damage    damage to be applied to the wrench
          * @param operation the real operation of the click
@@ -271,7 +271,7 @@ public class Behaviour_Wrench extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }

@@ -23,12 +23,12 @@ import net.minecraftforge.fluids.IFluidBlock;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
@@ -36,7 +36,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.misc.GT_DrillingLogicDelegate;
 
-public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_Pump extends BasicMachine {
 
     private static final ItemStack MINING_PIPE = GT_ModHandler.getIC2Item("miningPipe", 0);
 
@@ -146,8 +146,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
         return new GT_MetaTileEntity_Pump(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private static final FallbackableUITexture progressBarTexture = GT_UITextures
-        .fallbackableProgressbar("pump", GT_UITextures.PROGRESSBAR_CANNER);
+    private static final FallbackableUITexture progressBarTexture = UITextures
+        .fallbackableProgressbar("pump", UITextures.PROGRESSBAR_CANNER);
 
     @Override
     protected BasicUIProperties getUIProperties() {
@@ -156,7 +156,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
             .maxItemOutputs(2)
             .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
                 if (!isFluid && !isOutput && !isSpecial) {
-                    return GT_UITextures.OVERLAY_SLOT_MINING_PIPE;
+                    return UITextures.OVERLAY_SLOT_MINING_PIPE;
                 } else {
                     return null;
                 }

@@ -21,7 +21,7 @@ import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWer
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class AssociationLoader implements IWerkstoffRunnable {
 
@@ -34,8 +34,8 @@ public class AssociationLoader implements IWerkstoffRunnable {
             ItemStack stack = WerkstoffLoader.getCorrespondingItemStackUnsafe(prefixes, werkstoff, 1);
 
             if (stack != null && stack.getItem() != null) {
-                GT_OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
-                GT_OreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack, true, true);
+                OreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
+                OreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack, true, true);
             }
         }
     }

@@ -4,9 +4,9 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -17,8 +17,8 @@ import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -35,14 +35,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
-            && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+            && OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
 
             if (aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
                 || aMaterial == MaterialsBotania.Dreamwood) {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
                             Math.max(
@@ -54,7 +54,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GT_ModHandler.getDistilledWater(
                             Math.max(
@@ -66,7 +66,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
                             Math.max(
@@ -82,7 +82,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
                             Math.max(
@@ -94,7 +94,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GT_ModHandler.getDistilledWater(
                             Math.max(
@@ -106,7 +106,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
                             Math.max(
@@ -118,9 +118,9 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
 
-        ItemStack tStack1 = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
-        ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-        ItemStack tStack3 = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
+        ItemStack tStack1 = OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
+        ItemStack tStack2 = OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
+        ItemStack tStack3 = OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
         GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1, aStack));
 
@@ -139,7 +139,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                     GT_Values.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                        .itemOutputs(OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                         .fluidInputs(aMaterial.getMolten(1296L))
                         .duration(14 * SECONDS + 8 * TICKS)
                         .eut(8)
@@ -172,8 +172,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null) {
             // 9 ingots -> 1 block
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                 .duration(15 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(compressorRecipes);

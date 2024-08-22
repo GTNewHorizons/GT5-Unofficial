@@ -64,11 +64,11 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
+import gregtech.api.net.Packet_MultiTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -81,7 +81,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
 
-    private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
+    private static final Map<Integer, MultiblockTooltipBuilder> tooltip = new ConcurrentHashMap<>();
     private final List<WeakTargetRef<UpgradeCasing>> upgradeCasings = new ArrayList<>();
     private final List<WeakTargetRef<FunctionalCasing>> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
@@ -131,7 +131,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     /**
      * Create the tooltip for this multi block controller.
      */
-    protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
+    protected abstract MultiblockTooltipBuilder createTooltip();
 
     /**
      * @return The starting offset for the structure builder
@@ -269,8 +269,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         return getMultiTileEntityRegistryID() << 16 + getMultiTileEntityID();
     }
 
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
-        GT_Multiblock_Tooltip_Builder builder = tooltip.get(getToolTipID());
+    protected MultiblockTooltipBuilder getTooltip() {
+        MultiblockTooltipBuilder builder = tooltip.get(getToolTipID());
         if (builder == null) {
             builder = createTooltip();
             tooltip.put(getToolTipID(), builder);
@@ -1017,8 +1017,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+    public Packet_MultiTileEntity getClientDataPacket() {
+        final Packet_MultiTileEntity packet = super.getClientDataPacket();
 
         return packet;
 

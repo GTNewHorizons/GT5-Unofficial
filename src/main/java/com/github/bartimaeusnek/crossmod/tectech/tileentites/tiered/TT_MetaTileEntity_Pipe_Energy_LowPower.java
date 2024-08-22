@@ -28,13 +28,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
 
-public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Cable implements LowPowerLaser {
+public class TT_MetaTileEntity_Pipe_Energy_LowPower extends MetaPipeEntity_Cable implements LowPowerLaser {
 
     public TT_MetaTileEntity_Pipe_Energy_LowPower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0.25f, Materials.BorosilicateGlass, 0, 0, 0, false, false);
@@ -150,13 +150,13 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }

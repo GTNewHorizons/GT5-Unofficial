@@ -11,7 +11,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.GT_Utility;
@@ -27,7 +27,7 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
         super(
             120,
             uiPropertiesBuilder.logoPos(new Pos2d(152, 90))
-                .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_PLASMA_HEATER)),
+                .progressBarTexture(new FallbackableUITexture(UITextures.PROGRESSBAR_PLASMA_HEATER)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 

@@ -1,9 +1,9 @@
 package gregtech.common.redstonecircuits;
 
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
-import gregtech.api.util.GT_CircuitryBehavior;
+import gregtech.api.util.CircuitryBehavior;
 
-public class GT_Circuit_Repeater extends GT_CircuitryBehavior {
+public class GT_Circuit_Repeater extends CircuitryBehavior {
 
     public GT_Circuit_Repeater(int aIndex) {
         super(aIndex);

@@ -9,8 +9,8 @@ import static gregtech.api.recipe.RecipeMaps.largeNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.magicFuels;
 import static gregtech.api.recipe.RecipeMaps.smallNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -24,8 +24,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeConstants;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeConstants;
 
 public class GT_FuelLoader implements Runnable {
 
@@ -45,40 +45,40 @@ public class GT_FuelLoader implements Runnable {
         ItemList.sRocketFuel = GT_FluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 50_000)
             .addTo(smallNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(largeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)
@@ -121,26 +121,26 @@ public class GT_FuelLoader implements Runnable {
             .itemInputs(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4))
             .metadata(FUEL_VALUE, 4)
             .metadata(FUEL_TYPE, 5)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.experience_bottle, 1))
             .metadata(FUEL_VALUE, 10)
             .metadata(FUEL_TYPE, 5)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.ghast_tear, 1))
             .metadata(FUEL_VALUE, 50)
             .metadata(FUEL_TYPE, 5)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.beacon, 1))
             .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
             .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
             .metadata(FUEL_VALUE, 250)
             .metadata(FUEL_TYPE, 1)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
     }
 }

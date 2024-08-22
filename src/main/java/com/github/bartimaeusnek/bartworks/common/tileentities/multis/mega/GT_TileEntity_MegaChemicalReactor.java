@@ -17,7 +17,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -44,12 +44,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class GT_TileEntity_MegaChemicalReactor
     extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaChemicalReactor> implements ISurvivalConstructable {
@@ -65,8 +65,8 @@ public class GT_TileEntity_MegaChemicalReactor
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor")
             .addInfo("Controller block for the Chemical Reactor")
             .addInfo("What molecule do you want to synthesize")
@@ -179,7 +179,7 @@ public class GT_TileEntity_MegaChemicalReactor
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return this
-            .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
+            .survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 
@@ -191,8 +191,8 @@ public class GT_TileEntity_MegaChemicalReactor
 
         if (this.glassTier < 8) {
             for (int i = 0; i < this.mExoticEnergyHatches.size(); ++i) {
-                GT_MetaTileEntity_Hatch hatch = this.mExoticEnergyHatches.get(i);
-                if (hatch.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
+                Hatch hatch = this.mExoticEnergyHatches.get(i);
+                if (hatch.getConnectionType() == Hatch.ConnectionType.LASER) {
                     return false;
                 }
                 if (this.glassTier < hatch.mTier) {

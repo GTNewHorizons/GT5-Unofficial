@@ -2,11 +2,11 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,8 +22,8 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class BlastFurnaceRecipes implements Runnable {
 
@@ -380,7 +380,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32),
                 ItemList.GalliumArsenideCrystalSmallPart.get(1),
                 GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot.get(1))
@@ -391,9 +391,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64),
                 ItemList.GalliumArsenideCrystalSmallPart.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 8),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 8),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot2.get(1))
             .fluidInputs(Materials.Nitrogen.getGas(8000))
@@ -404,9 +404,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
+                OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
                 ItemList.GalliumArsenideCrystal.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1),
+                OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
             .fluidInputs(Materials.Argon.getGas(8000))
@@ -417,9 +417,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 32),
+                OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 32),
                 ItemList.GalliumArsenideCrystal.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 2),
+                OreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot4.get(1))
             .fluidInputs(Materials.Radon.getGas(8000))
@@ -430,9 +430,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 64),
+                OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 64),
                 ItemList.GalliumArsenideCrystal.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4),
+                OreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot5.get(1))
             .fluidInputs(Materials.Radon.getGas(16000))
@@ -445,9 +445,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calciumhydride, 3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Calciumhydride, 3),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3))
             .fluidOutputs(Materials.Hydrogen.getGas(2000))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
@@ -456,9 +456,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
             .duration(16 * MINUTES + 23 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 11800)
@@ -466,9 +466,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
                 GT_Utility.getIntegratedCircuit(11))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
             .fluidInputs(Materials.Radon.getGas(1000))
             .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
             .eut((int) TierEU.RECIPE_UV)
@@ -479,9 +479,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
             .duration(16 * MINUTES + 23 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 12700)
@@ -489,9 +489,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
                 GT_Utility.getIntegratedCircuit(11))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
             .fluidInputs(Materials.Radon.getGas(1000))
             .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
             .eut((int) TierEU.RECIPE_UHV)
@@ -502,9 +502,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
             .duration(16 * MINUTES + 23 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 13600)
@@ -512,9 +512,9 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
                 GT_Utility.getIntegratedCircuit(11))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
             .fluidInputs(Materials.Radon.getGas(1000))
             .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
             .eut((int) TierEU.RECIPE_UEV)
@@ -631,7 +631,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(MaterialsUEVplus.TranscendentMetal.getDust(1), GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
             .fluidInputs(Materials.Tungsten.getMolten(144))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72))
             .duration(3 * MINUTES)

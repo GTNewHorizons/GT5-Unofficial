@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.printerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Items;
@@ -11,15 +11,15 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class PrinterRecipes implements Runnable {
 
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
             .itemOutputs(ItemList.Paper_Punch_Card_Empty.get(1L))
             .fluidInputs(getFluidStack("squidink", 36))
             .duration(5 * SECONDS)
@@ -36,7 +36,7 @@ public class PrinterRecipes implements Runnable {
             .addTo(printerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L))
             .special(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data"))
             .itemOutputs(ItemList.Paper_Printed_Pages.get(1L))
             .fluidInputs(getFluidStack("squidink", 144))

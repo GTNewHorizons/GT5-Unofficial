@@ -30,7 +30,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -47,8 +47,7 @@ import mods.railcraft.api.core.items.IToolCrowbar;
     @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
     @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
     @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O) })
-public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
-    implements IDamagableItem, IToolCrowbar, IToolWrench {
+public abstract class Gregtech_MetaTool extends MetaGeneratedTool implements IDamagableItem, IToolCrowbar, IToolWrench {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this

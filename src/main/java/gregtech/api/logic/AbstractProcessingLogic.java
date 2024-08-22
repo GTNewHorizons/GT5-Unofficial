@@ -11,9 +11,9 @@ import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 
 /**
  * Logic class to calculate result of recipe check from inputs.
@@ -229,8 +229,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * At this point, inputs have been already consumed.
      */
     @Nonnull
-    protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-        @Nonnull GT_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
+    protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull ParallelHelper helper,
+        @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
@@ -267,8 +267,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     /**
      * Override to tweak final duration that will be set as a result of this logic class.
      */
-    protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-        @Nonnull GT_OverclockCalculator calculator) {
+    protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull ParallelHelper helper,
+        @Nonnull OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
 
@@ -297,8 +297,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * Override to tweak overclock logic if needed.
      */
     @Nonnull
-    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+    protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+        return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setDuration(recipe.mDuration)

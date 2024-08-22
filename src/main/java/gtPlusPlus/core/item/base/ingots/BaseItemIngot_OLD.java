@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.base.ingots;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -42,7 +42,7 @@ public class BaseItemIngot_OLD extends Item {
             temp = this.unlocalName.replace("itemHotIngot", "ingotHot");
         }
         if ((temp != null) && !temp.equals("")) {
-            GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+            OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
         }
         // this.generateCompressorRecipe();
     }

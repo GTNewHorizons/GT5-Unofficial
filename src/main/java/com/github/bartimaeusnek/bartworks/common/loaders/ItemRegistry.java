@@ -233,7 +233,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import ic2.api.item.IKineticRotor;
 
 public class ItemRegistry {
@@ -458,9 +458,9 @@ public class ItemRegistry {
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
 
-        GT_OreDictUnificator
+        OreDictUnificator
             .add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
-        GT_OreDictUnificator
+        OreDictUnificator
             .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
         int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,

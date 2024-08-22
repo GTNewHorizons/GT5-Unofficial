@@ -23,14 +23,14 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Steel;
+import gregtech.api.metatileentity.implementations.BasicMachine_Steel;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
+public class GT_MetaTileEntity_Furnace_Steel extends BasicMachine_Steel {
 
     public GT_MetaTileEntity_Furnace_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, "Smelting things with compressed Steam", 1, 1, true);

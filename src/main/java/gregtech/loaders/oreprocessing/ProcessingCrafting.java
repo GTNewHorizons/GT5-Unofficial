@@ -5,10 +5,10 @@ import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.WaferEngravingRecipes;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.WaferEngravingRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -19,8 +19,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -46,7 +46,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -55,7 +55,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -107,7 +107,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -116,7 +116,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -197,7 +197,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -206,7 +206,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -257,7 +257,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Redstone, 1L),
+                        OreDictUnificator.get(OrePrefixes.plate, Materials.Redstone, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                     .duration(2 * SECONDS + 10 * TICKS)
@@ -266,7 +266,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.RedAlloy, 1L),
+                        OreDictUnificator.get(OrePrefixes.foil, Materials.RedAlloy, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EtchedLowVoltageWiring", 1L, 0))
                     .duration(10 * SECONDS)
@@ -373,7 +373,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
                     .duration(1 * MINUTES + 40 * SECONDS)
@@ -382,7 +382,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                        OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
                     .duration(1 * MINUTES + 40 * SECONDS)

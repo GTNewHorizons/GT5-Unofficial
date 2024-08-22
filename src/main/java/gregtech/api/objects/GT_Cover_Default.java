@@ -5,10 +5,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
-public class GT_Cover_Default extends GT_CoverBehavior {
+public class GT_Cover_Default extends CoverBehavior {
 
     /**
      * This is the Dummy, if there is a generic Cover without behavior

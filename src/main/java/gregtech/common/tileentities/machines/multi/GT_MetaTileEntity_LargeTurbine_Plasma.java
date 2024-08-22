@@ -23,17 +23,17 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
@@ -64,8 +64,8 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Turbine")
             .addInfo("Controller block for the Large Plasma Generator")
             .addInfo("Needs a Turbine, place inside controller")
@@ -228,10 +228,9 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     @NotNull
     public CheckRecipeResult checkProcessing() {
         ItemStack controllerSlot = getControllerSlot();
-        if ((counter & 7) == 0
-            && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
-                || controllerSlot.getItemDamage() < 170
-                || controllerSlot.getItemDamage() > 179)) {
+        if ((counter & 7) == 0 && (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool)
+            || controllerSlot.getItemDamage() < 170
+            || controllerSlot.getItemDamage() > 179)) {
             stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
@@ -245,20 +244,19 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                     .hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
-                    (long) ((5F
-                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
+                    (long) ((5F + ((MetaGeneratedTool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
                         * 1000F));
                 optFlow = GT_Utility.safeInt(
                     (long) Math.max(
                         Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
+                        ((MetaGeneratedTool) controllerSlot.getItem()).getToolStats(controllerSlot)
+                            .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mToolSpeed
                             * 50));
                 overflowMultiplier = getOverflowMultiplier(controllerSlot);
 
-                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
-                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
-                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
+                flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
+                flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
+                flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
 
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
@@ -303,7 +301,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -321,13 +319,13 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
             tDura = GT_Utility.safeInt(
-                (long) (100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1])
-                    * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1])) + 1));
+                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(mInventory[1])
+                    * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

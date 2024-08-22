@@ -35,25 +35,25 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hatch_Maintenance {
+public class GT_MetaTileEntity_Hatch_DroneDownLink extends Hatch_Maintenance {
 
     private Vec3Impl downlinkCoord;
     private DroneConnection connection;
     // This has to be existed for doing random damage.
-    private GT_MetaTileEntity_MultiBlockBase machine;
+    private MultiBlockBase machine;
     private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
         "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
@@ -144,7 +144,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                 aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
                 return false;
             }
-            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
         return false;
@@ -188,7 +188,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     .withinDistance(this.downlinkCoord, centre.getRange())
                     && centre.getBaseMetaTileEntity()
                         .isActive()) {
-                    GT_MetaTileEntity_MultiBlockBase machine = tryFindCoreGTMultiBlock();
+                    MultiBlockBase machine = tryFindCoreGTMultiBlock();
                     if (machine != null && machine.isValid()) {
                         this.machine = machine;
                         connection = new DroneConnection(machine, centre);
@@ -202,7 +202,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     }
 
     // Find mainframe. Mainly from a method in GT_API——This will cause performance issue! Do not call it frequently.
-    private GT_MetaTileEntity_MultiBlockBase tryFindCoreGTMultiBlock() {
+    private MultiBlockBase tryFindCoreGTMultiBlock() {
         Queue<ChunkCoordinates> tQueue = new LinkedList<>();
         Set<ChunkCoordinates> visited = new HashSet<>(80);
         tQueue.add(
@@ -224,8 +224,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                 || (block == GregTech_API.sBlockReinforced
                     && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == 2);
             // See if the block itself is MultiBlock, also the one we need.
-            if (tTileEntity instanceof IGregTechTileEntity te
-                && te.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiBlockBase mte)
+            if (tTileEntity instanceof IGregTechTileEntity te && te.getMetaTileEntity() instanceof MultiBlockBase mte)
                 if (mte.mMaintenanceHatches.contains(this)) return mte;
 
             // Now see if we should add the nearby blocks to the queue:
@@ -272,7 +271,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
             ButtonWidget.closeWindowButton(true)
@@ -288,7 +287,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     .setTextAlignment(Alignment.CenterLeft)
                     .setTextColor(Color.WHITE.dark(1))
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
                     .setPos(10, 16)
                     .setSize(130, 16))
             .build();

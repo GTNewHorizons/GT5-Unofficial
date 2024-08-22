@@ -38,10 +38,10 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
+import gregtech.api.metatileentity.implementations.BasicHull;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
+public class GT_MetaTileEntity_Diode extends BasicHull {
 
     private long maxAmps;
     private long aAmps;

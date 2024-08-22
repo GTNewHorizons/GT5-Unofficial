@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 
 public abstract class EIGMode {
@@ -37,7 +37,7 @@ public abstract class EIGMode {
 
     public abstract double getFertilizerBoost();
 
-    public abstract GT_Multiblock_Tooltip_Builder addTooltipInfo(GT_Multiblock_Tooltip_Builder builder);
+    public abstract MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder);
 
     /**
      * Used to resolve factory type to an identifier.

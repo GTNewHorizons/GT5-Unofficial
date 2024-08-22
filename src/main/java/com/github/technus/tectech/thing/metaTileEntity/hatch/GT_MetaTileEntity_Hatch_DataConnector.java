@@ -25,13 +25,13 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
+public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket> extends Hatch
     implements IConnectsToDataPipe {
 
     public static Textures.BlockIcons.CustomIcon EM_D_SIDES;

@@ -17,10 +17,10 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -29,7 +29,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 import io.netty.buffer.ByteBuf;
 
 public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData>
-    extends GT_CoverBehaviorBase<T> {
+    extends CoverBehaviorBase<T> {
 
     public GT_Cover_AdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
         super(typeToken, coverTexture);
@@ -232,7 +232,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         protected static final int spaceX = 18;
         protected static final int spaceY = 18;
 
-        public AdvancedWirelessRedstoneBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+        public AdvancedWirelessRedstoneBaseUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

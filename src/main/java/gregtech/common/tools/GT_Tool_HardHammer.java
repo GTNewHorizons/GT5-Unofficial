@@ -20,7 +20,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import gregtech.GT_Mod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_ToolHarvestHelper;
@@ -165,20 +165,20 @@ public class GT_Tool_HardHammer extends GT_Tool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+            ? MetaGeneratedTool.getPrimaryMaterial(
                 aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHammer.mTextureIndex]
-            : GT_MetaGenerated_Tool
+            : MetaGeneratedTool
                 .getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new Behaviour_Prospecting(1, 1000));
     }
 

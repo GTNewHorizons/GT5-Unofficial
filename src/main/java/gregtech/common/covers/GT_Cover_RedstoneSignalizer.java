@@ -7,11 +7,11 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
 @SuppressWarnings("unused") // TODO: Consider re-registering this
-public class GT_Cover_RedstoneSignalizer extends GT_CoverBehavior {
+public class GT_Cover_RedstoneSignalizer extends CoverBehavior {
 
     GT_Cover_RedstoneSignalizer(ITexture coverTexture) {
         super(coverTexture);

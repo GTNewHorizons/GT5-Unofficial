@@ -4,11 +4,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatch_Dynamo {
+public class GT_MetaTileEntity_Hatch_DynamoBuffer extends Hatch_Dynamo {
 
     public GT_MetaTileEntity_Hatch_DynamoBuffer(final int aID, final String aName, final String aNameRegional,
         final int aTier) {

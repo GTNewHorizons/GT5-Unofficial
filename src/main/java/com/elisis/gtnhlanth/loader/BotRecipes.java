@@ -9,11 +9,11 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 
 import java.util.HashSet;
 
@@ -27,9 +27,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import ic2.core.Ic2Items;
 
 /*
@@ -132,7 +132,7 @@ public class BotRecipes {
         // 2WO3 + 3C = 2W + 3CO2
         GT_Values.RA.stdBuilder()
             .itemInputs(WO3, Materials.Carbon.getDust(3))
-            .itemOutputs(GT_OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
+            .itemOutputs(OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
             .fluidOutputs(Materials.CarbonDioxide.getGas(3000))
             .duration(6 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)

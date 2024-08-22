@@ -4,9 +4,9 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
@@ -17,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -158,7 +158,7 @@ public class HANDLER_Railcraft {
             // Fluid Extracting the Charcoals for Wood Tar
             GT_Values.RA.stdBuilder()
                 .itemInputs(aInputs2[i])
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L))
                 .outputChances(1000)
                 .fluidOutputs(Materials.WoodTar.getFluid(50L))
                 .duration(1 * SECONDS + 10 * TICKS)

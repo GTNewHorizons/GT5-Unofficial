@@ -18,9 +18,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.BlockGeneric;
 
-public class GT_Block_Storage extends GT_Generic_Block {
+public class GT_Block_Storage extends BlockGeneric {
 
     protected GT_Block_Storage(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);

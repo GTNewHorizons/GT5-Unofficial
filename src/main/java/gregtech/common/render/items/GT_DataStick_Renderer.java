@@ -9,7 +9,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.util.GT_AssemblyLineUtils;
+import gregtech.api.util.AssemblyLineUtils;
 
 // borrow form ae2
 
@@ -30,7 +30,7 @@ public class GT_DataStick_Renderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        final ItemStack is = GT_AssemblyLineUtils.getDataStickOutput(item);
+        final ItemStack is = AssemblyLineUtils.getDataStickOutput(item);
         final Minecraft mc = Minecraft.getMinecraft();
 
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT);

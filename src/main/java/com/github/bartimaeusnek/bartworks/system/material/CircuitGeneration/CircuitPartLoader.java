@@ -92,7 +92,7 @@ import static gregtech.api.enums.ItemList.Optically_Compatible_Memory;
 import static gregtech.api.enums.ItemList.Optically_Perfected_CPU;
 import static gregtech.api.enums.ItemList.values;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;

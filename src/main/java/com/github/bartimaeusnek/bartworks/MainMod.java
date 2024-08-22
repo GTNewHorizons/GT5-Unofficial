@@ -77,7 +77,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 @Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
     required-after:IC2;\
@@ -166,7 +166,7 @@ public final class MainMod {
             GTNHBlocks.run();
             for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap()
                 .entrySet()) {
-                GT_OreDictUnificator.registerOre(
+                OreDictUnificator.registerOre(
                     "blockGlass" + VN[pair.getValue()],
                     new ItemStack(
                         pair.getKey()

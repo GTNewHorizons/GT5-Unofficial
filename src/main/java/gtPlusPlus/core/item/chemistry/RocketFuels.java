@@ -3,9 +3,9 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
@@ -23,9 +23,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -205,8 +205,8 @@ public class RocketFuels extends ItemPackage {
     private static void createFormaldehydeCatalyst() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 16L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
                 GT_Utility.getIntegratedCircuit(18))
             .itemOutputs(ItemUtils.getSimpleStack(Formaldehyde_Catalyst_Dust, 4))
             .duration(8 * SECONDS)

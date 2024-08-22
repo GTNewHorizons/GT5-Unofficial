@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorColen;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
@@ -53,24 +53,23 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class GT_MetaTileEntity_TranscendentPlasmaMixer
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer>
-    implements ISurvivalConstructable {
+    extends EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer> implements ISurvivalConstructable {
 
     private static final String[][] structure = new String[][] {
         { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
@@ -110,8 +109,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transcendent Mixer")
             .addInfo("Assisting in all your DTPF needs.")
             .addInfo("This multiblock will run in parallel according to the amount set")
@@ -203,8 +202,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe);
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe);
             }
         }.setMaxParallelSupplier(() -> multiplier);
     }
@@ -233,7 +232,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFFSET,
@@ -298,8 +297,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                ret.add(UITextures.BUTTON_STANDARD);
+                ret.add(UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                 return ret.toArray(new IDrawable[0]);
             })
             .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
@@ -315,7 +314,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -338,7 +337,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                     .setTextColor(Color.WHITE.normal)
                     .setSize(150, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> multiplier, (val) -> multiplier = val),
                         builder));

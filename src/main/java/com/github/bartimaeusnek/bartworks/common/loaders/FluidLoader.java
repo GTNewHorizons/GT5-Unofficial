@@ -16,7 +16,7 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.awt.Color;
 

@@ -43,7 +43,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 
 public class BWGTMetaItems extends BW_MetaGenerated_Items {
@@ -66,7 +66,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                 this.hiddenThings.add(i);
                 continue;
             }
-            GT_OreDictUnificator
+            OreDictUnificator
                 .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
@@ -85,8 +85,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                     this.hiddenThings.add(i);
                     continue;
                 }
-                GT_OreDictUnificator
-                    .registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
+                OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
             }
         }
     }

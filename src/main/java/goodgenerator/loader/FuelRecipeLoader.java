@@ -4,10 +4,10 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefin
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelTime;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelVoltage;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
-import static gregtech.api.util.GT_RecipeConstants.NFR_COIL_TIER;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.LNG_BASIC_OUTPUT;
+import static gregtech.api.util.RecipeConstants.NFR_COIL_TIER;
 import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
 
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,7 +22,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.material.ELEMENT;
 
 public class FuelRecipeLoader {
@@ -92,8 +92,8 @@ public class FuelRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 27),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
                 MyMaterial.orundum.get(OrePrefixes.dust, 32))
             .fluidInputs(MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000), Materials.Praseodymium.getMolten(9216L))
             .fluidOutputs(MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
@@ -107,8 +107,8 @@ public class FuelRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 27),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 64),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
                 MyMaterial.orundum.get(OrePrefixes.dust, 64))
             .fluidInputs(
                 MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
@@ -142,7 +142,7 @@ public class FuelRecipeLoader {
         // MK V Naquadah Fuel
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8),
                 MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32))
             .fluidInputs(
                 MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
@@ -157,8 +157,8 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 4),
-                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
+                OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 4),
+                OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
                 MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48))
             .fluidInputs(
                 MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
@@ -174,7 +174,7 @@ public class FuelRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ELEMENT.STANDALONE.ASTRAL_TITANIUM.getDust(64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32))
             .fluidInputs(
                 MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
                 FluidRegistry.getFluidStack("molten.shirabon", 360))
@@ -188,9 +188,9 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 4),
+                OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 4),
                 ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
             .fluidInputs(
                 MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
                 FluidRegistry.getFluidStack("molten.shirabon", 1440))

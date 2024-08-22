@@ -6,11 +6,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class GregtechMetaTreeFarmerBase extends TieredMachineBlock {
 
     public GregtechMetaTreeFarmerBase(final int aID, final String aName, final String aNameRegional, final int aTier,
         final int aInvSlotCount, final String aDescription) {

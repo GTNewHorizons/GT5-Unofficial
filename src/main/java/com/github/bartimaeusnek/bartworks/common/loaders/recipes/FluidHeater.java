@@ -1,8 +1,8 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraftforge.fluids.FluidStack;
 

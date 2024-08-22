@@ -21,14 +21,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
+import gregtech.api.metatileentity.implementations.CubicMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_MetaTileEntity_ImplosionCompressor
-    extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ImplosionCompressor> {
+public class GT_MetaTileEntity_ImplosionCompressor extends CubicMultiBlockBase<GT_MetaTileEntity_ImplosionCompressor> {
 
     public GT_MetaTileEntity_ImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -44,8 +43,8 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
             .addInfo("Explosions are fun")
             .addInfo("Controller block for the Implosion Compressor")
@@ -122,7 +121,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    protected IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement() {
+    protected IStructureElement<CubicMultiBlockBase<?>> getCasingElement() {
         return ofChain(ofBlock(GregTech_API.sBlockCasings2, 0), ofBlock(GregTech_API.sBlockCasings3, 4));
     }
 

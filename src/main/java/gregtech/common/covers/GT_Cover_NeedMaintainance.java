@@ -8,27 +8,27 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.MultiBlockBase;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
+public class GT_Cover_NeedMaintainance extends CoverBehavior {
 
     public GT_Cover_NeedMaintainance(ITexture coverTexture) {
         super(coverTexture);
     }
 
     public static boolean isRotor(ItemStack rotor) {
-        return (rotor != null && rotor.getItem() instanceof GT_MetaGenerated_Tool
+        return (rotor != null && rotor.getItem() instanceof MetaGeneratedTool
             && rotor.getItemDamage() >= 170
             && rotor.getItemDamage() <= 176);
     }
@@ -45,7 +45,7 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
         boolean needsRepair = false;
         if (aTileEntity instanceof IGregTechTileEntity tTileEntity) {
             final IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-            if (mTileEntity instanceof GT_MetaTileEntity_MultiBlockBase multi) {
+            if (mTileEntity instanceof MultiBlockBase multi) {
                 final int ideal = multi.getIdealStatus();
                 final int real = multi.getRepairStatus();
                 final ItemStack tRotor = multi.getRealInventory()[1];
@@ -54,8 +54,8 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
                     if (ideal - real > coverVar) needsRepair = true;
                 } else if (coverVar == 5 || coverVar == 6) {
                     if (isRotor(tRotor)) {
-                        long tMax = GT_MetaGenerated_Tool.getToolMaxDamage(tRotor);
-                        long tCur = GT_MetaGenerated_Tool.getToolDamage(tRotor);
+                        long tMax = MetaGeneratedTool.getToolMaxDamage(tRotor);
+                        long tCur = MetaGeneratedTool.getToolDamage(tRotor);
                         if (coverVar == 5) {
                             needsRepair = (tCur >= tMax * 8 / 10);
                         } else {
@@ -171,7 +171,7 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new NeedMaintainanceUIFactory(buildContext).createWindow();
     }
 
@@ -182,7 +182,7 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public NeedMaintainanceUIFactory(GT_CoverUIBuildContext buildContext) {
+        public NeedMaintainanceUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

@@ -66,10 +66,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class BW_Util {
 
@@ -86,7 +86,7 @@ public class BW_Util {
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BW_Util.checkStackAndPrefix(itemStack))
-            matname = GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
+            matname = OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
         return ret.replace("%material", matname);
     }
 
@@ -237,10 +237,10 @@ public class BW_Util {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return itemStack != null && GT_OreDictUnificator.getAssociation(itemStack) != null
-            && GT_OreDictUnificator.getAssociation(itemStack).mPrefix != null
-            && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null
-            && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
+        return itemStack != null && OreDictUnificator.getAssociation(itemStack) != null
+            && OreDictUnificator.getAssociation(itemStack).mPrefix != null
+            && OreDictUnificator.getAssociation(itemStack).mMaterial != null
+            && OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
     }
 
     public static int abstractHashGTRecipe(GT_Recipe recipe) {
@@ -546,7 +546,7 @@ public class BW_Util {
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
-        aResult = GT_OreDictUnificator.get(true, aResult);
+        aResult = OreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length <= 0) return null;
@@ -674,7 +674,7 @@ public class BW_Util {
                 Object in = aRecipe[idx + 1];
                 if (in instanceof ItemStack) {
                     tItemStackMap.put(chr, GT_Utility.copy(in));
-                    tItemDataMap.put(chr, GT_OreDictUnificator.getItemData((ItemStack) in));
+                    tItemDataMap.put(chr, OreDictUnificator.getItemData((ItemStack) in));
                 } else if (in instanceof ItemData) {
                     String tString = in.toString();
                     switch (tString) {
@@ -694,7 +694,7 @@ public class BW_Util {
                             tItemDataMap.put(chr, (ItemData) in);
                             break;
                     }
-                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = OreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     aRecipe[idx + 1] = in.toString();
@@ -711,7 +711,7 @@ public class BW_Util {
                         tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
                         tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = OreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                 } else {
@@ -727,8 +727,7 @@ public class BW_Util {
                     x++;
                     tData[x] = tItemDataMap.get(chr);
                 }
-                if (GT_Utility.arrayContainsNonNull(tData))
-                    GT_OreDictUnificator.addItemData(aResult, new ItemData(tData));
+                if (GT_Utility.arrayContainsNonNull(tData)) OreDictUnificator.addItemData(aResult, new ItemData(tData));
             }
 
             if (aCheckForCollisions && tRemoveRecipe) {
@@ -768,7 +767,7 @@ public class BW_Util {
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GT_Utility.areStacksEqual(OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
                     tList.remove(i);
                     i--;
                     tList_sS = tList.size();

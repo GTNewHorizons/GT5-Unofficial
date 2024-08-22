@@ -13,9 +13,9 @@ import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.MetaTileEntity_Transformer;
 
-public class GT_MetaTileEntity_TT_Transformer extends GT_MetaTileEntity_Transformer {
+public class GT_MetaTileEntity_TT_Transformer extends MetaTileEntity_Transformer {
 
     public GT_MetaTileEntity_TT_Transformer(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "");

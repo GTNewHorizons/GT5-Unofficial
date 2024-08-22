@@ -28,7 +28,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MetaPipeEntity_Cable;
 import gregtech.api.util.GT_Utility;
 
 public class EuMeterGT extends Item {
@@ -138,7 +138,7 @@ public class EuMeterGT extends Item {
                             : ""));
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
-                if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
+                if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MetaPipeEntity_Cable) {
                     ArrayList<String> tList = new ArrayList<>();
                     GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
                     for (String str : tList) {

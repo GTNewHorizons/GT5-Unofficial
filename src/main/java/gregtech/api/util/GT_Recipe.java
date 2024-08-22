@@ -28,9 +28,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
@@ -159,7 +159,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (stackNeedsNBT) {
                 this.unifiedStack = stack;
             } else {
-                this.unifiedStack = GT_OreDictUnificator.get_nocopy(true, stack);
+                this.unifiedStack = OreDictUnificator.get_nocopy(true, stack);
                 if (!this.usesNbtMatching) {
                     this.unifiedStack.setTagCompound(null);
                 }
@@ -197,7 +197,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * Only for {@link GT_RecipeBuilder}.
+     * Only for {@link RecipeBuilder}.
      */
     GT_Recipe(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs, FluidStack[] mFluidOutputs,
         int[] mChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue, boolean mEnabled,
@@ -239,8 +239,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         aFluidInputs = ArrayExt.withoutNulls(aFluidInputs, FluidStack[]::new);
         aFluidOutputs = ArrayExt.withoutNulls(aFluidOutputs, FluidStack[]::new);
 
-        GT_OreDictUnificator.setStackArray(true, aInputs);
-        GT_OreDictUnificator.setStackArray(true, aOutputs);
+        OreDictUnificator.setStackArray(true, aInputs);
+        OreDictUnificator.setStackArray(true, aOutputs);
 
         for (ItemStack tStack : aOutputs) GT_Utility.updateItemStack(tStack);
 
@@ -554,7 +554,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         final ItemStack[] unifiedProvidedInputs = new ItemStack[aInputs.length];
         for (int i = 0; i < aInputs.length; i++) {
-            unifiedProvidedInputs[i] = GT_OreDictUnificator.get_nocopy(true, aInputs[i]);
+            unifiedProvidedInputs[i] = OreDictUnificator.get_nocopy(true, aInputs[i]);
         }
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
@@ -630,7 +630,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             final ItemStack[] unifiedProvidedInputs = new ItemStack[aInputs.length];
             for (int i = 0; i < aInputs.length; i++) {
-                unifiedProvidedInputs[i] = GT_OreDictUnificator.get_nocopy(true, aInputs[i]);
+                unifiedProvidedInputs[i] = OreDictUnificator.get_nocopy(true, aInputs[i]);
             }
 
             recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {
@@ -794,7 +794,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * Exists only for recipe copying from external. For ordinal use case, use {@link GT_RecipeBuilder#recipeCategory}.
+     * Exists only for recipe copying from external. For ordinal use case, use {@link RecipeBuilder#recipeCategory}.
      */
     public void setRecipeCategory(RecipeCategory recipeCategory) {
         this.recipeCategory = recipeCategory;
@@ -1091,13 +1091,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @return An array containing the amount of item to consume from the first slot of every input bus.
          *         {@code null} if at least one item fails to match the recipe ingredient.
          */
-        public static int[] getItemConsumptionAmountArray(ArrayList<GT_MetaTileEntity_Hatch_InputBus> inputBusses,
+        public static int[] getItemConsumptionAmountArray(ArrayList<Hatch_InputBus> inputBusses,
             GT_Recipe_AssemblyLine recipe) {
             int itemCount = recipe.mInputs.length;
             if (itemCount == 0) return null;
             int[] tStacks = new int[itemCount];
             for (int i = 0; i < itemCount; i++) {
-                GT_MetaTileEntity_Hatch_InputBus inputBus = inputBusses.get(i);
+                Hatch_InputBus inputBus = inputBusses.get(i);
                 if (!inputBus.isValid()) return null;
                 ItemStack slotStack;
                 if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
@@ -1136,8 +1136,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @Return The number of parallel recipes, or 0 if recipe is not satisfied at all. 0 < number < 1 means that
          *         inputs are found but not enough.
          */
-        public static double maxParallelCalculatedByInputItems(ArrayList<GT_MetaTileEntity_Hatch_InputBus> inputBusses,
-            int maxParallel, int[] itemConsumptions, Map<GT_Utility.ItemId, ItemStack> inputsFromME) {
+        public static double maxParallelCalculatedByInputItems(ArrayList<Hatch_InputBus> inputBusses, int maxParallel,
+            int[] itemConsumptions, Map<GT_Utility.ItemId, ItemStack> inputsFromME) {
             // Recipe item matching is done in the generation of itemConsumptions.
 
             Map<GT_Utility.ItemId, Long> itemConsumptionsFromME = new Object2LongOpenHashMap<>();
@@ -1145,7 +1145,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // Calculate the amount of each item to consume from ME
             for (int i = 0; i < itemConsumptions.length; i++) {
-                GT_MetaTileEntity_Hatch_InputBus inputBus = inputBusses.get(i);
+                Hatch_InputBus inputBus = inputBusses.get(i);
                 if (!inputBus.isValid()) return 0;
                 if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
                     ItemStack item = meBus.getShadowItemStack(0);
@@ -1167,7 +1167,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // Calculate parallel from regular input busses
             for (int i = 0; i < itemConsumptions.length; i++) {
-                GT_MetaTileEntity_Hatch_InputBus inputBus = inputBusses.get(i);
+                Hatch_InputBus inputBus = inputBusses.get(i);
                 if (!inputBus.isValid()) return 0;
                 if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME) continue;
 
@@ -1187,14 +1187,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @return The number of parallel recipes, or 0 if recipe is not satisfied at all. 0 < number < 1 means that
          *         fluids are found but not enough.
          */
-        public static double maxParallelCalculatedByInputFluids(ArrayList<GT_MetaTileEntity_Hatch_Input> inputHatches,
-            int maxParallel, FluidStack[] fluidConsumptions, Map<Fluid, FluidStack> fluidsFromME) {
+        public static double maxParallelCalculatedByInputFluids(ArrayList<Hatch_Input> inputHatches, int maxParallel,
+            FluidStack[] fluidConsumptions, Map<Fluid, FluidStack> fluidsFromME) {
             Map<Fluid, Long> fluidConsumptionsFromME = new Reference2LongOpenHashMap<>();
             double currentParallel = maxParallel;
 
             // Calculate the amount of each fluid to consume from ME
             for (int i = 0; i < fluidConsumptions.length; i++) {
-                GT_MetaTileEntity_Hatch_Input inputHatch = inputHatches.get(i);
+                Hatch_Input inputHatch = inputHatches.get(i);
                 if (!inputHatch.isValid()) return 0;
                 if (inputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
                     FluidStack fluid = meHatch.getShadowFluidStack(0);
@@ -1214,12 +1214,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // Calculate parallel from regular input hatches
             for (int i = 0; i < fluidConsumptions.length; i++) {
-                GT_MetaTileEntity_Hatch_Input inputHatch = inputHatches.get(i);
+                Hatch_Input inputHatch = inputHatches.get(i);
                 if (!inputHatch.isValid()) return 0;
                 if (inputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) continue;
 
                 FluidStack fluid;
-                if (inputHatch instanceof GT_MetaTileEntity_Hatch_MultiInput multiInput) {
+                if (inputHatch instanceof Hatch_MultiInput multiInput) {
                     fluid = multiInput.getFluid(0);
                 } else {
                     fluid = inputHatch.getFillableStack();
@@ -1239,10 +1239,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param inputBusses      Input bus list to check. Usually the input bus list of multi.
          * @param itemConsumptions Should be generated by {@link GT_Recipe_AssemblyLine#getItemConsumptionAmountArray}.
          */
-        public static void consumeInputItems(ArrayList<GT_MetaTileEntity_Hatch_InputBus> inputBusses,
-            int amountMultiplier, int[] itemConsumptions, Map<GT_Utility.ItemId, ItemStack> inputsFromME) {
+        public static void consumeInputItems(ArrayList<Hatch_InputBus> inputBusses, int amountMultiplier,
+            int[] itemConsumptions, Map<GT_Utility.ItemId, ItemStack> inputsFromME) {
             for (int i = 0; i < itemConsumptions.length; i++) {
-                GT_MetaTileEntity_Hatch_InputBus inputBus = inputBusses.get(i);
+                Hatch_InputBus inputBus = inputBusses.get(i);
                 if (!inputBus.isValid()) continue;
                 ItemStack item;
                 if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
@@ -1261,17 +1261,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param inputHatches      Input hatch list to check. Usually the input hatch list of multi.
          * @param fluidConsumptions Fluid inputs of the recipe.
          */
-        public static void consumeInputFluids(ArrayList<GT_MetaTileEntity_Hatch_Input> inputHatches,
-            int amountMultiplier, FluidStack[] fluidConsumptions, Map<Fluid, FluidStack> fluidsFromME) {
+        public static void consumeInputFluids(ArrayList<Hatch_Input> inputHatches, int amountMultiplier,
+            FluidStack[] fluidConsumptions, Map<Fluid, FluidStack> fluidsFromME) {
             for (int i = 0; i < fluidConsumptions.length; i++) {
-                GT_MetaTileEntity_Hatch_Input inputHatch = inputHatches.get(i);
+                Hatch_Input inputHatch = inputHatches.get(i);
                 if (!inputHatch.isValid()) continue;
                 FluidStack fluid;
                 if (inputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
                     fluid = fluidsFromME.get(
                         meHatch.getShadowFluidStack(0)
                             .getFluid());
-                } else if (inputHatch instanceof GT_MetaTileEntity_Hatch_MultiInput multiInput) {
+                } else if (inputHatch instanceof Hatch_MultiInput multiInput) {
                     fluid = multiInput.getFluid(0);
                 } else {
                     fluid = inputHatch.getFillableStack();
@@ -1286,7 +1286,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public ItemStack[][] mOreDictAlt;
 
         /**
-         * Only for {@link GT_RecipeBuilder}.
+         * Only for {@link RecipeBuilder}.
          */
         GT_Recipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
             FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,

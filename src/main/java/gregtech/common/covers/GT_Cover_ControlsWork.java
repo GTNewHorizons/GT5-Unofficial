@@ -8,19 +8,19 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
+public class GT_Cover_ControlsWork extends CoverBehavior implements IControlsWorkCover {
 
     public GT_Cover_ControlsWork(ITexture coverTexture) {
         super(coverTexture);
@@ -177,7 +177,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ControlsWorkUIFactory(buildContext).createWindow();
     }
 
@@ -188,7 +188,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public ControlsWorkUIFactory(GT_CoverUIBuildContext buildContext) {
+        public ControlsWorkUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -207,17 +207,17 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
                                 .addToggleButton(
                                     0,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_REDSTONE_ON)
                                         .setPos(spaceX * 0, spaceY * 0))
                                 .addToggleButton(
                                     1,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
                                         .setPos(spaceX * 0, spaceY * 1))
                                 .addToggleButton(
                                     2,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_CROSS)
                                         .setPos(spaceX * 0, spaceY * 2))
                                 .setPos(startX, startY))
                 .widget(

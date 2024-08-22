@@ -8,7 +8,7 @@ import net.minecraft.util.StatCollector;
 
 import goodgenerator.client.GUI.GG_UITextures;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -56,7 +56,7 @@ public class GoodGeneratorRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> preciseAssemblerRecipes = RecipeMapBuilder
         .of("gg.recipe.precise_assembler")
         .maxIO(4, 1, 4, 0)
-        .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .progressBar(UITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .progressBarPos(85, 30)
         .neiTransferRect(80, 30, 35, 18)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("value.precise_assembler"))

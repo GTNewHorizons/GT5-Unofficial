@@ -1,9 +1,9 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.HOURS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -17,8 +17,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class Assembler implements Runnable {
 
@@ -41,7 +41,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),
                 Materials.Lapis.getPlates(9),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
             .fluidInputs(FluidRegistry.getFluidStack("ic2coolant", 1000))
@@ -101,7 +101,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
+                OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
             .fluidInputs(Materials.Plastic.getMolten(1152L))
@@ -111,7 +111,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
                 Materials.Aluminium.getPlates(1),
                 ItemList.Circuit_Board_Plastic.get(1L),
                 ItemList.Battery_RE_LV_Lithium.get(1L))
@@ -124,7 +124,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Parts_GlassFiber.get(32),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 8),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 8),
                 WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 2))
             .itemOutputs(
                 new ItemStack(
@@ -170,7 +170,7 @@ public class Assembler implements Runnable {
                             ((j + 1) * 16),
                             ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
                         WerkstoffLoader.CubicZirconia.get(OrePrefixes.lens),
-                        GT_OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
+                        OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
                         emitters[i].get(2 * (j + 1)),
                         sensors[i].get(2 * (j + 1)),
                         ItemList.TRANSFORMERS[4 + i].get(2 * (j + 1)))
@@ -186,7 +186,7 @@ public class Assembler implements Runnable {
                             ((j + 1) * 16),
                             ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
                         WerkstoffLoader.CubicZirconia.get(OrePrefixes.lens),
-                        GT_OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
+                        OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
                         emitters[i].get(2 * (j + 1)),
                         sensors[i].get(2 * (j + 1)),
                         ItemList.TRANSFORMERS[4 + i].get(2 * (j + 1)))
@@ -203,7 +203,7 @@ public class Assembler implements Runnable {
                             (j + 1) * 16,
                             ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
                         WerkstoffLoader.CubicZirconia.get(OrePrefixes.lens),
-                        GT_OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
+                        OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
                         sensors[i].get(2 * (j + 1)),
                         ItemList.HATCHES_ENERGY[4 + i].get(2 * (j + 1)))
                     .itemOutputs(eInput)
@@ -219,7 +219,7 @@ public class Assembler implements Runnable {
                             (j + 1) * 16,
                             ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
                         WerkstoffLoader.CubicZirconia.get(OrePrefixes.lens),
-                        GT_OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
+                        OreDictUnificator.get(prefixes[j], cables[i + 4], 8),
                         emitters[i].get(2 * (j + 1)),
                         ItemList.HATCHES_DYNAMO[4 + i].get(2 * (j + 1)))
                     .itemOutputs(eDynamo)
@@ -249,8 +249,8 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
+                OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
+                OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
             .itemOutputs(new ItemStack(GregTech_API.sBlockCasings3, 1, 12))
             .fluidInputs(Materials.Concrete.getMolten(1296))
             .duration(2 * SECONDS)
@@ -260,8 +260,8 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(GregTech_API.sBlockCasings3, 1, 12),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 6),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 24))
+                OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 6),
+                OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 24))
             .itemOutputs(new ItemStack(GregTech_API.sBlockCasings8, 1, 5))
             .fluidInputs(Materials.Lead.getMolten(864))
             .duration(10 * SECONDS)

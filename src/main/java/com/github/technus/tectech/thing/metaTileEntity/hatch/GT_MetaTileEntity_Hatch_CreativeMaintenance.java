@@ -17,10 +17,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 
-public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEntity_Hatch_Maintenance {
+public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends Hatch_Maintenance {
 
     private static Textures.BlockIcons.CustomIcon face;
 

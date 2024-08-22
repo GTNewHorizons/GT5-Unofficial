@@ -1,15 +1,15 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RecipeConstants;
 
 public class ProcessingWax implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -25,7 +25,7 @@ public class ProcessingWax implements gregtech.api.interfaces.IOreRecipeRegistra
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .metadata(FUEL_VALUE, 6)
                 .metadata(FUEL_TYPE, 5)
-                .addTo(GT_RecipeConstants.Fuel);
+                .addTo(RecipeConstants.Fuel);
         }
     }
 }

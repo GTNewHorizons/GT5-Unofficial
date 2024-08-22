@@ -3,9 +3,9 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
@@ -50,8 +50,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -59,10 +59,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -71,17 +71,16 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 
-public abstract class GT_MetaTileEntity_FusionComputer
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
+public abstract class GT_MetaTileEntity_FusionComputer extends EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
     implements ISurvivalConstructable, IAddUIWidgets, IOverclockDescriptionProvider {
 
     private final OverclockDescriber overclockDescriber;
@@ -222,8 +221,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addController("Fusion Reactor")
             .addInfo("Some kind of fusion reactor, maybe")
             .addSeparator()
@@ -242,7 +241,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy tHatch)) return false;
+        if (!(aMetaTileEntity instanceof Hatch_Energy tHatch)) return false;
         if (tHatch.mTier < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mEnergyHatches.add(tHatch);
@@ -251,7 +250,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     private boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch)) return false;
+        if (!(aMetaTileEntity instanceof Hatch_Input tHatch)) return false;
         if (tHatch.getTierForStructure() < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         tHatch.mRecipeMap = getRecipeMap();
@@ -262,7 +261,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
         if (aBaseMetaTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tHatch)) return false;
+        if (!(aMetaTileEntity instanceof Hatch_Output tHatch)) return false;
         if (tHatch.getTierForStructure() < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatches.add(tHatch);
@@ -320,14 +319,14 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
                 // When the fusion first loads and is still processing, it does the recipe check without consuming.
                 return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
             }
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
             }
 
@@ -365,17 +364,17 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+            for (Hatch_Energy hatch : this.mEnergyHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
         if (this.mOutputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (Hatch_Output hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
         if (this.mInputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (Hatch_Input hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
@@ -401,7 +400,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 if (mMachine) {
                     this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (this.mEnergyHatches != null) {
-                        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+                        for (Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
                             long energyToMove = GT_Values.V[tier()] / 16;
                             if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
                                 && tHatch.getBaseMetaTileEntity()
@@ -543,7 +542,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -567,7 +566,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_FUSION_COMPUTER);
+        return new GUITextureSet().setMainBackground(UITextures.BACKGROUND_FUSION_COMPUTER);
     }
 
     @Override
@@ -625,7 +624,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     .setProgress(
                         () -> (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity())
                     .setDirection(ProgressBar.Direction.RIGHT)
-                    .setTexture(GT_UITextures.PROGRESSBAR_STORED_EU, 147)
+                    .setTexture(UITextures.PROGRESSBAR_STORED_EU, 147)
                     .setPos(5, 156)
                     .setSize(147, 5))
             .widget(new TextWidget().setStringSupplier(() -> {
@@ -653,7 +652,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 new ButtonWidget().setNEITransferRect(
                     RecipeMaps.fusionRecipes.getFrontend()
                         .getUIProperties().neiTransferRectId)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NEI)
+                    .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_NEI)
                     .setPos(154, 4)
                     .setSize(18, 18));
     }

@@ -7,18 +7,18 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_DoesWork extends GT_CoverBehavior {
+public class GT_Cover_DoesWork extends CoverBehavior {
 
     private static int FLAG_INVERTED = 0x1;
     private static int FLAG_PROGRESS = 0x2;
@@ -140,7 +140,7 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new DoesWorkUIFactory(buildContext).createWindow();
     }
 
@@ -155,7 +155,7 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public DoesWorkUIFactory(GT_CoverUIBuildContext buildContext) {
+        public DoesWorkUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -174,17 +174,17 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                                 .addToggleButton(
                                     0,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_PROGRESS)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_PROGRESS)
                                         .setPos(spaceX * 0, spaceY * 0))
                                 .addToggleButton(
                                     1,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_CHECKMARK)
                                         .setPos(spaceX * 1, spaceY * 0))
                                 .addToggleButton(
                                     2,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                                         .setPos(spaceX * 2, spaceY * 0))
                                 .addToggleButton(
                                     3,

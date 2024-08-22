@@ -13,10 +13,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
-public class GT_Cover_Vent extends GT_CoverBehavior {
+public class GT_Cover_Vent extends CoverBehavior {
 
     private final int mEfficiency;
     private final Fluid IC2_HOT_COOLANT = FluidRegistry.getFluid("ic2hotcoolant");

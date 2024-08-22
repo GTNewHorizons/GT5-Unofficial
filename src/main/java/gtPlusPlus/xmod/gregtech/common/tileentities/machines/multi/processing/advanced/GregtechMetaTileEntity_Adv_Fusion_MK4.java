@@ -13,15 +13,15 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -33,7 +33,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     public static final Method mUpdateHatchTexture;
 
     static {
-        mUpdateHatchTexture = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);
+        mUpdateHatchTexture = ReflectionUtils.getMethod(Hatch.class, "updateTexture", int.class);
     }
 
     public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
@@ -50,8 +50,8 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A BLUE GIANT")
             .addInfo("Controller block for the Fusion Reactor Mk IV")
@@ -162,17 +162,17 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     public boolean turnCasingActive(final boolean status) {
         try {
             if (this.mEnergyHatches != null) {
-                for (final GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+                for (final Hatch_Energy hatch : this.mEnergyHatches) {
                     mUpdateHatchTexture.invoke(hatch, (status ? TAE.getIndexFromPage(2, 14) : 53));
                 }
             }
             if (this.mOutputHatches != null) {
-                for (final GT_MetaTileEntity_Hatch_Output hatch2 : this.mOutputHatches) {
+                for (final Hatch_Output hatch2 : this.mOutputHatches) {
                     mUpdateHatchTexture.invoke(hatch2, (status ? TAE.getIndexFromPage(2, 14) : 53));
                 }
             }
             if (this.mInputHatches != null) {
-                for (final GT_MetaTileEntity_Hatch_Input hatch3 : this.mInputHatches) {
+                for (final Hatch_Input hatch3 : this.mInputHatches) {
                     mUpdateHatchTexture.invoke(hatch3, (status ? TAE.getIndexFromPage(2, 14) : 53));
                 }
             }

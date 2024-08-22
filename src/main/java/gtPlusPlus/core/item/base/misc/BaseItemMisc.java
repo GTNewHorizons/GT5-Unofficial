@@ -17,7 +17,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -53,7 +53,7 @@ public class BaseItemMisc extends Item {
             }
         }
         GameRegistry.registerItem(this, this.unlocalName);
-        GT_OreDictUnificator.registerOre(miscType.getOreDictPrefix() + unlocalName, ItemUtils.getSimpleStack(this));
+        OreDictUnificator.registerOre(miscType.getOreDictPrefix() + unlocalName, ItemUtils.getSimpleStack(this));
     }
 
     private String getCorrectTextures() {

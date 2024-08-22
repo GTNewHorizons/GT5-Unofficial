@@ -50,8 +50,8 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.GT_GUIColorOverride;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.GUIColorOverride;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.ItemData;
@@ -63,10 +63,10 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
 
@@ -113,8 +113,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
      */
     private NEIHandlerAbsoluteTooltip recipeNameTooltip;
 
-    protected final GT_GUIColorOverride colorOverride = GT_GUIColorOverride
-        .get(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
+    protected final GUIColorOverride colorOverride = GUIColorOverride
+        .get(UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
     private int neiTextColorOverride = -1;
 
     public GT_NEI_DefaultHandler(RecipeCategory recipeCategory) {
@@ -236,15 +236,15 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack aResult) {
-        ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
+        ItemData tPrefixMaterial = OreDictUnificator.getAssociation(aResult);
 
         ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
-        tResults.add(GT_OreDictUnificator.get(true, aResult));
+        tResults.add(OreDictUnificator.get(true, aResult));
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed)
             && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-                tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+                tResults.add(OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
         if (aResult.getUnlocalizedName()
@@ -301,13 +301,13 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack aInput) {
-        ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
+        ItemData tPrefixMaterial = OreDictUnificator.getAssociation(aInput);
         ArrayList<ItemStack> tInputs = new ArrayList<>();
         tInputs.add(aInput);
-        tInputs.add(GT_OreDictUnificator.get(false, aInput));
+        tInputs.add(OreDictUnificator.get(false, aInput));
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-                tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+                tInputs.add(OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
         addFluidStacks(aInput, tInputs);
@@ -459,8 +459,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             overclockDescriber = new EUNoOverclockDescriber((byte) 1, uiProperties.amperage);
         }
 
-        GT_OverclockCalculator calculator = overclockDescriber.createCalculator(
-            new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+        OverclockCalculator calculator = overclockDescriber.createCalculator(
+            new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDuration(recipe.mDuration),
             recipe);
         calculator.calculate();
@@ -528,7 +528,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
         public FixedPositionedStack(Object object, boolean renderRealStackSize, int x, int y, int aChance,
             boolean aUnificate) {
-            super(aUnificate ? GT_OreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
+            super(aUnificate ? OreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
             this.mChance = aChance;
             realStackSize = item != null ? item.stackSize : 0;
             this.renderRealStackSize = renderRealStackSize;

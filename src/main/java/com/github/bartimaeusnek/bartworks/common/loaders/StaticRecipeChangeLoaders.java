@@ -59,9 +59,9 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class StaticRecipeChangeLoaders {
 
@@ -239,10 +239,10 @@ public class StaticRecipeChangeLoaders {
         }
 
         for (OrePrefixes prefixes : OrePrefixes.values()) if (werkstoff.hasItemType(prefixes)) {
-            GT_OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+            OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
-                GT_OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
+                OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
             }
         }
     }
@@ -257,9 +257,9 @@ public class StaticRecipeChangeLoaders {
 
         for (OrePrefixes prefixes : OrePrefixes.values())
             if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
-                GT_OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+                OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                    OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
                 }
             }
     }
@@ -309,9 +309,8 @@ public class StaticRecipeChangeLoaders {
                                 .anyMatch(s -> GT_Utility.areStacksEqual(s, tmpInput))
                                 || BW_Util.checkStackAndPrefix(recipe.mInputs[i])
                                     && BW_Util.checkStackAndPrefix(baseRe.mInputs[i])
-                                    && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial
-                                        .equals(
-                                            GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
+                                    && OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial
+                                        .equals(OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
                                     && GT_Utility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0]))) {
                             toAdd.add(recipe.mOutputs[0]);
                             repToAdd.put(tag, recipe);
@@ -456,10 +455,8 @@ public class StaticRecipeChangeLoaders {
                         && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(14), stack)
                         && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(19), stack)) {
                             if (BW_Util.checkStackAndPrefix(stack)) circuitConfiguration = (byte) (OrePrefixes.dustSmall
-                                .equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-                                    ? 4
-                                    : OrePrefixes.dustTiny.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-                                        ? 9
+                                .equals(OreDictUnificator.getAssociation(stack).mPrefix) ? 4
+                                    : OrePrefixes.dustTiny.equals(OreDictUnificator.getAssociation(stack).mPrefix) ? 9
                                         : 1);
                             inputs.add(stack);
                         }

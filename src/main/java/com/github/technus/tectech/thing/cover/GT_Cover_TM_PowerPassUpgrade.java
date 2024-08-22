@@ -7,9 +7,9 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 
-public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
+public class GT_Cover_TM_PowerPassUpgrade extends CoverBehavior {
 
     public GT_Cover_TM_PowerPassUpgrade() {}
 

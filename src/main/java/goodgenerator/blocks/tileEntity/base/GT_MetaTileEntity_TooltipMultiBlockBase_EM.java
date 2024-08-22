@@ -10,12 +10,12 @@ import org.lwjgl.input.Keyboard;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 
 import gregtech.api.interfaces.ISecondaryDescribable;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
     implements ISecondaryDescribable {
 
-    private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltips = new ConcurrentHashMap<>();
+    private static final Map<Integer, MultiblockTooltipBuilder> tooltips = new ConcurrentHashMap<>();
 
     protected GT_MetaTileEntity_TooltipMultiBlockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -25,9 +25,9 @@ public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_Meta
         super(aName);
     }
 
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+    protected MultiblockTooltipBuilder getTooltip() {
         int tId = getBaseMetaTileEntity().getMetaTileID();
-        GT_Multiblock_Tooltip_Builder tooltip = tooltips.get(tId);
+        MultiblockTooltipBuilder tooltip = tooltips.get(tId);
         if (tooltip == null) {
             tooltip = createTooltip();
             tooltips.put(tId, tooltip);
@@ -35,7 +35,7 @@ public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_Meta
         return tooltip;
     }
 
-    protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
+    protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override
     public String[] getDescription() {

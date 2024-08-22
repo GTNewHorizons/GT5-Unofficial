@@ -81,21 +81,21 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
+public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
     IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceViewable {
 
@@ -692,7 +692,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 .startFromSlot(0)
                 .endAtSlot(MAX_PATTERN_COUNT - 1)
                 .phantom(false)
-                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
+                .background(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_PATTERN_ME)
                 .widgetCreator(slot -> new SlotWidget(slot) {
 
                     @Override
@@ -715,7 +715,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 }
             })
                 .setPlayClickSound(true)
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE)
+                .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_PLUS_LARGE)
                 .addTooltips(ImmutableList.of("Place manual items"))
                 .setSize(16, 16)
                 .setPos(170, 45))
@@ -725,7 +725,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 }
             })
                 .setPlayClickSound(true)
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
                 .setSize(16, 16)
                 .setPos(170, 28));
@@ -969,7 +969,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         // make sure the manual window is within the parent window

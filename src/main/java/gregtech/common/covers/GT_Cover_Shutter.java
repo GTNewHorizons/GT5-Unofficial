@@ -7,18 +7,18 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_Shutter extends GT_CoverBehavior {
+public class GT_Cover_Shutter extends CoverBehavior {
 
     public GT_Cover_Shutter(ITexture coverTexture) {
         super(coverTexture);
@@ -133,7 +133,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ShutterUIFactory(buildContext).createWindow();
     }
 
@@ -144,7 +144,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public ShutterUIFactory(GT_CoverUIBuildContext buildContext) {
+        public ShutterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

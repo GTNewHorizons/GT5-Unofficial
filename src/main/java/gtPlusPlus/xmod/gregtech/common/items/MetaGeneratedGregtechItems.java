@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
-import static gregtech.api.util.GT_RecipeConstants.RTG_DURATION_IN_DAYS;
+import static gregtech.api.util.RecipeConstants.RTG_DURATION_IN_DAYS;
 import static gregtech.client.GT_TooltipHandler.Tier.EV;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;

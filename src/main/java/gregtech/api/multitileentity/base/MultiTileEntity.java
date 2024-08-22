@@ -43,7 +43,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
@@ -52,8 +52,8 @@ import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.Packet_MultiTileEntity;
+import gregtech.api.net.Packet_New;
 import gregtech.api.net.data.CommonData;
 import gregtech.api.net.data.CoordinateData;
 import gregtech.api.net.data.MultiTileEntityData;
@@ -105,9 +105,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     private UUID ownerUUID = GT_Utility.defaultUuid;
     private boolean lockUpgrade = false;
 
-    private final GT_Packet_MultiTileEntity fullPacket = new GT_Packet_MultiTileEntity(false);
-    private final GT_Packet_MultiTileEntity timedPacket = new GT_Packet_MultiTileEntity(false);
-    private final GT_Packet_MultiTileEntity graphicPacket = new GT_Packet_MultiTileEntity(false);
+    private final Packet_MultiTileEntity fullPacket = new Packet_MultiTileEntity(false);
+    private final Packet_MultiTileEntity timedPacket = new Packet_MultiTileEntity(false);
+    private final Packet_MultiTileEntity graphicPacket = new Packet_MultiTileEntity(false);
 
     public MultiTileEntity(boolean isTicking) {
         this.isTicking = isTicking;
@@ -867,7 +867,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             return false;
         }
 
-        GT_UIInfos.openGTTileEntityUI(this, aPlayer);
+        UIInfos.openGTTileEntityUI(this, aPlayer);
         System.out.println("Trying to open a UI");
         return true;
     }
@@ -1033,16 +1033,16 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     /**
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
+    public Packet_MultiTileEntity getClientDataPacket() {
 
-        final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(false);
+        final Packet_MultiTileEntity packet = new Packet_MultiTileEntity(false);
         return packet;
     }
 
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
         if (worldObj == null || worldObj.isRemote) return;
-        final GT_Packet_New tPacket = getClientDataPacket();
+        final Packet_New tPacket = getClientDataPacket();
         if (aPlayer == null) {
             GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, tPacket, getXCoord(), getZCoord());
         } else {
@@ -1339,20 +1339,20 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
+    public void getFullPacketData(Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
         packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
-    public void getGraphicPacketData(GT_Packet_MultiTileEntity packet) {
+    public void getGraphicPacketData(Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
-    public void getTimedPacketData(GT_Packet_MultiTileEntity packet) {
+    public void getTimedPacketData(Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }

@@ -2,12 +2,12 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
@@ -36,15 +36,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.Hatch_Muffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
@@ -99,8 +99,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     protected abstract boolean requiresOutputHatch();
 
     @Override
-    protected final GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected final MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the XL " + getTurbineType() + " Turbine")
             .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
@@ -204,7 +204,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
 
     public final double getMufflerReduction() {
         double totalReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
             totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
         }
         return totalReduction / 4;
@@ -256,7 +256,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     public boolean addTurbineHatch(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
@@ -307,7 +307,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     public abstract int getFuelValue(FluidStack aLiquid);
 
     public static boolean isValidTurbine(ItemStack aTurbine) {
-        return (aTurbine != null && aTurbine.getItem() instanceof GT_MetaGenerated_Tool
+        return (aTurbine != null && aTurbine.getItem() instanceof MetaGeneratedTool
             && aTurbine.getItemDamage() >= 170
             && aTurbine.getItemDamage() <= 176);
     }
@@ -340,7 +340,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         AutoMap<Materials> aTurbineMats = new AutoMap<>();
         AutoMap<Integer> aTurbineSizes = new AutoMap<>();
         for (GT_MetaTileEntity_Hatch_Turbine aHatch : aTurbineAssemblies) {
-            aTurbineMats.add(GT_MetaGenerated_Tool.getPrimaryMaterial(aHatch.getTurbine()));
+            aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterial(aHatch.getTurbine()));
             aTurbineSizes.add(getTurbineSize(aHatch.getTurbine()));
         }
         Materials aBaseMat = aTurbineMats.get(0);
@@ -411,7 +411,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
             return;
         }
         startRecipeProcessing();
-        for (GT_MetaTileEntity_Hatch_InputBus aInputBus : this.mInputBusses) {
+        for (Hatch_InputBus aInputBus : this.mInputBusses) {
             for (int slot = aInputBus.getSizeInventory() - 1; slot >= 0; slot--) {
                 ItemStack aStack = aInputBus.getStackInSlot(slot);
                 if (aStack != null && GT_Utility.areStacksEqual(aStack, aTurbine)) {
@@ -465,21 +465,20 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                     ItemStack aStack = getFullTurbineAssemblies().get(0)
                         .getTurbine();
                     aTotalBaseEff += GT_Utility.safeInt(
-                        (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
+                        (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
                     aTotalOptimalFlow += GT_Utility.safeInt(
                         (long) Math.max(
                             Float.MIN_NORMAL,
-                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                * 50)
+                            ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
+                                .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed * 50)
                             * getSpeedMultiplier());
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+                    flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(aStack).mSteamMultiplier;
+                    flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(aStack).mGasMultiplier;
+                    flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
@@ -598,8 +597,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         for (GT_MetaTileEntity_Hatch_Turbine aHatch : this.getFullTurbineAssemblies()) {
             ItemStack aTurbine = aHatch.getTurbine();
             tDura = MathUtils.safeInt(
-                (long) (100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(aTurbine)
-                    * (GT_MetaGenerated_Tool.getToolDamage(aTurbine)) + 1));
+                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(aTurbine)
+                    * (MetaGeneratedTool.getToolDamage(aTurbine)) + 1));
             aTurbineDamage.append(EnumChatFormatting.RED)
                 .append(GT_Utility.formatNumbers(tDura))
                 .append(EnumChatFormatting.RESET)
@@ -608,7 +607,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -680,7 +679,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     public boolean polluteEnvironment(int aPollutionLevel) {
         if (this.requiresMufflers()) {
             mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
-            for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            for (Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
                 if (mPollution >= 10000) {
                     if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10000)) {
                         mPollution -= 10000;
@@ -828,7 +827,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
         int injected = 0;
         long aFirstVoltageFound = -1;
-        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
+        for (Hatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             // Check against voltage to check when hatch mixing
             if (aFirstVoltageFound == -1) {
@@ -841,7 +840,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
+        for (Hatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);

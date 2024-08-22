@@ -18,11 +18,11 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -30,7 +30,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_FacadeBase.FacadeData> {
+public abstract class GT_Cover_FacadeBase extends CoverBehaviorBase<GT_Cover_FacadeBase.FacadeData> {
 
     /**
      * This is the Dummy, if there is a generic Cover without behavior
@@ -303,7 +303,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new FacadeBaseUIFactory(buildContext).createWindow();
     }
 
@@ -314,7 +314,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public FacadeBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+        public FacadeBaseUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

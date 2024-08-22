@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 
 /**
@@ -905,7 +905,7 @@ public enum GregtechItemList implements GregtechItemContainer {
         if (GT_Utility.isStackInvalid(this.mStack)) {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmount(aAmount, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -916,7 +916,7 @@ public enum GregtechItemList implements GregtechItemContainer {
         if (GT_Utility.isStackInvalid(this.mStack)) {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, W, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -927,7 +927,7 @@ public enum GregtechItemList implements GregtechItemContainer {
         if (GT_Utility.isStackInvalid(this.mStack)) {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, 0, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -939,7 +939,7 @@ public enum GregtechItemList implements GregtechItemContainer {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
         return GT_Utility
-            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
+            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -970,7 +970,7 @@ public enum GregtechItemList implements GregtechItemContainer {
         if (GT_Utility.isStackInvalid(this.mStack)) {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -979,7 +979,7 @@ public enum GregtechItemList implements GregtechItemContainer {
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         }
         for (final Object tOreName : aOreNames) {
-            GT_OreDictUnificator.registerOre(tOreName, this.get(1));
+            OreDictUnificator.registerOre(tOreName, this.get(1));
         }
         return this;
     }
@@ -990,7 +990,7 @@ public enum GregtechItemList implements GregtechItemContainer {
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         }
         for (final Object tOreName : aOreNames) {
-            GT_OreDictUnificator.registerOre(tOreName, this.getWildcard(1));
+            OreDictUnificator.registerOre(tOreName, this.getWildcard(1));
         }
         return this;
     }

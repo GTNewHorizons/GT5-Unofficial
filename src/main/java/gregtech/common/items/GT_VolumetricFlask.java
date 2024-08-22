@@ -42,13 +42,13 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
+import gregtech.api.items.ItemGeneric;
 import gregtech.api.util.GT_Utility;
 import ic2.core.util.LiquidUtil;
 
-public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, IItemWithModularUI {
+public class GT_VolumetricFlask extends ItemGeneric implements IFluidContainerItem, IItemWithModularUI {
 
     private final int maxCapacity;
     private final String unlocalFlaskName;
@@ -67,7 +67,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null)
-            GT_UIInfos.openPlayerHeldItemUI(player);
+            UIInfos.openPlayerHeldItemUI(player);
         return super.onItemRightClick(stack, world, player);
     }
 
@@ -335,7 +335,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     .setTextColor(Color.WHITE.dark(1))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                     .setPos(8, 8)
                     .setSize(77, 12))
                 .widget(new TextWidget("Capacity").setPos(88, 10))

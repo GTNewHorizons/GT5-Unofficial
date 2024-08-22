@@ -25,10 +25,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.ItemGeneric;
 import gregtech.api.util.GT_Utility;
 
-public class GT_FluidDisplayItem extends GT_Generic_Item {
+public class GT_FluidDisplayItem extends ItemGeneric {
 
     private static final Map<Fluid, String> sFluidTooltips = new HashMap<>();
 

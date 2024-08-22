@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
@@ -27,14 +27,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
+import gregtech.api.metatileentity.implementations.CubicMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_MetaTileEntity_VacuumFreezer
-    extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
+public class GT_MetaTileEntity_VacuumFreezer extends CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
 
     public GT_MetaTileEntity_VacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -50,8 +49,8 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer")
             .addInfo("Controller Block for the Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
@@ -117,12 +116,12 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    protected IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement() {
+    protected IStructureElement<CubicMultiBlockBase<?>> getCasingElement() {
         return StructureUtility.ofBlock(GregTech_API.sBlockCasings2, 1);
     }
 
     @Override
-    protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
+    protected List<IHatchElement<? super CubicMultiBlockBase<?>>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy);
     }
 

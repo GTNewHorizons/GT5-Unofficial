@@ -93,10 +93,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_JubilanceMegaApiary;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.JubilanceMegaApiary;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.bees.GT_AlleleBeeSpecies;
 import gregtech.common.bees.GT_Bee_Mutation;
 import gregtech.common.items.CombType;
@@ -268,8 +268,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     FERTILIZER(GT_BranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525),
         beeSpecies -> {
             beeSpecies.addProduct(GT_ModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
-            beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
-            beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
+            beeSpecies.addSpecialty(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
+            beeSpecies.addSpecialty(OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
             beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
             beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
             beeSpecies.setHumidity(DAMP);
@@ -668,7 +668,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALT), 0.35f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LITHIUM), 0.05f);
-        beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 1L), 0.1f);
+        beeSpecies.addSpecialty(OreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 1L), 0.1f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(WARM);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
@@ -1250,7 +1250,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AWAKENEDDRACONIUM), 0.20f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(HELLISH);
-        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
     }, template -> {
         AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_3);
         AlleleHelper.instance.set(template, CAVE_DWELLING, false);
@@ -1372,7 +1372,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();
             // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-            beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+            beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
         }, template -> {
             AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
             AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
@@ -2324,7 +2324,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();
             // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-            beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+            beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(NEUTRONIUM, BARNARDAF, 7, 10);
             if (Avaritia.isModLoaded())
@@ -2338,7 +2338,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();
             // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-            beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+            beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
         }, template -> {
             AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "blindness"));
@@ -2356,7 +2356,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
         // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 10);
         if (AvaritiaAddons.isModLoaded()) {
@@ -2369,7 +2369,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
-        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
     }, template -> {
         AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
@@ -2437,7 +2437,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
         // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, SNOWQUEEN, 2);
         tMutation.restrictTemperature(ICY);

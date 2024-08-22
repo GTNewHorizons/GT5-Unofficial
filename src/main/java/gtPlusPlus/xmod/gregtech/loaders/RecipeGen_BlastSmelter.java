@@ -15,8 +15,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RecipeBuilder;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeCategories;
@@ -288,7 +288,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
         }
 
         // Adds Recipe
-        GT_RecipeBuilder builder = GT_Values.RA.stdBuilder();
+        RecipeBuilder builder = GT_Values.RA.stdBuilder();
         List<ItemStack> inputs = new ArrayList<>(Arrays.asList(components));
         inputs.removeIf(Objects::isNull);
         components = inputs.toArray(new ItemStack[0]);

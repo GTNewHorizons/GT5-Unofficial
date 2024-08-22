@@ -32,7 +32,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.net.GT_Packet_UpdateItem;
+import gregtech.api.net.Packet_UpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -192,7 +192,7 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
     private static void onConfigured(ItemStack stack) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setByte("meta", (byte) stack.getItemDamage());
-        GT_Values.NW.sendToServer(new GT_Packet_UpdateItem(tag));
+        GT_Values.NW.sendToServer(new Packet_UpdateItem(tag));
     }
 
     private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(

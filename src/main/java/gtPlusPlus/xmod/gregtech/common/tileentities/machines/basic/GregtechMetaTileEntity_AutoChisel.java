@@ -13,11 +13,11 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GT_Utility;
@@ -25,7 +25,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
-public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMachine {
+public class GregtechMetaTileEntity_AutoChisel extends BasicMachine {
 
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
@@ -161,8 +161,8 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
         return DID_NOT_FIND_RECIPE;
     }
 
-    private static final FallbackableUITexture progressBarTexture = GT_UITextures
-        .fallbackableProgressbar("auto_chisel", GT_UITextures.PROGRESSBAR_COMPRESS);
+    private static final FallbackableUITexture progressBarTexture = UITextures
+        .fallbackableProgressbar("auto_chisel", UITextures.PROGRESSBAR_COMPRESS);
 
     @Override
     protected BasicUIProperties getUIProperties() {
@@ -174,7 +174,7 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     @Override
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos)
-            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COMPRESSOR);
+            .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_COMPRESSOR);
     }
 
     @Override

@@ -6,11 +6,11 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_PacketTypes;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.PacketTypes;
+import gregtech.api.net.Packet_New;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Packet_Ores extends GT_Packet_New {
+public class GT_Packet_Ores extends Packet_New {
 
     private int mX;
     private int mZ;
@@ -38,7 +38,7 @@ public class GT_Packet_Ores extends GT_Packet_New {
     }
 
     @Override
-    public GT_Packet_New decode(ByteArrayDataInput aData) {
+    public Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_Ores(aData.readInt(), aData.readShort(), aData.readInt(), aData.readShort());
     }
 
@@ -57,6 +57,6 @@ public class GT_Packet_Ores extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return GT_PacketTypes.ORES.id;
+        return PacketTypes.ORES.id;
     }
 }

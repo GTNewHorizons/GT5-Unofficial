@@ -30,7 +30,7 @@ import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
@@ -209,11 +209,11 @@ public class EyeOfHarmonyRecipe {
 
         switch (key) {
             case "Ne":
-                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
+                return OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
             case "ED":
             case "VA":
             case "EA":
-                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
+                return OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
             case "Mo":
                 return getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1);
             case "De":
@@ -268,7 +268,7 @@ public class EyeOfHarmonyRecipe {
             case "VB":
                 return getModItem(NewHorizonsCoreMod.ID, "item.VegaBStoneDust", 1);
             default:
-                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
+                return OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
         }
     }
 

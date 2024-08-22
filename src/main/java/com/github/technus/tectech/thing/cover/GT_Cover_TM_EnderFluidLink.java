@@ -20,17 +20,17 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
+public class GT_Cover_TM_EnderFluidLink extends CoverBehavior {
 
     private static final int L_PER_TICK = 8000;
     private static final int IMPORT_EXPORT_MASK = 0b0001;
@@ -115,7 +115,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         // Only open gui if we're placed on a fluid tank
         if (buildContext.getTile() instanceof IFluidHandler) {
             return new EnderFluidLinkUIFactory(buildContext).createWindow();
@@ -134,7 +134,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         private static final int IMPORT_BUTTON_ID = 2;
         private static final int EXPORT_BUTTON_ID = 3;
 
-        public EnderFluidLinkUIFactory(GT_CoverUIBuildContext buildContext) {
+        public EnderFluidLinkUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -167,7 +167,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
                 .setTextColor(Color.WHITE.dark(1))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setFocusOnGuiOpen(true)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                .setBackground(UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0)
                 .setSize(SPACE_X * 5 - 8, 12))
                 .widget(
@@ -181,25 +181,25 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
                                 .addToggleButton(
                                     PUBLIC_BUTTON_ID,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_WHITELIST)
                                         .addTooltip(GT_Utility.trans("326", "Public"))
                                         .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
                                 .addToggleButton(
                                     PRIVATE_BUTTON_ID,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_BLACKLIST)
                                         .addTooltip(GT_Utility.trans("327", "Private"))
                                         .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
                                 .addToggleButton(
                                     IMPORT_BUTTON_ID,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_IMPORT)
                                         .addTooltip(GT_Utility.trans("007", "Import"))
                                         .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
                                 .addToggleButton(
                                     EXPORT_BUTTON_ID,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                    widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_EXPORT)
                                         .addTooltip(GT_Utility.trans("006", "Export"))
                                         .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
                 .widget(

@@ -17,14 +17,14 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.metatileentity.implementations.BasicBatteryBuffer;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -33,7 +33,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
+public class GT_Cover_EUMeter extends CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
 
     public GT_Cover_EUMeter(ITexture coverTexture) {
         super(EUMeterData.class, coverTexture);
@@ -173,7 +173,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new EUMeterUIFactory(buildContext).createWindow();
     }
 
@@ -184,7 +184,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public EUMeterUIFactory(GT_CoverUIBuildContext buildContext) {
+        public EUMeterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -209,7 +209,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                             .addTooltip(
                                 state -> EnergyType.getEnergyType(state)
                                     .getTooltip())
-                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                            .setStaticTexture(UITextures.OVERLAY_BUTTON_CYCLIC)
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         CoverDataFollower_ToggleButtonWidget.ofRedstone(),
@@ -352,7 +352,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             GT_Utility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
                 if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
+                    if (mte instanceof BasicBatteryBuffer buffer) {
                         return buffer.getStoredEnergy()[0];
                     }
                 }
@@ -360,7 +360,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             }, (te) -> {
                 if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
+                    if (mte instanceof BasicBatteryBuffer buffer) {
                         return buffer.getStoredEnergy()[1];
                     }
                 }

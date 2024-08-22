@@ -11,18 +11,18 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
-public class GT_Cover_Pump extends GT_CoverBehavior {
+public class GT_Cover_Pump extends CoverBehavior {
 
     public final int mTransferRate;
 
@@ -165,7 +165,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new PumpUIFactory(buildContext).createWindow();
     }
 
@@ -179,7 +179,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
         private CoverDataFollower_ToggleButtonWidget<ISerializableObject.LegacyCoverData> mBlockWidget = null;
         private CoverDataFollower_ToggleButtonWidget<ISerializableObject.LegacyCoverData> mAllowWidget = null;
 
-        public PumpUIFactory(GT_CoverUIBuildContext buildContext) {
+        public PumpUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -197,32 +197,32 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                             .addToggleButton(
                                 0,
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_EXPORT)
                                     .addTooltip(GT_Utility.trans("006", "Export"))
                                     .setPos(spaceX * 0, spaceY * 0))
                             .addToggleButton(
                                 1,
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_IMPORT)
                                     .addTooltip(GT_Utility.trans("007", "Import"))
                                     .setPos(spaceX * 1, spaceY * 0))
                             .addToggleButton(
                                 2,
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_CHECKMARK)
                                     .addTooltip(GT_Utility.trans("224", "Always On"))
                                     .setPos(spaceX * 0, spaceY * 1))
                             .addToggleButton(
                                 3,
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                                widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
                                     .addTooltip(GT_Utility.trans("343", "Use Machine Processing State"))
                                     .setPos(spaceX * 1, spaceY * 1))
                             .addToggleButton(
                                 4,
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                                 widget -> widget
-                                    .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                                    .setStaticTexture(UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
                                     .addTooltip(GT_Utility.trans("343.1", "Use Inverted Machine Processing State"))
                                     .setPos(spaceX * 2, spaceY * 1))
                             .addToggleButton(5, CoverDataFollower_ToggleButtonWidget.ofDisableable(), widget -> {
@@ -230,8 +230,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                                 widget.setTextureGetter(i -> {
                                     ISerializableObject.LegacyCoverData coverData = getCoverData();
                                     return coverData == null || coverData.get() % 2 == 0
-                                        ? GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT
-                                        : GT_UITextures.OVERLAY_BUTTON_ALLOW_OUTPUT;
+                                        ? UITextures.OVERLAY_BUTTON_ALLOW_INPUT
+                                        : UITextures.OVERLAY_BUTTON_ALLOW_OUTPUT;
                                 })
                                     .dynamicTooltip(() -> {
                                         ISerializableObject.LegacyCoverData coverData = getCoverData();
@@ -247,8 +247,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                                 widget.setTextureGetter(i -> {
                                     ISerializableObject.LegacyCoverData coverData = getCoverData();
                                     return coverData == null || coverData.get() % 2 == 0
-                                        ? GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT
-                                        : GT_UITextures.OVERLAY_BUTTON_BLOCK_OUTPUT;
+                                        ? UITextures.OVERLAY_BUTTON_BLOCK_INPUT
+                                        : UITextures.OVERLAY_BUTTON_BLOCK_OUTPUT;
                                 })
                                     .dynamicTooltip(() -> {
                                         ISerializableObject.LegacyCoverData coverData = getCoverData();

@@ -34,16 +34,16 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
+import gregtech.api.metatileentity.implementations.BasicHull;
+import gregtech.api.metatileentity.implementations.TooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiBlockBase
+public class GT_MetaTileEntity_Cleanroom extends TooltipMultiBlockBase
     implements IConstructable, ISecondaryDescribable, ICleanroom {
 
     private final Set<ICleanroomReceiver> cleanroomReceivers = new HashSet<>();
@@ -84,8 +84,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cleanroom")
             .addInfo("Controller block for the Cleanroom")
             .addInfo("Consumes 40 EU/t when first turned on")
@@ -277,7 +277,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                             }
                                             return false;
                                         }
-                                        if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
+                                        if (aMetaTileEntity instanceof BasicHull) {
                                             mHullCount++;
                                         } else {
                                             if (debugCleanroom) {

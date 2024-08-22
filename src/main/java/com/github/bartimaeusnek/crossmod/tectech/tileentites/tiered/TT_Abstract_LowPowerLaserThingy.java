@@ -23,10 +23,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 
-public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_TieredMachineBlock
-    implements LowPowerLaser {
+public abstract class TT_Abstract_LowPowerLaserThingy extends TieredMachineBlock implements LowPowerLaser {
 
     protected long AMPERES;
 

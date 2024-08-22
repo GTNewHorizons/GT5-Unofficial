@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -42,8 +42,8 @@ public class BaseItemTCShard extends Item {
         this.setMaxStackSize(64);
         this.setTextureName(GTPlusPlus.ID + ":" + "itemShard");
         GameRegistry.registerItem(this, this.unlocalName);
-        GT_OreDictUnificator.registerOre("shard" + DisplayName, ItemUtils.getSimpleStack(this));
-        GT_OreDictUnificator.registerOre("gemInfused" + DisplayName, ItemUtils.getSimpleStack(this));
+        OreDictUnificator.registerOre("shard" + DisplayName, ItemUtils.getSimpleStack(this));
+        OreDictUnificator.registerOre("gemInfused" + DisplayName, ItemUtils.getSimpleStack(this));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

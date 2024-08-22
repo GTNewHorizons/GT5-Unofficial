@@ -30,13 +30,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.BlockGeneric;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 
-public class GT_Block_Reinforced extends GT_Generic_Block {
+public class GT_Block_Reinforced extends BlockGeneric {
 
     public GT_Block_Reinforced(String aName) {
         super(GT_Item_Storage.class, aName, new GT_Material_Reinforced());

@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import static gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial;
+import static gregtech.api.items.MetaGeneratedTool.getPrimaryMaterial;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +29,7 @@ import appeng.util.Platform;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.common.items.behaviors.Behaviour_Switch_Mode;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
@@ -150,7 +150,7 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new Behaviour_Switch_Mode());
         aItem.addItemBehavior(aID, new Behaviour_Wrench(100));
     }

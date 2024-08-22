@@ -13,10 +13,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
-public class GT_Cover_Drain extends GT_CoverBehavior {
+public class GT_Cover_Drain extends CoverBehavior {
 
     public GT_Cover_Drain(ITexture coverTexture) {
         super(coverTexture);

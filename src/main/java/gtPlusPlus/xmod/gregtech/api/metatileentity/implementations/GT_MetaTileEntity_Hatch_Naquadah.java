@@ -14,13 +14,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
-public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_Input {
+public class GT_MetaTileEntity_Hatch_Naquadah extends Hatch_Input {
 
     public final FluidStack[] mFluidsToUse = new FluidStack[3];
     public final int mFluidCapacity;

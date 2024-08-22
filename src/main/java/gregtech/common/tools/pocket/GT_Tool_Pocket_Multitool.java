@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.behaviors.Behaviour_Switch_Metadata;
 import gregtech.common.tools.GT_Tool;
 
@@ -29,11 +29,11 @@ public class GT_Tool_Pocket_Multitool extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
+        return MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         super.onStatsAddedToTool(aItem, aID);
         aItem.addItemBehavior(aID, new Behaviour_Switch_Metadata(mSwitchIndex, true, true));
     }

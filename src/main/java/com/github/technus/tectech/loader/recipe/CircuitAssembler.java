@@ -1,7 +1,7 @@
 package com.github.technus.tectech.loader.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -14,7 +14,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class CircuitAssembler implements Runnable {
 
@@ -32,7 +32,7 @@ public class CircuitAssembler implements Runnable {
                 ItemList.Circuit_Parts_CapacitorXSMD.get(16L),
                 ItemList.Circuit_Parts_DiodeXSMD.get(16L),
                 CustomItemList.DATApipe.get(4L),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 16))
+                OreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 16))
             .itemOutputs(ItemList.Circuit_OpticalProcessor.get(1L))
             .fluidInputs(new FluidStack(solderUEV, 288))
             .requiresCleanRoom()
@@ -43,8 +43,8 @@ public class CircuitAssembler implements Runnable {
         // Parametrizer Memory Card
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 4))
+                OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
+                OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
             .fluidInputs(Materials.Plastic.getMolten(72))
             .requiresCleanRoom()

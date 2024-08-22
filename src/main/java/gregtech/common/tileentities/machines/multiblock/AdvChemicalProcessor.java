@@ -45,13 +45,13 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.AdvChemicalProcessorProcessingLogic;
 
 public class AdvChemicalProcessor
@@ -178,8 +178,8 @@ public class AdvChemicalProcessor
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor")
             .addInfo("Controller block for the Advanced Chemical Processor")
             .addInfo("Does not lose efficiency when overclocked")
@@ -384,7 +384,7 @@ public class AdvChemicalProcessor
                             if (!widget.isClient()) widget.getContext()
                                 .openSyncedWindow(PROCESS_WINDOW_BASE_ID + processIndex);
                         })
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                    .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_WHITELIST)
                     .setSize(18, 18)
                     .setEnabled((widget -> processIndex < maxComplexParallels))
                     .setPos(20 * (i % 4) + 18, 18 + (i / 4) * 20));
@@ -396,7 +396,7 @@ public class AdvChemicalProcessor
                 .setTextColor(Color.WHITE.normal)
                 .setTextAlignment(Alignment.Center)
                 .addTooltip("Tier")
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                 .setSize(18, 18)
                 .setPos(130, 85));
         return child;
@@ -428,7 +428,7 @@ public class AdvChemicalProcessor
         builder.widget(
             new TextWidget("Process " + processIndex).setTextAlignment(Alignment.Center)
                 .setPos(13, 7));
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
             SlotGroup.ofItemHandler(processWhitelistInventoryHandlers.get(processIndex), 4)
                 .startFromSlot(0)

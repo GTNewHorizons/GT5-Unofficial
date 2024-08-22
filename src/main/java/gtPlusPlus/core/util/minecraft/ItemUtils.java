@@ -5,7 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -122,7 +122,7 @@ public class ItemUtils {
             if (em != null) {
 
                 final ItemStack metaStack = new ItemStack(em, 1, meta);
-                GT_OreDictUnificator.registerOre(oreDictName, metaStack);
+                OreDictUnificator.registerOre(oreDictName, metaStack);
 
             }
         } catch (final NullPointerException e) {
@@ -353,7 +353,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getGregtechDust(final Materials material, final int amount) {
-        final ItemStack returnValue = GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L);
+        final ItemStack returnValue = OreDictUnificator.get(OrePrefixes.dust, material, 1L);
         if (returnValue != null) {
             if (ItemUtils.checkForInvalidItems(returnValue)) {
                 return returnValue.copy();
@@ -657,7 +657,7 @@ public class ItemUtils {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
         }
-        ItemStack aGtStack = GT_OreDictUnificator.get(mPrefix, mMat, mAmount);
+        ItemStack aGtStack = OreDictUnificator.get(mPrefix, mMat, mAmount);
         if (aGtStack == null) {
             Logger
                 .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");

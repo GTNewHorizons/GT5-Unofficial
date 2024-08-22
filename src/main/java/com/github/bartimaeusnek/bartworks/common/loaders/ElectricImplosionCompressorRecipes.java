@@ -14,8 +14,8 @@ import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
@@ -25,7 +25,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
@@ -87,9 +87,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Magneto material recipe for base fluid.
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
+                OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
+                OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
             .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(64 * 144L))
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * 144L))
             .duration(4 * SECONDS)
@@ -99,7 +99,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // Infinity Catalyst
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
+            .itemInputs(OreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -109,7 +109,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         if (UniversalSingularities.isModLoaded()) {
             // Fluxed Singularity
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.block, Materials.ElectrumFlux, 16L))
+                .itemInputs(OreDictUnificator.get(OrePrefixes.block, Materials.ElectrumFlux, 16L))
                 .itemOutputs(getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
                 .duration(1)
                 .eut(TierEU.RECIPE_UIV)
@@ -171,10 +171,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                GT_OreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
+                OreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
             .itemOutputs(
-                GT_OreDictUnificator
-                    .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
+                OreDictUnificator.get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
             .fluidInputs(
                 MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
                     .getMolten((long) partFraction * multiplier))

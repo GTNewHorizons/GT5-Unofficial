@@ -41,9 +41,9 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -60,8 +60,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
  * if you override these methods, or linking will break.
  */
-public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends ExtendedPowerMultiBlockBase<T>>
+    extends ExtendedPowerMultiBlockBase<T> {
 
     /**
      * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost".
@@ -729,8 +729,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                ret.add(UITextures.BUTTON_STANDARD);
+                ret.add(UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                 return ret.toArray(new IDrawable[0]);
             })
             .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
@@ -746,7 +746,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -769,7 +769,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
                     .setTextColor(Color.WHITE.normal)
                     .setSize(150, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(UITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
                         builder));

@@ -3,11 +3,11 @@ package com.elisis.gtnhlanth.common.tileentity;
 import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
@@ -50,16 +50,15 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
-public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchrotron>
-    implements ISurvivalConstructable {
+public class Synchrotron extends EnhancedMultiBlockBase<Synchrotron> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<Synchrotron> STRUCTURE_DEFINITION;
 
@@ -95,77 +94,77 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         STRUCTURE_DEFINITION = StructureDefinition.<Synchrotron>builder().addShape(
                 STRUCTURE_PIECE_ENTRANCE,
 
-                
-                
-                new String[][] { 
-                		{ 
-                			"                                    ", 
+
+
+                new String[][] {
+                		{
+                			"                                    ",
                 			"  ccc                               ",
-                			" cgggc                              ", 
+                			" cgggc                              ",
                         	" cgvgc                              ",
-                        	" cgggc                              ", 
-                        	"  ccc                               " 
-                		} 
+                        	" cgggc                              ",
+                        	"  ccc                               "
+                		}
                 })
                 .addShape(
                     STRUCTURE_PIECE_BASE,
 
                     new String[][] {
-                    	{ 
-                    		"                                    ", 
+                    	{
+                    		"                                    ",
                     		"  ccc                               ",
-                    		" ccccc       cjjjjjc                ", 
+                    		" ccccc       cjjjjjc                ",
                     		" cc-cc      cjjc~cjjc               ",
-                    		" ccccc       cjjjjjc                ", 
+                    		" ccccc       cjjjjjc                ",
                     		"  ccc                               ",
-                    		"                                    " 
-                    	},
-                    	{ 
-                    		"                                    ", 
-                    		"  ccc      ccccccccccc              ",
-                    		" c---c    ccc-------ccc             ", 
-                    		" c---c    ccc-------ccc             ",
-                    		" c---c    ccc-------ccc             ", 
-                    		"  ccc      ccccccccccc              ",
-                    		"                                    " 
-                    	},
-                    	{ 
-                    		"           ccccccccccc              ", 
-                    		"  ccc    cc-----------cc            ",
-                    		" c---c  cc-------------cc           ", 
-                    		" c---c  cc-------------cc           ",
-                    		" c---c  cc-------------cc           ", 
-                    		"  ccc    ccc---------ccc            ",
-                    		"           ccccccccccc              " 
+                    		"                                    "
                     	},
                     	{
-                    		"         ccccccccccccccc            ", 
+                    		"                                    ",
+                    		"  ccc      ccccccccccc              ",
+                    		" c---c    ccc-------ccc             ",
+                    		" c---c    ccc-------ccc             ",
+                    		" c---c    ccc-------ccc             ",
+                    		"  ccc      ccccccccccc              ",
+                    		"                                    "
+                    	},
+                    	{
+                    		"           ccccccccccc              ",
+                    		"  ccc    cc-----------cc            ",
+                    		" c---c  cc-------------cc           ",
+                    		" c---c  cc-------------cc           ",
+                    		" c---c  cc-------------cc           ",
+                    		"  ccc    ccc---------ccc            ",
+                    		"           ccccccccccc              "
+                    	},
+                    	{
+                    		"         ccccccccccccccc            ",
                     		"  ccc  cc---------------cc          ",
-                    		" c---ccc-----------------c          ", 
+                    		" c---ccc-----------------c          ",
                     		" c---ccc-----------------cc         ",
-                    		" c---ccc-----------------c          ", 
+                    		" c---ccc-----------------c          ",
                     		"  ccc  cc---------------cc          ",
                     		"         ccccccccccccccc            ",
-                    		
+
                     	},
                     	{
-                    		"  ccc   ccccccccccccccccc           ", 
+                    		"  ccc   ccccccccccccccccc           ",
                     		" ckkkccc-----------------cc         ",
-                    		"ck---kc-------------------cc        ", 
+                    		"ck---kc-------------------cc        ",
                     		"ck---kc--------------------c        ",
-                    		"ck---kc-------------------cc        ", 
+                    		"ck---kc-------------------cc        ",
                     		" ckkkccc-----------------cc         ",
                     		"  ccc  cccccccccccccccccc           "
-                    		
+
                     	},
-                    	{ 
-                    		"  cccccccccccc     ccccccc          ", 
+                    	{
+                    		"  cccccccccccc     ccccccc          ",
                     		" cdddcc-------ccccc-------cc        ",
-                    		"cd---d----------------------c       ", 
                     		"cd---d----------------------c       ",
-                    		"cd---d----------------------c       ", 
+                    		"cd---d----------------------c       ",
+                    		"cd---d----------------------c       ",
                     		" cdddcc-------ccccc-------cc        ",
-                    		"  cccccccccccc     ccccccc          ", 
+                    		"  cccccccccccc     ccccccc          ",
                     	},
                     	{
                     		"  ccccccccc           ccccc         ",
@@ -184,7 +183,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c----------cc       cc-------c      ",
                     		" c--------cc         cc-----cc      ",
                     		"  cccccccc             ccccc        "
-                    		
+
                     	},
                     	{
                     		"  ccccccc               ccccc       ",
@@ -194,7 +193,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c---------c           c-------c     ",
                     		" c-------c             c-----c      ",
                     		"  ccccccc               ccccc       "
-                    	
+
                     	},
                     	{
                     		"  cccccc                 ccccc      ",
@@ -204,7 +203,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c--------c             c------c     ",
                     		" c------c               c-----c     ",
                     		"  cccccc                 ccccc      "
-                    	
+
                     	},
                     	{
                     		"  ccccc                   cccc      ",
@@ -214,7 +213,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c-------c               c------c    ",
                     		" c-----c                 c----c     ",
                     		"  ccccc                   cccc      "
-                    		
+
                     	},
                     	{
                     		"  cccc                     ccc      ",
@@ -224,7 +223,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c------c                 c-----c    ",
                     		" c----cc                 cc---cc    ",
                     		"  cccc                     ccc      "
-                    		
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -234,7 +233,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c------c                 c-----c    ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    	
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -244,7 +243,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"c-----c                   c----cc   ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    	
+
                     	},
                     	{
                     		"  ccc                       ccc     ",
@@ -254,7 +253,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"ck---kc                   ck---kc   ",
                     		" ckkkcc                   cckkkc    ",
                     		"  ccc                       ccc     "
-                    	
+
                     	},
                     	{
                     		"  cec                       cec     ",
@@ -264,7 +263,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"cn---nc                   cn---nc   ",
                     		" cnnnc                     cnnnc    ",
                     		"  ccc                       ccc     "
-                    		
+
                     	},
                     	{
                     		"  cic                       cic     ",
@@ -274,7 +273,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"cn---nc                   cn---nc   ",
                     		" cndnc                     cndnc    ",
                     		"  coc                       coc     "
-                    		
+
                     	},
                     	{
                     		"  cec                       cec     ",
@@ -284,7 +283,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"cn---nc                   cn---nc   ",
                     		" cnnnc                     cnnnc    ",
                     		"  ccc                       ccc     "
-                    		
+
                     	},
                     	{
                     		"  ccc                       ccc     ",
@@ -294,7 +293,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"ck---kc                   ck---kc   ",
                     		" ckkkcc                   cckkkc    ",
                     		"  ccc                       ccc     "
-                    		
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -304,7 +303,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"cc----c                   c----cc   ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    		
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -314,7 +313,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		" c-----c                 c-----c    ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    		
+
                     	},
                     	{
                     		"   ccc                     ccc      ",
@@ -324,7 +323,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		" c-----c                 c-----c    ",
                     		" cc---cc                 cc---cc    ",
                     		"   ccc                     ccc      "
-                    		
+
                     	},
                     	{
                     		"   cccc                   cccc      ",
@@ -334,7 +333,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		" c------c               c------c    ",
                     		"  c----c                 c----c     ",
                     		"   cccc                   cccc      "
-                    		
+
                     	},
                     	{
                     		"   ccccc                 ccccc      ",
@@ -344,7 +343,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"  c------c             c------c     ",
                     		"  c-----c               c-----c     ",
                     		"   ccccc                 ccccc      "
-                    		
+
                     	},
                     	{
                     		"    ccccc               ccccc       ",
@@ -354,7 +353,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"  c-------c           c-------c     ",
                     		"   c-----c             c-----c      ",
                     		"    ccccc               ccccc       "
-                    		
+
                     	},
                     	{
                     		"     ccccc             ccccc        ",
@@ -364,7 +363,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"   c-------cc       cc-------cc     ",
                     		"    c-----cc         cc------c      ",
                     		"     ccccc             cccccc       "
-                    		
+
                     	},
                     	{
                     		"      ccccc           ccccccc       ",
@@ -374,7 +373,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"    c--------ccccccc--------cccc    ",
                     		"    cc-----cccc   cccc------cc      ",
                     		"      ccccc           cccccc        "
-                    		
+
                     	},
                     	{
                     		"       ccccccc     cccccccccc       ",
@@ -384,7 +383,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"    c---------kdkdk--------ccccccccc",
                     		"     cc-------ccccc--------cccc     ",
                     		"       ccccccc     cccccccc         "
-                    		
+
                     	},
                     	{
                     		"        cccccccccccccccccccc        ",
@@ -394,7 +393,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"     cc---------------------------cg",
                     		"       c-------------------ccccccccc",
                     		"        ccccccccccccccccccc         "
-                    		
+
                     	},
                     	{
                     		"         ccccccccccccccccccc        ",
@@ -404,7 +403,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"       c--------------------------cg",
                     		"        c-----------------cccccccccc",
                     		"         ccccccccccccccccc          "
-                    		
+
                     	},
                     	{
                     		"            ccccccccccccccc         ",
@@ -414,7 +413,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"        cc------------------------cg",
                     		"         ccc-------------ccccccccccc",
                     		"            ccccccccccccc           "
-                    		
+
                     	},
                     	{
                     		"                                    ",
@@ -423,7 +422,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"          cc--kdkdk------ccccccccccc",
                     		"          ccc-kdkdk------ccccccccccc",
                     		"           cccccccccccccccccc       "
-                    		
+
                     	},
                     	{
                     		"                                    ",
@@ -433,7 +432,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"             cccccccccccccccc       ",
                     		"                                    ",
                     		"                                    "
-                    		
+
                     	}
 
                    }
@@ -451,16 +450,16 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                 .addElement('b', buildHatchAdder(Synchrotron.class).hatchClass(TileHatchOutputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(2).adder(Synchrotron::addBeamlineOutputHatch).build())
                 .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
-                .addElement('j', 
+                .addElement('j',
                 		buildHatchAdder(Synchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                
+
                 .build();
-        
-     
+
+
 
     }
-    
+
     // spotless:on
 
     /*
@@ -490,8 +489,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Accelerator")
             .addInfo("Controller block for the Synchrotron")
             .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation")
@@ -592,11 +591,11 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         if (mMachine) return -1;
 
-        int build = survivialBuildPiece(STRUCTURE_PIECE_ENTRANCE, stackSize, 16, 3, 1, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_ENTRANCE, stackSize, 16, 3, 1, elementBudget, env, false, true);
 
         if (build >= 0) return build;
 
-        return survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 16, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 16, 3, 0, elementBudget, env, false, true);
 
     }
 
@@ -618,9 +617,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+        if (aMetaTileEntity instanceof Hatch_Energy) {
 
-            GT_MetaTileEntity_Hatch_Energy hatch = (GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity;
+            Hatch_Energy hatch = (Hatch_Energy) aMetaTileEntity;
 
             // First energy hatch added
             if (this.mEnergyHatches.size() == 0) this.energyHatchTier = hatch.mTier;
@@ -904,7 +903,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for (Hatch_Energy tHatch : mEnergyHatches) {
             if (tHatch.isValid()) {
                 storedEnergy += tHatch.getBaseMetaTileEntity()
                     .getStoredEU();

@@ -35,12 +35,12 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.TieredMachineBlock;
 import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
@@ -48,7 +48,7 @@ import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
+public abstract class GT_MetaTileEntity_DigitalChestBase extends TieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IAddUIWidgets {
 
     protected boolean mVoidOverflow = false;
@@ -346,7 +346,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -525,21 +525,21 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 16)
                 .setSize(71, 45))
             .widget(
                 new SlotWidget(inventoryHandler, 0)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_IN)
                     .setPos(79, 16))
             .widget(
                 new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_OUT)
                     .setPos(79, 52))
             .widget(
                 SlotWidget.phantom(inventoryHandler, 2)
                     .disableInteraction()
-                    .setBackground(GT_UITextures.TRANSPARENT)
+                    .setBackground(UITextures.TRANSPARENT)
                     .setPos(59, 42))
             .widget(
                 new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())

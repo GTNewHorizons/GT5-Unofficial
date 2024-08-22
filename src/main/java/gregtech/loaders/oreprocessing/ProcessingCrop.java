@@ -5,8 +5,8 @@ import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -17,7 +17,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -70,13 +70,13 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "cropChilipepper" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack)
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
             case "cropCoffee" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack)
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
+                .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);

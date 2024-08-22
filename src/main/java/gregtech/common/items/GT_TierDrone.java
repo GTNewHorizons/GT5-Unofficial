@@ -1,8 +1,8 @@
 package gregtech.common.items;
 
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.ItemGeneric;
 
-public class GT_TierDrone extends GT_Generic_Item {
+public class GT_TierDrone extends ItemGeneric {
 
     private final int level;
 

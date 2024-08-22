@@ -21,11 +21,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.net.Packet_BlockEvent;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.api.interfaces.ILazyCoverable;
 import gtPlusPlus.api.objects.Logger;
@@ -297,7 +297,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return this.canAccessData() ? this.mInventory.isValidSlot(aIndex) : false;
     }
 
-    private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[] { GregTech_API.sNoBehavior,
+    private final CoverBehavior[] mCoverBehaviors = new CoverBehavior[] { GregTech_API.sNoBehavior,
         GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior,
         GregTech_API.sNoBehavior };
     protected TileEntityBase mMetaTileEntity;
@@ -848,7 +848,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public final void sendBlockEvent(byte aID, byte aValue) {
         GT_Values.NW.sendPacketToAllPlayersInRange(
             this.worldObj,
-            new GT_Packet_Block_Event(this.xCoord, (short) this.yCoord, this.zCoord, aID, aValue),
+            new Packet_BlockEvent(this.xCoord, (short) this.yCoord, this.zCoord, aID, aValue),
             this.xCoord,
             this.zCoord);
     }
@@ -926,7 +926,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public GT_CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
+    public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
         return side != ForgeDirection.UNKNOWN ? mCoverBehaviors[side.ordinal()] : GregTech_API.sNoBehavior;
     }
 
@@ -944,7 +944,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             final int ordinalSide = side.ordinal();
             mCoverSides[ordinalSide] = aID;
             mCoverData[ordinalSide] = 0;
-            mCoverBehaviors[ordinalSide] = (GT_CoverBehavior) GregTech_API.getCoverBehaviorNew(aID);
+            mCoverBehaviors[ordinalSide] = (CoverBehavior) GregTech_API.getCoverBehaviorNew(aID);
             return true;
         }
         return false;
@@ -1229,7 +1229,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             setInventorySlotContents(aIndex, aStack);
             return true;
         }
-        aStack = GT_OreDictUnificator.get(aStack);
+        aStack = OreDictUnificator.get(aStack);
         if (GT_Utility.areStacksEqual(tStack, aStack)
             && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             tStack.stackSize += aStack.stackSize;

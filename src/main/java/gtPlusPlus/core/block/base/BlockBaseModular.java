@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.lib.CORE;
@@ -79,13 +79,13 @@ public class BlockBaseModular extends BasicBlock {
             ItemBlockGtBlock.class,
             Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
-            GT_OreDictUnificator
+            OreDictUnificator
                 .registerOre("block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         } else if (fx == 1) {
-            GT_OreDictUnificator
+            OreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         } else if (fx == 2) {
-            GT_OreDictUnificator
+            OreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         }
     }

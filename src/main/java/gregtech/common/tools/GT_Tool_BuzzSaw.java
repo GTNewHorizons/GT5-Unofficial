@@ -10,7 +10,7 @@ import net.minecraft.util.IChatComponent;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class GT_Tool_BuzzSaw extends GT_Tool_Saw {
 
@@ -57,15 +57,15 @@ public class GT_Tool_BuzzSaw extends GT_Tool_Saw {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+            ? MetaGeneratedTool.getPrimaryMaterial(
                 aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadBuzzSaw.mTextureIndex]
             : Textures.ItemIcons.HANDLE_BUZZSAW;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override

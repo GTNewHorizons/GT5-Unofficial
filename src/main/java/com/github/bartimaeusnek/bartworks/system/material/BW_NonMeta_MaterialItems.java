@@ -21,8 +21,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public enum BW_NonMeta_MaterialItems implements IItemContainer {
 
@@ -97,7 +97,7 @@ public enum BW_NonMeta_MaterialItems implements IItemContainer {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmount(aAmount, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -105,7 +105,7 @@ public enum BW_NonMeta_MaterialItems implements IItemContainer {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, W, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -113,7 +113,7 @@ public enum BW_NonMeta_MaterialItems implements IItemContainer {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, 0, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -122,7 +122,7 @@ public enum BW_NonMeta_MaterialItems implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility
-            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
+            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, OreDictUnificator.get(this.mStack));
     }
 
     @Override
@@ -146,14 +146,14 @@ public enum BW_NonMeta_MaterialItems implements IItemContainer {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(this.mStack));
+        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, OreDictUnificator.get(this.mStack));
     }
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, this.get(1));
+        for (Object tOreName : aOreNames) OreDictUnificator.registerOre(tOreName, this.get(1));
         return this;
     }
 
@@ -161,7 +161,7 @@ public enum BW_NonMeta_MaterialItems implements IItemContainer {
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, this.getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictUnificator.registerOre(tOreName, this.getWildcard(1));
         return this;
     }
 }

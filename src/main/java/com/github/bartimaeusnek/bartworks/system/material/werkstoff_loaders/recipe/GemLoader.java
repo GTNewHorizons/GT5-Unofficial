@@ -33,10 +33,10 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeConstants.ADDITIVE_AMOUNT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -54,7 +54,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class GemLoader implements IWerkstoffRunnable {
 
@@ -184,7 +184,7 @@ public class GemLoader implements IWerkstoffRunnable {
             if (!werkstoff.contains(WerkstoffLoader.NO_BLAST)) {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gemFlawless, 3))
-                    .itemOutputs(werkstoff.get(gemExquisite), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .itemOutputs(werkstoff.get(gemExquisite), OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -192,7 +192,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gem, 3))
-                    .itemOutputs(werkstoff.get(gemFlawless), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .itemOutputs(werkstoff.get(gemFlawless), OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -200,7 +200,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gemFlawed, 3))
-                    .itemOutputs(werkstoff.get(gem), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .itemOutputs(werkstoff.get(gem), OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -208,7 +208,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gemChipped, 3))
-                    .itemOutputs(werkstoff.get(gemFlawed), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .itemOutputs(werkstoff.get(gemFlawed), OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -216,7 +216,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(werkstoff.get(dust, 4))
-                    .itemOutputs(werkstoff.get(gem, 3), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 8))
+                    .itemOutputs(werkstoff.get(gem, 3), OreDictUnificator.get(dustTiny, Materials.DarkAsh, 8))
                     .duration(20 * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .metadata(ADDITIVE_AMOUNT, 24)

@@ -45,9 +45,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class CircuitImprintLoader {
 
@@ -229,22 +229,22 @@ public class CircuitImprintLoader {
         if (original.mInputs[index] != null && in[index] == null) {
             // big wires
             if (BW_Util.checkStackAndPrefix(original.mInputs[index])
-                && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireGt01) {
-                in[index] = GT_OreDictUnificator.get(
+                && OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireGt01) {
+                in[index] = OreDictUnificator.get(
                     OrePrefixes.wireGt16,
-                    GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                    OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
                     original.mInputs[index].stackSize);
                 // fine wires
             } else if (BW_Util.checkStackAndPrefix(original.mInputs[index])
-                && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
-                    in[index] = GT_OreDictUnificator.get(
+                && OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
+                    in[index] = OreDictUnificator.get(
                         OrePrefixes.wireGt04,
-                        GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                        OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
                         original.mInputs[index].stackSize);
                     if (in[index] == null) {
-                        in[index] = GT_OreDictUnificator.get(
+                        in[index] = OreDictUnificator.get(
                             OrePrefixes.wireFine,
-                            GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                            OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
                             original.mInputs[index].stackSize * 16);
                     }
                     // other components

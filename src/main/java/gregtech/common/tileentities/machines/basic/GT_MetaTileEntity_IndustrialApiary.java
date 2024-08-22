@@ -101,23 +101,23 @@ import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.GT_Mod;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UIInfos;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ApiaryModifier;
-import gregtech.api.util.GT_ApiaryUpgrade;
+import gregtech.api.util.ApiaryModifier;
+import gregtech.api.util.ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
+public class GT_MetaTileEntity_IndustrialApiary extends BasicMachine
     implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener, IAddUIWidgets {
 
     public static final int beeCycleLength = 550;
@@ -705,17 +705,17 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             || beeRoot.isMember(aStack, EnumBeeType.PRINCESS.ordinal());
         else if (aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
         else if (aIndex < getOutputSlot()) {
-            if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return false;
+            if (!ApiaryUpgrade.isUpgrade(aStack)) return false;
             for (int i = upgradeSlot; i < upgradeSlot + upgradeSlotCount; i++) {
                 if (aIndex == i) continue;
                 final ItemStack s = getStackInSlot(i);
                 if (s == null) continue;
                 if (GT_Utility.areStacksEqual(getStackInSlot(i), aStack)) return false;
-                if (GT_ApiaryUpgrade.isUpgrade(aStack)) {
-                    if (!GT_ApiaryUpgrade.getUpgrade(aStack)
+                if (ApiaryUpgrade.isUpgrade(aStack)) {
+                    if (!ApiaryUpgrade.getUpgrade(aStack)
                         .isAllowedToWorkWith(getStackInSlot(i))) return false;
-                } else if (GT_ApiaryUpgrade.isUpgrade(s)) {
-                    if (!GT_ApiaryUpgrade.getUpgrade(s)
+                } else if (ApiaryUpgrade.isUpgrade(s)) {
+                    if (!ApiaryUpgrade.getUpgrade(s)
                         .isAllowedToWorkWith(aStack)) return false;
                 }
             }
@@ -991,12 +991,12 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private int maxspeed = 0;
 
     public void updateModifiers() {
-        final GT_ApiaryModifier mods = new GT_ApiaryModifier();
+        final ApiaryModifier mods = new ApiaryModifier();
         for (int i = 0; i < upgradeSlotCount; i++) {
             final ItemStack s = getStackInSlot(upgradeSlot + i);
             if (s == null) continue;
-            if (GT_ApiaryUpgrade.isUpgrade(s)) {
-                final GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
+            if (ApiaryUpgrade.isUpgrade(s)) {
+                final ApiaryUpgrade upgrade = ApiaryUpgrade.getUpgrade(s);
                 upgrade.applyModifiers(mods, s);
             }
         }
@@ -1025,13 +1025,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     /** Tries to move as much of [stack] into a possible upgrade slot */
     public void addUpgrade(ItemStack stack) {
-        if (stack == null || !GT_ApiaryUpgrade.isUpgrade(stack)) return;
+        if (stack == null || !ApiaryUpgrade.isUpgrade(stack)) return;
 
         int amount = stack.stackSize;
         for (int i = upgradeSlot; i < upgradeSlot + upgradeSlotCount; i++) {
             if (!isItemValidForSlot(i, stack)) continue;
 
-            int maxStackSize = GT_ApiaryUpgrade.getUpgrade(stack)
+            int maxStackSize = ApiaryUpgrade.getUpgrade(stack)
                 .getMaxNumber();
             ItemStack stackInSlot = getStackInSlot(i);
 
@@ -1204,11 +1204,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         builder
             .widget(
                 new SlotWidget(new ApiarySlot(inventoryHandler, queen))
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_BEE_QUEEN)
                     .setPos(36, 21))
             .widget(
                 new SlotWidget(new ApiarySlot(inventoryHandler, drone))
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_BEE_DRONE)
+                    .setBackground(getGUITextureSet().getItemSlot(), UITextures.OVERLAY_SLOT_BEE_DRONE)
                     .setPos(36, 41))
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 2)
@@ -1225,7 +1225,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
         builder.widget(
             new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
+                .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_CROSS)
                 .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(7, 26)
@@ -1233,14 +1233,14 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             .widget(
                 new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
                     .setTextureGetter(
-                        i -> i == 0 ? GT_UITextures.OVERLAY_BUTTON_CROSS : GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                        i -> i == 0 ? UITextures.OVERLAY_BUTTON_CROSS : UITextures.OVERLAY_BUTTON_CHECKMARK)
                     .setGTTooltip(() -> mTooltipCache.getData(AUTOQUEEN_TOOLTIP))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setPos(7, 44)
                     .setSize(18, 18)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_SLOT_BEE_QUEEN))
+                    .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_SLOT_BEE_QUEEN))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_INFORMATION)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_INFORMATION)
                     .setGTTooltip(() -> {
                         final String energyreq = GT_Utility.formatNumbers(
                             (int) ((float) GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * getEnergyModifier()
@@ -1313,7 +1313,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     builder,
                     (widget, val) -> widget.notifyTooltipChange())
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(GT_UITextures.PICTURE_SQUARE_LIGHT_GRAY)
+                .setBackground(UITextures.PICTURE_SQUARE_LIGHT_GRAY)
                 .setPos(25, 62)
                 .setSize(18, 18))
             .widget(
@@ -1327,8 +1327,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     .setPos(26, 72));
     }
 
-    private static final FallbackableUITexture progressBarTexture = GT_UITextures
-        .fallbackableProgressbar("iapiary", GT_UITextures.PROGRESSBAR_ARROW);
+    private static final FallbackableUITexture progressBarTexture = UITextures
+        .fallbackableProgressbar("iapiary", UITextures.PROGRESSBAR_ARROW);
 
     @Override
     protected BasicUIProperties getUIProperties() {
@@ -1424,7 +1424,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         }
     }
 
-    private static final UIInfo<?, ?> IndustrialApiaryUI = GT_UIInfos.GTTileEntityUIFactory
+    private static final UIInfo<?, ?> IndustrialApiaryUI = UIInfos.GTTileEntityUIFactory
         .apply(GT_ModularUIContainer_IndustrialApiary::new);
 
     private static class GT_ModularUIContainer_IndustrialApiary extends ModularUIContainer {
@@ -1449,8 +1449,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             if (slotStack != null && !GT_Utility.areStacksEqual(slotStack, s)) return null; // super would replace item
             if (slotStack == null && !slot.isItemValid(s))
                 return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            if (!GT_ApiaryUpgrade.isUpgrade(s)) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            int max = GT_ApiaryUpgrade.getUpgrade(s)
+            if (!ApiaryUpgrade.isUpgrade(s)) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            int max = ApiaryUpgrade.getUpgrade(s)
                 .getMaxNumber();
             if (slotStack != null) max = Math.max(0, max - slotStack.stackSize);
             max = Math.min(max, s.stackSize);
@@ -1470,7 +1470,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             if (aSlotIndex >= playerInventorySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
             final ItemStack aStack = s.getStack();
             if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (!ApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
             for (int i = playerInventorySlot + 2; i < playerInventorySlot + 2 + 4; i++) {
                 final Slot iSlot = getSlot(i);
                 final ItemStack iStack = iSlot.getStack();
@@ -1479,7 +1479,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 } else {
                     if (!GT_Utility.areStacksEqual(aStack, iStack)) continue;
                 }
-                int max = GT_ApiaryUpgrade.getUpgrade(aStack)
+                int max = ApiaryUpgrade.getUpgrade(aStack)
                     .getMaxNumber();
                 if (iStack == null) {
                     max = Math.min(max, aStack.stackSize);

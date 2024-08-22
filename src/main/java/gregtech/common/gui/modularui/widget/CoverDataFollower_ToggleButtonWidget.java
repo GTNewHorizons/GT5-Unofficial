@@ -5,8 +5,8 @@ import java.util.function.Function;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
@@ -45,17 +45,17 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheckAndCross() {
         return new CoverDataFollower_ToggleButtonWidget<T>()
-            .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.OVERLAY_BUTTON_CROSS);
+            .setToggleTexture(UITextures.OVERLAY_BUTTON_CHECKMARK, UITextures.OVERLAY_BUTTON_CROSS);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheck() {
         return new CoverDataFollower_ToggleButtonWidget<T>()
-            .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT);
+            .setToggleTexture(UITextures.OVERLAY_BUTTON_CHECKMARK, UITextures.TRANSPARENT);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofRedstone() {
         return new CoverDataFollower_ToggleButtonWidget<T>()
-            .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON, GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF);
+            .setToggleTexture(UITextures.OVERLAY_BUTTON_REDSTONE_ON, UITextures.OVERLAY_BUTTON_REDSTONE_OFF);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofDisableable() {
@@ -79,7 +79,7 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
 
         @Override
         public IDrawable[] getBackground() {
-            if (!canClick()) return new IDrawable[] { GT_UITextures.BUTTON_COVER_NORMAL_DISABLED };
+            if (!canClick()) return new IDrawable[] { UITextures.BUTTON_COVER_NORMAL_DISABLED };
             return super.getBackground();
         }
     }

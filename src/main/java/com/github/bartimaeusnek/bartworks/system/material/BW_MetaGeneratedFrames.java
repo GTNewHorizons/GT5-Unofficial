@@ -15,8 +15,8 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +32,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.OreDictUnificator;
 
 public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
@@ -42,7 +42,7 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
         super(aID, aName, aNameRegional, 0);
         this.mMaterial = aMaterial;
 
-        GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, this.getStackForm(1));
+        OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, this.getStackForm(1));
         GT_ModHandler.addCraftingRecipe(
             this.getStackForm(2),
             RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
@@ -50,7 +50,7 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
         RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
+                OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
                 ItemList.Circuit_Integrated.getWithDamage(0, 4))
             .itemOutputs(getStackForm(1))
             .duration(3 * SECONDS + 4 * TICKS)

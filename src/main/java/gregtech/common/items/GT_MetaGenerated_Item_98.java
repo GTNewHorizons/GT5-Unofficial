@@ -24,15 +24,15 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 /** This class holds cells for non-GT fluids. */
-public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
+public class GT_MetaGenerated_Item_98 extends MetaGeneratedItem {
 
     public static GT_MetaGenerated_Item_98 INSTANCE;
 
@@ -298,8 +298,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         // Register IC2 steam cell and Railcraft steam cell as synonyms.
         // There is no steam material, so we'll use Water.cellMolten instead.
-        GT_OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GT_ModHandler.getIC2Item("steamCell", 1L));
-        GT_OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
+        OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GT_ModHandler.getIC2Item("steamCell", 1L));
+        OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
     @Override

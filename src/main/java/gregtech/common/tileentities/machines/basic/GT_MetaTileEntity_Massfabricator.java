@@ -33,19 +33,19 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OverclockCalculator;
 
-public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_Massfabricator extends BasicMachine {
 
     public static int sUUAperUUM = 1;
     public static int sUUASpeedBonus = 4;
@@ -204,7 +204,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         }
 
         @Override
-        public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+        public OverclockCalculator createCalculator(OverclockCalculator template, GT_Recipe recipe) {
             return super.createCalculator(template, recipe).setEUt(Ints.saturatedCast(V[tier] * amperage))
                 .setEUtIncreasePerOC(2.0)
                 .limitOverclockCount(tier - 1)
@@ -212,19 +212,19 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         }
 
         @Override
-        protected boolean shouldShowAmperage(GT_OverclockCalculator calculator) {
+        protected boolean shouldShowAmperage(OverclockCalculator calculator) {
             return true;
         }
 
         @Override
-        protected String getVoltageString(GT_OverclockCalculator calculator) {
+        protected String getVoltageString(OverclockCalculator calculator) {
             // standard amperage calculation doesn't work here
             return decorateWithOverclockLabel(GT_Utility.formatNumbers(V[mTier]) + " EU/t", calculator)
                 + GT_Utility.getTierNameWithParentheses(V[mTier]);
         }
 
         @Override
-        protected String getAmperageString(GT_OverclockCalculator calculator) {
+        protected String getAmperageString(OverclockCalculator calculator) {
             int amperage = this.amperage;
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {

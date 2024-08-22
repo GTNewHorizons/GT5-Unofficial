@@ -34,8 +34,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.server.FMLServerHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.net.GT_Packet;
-import gregtech.api.net.GT_Packet_New;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.net.Packet_New;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -47,20 +47,19 @@ import io.netty.handler.codec.MessageToMessageCodec;
  */
 @SuppressWarnings("deprecation")
 @ChannelHandler.Sharable
-public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_New> implements IGT_NetworkHandler {
+public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, Packet_New> implements IGT_NetworkHandler {
 
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private final GT_Packet_New[] mSubChannels;
+    private final Packet_New[] mSubChannels;
 
     public BW_Network() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", this, new BW_Network.HandlerShared());
-        this.mSubChannels = new GT_Packet_New[] { new RendererPacket(), new CircuitProgrammerPacket(),
+        this.mSubChannels = new Packet_New[] { new RendererPacket(), new CircuitProgrammerPacket(),
             new MetaBlockPacket(), new OreDictCachePacket(), new ServerJoinedPackage(), new EICPacket() };
     }
 
     @Override
-    protected void encode(ChannelHandlerContext aContext, GT_Packet_New aPacket, List<Object> aOutput)
-        throws Exception {
+    protected void encode(ChannelHandlerContext aContext, Packet_New aPacket, List<Object> aOutput) throws Exception {
         aOutput.add(
             new FMLProxyPacket(
                 Unpooled.buffer()
@@ -158,12 +157,12 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_
     }
 
     @Sharable
-    static final class HandlerShared extends SimpleChannelInboundHandler<GT_Packet_New> {
+    static final class HandlerShared extends SimpleChannelInboundHandler<Packet_New> {
 
         HandlerShared() {}
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, GT_Packet_New aPacket) throws Exception {
+        protected void channelRead0(ChannelHandlerContext ctx, Packet_New aPacket) throws Exception {
             EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
             aPacket.process(aPlayer == null ? null : GT_Values.GT.getThePlayer().worldObj);
         }

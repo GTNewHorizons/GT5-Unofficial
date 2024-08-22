@@ -42,13 +42,13 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_THTR> {
+public class GT_TileEntity_THTR extends EnhancedMultiBlockBase<GT_TileEntity_THTR> {
 
     private static final int BASECASINGINDEX = 44;
 
@@ -129,8 +129,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor")
             .addInfo("Controller block for the Thorium High Temperature Reactor (THTR)")
             .addInfo("Needs to be primed with " + GT_Utility.formatNumbers(HELIUM_NEEDED) + " of helium")
@@ -289,7 +289,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         int takecoolant = this.coolanttaking;
         int drainedamount = 0;
 
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+        for (Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                 FluidStack drained = tHatch.drain(takecoolant, true);

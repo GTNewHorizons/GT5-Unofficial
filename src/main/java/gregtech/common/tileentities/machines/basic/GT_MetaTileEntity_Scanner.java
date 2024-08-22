@@ -40,19 +40,19 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_AssemblyLineUtils;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
-public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_Scanner extends BasicMachine {
 
     public GT_MetaTileEntity_Scanner(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -189,7 +189,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     return 2;
                 }
-                ItemData tData = GT_OreDictUnificator.getAssociation(aStack);
+                ItemData tData = OreDictUnificator.getAssociation(aStack);
                 if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
                     && (tData.mMaterial.mMaterial.mElement != null)
                     && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
@@ -363,7 +363,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                         this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
 
                         // Use Assline Utils
-                        if (GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {
+                        if (AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {
                             aStack.stackSize -= 1;
                             calculateOverclockedNess(30, tRecipe.mResearchTime);
                             // In case recipe is too OP for that machine

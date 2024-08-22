@@ -19,12 +19,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.BasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
@@ -34,8 +34,7 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.misc.GT_DrillingLogicDelegate;
 import gregtech.common.misc.GT_IDrillingLogicDelegateOwner;
 
-public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
-    implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
+public class GT_MetaTileEntity_Miner extends BasicMachine implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
 
     static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
     static final int[] SPEED = { 160, 160, 80, 40, 20 }; // Miner cycle time per tier
@@ -395,8 +394,8 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return pipe;
     }
 
-    private static final FallbackableUITexture progressBarTexture = GT_UITextures
-        .fallbackableProgressbar("miner", GT_UITextures.PROGRESSBAR_CANNER);
+    private static final FallbackableUITexture progressBarTexture = UITextures
+        .fallbackableProgressbar("miner", UITextures.PROGRESSBAR_CANNER);
 
     @Override
     protected BasicUIProperties getUIProperties() {

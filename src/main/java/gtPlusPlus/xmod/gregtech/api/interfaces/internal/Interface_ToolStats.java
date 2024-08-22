@@ -13,7 +13,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 
 /**
@@ -198,5 +198,5 @@ public interface Interface_ToolStats extends IToolStats {
      * Called when this gets added to a Tool Item
      */
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID);
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID);
 }

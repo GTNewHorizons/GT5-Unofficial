@@ -2,12 +2,12 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
@@ -24,9 +24,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeConstants;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
@@ -440,8 +440,8 @@ public class GenericChem extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 16L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 16L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
             .fluidOutputs(FluidUtils.getFluidStack(Carbon_Disulfide, 4000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -494,7 +494,7 @@ public class GenericChem extends ItemPackage {
             .metadata(FUEL_TYPE, 1)
             .duration(0)
             .eut(0)
-            .addTo(GT_RecipeConstants.Fuel);
+            .addTo(RecipeConstants.Fuel);
     }
 
     private void recipeGrindingBallAlumina() {
@@ -510,7 +510,7 @@ public class GenericChem extends ItemPackage {
     private void recipeGrindingBallSoapstone() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 32L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 32L),
                 GT_Utility.getIntegratedCircuit(10))
             .itemOutputs(ItemUtils.getSimpleStack(mMillingBallSoapstone, 8))
             .fluidInputs(FluidUtils.getFluidStack(AgrichemFluids.mLiquidResin, 2500))
@@ -561,8 +561,8 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierOneChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2L))
             .itemOutputs(ItemUtils.getSimpleStack(mRedCatalyst, 10))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -575,8 +575,8 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierThreeChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L))
             .itemOutputs(ItemUtils.getSimpleStack(mYellowCatalyst, 10))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -589,8 +589,8 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierTwoChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 3L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 3L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L))
             .itemOutputs(ItemUtils.getSimpleStack(mBlueCatalyst, 10))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -603,8 +603,8 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierTwoChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 5L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 5L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 5L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 5L))
             .itemOutputs(ItemUtils.getSimpleStack(mOrangeCatalyst, 10))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -617,7 +617,7 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierFourChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6L),
                 ELEMENT.getInstance().RUTHENIUM.getDust(6))
             .itemOutputs(ItemUtils.getSimpleStack(mPurpleCatalyst, 10))
             .duration(2 * MINUTES)
@@ -631,8 +631,8 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierOneChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
             .itemOutputs(ItemUtils.getSimpleStack(mBrownCatalyst, 10))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -645,7 +645,7 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierThreeChip(),
                 CI.getEmptyCatalyst(10),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
                 ELEMENT.getInstance().RHODIUM.getDust(4))
             .itemOutputs(ItemUtils.getSimpleStack(mPinkCatalyst, 10))
             .duration(30 * SECONDS)
@@ -672,7 +672,7 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierThreeChip(),
                 CI.getEmptyCatalyst(5),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5))
             .fluidInputs(MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000))
             .duration(30 * SECONDS)
@@ -686,8 +686,8 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 getTierThreeChip(),
                 CI.getEmptyCatalyst(5),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 10L))
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L),
+                OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 10L))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 5))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UHV)

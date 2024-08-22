@@ -20,12 +20,12 @@ import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -49,7 +49,7 @@ import io.netty.buffer.ByteBuf;
  * speed is negative. This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the
  * legacy behavior.
  */
-public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_FluidRegulator.FluidRegulatorData> {
+public class GT_Cover_FluidRegulator extends CoverBehaviorBase<GT_Cover_FluidRegulator.FluidRegulatorData> {
 
     private static final int SPEED_LENGTH = 20;
     private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
@@ -224,7 +224,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new FluidRegulatorUIFactory(buildContext).createWindow();
     }
 
@@ -241,7 +241,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
             numberFormat.setMaximumFractionDigits(2);
         }
 
-        public FluidRegulatorUIFactory(GT_CoverUIBuildContext buildContext) {
+        public FluidRegulatorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
@@ -259,7 +259,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.speed = Math.abs(coverData.speed);
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_EXPORT)
                             .addTooltip(GT_Utility.trans("006", "Export"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
@@ -269,7 +269,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.speed = -Math.abs(coverData.speed);
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_IMPORT)
                             .addTooltip(GT_Utility.trans("007", "Import"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addFollower(
@@ -279,7 +279,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.condition = Conditional.Always;
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_CHECKMARK)
                             .addTooltip(GT_Utility.trans("224", "Always On"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addFollower(
@@ -289,7 +289,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.condition = Conditional.Conditional;
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
                             .addTooltip(GT_Utility.trans("343", "Use Machine Processing State"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addFollower(
@@ -299,7 +299,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.condition = Conditional.Inverted;
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                        widget -> widget.setStaticTexture(UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
                             .addTooltip(GT_Utility.trans("343.1", "Use Inverted Machine Processing State"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addFollower(

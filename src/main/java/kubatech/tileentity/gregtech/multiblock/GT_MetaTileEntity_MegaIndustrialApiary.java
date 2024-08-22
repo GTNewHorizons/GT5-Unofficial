@@ -27,10 +27,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static forestry.api.apiculture.BeeManager.beeRoot;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -111,17 +111,17 @@ import forestry.plugins.PluginApiculture;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.Hatch_Energy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import kubatech.Tags;
@@ -270,7 +270,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
         if (built == -1) {
             GT_Utility.sendChatToPlayer(
                 env.getActor(),
@@ -291,8 +291,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Mega Apiary")
             .addInfo("Controller block for Industrial Apicultural Acclimatiser and Drone Domestication Station")
             .addInfo(buildAuthorList("kuba6000", "Runakai"))
@@ -592,8 +592,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         flowersCheck.addAll(flowersCache.keySet());
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
         if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
-            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
-                if (this.mGlassTier < hatchEnergy.mTier) return false;
+            for (Hatch_Energy hatchEnergy : this.mEnergyHatches) if (this.mGlassTier < hatchEnergy.mTier) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 190;
         flowersError = valid && !this.flowersCheck.isEmpty();
         if (valid) updateMaxSlots();
@@ -730,7 +729,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
@@ -742,7 +741,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
                 .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(UITextures.BUTTON_STANDARD)
                 .setPos(140, 4)
                 .setSize(55, 16));
 
@@ -775,7 +774,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     if (!widget.isClient()) widget.getContext()
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                .setBackground(UITextures.BUTTON_STANDARD, UITextures.OVERLAY_BUTTON_CYCLIC)
                 .addTooltip("Configuration")
                 .setSize(16, 16));
     }
@@ -784,7 +783,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         ModularWindow.Builder builder = ModularWindow.builder(200, 100);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+            new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
             .widget(new TextWidget("Configuration").setPos(25, 9))
@@ -827,7 +826,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
-                            GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                            UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
                         .addTooltip("Primary mode"))
                     .widget(
@@ -860,7 +859,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("Secondary mode"))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
@@ -871,7 +870,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                new DrawableWidget().setDrawable(UITextures.OVERLAY_BUTTON_CROSS)
                     .setSize(18, 18)
                     .setPos(10, 30)
                     .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))

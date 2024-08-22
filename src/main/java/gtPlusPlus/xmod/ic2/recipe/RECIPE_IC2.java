@@ -3,8 +3,8 @@ package gtPlusPlus.xmod.ic2.recipe;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolHardHammer;
 import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolWrench;
 
@@ -17,8 +17,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
@@ -37,15 +37,15 @@ public class RECIPE_IC2 {
     public static String plate_T3 = "plateVibrantAlloy";
     public static String plate_T4 = "plateAlloyIridium";
 
-    public static ItemStack block_T1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.EnergeticAlloy, 1L);
-    public static ItemStack block_T2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L);
-    public static ItemStack block_T3 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.VibrantAlloy, 1L);
-    public static ItemStack block_T4 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L);
+    public static ItemStack block_T1 = OreDictUnificator.get(OrePrefixes.ingot, Materials.EnergeticAlloy, 1L);
+    public static ItemStack block_T2 = OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L);
+    public static ItemStack block_T3 = OreDictUnificator.get(OrePrefixes.ingot, Materials.VibrantAlloy, 1L);
+    public static ItemStack block_T4 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L);
 
-    public static ItemStack shaft_block_T1 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1L);
-    public static ItemStack shaft_block_T2 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1L);
-    public static ItemStack shaft_block_T3 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1L);
-    public static ItemStack shaft_block_T4 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1L);
+    public static ItemStack shaft_block_T1 = OreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1L);
+    public static ItemStack shaft_block_T2 = OreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1L);
+    public static ItemStack shaft_block_T3 = OreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1L);
+    public static ItemStack shaft_block_T4 = OreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1L);
 
     public static String ingot_T1 = "ingotEnergeticAlloy";
     public static String ingot_T2 = "ingotTungstenSteel";
@@ -79,10 +79,10 @@ public class RECIPE_IC2 {
             plate_T3 = "plateUltimet";
             plate_T4 = "plateAlloyIridium";
 
-            block_T1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Magnalium, 1L);
-            block_T2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L);
-            block_T3 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Ultimet, 1L);
-            block_T4 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L);
+            block_T1 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Magnalium, 1L);
+            block_T2 = OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L);
+            block_T3 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Ultimet, 1L);
+            block_T4 = OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L);
 
             ingot_T1 = "ingotMagnalium";
             ingot_T2 = "ingotTungstenSteel";

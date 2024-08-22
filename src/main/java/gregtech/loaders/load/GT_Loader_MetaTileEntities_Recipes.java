@@ -8,7 +8,7 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -25,12 +25,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.metatileentity.implementations.BasicMachine_Recipe;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 import gregtech.loaders.postload.GT_PCBFactoryMaterialLoader;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
@@ -100,46 +100,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_AlloySmelter.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_AlloySmelter.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_AlloySmelter.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_AlloySmelter.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_AlloySmelter.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             5);
 
     }
@@ -148,46 +143,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE4, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE4, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE4, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE4, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE4, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             5);
 
     }
@@ -196,51 +186,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Assembler.get(1),
             bitsd,
-            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Assembler.get(1),
             bitsd,
-            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Assembler.get(1),
             bitsd,
-            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Assembler.get(1),
             bitsd,
-            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Assembler.get(1),
             bitsd,
-            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ACA", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
     }
 
@@ -248,51 +228,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Autoclave.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-                'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I', BasicMachine_Recipe.X.PLATE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Autoclave.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-                'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I', BasicMachine_Recipe.X.PLATE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Autoclave.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-                'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I', BasicMachine_Recipe.X.PLATE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Autoclave.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-                'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I', BasicMachine_Recipe.X.PLATE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Autoclave.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-                'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I', BasicMachine_Recipe.X.PLATE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -301,51 +271,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Bender.get(1),
             bitsd,
-            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Bender.get(1),
             bitsd,
-            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Bender.get(1),
             bitsd,
-            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Bender.get(1),
             bitsd,
-            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Bender.get(1),
             bitsd,
-            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             5);
     }
 
@@ -353,51 +313,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Canner.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Canner.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Canner.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Canner.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Canner.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             5);
     }
 
@@ -405,46 +355,36 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Centrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", aTextWireHull, "CEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "CEC", aTextWireHull, "CEC", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Centrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", aTextWireHull, "CEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "CEC", aTextWireHull, "CEC", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Centrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", aTextWireHull, "CEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "CEC", aTextWireHull, "CEC", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Centrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", aTextWireHull, "CEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "CEC", aTextWireHull, "CEC", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Centrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", aTextWireHull, "CEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "CEC", aTextWireHull, "CEC", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
     }
 
@@ -452,56 +392,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ChemicalBath.get(1),
             bitsd,
-            new Object[] { "VGW", "PGV", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "VGW", "PGV", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ChemicalBath.get(1),
             bitsd,
-            new Object[] { "VGW", "PGV", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "VGW", "PGV", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ChemicalBath.get(1),
             bitsd,
-            new Object[] { "VGW", "PGV", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "VGW", "PGV", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ChemicalBath.get(1),
             bitsd,
-            new Object[] { "VGW", "PGV", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "VGW", "PGV", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ChemicalBath.get(1),
             bitsd,
-            new Object[] { "VGW", "PGV", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "VGW", "PGV", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -510,48 +435,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ChemicalReactor.get(1),
             bitsd,
-            new Object[] { "GRG", "WEW", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "WEW", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ChemicalReactor.get(1),
             bitsd,
-            new Object[] { "GRG", "WEW", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "WEW", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ChemicalReactor.get(1),
             bitsd,
-            new Object[] { "GRG", "WEW", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.pipeMedium.get(Materials.Plastic) },
+            new Object[] { "GRG", "WEW", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', OrePrefixes.pipeMedium.get(Materials.Plastic) },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ChemicalReactor.get(1),
             bitsd,
-            new Object[] { "GRG", "WEW", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.pipeLarge.get(Materials.Plastic) },
+            new Object[] { "GRG", "WEW", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', OrePrefixes.pipeLarge.get(Materials.Plastic) },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ChemicalReactor.get(1),
             bitsd,
-            new Object[] { "GRG", "WEW", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.pipeHuge.get(Materials.Plastic) },
+            new Object[] { "GRG", "WEW", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', OrePrefixes.pipeHuge.get(Materials.Plastic) },
             5);
     }
 
@@ -559,89 +477,73 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             5);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LuV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             6);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_ZPM_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             7);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_UV_CircuitAssembler.get(1),
             bitsd,
-            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER },
+            new Object[] { "ACE", "VMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'A', BasicMachine_Recipe.X.ROBOT_ARM, 'C',
+                BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'E',
+                BasicMachine_Recipe.X.EMITTER },
             8);
 
     }
@@ -650,46 +552,36 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Compressor.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Compressor.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Compressor.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Compressor.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Compressor.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
 
     }
@@ -698,56 +590,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Cutter.get(1),
             bitsd,
-            new Object[] { "WCG", "VMB", "CWE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingDiamondBlade },
+            new Object[] { "WCG", "VMB", "CWE", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE,
+                'G', BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Cutter.get(1),
             bitsd,
-            new Object[] { "WCG", "VMB", "CWE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingDiamondBlade },
+            new Object[] { "WCG", "VMB", "CWE", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE,
+                'G', BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Cutter.get(1),
             bitsd,
-            new Object[] { "WCG", "VMB", "CWE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingDiamondBlade },
+            new Object[] { "WCG", "VMB", "CWE", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE,
+                'G', BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Cutter.get(1),
             bitsd,
-            new Object[] { "WCG", "VMB", "CWE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingDiamondBlade },
+            new Object[] { "WCG", "VMB", "CWE", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE,
+                'G', BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Cutter.get(1),
             bitsd,
-            new Object[] { "WCG", "VMB", "CWE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingDiamondBlade },
+            new Object[] { "WCG", "VMB", "CWE", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE,
+                'G', BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade },
             5);
 
     }
@@ -756,56 +633,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Distillery.get(1),
             bitsd,
-            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'B',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'B', BasicMachine_Recipe.X.PIPE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Distillery.get(1),
             bitsd,
-            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'B',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'B', BasicMachine_Recipe.X.PIPE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Distillery.get(1),
             bitsd,
-            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'B',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'B', BasicMachine_Recipe.X.PIPE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Distillery.get(1),
             bitsd,
-            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'B',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'B', BasicMachine_Recipe.X.PIPE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Distillery.get(1),
             bitsd,
-            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'B',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'B', BasicMachine_Recipe.X.PIPE, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -814,46 +676,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_E_Furnace.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_E_Furnace.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_E_Furnace.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_E_Furnace.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_E_Furnace.get(1),
             bitsd,
-            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             5);
 
     }
@@ -862,51 +719,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Electrolyzer.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CWC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Gold), 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CWC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I',
+                OrePrefixes.wireGt01.get(Materials.Gold), 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Electrolyzer.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CWC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Silver), 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CWC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I',
+                OrePrefixes.wireGt01.get(Materials.Silver), 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Electrolyzer.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CWC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Electrum), 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CWC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I',
+                OrePrefixes.wireGt01.get(Materials.Electrum), 'G', BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Electrolyzer.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CWC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Platinum), 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CWC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I',
+                OrePrefixes.wireGt01.get(Materials.Platinum), 'G', BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Electrolyzer.get(1),
             bitsd,
-            new Object[] { "IGI", "IMI", "CWC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.HSSG), 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "IGI", "IMI", "CWC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'I',
+                OrePrefixes.wireGt01.get(Materials.HSSG), 'G', BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -915,56 +762,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ElectromagneticSeparator.get(1),
             bitsd,
-            new Object[] { "VWZ", "WMS", "CWZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "VWZ", "WMS", "CWZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ElectromagneticSeparator.get(1),
             bitsd,
-            new Object[] { "VWZ", "WMS", "CWZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "VWZ", "WMS", "CWZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ElectromagneticSeparator.get(1),
             bitsd,
-            new Object[] { "VWZ", "WMS", "CWZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "VWZ", "WMS", "CWZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ElectromagneticSeparator.get(1),
             bitsd,
-            new Object[] { "VWZ", "WMS", "CWZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "VWZ", "WMS", "CWZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ElectromagneticSeparator.get(1),
             bitsd,
-            new Object[] { "VWZ", "WMS", "CWZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "VWZ", "WMS", "CWZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'V',
+                BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
 
     }
@@ -973,51 +805,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Extractor.get(1),
             bitsd,
-            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.PISTON, 'P', BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Extractor.get(1),
             bitsd,
-            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.PISTON, 'P', BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Extractor.get(1),
             bitsd,
-            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.PISTON, 'P', BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Extractor.get(1),
             bitsd,
-            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.PISTON, 'P', BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Extractor.get(1),
             bitsd,
-            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "EMP", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.PISTON, 'P', BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -1026,51 +848,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Extruder.get(1),
             bitsd,
-            new Object[] { "CCE", "XMP", "CCE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'X',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CCE", "XMP", "CCE", 'M', BasicMachine_Recipe.X.HULL, 'X', BasicMachine_Recipe.X.PISTON, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'P', BasicMachine_Recipe.X.PIPE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Extruder.get(1),
             bitsd,
-            new Object[] { "CCE", "XMP", "CCE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'X',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CCE", "XMP", "CCE", 'M', BasicMachine_Recipe.X.HULL, 'X', BasicMachine_Recipe.X.PISTON, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'P', BasicMachine_Recipe.X.PIPE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Extruder.get(1),
             bitsd,
-            new Object[] { "CCE", "XMP", "CCE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'X',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CCE", "XMP", "CCE", 'M', BasicMachine_Recipe.X.HULL, 'X', BasicMachine_Recipe.X.PISTON, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'P', BasicMachine_Recipe.X.PIPE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Extruder.get(1),
             bitsd,
-            new Object[] { "CCE", "XMP", "CCE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'X',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CCE", "XMP", "CCE", 'M', BasicMachine_Recipe.X.HULL, 'X', BasicMachine_Recipe.X.PISTON, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'P', BasicMachine_Recipe.X.PIPE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Extruder.get(1),
             bitsd,
-            new Object[] { "CCE", "XMP", "CCE", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'X',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CCE", "XMP", "CCE", 'M', BasicMachine_Recipe.X.HULL, 'X', BasicMachine_Recipe.X.PISTON, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'P', BasicMachine_Recipe.X.PIPE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             5);
 
     }
@@ -1079,51 +891,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Fermenter.get(1),
             bitsd,
-            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Fermenter.get(1),
             bitsd,
-            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Fermenter.get(1),
             bitsd,
-            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Fermenter.get(1),
             bitsd,
-            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Fermenter.get(1),
             bitsd,
-            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -1132,51 +934,36 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidCanner.get(1),
             bitsd,
-            new Object[] { "GCG", "GMG", "WPW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "GMG", "WPW", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidCanner.get(1),
             bitsd,
-            new Object[] { "GCG", "GMG", "WPW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "GMG", "WPW", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidCanner.get(1),
             bitsd,
-            new Object[] { "GCG", "GMG", "WPW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "GMG", "WPW", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidCanner.get(1),
             bitsd,
-            new Object[] { "GCG", "GMG", "WPW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "GMG", "WPW", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidCanner.get(1),
             bitsd,
-            new Object[] { "GCG", "GMG", "WPW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GCG", "GMG", "WPW", 'M', BasicMachine_Recipe.X.HULL, 'P', BasicMachine_Recipe.X.PUMP, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -1185,51 +972,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidExtractor.get(1),
             bitsd,
-            new Object[] { "GEG", "TPT", "CMC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'T',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GEG", "TPT", "CMC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.PISTON, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'T', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidExtractor.get(1),
             bitsd,
-            new Object[] { "GEG", "TPT", "CMC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'T',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GEG", "TPT", "CMC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.PISTON, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'T', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidExtractor.get(1),
             bitsd,
-            new Object[] { "GEG", "TPT", "CMC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'T',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GEG", "TPT", "CMC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.PISTON, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'T', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidExtractor.get(1),
             bitsd,
-            new Object[] { "GEG", "TPT", "CMC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'T',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GEG", "TPT", "CMC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.PISTON, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'T', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidExtractor.get(1),
             bitsd,
-            new Object[] { "GEG", "TPT", "CMC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'T',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GEG", "TPT", "CMC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.PISTON, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'T', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS },
             5);
 
     }
@@ -1238,56 +1015,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidHeater.get(1),
             bitsd,
-            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'O', BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidHeater.get(1),
             bitsd,
-            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'O', BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidHeater.get(1),
             bitsd,
-            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'O', BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidHeater.get(1),
             bitsd,
-            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'O', BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidHeater.get(1),
             bitsd,
-            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'O', BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.GLASS },
             5);
     }
 
@@ -1295,51 +1057,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidSolidifier.get(1),
             bitsd,
-            new Object[] { "PGP", aTextWireHull, "CBC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingChest },
+            new Object[] { "PGP", aTextWireHull, "CBC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingChest },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidSolidifier.get(1),
             bitsd,
-            new Object[] { "PGP", aTextWireHull, "CBC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingChest },
+            new Object[] { "PGP", aTextWireHull, "CBC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingChest },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidSolidifier.get(1),
             bitsd,
-            new Object[] { "PGP", aTextWireHull, "CBC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingChest },
+            new Object[] { "PGP", aTextWireHull, "CBC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingChest },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidSolidifier.get(1),
             bitsd,
-            new Object[] { "PGP", aTextWireHull, "CBC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingChest },
+            new Object[] { "PGP", aTextWireHull, "CBC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingChest },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidSolidifier.get(1),
             bitsd,
-            new Object[] { "PGP", aTextWireHull, "CBC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS,
-                'B', OreDictNames.craftingChest },
+            new Object[] { "PGP", aTextWireHull, "CBC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                BasicMachine_Recipe.X.GLASS, 'B', OreDictNames.craftingChest },
             5);
 
     }
@@ -1348,51 +1100,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Hammer.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
+            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Hammer.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
+            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Hammer.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
+            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Hammer.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
+            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Hammer.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
+            new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil },
             5);
 
     }
@@ -1401,46 +1143,36 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Press.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Press.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Press.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Press.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Press.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
     }
 
@@ -1448,51 +1180,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_LaserEngraver.get(1),
             bitsd,
-            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.EMITTER, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_LaserEngraver.get(1),
             bitsd,
-            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.EMITTER, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_LaserEngraver.get(1),
             bitsd,
-            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.EMITTER, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_LaserEngraver.get(1),
             bitsd,
-            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.EMITTER, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_LaserEngraver.get(1),
             bitsd,
-            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.EMITTER, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             5);
 
     }
@@ -1501,51 +1223,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Lathe.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OrePrefixes.gem.get(Materials.Diamond) },
+            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'D', OrePrefixes.gem.get(Materials.Diamond) },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Lathe.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OrePrefixes.gemFlawless.get(Materials.Diamond) },
+            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'D', OrePrefixes.gemFlawless.get(Materials.Diamond) },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Lathe.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond },
+            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Lathe.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond },
+            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Lathe.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond },
+            new Object[] { aTextWireCoil, "EMD", "CWP", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'P', BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond },
             5);
 
     }
@@ -1554,51 +1266,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Macerator.get(1),
             bitsd,
-            new Object[] { "PEG", "WWM", "CCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.gem.get(Materials.Diamond) },
+            new Object[] { "PEG", "WWM", "CCW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.gem.get(Materials.Diamond) },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Macerator.get(1),
             bitsd,
-            new Object[] { "PEG", "WWM", "CCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.gemFlawless.get(Materials.Diamond) },
+            new Object[] { "PEG", "WWM", "CCW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.gemFlawless.get(Materials.Diamond) },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Macerator.get(1),
             bitsd,
-            new Object[] { "PEG", "WWM", "CCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder },
+            new Object[] { "PEG", "WWM", "CCW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OreDictNames.craftingGrinder },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Macerator.get(1),
             bitsd,
-            new Object[] { "PEG", "WWM", "CCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder },
+            new Object[] { "PEG", "WWM", "CCW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OreDictNames.craftingGrinder },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Macerator.get(1),
             bitsd,
-            new Object[] { "PEG", "WWM", "CCW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder },
+            new Object[] { "PEG", "WWM", "CCW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OreDictNames.craftingGrinder },
             5);
 
     }
@@ -1607,46 +1309,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Amplifab.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 },
+            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4 },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Amplifab.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 },
+            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4 },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Amplifab.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 },
+            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4 },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Amplifab.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 },
+            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4 },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Amplifab.get(1),
             bitsd,
-            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 },
+            new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PUMP, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4 },
             5);
 
     }
@@ -1655,51 +1352,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Microwave.get(1),
             bitsd,
-            new Object[] { "LWC", "LMR", "LEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) },
+            new Object[] { "LWC", "LMR", "LEC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'R',
+                BasicMachine_Recipe.X.EMITTER, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'L',
+                OrePrefixes.plate.get(Materials.Lead) },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Microwave.get(1),
             bitsd,
-            new Object[] { "LWC", "LMR", "LEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) },
+            new Object[] { "LWC", "LMR", "LEC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'R',
+                BasicMachine_Recipe.X.EMITTER, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'L',
+                OrePrefixes.plate.get(Materials.Lead) },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Microwave.get(1),
             bitsd,
-            new Object[] { "LWC", "LMR", "LEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) },
+            new Object[] { "LWC", "LMR", "LEC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'R',
+                BasicMachine_Recipe.X.EMITTER, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'L',
+                OrePrefixes.plate.get(Materials.Lead) },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Microwave.get(1),
             bitsd,
-            new Object[] { "LWC", "LMR", "LEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) },
+            new Object[] { "LWC", "LMR", "LEC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'R',
+                BasicMachine_Recipe.X.EMITTER, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'L',
+                OrePrefixes.plate.get(Materials.Lead) },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Microwave.get(1),
             bitsd,
-            new Object[] { "LWC", "LMR", "LEC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) },
+            new Object[] { "LWC", "LMR", "LEC", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'R',
+                BasicMachine_Recipe.X.EMITTER, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'L',
+                OrePrefixes.plate.get(Materials.Lead) },
             5);
 
     }
@@ -1708,46 +1395,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Mixer.get(1),
             bitsd,
-            new Object[] { "GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "GEG", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'R', BasicMachine_Recipe.X.ROTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'G',
+                BasicMachine_Recipe.X.GLASS },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Mixer.get(1),
             bitsd,
-            new Object[] { "GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "GEG", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'R', BasicMachine_Recipe.X.ROTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'G',
+                BasicMachine_Recipe.X.GLASS },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Mixer.get(1),
             bitsd,
-            new Object[] { "GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "GEG", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'R', BasicMachine_Recipe.X.ROTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'G',
+                BasicMachine_Recipe.X.GLASS },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Mixer.get(1),
             bitsd,
-            new Object[] { "GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "GEG", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'R', BasicMachine_Recipe.X.ROTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'G',
+                BasicMachine_Recipe.X.GLASS },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Mixer.get(1),
             bitsd,
-            new Object[] { "GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS },
+            new Object[] { "GRG", "GEG", aTextCableHull, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'R', BasicMachine_Recipe.X.ROTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'G',
+                BasicMachine_Recipe.X.GLASS },
             5);
     }
 
@@ -1755,46 +1437,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_OreWasher.get(1),
             bitsd,
-            new Object[] { "RGR", "CEC", aTextWireHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP },
+            new Object[] { "RGR", "CEC", aTextWireHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.PUMP },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_OreWasher.get(1),
             bitsd,
-            new Object[] { "RGR", "CEC", aTextWireHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP },
+            new Object[] { "RGR", "CEC", aTextWireHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.PUMP },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_OreWasher.get(1),
             bitsd,
-            new Object[] { "RGR", "CEC", aTextWireHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP },
+            new Object[] { "RGR", "CEC", aTextWireHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.PUMP },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_OreWasher.get(1),
             bitsd,
-            new Object[] { "RGR", "CEC", aTextWireHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP },
+            new Object[] { "RGR", "CEC", aTextWireHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.PUMP },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_OreWasher.get(1),
             bitsd,
-            new Object[] { "RGR", "CEC", aTextWireHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP },
+            new Object[] { "RGR", "CEC", aTextWireHull, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROTOR, 'E', BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE, 'G', BasicMachine_Recipe.X.PUMP },
             5);
 
     }
@@ -1803,46 +1480,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Oven.get(1),
             bitsd,
-            new Object[] { "CEC", aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "CEC", aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Oven.get(1),
             bitsd,
-            new Object[] { "CEC", aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "CEC", aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Oven.get(1),
             bitsd,
-            new Object[] { "CEC", aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "CEC", aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Oven.get(1),
             bitsd,
-            new Object[] { "CEC", aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "CEC", aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Oven.get(1),
             bitsd,
-            new Object[] { "CEC", aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING },
+            new Object[] { "CEC", aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'C',
+                BasicMachine_Recipe.X.COIL_HEATING },
             5);
 
     }
@@ -1851,51 +1523,46 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_PlasmaArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, "TPT", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4, 'T', BasicMachine_Recipe.X.PUMP, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_PlasmaArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, "TPT", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4, 'T', BasicMachine_Recipe.X.PUMP, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_PlasmaArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, "TPT", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4, 'T', BasicMachine_Recipe.X.PUMP, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_PlasmaArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, "TPT", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4, 'T', BasicMachine_Recipe.X.PUMP, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_PlasmaArcFurnace.get(1),
             bitsd,
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP,
-                'G', OrePrefixes.cell.get(Materials.Graphite) },
+            new Object[] { "WGW", aTextCableHull, "TPT", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PLATE, 'C', BasicMachine_Recipe.X.BETTER_CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE4, 'T', BasicMachine_Recipe.X.PUMP, 'G',
+                OrePrefixes.cell.get(Materials.Graphite) },
             5);
 
     }
@@ -1904,46 +1571,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Polarizer.get(1),
             bitsd,
-            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'W',
+                BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Polarizer.get(1),
             bitsd,
-            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'W',
+                BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Polarizer.get(1),
             bitsd,
-            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'W',
+                BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Polarizer.get(1),
             bitsd,
-            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'W',
+                BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Polarizer.get(1),
             bitsd,
-            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'S',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC, 'Z',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', BasicMachine_Recipe.X.HULL, 'S',
+                BasicMachine_Recipe.X.STICK_ELECTROMAGNETIC, 'Z', BasicMachine_Recipe.X.COIL_ELECTRIC, 'W',
+                BasicMachine_Recipe.X.WIRE },
             5);
 
     }
@@ -1952,73 +1614,57 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LuV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             6);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_ZPM_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             7);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_UV_Printer.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             8);
 
     }
@@ -2027,46 +1673,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Recycler.get(1),
             bitsd,
-            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
+            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.dust.get(Materials.Glowstone) },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Recycler.get(1),
             bitsd,
-            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
+            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.dust.get(Materials.Glowstone) },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Recycler.get(1),
             bitsd,
-            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
+            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.dust.get(Materials.Glowstone) },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Recycler.get(1),
             bitsd,
-            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
+            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.dust.get(Materials.Glowstone) },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Recycler.get(1),
             bitsd,
-            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
+            new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'G',
+                OrePrefixes.dust.get(Materials.Glowstone) },
             5);
 
     }
@@ -2075,46 +1716,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Sifter.get(1),
             bitsd,
-            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Sifter.get(1),
             bitsd,
-            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Sifter.get(1),
             bitsd,
-            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Sifter.get(1),
             bitsd,
-            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Sifter.get(1),
             bitsd,
-            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W',
+                BasicMachine_Recipe.X.WIRE },
             5);
 
     }
@@ -2123,51 +1759,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Slicer.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Slicer.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Slicer.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Slicer.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Slicer.get(1),
             bitsd,
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL,
-                'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'P',
+                BasicMachine_Recipe.X.PISTON, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C', BasicMachine_Recipe.X.CIRCUIT,
+                'W', BasicMachine_Recipe.X.WIRE },
             5);
 
     }
@@ -2176,51 +1802,41 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ThermalCentrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", "OMO", "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CEC", "OMO", "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ThermalCentrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", "OMO", "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CEC", "OMO", "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ThermalCentrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", "OMO", "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CEC", "OMO", "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ThermalCentrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", "OMO", "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CEC", "OMO", "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ThermalCentrifuge.get(1),
             bitsd,
-            new Object[] { "CEC", "OMO", "WEW", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE },
+            new Object[] { "CEC", "OMO", "WEW", 'M', BasicMachine_Recipe.X.HULL, 'E', BasicMachine_Recipe.X.MOTOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'O',
+                BasicMachine_Recipe.X.COIL_HEATING_DOUBLE },
             5);
 
     }
@@ -2229,81 +1845,65 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             5);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LuV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             6);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_ZPM_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             7);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_UV_Unboxinator.get(1),
             bitsd,
-            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'R',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'V',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
+            new Object[] { "BCB", "VMR", aTextWireCoil, 'M', BasicMachine_Recipe.X.HULL, 'R',
+                BasicMachine_Recipe.X.ROBOT_ARM, 'V', BasicMachine_Recipe.X.CONVEYOR, 'C',
+                BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE, 'B', OreDictNames.craftingChest },
             8);
     }
 
@@ -2311,46 +1911,36 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Wiremill.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             1);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Wiremill.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             2);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Wiremill.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             3);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Wiremill.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             4);
 
         GT_ModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Wiremill.get(1),
             bitsd,
-            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR,
-                'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE },
+            new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', BasicMachine_Recipe.X.HULL, 'E',
+                BasicMachine_Recipe.X.MOTOR, 'C', BasicMachine_Recipe.X.CIRCUIT, 'W', BasicMachine_Recipe.X.WIRE },
             5);
     }
 
@@ -2726,52 +2316,52 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
 
         // hull recycling data
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_ULV.get(1L),
             ItemList.Casing_ULV.get(1),
             OrePrefixes.cableGt01.get(Materials.Lead),
             OrePrefixes.cableGt01.get(Materials.Lead));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_LV.get(1L),
             ItemList.Casing_LV.get(1),
             OrePrefixes.cableGt01.get(Materials.Tin),
             OrePrefixes.cableGt01.get(Materials.Tin));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_MV.get(1L),
             ItemList.Casing_MV.get(1),
             OrePrefixes.cableGt01.get(Materials.AnyCopper),
             OrePrefixes.cableGt01.get(Materials.AnyCopper));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_HV.get(1L),
             ItemList.Casing_HV.get(1),
             OrePrefixes.cableGt01.get(Materials.Gold),
             OrePrefixes.cableGt01.get(Materials.Gold));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_EV.get(1L),
             ItemList.Casing_EV.get(1),
             OrePrefixes.cableGt01.get(Materials.Aluminium),
             OrePrefixes.cableGt01.get(Materials.Aluminium));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_IV.get(1L),
             ItemList.Casing_IV.get(1),
             OrePrefixes.cableGt01.get(Materials.Tungsten),
             OrePrefixes.cableGt01.get(Materials.Tungsten));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_LuV.get(1L),
             ItemList.Casing_LuV.get(1),
             OrePrefixes.cableGt01.get(Materials.VanadiumGallium),
             OrePrefixes.cableGt01.get(Materials.VanadiumGallium));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_ZPM.get(1L),
             ItemList.Casing_ZPM.get(1),
             OrePrefixes.cableGt02.get(Materials.Naquadah),
             OrePrefixes.cableGt02.get(Materials.Naquadah));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_UV.get(1L),
             ItemList.Casing_UV.get(1),
             OrePrefixes.cableGt04.get(Materials.NaquadahAlloy),
             OrePrefixes.cableGt04.get(Materials.NaquadahAlloy));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_MAX.get(1L),
             ItemList.Casing_MAX.get(1),
             OrePrefixes.cableGt04.get(Materials.SuperconductorUV),
@@ -2905,43 +2495,43 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.rotor.get(Materials.Steel), 'X', ItemList.Electric_Motor_MV });
 
         // recycling data for the other mufflers, recipes are in assembler
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_HV.get(1L),
             ItemList.Hull_HV.get(1),
             OrePrefixes.pipeLarge.get(Materials.StainlessSteel),
             OrePrefixes.rotor.get(Materials.StainlessSteel),
             ItemList.Electric_Motor_HV.get(1));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_EV.get(1L),
             ItemList.Hull_EV.get(1),
             OrePrefixes.pipeLarge.get(Materials.Titanium),
             OrePrefixes.rotor.get(Materials.Titanium),
             ItemList.Electric_Motor_EV.get(1));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_IV.get(1L),
             ItemList.Hull_IV.get(1),
             OrePrefixes.pipeLarge.get(Materials.TungstenSteel),
             OrePrefixes.rotor.get(Materials.TungstenSteel),
             ItemList.Electric_Motor_IV.get(1));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_LuV.get(1L),
             ItemList.Hull_LuV.get(1),
             OrePrefixes.pipeLarge.get(Materials.Enderium),
             OrePrefixes.rotor.get(Materials.Enderium),
             ItemList.Electric_Motor_LuV.get(1));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_ZPM.get(1L),
             ItemList.Hull_ZPM.get(1),
             OrePrefixes.pipeLarge.get(Materials.Naquadah),
             OrePrefixes.rotor.get(Materials.NaquadahAlloy),
             ItemList.Electric_Motor_ZPM.get(1));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_UV.get(1L),
             ItemList.Hull_UV.get(1),
             OrePrefixes.pipeLarge.get(Materials.NetherStar),
             OrePrefixes.rotor.get(Materials.Neutronium),
             ItemList.Electric_Motor_UV.get(1));
-        GT_OreDictUnificator.addItemDataFromInputs(
+        OreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_MAX.get(1L),
             ItemList.Hull_MAX.get(1),
             OrePrefixes.pipeLarge.get(Materials.MysteriousCrystal),
@@ -4197,28 +3787,28 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         // high pressure fluid pipes
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1L),
+                OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1L),
                 ItemList.Electric_Pump_EV.get(1L),
                 GT_Utility.getIntegratedCircuit(5))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L),
+                OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L),
                 ItemList.Electric_Pump_IV.get(1L),
                 GT_Utility.getIntegratedCircuit(5))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1L))
             .duration(20 * SECONDS)
             .eut(4096)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L),
+                OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L),
                 ItemList.Electric_Pump_IV.get(2L),
                 GT_Utility.getIntegratedCircuit(5))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 1L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 1L))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

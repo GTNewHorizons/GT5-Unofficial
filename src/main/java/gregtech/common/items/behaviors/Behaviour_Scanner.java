@@ -13,18 +13,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_Scanner extends Behaviour_None {
 
-    public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Scanner();
+    public static final IItemBehaviour<MetaBaseItem> INSTANCE = new Behaviour_Scanner();
     private final String mTooltip = GT_LanguageManager
         .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final NBTTagCompound tNBT = aStack.getTagCompound();
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
@@ -48,7 +48,7 @@ public class Behaviour_Scanner extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             int lines = tNBT.getInteger("dataLinesCount");

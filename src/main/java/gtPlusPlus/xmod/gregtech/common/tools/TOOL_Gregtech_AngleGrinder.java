@@ -20,7 +20,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.tools.GT_Tool;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -139,7 +139,7 @@ public class TOOL_Gregtech_AngleGrinder extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
     }
 
     @Override
@@ -164,7 +164,7 @@ public class TOOL_Gregtech_AngleGrinder extends GT_Tool {
     }
 
     @Override
-    public void onStatsAddedToTool(final GT_MetaGenerated_Tool aItem, final int aID) {
+    public void onStatsAddedToTool(final MetaGeneratedTool aItem, final int aID) {
         aItem.addItemBehavior(aID, new Behaviour_None());
     }
 

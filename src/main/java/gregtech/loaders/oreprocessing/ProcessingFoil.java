@@ -11,8 +11,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
 
 public class ProcessingFoil implements IOreRecipeRegistrator {
 
@@ -30,9 +30,9 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     private void registerBenderRecipe(Materials material) {
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_Utility.copyAmount(1, GT_OreDictUnificator.get(OrePrefixes.plate, material, 4L)),
+                GT_Utility.copyAmount(1, OreDictUnificator.get(OrePrefixes.plate, material, 4L)),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, material, 4L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.foil, material, 4L))
             .duration((int) Math.max(material.getMass(), 1L))
             .eut(calculateRecipeEU(material, 24))
             .addTo(benderRecipes);

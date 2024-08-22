@@ -4,20 +4,20 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
-import static gregtech.api.util.GT_ParallelHelper.addFluidsLong;
-import static gregtech.api.util.GT_ParallelHelper.addItemsLong;
-import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
-import static gregtech.api.util.GT_RecipeBuilder.BUCKETS;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.OreDictUnificator.getAssociation;
+import static gregtech.api.util.ParallelHelper.addFluidsLong;
+import static gregtech.api.util.ParallelHelper.addItemsLong;
+import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.RecipeBuilder.BUCKETS;
+import static gregtech.api.util.RecipeBuilder.INGOTS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,19 +60,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.Hatch;
+import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -81,9 +81,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class GregtechMetaTileEntity_QuantumForceTransformer
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GregtechMetaTileEntity_QuantumForceTransformer>
-    implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_QuantumForceTransformer extends
+    ExtendedPowerMultiBlockBase<GregtechMetaTileEntity_QuantumForceTransformer> implements ISurvivalConstructable {
 
     private int mCasing;
     protected int mCraftingTier = 0;
@@ -93,8 +92,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     private static final Fluid mNeptunium = ELEMENT.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = ELEMENT.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
-    private GT_MetaTileEntity_Hatch_Input mNeptuniumHatch;
-    private GT_MetaTileEntity_Hatch_Input mFermiumHatch;
+    private Hatch_Input mNeptuniumHatch;
+    private Hatch_Input mFermiumHatch;
     private static final IStructureDefinition<GregtechMetaTileEntity_QuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
         .<GregtechMetaTileEntity_QuantumForceTransformer>builder()
         .addShape(
@@ -214,16 +213,14 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'Z',
-            buildHatchAdder(GregtechMetaTileEntity_QuantumForceTransformer.class)
-                .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+            buildHatchAdder(GregtechMetaTileEntity_QuantumForceTransformer.class).hatchClass(Hatch_Input.class)
                 .adder(GregtechMetaTileEntity_QuantumForceTransformer::addNeptuniumHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
                 .dot(5)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'X',
-            buildHatchAdder(GregtechMetaTileEntity_QuantumForceTransformer.class)
-                .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+            buildHatchAdder(GregtechMetaTileEntity_QuantumForceTransformer.class).hatchClass(Hatch_Input.class)
                 .adder(GregtechMetaTileEntity_QuantumForceTransformer::addFermiumHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
                 .dot(5)
@@ -245,8 +242,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Quantum Force Transformer")
             .addInfo("Controller Block for the Quantum Force Transformer")
             .addInfo("Allows Complex chemical lines to be performed instantly in one step")
@@ -335,7 +332,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(MAIN_PIECE, stackSize, 7, 20, 4, elementBudget, env, false, true);
+        return survivalBuildPiece(MAIN_PIECE, stackSize, 7, 20, 4, elementBudget, env, false, true);
     }
 
     public static List<Pair<Block, Integer>> getAllCraftingTiers() {
@@ -519,7 +516,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
             @NotNull
             @Override
-            public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+            public ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
                     ArrayList<ItemStack> items = new ArrayList<>();
 
@@ -728,10 +725,10 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            mNeptuniumHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            mNeptuniumHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;
@@ -741,10 +738,10 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            mFermiumHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof Hatch_Input) {
+            ((Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            mFermiumHatch = (Hatch_Input) aMetaTileEntity;
             return true;
         }
         return false;

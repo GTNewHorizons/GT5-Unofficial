@@ -3,9 +3,9 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.RecipeBuilder.MINUTES;
+import static gregtech.api.util.RecipeBuilder.SECONDS;
+import static gregtech.api.util.RecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.item.ItemStack;
@@ -21,9 +21,9 @@ import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OreDictUnificator;
+import gregtech.api.util.RecipeBuilder;
 
 public class DistilleryRecipes implements Runnable {
 
@@ -388,7 +388,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .fluidInputs(Materials.Biomass.getFluid(1000L))
             .fluidOutputs(Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -428,7 +428,7 @@ public class DistilleryRecipes implements Runnable {
         // C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
 
         GT_Values.RA.stdBuilder()
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L))
+            .itemOutputs(OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L))
             .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(5000L))
             .duration(2 * MINUTES + 5 * SECONDS)
@@ -1216,7 +1216,7 @@ public class DistilleryRecipes implements Runnable {
     public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
         FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
+            RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
             if (aOutput2 != GT_Values.NI) {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1227,7 +1227,7 @@ public class DistilleryRecipes implements Runnable {
                 .eut(aEUt / 4)
                 .addTo(distilleryRecipes);
         }
-        GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
+        RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .itemInputs(aCircuit);
         if (aOutput2 != GT_Values.NI) {
             buildDT.itemOutputs(aOutput2);
@@ -1242,7 +1242,7 @@ public class DistilleryRecipes implements Runnable {
     public void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
         int aDuration, int aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
+            RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
             if (aOutput2 != GT_Values.NI) {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1253,7 +1253,7 @@ public class DistilleryRecipes implements Runnable {
                 .eut(aEUt / 4)
                 .addTo(distilleryRecipes);
         }
-        GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder();
+        RecipeBuilder buildDT = GT_Values.RA.stdBuilder();
         if (aOutput2 != GT_Values.NI) {
             buildDT.itemOutputs(aOutput2);
         }

@@ -12,15 +12,15 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_FilterBase;
+import gregtech.api.metatileentity.implementations.FilterBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase {
+public class GT_MetaTileEntity_Filter extends FilterBase {
 
     private static final int NUM_FILTER_SLOTS = 9;
     private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines.ignore_nbt.tooltip";
@@ -100,19 +100,19 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase {
         super.addUIWidgets(builder, buildContext);
         addAllowNbtButton(builder);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
+            new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
                 .setPos(6, 19)
                 .setSize(9, 24))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
+                new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
                     .setPos(71, 19)
                     .setSize(24, 24))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_RED.apply(19, true))
+                new DrawableWidget().setDrawable(UITextures.PICTURE_ARROW_24_RED.apply(19, true))
                     .setPos(152, 19)
                     .setSize(19, 24))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                new DrawableWidget().setDrawable(UITextures.PICTURE_SLOTS_HOLO_3BY3)
                     .setPos(16, 4)
                     .setSize(54, 54))
             .widget(
@@ -122,7 +122,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase {
                     .phantom(true)
                     .applyForWidget(
                         widget -> widget.disableShiftInsert()
-                            .setBackground(GT_UITextures.TRANSPARENT))
+                            .setBackground(UITextures.TRANSPARENT))
                     .build()
                     .setPos(16, 4))
             .widget(
@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase {
             createToggleButton(
                 () -> ignoreNbt,
                 val -> ignoreNbt = val,
-                GT_UITextures.OVERLAY_BUTTON_NBT,
+                UITextures.OVERLAY_BUTTON_NBT,
                 () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -28,7 +28,7 @@ public class GGFabRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> toolCastRecipes = RecipeMapBuilder.of("ggfab.recipe.toolcast")
         .maxIO(1, 4, 1, 0)
         .minInputs(1, 1)
-        .progressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+        .progressBar(UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
         .recipeEmitter(b -> {
             Optional<GT_Recipe> rr = b.noOptimize()
                 .validateNoInput()

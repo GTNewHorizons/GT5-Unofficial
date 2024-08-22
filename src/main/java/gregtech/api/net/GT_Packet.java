@@ -8,7 +8,7 @@ import com.google.common.io.ByteArrayDataInput;
 import io.netty.buffer.ByteBuf;
 
 /**
- * @deprecated Use {@link GT_Packet_New} instead
+ * @deprecated Use {@link Packet_New} instead
  */
 @Deprecated
 public abstract class GT_Packet {
