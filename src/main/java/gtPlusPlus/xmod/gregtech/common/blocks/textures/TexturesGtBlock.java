@@ -230,13 +230,10 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Cyber_A = Internal_Overlay_Machine_Cyber_A;
 
     public static final CustomIcon TEXTURE_CASING_AMAZON = new CustomIcon("TileEntities/CASING_AMAZON");
-    public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon(
-        "TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
-    public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon(
-        "TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
+    public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
+    public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
     public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon("TileEntities/MACHINE_CASING_ROCKETDYNE");
-    public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon(
-        "TileEntities/MACHINE_CASING_GRINDING_FACTORY");
+    public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_GRINDING_FACTORY");
     public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon("TileEntities/MACHINE_CASING_FLOTATION");
 
     // Redstone blocks
@@ -367,6 +364,7 @@ public class TexturesGtBlock {
     private static final CustomIcon Internal_Overlay_Machine_Controller_Default = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED");
     public static final CustomIcon Overlay_Machine_Controller_Default = Internal_Overlay_Machine_Controller_Default;
+
     private static final CustomIcon Internal_Overlay_Machine_Controller_Default_Active = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED_ACTIVE");
     public static final CustomIcon Overlay_Machine_Controller_Default_Active = Internal_Overlay_Machine_Controller_Default_Active;
@@ -374,9 +372,20 @@ public class TexturesGtBlock {
     private static final CustomIcon Internal_Overlay_Machine_Controller_Advanced = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED");
     public static final CustomIcon Overlay_Machine_Controller_Advanced = Internal_Overlay_Machine_Controller_Advanced;
+
     private static final CustomIcon Internal_Overlay_Machine_Controller_Advanced_Active = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
     public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = Internal_Overlay_Machine_Controller_Advanced_Active;
+
+    private static final CustomIcon internalOMCCokeOven = new CustomIcon("iconsets/controllerFaces/cokeOven");
+    public static final CustomIcon OverlayMachineControllerCokeOven = internalOMCCokeOven;
+    private static final CustomIcon internalOMCCokeOvenActive = new CustomIcon("iconsets/controllerFaces/cokeOvenActive");
+    public static final CustomIcon OverlayMachineControllerCokeOvenActive = internalOMCCokeOvenActive;
+
+    private static final CustomIcon internalOMCFluidHeater = new CustomIcon("iconsets/controllerFaces/fluidHeater");
+    public static final CustomIcon OverlayMachineControllerFluidHeater = internalOMCFluidHeater;
+    private static final CustomIcon internalOMCCFluidHeaterActive = new CustomIcon("iconsets/controllerFaces/fluidHeaterActive");
+    public static final CustomIcon OverlayMachineControllerFluidHeaterActive = internalOMCCFluidHeaterActive;
 
     // Crafting Overlays
     public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon(
@@ -411,21 +420,17 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/OVERLAY_DATA_ORB");
 
     // Dimensional
-    private static final CustomIcon Internal_Overlay_Machine_Dimensional_Orange = new CustomIcon(
-        "TileEntities/adv_machine_dimensional_cover_orange");
+    private static final CustomIcon Internal_Overlay_Machine_Dimensional_Orange = new CustomIcon("TileEntities/adv_machine_dimensional_cover_orange");
     public static final CustomIcon Overlay_Machine_Dimensional_Orange = Internal_Overlay_Machine_Dimensional_Orange;
     // Icons
     private static final CustomIcon Internal_Overlay_MatterFab = new CustomIcon("TileEntities/adv_machine_matterfab");
     public static final CustomIcon Overlay_MatterFab = Internal_Overlay_MatterFab;
-    private static final CustomIcon Internal_Overlay_MatterFab_Active = new CustomIcon(
-        "TileEntities/adv_machine_matterfab_active");
+    private static final CustomIcon Internal_Overlay_MatterFab_Active = new CustomIcon("TileEntities/adv_machine_matterfab_active");
     public static final CustomIcon Overlay_MatterFab_Active = Internal_Overlay_MatterFab_Active;
 
-    private static final CustomIcon Internal_Overlay_MatterFab_Animated = new CustomIcon(
-        "TileEntities/adv_machine_matterfab_animated");
+    private static final CustomIcon Internal_Overlay_MatterFab_Animated = new CustomIcon("TileEntities/adv_machine_matterfab_animated");
     public static final CustomIcon Overlay_MatterFab_Animated = Internal_Overlay_MatterFab_Animated;
-    private static final CustomIcon Internal_Overlay_MatterFab_Active_Animated = new CustomIcon(
-        "TileEntities/adv_machine_matterfab_active_animated");
+    private static final CustomIcon Internal_Overlay_MatterFab_Active_Animated = new CustomIcon("TileEntities/adv_machine_matterfab_active_animated");
     public static final CustomIcon Overlay_MatterFab_Active_Animated = Internal_Overlay_MatterFab_Active_Animated;
 
     private static final CustomIcon Internal_Overlay_Water = new CustomIcon("TileEntities/adv_machine_water");
