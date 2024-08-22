@@ -22,8 +22,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import gregtech.common.config.ConfigDebug;
+import gregtech.common.config.ConfigFeatures;
 import gregtech.common.config.ConfigGeneral;
 import gregtech.common.config.ConfigMachines;
+import gregtech.common.config.ConfigOreDropBehavior;
 import gregtech.common.config.ConfigPollution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -135,10 +137,22 @@ public class GT_PreLoad {
         File tFile = new File(new File(configDir, "GregTech"), "GregTech.cfg");
         Configuration tMainConfig = new Configuration(tFile);
         tMainConfig.load();
+
         tFile = new File(new File(configDir, "GregTech"), "IDs.cfg");
         GT_Config.sConfigFileIDs = new Configuration(tFile);
         GT_Config.sConfigFileIDs.load();
         GT_Config.sConfigFileIDs.save();
+
+        tFile = new File(new File(configDir, "GregTech"), "Cleanroom.cfg");
+        GT_Config.cleanroomFile = new Configuration(tFile);
+        GT_Config.cleanroomFile.load();
+        GT_Config.cleanroomFile.save();
+
+        tFile = new File(new File(configDir, "GregTech"), "UndergroundFluids.cfg");
+        GT_Config.undergroundFluidsFile = new Configuration(tFile);
+        GT_Config.undergroundFluidsFile.load();
+        GT_Config.undergroundFluidsFile.save();
+
         GregTech_API.sMachineFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "MachineStats.cfg")));
         GregTech_API.sWorldgenFile = new GT_Config(
@@ -441,9 +455,6 @@ public class GT_PreLoad {
             Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
 
-        // todo: port this part too.
-        if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
-
         // machines
         GT_Values.ticksBetweenSounds = ConfigMachines.ticksBetweenSounds;
         GT_Values.blacklistedTileEntiyClassNamesForWA = ConfigMachines.blacklistedTileEntiyClassNamesForWA;
@@ -493,45 +504,49 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = ConfigPollution.mPollutionHighPressureLavaBoilerPerSecond;
         GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = ConfigPollution.mPollutionHighPressureCoalBoilerPerSecond;
         GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = ConfigPollution.mPollutionBaseDieselGeneratorPerSecond;
-        double[] mPollutionDieselGeneratorReleasedByTier = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionReleasedByTierDieselGenerator",
-                GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier)
-            .getDoubleList();
-        if (mPollutionDieselGeneratorReleasedByTier.length
-            == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
+        double[] mPollutionDieselGeneratorReleasedByTier = Arrays.stream(ConfigPollution.mPollutionDieselGeneratorReleasedByTier).mapToDouble(Double::parseDouble).toArray();
+        if (mPollutionDieselGeneratorReleasedByTier.length == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
         } else {
             GT_FML_LOGGER
                 .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = ConfigPollution.mPollutionBaseGasTurbinePerSecond;
-        double[] mPollutionGasTurbineReleasedByTier = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionReleasedByTierGasTurbineGenerator",
-                GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier)
-            .getDoubleList();
-        if (mPollutionGasTurbineReleasedByTier.length
-            == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
+        double[] mPollutionGasTurbineReleasedByTier = Arrays.stream(ConfigPollution.mPollutionGasTurbineReleasedByTier).mapToDouble(Double::parseDouble).toArray();
+        if (mPollutionGasTurbineReleasedByTier.length == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
         } else {
             GT_FML_LOGGER.error("The Length of the Gas Turbine Pollution Array Config must be the same as the Default");
         }
 
-        GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
+        // cleanroom file
+        if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(GT_Config.cleanroomFile);
+
+        // underground fluids file
+        GT_Mod.gregtechproxy.mUndergroundOil.getConfig(GT_Config.undergroundFluidsFile, "undergroundfluid");
+
+        // Worldgeneration.cfg
         GT_Mod.gregtechproxy.enableUndergroundGravelGen = GregTech_API.sWorldgenFile
             .get("general", "enableUndergroundGravelGen", GT_Mod.gregtechproxy.enableUndergroundGravelGen);
         GT_Mod.gregtechproxy.enableUndergroundDirtGen = GregTech_API.sWorldgenFile
             .get("general", "enableUndergroundDirtGen", GT_Mod.gregtechproxy.enableUndergroundDirtGen);
+        GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile
+            .get("general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
+        GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile
+            .get("general", "enableRedGraniteOres", GT_Mod.gregtechproxy.enableRedGraniteOres);
+        GT_Mod.gregtechproxy.enableMarbleOres = GregTech_API.sWorldgenFile
+            .get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
+        GT_Mod.gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile
+            .get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
 
+        // Others.cfg
         Calendar now = Calendar.getInstance();
         GT_Mod.gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(
             ConfigCategories.general,
             "AprilFool",
             now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
 
+        // OverpoweredStuff.cfg
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
         GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
@@ -543,31 +558,16 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)
             .getBoolean(true);
 
-        GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile
-            .get("general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
-        GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile
-            .get("general", "enableRedGraniteOres", GT_Mod.gregtechproxy.enableRedGraniteOres);
-        GT_Mod.gregtechproxy.enableMarbleOres = GregTech_API.sWorldgenFile
-            .get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
-        GT_Mod.gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile
-            .get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
-
+        // ore_drop_behavior
         try {
-            String setting_string = tMainConfig.get(
-                "OreDropBehaviour",
-                "general",
-                "FortuneItem",
-                "Settings: \n'PerDimBlock': Sets the drop to the block variant of the ore block based on dimension, defaults to stone type, \n'UnifiedBlock': Sets the drop to the stone variant of the ore block, \n'Block': Sets the drop to the ore  mined, \n'FortuneItem': Sets the drop to the new ore item and makes it affected by fortune, \n'Item': Sets the drop to the new ore item, \nDefaults to: 'FortuneItem'")
-                .getString();
-            GT_Log.out.println("Trying to set it to: " + setting_string);
-            GT_Proxy.OreDropSystem setting = GT_Proxy.OreDropSystem.valueOf(setting_string);
-            GT_Mod.gregtechproxy.oreDropSystem = setting;
-
+            GT_Log.out.println("Trying to set it to: " + ConfigOreDropBehavior.setting);
+            GT_Mod.gregtechproxy.oreDropSystem = GT_Proxy.OreDropSystem.valueOf(ConfigOreDropBehavior.setting);;
         } catch (IllegalArgumentException e) {
             GT_Log.err.println(e);
             GT_Mod.gregtechproxy.oreDropSystem = GT_Proxy.OreDropSystem.FortuneItem;
         }
 
+        // MaterialProperties
         GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
             .get("havestLevel", "activateHarvestLevelChange", false); // TODO CHECK
         if (GT_Mod.gregtechproxy.mChangeHarvestLevels) {
@@ -587,43 +587,19 @@ public class GT_PreLoad {
                         .get("materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality));
         }
 
-        GT_Mod.gregtechproxy.mUpgradeCount = Math.min(
-            64,
-            Math.max(
-                1,
-                tMainConfig.get("features", "UpgradeStacksize", 4)
-                    .getInt()));
+        // features
+        GT_Mod.gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, ConfigFeatures.upgradeStackSize));
         for (OrePrefixes tPrefix : OrePrefixes.values()) {
             if (tPrefix.mIsUsedForOreProcessing) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(
-                    64,
-                    Math.max(
-                        1,
-                        tMainConfig.get("features", "MaxOreStackSize", 64)
-                            .getInt())));
+                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, ConfigFeatures.maxOreStackSize)));
             } else if (tPrefix == OrePrefixes.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(
-                    64,
-                    Math.max(
-                        16,
-                        tMainConfig.get("features", "MaxPlankStackSize", 64)
-                            .getInt())));
+                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxPlankStackSize)));
             } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
                 || (tPrefix == OrePrefixes.treeSapling)
                 || (tPrefix == OrePrefixes.log)) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(
-                        64,
-                        Math.max(
-                            16,
-                            tMainConfig.get("features", "MaxLogStackSize", 64)
-                                .getInt())));
+                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxLogStackSize)));
                 } else if (tPrefix.mIsUsedForBlocks) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(
-                        64,
-                        Math.max(
-                            16,
-                            tMainConfig.get("features", "MaxOtherBlockStackSize", 64)
-                                .getInt())));
+                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxOtherBlocksStackSize)));
                 }
         }
 

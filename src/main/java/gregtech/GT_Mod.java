@@ -18,8 +18,10 @@ import java.util.function.Predicate;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import gregtech.common.config.ConfigDebug;
+import gregtech.common.config.ConfigFeatures;
 import gregtech.common.config.ConfigGeneral;
 import gregtech.common.config.ConfigMachines;
+import gregtech.common.config.ConfigOreDropBehavior;
 import gregtech.common.config.ConfigPollution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -178,6 +180,8 @@ public class GT_Mod implements IGT_Mod {
             ConfigurationManager.registerConfig(ConfigMachines.class);
             ConfigurationManager.registerConfig(ConfigDebug.class);
             ConfigurationManager.registerConfig(ConfigPollution.class);
+            ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
+            ConfigurationManager.registerConfig(ConfigFeatures.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);

@@ -105,14 +105,38 @@ public class ConfigPollution {
     @Config.RequiresMcRestart
     public static int mPollutionBaseDieselGeneratorPerSecond;
 
-    // Cannot implement it yet due to GTNHLib not having the annotations for it yet
-    // public static double[] mPollutionDieselGeneratorReleasedByTier;
+    // reading double as strings, not perfect, but better than nothing
+    @Config.Comment({
+        "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
+        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc."
+    })
+    @Config.DefaultStringList({
+        "0.1",
+        "1.0",
+        "0.9",
+        "0.8"
+    })
+    @Config.RequiresMcRestart
+    public static String[] mPollutionDieselGeneratorReleasedByTier;
 
     @Config.Comment("Controls the pollution released per second by the base gas turbine.")
     @Config.DefaultInt(40)
     @Config.RequiresMcRestart
     public static int mPollutionBaseGasTurbinePerSecond;
 
-    // Cannot implement it yet due to GTNHLib not having the annotations for it yet
-    // public static double[] mPollutionGasTurbineReleasedByTier;
+    // reading double as strings, not perfect, but better than nothing
+    @Config.Comment({
+        "Pollution released by tier, with the following formula: PollutionBaseGasTurbinePerSecond * PollutionGasTurbineReleasedByTier[Tier]",
+        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc."
+    })
+    @Config.DefaultStringList({
+        "0.1",
+        "1.0",
+        "0.9",
+        "0.8",
+        "0.7",
+        "0.6"
+    })
+    @Config.RequiresMcRestart
+    public static String[] mPollutionGasTurbineReleasedByTier;
 }
