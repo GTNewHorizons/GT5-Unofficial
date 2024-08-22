@@ -66,6 +66,7 @@ public class GT_UO_DimensionList {
         SetConfigValues("Overworld", "0", "liquid_heavy_oil", "liquid_heavy_oil", 0, 550, 20, 4);
         SetConfigValues("Overworld", "0", "oil", "oil", 0, 600, 20, 5);
         SetConfigValues("Moon", "Moon", "helium-3", "helium-3", 24, 128, 100, 1);
+        fConfig.save();
     }
 
     public void getConfig(Configuration aConfig, String aCategory) {
