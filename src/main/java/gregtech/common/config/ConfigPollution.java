@@ -74,7 +74,7 @@ public class ConfigPollution {
     @Config.Comment("Controls the pollution reduction obtained with each increment of the circuit when throttling large boilers.")
     @Config.DefaultFloat(1.0f / 24.0f) // divided by 24 because there are 24 circuit configs.
     @Config.RequiresMcRestart
-    public static int mPollutionReleasedByThrottle;
+    public static float mPollutionReleasedByThrottle;
     @Config.Comment("Controls the pollution released per second by the large gas turbine.")
     @Config.DefaultInt(300)
     @Config.RequiresMcRestart
