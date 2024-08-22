@@ -416,7 +416,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 if (mUpdate <= 0) mUpdate = 50;
                 mUpdated = false;
             }
-            if (--mUpdate == 0 || --mStartUpCheck == 0) {
+            if (--mUpdate == 0 || --mStartUpCheck == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
 
