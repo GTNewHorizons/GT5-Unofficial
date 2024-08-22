@@ -62,6 +62,7 @@ public enum Mods {
     EnderZoo(Names.ENDER_ZOO),
     EnhancedLootBags(Names.ENHANCED_LOOT_BAGS),
     EternalSingularity(Names.ETERNAL_SINGULARITY),
+    EtFuturumRequiem(Names.ET_FUTURUM_REQUIEM),
     ExtraBees(Names.EXTRA_BEES),
     ExtraCells2(Names.EXTRA_CELLS2),
     ExtraTrees(Names.EXTRA_TREES),
@@ -71,6 +72,7 @@ public enum Mods {
     Forestry(Names.FORESTRY),
     ForgeMicroblocks(Names.FORGE_MICROBLOCKS),
     ForgeRelocation(Names.FORGE_RELOCATION),
+    GGFab(Names.G_G_FAB),
     GTNHIntergalactic(Names.G_T_N_H_INTERGALACTIC),
     GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
     GTPlusPlus(Names.G_T_PLUS_PLUS),
@@ -109,6 +111,7 @@ public enum Mods {
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
     Minecraft(Names.MINECRAFT),
     MineTweaker(Names.MINE_TWEAKER),
+    MobsInfo(Names.MOBS_INFO),
     NEICustomDiagrams(Names.N_E_I_CUSTOM_DIAGRAMS),
     NEIOrePlugin(Names.N_E_I_ORE_PLUGIN),
     Natura(Names.NATURA),
@@ -244,6 +247,7 @@ public enum Mods {
         public static final String ENDER_ZOO = "EnderZoo";
         public static final String ENHANCED_LOOT_BAGS = "enhancedlootbags";
         public static final String ETERNAL_SINGULARITY = "eternalsingularity";
+        public static final String ET_FUTURUM_REQUIEM = "etfuturum";
         public static final String EXTRA_BEES = "ExtraBees";
         public static final String EXTRA_CELLS2 = "extracells";
         public static final String EXTRA_TREES = "ExtraTrees";
@@ -253,6 +257,7 @@ public enum Mods {
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";
         public static final String FORGE_RELOCATION = "ForgeRelocation";
+        public static final String G_G_FAB = "ggfab";
         public static final String G_T_N_H_INTERGALACTIC = "gtnhintergalactic";
         public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
         public static final String G_T_PLUS_PLUS = "miscutils";
@@ -291,6 +296,7 @@ public enum Mods {
         public static final String MINE_AND_BLADE_BATTLE_GEAR2 = "battlegear2";
         public static final String MINECRAFT = "minecraft";
         public static final String MINE_TWEAKER = "MineTweaker3";
+        public static final String MOBS_INFO = "mobsinfo";
         public static final String N_E_I_CUSTOM_DIAGRAMS = "neicustomdiagram";
         public static final String N_E_I_ORE_PLUGIN = "gtneioreplugin";
         public static final String NATURA = "Natura";

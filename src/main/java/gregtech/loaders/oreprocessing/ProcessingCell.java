@@ -259,7 +259,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Fluorine" -> recipeBuilder.metadata(FUEL_VALUE, 147_456)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GT_RecipeConstants.Fuel);
-                        case "Force" -> recipeBuilder.metadata(FUEL_VALUE, 150_000)
+                        case "Force" -> recipeBuilder.metadata(FUEL_VALUE, 180_000)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GT_RecipeConstants.Fuel);
                         case "Gadolinium" -> recipeBuilder.metadata(FUEL_VALUE, 366_551)

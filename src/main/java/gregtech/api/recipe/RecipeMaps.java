@@ -1,18 +1,10 @@
 package gregtech.api.recipe;
 
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_INPUT;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_OUTPUT;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUID_OUTPUT;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_INPUT;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OR_FLUID_INPUT;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OR_FLUID_OUTPUT;
-import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OUTPUT;
 import static gregtech.api.util.GT_RecipeMapUtil.GT_RecipeTemplate;
 import static gregtech.api.util.GT_RecipeMapUtil.asTemplate;
 import static gregtech.api.util.GT_RecipeMapUtil.buildOrEmpty;
@@ -61,7 +53,9 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
+import gregtech.api.recipe.maps.PurificationUnitLaserFrontend;
 import gregtech.api.recipe.maps.PurificationUnitOzonationFrontend;
+import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
 import gregtech.api.recipe.maps.PurificationUnitPlasmaHeaterFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
@@ -71,7 +65,6 @@ import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -83,6 +76,7 @@ import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
+import gtPlusPlus.core.item.ModItems;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
@@ -103,7 +97,6 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GT_UITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
-        .recipeConfigFile("orewasher", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> thermalCentrifugeRecipes = RecipeMapBuilder
         .of("gt.recipe.thermalcentrifuge")
@@ -120,7 +113,6 @@ public final class RecipeMaps {
                 return GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE;
             }
         })
-        .recipeConfigFile("thermalcentrifuge", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> compressorRecipes = RecipeMapBuilder.of("gt.recipe.compressor")
         .maxIO(1, 1, 0, 0)
@@ -135,7 +127,6 @@ public final class RecipeMaps {
         .progressBarSteam(GT_UITextures.PROGRESSBAR_COMPRESS_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
-        .recipeConfigFile("compressor", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> extractorRecipes = RecipeMapBuilder.of("gt.recipe.extractor")
         .maxIO(1, 1, 0, 0)
@@ -150,7 +141,6 @@ public final class RecipeMaps {
         .progressBarSteam(GT_UITextures.PROGRESSBAR_EXTRACT_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
-        .recipeConfigFile("extractor", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecyclerBackend> recyclerRecipes = RecipeMapBuilder
         .of("ic.recipe.recycler", RecyclerBackend::new)
@@ -247,7 +237,6 @@ public final class RecipeMaps {
         .of("gt.recipe.plasmaarcfurnace")
         .maxIO(1, 9, 1, 1)
         .minInputs(1, 1)
-        .recipeConfigFile("arcfurnace", FIRST_ITEM_INPUT)
         .build();
     /**
      * Usually, but not always, you should use {@link GT_RecipeConstants#UniversalArcFurnace} instead.
@@ -256,7 +245,6 @@ public final class RecipeMaps {
         .maxIO(1, 9, 1, 0)
         .minInputs(1, 1)
         .amperage(3)
-        .recipeConfigFile("arcfurnace", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<PrinterBackend> printerRecipes = RecipeMapBuilder
         .of("gt.recipe.printer", PrinterBackend::new)
@@ -275,12 +263,10 @@ public final class RecipeMaps {
             }
             return GT_UITextures.OVERLAY_SLOT_PAGE_BLANK;
         })
-        .recipeConfigFile("printer", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> sifterRecipes = RecipeMapBuilder.of("gt.recipe.sifter")
         .maxIO(1, 9, 1, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
-        .recipeConfigFile("sifter", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<FormingPressBackend> formingPressRecipes = RecipeMapBuilder
         .of("gt.recipe.press", FormingPressBackend::new)
@@ -296,7 +282,6 @@ public final class RecipeMaps {
             return GT_UITextures.OVERLAY_SLOT_PRESS_2;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_COMPRESS)
-        .recipeConfigFile("press", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> laserEngraverRecipes = RecipeMapBuilder
         .of("gt.recipe.laserengraver")
@@ -305,29 +290,16 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GT_UITextures.OVERLAY_SLOT_LENS : null)
         // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
-        .neiRecipeComparator((a, b) -> {
-            // Find lens, if no lens was present we can use the default comparator
-            if (a.mInputs.length > 1 && b.mInputs.length > 1) {
-                ItemStack firstLens = a.mInputs[1];
-                ItemStack secondLens = b.mInputs[1];
-                // Find purified water/any fluid, if none was present simply use the lens to compare
-                if (ItemStack.areItemStacksEqual(firstLens, secondLens) && a.mFluidInputs.length > 0
-                    && b.mFluidInputs.length > 0) {
-                    return Comparator
-                        .<GT_Recipe, Integer>comparing(r -> PurifiedWaterHelpers.getWaterTier(r.mFluidInputs[0]))
-                        .compare(a, b);
-                }
-            }
-            return a.compareTo(b);
-        })
-        .recipeConfigFile("laserengraving", FIRST_ITEM_OUTPUT)
+        .neiRecipeComparator(
+            (a, b) -> Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
+                .thenComparing(GT_Recipe::compareTo)
+                .compare(a, b))
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")
         .maxIO(9, 4, 1, 1)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GT_UITextures.OVERLAY_SLOT_DUST : null)
         .progressBar(GT_UITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
-        .recipeConfigFile("mixer", FIRST_ITEM_OR_FLUID_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> autoclaveRecipes = RecipeMapBuilder.of("gt.recipe.autoclave")
         .maxIO(2, 4, 1, 1)
@@ -344,8 +316,6 @@ public final class RecipeMaps {
             }
             return GT_UITextures.OVERLAY_SLOT_DUST;
         })
-
-        .recipeConfigFile("autoclave", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> electroMagneticSeparatorRecipes = RecipeMapBuilder
         .of("gt.recipe.electromagneticseparator")
@@ -355,13 +325,11 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> isOutput ? GT_UITextures.OVERLAY_SLOT_DUST
                 : GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
         .progressBar(GT_UITextures.PROGRESSBAR_MAGNET)
-        .recipeConfigFile("electromagneticseparator", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> polarizerRecipes = RecipeMapBuilder.of("gt.recipe.polarizer")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .progressBar(GT_UITextures.PROGRESSBAR_MAGNET)
-        .recipeConfigFile("polarizer", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> maceratorRecipes = RecipeMapBuilder.of("gt.recipe.macerator")
         .maxIO(1, 4, 0, 0)
@@ -376,13 +344,11 @@ public final class RecipeMaps {
         .progressBarSteam(GT_UITextures.PROGRESSBAR_MACERATE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Macerator.get(1)))
-        .recipeConfigFile("pulveriser", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalBathRecipes = RecipeMapBuilder.of("gt.recipe.chemicalbath")
         .maxIO(1, 3, 1, 1)
         .minInputs(1, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
-        .recipeConfigFile("chemicalbath", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<FluidCannerBackend> fluidCannerRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidcanner", FluidCannerBackend::new)
@@ -390,7 +356,6 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GT_UITextures.OVERLAY_SLOT_CANISTER : null)
         .progressBar(GT_UITextures.PROGRESSBAR_CANNER)
-        .recipeConfigFile("canning", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> brewingRecipes = RecipeMapBuilder.of("gt.recipe.brewer")
         .maxIO(1, 0, 1, 1)
@@ -398,7 +363,6 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_CAULDRON : null)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .recipeConfigFile("brewing", FIRST_FLUIDSTACK_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> fluidHeaterRecipes = RecipeMapBuilder.of("gt.recipe.fluidheater")
         .maxIO(1, 0, 1, 1)
@@ -412,7 +376,6 @@ public final class RecipeMaps {
             return GT_UITextures.OVERLAY_SLOT_HEATER_1;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .recipeConfigFile("fluidheater", FIRST_FLUIDSTACK_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> distilleryRecipes = RecipeMapBuilder.of("gt.recipe.distillery")
         .maxIO(1, 1, 1, 1)
@@ -467,13 +430,11 @@ public final class RecipeMaps {
                 r.mDuration = aDuration;
             }
         })
-        .recipeConfigFile("distillery", FIRST_FLUIDSTACK_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> fermentingRecipes = RecipeMapBuilder.of("gt.recipe.fermenter")
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .recipeConfigFile("fermenting", FIRST_FLUIDSTACK_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> fluidSolidifierRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidsolidifier")
@@ -491,7 +452,6 @@ public final class RecipeMaps {
                     r.mFluidInputs = new FluidStack[] { Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount) };
             }
         })
-        .recipeConfigFile("fluidsolidifier", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> fluidExtractionRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidextractor")
@@ -511,7 +471,6 @@ public final class RecipeMaps {
                     r.mFluidOutputs = new FluidStack[] { Materials.PulsatingIron.getMolten(r.mFluidOutputs[0].amount) };
             }
         })
-        .recipeConfigFile("fluidextractor", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> packagerRecipes = RecipeMapBuilder.of("gt.recipe.packager")
         .maxIO(2, 1, 0, 0)
@@ -525,14 +484,12 @@ public final class RecipeMaps {
             }
             return null;
         })
-        .recipeConfigFile("boxing", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<UnpackagerBackend> unpackagerRecipes = RecipeMapBuilder
         .of("gt.recipe.unpackager", UnpackagerBackend::new)
         .maxIO(1, 2, 0, 0)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isOutput ? GT_UITextures.OVERLAY_SLOT_BOXED : null)
-        .recipeConfigFile("unboxing", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> fusionRecipes = RecipeMapBuilder.of("gt.recipe.fusionreactor")
         .maxIO(0, 0, 2, 1)
@@ -546,7 +503,6 @@ public final class RecipeMaps {
                     recipe -> FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt))
                 .thenComparing(GT_Recipe::compareTo))
         .frontend(FluidOnlyFrontend::new)
-        .recipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")
         .maxIO(2, 6, 1, 1)
@@ -564,7 +520,6 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
-        .recipeConfigFile("centrifuge", FIRST_ITEM_OR_FLUID_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
@@ -582,7 +537,6 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
-        .recipeConfigFile("electrolyzer", FIRST_ITEM_OR_FLUID_INPUT)
         .build();
     /**
      * Use {@link GT_RecipeConstants#COIL_HEAT} as heat level.
@@ -591,7 +545,6 @@ public final class RecipeMaps {
         .maxIO(6, 6, 1, 1)
         .minInputs(1, 0)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
-        .recipeConfigFile("blastfurnace", FIRST_ITEM_INPUT)
         .build();
     /**
      * Use {@link GT_RecipeConstants#COIL_HEAT} as heat level.
@@ -671,8 +624,8 @@ public final class RecipeMaps {
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
                     .setDuration(aDuration * 2 / 3);
             }
-            ItemStack cactusCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", aCoalAmount * 2L);
-            ItemStack sugarCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", aCoalAmount * 2L);
+            ItemStack cactusCoke = new ItemStack(ModItems.itemCactusCoke, aCoalAmount * 2);
+            ItemStack sugarCoke = new ItemStack(ModItems.itemSugarCoke, aCoalAmount * 2);
             coll.derive()
                 .setInputs(aInput1, aInput2, cactusCoke)
                 .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
@@ -708,7 +661,6 @@ public final class RecipeMaps {
             }
             return coll.getAll();
         })
-        .recipeConfigFile("primitiveblastfurnace", FIRST_ITEM_INPUT)
         .build();
     /**
      * Uses {@link GT_RecipeConstants#ADDITIVE_AMOUNT} for TNT/ITNT/... amount. Value is truncated to [0, 64]
@@ -764,7 +716,6 @@ public final class RecipeMaps {
                 .setInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT, null));
             return coll.getAll();
         })
-        .recipeConfigFile("implosion", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
         .of("gt.recipe.vacuumfreezer")
@@ -790,7 +741,6 @@ public final class RecipeMaps {
             }
             return buildOrEmpty(b);
         })
-        .recipeConfigFile("vacuumfreezer", FIRST_ITEM_INPUT)
         .build();
     /**
      * Using {@code .addTo(chemicalReactorRecipes)} will cause the recipe to be added to single block recipe map ONLY!
@@ -818,7 +768,6 @@ public final class RecipeMaps {
         })
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .disableOptimize()
-        .recipeConfigFile("chemicalreactor", FIRST_ITEM_OR_FLUID_OUTPUT)
         .build();
     /**
      * Using {@code .addTo(multiblockChemicalReactorRecipes)} will cause the recipe to be added to
@@ -848,20 +797,17 @@ public final class RecipeMaps {
         .logoPos(80, 62)
         .frontend(DistillationTowerFrontend::new)
         .disableOptimize()
-        .recipeConfigFile("distillation", FIRST_FLUIDSTACK_INPUT)
         .build();
     public static final RecipeMap<OilCrackerBackend> crackingRecipes = RecipeMapBuilder
         .of("gt.recipe.craker", OilCrackerBackend::new)
         .maxIO(1, 1, 2, 1)
         .minInputs(1, 2)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .recipeConfigFile("cracking", FIRST_FLUIDSTACK_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> pyrolyseRecipes = RecipeMapBuilder.of("gt.recipe.pyro")
         .maxIO(2, 1, 1, 1)
         .minInputs(1, 0)
         .disableOptimize()
-        .recipeConfigFile("pyrolyse", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> wiremillRecipes = RecipeMapBuilder.of("gt.recipe.wiremill")
         .maxIO(2, 1, 0, 0)
@@ -869,7 +815,6 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_WIREMILL : null)
         .progressBar(GT_UITextures.PROGRESSBAR_WIREMILL)
-        .recipeConfigFile("wiremill", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> benderRecipes = RecipeMapBuilder.of("gt.recipe.metalbender")
         .maxIO(2, 1, 0, 0)
@@ -877,7 +822,6 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_BENDER : null)
         .progressBar(GT_UITextures.PROGRESSBAR_BENDING)
-        .recipeConfigFile("bender", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> alloySmelterRecipes = RecipeMapBuilder.of("gt.recipe.alloysmelter")
         .maxIO(2, 1, 0, 0)
@@ -901,9 +845,6 @@ public final class RecipeMaps {
         })
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_AlloySmelter.get(1)))
-        .recipeConfigFile(
-            "alloysmelting",
-            r -> GT_Config.getStackConfigName(GT_Utility.isArrayOfLength(r.mInputs, 1) ? r.mInputs[0] : r.mOutputs[0]))
         .build();
     public static final RecipeMap<AssemblerBackend> assemblerRecipes = RecipeMapBuilder
         .of("gt.recipe.assembler", AssemblerBackend::new)
@@ -913,7 +854,6 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
-        .recipeConfigFile("assembling", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> circuitAssemblerRecipes = RecipeMapBuilder
         .of("gt.recipe.circuitassembler")
@@ -923,7 +863,6 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GT_UITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
-        .recipeConfigFile("circuitassembler", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
         .maxIO(2, 2, 0, 0)
@@ -938,7 +877,6 @@ public final class RecipeMaps {
             return GT_UITextures.OVERLAY_SLOT_CANISTER;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_CANNER)
-        .recipeConfigFile("canning", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> latheRecipes = RecipeMapBuilder.of("gt.recipe.lathe")
         .maxIO(1, 2, 0, 0)
@@ -954,7 +892,6 @@ public final class RecipeMaps {
         })
         .progressBar(GT_UITextures.PROGRESSBAR_LATHE)
         .addSpecialTexture(98, 24, 5, 18, GT_UITextures.PROGRESSBAR_LATHE_BASE)
-        .recipeConfigFile("lathe", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> cutterRecipes = RecipeMapBuilder.of("gt.recipe.cuttingsaw")
         .maxIO(2, 4, 1, 0)
@@ -996,7 +933,6 @@ public final class RecipeMaps {
                 .ifPresent(ret::add);
             return ret;
         })
-        .recipeConfigFile("cutting", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> slicerRecipes = RecipeMapBuilder.of("gt.recipe.slicer")
         .maxIO(2, 1, 0, 0)
@@ -1011,7 +947,6 @@ public final class RecipeMaps {
             return GT_UITextures.OVERLAY_SLOT_SLICE_SHAPE;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_SLICE)
-        .recipeConfigFile("slicer", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> extruderRecipes = RecipeMapBuilder.of("gt.recipe.extruder")
         .maxIO(2, 1, 0, 0)
@@ -1020,7 +955,6 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GT_UITextures.OVERLAY_SLOT_EXTRUDER_SHAPE : null)
         .progressBar(GT_UITextures.PROGRESSBAR_EXTRUDE)
-        .recipeConfigFile("extruder", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> hammerRecipes = RecipeMapBuilder.of("gt.recipe.hammer")
         .maxIO(2, 2, 2, 2)
@@ -1035,7 +969,6 @@ public final class RecipeMaps {
         .addSpecialTextureSteam(78, 42, 20, 6, GT_UITextures.PROGRESSBAR_HAMMER_BASE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Hammer.get(1)))
-        .recipeConfigFile("forgehammer", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> amplifierRecipes = RecipeMapBuilder.of("gt.recipe.uuamplifier")
         .maxIO(1, 0, 0, 1)
@@ -1050,7 +983,6 @@ public final class RecipeMaps {
             return null;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
-        .recipeConfigFile("amplifier", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> massFabFakeRecipes = RecipeMapBuilder.of("gt.recipe.massfab")
         .maxIO(1, 0, 1, 1)
@@ -1225,9 +1157,10 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantuvtreatment")
-        .maxIO(0, 0, 1, 1)
+        .maxIO(9, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW)
+        .frontend(PurificationUnitLaserFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationDegasifierRecipes = RecipeMapBuilder
@@ -1242,6 +1175,7 @@ public final class RecipeMaps {
         .maxIO(2, 1, 1, 2)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW)
+        .frontend(PurificationUnitParticleExtractorFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")

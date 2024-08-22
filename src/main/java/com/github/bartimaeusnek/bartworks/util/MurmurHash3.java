@@ -155,9 +155,6 @@ public final class MurmurHash3 {
 
             k1 |= k2 << shift;
 
-            // int used_bits = 32 - shift; // how many bits of k2 were used in k1.
-            // int unused_bits = bits - used_bits; // (bits-(32-shift)) == bits+shift-32 == bits-newshift
-
             shift += bits;
             if (shift >= 32) {
                 // mix after we have a complete word

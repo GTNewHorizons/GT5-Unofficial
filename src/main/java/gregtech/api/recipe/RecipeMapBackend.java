@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import static gregtech.api.util.GT_RecipeBuilder.ENABLE_COLLISION_CHECK;
 import static gregtech.api.util.GT_RecipeBuilder.handleInvalidRecipe;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
@@ -171,13 +172,6 @@ public class RecipeMapBackend {
         Iterable<? extends GT_Recipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (GT_Recipe recipe : recipes) {
-            if (properties.recipeConfigCategory != null) {
-                assert properties.recipeConfigKeyConvertor != null;
-                String configKey = properties.recipeConfigKeyConvertor.apply(recipe);
-                if (configKey != null && recipe.mDuration <= 0) {
-                    continue;
-                }
-            }
             if (recipe.mFluidInputs.length < properties.minFluidInputs
                 || recipe.mInputs.length < properties.minItemInputs) {
                 return Collections.emptyList();
@@ -186,7 +180,7 @@ public class RecipeMapBackend {
                 recipe = properties.recipeTransformer.apply(recipe);
             }
             if (recipe == null) continue;
-            if (builder.isCheckForCollision() && checkCollision(recipe)) {
+            if (builder.isCheckForCollision() && ENABLE_COLLISION_CHECK && checkCollision(recipe)) {
                 handleCollision(recipe);
                 continue;
             }

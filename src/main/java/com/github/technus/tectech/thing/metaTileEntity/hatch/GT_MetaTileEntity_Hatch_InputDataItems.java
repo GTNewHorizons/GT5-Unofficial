@@ -11,6 +11,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -205,6 +206,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
 
     @Override
     public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
+        if (stacks == null) return Collections.emptyList();
         return Arrays.stream(stacks)
             .filter(stack -> stack != null && filter.test(stack))
             .collect(Collectors.toList());

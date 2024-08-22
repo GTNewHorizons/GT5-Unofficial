@@ -3,7 +3,8 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
-import static com.github.technus.tectech.util.CommonValues.VN;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;
@@ -173,7 +174,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxEUInput() {
-        return CommonValues.V[mTier];
+        return V[mTier];
     }
 
     @Override
@@ -183,12 +184,12 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxEUStore() {
-        return CommonValues.V[mTier] << 4;
+        return V[mTier] << 4;
     }
 
     @Override
     public long getMinimumStoredEU() {
-        return CommonValues.V[mTier] << 2;
+        return V[mTier] << 2;
     }
 
     @Override
@@ -199,11 +200,6 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     @Override
     public int maxProgresstime() {
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
     }
 
     @Override

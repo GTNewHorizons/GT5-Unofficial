@@ -42,7 +42,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -63,7 +62,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     private static final int STRUCTURE_Y_OFFSET = 8;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
-    private GT_MetaTileEntity_Hatch_InputBus lensInputBus;
+    private GT_MetaTileEntity_LensHousing lensInputBus;
     private GT_MetaTileEntity_LensIndicator lensIndicator;
 
     private UVTreatmentLensCycle lensCycle = null;
@@ -81,6 +80,8 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
      * Minimum amount of time between two lens swaps
      */
     public static final int MIN_TIME_BETWEEN_SWAPS = MAX_TIME_BETWEEN_SWAPS / 4;
+
+    public static final ArrayList<ItemStack> LENS_ITEMS = new ArrayList<>();
 
     private int numSwapsPerformed = 0;
     private int timeUntilNextSwap = 0;
@@ -318,8 +319,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult result = super.checkProcessing();
         if (result.wasSuccessful()) {
-            // Note that this cast is fine, look at GT_PurifiedWaterRecipes.java
-            this.lensCycle = new UVTreatmentLensCycle((List<ItemStack>) this.currentRecipe.mSpecialItems);
+            this.lensCycle = new UVTreatmentLensCycle(LENS_ITEMS);
         }
         return result;
     }
@@ -447,6 +447,8 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        // Do not form without lens bus
+        if (lensInputBus == null) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 

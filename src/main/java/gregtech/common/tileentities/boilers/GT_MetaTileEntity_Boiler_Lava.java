@@ -31,12 +31,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -392,14 +388,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+    protected boolean isAutomatable() {
         return true;
     }
 
@@ -466,48 +455,9 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setPos(43, 25)
-                .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
-            .widget(
-                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                    .setPos(43, 61)
-                    .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-            .widget(
-                new FluidSlotWidget(lavaTank).setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn())
-                    .setPos(115, 61))
-            .widget(createAshSlot())
-            .widget(
-                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(70, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(83, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(96, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar()
-                    // cap minimum so that one can easily see there's fuel remaining
-                    .setProgress(() -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                    .setTexture(getProgressbarFuel(), 14)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(116, 45)
-                    .setSize(14, 14))
-            .widget(
-                new DrawableWidget().setDrawable(getOverlaySlotCanister())
-                    .setPos(43, 43)
-                    .setSize(18, 18));
+    protected Widget createFuelSlot() {
+        return new FluidSlotWidget(lavaTank).setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn())
+            .setPos(115, 61);
     }
 
     static class LavaTank extends FluidTank {

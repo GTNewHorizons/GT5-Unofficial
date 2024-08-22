@@ -260,7 +260,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
 
         List<ItemStack> tInput = getStoredInputs();
         List<FluidStack> tInputFluid = getStoredFluids();
-        long availableEUt = getMaxInputVoltage();
+        long availableEUt = GT_Utility.roundUpVoltage(getMaxInputVoltage());
         if (availableEUt < RECIPE_EUT) {
             return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
         }
@@ -273,10 +273,10 @@ public class GT_MetaTileEntity_IntegratedOreFactory
 
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setEUt(availableEUt)
             .setRecipeEUt(RECIPE_EUT)
-            .setDuration(getTime(sMode));
+            .setDuration(getTime(sMode))
+            .setParallel(originalMaxParallel);
 
-        double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
-            .calculateDurationUnderOneTick();
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
 
         if (tickTimeAfterOC < 1) {
             maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
@@ -325,9 +325,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         currentParallel = itemParallel;
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
-        long eutUseAfterOC = calculator
-            .calculateEUtConsumptionUnderOneTick(originalMaxParallel, currentParallelBeforeBatchMode);
-        calculator.setParallel(Math.min(currentParallelBeforeBatchMode, originalMaxParallel))
+        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
             .calculate();
 
         double batchMultiplierMax = 1;
@@ -407,7 +405,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
         this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
-        this.lEUt = eutUseAfterOC;
+        this.lEUt = calculator.getConsumption();
         if (this.lEUt > 0) {
             this.lEUt = -this.lEUt;
         }

@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -10,6 +9,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.loaders.misc.GT_Bees.combs;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -535,13 +535,13 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(1000)
             .fluidOutputs(Materials.Lava.getFluid(800L))
             .duration(12 * SECONDS + 16 * TICKS)
-            .eut(128)
+            .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
 
         // Beecombs fluid extractor recipes
         // xenon
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 134))
+            .itemInputs(new ItemStack(combs, 1, 134))
             .fluidOutputs(getFluidStack("xenon", 250))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
@@ -549,7 +549,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         // neon
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 135))
+            .itemInputs(new ItemStack(combs, 1, 135))
             .fluidOutputs(getFluidStack("neon", 250))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_IV)
@@ -557,7 +557,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         // krpton
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 136))
+            .itemInputs(new ItemStack(combs, 1, 136))
             .fluidOutputs(getFluidStack("krypton", 250))
             .duration(1 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_IV)

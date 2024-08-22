@@ -469,8 +469,8 @@ public class GT_ParallelHelper {
 
         // Save the original max parallel before calculating our overclocking under 1 tick
         int originalMaxParallel = maxParallel;
-        double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
-            .calculateDurationUnderOneTick();
+        calculator.setParallel(originalMaxParallel);
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
         if (tickTimeAfterOC < 1) {
             maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
         }
@@ -559,12 +559,8 @@ public class GT_ParallelHelper {
             return;
         }
 
-        long eutUseAfterOC = calculator.calculateEUtConsumptionUnderOneTick(originalMaxParallel, currentParallel);
-        calculator.setParallel(Math.min(currentParallel, originalMaxParallel))
+        calculator.setCurrentParallel(currentParallel)
             .calculate();
-        if (currentParallel > originalMaxParallel) {
-            calculator.setRecipeEUt(eutUseAfterOC);
-        }
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
             int tExtraParallels;

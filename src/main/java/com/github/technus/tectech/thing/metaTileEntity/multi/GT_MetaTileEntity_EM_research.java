@@ -3,12 +3,12 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -49,6 +50,11 @@ import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -89,6 +95,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private String machineType = assembly;
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
+
+    // Used to sync currently researching item to GUI
+    private String clientOutputName;
 
     private static LinkedHashMap<String, String> lServerNames;
 
@@ -587,7 +596,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(computationRequired / 20L) };
+                + GT_Utility.formatNumbers(getComputationRequired()) };
     }
 
     @Override
@@ -655,6 +664,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         computationRequired = computationRemaining = 0;
         tRecipe = null;
         holdItem = null;
+    }
+
+    @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
     }
 
     @Override
@@ -744,14 +758,58 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements
+            .widget(
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(
+                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.research_progress",
+                            getComputationConsumed(),
+                            getComputationRequired(),
+                            GT_Utility.formatNumbers(getComputationProgress())))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(
+                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
+            .widget(new FakeSyncWidget.LongSyncer(() -> computationRequired, aLong -> computationRequired = aLong))
+            .widget(new FakeSyncWidget.LongSyncer(() -> computationRemaining, aLong -> computationRemaining = aLong))
+            .widget(new FakeSyncWidget.StringSyncer(() -> {
+                if (tRecipe != null && tRecipe.mOutput != null) {
+                    return tRecipe.mOutput.getDisplayName();
+                }
+                return "";
+            }, aString -> clientOutputName = aString));
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
         tag.setString("machineType", machineType);
-        tag.setLong("computation", (computationRequired - computationRemaining) / 20L);
-        tag.setLong("computationRequired", computationRequired / 20L);
+        tag.setLong("computation", getComputationConsumed());
+        tag.setLong("computationRequired", getComputationRequired());
+    }
+
+    private long getComputationConsumed() {
+        return (computationRequired - computationRemaining) / 20L;
+    }
+
+    private long getComputationRequired() {
+        return computationRequired / 20L;
+    }
+
+    private double getComputationProgress() {
+        return 100d
+            * (getComputationRequired() > 0d ? (double) getComputationConsumed() / getComputationRequired() : 0d);
     }
 
     @Override

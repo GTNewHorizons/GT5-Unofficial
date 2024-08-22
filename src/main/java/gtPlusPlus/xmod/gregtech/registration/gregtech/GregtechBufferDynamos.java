@@ -135,7 +135,7 @@ public class GregtechBufferDynamos {
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_MAX.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_MAX, 'T', CI.getTieredCircuit(9), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UHV, 'T', CI.getTieredCircuit(9), 'C',
                 OrePrefixes.wireGt04.get(Materials.SuperconductorUHV) });
     }
 }
