@@ -40,6 +40,7 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_BreederCell_Item;
@@ -359,7 +360,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -373,7 +374,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -387,7 +388,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Depleted_MNq_1.set(new GT_DepletetCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
@@ -438,7 +439,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -452,7 +453,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -466,7 +467,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Uraniumcell_1.set(

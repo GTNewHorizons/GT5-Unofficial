@@ -541,7 +541,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UHV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(1152L))
                 .duration(5 * SECONDS)
-                .eut(500000)
+                .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -551,7 +551,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UEV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L))
                 .duration(10 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -561,7 +561,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UIV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(4608L))
                 .duration(15 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -571,7 +571,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(9216L))
                 .duration(30 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -581,7 +581,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UxV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(18432L))
                 .duration(60 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
         }
 
@@ -810,7 +810,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_UV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1340,7 +1340,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Hatch_Muffler_UV.get(1))
             .duration(10 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1352,7 +1352,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Hatch_Muffler_MAX.get(1))
             .duration(10 * SECONDS)
-            .eut(2000000)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2113,7 +2113,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.UV_Coil.get(1))
             .duration(10 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2123,7 +2123,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.UHV_Coil.get(1))
             .duration(10 * SECONDS)
-            .eut(2000000)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2936,7 +2936,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Wood, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.wooden_sword, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2945,7 +2946,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Stone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.stone_sword, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2954,7 +2956,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.iron_sword, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2963,7 +2966,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.golden_sword, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2972,7 +2976,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Diamond, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.diamond_sword, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2981,7 +2986,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Bronze, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Sword_Bronze.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2990,7 +2996,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Steel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Sword_Steel.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -2999,7 +3006,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Wood, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.wooden_pickaxe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3008,7 +3016,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Stone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.stone_pickaxe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3017,7 +3026,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.iron_pickaxe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3026,7 +3036,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.golden_pickaxe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3035,7 +3046,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Diamond, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.diamond_pickaxe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3044,7 +3056,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Bronze, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Pickaxe_Bronze.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3053,7 +3066,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Steel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Pickaxe_Steel.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3062,7 +3076,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Wood, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.wooden_shovel, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3071,7 +3086,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Stone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.stone_shovel, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3080,7 +3096,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.iron_shovel, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3089,7 +3106,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.golden_shovel, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3098,7 +3116,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Diamond, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.diamond_shovel, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3107,7 +3126,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Bronze, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Shovel_Bronze.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3116,7 +3136,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Steel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Shovel_Steel.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3125,7 +3146,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Wood, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.wooden_axe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3134,7 +3156,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Stone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.stone_axe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3143,7 +3166,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.iron_axe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3152,7 +3176,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.golden_axe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3161,7 +3186,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Diamond, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.diamond_axe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3170,7 +3196,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Bronze, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Axe_Bronze.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3179,7 +3206,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Steel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Axe_Steel.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3188,7 +3216,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Wood, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.wooden_hoe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3197,7 +3226,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Stone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.stone_hoe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3206,7 +3236,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.iron_hoe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3215,7 +3246,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.golden_hoe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3224,7 +3256,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Diamond, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.diamond_hoe, 1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3233,7 +3266,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Bronze, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Hoe_Bronze.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)
@@ -3242,7 +3276,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Steel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Tool_Hoe_Steel.getUndamaged(1))
             .duration(5 * SECONDS)
             .eut(16)

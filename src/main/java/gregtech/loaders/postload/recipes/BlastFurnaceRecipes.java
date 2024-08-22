@@ -635,7 +635,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .fluidInputs(Materials.Tungsten.getMolten(144))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72))
             .duration(3 * MINUTES)
-            .eut(32000000)
+            .eut(TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 11701)
             .addTo(blastFurnaceRecipes);
 
@@ -648,7 +648,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
             .fluidInputs(Materials.Chlorine.getGas(3000))
             .duration(30 * SECONDS)
-            .eut((int) TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 573)
             .addTo(blastFurnaceRecipes);
 

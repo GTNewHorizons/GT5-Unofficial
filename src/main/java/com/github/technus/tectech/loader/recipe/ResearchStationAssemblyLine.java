@@ -115,7 +115,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.OilDrill4.get(1),
             16777216,
             2048,
-            2000000,
+            (int) TierEU.RECIPE_UHV,
             4,
             new Object[] { ItemList.OilDrill4.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
@@ -127,14 +127,14 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Neutronium.getMolten(576) },
             ItemList.OilDrillInfinite.get(1),
             6000,
-            2000000);
+            (int) TierEU.RECIPE_UHV);
 
         // Infinity Coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Coil_AwakenedDraconium.get(1),
             16_777_216,
             2048,
-            8_000_000,
+            (int) TierEU.RECIPE_UEV,
             1,
             new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
@@ -144,14 +144,14 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.DraconiumAwakened.getMolten(576), },
             ItemList.Casing_Coil_Infinity.get(1),
             60 * 20,
-            8_000_000);
+            (int) TierEU.RECIPE_UEV);
 
         // Hypogen Coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Coil_Infinity.get(1),
             16_777_216 * 2,
             2048 * 2,
-            32_000_000,
+            (int) TierEU.RECIPE_UIV,
             1,
             new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L },
                 GT_OreDictUnificator.get("wireGt02Hypogen", 8L), HYPOGEN.getScrew(8),
@@ -161,14 +161,14 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.Infinity.getMolten(576), },
             ItemList.Casing_Coil_Hypogen.get(1),
             60 * 20,
-            8000000 * 4);
+            (int) TierEU.RECIPE_UIV);
 
         // Eternal coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Coil_Hypogen.get(1),
             16_777_216 * 4,
             8_192,
-            128_000_000,
+            (int) TierEU.RECIPE_UMV,
             1,
             new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, MaterialsUEVplus.SpaceTime, 8),
@@ -183,7 +183,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
             ItemList.Casing_Coil_Eternal.get(1),
             60 * 20,
-            8_000_000 * 16);
+            (int) TierEU.RECIPE_UMV);
 
         // UHV-UMV Energy Hatch & Dynamo
         {
@@ -221,7 +221,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         new FluidStack(solderIndalloy, 40 * 144) },
                     ItemList.Hatch_Energy_UHV.get(1L),
                     1000,
-                    2000000);
+                    (int) TierEU.RECIPE_UHV);
 
                 // Energy Hatch UEV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -240,7 +240,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8000L) },
                     ItemList.Hatch_Energy_UEV.get(1L),
                     1000,
-                    8000000);
+                    (int) TierEU.RECIPE_UEV);
 
                 // Energy Hatch UIV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -260,7 +260,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.UUMatter.getFluid(16_000L) },
                     ItemList.Hatch_Energy_UIV.get(1L),
                     1000,
-                    32_000_000);
+                    (int) TierEU.RECIPE_UIV);
 
                 // Energy Hatch UMV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -282,7 +282,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.UUMatter.getFluid(32000L) },
                     ItemList.Hatch_Energy_UMV.get(1L),
                     1000,
-                    128_000_000);
+                    (int) TierEU.RECIPE_UMV);
 
                 // Energy Hatch UXV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -305,7 +305,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.UUMatter.getFluid(64000L) },
                     ItemList.Hatch_Energy_UXV.get(1L),
                     1000,
-                    512_000_000);
+                    (int) TierEU.RECIPE_UXV);
             }
 
             // Dynamo Hatch
@@ -342,7 +342,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         new FluidStack(solderIndalloy, 40 * 144) },
                     ItemList.Hatch_Dynamo_UHV.get(1L),
                     1000,
-                    2000000);
+                    (int) TierEU.RECIPE_UHV);
 
                 // Dynamo Hatch UEV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -361,7 +361,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8000L) },
                     ItemList.Hatch_Dynamo_UEV.get(1L),
                     1000,
-                    8000000);
+                    (int) TierEU.RECIPE_UEV);
 
                 // Dynamo Hatch UIV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -381,7 +381,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.UUMatter.getFluid(16_000L) },
                     ItemList.Hatch_Dynamo_UIV.get(1L),
                     1000,
-                    32_000_000);
+                    (int) TierEU.RECIPE_UIV);
 
                 // Dynamo Hatch UMV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -403,7 +403,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.UUMatter.getFluid(32000L) },
                     ItemList.Hatch_Dynamo_UMV.get(1L),
                     1000,
-                    128_000_000);
+                    (int) TierEU.RECIPE_UMV);
 
                 // Dynamo Hatch UXV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -426,7 +426,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.UUMatter.getFluid(64000L) },
                     ItemList.Hatch_Dynamo_UXV.get(1L),
                     1000,
-                    512_000_000);
+                    (int) TierEU.RECIPE_UXV);
             }
         }
 
@@ -467,7 +467,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.Circuit_Biowarecomputer.get(1L),
             48000,
             128,
-            500000,
+            (int) TierEU.RECIPE_UV,
             8,
             new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(2L), ItemList.Circuit_Biowarecomputer.get(2L),
                 new ItemStack[] { ItemList.Circuit_Parts_TransistorASMD.get(16L),
@@ -484,7 +484,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.SuperCoolant.getFluid(10_000L), },
             ItemList.Circuit_Biowaresupercomputer.get(1L),
             4000,
-            500000);
+            (int) TierEU.RECIPE_UV);
 
         // Bio Mainframe
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -515,14 +515,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.SuperCoolant.getFluid(20_000L), },
             ItemList.Circuit_Biomainframe.get(1L),
             6000,
-            2000000);
+            (int) TierEU.RECIPE_UHV);
 
         // Optical Assembly
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_OpticalProcessor.get(1L),
             192_000,
             256,
-            2_000_000,
+            (int) TierEU.RECIPE_UHV,
             16,
             new Object[] { ItemList.Circuit_Board_Optical.get(1L), ItemList.Circuit_OpticalProcessor.get(2L),
                 ItemList.Circuit_Parts_InductorXSMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
@@ -536,7 +536,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.SuperCoolant.getFluid(10_000L), new FluidStack(FluidRegistry.getFluid("oganesson"), 500) },
             ItemList.Circuit_OpticalAssembly.get(1L),
             20 * 20,
-            2_000_000);
+            (int) TierEU.RECIPE_UHV);
 
         // Optical Computer
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -559,14 +559,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 2) },
             ItemList.Circuit_OpticalComputer.get(1L),
             200 * 20,
-            2_000_000);
+            (int) TierEU.RECIPE_UHV);
 
         // Optical Mainframe
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_OpticalComputer.get(1L),
             768_000,
             1024,
-            8_000_000,
+            (int) TierEU.RECIPE_UEV,
             64,
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
                 ItemList.Circuit_OpticalComputer.get(2L), ItemList.Circuit_Parts_InductorXSMD.get(32L),
@@ -585,7 +585,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 500 * 4) },
             ItemList.Circuit_OpticalMainframe.get(1L),
             300 * 20,
-            8_000_000);
+            (int) TierEU.RECIPE_UEV);
 
         // Laser Vacuum Mirror
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -700,7 +700,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
                 (int) TierEU.RECIPE_MAX,
                 32_768,
-                500_000_000,
+                (int) TierEU.RECIPE_UXV,
                 64,
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.SpaceTime, 64L),
@@ -735,7 +735,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Casing_Dim_Bridge.get(1),
                 32_000_000,
                 4096,
-                32_000_000,
+                (int) TierEU.RECIPE_UIV,
                 1,
                 new Object[] { ItemList.Casing_Dim_Bridge.get(4), ItemRegistry.megaMachines[0],
                     ItemList.Hatch_Energy_UEV.get(4L),
@@ -761,7 +761,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Casing_Dim_Injector.get(1),
                 8_000_000,
                 4096,
-                32_000_000,
+                (int) TierEU.RECIPE_UIV,
                 1,
                 new Object[] { ItemList.Casing_Dim_Trans.get(1), ItemList.MicroTransmitter_UV.get(1),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 2L },
@@ -772,14 +772,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack(solderUEV, 1152 * 8), Materials.NaquadahEnriched.getMolten(1296L) },
                 ItemList.Casing_Dim_Bridge.get(1),
                 240 * 20,
-                32_000_000);
+                (int) TierEU.RECIPE_UIV);
 
             // Dimensional injection casing.
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_Dim_Trans.get(1),
                 2_000_000,
                 2048,
-                32_000_000,
+                (int) TierEU.RECIPE_UIV,
                 1,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ledox, 1),
@@ -793,14 +793,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack(solderUEV, 576), Materials.NaquadahEnriched.getMolten(288L) },
                 ItemList.Casing_Dim_Injector.get(1),
                 20 * 20,
-                32_000_000);
+                (int) TierEU.RECIPE_UIV);
 
             // Dimensionally Transcendent Casing.
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                 getModItem(Avaritia.ID, "Singularity", 1L, 0),
                 2_000_000,
                 2048,
-                32_000_000,
+                (int) TierEU.RECIPE_UIV,
                 1,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 6),
                     LAURENIUM.getScrew(12), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -809,7 +809,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack(solderUEV, 288), Materials.NaquadahEnriched.getMolten(144L) },
                 ItemList.Casing_Dim_Trans.get(1),
                 20 * 20,
-                32_000_000);
+                (int) TierEU.RECIPE_UIV);
 
             // Transdimensional Alignment Matrix
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -837,7 +837,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier8", 1, 0),
             16_777_216,
             2048,
-            2_000_000,
+            (int) TierEU.RECIPE_UHV,
             64,
             new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
                 getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
@@ -906,7 +906,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.ZPM3.get(1L),
                 1_200_000,
                 128,
-                8_000_000,
+                (int) TierEU.RECIPE_UEV,
                 16,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
@@ -930,7 +930,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.ZPM4.get(1),
                     24_000_000,
                     1_280,
-                    32_000_000,
+                    (int) TierEU.RECIPE_UIV,
                     32,
                     new Object[] { HYPOGEN.getPlateDouble(32), HYPOGEN.getPlateDouble(32),
                         new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
@@ -954,7 +954,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.ZPM5.get(1L),
                     480_000_000,
                     12_288,
-                    128_000_000,
+                    (int) TierEU.RECIPE_UMV,
                     64,
                     new Object[] { ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
                         ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
@@ -982,7 +982,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             GregtechItemList.Compressed_Fusion_Reactor.get(1),
             320000,
             512,
-            2000000,
+            (int) TierEU.RECIPE_UHV,
             1,
             new Object[] { GregtechItemList.Casing_Fusion_Internal.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L },
@@ -996,14 +996,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ALLOY.OCTIRON.getFluidStack(9216), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216), },
             GregtechItemList.FusionComputer_UV2.get(1),
             6000,
-            2000000);
+            (int) TierEU.RECIPE_UHV);
 
         // MK4 Coils
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Fusion_Coil.get(1L),
             160000,
             512,
-            2000000,
+            (int) TierEU.RECIPE_UHV,
             1,
             new Object[] { ItemList.Energy_LapotronicOrb2.get(16L),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16L },
@@ -1014,14 +1014,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ALLOY.OCTIRON.getFluidStack(2304), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304), },
             GregtechItemList.Casing_Fusion_Internal.get(1),
             1200,
-            2000000);
+            (int) TierEU.RECIPE_UHV);
 
         // MK4 Casing
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Fusion2.get(1L),
             80000,
             512,
-            2000000,
+            (int) TierEU.RECIPE_UHV,
             1,
             new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.EV), 16L },
                 new Object[] { OrePrefixes.circuit.get(Materials.IV), 8L },
@@ -1033,7 +1033,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ALLOY.OCTIRON.getFluidStack(576), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576), },
             GregtechItemList.Casing_Fusion_External.get(1),
             300,
-            2000000);
+            (int) TierEU.RECIPE_UHV);
 
         // MK5 Computer
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -1099,7 +1099,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack(defcCasingBlock, 1, 8),
                 16_777_216,
                 1024,
-                2_000_000,
+                (int) TierEU.RECIPE_UHV,
                 8,
                 new Object[] { ItemList.AssemblingMachineUHV.get(1), new ItemStack(defcCasingBlock, 1, 8),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
@@ -1112,7 +1112,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     Materials.DraconiumAwakened.getMolten(1440), },
                 DraconicEvolutionFusionCrafter.get(1),
                 1500,
-                8_000_000);
+                (int) TierEU.RECIPE_UEV);
             // DE Schematics Cores Tier 1
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                 new ItemStack(defcCasingBlock, 1, 9),
@@ -1127,7 +1127,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L), },
                 DEFCDraconicSchematic.get(1),
                 6000,
-                500_000);
+                (int) TierEU.RECIPE_UV);
 
             // DE Schematics Cores Tier 2
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -1143,7 +1143,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L), },
                 DEFCWyvernSchematic.get(1),
                 12000,
-                2_000_000);
+                (int) TierEU.RECIPE_UHV);
 
             // DE Schematics Cores Tier 3
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -1159,7 +1159,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L), },
                 DEFCAwakenedSchematic.get(1),
                 24000,
-                8_000_000);
+                (int) TierEU.RECIPE_UEV);
 
             // DE Schematics Cores Tier 4
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -1175,7 +1175,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L), },
                 DEFCChaoticSchematic.get(1),
                 36000,
-                32_000_000);
+                (int) TierEU.RECIPE_UIV);
         }
 
         // Debug maintenance hatch
@@ -1183,7 +1183,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.Hatch_AutoMaintenance.get(1L),
             2764800,
             128,
-            500000,
+            (int) TierEU.RECIPE_UV,
             6,
             new Object[] { ItemList.Hatch_AutoMaintenance.get(1L), ItemList.Robot_Arm_UV.get(1L),
                 ItemList.Electric_Pump_UV.get(1L), ItemList.Conveyor_Module_UV.get(1L),
@@ -1193,7 +1193,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.Lubricant.getFluid(256000), new FluidStack(solderIndalloy, 1296), },
             CustomItemList.hatch_CreativeMaintenance.get(1),
             6000,
-            500000);
+            (int) TierEU.RECIPE_UV);
 
         // Debug uncertainty resolver
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -1226,7 +1226,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         int total_computation = 24000;
         int comp_per_second = 32;
-        int research_eu_per_tick = 500_000;
+        int research_eu_per_tick = (int) TierEU.RECIPE_UV;
         int research_amperage = 1;
 
         FluidStack fluid_0 = Materials.Naquadria.getMolten(2592);
@@ -1234,7 +1234,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
-        int crafting_eu_per_tick = 500_000;
+        int crafting_eu_per_tick = (int) TierEU.RECIPE_UV;
 
         // -------------------------------------------------------------
 
@@ -1440,7 +1440,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         int total_computation = 48_000;
         int comp_per_second = 64;
-        int research_eu_per_tick = 2_000_000;
+        int research_eu_per_tick = (int) TierEU.RECIPE_UHV;
         int research_amperage = 1;
 
         FluidStack fluid_0 = Materials.Quantium.getMolten(2592);
@@ -1448,7 +1448,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
-        int crafting_eu_per_tick = 2_000_000;
+        int crafting_eu_per_tick = (int) TierEU.RECIPE_UHV;
 
         // -------------------------------------------------------------
 
@@ -1655,7 +1655,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         int total_computation = 96_000;
         int comp_per_second = 128;
-        int research_eu_per_tick = 8_000_000;
+        int research_eu_per_tick = (int) TierEU.RECIPE_UEV;
         int research_amperage = 1;
 
         FluidStack fluid_0 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
@@ -1663,7 +1663,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
-        int crafting_eu_per_tick = 8_000_000;
+        int crafting_eu_per_tick = (int) TierEU.RECIPE_UEV;
 
         // -------------------------------------------------------------
 
@@ -1871,7 +1871,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         int total_computation = 192_000;
         int comp_per_second = 256;
-        int research_eu_per_tick = 32_000_000;
+        int research_eu_per_tick = (int) TierEU.RECIPE_UIV;
         int research_amperage = 1;
 
         FluidStack fluid_0 = hypogen != null ? new FluidStack(hypogen, 576) : null;
@@ -1880,7 +1880,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_3 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
-        int crafting_eu_per_tick = 32_000_000;
+        int crafting_eu_per_tick = (int) TierEU.RECIPE_UIV;
 
         // -------------------------------------------------------------
 
@@ -3314,9 +3314,9 @@ public class ResearchStationAssemblyLine implements Runnable {
             : FluidRegistry.getFluid("molten.solderingalloy");
 
         int recipeDurationTicks = 20 * 20;
-        int recipeEuPerTick = 128_000_000;
+        int recipeEuPerTick = (int) TierEU.RECIPE_UMV;
 
-        int researchEuPerTick = 128_000_000;
+        int researchEuPerTick = (int) TierEU.RECIPE_UMV;
         int researchAmperage = 4;
         int compPerSecond = 2000;
         int totalComputation = 500_000;

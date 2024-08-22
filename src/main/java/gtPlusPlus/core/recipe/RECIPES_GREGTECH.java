@@ -816,7 +816,7 @@ public class RECIPES_GREGTECH {
                 ELEMENT.getInstance().CARBON.getDust(16))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
             .fluidOutputs(ELEMENT.getInstance().THALLIUM.getFluidStack(288))
-            .eut(8000)
+            .eut(TierEU.RECIPE_IV)
             .duration(1 * MINUTES + 15 * SECONDS)
             .noOptimize()
             .addTo(alloyBlastSmelterRecipes);
@@ -907,7 +907,7 @@ public class RECIPES_GREGTECH {
             .outputChances(20_00, 5_00, 10, 7, 6, 5, 4, 3, 2)
             .fluidInputs(FluidUtils.getFluidStack("sludge", 1000))
             .fluidOutputs(Materials.Methane.getGas(100))
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .duration(2 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -1585,7 +1585,7 @@ public class RECIPES_GREGTECH {
             .outputChances(100)
             .fluidInputs(FluidUtils.getFluidStack("molten.bismuth", 1))
             .duration(8 * HOURS + 20 * MINUTES)
-            .eut(8160)
+            .eut(TierEU.RECIPE_IV)
             .addTo(cyclotronRecipes);
 
         // Americium
@@ -1645,7 +1645,7 @@ public class RECIPES_GREGTECH {
             .outputChances(500)
             .fluidInputs(FluidUtils.getFluidStack("deuterium", 400))
             .duration(5 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(cyclotronRecipes);
 
         /*
