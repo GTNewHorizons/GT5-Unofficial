@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -3232,19 +3233,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {
-        return String.format(
-            aFormat.replace("%s", "%temp")
-                .replace("%material", "%s"),
-            this.mDefaultLocalName)
-            .replace("%temp", "%s");
+        try {
+            return String.format(
+                aFormat.replace("%s", "%temp")
+                    .replace("%material", "%s"),
+                this.mDefaultLocalName)
+                .replace("%temp", "%s");
+        } catch (IllegalFormatException ignored) {
+            return aFormat;
+        }
     }
 
     public String getLocalizedNameForItem(String aFormat) {
-        return String.format(
-            aFormat.replace("%s", "%temp")
-                .replace("%material", "%s"),
-            this.mLocalizedName)
-            .replace("%temp", "%s");
+        try {
+            return String.format(
+                aFormat.replace("%s", "%temp")
+                    .replace("%material", "%s"),
+                this.mLocalizedName)
+                .replace("%temp", "%s");
+        } catch (IllegalFormatException ignored) {
+            return aFormat;
+        }
     }
 
     public boolean hasCorrespondingFluid() {

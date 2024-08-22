@@ -682,7 +682,7 @@ public class CentrifugeRecipes implements Runnable {
             .fluidInputs(Materials.EnrichedNaquadria.getFluid(9216))
             .fluidOutputs(Materials.FluidNaquadahFuel.getFluid(4806))
             .duration(30 * SECONDS)
-            .eut(2000000)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -762,7 +762,7 @@ public class CentrifugeRecipes implements Runnable {
                 .itemInputs(new ItemStack(combs, 1, 152), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(ThaumicTinkerer.ID, "kamiResource", 1L, 6))
                 .duration(6 * SECONDS + 8 * TICKS)
-                .eut(512)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(centrifugeRecipes);
 
             // Endshard
@@ -771,7 +771,7 @@ public class CentrifugeRecipes implements Runnable {
                 .itemInputs(new ItemStack(combs, 1, 153), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(ThaumicTinkerer.ID, "kamiResource", 1L, 7))
                 .duration(6 * SECONDS + 8 * TICKS)
-                .eut(512)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(centrifugeRecipes);
         }
 

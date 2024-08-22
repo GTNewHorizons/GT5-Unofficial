@@ -157,15 +157,6 @@ public class GregtechConduits {
             Logger.INFO("Failed during Hexadecuple pipe generation. [Ecx]");
             e.printStackTrace();
         }
-
-        // Generate Heat Pipes
-        // GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(31021, "gtpp.pipe.heat.basic.01", "Lead Heat
-        // Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
-        // GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(31022, "gtpp.pipe.heat.basic.02", "Iron Heat
-        // Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
-        // GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(31023, "gtpp.pipe.heat.basic.03", "Silver
-        // Heat Pipe (1500C)", Materials.Silver, 1500).getStackForm(1L));
-
     }
 
     private static void generateFluidMultiPipes(Constructor<GT_MetaPipeEntity_Fluid> aClazz, Materials aMaterial,
@@ -636,37 +627,6 @@ public class GregtechConduits {
         }
     }
 
-    private static void superConductorFactory(final GT_Materials Material, final int Voltage, final int ID,
-        final long insulatedLoss, final long uninsulatedLoss, final long Amps) {
-        final GT_Materials T = Material;
-        int V = 0;
-        if (Voltage == 8) {
-            V = 0;
-        } else if (Voltage == 32) {
-            V = 1;
-        } else if (Voltage == 128) {
-            V = 2;
-        } else if (Voltage == 512) {
-            V = 3;
-        } else if (Voltage == 2048) {
-            V = 4;
-        } else if (Voltage == 8196) {
-            V = 5;
-        } else if (Voltage == 32768) {
-            V = 6;
-        } else if (Voltage == 131072) {
-            V = 7;
-        } else if (Voltage == 524288) {
-            V = 8;
-        } else if (Voltage == Integer.MAX_VALUE) {
-            V = 9;
-        } else {
-            Logger.ERROR("Failed to set voltage on " + Material.name() + ". Invalid voltage of " + Voltage + "V set.");
-            Logger.ERROR(Material.name() + " has defaulted to 8v.");
-            V = 0;
-        }
-    }
-
     private static void generateGTFluidPipes(final Materials material, final int startID, final int transferRatePerSec,
         final int heatResistance, final boolean isGasProof) {
         final int transferRatePerTick = transferRatePerSec / 20;
@@ -727,20 +687,11 @@ public class GregtechConduits {
                 transferRatePerTick * 48,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        // generatePipeRecipes(material.mDefaultLocalName, mass, voltage);
     }
 
     private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial,
         final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof) {
         final int transferRatePerTick = transferRatePerSec / 20;
-        long mass;
-        if (myMaterial != null) {
-            mass = myMaterial.getMass();
-        } else {
-            mass = ELEMENT.getInstance().IRON.getMass();
-        }
-
-        int tVoltageMultiplier = (material.mBlastFurnaceTemp >= 2800) ? 64 : 16;
 
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
@@ -797,7 +748,6 @@ public class GregtechConduits {
                 transferRatePerTick * 48,
                 heatResistance,
                 isGasProof).getStackForm(1L));
-        // generatePipeRecipes(material.mDefaultLocalName, mass, tVoltageMultiplier);
 
     }
 
@@ -844,8 +794,7 @@ public class GregtechConduits {
                 + "? "
                 + ((ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1) != null) ? true : false));
 
-        int eut = 120;
-        eut = (int) (8 * vMulti);
+        int eut = (int) (8 * vMulti);
 
         // Add the Three Shaped Recipes First
         RecipeUtils.addShapedRecipe(
