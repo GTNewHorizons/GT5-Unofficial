@@ -3090,7 +3090,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 32),
                 ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L),
                 ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
-                CustomItemList.eM_energyTunnel7_UIV.get(1), getItemContainer("Generator_Plasma_UV").get(64),
+                CustomItemList.eM_energyTunnel7_UIV.get(1), ItemList.Generator_Plasma_UV.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 6),
                 ELEMENT.STANDALONE.HYPOGEN.getPlate(6) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
@@ -3212,7 +3212,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
-        ItemStack megaEBF = getModItem(GregTech.ID, "gt.blockmachines", 64L, 12730);
+        ItemStack megaEBF = GT_Utility.copyAmount(64, ItemRegistry.megaMachines[0]);
 
         // Smelting Module Controller
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3262,14 +3262,14 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // Plasma Module Controller
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-            getItemContainer("FluidHeaterUIV").get(1),
+            ItemList.FluidHeaterUIV.get(1),
             48_000_000,
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4),
-                getItemContainer("FluidHeaterUIV").get(64), GregtechItemList.FusionComputer_UV3.get(8),
-                ItemList.ZPM4.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 32),
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), ItemList.FluidHeaterUIV.get(64),
+                GregtechItemList.FusionComputer_UV3.get(8), ItemList.ZPM4.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 32),
                 ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
                 ItemList.Electric_Pump_UIV.get(64), ItemList.Relativistic_Heat_Capacitor.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
