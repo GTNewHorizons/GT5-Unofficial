@@ -1,9 +1,7 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.GT_Mod.aTextGeneral;
 import static gregtech.api.enums.Mods.CraftTweaker;
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -21,12 +19,12 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.config.ConfigDebug;
-import gregtech.common.config.ConfigFeatures;
-import gregtech.common.config.ConfigGeneral;
-import gregtech.common.config.ConfigMachines;
-import gregtech.common.config.ConfigOreDropBehavior;
-import gregtech.common.config.ConfigPollution;
+import gregtech.common.config.gregtech.ConfigDebug;
+import gregtech.common.config.gregtech.ConfigFeatures;
+import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigMachines;
+import gregtech.common.config.gregtech.ConfigOreDropBehavior;
+import gregtech.common.config.gregtech.ConfigPollution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
