@@ -1,7 +1,11 @@
 package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+import gregtech.GT_Mod;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "general",configSubDirectory = "GregTech",filename = "GregTech")
 public class ConfigGeneral {
@@ -145,4 +149,99 @@ public class ConfigGeneral {
     @Config.DefaultInt(100)
     @Config.RequiresMcRestart
     public static int MILLISECOND_THESHOLD_UNTIL_LAG_WARNING;
+
+    @Config.Comment("if true, drops the content of the machine inventory before exploding.")
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean mExplosionItemDrop;
+
+    @Config.Comment("if true, enables the cleanroom multi.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mEnableCleanroom;
+
+    @Config.Comment("if true, enables low gravity requirement in some crafts. Is forced to false if GalactiCraft is not present.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mLowGravProcessing;
+
+    @Config.Comment("if true, crops need a block below to fully grow.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mCropNeedBlock;
+
+    @Config.Comment("if yes, allows the automatic interactions with the maintenance hatches.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mAMHInteraction;
+
+    @Config.Comment("if true, mixed ores only yields the equivalent of 2/3 of the pure ores.")
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre;
+
+    @Config.Comment("if true, rich ores yield twice as much as normal ores.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mRichOreYieldMultiplier;
+
+    @Config.Comment("if true, nether ores yield twice as much as normal ores.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mNetherOreYieldMultiplier;
+
+    @Config.Comment("if true, end ores yield twice as much as normal ores.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean mEndOreYieldMultiplier;
+
+    @Config.Comment("if true, enables GT6 styled pipe connections.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean gt6Pipe;
+
+    @Config.Comment("if true, enables GT6 styled wire connections.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean gt6Cable;
+
+    @Config.Comment("if true, allows GT5U cables to be IC2 power sources.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean ic2EnergySourceCompat;
+
+    @Config.Comment("if true, wires will require soldering material to be connected.")
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean costlyCableConnection;
+
+    @Config.Comment("if true, crashes on null recipe input.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean crashOnNullRecipeInput;
+
+    @Config.Comment("if true, enable placeholder for material names in lang file.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean i18nPlaceholder;
+
+    @Config.Comment("if true, vanilla mobspawners with have a hardness of 500 and a blast resistance of 6 000 000.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean harderMobSpawner;
+    @Config.Comment("Controls the minimum distance allowed for the long distance pipelines to form.")
+    @Config.DefaultInt(64)
+    @Config.RequiresMcRestart
+    public static int minimalDistancePoints;
+
+    @Config.Comment("This will set the blacklist of blocks for CTM blocks.")
+    @Config.DefaultStringList({"team.chisel.block.BlockRoadLine"})
+    @Config.RequiresMcRestart
+    public static String[] CTMBlacklist;
+
+    @Config.Comment("This will set the whitelist of blocks for CTM blocks.")
+    @Config.DefaultStringList({"team.chisel.block.BlockCarvable",
+        "team.chisel.block.BlockCarvableGlass" })
+    @Config.RequiresMcRestart
+    public static String[] CTMWhitelist;
 }

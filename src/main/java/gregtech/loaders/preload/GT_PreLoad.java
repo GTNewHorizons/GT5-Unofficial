@@ -419,9 +419,36 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAchievements = ConfigGeneral.mAchievements;
         GT_Mod.gregtechproxy.mHideUnusedOres = ConfigGeneral.mHideUnusedOres;
         GT_Mod.gregtechproxy.mEnableAllMaterials = ConfigGeneral.mEnableAllMaterials;
-        GT_Mod.gregtechproxy.mExplosionItemDrop = tMainConfig
-            .get("general", "ExplosionItemDrops", GT_Mod.gregtechproxy.mExplosionItemDrop)
-            .getBoolean(GT_Mod.gregtechproxy.mExplosionItemDrop);
+        GT_Mod.gregtechproxy.mExplosionItemDrop = ConfigGeneral.mExplosionItemDrop;
+        GT_Mod.gregtechproxy.mEnableCleanroom = ConfigGeneral.mEnableCleanroom;
+        GT_Mod.gregtechproxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && ConfigGeneral.mLowGravProcessing;
+
+        // marked for removal
+        GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig
+            .get("general", "GTNH Optimised Material Loading", true)
+            .getBoolean(true);
+
+        GT_Mod.gregtechproxy.mCropNeedBlock = ConfigGeneral.mCropNeedBlock;
+        GT_Mod.gregtechproxy.mAMHInteraction = ConfigGeneral.mAMHInteraction;
+        GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = ConfigGeneral.mMixedOreOnlyYieldsTwoThirdsOfPureOre;
+        GT_Mod.gregtechproxy.mRichOreYieldMultiplier = ConfigGeneral.mRichOreYieldMultiplier;
+        GT_Mod.gregtechproxy.mNetherOreYieldMultiplier = ConfigGeneral.mNetherOreYieldMultiplier;
+        GT_Mod.gregtechproxy.mEndOreYieldMultiplier = ConfigGeneral.mEndOreYieldMultiplier;
+        GT_Mod.gregtechproxy.gt6Pipe = ConfigGeneral.gt6Pipe;
+        GT_Mod.gregtechproxy.gt6Cable = ConfigGeneral.gt6Cable;
+        GT_Mod.gregtechproxy.ic2EnergySourceCompat = ConfigGeneral.ic2EnergySourceCompat;
+        GT_Mod.gregtechproxy.costlyCableConnection = ConfigGeneral.costlyCableConnection;
+        GT_Mod.gregtechproxy.crashOnNullRecipeInput = ConfigGeneral.crashOnNullRecipeInput;
+        GT_LanguageManager.i18nPlaceholder = ConfigGeneral.i18nPlaceholder;
+        GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = ConfigGeneral.minimalDistancePoints;
+        GT_Values.mCTMEnabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMWhitelist));
+        GT_Values.mCTMDisabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMBlacklist));
+        if (ConfigGeneral.harderMobSpawner) {
+            Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
+        }
+
+        // todo: port this part too.
+        if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
 
         // machines
         GT_Values.ticksBetweenSounds = ConfigMachines.ticksBetweenSounds;
@@ -504,44 +531,24 @@ public class GT_PreLoad {
             .get("general", "enableUndergroundGravelGen", GT_Mod.gregtechproxy.enableUndergroundGravelGen);
         GT_Mod.gregtechproxy.enableUndergroundDirtGen = GregTech_API.sWorldgenFile
             .get("general", "enableUndergroundDirtGen", GT_Mod.gregtechproxy.enableUndergroundDirtGen);
-        GT_Mod.gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true)
-            .getBoolean(true);
-        if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
-        GT_Mod.gregtechproxy.mLowGravProcessing = GalacticraftCore.isModLoaded()
-            && tMainConfig.get("general", "LowGravProcessing", true)
-                .getBoolean(true);
-        GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig
-            .get("general", "GTNH Optimised Material Loading", true)
-            .getBoolean(true);
+
         Calendar now = Calendar.getInstance();
         GT_Mod.gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(
             ConfigCategories.general,
             "AprilFool",
             now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
-        GT_Mod.gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mAMHInteraction = tMainConfig.get("general", "AllowAutoMaintenanceHatchInteraction", false)
-            .getBoolean(false);
+
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
         GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
         GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
-        GregTech_API.meIOLoaded = EnderIO.isModLoaded();
+
         GT_Mod.gregtechproxy.mForceFreeFace = GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "forceFreeFace", true);
         GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)
             .getBoolean(true);
 
-        GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = tMainConfig
-            .get("general", "MixedOreOnlyYieldsTwoThirdsOfPureOre", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mRichOreYieldMultiplier = tMainConfig.get("general", "RichOreYieldMultiplier", true)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mNetherOreYieldMultiplier = tMainConfig.get("general", "NetherOreYieldMultiplier", true)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mEndOreYieldMultiplier = tMainConfig.get("general", "EndOreYieldMultiplier", true)
-            .getBoolean(false);
         GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile
             .get("general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
         GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile
@@ -550,23 +557,7 @@ public class GT_PreLoad {
             .get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
         GT_Mod.gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile
             .get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
-        GT_Mod.gregtechproxy.gt6Pipe = tMainConfig.get("general", "GT6StyledPipesConnection", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.gt6Cable = tMainConfig.get("general", "GT6StyledWiresConnection", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.ic2EnergySourceCompat = tMainConfig.get("general", "Ic2EnergySourceCompat", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.costlyCableConnection = tMainConfig
-            .get("general", "CableConnectionRequiresSolderingMaterial", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.crashOnNullRecipeInput = tMainConfig.get("general", "crashOnNullRecipeInput", false)
-            .getBoolean(false);
-        GT_LanguageManager.i18nPlaceholder = tMainConfig
-            .get("general", "EnablePlaceholderForMaterialNamesInLangFile", true)
-            .getBoolean(true);
-        GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = tMainConfig
-            .get("general", "LongDistancePipelineMinimalDistancePoints", 64)
-            .getInt(64);
+
         try {
             String setting_string = tMainConfig.get(
                 "OreDropBehaviour",
@@ -600,12 +591,6 @@ public class GT_PreLoad {
                 .forEach(
                     tMaterial -> GT_Mod.gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties
                         .get("materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality));
-        }
-
-        if (tMainConfig.get("general", "hardermobspawners", true)
-            .getBoolean(true)) {
-            Blocks.mob_spawner.setHardness(500.0F)
-                .setResistance(6000000.0F);
         }
 
         GT_Mod.gregtechproxy.mUpgradeCount = Math.min(
@@ -647,22 +632,6 @@ public class GT_PreLoad {
                                 .getInt())));
                 }
         }
-
-        GT_Values.mCTMEnabledBlock
-            .addAll(
-                Arrays
-                    .asList(
-                        tMainConfig
-                            .get(
-                                "general",
-                                "ctm_block_whitelist",
-                                new String[] { "team.chisel.block.BlockCarvable",
-                                    "team.chisel.block.BlockCarvableGlass" })
-                            .getStringList()));
-        GT_Values.mCTMDisabledBlock.addAll(
-            Arrays.asList(
-                tMainConfig.get("general", "ctm_block_blacklist", new String[] { "team.chisel.block.BlockRoadLine" })
-                    .getStringList()));
 
         GT_RecipeBuilder.onConfigLoad();
     }

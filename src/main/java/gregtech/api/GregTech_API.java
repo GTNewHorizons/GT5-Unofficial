@@ -260,7 +260,7 @@ public class GregTech_API {
         sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false,
         sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
         sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
-        sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
+        sMachineWireFire = true, mOutputRF = false, mInputRF = false, mRFExplosions = false,
         mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
