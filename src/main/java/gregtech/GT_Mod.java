@@ -5,6 +5,7 @@ import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GT_Recipe.setItemStacks;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -277,6 +278,9 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
+
+        // populate itemstack instance for NBT check in GT_Recipe
+        setItemStacks();
 
         GT_PreLoad.sortToTheEnd();
         GregTech_API.sPreloadFinished = true;
