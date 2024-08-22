@@ -41,86 +41,8 @@ import ic2.core.Ic2Items;
  */
 public class BeforeGTPreload implements Runnable {
 
-    private static boolean didrun;
-
     @Override
     public void run() {
-        if (didrun) return;
 
-        Field activeContainer = FieldUtils.getDeclaredField(LoadController.class, "activeContainer", true);
-        ModContainer bartworks = null;
-        ModContainer gregtech = Loader.instance()
-            .activeModContainer();
-        boolean switchback = false;
-        LoadController modController = null;
-        if (!Loader.instance()
-            .activeModContainer()
-            .getModId()
-            .equals(BartWorks.ID)) {
-            Field fieldModController = FieldUtils.getDeclaredField(Loader.class, "modController", true);
-            try {
-                modController = (LoadController) fieldModController.get(Loader.instance());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                FMLCommonHandler.instance()
-                    .exitJava(-1, true);
-            }
-
-            assert modController != null;
-            for (ModContainer mod : modController.getActiveModList()) {
-                if (mod.getModId()
-                    .equals(BartWorks.ID)) {
-                    bartworks = mod;
-                }
-                if (bartworks != null) break;
-            }
-            if (bartworks == null || gregtech == null) FMLCommonHandler.instance()
-                .exitJava(-1, true);
-
-            try {
-                activeContainer.set(modController, bartworks);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                FMLCommonHandler.instance()
-                    .exitJava(-1, true);
-            }
-            switchback = true;
-        }
-
-        Block[] bw_glasses;
-        try {
-            bw_glasses = (Block[]) Class.forName("com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry")
-                .getField("bw_glasses")
-                .get(null);
-            GameRegistry.registerBlock(bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
-            GameRegistry.registerBlock(bw_glasses[1], BW_ItemBlocks.class, "BW_GlasBlocks2");
-            OreDictionary.registerOre("blockGlassHV", new ItemStack(Blocks.glass, 1, GT_Values.W));
-            OreDictionary.registerOre("blockGlassHV", new ItemStack(bw_glasses[0], 1, 0));
-            OreDictionary.registerOre("blockGlassEV", Ic2Items.reinforcedGlass);
-            OreDictionary.registerOre("blockGlassEV", new ItemStack(bw_glasses[0], 1, 1));
-            OreDictionary.registerOre("blockGlassIV", new ItemStack(bw_glasses[0], 1, 12));
-            OreDictionary.registerOre("blockGlassIV", new ItemStack(bw_glasses[0], 1, 2));
-            OreDictionary.registerOre("blockGlassLuV", new ItemStack(bw_glasses[0], 1, 3));
-            OreDictionary.registerOre("blockGlassZPM", new ItemStack(bw_glasses[0], 1, 4));
-            OreDictionary.registerOre("blockGlassUV", new ItemStack(bw_glasses[0], 1, 5));
-            OreDictionary.registerOre("blockGlassUHV", new ItemStack(bw_glasses[0], 1, 13));
-            OreDictionary.registerOre("blockGlassUEV", new ItemStack(bw_glasses[0], 1, 14));
-            OreDictionary.registerOre("blockGlassUIV", new ItemStack(bw_glasses[0], 1, 15));
-            OreDictionary.registerOre("blockGlassUMV", new ItemStack(bw_glasses[1], 1, 0));
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
-            e.printStackTrace();
-            FMLCommonHandler.instance()
-                .exitJava(-1, true);
-        }
-        if (switchback) {
-            try {
-                activeContainer.set(modController, gregtech);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                FMLCommonHandler.instance()
-                    .exitJava(-1, true);
-            }
-        }
-        BeforeGTPreload.didrun = true;
     }
 }

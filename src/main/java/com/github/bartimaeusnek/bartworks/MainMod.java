@@ -19,6 +19,8 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
+import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -36,7 +38,6 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ArtificialMicaLine;
-import com.github.bartimaeusnek.bartworks.common.loaders.BeforeGTPreload;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
@@ -103,12 +104,15 @@ public final class MainMod {
     public static BW_Network BW_Network_instance = new BW_Network();
 
     public MainMod() {
-        GregTech_API.sBeforeGTPreload.add(new BeforeGTPreload());
+
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
         MainMod.LOGGER.info("Found GT++, continuing");
+
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BW_ItemBlocks.class, "BW_GlasBlocks2");
 
         if (API_ConfigValues.debugLog) {
             try {
@@ -128,6 +132,7 @@ public final class MainMod {
             GregTech_API.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
 
+        RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -155,7 +160,6 @@ public final class MainMod {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
 
-        RegisterGlassTiers.run();
 
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();

@@ -46,22 +46,11 @@ import com.github.bartimaeusnek.bartworks.API.GlassTier;
 public class RegisterGlassTiers {
 
     public static void run() {
+        registerGlassAsTiered();
+        registerGlassOreDicts();
+    }
 
-        // This feels like it should happen after registration, but it wasn't before refactoring. So I will leave it be
-        // for now...
-
-        // Register glass ore dict entries.
-        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap()
-            .entrySet()) {
-            String oreName = "blockGlass" + VN[pair.getValue()];
-            ItemStack itemStack = new ItemStack(
-                pair.getKey()
-                    .getBlock(),
-                1,
-                pair.getKey()
-                    .getMeta());
-            OreDictionary.registerOre(oreName, itemStack);
-        }
+    private static void registerGlassAsTiered() {
 
         // ---------------------------------------------------------------------
         // Register glass.
@@ -115,6 +104,22 @@ public class RegisterGlassTiers {
         if (Botania.isModLoaded()) {
             GlassTier.addCustomGlass(Botania.ID, "manaGlass", 0, 4);
             GlassTier.addCustomGlass(Botania.ID, "elfGlass", 0, 5);
+        }
+    }
+
+    private static void registerGlassOreDicts() {
+
+        // Register glass ore dict entries.
+        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap()
+            .entrySet()) {
+            String oreName = "blockGlass" + VN[pair.getValue()];
+            ItemStack itemStack = new ItemStack(
+                pair.getKey()
+                    .getBlock(),
+                1,
+                pair.getKey()
+                    .getMeta());
+            OreDictionary.registerOre(oreName, itemStack);
         }
     }
 }
