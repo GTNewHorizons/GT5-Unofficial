@@ -426,7 +426,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             // TODO: Look for proper fix
-            if (mUpdate < 0) mUpdate = 600;
+            if (mUpdate < -550) mUpdate = 50;
         } else {
             if (aBaseMetaTileEntity.isActive() && aTick % 100 == 0) {
                 int[] abc = new int[] { 0, -2, 7 };
@@ -754,7 +754,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder));
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
