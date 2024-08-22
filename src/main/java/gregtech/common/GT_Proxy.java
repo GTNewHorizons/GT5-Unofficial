@@ -611,7 +611,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public boolean mCropNeedBlock = true;
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
-    public boolean mBrickedBlastFurnace = true;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
     public boolean mRichOreYieldMultiplier = true;
     public boolean mNetherOreYieldMultiplier = true;

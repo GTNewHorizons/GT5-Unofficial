@@ -558,8 +558,6 @@ public class GT_PreLoad {
 
         GT_Mod.gregtechproxy.mForceFreeFace = GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "forceFreeFace", true);
-        GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)
-            .getBoolean(true);
 
         // ore_drop_behavior
         try {
