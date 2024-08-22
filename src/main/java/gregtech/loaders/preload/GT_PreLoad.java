@@ -447,6 +447,9 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.ic2EnergySourceCompat = ConfigGeneral.ic2EnergySourceCompat;
         GT_Mod.gregtechproxy.costlyCableConnection = ConfigGeneral.costlyCableConnection;
         GT_Mod.gregtechproxy.crashOnNullRecipeInput = ConfigGeneral.crashOnNullRecipeInput;
+        if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")){
+            GT_Mod.gregtechproxy.crashOnNullRecipeInput = false; // Use flags in GT_RecipeBuilder instead!
+        }
         GT_LanguageManager.i18nPlaceholder = ConfigGeneral.i18nPlaceholder;
         GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = ConfigGeneral.minimalDistancePoints;
         GT_Values.mCTMEnabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMWhitelist));
