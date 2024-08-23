@@ -122,7 +122,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called to set Configuration values for this MetaTileEntity. Use aConfig.get(ConfigCategories.machineconfig,
      * "MetaTileEntityName.Ability", DEFAULT_VALUE); to set the Values.
      */
-    void onConfigLoad(GT_Config aConfig);
+    void onConfigLoad();
 
     /**
      * If a Cover of that Type can be placed on this Side. Also Called when the Facing of the Block Changes and a Cover

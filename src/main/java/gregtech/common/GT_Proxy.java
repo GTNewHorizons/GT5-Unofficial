@@ -1281,7 +1281,7 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
             for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                     if (GregTech_API.METATILEENTITIES[i] != null) {
-                        GregTech_API.METATILEENTITIES[i].onConfigLoad(GregTech_API.sMachineFile);
+                        GregTech_API.METATILEENTITIES[i].onConfigLoad();
                     }
                 }
             }

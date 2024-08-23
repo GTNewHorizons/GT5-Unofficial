@@ -204,7 +204,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
+    public void onConfigLoad() {
         /* Do nothing */
     }
 

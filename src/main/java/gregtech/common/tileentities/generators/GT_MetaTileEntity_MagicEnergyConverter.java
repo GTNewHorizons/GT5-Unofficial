@@ -68,10 +68,7 @@ public class GT_MetaTileEntity_MagicEnergyConverter extends GT_MetaTileEntity_Ba
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-            ConfigCategories.machineconfig,
-            "MagicEnergyConverter.efficiency.tier." + this.mTier,
-            100 - this.mTier * 5);
+        this.mEfficiency = 100 - this.mTier * 5;
     }
 
     @Override

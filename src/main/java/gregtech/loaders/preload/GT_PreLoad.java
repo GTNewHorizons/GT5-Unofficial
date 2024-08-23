@@ -147,8 +147,6 @@ public class GT_PreLoad {
         GT_Config.undergroundFluidsFile.load();
         GT_Config.undergroundFluidsFile.save();
 
-        GregTech_API.sMachineFile = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "MachineStats.cfg")));
         GregTech_API.sWorldgenFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
         GregTech_API.sMaterialProperties = new GT_Config(
@@ -546,8 +544,8 @@ public class GT_PreLoad {
         GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
 
-        GT_Mod.gregtechproxy.mForceFreeFace = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "forceFreeFace", true);
+        // MachineStats.cfg
+        GT_Mod.gregtechproxy.mForceFreeFace = gregtech.common.config.machinestats.ConfigMachines.forceFreeFace;
 
         // ore_drop_behavior
         try {

@@ -33,8 +33,8 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     protected int SLOT_FILTER = 0;
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        super.onConfigLoad(aConfig);
+    public void onConfigLoad() {
+        super.onConfigLoad();
         try {
             int a1 = GT_Mod.gregtechproxy.mPollutionSmogLimit;
             if (a1 > 0) {

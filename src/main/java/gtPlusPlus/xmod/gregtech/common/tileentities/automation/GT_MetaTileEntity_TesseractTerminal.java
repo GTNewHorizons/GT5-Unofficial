@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public void onConfigLoad(final GT_Config aConfig) {
+    public void onConfigLoad() {
         sInterDimensionalTesseractAllowed = true;
         TESSERACT_ENERGY_COST = 512;
         TESSERACT_ENERGY_COST_DIMENSIONAL = 2048;

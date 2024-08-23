@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.common.config.machinestats.ConfigMachines;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.enchantment.Enchantment;
@@ -81,10 +82,9 @@ interface MagicalEnergyBBListener {
 public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_BasicGenerator
     implements MagicalEnergyBBListener {
 
-    private static final boolean THAUMCRAFT_LOADED = Thaumcraft.isModLoaded();
     private static final ConcurrentHashMap<UUID, GT_MetaTileEntity_MagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(
         4);
-    private static final List<Aspect> sPrimalAspects = (THAUMCRAFT_LOADED) ? Aspect.getPrimalAspects()
+    private static final List<Aspect> sPrimalAspects = (Thaumcraft.isModLoaded()) ? Aspect.getPrimalAspects()
         : new ArrayList<>();
     private static final Map<Aspect, Integer> sAspectsEnergy = new HashMap<>();
     private static boolean sAllowMultipleEggs = false;
@@ -103,28 +103,21 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
     public GT_MetaTileEntity_MagicalEnergyAbsorber(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Feasts on magic close to it:");
-        onConfigLoad(GregTech_API.sMachineFile);
+        onConfigLoad();
     }
 
     private GT_MetaTileEntity_MagicalEnergyAbsorber(String aName, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad(GregTech_API.sMachineFile);
+        onConfigLoad();
     }
 
     /**
      * Populates static variables dependant on config settings
-     *
-     * @param aConfig GT_Config
      */
-    private static void sharedConfigLoad(GT_Config aConfig) {
-        sAllowMultipleEggs = aConfig.get(machineconfig, "MagicEnergyAbsorber.AllowMultipleEggs", false);
-        sDragonEggEnergyPerTick = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerTick.DragonEgg", 2048);
-        sCreeperEggEnergyPerTick = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerTick.CreeperEgg", 512);
-        sEnergyPerEndercrystal = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerTick.EnderCrystal", 512);
-        if (THAUMCRAFT_LOADED) {
-            sEnergyFromVis = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerVis", 20);
-            sEnergyPerEssentia = aConfig.get(machineconfig, "MagicEnergyAbsorber.EnergyPerEssentia", 320);
+    private static void sharedConfigLoad() {
+        sAllowMultipleEggs = ConfigMachines.allowMultipleEggs;
+        if (Thaumcraft.isModLoaded()) {
             for (Aspect tAspect : Aspect.aspects.values()) {
                 // noinspection UnstableApiUsage
                 sAspectsEnergy.put(
@@ -142,13 +135,13 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         sActiveSiphon = aSiphon;
     }
 
-    @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        sharedConfigLoad(aConfig);
-        mEfficiency = aConfig.get(machineconfig, "MagicEnergyAbsorber.efficiency.tier." + mTier, 100 - mTier * 10);
+
+    public void onConfigLoad() {
+        sharedConfigLoad();
+        mEfficiency = 100 - mTier * 10;
         mMaxVisPerDrain = (int) Math.round(
-            Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * (getEfficiency() != 0 ? getEfficiency() : 100))));
-        if (Math.pow(mMaxVisPerDrain, 2) * sEnergyFromVis * (getEfficiency() != 0 ? getEfficiency() : 100) < V[mTier]) {
+            Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * getEfficiency())));
+        if (Math.pow(mMaxVisPerDrain, 2) * sEnergyFromVis * getEfficiency() < V[mTier]) {
             mMaxVisPerDrain += 1;
         }
     }
@@ -229,7 +222,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         if (sEnergyPerEndercrystal > 0) {
             description.add(LI + sEnergyPerEndercrystal + EU_PER + LIGHT_PURPLE + "Ender Crystal" + GRAY + " in range");
         }
-        if (THAUMCRAFT_LOADED) {
+        if (Thaumcraft.isModLoaded()) {
             description.add(LI + mMaxVisPerDrain + "%%%CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
             description.add(
                 LI + (sEnergyPerEssentia * getEfficiency()) / 100
@@ -561,7 +554,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     private long absorbFromVisNet() {
-        if (!THAUMCRAFT_LOADED) return 0;
+        if (!Thaumcraft.isModLoaded()) return 0;
 
         long tEU;
         IGregTechTileEntity tBaseMetaTileEntity = getBaseMetaTileEntity();
@@ -584,7 +577,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     private long absorbFromEssentiaContainers() {
-        if (!THAUMCRAFT_LOADED) return 0;
+        if (!Thaumcraft.isModLoaded()) return 0;
 
         long tEU = 0;
 
@@ -666,7 +659,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             mMaxTier = Math.max(Math.max(aMaxTier, 0), Math.max(aDefaultTier, 0));
             mDefaultTier = Math.min(aDefaultTier, mMaxTier);
             mTier = mDefaultTier;
-            if (THAUMCRAFT_LOADED) mAvailableAspects = new ArrayList<>(Aspect.aspects.size());
+            if (Thaumcraft.isModLoaded()) mAvailableAspects = new ArrayList<>(Aspect.aspects.size());
         }
 
         int getTier() {
@@ -734,7 +727,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         }
 
         private void scanAvailableAspects() {
-            if (!THAUMCRAFT_LOADED) return;
+            if (!Thaumcraft.isModLoaded()) return;
             IGregTechTileEntity tBaseMetaTileEntity = mAbsorber.getBaseMetaTileEntity();
             if (tBaseMetaTileEntity.isInvalidTileEntity()) return;
             int tRange = getRange();

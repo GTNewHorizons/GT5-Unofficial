@@ -26,11 +26,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     private static boolean addedGeneralDesc = false;
 
     private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(
-        GregTech_API.sMachineFile.mConfig.getStringList(
-            "LargeBoiler.allowedFuels",
-            ConfigCategories.machineconfig.toString(),
-            new String[] { "gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7" },
-            "Allowed fuels for the Large Titanium Boiler and Large Tungstensteel Boiler"));
+        "gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7");
 
     public LargeBoilerFuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);

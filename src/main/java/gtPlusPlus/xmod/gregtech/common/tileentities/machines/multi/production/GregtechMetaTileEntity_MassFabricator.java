@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.config.machinestats.ConfigMassFabricator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -145,14 +146,12 @@ public class GregtechMetaTileEntity_MassFabricator
     }
 
     @Override
-    public void onConfigLoad(final GT_Config aConfig) {
-        super.onConfigLoad(aConfig);
-        sDurationMultiplier = aConfig
-            .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
-        sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
-        sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
-        sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
-        // Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
+    public void onConfigLoad() {
+        super.onConfigLoad();
+        sDurationMultiplier = ConfigMassFabricator.durationMultiplier;
+        sUUAperUUM = ConfigMassFabricator.UUAPerUUM;
+        sUUASpeedBonus = ConfigMassFabricator.UUASpeedBonus;
+        sRequiresUUA = ConfigMassFabricator.requiresUUA;
     }
 
     public static boolean sInit = false;

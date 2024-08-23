@@ -239,7 +239,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
+    public void onConfigLoad() {
         /* Do nothing */
     }
 

@@ -23,6 +23,11 @@ import gregtech.common.config.gregtech.ConfigGeneral;
 import gregtech.common.config.gregtech.ConfigMachines;
 import gregtech.common.config.gregtech.ConfigOreDropBehavior;
 import gregtech.common.config.gregtech.ConfigPollution;
+import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
+import gregtech.common.config.machinestats.ConfigTeleporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -175,6 +180,15 @@ import ic2.api.recipe.RecipeOutput;
 public class GT_Mod implements IGT_Mod {
     static {
         try{
+            // MachineStats.cfg
+            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigTeleporter.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
+            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
+
+            // GregTech.cfg
             ConfigurationManager.registerConfig(ConfigGeneral.class);
             ConfigurationManager.registerConfig(ConfigMachines.class);
             ConfigurationManager.registerConfig(ConfigDebug.class);

@@ -46,17 +46,17 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
             aNameRegional,
             aTier,
             new String[] { "Converts Steam into EU", "Base rate: 2L of Steam -> 1 EU" });
-        onConfigLoad();
+        this.mEfficiency = 6 + this.mTier;
     }
 
     public GT_MetaTileEntity_SteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        this.mEfficiency = 6 + this.mTier;
     }
 
     public GT_MetaTileEntity_SteamTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        this.mEfficiency = 6 + this.mTier;
     }
 
     @Override
@@ -88,11 +88,6 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     @Override
     public int getCapacity() {
         return 24000 * this.mTier;
-    }
-
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + this.mTier);
     }
 
     @Override

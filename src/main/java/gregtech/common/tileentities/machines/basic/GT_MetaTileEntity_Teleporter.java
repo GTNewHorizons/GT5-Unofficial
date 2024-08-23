@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES_GL
 import java.util.List;
 import java.util.function.Consumer;
 
+import gregtech.common.config.machinestats.ConfigTeleporter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
@@ -246,12 +247,10 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        sInterDimensionalTeleportAllowed = aConfig
-            .get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
-        sPassiveEnergyDrain = aConfig
-            .get(ConfigCategories.machineconfig, "Teleporter.PassiveDrain", sPassiveEnergyDrain);
-        sPowerMultiplyer = aConfig.get(ConfigCategories.machineconfig, "Teleporter.PowerMultipler", sPowerMultiplyer);
+    public void onConfigLoad() {
+        sInterDimensionalTeleportAllowed = ConfigTeleporter.interDimensionalTPAllowed;
+        sPassiveEnergyDrain = ConfigTeleporter.passiveEnergyDrain;
+        sPowerMultiplyer = ConfigTeleporter.powerMultiplier;
         sFPowerMultiplyer = sPowerMultiplyer / 100.0;
     }
 

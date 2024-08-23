@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         if (aTier > 8 || aTier < 4) {
             new Exception("Tier without Recipe Map!").printStackTrace();
         }
-        onConfigLoad();
+        mEfficiency =  getBaseEff();
     }
 
     public GT_MetaTileEntity_NaquadahReactor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         if (aTier > 8 || aTier < 4) {
             new Exception("Tier without Recipe Map!").printStackTrace();
         }
-        onConfigLoad();
+        mEfficiency =  getBaseEff();
     }
 
     @Override
@@ -89,16 +89,11 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
 
     @Override
     public int getEfficiency() {
-        return mEfficiency == 0 ? onConfigLoad() : mEfficiency;
+        return  mEfficiency;
     }
 
     private int getBaseEff() {
         return mTier == 4 ? 80 : 100 + (50 * (mTier - 5));
-    }
-
-    public int onConfigLoad() {
-        return mEfficiency = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "SolidNaquadah.efficiency.tier." + mTier, getBaseEff());
     }
 
     @Override

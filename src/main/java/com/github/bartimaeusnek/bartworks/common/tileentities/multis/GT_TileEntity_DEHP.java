@@ -59,7 +59,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     @SuppressWarnings("rawtypes")
-    public void onConfigLoad(GT_Config aConfig) {
+    public void onConfigLoad() {
         try {
             Class c = TileEntityNuclearReactorElectric.class;
             Field f = c.getDeclaredField("huOutputModifier");
@@ -69,7 +69,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             | IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
-        super.onConfigLoad(aConfig);
+        super.onConfigLoad();
     }
 
     @Override

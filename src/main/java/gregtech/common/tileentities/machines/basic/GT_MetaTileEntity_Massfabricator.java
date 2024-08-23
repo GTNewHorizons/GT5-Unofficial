@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.common.config.machinestats.ConfigMassFabricator;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
@@ -135,13 +136,12 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        super.onConfigLoad(aConfig);
-        sDurationMultiplier = aConfig
-            .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
-        sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
-        sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
-        sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
+    public void onConfigLoad() {
+        super.onConfigLoad();
+        sDurationMultiplier = ConfigMassFabricator.durationMultiplier;
+        sUUAperUUM = ConfigMassFabricator.UUAPerUUM;
+        sUUASpeedBonus = ConfigMassFabricator.UUASpeedBonus;
+        sRequiresUUA = ConfigMassFabricator.requiresUUA;
         Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
     }
 

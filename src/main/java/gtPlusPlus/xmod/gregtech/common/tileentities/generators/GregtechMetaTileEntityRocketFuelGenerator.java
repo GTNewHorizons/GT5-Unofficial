@@ -25,13 +25,12 @@ public class GregtechMetaTileEntityRocketFuelGenerator extends GregtechRocketFue
     public GregtechMetaTileEntityRocketFuelGenerator(final int aID, final String aName, final String aNameRegional,
         final int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires GT++ Rocket Fuels", new ITexture[0]);
-        this.onConfigLoad();
     }
 
     public GregtechMetaTileEntityRocketFuelGenerator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.onConfigLoad();
+        this.mEfficiency = getEfficiency();
     }
 
     @Override
@@ -59,17 +58,9 @@ public class GregtechMetaTileEntityRocketFuelGenerator extends GregtechRocketFue
         return 32000;
     }
 
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-            ConfigCategories.machineconfig,
-            "RocketEngine.efficiency.tier." + this.mTier,
-            80 - (10 * (this.mTier - 4)));
-    }
-
     @Override
     public int getEfficiency() {
-        int eff = 80 - (10 * (this.mTier - 4));
-        return eff;
+        return 80 - (10 * (this.mTier - 4));
     }
 
     @Override

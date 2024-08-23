@@ -51,14 +51,12 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
                         * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[aTier])
                     + " Pollution per second" });
         this.mEfficiency = mEfficiency;
-        onConfigLoad();
     }
 
     public GT_MetaTileEntity_GasTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         int mEfficiency) {
         super(aName, aTier, aDescription, aTextures);
         this.mEfficiency = mEfficiency;
-        onConfigLoad();
     }
 
     @Override
@@ -84,11 +82,6 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
     @Override
     public int getCapacity() {
         return 16000;
-    }
-
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, this.mEfficiency);
     }
 
     @Override

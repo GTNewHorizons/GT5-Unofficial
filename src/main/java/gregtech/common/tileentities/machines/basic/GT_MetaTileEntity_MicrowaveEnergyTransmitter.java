@@ -9,6 +9,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
 import java.util.function.Consumer;
 
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigTeleporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -154,12 +156,11 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        sInterDimensionalTeleportAllowed = aConfig
-            .get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
-        mMaxLoss = Math.max(aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLoss", 50), 11);
-        mMaxLossDistance = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLossDistance", 10000);
-        mPassiveEnergyUse = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.PassiveEnergy", true);
+    public void onConfigLoad() {
+        sInterDimensionalTeleportAllowed = ConfigTeleporter.interDimensionalTPAllowed;
+        mMaxLoss = Math.max(ConfigMicrowaveEnergyTransmitter.maxLoss, 11);
+        mMaxLossDistance = ConfigMicrowaveEnergyTransmitter.maxLossDistance;
+        mPassiveEnergyUse = ConfigMicrowaveEnergyTransmitter.passiveEnergyUse;
     }
 
     @Override
