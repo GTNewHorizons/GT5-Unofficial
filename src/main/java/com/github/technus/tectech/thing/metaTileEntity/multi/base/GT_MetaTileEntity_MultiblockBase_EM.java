@@ -1518,7 +1518,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             if (!drainEnergyInput(
                 getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
                 eAmpereFlow)) {
-                criticalStopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
         }
