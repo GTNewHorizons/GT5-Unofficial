@@ -12,7 +12,6 @@ import static thaumcraft.api.ThaumcraftApi.addArcaneCraftingRecipe;
 import java.util.Arrays;
 import java.util.Collections;
 
-import gregtech.GT_Mod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -309,8 +308,7 @@ public class Research {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Unstable, 1),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Void, 1),
                         GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1), Ic2Items.industrialTnt,
-                        GT_ModHandler.getModItem(ExtraUtilities.ID, "trashcan", 1, 0)
-                    },
+                        GT_ModHandler.getModItem(ExtraUtilities.ID, "trashcan", 1, 0) },
                     ItemRefer.Essentia_Upgrade_Unstable.get(1),
                     6,
                     Arrays.asList(
