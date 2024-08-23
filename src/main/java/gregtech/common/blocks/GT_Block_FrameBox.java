@@ -198,7 +198,6 @@ public class GT_Block_FrameBox extends BlockContainer {
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity frameEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (frameEntity == null) return false;
         return frameEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(forgeSide)
             .getCoverID() != 0;
     }
