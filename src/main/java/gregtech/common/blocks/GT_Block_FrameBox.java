@@ -128,8 +128,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         // If this block already holds a TE, just forward the call
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te != null) {
-            BaseMetaPipeEntity baseTileEntity = (BaseMetaPipeEntity) te;
+        if (te instanceof BaseMetaPipeEntity baseTileEntity) {
             // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
             // This happens on world load for some reason
             if (baseTileEntity.getMetaTileEntity() == null) {
