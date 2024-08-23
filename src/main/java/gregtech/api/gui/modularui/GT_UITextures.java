@@ -298,6 +298,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
     public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
     public static final UITexture OVERLAY_BUTTON_LOCKED = UITexture
