@@ -3960,19 +3960,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.MicroTransmitter_ZPM.get(1L),
             bitsd,
-            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_ZPM, 'B',
-                GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "EnableZPMandUVBatteries", false)
-                    ? ItemList.Energy_Module
-                    : ItemList.ZPM2,
+            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_ZPM, 'B',ItemList.Energy_Module,
                 'C', ItemList.Emitter_ZPM, 'G', OrePrefixes.circuit.get(Materials.ZPM), 'P',
                 ItemList.Field_Generator_ZPM });
         GT_ModHandler.addCraftingRecipe(
             ItemList.MicroTransmitter_UV.get(1L),
             bitsd,
-            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_UV, 'B',
-                GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "EnableZPMandUVBatteries", false)
-                    ? ItemList.Energy_Module
-                    : ItemList.ZPM3,
+            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_UV, 'B', ItemList.Energy_Module,
                 'C', ItemList.Emitter_UV, 'G', OrePrefixes.circuit.get(Materials.UV), 'P',
                 ItemList.Field_Generator_UV });
 

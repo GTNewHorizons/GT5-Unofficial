@@ -154,8 +154,6 @@ public class GT_PreLoad {
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
         GregTech_API.sSpecialFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Other.cfg")));
-        GregTech_API.sOPStuff = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "OverpoweredStuff.cfg")));
 
         GregTech_API.sClientDataFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
@@ -537,11 +535,11 @@ public class GT_PreLoad {
             now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
 
         // OverpoweredStuff.cfg
-        GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
-        GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
-        GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
-        GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
-        GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
+        GregTech_API.mOutputRF = gregtech.common.config.opstuff.ConfigGeneral.outputRF;
+        GregTech_API.mInputRF = gregtech.common.config.opstuff.ConfigGeneral.inputRF;
+        GregTech_API.mEUtoRF = gregtech.common.config.opstuff.ConfigGeneral.howMuchRFWith100EUInInput;
+        GregTech_API.mRFtoEU = gregtech.common.config.opstuff.ConfigGeneral.howMuchEUWith100RFInInput;
+        GregTech_API.mRFExplosions = gregtech.common.config.opstuff.ConfigGeneral.RFExplosions;
 
         // MachineStats.cfg
         GT_Mod.gregtechproxy.mForceFreeFace = gregtech.common.config.machinestats.ConfigMachines.forceFreeFace;

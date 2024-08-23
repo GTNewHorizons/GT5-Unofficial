@@ -67,13 +67,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                 aPrefix,
                 aMaterial,
                 GT_Utility.copyAmount(1, aStack),
-                Math.max(
-                    1,
-                    gregtech.api.GregTech_API.sOPStuff.get(
-                        gregtech.api.enums.ConfigCategories.Materials.oreprocessingoutputmultiplier,
-                        aMaterial.toString(),
-                        1))
-                    * (tIsRich ? 2 : 1));
+                tIsRich ? 2 : 1);
         }
     }
 

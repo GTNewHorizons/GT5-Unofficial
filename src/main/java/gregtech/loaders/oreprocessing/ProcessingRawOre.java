@@ -44,12 +44,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 aPrefix,
                 aMaterial,
                 GT_Utility.copyAmount(1, aStack),
-                Math.max(
-                    1,
-                    gregtech.api.GregTech_API.sOPStuff.get(
-                        gregtech.api.enums.ConfigCategories.Materials.oreprocessingoutputmultiplier,
-                        aMaterial.toString(),
-                        1)));
+                1);
         }
     }
 

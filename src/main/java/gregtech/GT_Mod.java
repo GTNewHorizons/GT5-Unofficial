@@ -181,14 +181,6 @@ import ic2.api.recipe.RecipeOutput;
 public class GT_Mod implements IGT_Mod {
     static {
         try{
-            // MachineStats.cfg
-            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
-            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
-            ConfigurationManager.registerConfig(ConfigTeleporter.class);
-            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
-            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
-            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
-
             // GregTech.cfg
             ConfigurationManager.registerConfig(ConfigGeneral.class);
             ConfigurationManager.registerConfig(ConfigMachines.class);
@@ -197,6 +189,17 @@ public class GT_Mod implements IGT_Mod {
             ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
             ConfigurationManager.registerConfig(ConfigFeatures.class);
             ConfigurationManager.registerConfig(ConfigHarvestLevel.class);
+
+            // MachineStats.cfg
+            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigTeleporter.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
+            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
+
+            // OverPoweredStuff
+            ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);

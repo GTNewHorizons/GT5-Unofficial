@@ -27,6 +27,7 @@ import static gregtech.api.enums.Mods.TaintedMagic;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicBoots;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
@@ -56,6 +57,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import gregtech.common.config.opstuff.ConfigGeneral;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -569,7 +571,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public int[] mHarvestLevel = new int[1000];
     public int mGraniteHavestLevel = 3;
     public int mMaxHarvestLevel = 7;
-    public int mWireHeatingTicks = 4;
     public double replicatorExponent = 1.2D;
     public int mPollutionSmogLimit = 550000;
     public int mPollutionPoisonLimit = 750000;
@@ -830,9 +831,8 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
         GT_Log.ore.println("GT_Mod: Preload-Phase started!");
 
         GregTech_API.sPreloadStarted = true;
-        this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
-        this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
-        this.replicatorExponent = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
+        this.mIgnoreTcon = ConfigGeneral.ignoreTinkerConstruct;
+        this.replicatorExponent = ConfigGeneral.replicatorExponent;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1702,17 +1702,10 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
         }
         try {
             aEvent.Ore.stackSize = 1;
-            if (this.mIgnoreTcon || aEvent.Ore.getUnlocalizedName()
-                .startsWith("item.oreberry")) {
-                if ((aOriginalMod.toLowerCase(Locale.ENGLISH)
-                    .contains("xycraft"))
-                    || (aOriginalMod.toLowerCase(Locale.ENGLISH)
-                        .contains("tconstruct"))) {
-                    if (GT_Values.D1) {
-                        GT_Log.ore.println(aMod + " -> " + aEvent.Name + " is getting ignored, because of racism. :P");
-                    }
-                    return;
-                }
+
+            // skipping TinkerConstruct ore registration
+            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)) {
+                return;
             }
             String tModToName = aMod + " -> " + aEvent.Name;
             if (this.mOreDictActivated || GregTech_API.sPostloadStarted || GregTech_API.sLoadFinished) {
