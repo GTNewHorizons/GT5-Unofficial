@@ -45,7 +45,7 @@ public class GregtechIndustrialMassFabricator {
                 ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrap"), 9))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
-            .eut(TierEU.LV)
+            .eut(TierEU.RECIPE_LV)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
@@ -56,7 +56,7 @@ public class GregtechIndustrialMassFabricator {
                 ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrapbox")))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
-            .eut(TierEU.LV)
+            .eut(TierEU.RECIPE_LV)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
@@ -90,7 +90,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Advanced UUM
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(3))
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .fluidInputs(Materials.UUAmplifier.getFluid(256))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)
