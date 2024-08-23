@@ -287,6 +287,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     }
 
     @Override
+    public Pos2d getStructureUpdateButtonPos() {
+        return new Pos2d(174, 148 - (slotWidgets.size() * 18));
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
@@ -312,7 +317,8 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder));
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
