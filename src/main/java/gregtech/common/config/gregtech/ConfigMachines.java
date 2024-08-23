@@ -92,53 +92,53 @@ public class ConfigMachines {
     @Config.Comment("If true, machines can explode.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineExplosions;
+    public static boolean machineExplosions;
 
     @Config.Comment("If true, machine can take fire.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineFlammable;
+    public static boolean machineFlammable;
 
     @Config.Comment("If true, explodes if the machine is dismantled without a wrench.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineNonWrenchExplosions;
+    public static boolean machineNonWrenchExplosions;
 
     @Config.Comment("If true, burn the wires on explosion. (by sending IV amps into the cables)")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineWireFire;
+    public static boolean machineWireFire;
 
     @Config.Comment("If true, machine will randomly explode if there is fire on adjacent blocks.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineFireExplosions;
+    public static boolean machineFireExplosions;
 
     @Config.Comment("If true, will randomly explode if it is raining.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineRainExplosions;
+    public static boolean machineRainExplosions;
 
     @Config.Comment("If true, will randomly explode during thunderstorm if the machine can be exposed to rain.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sMachineThunderExplosions;
+    public static boolean machineThunderExplosions;
 
     @Config.Comment("If true, enable the guis of the machines to get a tint and it will be of the color of the dye applied to the machine.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sColoredGUI;
+    public static boolean coloredGUI;
 
     @Config.Comment("If true and if the machine tint is activated, the guis will have a uniform metallic tint no matter what color is applied to the machines.")
     @Config.DefaultBoolean(false)
     @Config.RequiresMcRestart
-    public static boolean sMachineMetalGUI;
+    public static boolean machineMetalGUI;
 
     // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
     @Config.Comment("If true, use the definition of the metallic tint in GT5U, otherwise NHCore will set it to white.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean sUseMachineMetal;
+    public static boolean useMachineMetal;
 
     @Config.Comment("if true, enables MuTEs(multitile entities) to be added to the game. MuTEs are in the start of development and its not recommended to enable them unless you know what you are doing. (always activated in dev env)")
     @Config.DefaultBoolean(false)

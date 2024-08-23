@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -2638,9 +2637,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHarvestLevels() {
-        GT_Mod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.ActivateHarvestLevelChange;
+        GT_Mod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
         GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
-        GT_Mod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.GraniteHarvestLevel;
+        GT_Mod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {
