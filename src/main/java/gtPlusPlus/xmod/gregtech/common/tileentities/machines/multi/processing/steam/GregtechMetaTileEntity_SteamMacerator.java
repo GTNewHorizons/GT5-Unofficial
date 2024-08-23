@@ -46,6 +46,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
@@ -240,6 +242,15 @@ public class GregtechMetaTileEntity_SteamMacerator
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Nonnull
+            @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
             // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these here are bonuses.
             @Override
             @Nonnull
@@ -252,13 +263,20 @@ public class GregtechMetaTileEntity_SteamMacerator
     }
 
     @Override
+    public int getTierRecipes() {
+        return tierMachine == 1 ? 1 : 2;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Macerator")
             .addInfo("33.3% faster than using a single block Steam Macerator.")
             .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator on Tier 1.")
-            .addInfo("Macerates up to 8 x Tier things at a time.")
+            .addInfo("Bronze tier runs recipes up to LV tier")
+            .addInfo("Steel tier runs recipes up to MV tier")
+            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
