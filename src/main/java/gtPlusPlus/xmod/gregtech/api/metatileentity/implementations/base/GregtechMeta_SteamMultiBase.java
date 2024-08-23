@@ -75,6 +75,8 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
 
     protected abstract GT_RenderedTexture getFrontOverlayActive();
 
+    public abstract int getTierRecipes();
+
     private int getCasingTextureIndex() {
         return 10;
     }
@@ -86,7 +88,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(V[1]);
+        logic.setAvailableVoltage(V[getTierRecipes()]);
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
