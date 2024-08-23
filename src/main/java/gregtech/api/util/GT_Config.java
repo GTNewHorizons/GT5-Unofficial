@@ -40,7 +40,7 @@ public class GT_Config implements Runnable {
             aName.replaceAll("\\|", "."),
             aDefault);
         int rResult = tProperty.getInt(aDefault);
-        if (!tProperty.wasRead() && shouldSave()) sConfigFileIDs.save();
+        sConfigFileIDs.save();
         return rResult;
     }
 
