@@ -476,8 +476,6 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
         isMachineValid = ElevatorUtil.getModuleSlotsUnlocked(motorTier) >= mProjectModuleHatches.size();
-        // Fix maintenance issues
-        fixAllIssues();
         if (elevatorCable != null) {
             elevatorCable.setShouldRender(isMachineValid);
             return isMachineValid;

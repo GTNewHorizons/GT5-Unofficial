@@ -6,8 +6,10 @@ import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -65,6 +67,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -124,7 +127,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
     /** Name of the overdrive setting */
     private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GCCoreUtil
             .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
@@ -240,6 +243,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
+        if (!overdriveSetting.getStatus(false).isOk) return SimpleCheckRecipeResult.ofFailure("invalid_overdrive");
         if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
             return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
         }
@@ -251,18 +255,19 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mPollution = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        if (getStoredFluids().size() <= 0) {
+        List<FluidStack> inputFluids = getStoredFluids();
+        if (inputFluids.isEmpty()) {
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
 
         // Look for a valid plasma to start a mining operation
-        for (FluidStack fluidStack : getStoredFluids()) {
+        for (FluidStack fluidStack : inputFluids) {
             int availablePlasmaTier = getTierFromPlasma(fluidStack);
             if (availablePlasmaTier > 0) {
                 // Check if valid inputs for a mining operation are present
                 CheckRecipeResult result = process(
                         getStoredInputs().toArray(new ItemStack[0]),
-                        getStoredFluids().toArray(new FluidStack[0]),
+                        inputFluids.toArray(new FluidStack[0]),
                         availablePlasmaTier,
                         fluidStack,
                         getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
@@ -287,10 +292,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             FluidStack plasma, int maxParallels) {
         // Check inputs
         if ((inputs == null && fluidInputs == null)) {
-            return SimpleCheckRecipeResult.ofFailure("no_plasma");
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (plasma == null || availablePlasmaTier <= 0) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
+            return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
 
         // Get all asteroid pools that this drone can pull from
@@ -351,7 +356,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
 
         // Randomly generate ore stacks with the given chances, ores and size
-        ItemStack[] outputs = new ItemStack[tRecipe.maxSize * parallels];
+        Map<GT_Utility.ItemId, Long> outputs = new HashMap<>();
         int totalChance = Arrays.stream(tRecipe.mChances).sum();
         try {
             for (int i = 0; i < tRecipe.maxSize * parallels; i++) {
@@ -368,7 +373,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                             ItemStack generatedOre = tRecipe.mOutputs[j];
                             if (configuredOres == null || configuredOres.isEmpty()
                                     || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
-                                outputs[i] = generatedOre.copy();
+                                outputs.merge(
+                                        GT_Utility.ItemId.createNoCopy(generatedOre),
+                                        (long) generatedOre.stackSize,
+                                        Long::sum);
                             }
                             break;
                         }
@@ -384,7 +392,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 Math.ceil(plasma.amount - parallels * getPlasmaUsageFromTier(availablePlasmaTier) * plasmaModifier));
 
         // Assign recipe parameters
-        mOutputItems = outputs;
+        ArrayList<ItemStack> outputItems = new ArrayList<>();
+        for (Map.Entry<GT_Utility.ItemId, Long> entry : outputs.entrySet()) {
+            GT_ParallelHelper.addItemsLong(outputItems, entry.getKey().getItemStack(), entry.getValue());
+        }
+        mOutputItems = outputItems.toArray(new ItemStack[0]);
+
         lEUt = (long) -tRecipe.mEUt * parallels;
         eAmpereFlow = 1;
         // TODO: Implement way to get computation from master controller. Or maybe keep it this way so
@@ -488,7 +501,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      *
      * @return Number of possible parallels
      */
-    protected abstract int getParallels();
+    protected abstract int getMaxParallels();
 
     /**
      * Get the number of parallels that this module can handle
@@ -502,7 +515,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return 0;
         }
         float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
-        return Math.min((int) parallelSetting.get(), (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
+        return Math.min(
+                (int) Math.min(getMaxParallels(), parallelSetting.get()),
+                (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
     /**
@@ -548,7 +563,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Parameters.Group hatch_2 = parametrization.getGroup(2, false);
         Parameters.Group hatch_3 = parametrization.getGroup(3, false);
         distanceSetting = hatch_0.makeInParameter(0, 1, DISTANCE_SETTING_NAME, DISTANCE_STATUS);
-        parallelSetting = hatch_0.makeInParameter(1, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
+        parallelSetting = hatch_0.makeInParameter(1, getMaxParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
         overdriveSetting = hatch_1.makeInParameter(0, 1, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
         modeSetting = hatch_2.makeInParameter(0, 0, MODE_SETTING_NAME, MODE_STATUS);
         rangeSetting = hatch_2.makeInParameter(1, 0, RANGE_SETTING_NAME, RANGE_STATUS);
@@ -791,7 +806,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
-        protected int getParallels() {
+        protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
 
@@ -884,7 +899,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
-        protected int getParallels() {
+        protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
 
@@ -977,7 +992,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          *
          * @return Number of possible parallels
          */
-        protected int getParallels() {
+        protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
 

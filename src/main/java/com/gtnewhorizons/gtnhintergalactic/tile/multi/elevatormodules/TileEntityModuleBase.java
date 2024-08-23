@@ -29,6 +29,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
@@ -172,7 +173,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
             if (aTick % 20 == 0) energyDisplay.set(getEUVar());
             if (mEfficiency < 0) mEfficiency = 0;
             if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
-                stopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             }
         }
     }
