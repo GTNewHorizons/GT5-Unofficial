@@ -190,12 +190,12 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAIndustrialForgeHammerActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAIndustrialForgeHammer;
     }
 
     @Override

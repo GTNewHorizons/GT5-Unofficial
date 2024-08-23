@@ -158,12 +158,12 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.OverlayMachineControllerCokeOvenActive;
+        return TexturesGtBlock.oMCACokeOvenActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.OverlayMachineControllerCokeOven;
+        return TexturesGtBlock.oMCACokeOven;
     }
 
     @Override

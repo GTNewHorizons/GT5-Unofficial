@@ -137,12 +137,12 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater extends
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.OverlayMachineControllerFluidHeaterActive;
+        return TexturesGtBlock.oMCAFluidHeaterActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.OverlayMachineControllerFluidHeater;
+        return TexturesGtBlock.oMCAFluidHeater;
     }
 
     @Override

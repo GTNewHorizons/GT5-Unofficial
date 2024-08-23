@@ -206,12 +206,12 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+        return TexturesGtBlock.oMCDAlgaePondBaseActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+        return TexturesGtBlock.oMCDAlgaePondBase;
     }
 
     @Override
