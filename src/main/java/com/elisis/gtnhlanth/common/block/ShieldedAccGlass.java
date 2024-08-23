@@ -3,6 +3,7 @@ package com.elisis.gtnhlanth.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -51,6 +52,11 @@ public class ShieldedAccGlass extends Block {
         if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
+    }
+
+    @Override
+    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
+        return Blocks.glass.getBlockHardness(aWorld, aX, aY, aZ);
     }
 
     @Override
