@@ -18,11 +18,9 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GanysSurface;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
-import static gregtech.api.enums.Mods.MagicalCrops;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TaintedMagic;
@@ -1068,19 +1066,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public void onLoad() {
         GT_Log.out.println("GT_Mod: Beginning Load-Phase.");
         GT_Log.ore.println("GT_Mod: Beginning Load-Phase.");
-        if (MagicalCrops.isModLoaded()) {
-            GT_OreDictUnificator.registerOre(
-                "cropChilipepper",
-                GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 2));
-            GT_OreDictUnificator.registerOre(
-                "cropTomato",
-                GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 8));
-            GT_OreDictUnificator
-                .registerOre("cropGrape", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 4));
-        }
-        if (GanysSurface.isModLoaded()) {
-            GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem(GanysSurface.ID, "teaLeaves", 1L, 0));
-        }
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
@@ -2754,119 +2739,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                     switch (tOre.mModID) {
                         case Names.ENDER_I_O -> {
                             if (tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            }
-                        }
-                        case Names.THERMAL_FONDATION -> {
-                            if (tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Blizz) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            } else if (tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Pyrotheum) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            }
-                        }
-                        case Names.ARS_MAGICA2 -> {
-                            if (tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Vinteum) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            } else if (tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.BlueTopaz) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            } else if (tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Chimerite) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            } else if (tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Moonstone) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            } else if (tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Sunstone) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            }
-                        }
-                        case Names.ROTARY_CRAFT -> {
-                            if (tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.HSLA) {
                                 GT_OreDictUnificator
                                     .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
                                 GT_OreDictUnificator.set(
