@@ -66,10 +66,10 @@ public class GT_Block_FrameBox extends BlockContainer {
                 GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_NAME,
                     GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material)
-                        : getLocalizedName(GregTech_API.sGeneratedMaterials[meta]));
+                        : getLocalizedName(material));
                 GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
-                    GregTech_API.sGeneratedMaterials[meta].getToolTip());
+                    material.getToolTip());
             }
         }
     }
