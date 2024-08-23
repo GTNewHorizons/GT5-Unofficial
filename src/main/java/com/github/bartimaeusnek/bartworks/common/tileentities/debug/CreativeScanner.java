@@ -54,6 +54,16 @@ public class CreativeScanner extends GT_MetaTileEntity_Scanner {
     }
 
     @Override
+    protected boolean hasEnoughEnergyToCheckRecipe() {
+        return true;
+    }
+
+    @Override
+    protected boolean drainEnergyForProcess(long aEUt) {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         this.mProgresstime = this.mMaxProgresstime;
         super.onPostTick(aBaseMetaTileEntity, aTick);

@@ -75,7 +75,9 @@ public class GTNHLanthanides {
 
     @EventHandler
     public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
+
         BotRecipes.removeRecipes();
         RecipeLoader.removeCeriumSources();
+
     }
 }
