@@ -164,7 +164,7 @@ public class CircuitPartLoader implements Runnable {
                         null,
                         toolTip,
                         true);
-            String tt = toolTip.size() > 0 ? toolTip.get(0) : "";
+            String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
             // tt += "Internal Name = "+single;
             String localised = GT_LanguageManager
                 .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
