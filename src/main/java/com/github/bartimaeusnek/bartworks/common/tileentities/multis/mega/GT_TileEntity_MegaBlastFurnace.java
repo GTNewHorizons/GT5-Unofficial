@@ -49,6 +49,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -175,6 +176,16 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
+            .addInfo(
+                GT_Values.TIER_COLORS[8] + GT_Values.VN[8]
+                    + EnumChatFormatting.GRAY
+                    + "-tier glass required for "
+                    + EnumChatFormatting.BLUE
+                    + "Tec"
+                    + EnumChatFormatting.DARK_BLUE
+                    + "Tech"
+                    + EnumChatFormatting.GRAY
+                    + " Laser Hatches.")
             .addPollutionAmount(20 * this.getPollutionPerTick(null))
             .addSeparator()
             .beginStructureBlock(15, 20, 15, true)
