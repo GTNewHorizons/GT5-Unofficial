@@ -2154,6 +2154,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public Pos2d getStructureUpdateButtonPos() {
+        return new Pos2d(174, 130);
+    }
+
+    @Override
+    public int getStructureUpdateTime() {
+        return mUpdate;
+    }
+
+    @Override
+    public void setStructureUpdateTime(int time) {
+        mUpdate = time;
+    }
+
+    @Override
     public boolean supportsVoidProtection() {
         return false;
     }
@@ -2405,7 +2420,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .widget(createInputSeparationButton(builder))
             .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder));
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
     }
 
     @Override

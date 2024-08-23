@@ -1,7 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.GregTech_API.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.GregTech_API.sBlockCasings1;
+import static gregtech.api.GregTech_API.sBlockCasings2;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -14,6 +19,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -44,7 +50,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -52,50 +57,51 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings2;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GregtechMetaTileEntity_SteamCentrifuge
-    extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCentrifuge> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMixer>
+    implements ISurvivalConstructable {
 
-    public GregtechMetaTileEntity_SteamCentrifuge(String aName) {
+    public GregtechMetaTileEntity_SteamMixer(String aName) {
         super(aName);
     }
 
-    public GregtechMetaTileEntity_SteamCentrifuge(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_SteamMixer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_SteamCentrifuge(this.mName);
+        return new GregtechMetaTileEntity_SteamMixer(this.mName);
     }
 
     @Override
     public String getMachineType() {
-        return "Centrifuge";
+        return "Mixer";
     }
 
     private static final String STRUCTUR_PIECE_MAIN = "main";
 
-    private IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamMixer> STRUCTURE_DEFINITION = null;
     // spotless:off
-    private final String[][] shape = new String[][] {
-        { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " },
-        { "     ", " ABA ", " BDB ", " ABA ", "     " },
-        { "  A  ", " ACA ", "ACDCA", " ACA ", "  A  " },
-        { " A~A ", "AABAA", "ABDBA", "AABAA", " AAA " },
-        { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " } };
+    private final String[][] shape = new String[][]{
+        {"       ","   A   ","   A   "," AAAAA ","   A   ","   A   ","       "},
+        {"   A   ","   A   ","       ","AA B AA","       ","   A   ","   A   "},
+        {"   A   ","       ","       ","A  C  A","       ","       ","   A   "},
+        {" AAAAA ","A     A","A     A","A  C  A","A     A","A     A"," AAAAA "},
+        {" AA~AA ","AD   DA","A D D A","A  B  A","A D D A","AD   DA"," AAAAA "},
+        {" AAAAA ","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA"," AAAAA "}};
     //spotless:on
 
-    private static final int HORIZONTAL_OFF_SET = 2;
-    private static final int VERTICAL_OFF_SET = 3;
+    private static final int HORIZONTAL_OFF_SET = 3;
+    private static final int VERTICAL_OFF_SET = 4;
     private static final int DEPTH_OFF_SET = 0;
 
     private int tierGearBoxCasing = -1;
     private int tierPipeCasing = -1;
-    private int tierFireBoxCasing = -1;
     private int tierMachineCasing = -1;
 
     private int tCountCasing = 0;
@@ -111,12 +117,6 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             tCountCasing++;
             return 2;
         }
-        return 0;
-    }
-
-    public static int getTierFireBoxCasing(Block block, int meta) {
-        if (block == sBlockCasings3 && 13 == meta) return 1;
-        if (block == sBlockCasings3 && 14 == meta) return 2;
         return 0;
     }
 
@@ -137,10 +137,11 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mInputHatches) h.updateTexture(getCasingTextureID());
     }
 
     private int getCasingTextureID() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2)
+        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
             return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
         return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
@@ -176,16 +177,16 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     }
 
     @Override
-    public IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> getStructureDefinition() {
+    public IStructureDefinition<GregtechMetaTileEntity_SteamMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCentrifuge>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamMixer>builder()
 
                 .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'B',
                     ofBlocksTiered(
-                        GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
+                        GregtechMetaTileEntity_SteamMixer::getTierGearBoxCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
                         -1,
                         (t, m) -> t.tierGearBoxCasing = m,
@@ -193,29 +194,28 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                 .addElement(
                     'C',
                     ofBlocksTiered(
-                        GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
+                        GregtechMetaTileEntity_SteamMixer::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement(
-                    'D',
-                    ofBlocksTiered(
-                        GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireBoxCasing = m,
-                        t -> t.tierFireBoxCasing))
+                .addElement('D', ofBlock(Blocks.iron_block, 0))
                 .addElement(
                     'A',
                     ofChain(
-                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
+                        buildSteamInput(GregtechMetaTileEntity_SteamMixer.class).casingIndex(10)
                             .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .build(),
-                        buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, OutputHatch)
+                        buildHatchAdder(GregtechMetaTileEntity_SteamMixer.class)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                SteamHatchElement.OutputBus_Steam,
+                                OutputHatch,
+                                InputHatch)
                             .casingIndex(10)
                             .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
@@ -253,37 +253,35 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;
-        tierFireBoxCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierFireBoxCasing < 0 && tierMachineCasing < 0) return false;
+        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
-            && tierFireBoxCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing > 60
-            && checkHatch()) {
+            && tCountCasing > 90
+            && !mSteamInputFluids.isEmpty()
+            && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && !mInputHatches.isEmpty()
+            && !mOutputHatches.isEmpty()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
-            && tierFireBoxCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing > 60
-            && checkHatches()) {
+            && tCountCasing > 90
+            && !mSteamInputFluids.isEmpty()
+            && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && !mInputHatches.isEmpty()
+            && !mOutputHatches.isEmpty()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
         return false;
-    }
-
-    private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
     }
 
     @Override
@@ -293,7 +291,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.centrifugeRecipes;
+        return GTPPRecipeMaps.mixerNonCellRecipes;
     }
 
     @Override
@@ -328,16 +326,14 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Centrifuge")
-            .addInfo("33.3% faster than a single block steam machine would run.")
-            .addInfo(
-                "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
+            .addInfo("Controller Block for the Steam Mixer")
             .addInfo("Bronze tier runs recipes up to LV tier")
             .addInfo("Steel tier runs recipes up to MV tier")
             .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
             .addSeparator()
-            .beginStructureBlock(5, 5, 5, false)
+            .beginStructureBlock(7, 6, 7, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
@@ -348,17 +344,17 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                     + " Any casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addStructureInfo(EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Bronze Firebox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "90-100x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+                EnumChatFormatting.GOLD + "90-100x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
             .addStructureInfo("")
             .toolTipFinisher(AuthorEvgenWarGold);
         return tt;

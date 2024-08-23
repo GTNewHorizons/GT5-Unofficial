@@ -29,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,6 +73,16 @@ public class GT_TileEntity_MegaChemicalReactor
             .addInfo("Controller block for the Chemical Reactor")
             .addInfo("What molecule do you want to synthesize")
             .addInfo("Or you want to replace something in this molecule")
+            .addInfo(
+                GT_Values.TIER_COLORS[8] + GT_Values.VN[8]
+                    + EnumChatFormatting.GRAY
+                    + "-tier glass required for "
+                    + EnumChatFormatting.BLUE
+                    + "Tec"
+                    + EnumChatFormatting.DARK_BLUE
+                    + "Tech"
+                    + EnumChatFormatting.GRAY
+                    + " Laser Hatches.")
             .addInfo("The structure is too complex!")
             .addInfo("Follow the Structure Lib hologram projector to build the main structure.")
             .addSeparator()
