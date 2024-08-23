@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.Avaritia;
 import static goodgenerator.loader.Loaders.huiCircuit;
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -15,8 +15,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class PlasmaForgeRecipes implements Runnable {

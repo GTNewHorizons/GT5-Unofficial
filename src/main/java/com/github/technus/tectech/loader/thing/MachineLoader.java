@@ -308,6 +308,7 @@ import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeMain
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeUncertainty;
 import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.MetaTileEntityIDs.ActiveTransformer;
 import static gregtech.api.enums.MetaTileEntityIDs.AdvancedTeslaTransceiver1by1;
@@ -608,7 +609,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPM64AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM65536AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM65536AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPMVoltageBuckConverter;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
@@ -662,8 +662,8 @@ import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_OwnerDetector;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.MetaTileEntityIDs;
 
 /**
  * Created by danie_000 on 16.11.2016.

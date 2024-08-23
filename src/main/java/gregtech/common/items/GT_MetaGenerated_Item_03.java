@@ -205,7 +205,6 @@ import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housi
 import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
 import static gregtech.common.items.ID_MetaItem_03.Phononic_Seed_Crystal;
-import static gregtech.common.items.ID_MetaItem_03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Catalyst_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Charm;
@@ -214,6 +213,7 @@ import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Stran
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Up;
+import static gregtech.common.items.ID_MetaItem_03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
 import static gregtech.common.items.ID_MetaItem_03.Thermal_Superconductor;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
