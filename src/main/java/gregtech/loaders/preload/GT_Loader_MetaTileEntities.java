@@ -484,7 +484,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Crystalizer;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTech_API;
@@ -583,6 +582,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pi
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Crystalizer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
