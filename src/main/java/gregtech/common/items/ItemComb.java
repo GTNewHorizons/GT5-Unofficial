@@ -410,9 +410,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Diamond, 1) },
             new int[] { 50 * 100, 20 * 100, 10 * 100, 5 * 100 },
             Voltage.HV);
-        addProcessGT(CombType.SPARKELING, new Materials[] { Materials.NetherStar }, Voltage.EV);
+        addProcessGT(CombType.SPARKLING, new Materials[] { Materials.NetherStar }, Voltage.EV);
         addCentrifugeToItemStack(
-            CombType.SPARKELING,
+            CombType.SPARKLING,
             new ItemStack[] { GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
                 GT_ModHandler.getModItem(MagicBees.ID, "miscResources", 2, 5),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherStar, 1) },
@@ -580,6 +580,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.IRIDIUM, new Materials[] { Materials.Iridium }, Voltage.IV);
         addProcessGT(CombType.PALLADIUM, new Materials[] { Materials.Palladium }, Voltage.IV);
         addProcessGT(CombType.OSMIUM, new Materials[] { Materials.Osmium }, Voltage.IV);
+        addProcessGT(CombType.NEODYMIUM, new Materials[] { Materials.Neodymium }, Voltage.MV);
+        addProcessGT(CombType.EUROPIUM, new Materials[] { Materials.Europium }, Voltage.LuV);
         addProcessGT(CombType.LITHIUM, new Materials[] { Materials.Lithium }, Voltage.MV);
         addProcessGT(CombType.ELECTROTINE, new Materials[] { Materials.Electrotine }, Voltage.MV);
         addProcessGT(CombType.DRACONIC, new Materials[] { Materials.Draconium }, Voltage.IV);
@@ -824,7 +826,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             Voltage.IV,
             300);
         addCentrifugeToItemStack(
-            CombType.NEPTUN,
+            CombType.NEPTUNE,
             new ItemStack[] { ItemList.FR_Wax.get(1L),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ProteusStoneDust", 1L, 0),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TritonStoneDust", 1L, 0) },
@@ -912,7 +914,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addFluidExtractorProcess(CombType.OXYGEN, Materials.Oxygen.getGas(500), Voltage.MV);
         // Organic part 2, unknown liquid
         // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
-        addFluidExtractorProcess(CombType.UNKNOWNWATER, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
+        addFluidExtractorProcess(CombType.UNKNOWNLIQUID, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
         /*
          * TODO: update this comment
          * The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused Shard Line are below the
