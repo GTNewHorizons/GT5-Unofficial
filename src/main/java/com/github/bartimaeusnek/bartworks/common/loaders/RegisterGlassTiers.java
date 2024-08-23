@@ -19,6 +19,7 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Map;
 
@@ -91,6 +92,11 @@ public class RegisterGlassTiers {
         if (Botania.isModLoaded()) {
             GlassTier.addCustomGlass(Botania.ID, "manaGlass", 0, 4);
             GlassTier.addCustomGlass(Botania.ID, "elfGlass", 0, 5);
+        }
+
+        if (Thaumcraft.isModLoaded()) {
+            // Warded glass
+            GlassTier.addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3);
         }
     }
 
