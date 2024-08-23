@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,6 +32,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.structures.AntimatterStructures;
+import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.GT_HatchElement;
@@ -53,6 +58,7 @@ import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -363,6 +369,10 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 totalAntimatterAmount += antimatterStored[i].amount;
             }
             drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
+
+            if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
+                setProtoRender(false);
+            }
         }
     }
 
@@ -465,6 +475,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             endRecipeProcessing();
+            setProtoRender(false);
             return CheckRecipeResultRegistry.insufficientPower(energyCost);
         }
 
@@ -494,8 +505,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialsUEVplus.Protomatter.getFluid(1L)));
             endRecipeProcessing();
+            setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
+
+        updateAntimatterSize(totalAntimatterAmount + antimatterChange);
+        setProtoRender(true);
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
@@ -742,6 +757,114 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        super.stopMachine(reason);
+        setProtoRender(false);
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        destroyAntimatterRender();
+    }
+
+    public void updateAntimatterSize(float antimatterAmount) {
+        TileAntimatter render = forceGetAntimatterRender();
+
+        if (antimatterAmount < 0) {
+            setProtoRender(false);
+            render.setCoreSize(0);
+            return;
+        }
+
+        float size = (float) Math.log(antimatterAmount);
+        render.setCoreSize(size);
+    }
+
+    public void setProtoRender(boolean flag) {
+        TileAntimatter render = forceGetAntimatterRender();
+        render.setProtomatterRender(flag);
+        if (flag) render.setRotationFields(getRotation(), getDirection());
+    }
+
+    public TileAntimatter getAntimatterRender() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        World world = gregTechTileEntity.getWorld();
+
+        if (world == null) {
+            return null;
+        }
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        int wX = (int) (x + xOffset);
+        int wY = (int) (y + yOffset);
+        int wZ = (int) (z + zOffset);
+
+        return (TileAntimatter) world.getTileEntity(wX, wY, wZ);
+    }
+
+    public void destroyAntimatterRender() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        World world = gregTechTileEntity.getWorld();
+
+        if (world == null) {
+            return;
+        }
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+
+        int xTarget = x + xOffset;
+        int yTarget = y + yOffset;
+        int zTarget = z + zOffset;
+
+        world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
+    }
+
+    public void createAntimatterRender() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        World world = gregTechTileEntity.getWorld();
+
+        if (world == null) {
+            return;
+        }
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+
+        int wX = x + xOffset;
+        int wY = y + yOffset;
+        int wZ = z + zOffset;
+
+        world.setBlock(wX, wY, wZ, Blocks.air);
+        world.setBlock(wX, wY, wZ, Loaders.antimatterRenderBlock);
+    }
+
+    public TileAntimatter forceGetAntimatterRender() {
+        TileAntimatter render = getAntimatterRender();
+        if (render != null) return render;
+        else createAntimatterRender();
+        return getAntimatterRender();
     }
 
 }
