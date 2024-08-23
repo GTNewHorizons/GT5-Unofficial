@@ -171,11 +171,6 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new NeedMaintainanceUIFactory(buildContext).createWindow();
     }
@@ -204,8 +199,8 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
 
             final String[] buttonText = { GT_Utility.trans("247", "1 Issue"), GT_Utility.trans("248", "2 Issues"),
                 GT_Utility.trans("249", "3 Issues"), GT_Utility.trans("250", "4 Issues"),
-                GT_Utility.trans("251", "5 Issues"), GT_Utility.trans("252", "Rotor < 80%"),
-                GT_Utility.trans("253", "Rotor < 100%"), GT_Utility.trans("INVERTED", "Inverted"),
+                GT_Utility.trans("251", "5 Issues"), GT_Utility.trans("252", "Rotor < 20%"),
+                GT_Utility.trans("253", "Rotor ≈ 0%"), GT_Utility.trans("INVERTED", "Inverted"),
                 GT_Utility.trans("NORMAL", "Normal"), };
 
             builder

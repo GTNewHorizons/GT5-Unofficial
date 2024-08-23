@@ -7,7 +7,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -62,12 +61,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GT_Utility.copyAmount(8, aStack), GT_Utility.getIntegratedCircuit(8))
                 .itemOutputs(new ItemStack(Blocks.chest, 1))
                 .duration(40 * SECONDS)
-                .eut(4)
-                .addTo(assemblerRecipes);
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(6, aStack), new ItemStack(Items.book, 3))
-                .itemOutputs(new ItemStack(Blocks.bookshelf, 1))
-                .duration(20 * SECONDS)
                 .eut(4)
                 .addTo(assemblerRecipes);
 

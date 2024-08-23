@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,8 +15,6 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.GT_Container_BasicTank;
-import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -144,41 +141,27 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
         return false;
     }
 
-    @Deprecated
-    public FluidStack getDisplayedFluid() {
-        return getDrainableStack();
-    }
-
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicTank(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
-
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0)
+            if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0) {
                 setFillableStack(null);
+            }
+
+            final int inputSlot = getInputSlot();
 
             if (doesEmptyContainers()) {
-                FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true);
+                FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[inputSlot], true);
                 if (tFluid != null && isFluidInputAllowed(tFluid)) {
                     if (getFillableStack() == null) {
                         if (isFluidInputAllowed(tFluid) && tFluid.amount <= getCapacity()) {
                             if (aBaseMetaTileEntity.addStackToSlot(
                                 getOutputSlot(),
-                                GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                                GT_Utility.getContainerForFilledItem(mInventory[inputSlot], true),
                                 1)) {
                                 setFillableStack(tFluid.copy());
                                 this.onEmptyingContainerWhenEmpty();
-                                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
+                                aBaseMetaTileEntity.decrStackSize(inputSlot, 1);
                             }
                         }
                     } else {
@@ -186,10 +169,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                             && ((long) tFluid.amount + getFillableStack().amount) <= (long) getCapacity()) {
                             if (aBaseMetaTileEntity.addStackToSlot(
                                 getOutputSlot(),
-                                GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                                GT_Utility.getContainerForFilledItem(mInventory[inputSlot], true),
                                 1)) {
                                 getFillableStack().amount += tFluid.amount;
-                                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
+                                aBaseMetaTileEntity.decrStackSize(inputSlot, 1);
                             }
                         }
                     }
@@ -198,10 +181,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
             if (doesFillContainers()) {
                 ItemStack tOutput = GT_Utility
-                    .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+                    .fillFluidContainer(getDrainableStack(), mInventory[inputSlot], false, true);
                 if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
                     FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
-                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
+                    aBaseMetaTileEntity.decrStackSize(inputSlot, 1);
                     if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
                     if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
                 }

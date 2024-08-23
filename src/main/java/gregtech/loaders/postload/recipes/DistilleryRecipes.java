@@ -130,30 +130,6 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.OilLight.getFluid(300L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.OilMedium.getFluid(200L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.OilHeavy.getFluid(100L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
             .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
@@ -530,14 +506,14 @@ public class DistilleryRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.OilLight.getFluid(1500))
+            .fluidInputs(Materials.OilLight.getFluid(1000))
             .fluidOutputs(
-                Materials.SulfuricHeavyFuel.getFluid(100),
-                Materials.SulfuricLightFuel.getFluid(200),
-                Materials.SulfuricNaphtha.getFluid(300),
-                MaterialsKevlar.NaphthenicAcid.getFluid(25),
-                Materials.SulfuricGas.getGas(2400))
-            .duration(1 * SECONDS + 12 * TICKS)
+                Materials.SulfuricHeavyFuel.getFluid(70),
+                Materials.SulfuricLightFuel.getFluid(130),
+                Materials.SulfuricNaphtha.getFluid(200),
+                MaterialsKevlar.NaphthenicAcid.getFluid(15),
+                Materials.SulfuricGas.getGas(1600))
+            .duration(1 * SECONDS + 1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
 
@@ -556,14 +532,14 @@ public class DistilleryRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.Oil.getFluid(500L))
+            .fluidInputs(Materials.Oil.getFluid(1000L))
             .fluidOutputs(
-                Materials.SulfuricHeavyFuel.getFluid(150),
-                Materials.SulfuricLightFuel.getFluid(500),
-                Materials.SulfuricNaphtha.getFluid(200),
-                MaterialsKevlar.NaphthenicAcid.getFluid(25),
-                Materials.SulfuricGas.getGas(600))
-            .duration(1 * SECONDS + 12 * TICKS)
+                Materials.SulfuricHeavyFuel.getFluid(300),
+                Materials.SulfuricLightFuel.getFluid(1000),
+                Materials.SulfuricNaphtha.getFluid(400),
+                MaterialsKevlar.NaphthenicAcid.getFluid(50),
+                Materials.SulfuricGas.getGas(1200))
+            .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
 
@@ -571,9 +547,9 @@ public class DistilleryRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(9))
             .fluidInputs(Materials.OilHeavy.getFluid(1000))
             .fluidOutputs(
-                Materials.SulfuricHeavyFuel.getFluid(2500),
-                Materials.SulfuricLightFuel.getFluid(450),
-                Materials.SulfuricNaphtha.getFluid(150),
+                Materials.SulfuricHeavyFuel.getFluid(450),
+                Materials.SulfuricLightFuel.getFluid(150),
+                Materials.SulfuricNaphtha.getFluid(300),
                 MaterialsKevlar.NaphthenicAcid.getFluid(50),
                 Materials.SulfuricGas.getGas(600))
             .duration(5 * SECONDS)
@@ -587,6 +563,16 @@ public class DistilleryRecipes implements Runnable {
                 Materials.AntiKnock.getFluid(400L),
                 Materials.Methanol.getFluid(500L),
                 Materials.Butene.getGas(400L))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(distillationTowerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.MTBEMixtureAlt.getGas(900L))
+            .fluidOutputs(
+                Materials.AntiKnock.getFluid(400L),
+                Materials.Methanol.getFluid(500L),
+                Materials.Butane.getGas(400L))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
@@ -669,12 +655,12 @@ public class DistilleryRecipes implements Runnable {
             256);
 
         addUniversalDistillationRecipewithCircuit(
-            Materials.OilLight.getFluid(150),
+            Materials.OilLight.getFluid(100),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(20),
-                Materials.SulfuricNaphtha.getFluid(30), Materials.SulfuricGas.getGas(240) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(7), Materials.SulfuricLightFuel.getFluid(13),
+                Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(160) },
             null,
-            20,
+            10,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilMedium.getFluid(100),
@@ -685,20 +671,20 @@ public class DistilleryRecipes implements Runnable {
             20,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.Oil.getFluid(50L),
+            Materials.Oil.getFluid(100L),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(50),
-                Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(30), Materials.SulfuricLightFuel.getFluid(100),
+                Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(120) },
             null,
-            20,
+            30,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilHeavy.getFluid(100),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(250), Materials.SulfuricLightFuel.getFluid(45),
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(100), Materials.SulfuricLightFuel.getFluid(45),
                 Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricGas.getGas(60) },
             null,
-            20,
+            40,
             288);
 
         // 2 0.5HCl(Diluted) = HCl + H2O

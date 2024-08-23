@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GT_Values.VP;
 import static gregtech.api.enums.Materials.Bronze;
 import static gregtech.api.enums.Materials.Cobalt;
 import static gregtech.api.enums.Materials.DarkSteel;
@@ -28,6 +29,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.RECYCLE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+import static gregtech.api.util.GT_Utility.getTier;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,9 +54,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -183,19 +183,19 @@ public class GT_RecipeRegistrator {
             || GT_Utility.getFluidForFilledItem(aStack, false) != null
             || aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECIPES)) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
-        registerReverseSmelting(
-            GT_Utility.copyAmount(1, aStack),
-            aData.mMaterial.mMaterial,
-            aData.mMaterial.mAmount,
-            true);
         if (!GT_Utility.areStacksEqual(GT_ModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
+            registerReverseSmelting(
+                GT_Utility.copyAmount(1, aStack),
+                aData.mMaterial.mMaterial,
+                aData.mMaterial.mAmount,
+                true);
             registerReverseFluidSmelting(
                 GT_Utility.copyAmount(1, aStack),
                 aData.mMaterial.mMaterial,
                 aData.mMaterial.mAmount,
                 aData.getByProduct(0));
+            registerReverseArcSmelting(GT_Utility.copyAmount(1, aStack), aData);
         }
-        registerReverseArcSmelting(GT_Utility.copyAmount(1, aStack), aData);
     }
 
     /**
@@ -224,9 +224,15 @@ public class GT_RecipeRegistrator {
         if (recipeOutput != null) {
             builder.itemOutputs(recipeOutput);
         }
+        long powerUsage = Math.max(8, (long) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature()));
+        // avoid full amp recipes
+        int powerTier = getTier(powerUsage);
+        if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
+            powerUsage = VP[powerTier];
+        }
         builder.fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
             .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
-            .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
+            .eut(powerUsage)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
             .addTo(fluidExtractionRecipes);
     }
@@ -306,11 +312,8 @@ public class GT_RecipeRegistrator {
                 continue;
             }
             if (tMaterial.mMaterial.contains(SubTag.METAL)) {
-                if (GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed) {
-                    tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
-                } else {
-                    tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mSmeltInto;
-                }
+
+                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
                 continue;
             }
             tMaterial.mAmount = 0;
@@ -604,30 +607,26 @@ public class GT_RecipeRegistrator {
 
                         if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
                             assert aItemData != null;
-                            if (GregTech_API.sRecipeFile.get(
-                                ConfigCategories.Recipes.recipereplacements,
-                                aItemData.mMaterial.mMaterial + "." + sShapesA[i][0],
-                                true)) {
-                                if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
-                                    switch (sShapesA[i].length) {
-                                        case 2 -> GT_ModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GT_ModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
-                                        case 3 -> GT_ModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GT_ModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
-                                                s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                aItemData });
-                                        default -> GT_ModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GT_ModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
-                                                s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial),
-                                                s_I.charAt(0), aItemData });
-                                    }
+
+                            if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
+                                switch (sShapesA[i].length) {
+                                    case 2 -> GT_ModHandler.addCraftingRecipe(
+                                        tStack,
+                                        GT_ModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                    case 3 -> GT_ModHandler.addCraftingRecipe(
+                                        tStack,
+                                        GT_ModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
+                                            s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                            aItemData });
+                                    default -> GT_ModHandler.addCraftingRecipe(
+                                        tStack,
+                                        GT_ModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0),
+                                            aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                            aItemData });
                                 }
                             }
                         }

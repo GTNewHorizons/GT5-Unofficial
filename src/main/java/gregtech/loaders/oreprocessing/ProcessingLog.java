@@ -16,8 +16,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -129,20 +127,14 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
                 addPyrolyeOvenRecipes(aStack);
-                if (GregTech_API.sRecipeFile
-                    .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
-                    GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
-                }
+                GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
             }
             for (int i = 0; i < 32767; i++) {
                 if ((GT_Utility.areStacksEqual(
                     GT_ModHandler.getSmeltingOutput(new ItemStack(aStack.getItem(), 1, i), false, null),
                     new ItemStack(Items.coal, 1, 1)))) {
                     addPyrolyeOvenRecipes(aStack);
-                    if (GregTech_API.sRecipeFile
-                        .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
-                        GT_ModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
-                    }
+                    GT_ModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
                 }
                 ItemStack tStack = GT_ModHandler.getRecipeOutput(new ItemStack(aStack.getItem(), 1, i));
                 if (tStack == null) {
@@ -195,10 +187,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .duration(10 * SECONDS)
                             .eut(8)
                             .addTo(cutterRecipes);
-                        GT_ModHandler.addSawmillRecipe(
-                            new ItemStack(aStack.getItem(), 1, i),
-                            tPlanks,
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
                         GT_ModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
                         GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(
@@ -219,10 +207,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
                 addPyrolyeOvenRecipes(aStack);
-                if (GregTech_API.sRecipeFile
-                    .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
-                    GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
-                }
+                GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
             }
             ItemStack tStack = GT_ModHandler.getRecipeOutput(GT_Utility.copyAmount(1, aStack));
             if (tStack != null) {
@@ -271,10 +256,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(10 * SECONDS)
                         .eut(8)
                         .addTo(cutterRecipes);
-                    GT_ModHandler.addSawmillRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        tPlanks,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
                     GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1, aStack));
                     GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(
@@ -293,8 +274,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1, aStack), false, null),
             new ItemStack(Items.coal, 1, 1)))) {
             addPyrolyeOvenRecipes(aStack);
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true))
-                GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
+            GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
         }
     }
 

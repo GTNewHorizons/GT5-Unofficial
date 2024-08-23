@@ -325,8 +325,9 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             ModularWindow.Builder builder = ModularWindow.builder(150, 54);
             builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
 
+            NumericWidget capacityWidget = new NumericWidget();
             builder.widget(
-                new NumericWidget().setGetter(() -> capacity)
+                capacityWidget.setGetter(() -> capacity)
                     .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
                     .setBounds(1, maxCapacity)
                     .setScrollValues(1, 144, 1000)
@@ -341,11 +342,11 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                 .widget(
                     new VanillaButtonWidget().setDisplayString("Confirm")
                         .setOnClick((clickData, widget) -> {
-                            if (!widget.isClient()) {
-                                widget.getWindow()
-                                    .tryClose();
-                            }
+                            capacityWidget.onRemoveFocus();
+                            widget.getWindow()
+                                .tryClose();
                         })
+                        .setSynced(false, false)
                         .setPos(8, 26)
                         .setSize(48, 20));
 

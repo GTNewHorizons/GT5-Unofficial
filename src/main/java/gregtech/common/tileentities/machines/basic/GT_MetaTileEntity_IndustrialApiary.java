@@ -69,8 +69,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.EnumBeeType;
@@ -743,7 +741,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (aIndex > drone && aIndex < getOutputSlot()) updateModifiers();
     }
 
-    @SideOnly(Side.CLIENT)
     public ItemStack getUsedQueen() {
         return usedQueen;
     }
@@ -1201,11 +1198,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
         UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip",
         AUTOQUEEN_TOOLTIP = "GT5U.machines.industrialapiary.autoqueen.tooltip";
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

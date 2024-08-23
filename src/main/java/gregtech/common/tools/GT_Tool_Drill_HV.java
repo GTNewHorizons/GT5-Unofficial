@@ -11,7 +11,7 @@ public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
 
     @Override
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 400 : 800;
+        return 800;
     }
 
     @Override

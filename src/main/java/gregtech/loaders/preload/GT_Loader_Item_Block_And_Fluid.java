@@ -40,6 +40,7 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_BreederCell_Item;
@@ -52,6 +53,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
+import gregtech.common.blocks.GT_Block_Casings10;
+import gregtech.common.blocks.GT_Block_Casings11;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings3;
 import gregtech.common.blocks.GT_Block_Casings4;
@@ -61,14 +64,18 @@ import gregtech.common.blocks.GT_Block_Casings8;
 import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
+import gregtech.common.blocks.GT_Block_Glass1;
 import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Laser;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Metal;
 import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_Block_Reinforced;
 import gregtech.common.blocks.GT_Block_Stones;
+import gregtech.common.blocks.GT_Block_TintedIndustrialGlass;
 import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_WormholeRenderBlock;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -81,7 +88,10 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.GT_NeutronReflector_Item;
 import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.GT_WirelessHeadphones;
 import gregtech.common.tileentities.render.TileDrone;
+import gregtech.common.tileentities.render.TileLaser;
+import gregtech.common.tileentities.render.TileWormhole;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
@@ -152,6 +162,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_MetaGenerated_Item_99();
         new GT_MetaGenerated_Tool_01();
         new GT_FluidDisplayItem();
+        new GT_WirelessHeadphones();
 
         // Tiered recipe materials actually appear to be set in GT_MetaTileEntity_BasicMachine_GT_Recipe, making these
         // unused
@@ -349,7 +360,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -363,7 +374,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -377,7 +388,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Depleted_MNq_1.set(new GT_DepletetCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
@@ -428,7 +439,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -442,7 +453,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -456,7 +467,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Uraniumcell_1.set(
@@ -536,12 +547,19 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockCasings6 = new GT_Block_Casings6();
         GregTech_API.sBlockCasings8 = new GT_Block_Casings8();
         GregTech_API.sBlockCasings9 = new GT_Block_Casings9();
+        GregTech_API.sBlockCasings10 = new GT_Block_Casings10();
+        GregTech_API.sBlockCasings11 = new GT_Block_Casings11();
         GregTech_API.sBlockGranites = new GT_Block_Granites();
         GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
+        GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
+        GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
+        GregTech_API.sLaserRender = new GT_Block_Laser();
+        GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
+
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -667,6 +685,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
+
+        GT_Log.out.println("GT_Mod: Registering the LaserRender.");
+        GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
+
+        GT_Log.out.println("GT_Mod: Registering the WormholeRender.");
+        GameRegistry.registerTileEntity(TileWormhole.class, "WormholeRender");
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
@@ -1946,128 +1970,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ItemList.IC2_Spray_WeedEx.get(1L),
                 ItemList.Spray_Empty.get(1L)));
 
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison", 125),
-                ItemList.Arrow_Head_Glass_Poison.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.long", 125),
-                ItemList.Arrow_Head_Glass_Poison_Long.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.strong", 125),
-                ItemList.Arrow_Head_Glass_Poison_Strong.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.slowness", 125),
-                ItemList.Arrow_Head_Glass_Slowness.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.slowness.long", 125),
-                ItemList.Arrow_Head_Glass_Slowness_Long.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.weakness", 125),
-                ItemList.Arrow_Head_Glass_Weakness.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.weakness.long", 125),
-                ItemList.Arrow_Head_Glass_Weakness_Long.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("holywater", 125),
-                ItemList.Arrow_Head_Glass_Holy_Water.get(1L),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
-
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison", 125),
-                ItemList.Arrow_Wooden_Glass_Poison.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.long", 125),
-                ItemList.Arrow_Wooden_Glass_Poison_Long.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.strong", 125),
-                ItemList.Arrow_Wooden_Glass_Poison_Strong.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.slowness", 125),
-                ItemList.Arrow_Wooden_Glass_Slowness.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.slowness.long", 125),
-                ItemList.Arrow_Wooden_Glass_Slowness_Long.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.weakness", 125),
-                ItemList.Arrow_Wooden_Glass_Weakness.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.weakness.long", 125),
-                ItemList.Arrow_Wooden_Glass_Weakness_Long.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("holywater", 125),
-                ItemList.Arrow_Wooden_Glass_Holy_Water.get(1L),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
-
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison", 125),
-                ItemList.Arrow_Plastic_Glass_Poison.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.long", 125),
-                ItemList.Arrow_Plastic_Glass_Poison_Long.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.strong", 125),
-                ItemList.Arrow_Plastic_Glass_Poison_Strong.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.slowness", 125),
-                ItemList.Arrow_Plastic_Glass_Slowness.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.slowness.long", 125),
-                ItemList.Arrow_Plastic_Glass_Slowness_Long.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.weakness", 125),
-                ItemList.Arrow_Plastic_Glass_Weakness.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.weakness.long", 125),
-                ItemList.Arrow_Plastic_Glass_Weakness_Long.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("holywater", 125),
-                ItemList.Arrow_Plastic_Glass_Holy_Water.get(1L),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         if (!GT_Values.D1) {
             try {
                 Class.forName("codechicken.nei.api.API");

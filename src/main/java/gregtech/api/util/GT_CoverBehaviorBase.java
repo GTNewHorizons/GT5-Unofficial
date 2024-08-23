@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -28,14 +27,13 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.gui.widgets.GT_CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.common.covers.CoverInfo;
 
 /**
@@ -223,12 +221,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return onCoverShiftRightClickImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer);
     }
 
-    @Deprecated
-    public final Object getClientGUI(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
-        return getClientGUIImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer, aWorld);
-    }
-
     /**
      * Removes the Cover if this returns true, or if aForced is true. Doesn't get called when the Machine Block is
      * getting broken, only if you break the Cover away from the Machine.
@@ -253,6 +245,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public final String getDescription(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
         ICoverable aTileEntity) {
         return getDescriptionImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Called when Base TE being unloaded.
+     */
+    public void onCoverUnload(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {
+        onCoverUnloadImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
     /**
@@ -412,13 +412,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected GT_GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 
-    /**
-     * For back compatibility, you need to override this if this cover uses ModularUI.
-     */
-    public boolean useModularUI() {
-        return false;
-    }
-
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new UIFactory(buildContext).createWindow();
     }
@@ -439,9 +432,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
             builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
             builder.setGuiTint(getUIBuildContext().getGuiColorization());
-            if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
-                builder.bindPlayerInventory(getUIBuildContext().getPlayer());
-            }
+            maybeBindPlayerInventory(builder);
             addTitleToUI(builder);
             addUIWidgets(builder);
             if (getUIBuildContext().isAnotherWindow()) {
@@ -459,6 +450,12 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             }
 
             return builder.build();
+        }
+
+        protected void maybeBindPlayerInventory(ModularWindow.Builder builder) {
+            if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
+                builder.bindPlayerInventory(getUIBuildContext().getPlayer(), 7, GUITextureSet.DEFAULT.getItemSlot());
+            }
         }
 
         /**
@@ -581,6 +578,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
+    protected void onCoverUnloadImpl(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {}
+
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, T aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
@@ -621,27 +621,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
-            if (useModularUI()) {
-                GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
-            } else {
-                GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                        side,
-                        aCoverID,
-                        aCoverVariable,
-                        aTileEntity,
-                        (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
-            }
+            GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
             return true;
         }
         return false;
-    }
-
-    @Deprecated
-    protected Object getClientGUIImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, World aWorld) {
-        return null;
     }
 
     /**

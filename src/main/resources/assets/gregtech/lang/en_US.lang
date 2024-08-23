@@ -68,8 +68,16 @@ GT5U.LHE.steam=(in steam)
 GT5U.LHE.superheated=Superheated
 GT5U.LHE.threshold=threshold
 
+GT5U.DTPF.convergencebutton=Allow Convergence
+GT5U.DTPF.convergencebuttontooltip.0=Requires Transdimensional Aligment Matrix in controller slot
+GT5U.DTPF.convergencebuttontooltip.1=Right Click to open catalyst selection menu
+GT5U.DTPF.catalysttier=Catalyst Tier
+GT5U.DTPF.catalystinfotooltip=Tier of additional catalyst to use for recipes without catalyst in them, from 1-Crude to 5-Stellar
+
 GT5U.fusion.req=EU Required
 GT5U.fusion.plasma=Plasma Output
+
+GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
@@ -222,6 +230,14 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.purificationplantclarifier=Clarifier
+gt.recipe.purificationplantflocculation=Flocculation
+gt.recipe.purificationplantphadjustment=pH Neutralization
+gt.recipe.purificationplantozonation=Ozonation
+gt.recipe.purificationplantplasmaheating=Temperature Fluctuation
+gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
+gt.recipe.purificationplantdegasifier=Degassing
+gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -310,6 +326,33 @@ GT5U.machines.stalled_vent.tooltip=§4Stalled: Cannot vent steam!
 GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to
 GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam
 GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
+GT5U.GTPP_MULTI_ARC_FURNACE.mode.0=Electric
+GT5U.GTPP_MULTI_ARC_FURNACE.mode.1=Plasma
+GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.0=Cutting
+GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.1=Slicing
+GT5U.GTPP_MULTI_WASH_PLANT.mode.0=Ore Washer
+GT5U.GTPP_MULTI_WASH_PLANT.mode.1=Simple Washer
+GT5U.GTPP_MULTI_WASH_PLANT.mode.2=Chemical Bath
+GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode.0=Bending
+GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode.1=Forming Press
+GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.0=Separator
+GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.1=Polarizer
+GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.0=Metal
+GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.1=Fluid
+GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.2=Misc
+GT5U.MULTI_CANNER.mode.0=Canner
+GT5U.MULTI_CANNER.mode.1=Fluid Canner
+GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.0=Vacuum Furnace
+GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.1=Dehydrator
+GT5U.GTPP_MULTI_MASS_FABRICATOR.mode.0=Mass Fabricator
+GT5U.GTPP_MULTI_MASS_FABRICATOR.mode.1=Recycler
+GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode.0=Distillation Tower
+GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode.1=Distillery
+GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode.0=Precise
+GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode.1=Normal
+GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
+GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
+GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
@@ -382,6 +425,8 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.1=Click to toggle automatic item pu
 GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional parameters.
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
+GT5U.machines.stocking_bus.force_check=Recipe Check on change
+GT5U.machines.stocking_bus.hatch_warning=Requires a fresh structure check to apply (Reboot/Replace controller)
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
@@ -391,12 +436,22 @@ GT5U.machines.stocking_hatch.auto_pull_toggle.enabled=Automatic Fluid Pull Enabl
 GT5U.machines.stocking_hatch.auto_pull_toggle.disabled=Automatic Fluid Pull Disabled
 GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
 GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.output_bus.saved=Saved Config to Data Stick
+GT5U.machines.output_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.output_bus.invalid=Invalid Data Stick config
 GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
 GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
 GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
 GT5U.machines.dronecentre.noconnection=No valid connection
 GT5U.machines.dronecentre.enableRender=Enable Drone Render
 GT5U.machines.dronecentre.disableRender=Disable Drone Render
+GT5U.machines.betterjukebox.attenuationDistance.tooltip=Sound attenuation distance: %d blocks
+GT5U.machines.betterjukebox.p2pAttenuationDistance.tooltip=P2P sound attenuation distance: %d blocks
+GT5U.machines.betterjukebox.loop.tooltip=Loop mode (keep discs in input inventory)
+GT5U.machines.betterjukebox.shuffle.tooltip=Shuffle mode (play random discs instead of in order)
+GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
+GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
+GT5U.machines.laser_hatch.amperage=Amperage
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -405,6 +460,8 @@ GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
 GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filter
 
 GT5U.gui.select.current=Current:
+GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
+GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
 GT5U.gui.button.power_switch=Power Switch
 GT5U.gui.button.voiding_mode=Voiding Mode:
 GT5U.gui.button.voiding_mode_none=§7Void Nothing
@@ -412,6 +469,7 @@ GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
 GT5U.gui.button.input_separation=Input Separation
+GT5U.gui.button.mode_switch=Mode Switch
 GT5U.gui.button.batch_mode=Batch Mode
 GT5U.gui.button.lock_recipe=Lock Recipe
 GT5U.gui.button.down_tier=Down Tier
@@ -432,19 +490,26 @@ GT5U.gui.button.drone_outofrange=§4Machine is too far, drone control system not
 GT5U.gui.button.drone_open_list=Open Machine List
 GT5U.gui.button.drone_poweron_all=Turn ON ALL machines, no matter how remote
 GT5U.gui.button.drone_poweroff_all=Turn OFF ALL machines, no matter how remote
+GT5U.gui.button.drone_name=Sort by §3name
+GT5U.gui.button.drone_distance=Sort by §3distance
+GT5U.gui.button.drone_error=Sort by §3shutdown status
+GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
 GT5U.gui.text.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.none=
-GT5U.gui.text.crash=§4Machine turned off due to crash
+GT5U.gui.text.crash=§4Machine turned off due to crash. Refer to the log for more info.
 GT5U.gui.text.no_fuel=§7No valid fuel found
 GT5U.gui.text.no_turbine=§7No valid turbine found
 GT5U.gui.text.no_lubricant=§7No lubricant found
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
+GT5U.gui.text.electromagnet_missing=§7Needs an Electromagnet to run
+GT5U.gui.text.electromagnet_insufficient=§7Electromagnet too weak to handle exotic energy hatches
+GT5U.gui.text.laser_insufficient=§7Laser source is too weak to run this recipe
 GT5U.gui.text.cleanroom_running=§aCleanroom running
 GT5U.gui.text.no_machine=§7No valid processing machine
 GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe
@@ -478,6 +543,7 @@ GT5U.gui.text.internal_error=§4Recipe was found, but had internal error
 GT5U.gui.text.drill_ores_left_chunk=Ores left in current chunk: §a%s
 GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
 GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%s / %s
+GT5U.gui.text.drill_current_vein=Current Vein: §a%s
 GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
 GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
@@ -495,6 +561,9 @@ GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
+GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
+GT5U.gui.text.ph_sensor=pH threshold
+GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -526,12 +595,16 @@ GT5U.hatch.infiniteCacheFluid.false=ME Output hatch will stop accepting fluid wh
 GT5U.hatch.additionalConnection.true=ME channels connect to any side
 GT5U.hatch.additionalConnection.false=ME channels connect to front side only
 
+GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
+GT5U.bus.filterTooltip.full=§aClick to clear output filter
+
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress
 GT5U.multiblock.efficiency=Efficiency
 GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
+GT5U.multiblock.maxtier=Max Tier
 GT5U.multiblock.usage=Probably uses
 GT5U.multiblock.parallelism=Max parallelism
 GT5U.multiblock.curparallelism=Current parallelism
@@ -606,6 +679,8 @@ GT5U.interface.coverTabs.east=East
 
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
+
+GT5U.biomes.humidity=Humidity:
 
 # NEI options
 nei.options.tools.dump.gt5u=GT5u
@@ -1496,4 +1571,289 @@ gt.time.second.plural=seconds
 
 #Tool modes
 gt.wrench.mode.1=Line Mode
+
+
+# GT++
+# Shit I stole from GTNH~
+
+GT5U.gui.text.no_water=§7Missing water
+GT5U.gui.text.no_lava=§7Missing lava
+GT5U.gui.text.no_air=§7Missing air
+GT5U.gui.text.no_co2=§7Missing CO2
+GT5U.gui.text.no_li2bef4=§7Missing Li2BeF4
+GT5U.gui.text.no_saw=§7Missing saw
+GT5U.gui.text.no_sapling=§7Missing sapling
+GT5U.gui.text.no_oxygen=§7Missing oxygen
+GT5U.gui.text.fuel_blacklisted=§7Fuel blacklisted
+GT5U.gui.text.no_catalyst=§7No valid catalyst found
+GT5U.gui.text.no_milling_ball=§7No milling ball found
+GT5U.gui.text.growing_trees=§aGrowing trees
+GT5U.gui.text.managing_power=§aManaging power
+GT5U.gui.text.no_scrap=§aInput too low quality
+GT5U.gui.text.warm_up=§aWarming up
+GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
+GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
+GT5U.gui.text.no_tools=§7Missing applicable tools
+
+GTPP.EBF.heat=Heat capacity
+
+GTPP.machines.tier=Tier
+GTPP.machines.input=Input
+GTPP.machines.output=Output
+
+GTPP.multiblock.pollutionreduced=Pollution reduced to
+GTPP.multiblock.pollution=Pollution
+GTPP.multiblock.energy=Stored Energy
+GTPP.multiblock.progress=Progress
+GTPP.multiblock.efficiency=Efficiency
+GTPP.multiblock.problems=Problems
+GTPP.multiblock.mei=Max Energy Income
+GTPP.multiblock.usage=Probably uses
+GTPP.multiblock.generation=Probably generates
+GTPP.multiblock.specialvalue=Special Value
+GTPP.multiblock.duration=Duration
+GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
+GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), fluid extractor (circuit 21) and extractor (circuit 22).
+GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
+
+
+GTPP.waila.steam.use=Probably uses: §e%s§r L/t Steam
+
+GTPP.CC.machinetier=Control Core Tier
+GTPP.CC.discount=EU Discount
+GTPP.CC.parallel=Maximum Parallel
+
+# Tooltips for the Charger Packs
+GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
+GTPP.battpack.tooltip.2=Drains
+GTPP.battpack.tooltip.3=to charge worn armour
+GTPP.battpack.tooltip.4=Also charges items on the hotbar
+
+# Tooltips for the Personal Healing Bauble
+GTPP.nanohealer.tooltip.1=Worn as a Necklace within Baubles
+GTPP.nanohealer.tooltip.2=Drains
+GTPP.nanohealer.tooltip.3= EU per operation.
+GTPP.nanohealer.tooltip.4=Can restore HP, Hunger and Saturation.
+GTPP.nanohealer.tooltip.5=Will not prevent death.
+GTPP.nanohealer.tooltip.6=Shift+RMB to toggle notifications.
+GTPP.nanohealer.hidden=Hiding Info?
+
+# 10/4/19
+# Tooltips for the Mob Killing Baubles
+GTPP.monsterkiller.tooltip.1=Worn as an Amulet within Baubles
+GTPP.monsterkiller.tooltip.2=Drains
+GTPP.monsterkiller.tooltip.3=per each kill
+GTPP.monsterkiller.tooltip.4=Target Type:
+
+# 17/08/19
+GTPP.container.decaychest.name=Decayables
+
+
+
+
+
+
+
+
+
+
+
+
+# NEI INFORMATION
+GTPP.nei.info=Information
+GTPP.nei.eutick=Eu/t
+GTPP.nei.timetaken=Time Taken
+GTPP.nei.output=Output
+GTPP.nei.input=Input
+GTPP.nei.result=Result
+GTPP.nei.radioation=Radiation Level
+
+# Some Generic Words
+GTPP.info.eu=EU
+GTPP.info.euInfo=EU Information
+GTPP.info.inputLimit=Input Limit
+GTPP.info.currentPower=Current Power
+GTPP.info.hidden=Hidden
+
+# Some Time Words
+GTPP.time.ticks=Ticks
+GTPP.time.seconds=Seconds
+GTPP.time.minutes=Minutes
+GTPP.time.hours=Hours
+GTPP.time.days=Days
+GTPP.time.weeks=Weeks
+GTPP.time.months=Months
+
+# Steam MultiBlock Tooltips
+GTPP.MBTT.SteamHatch=Steam Hatch
+GTPP.MBTT.SteamInputBus=Input Bus (Steam)
+GTPP.MBTT.SteamOutputBus=Output Bus (Steam)
+
+
+
+
+
+
+
+
+# Achievements
+
+# 4/2/19
+achievement.gt.blockmachines.fusioncomputer.tier.09=Fusion Computer Mark IV
+achievement.gtplusplus.blockcasings.3.12=Fusion Casing MK III
+achievement.gtplusplus.blockcasings.3.13=Advanced Magnetic Containment!
+achievement.gtplusplus.blockcasings.3.15=Quantum Containment!
+achievement.gt.blockmachines.fusioncomputer.tier.09.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.3.12.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.3.13.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.3.15.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.gtplusplus.fusion.single=Alternative Fusion
+achievement.gt.blockmachines.gtplusplus.tank.plasma=Plasma Storage
+achievement.gt.blockmachines.gtplusplus.fusion.single.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.gtplusplus.tank.plasma.desc=[AL] Pickup this item to see the recipe in NEI
+
+
+# 5/2/19
+achievement.MU-metaitem.01.32106=Junior Physicist
+achievement.MU-metaitem.01.32107=Graduate Physicist
+achievement.MU-metaitem.01.32108=Scholarly Physicist
+achievement.MU-metaitem.01.32109=Master Physicist
+achievement.MU-metaitem.01.32106.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32107.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32108.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32109.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32066=Proton Containment
+achievement.MU-metaitem.01.32068=Electron Containment
+achievement.MU-metaitem.01.32070=Quark Containment
+achievement.MU-metaitem.01.32110=Graviton Containment
+achievement.MU-metaitem.01.32066.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32068.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32070.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.MU-metaitem.01.32110.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.item.personalHealingDevice=Food is for chumps
+achievement.item.personalHealingDevice.desc=[AL] You have upgraded to the nano, the future is yours
+achievement.item.GTPP.BattPack.06.name=Charge Pack Mk I
+achievement.item.GTPP.BattPack.07.name=Charge Pack Mk II
+achievement.item.GTPP.BattPack.08.name=Charge Pack Mk III
+achievement.item.GTPP.BattPack.09.name=Charge Pack Mk IV
+achievement.item.GTPP.BattPack.06.name.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.item.GTPP.BattPack.07.name.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.item.GTPP.BattPack.08.name.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.item.GTPP.BattPack.09.name.desc=[AL] Pickup this item to see the recipe in NEI
+
+
+
+# 14/2/19
+achievement.gtpp.start=Gregtech++
+achievement.gtpp.start.desc=So, think you've got what it takes?
+achievement.hatch.control=This is where you put the Control Core
+achievement.hatch.control.desc=A special hatch required by all GT++ Multiblocks.
+achievement.hatch.dynamo.buffered=Buffered Dynamo Hatch
+achievement.hatch.dynamo.buffered.desc=More energy from the same multi!
+achievement.multi.abs=Alloy Blast Smelter [ABS]
+achievement.multi.abs.desc=Used to create most late game alloys.
+achievement.dust.potin=Potin!
+achievement.dust.potin.desc=Well, you gotta start somewhere...
+achievement.dust.eglin=Eglin Steel!
+achievement.dust.eglin.desc=Progress, albeit slow...
+achievement.dust.staballoy=Staballoy!
+achievement.dust.staballoy.desc=Now we're talking...
+achievement.dust.quantum=Quantum!
+achievement.dust.quantum.desc=Raw Matter.
+achievement.dust.hypogen=Hypogen!
+achievement.dust.hypogen.desc=What even is this material?
+achievement.block.fishtrap=Free Fish
+achievement.block.fishtrap.desc=Better than HarvestCraft.
+achievement.block.withercage=Jail
+achievement.block.withercage.desc=Trap a Wither/Dragon with this.
+achievement.rtg=Radioisotope Thermoelectric Generation!
+achievement.rtg.desc=Probably stolen from Russia, use with care.
+achievement.dehydrate=Dehydration
+achievement.dehydrate.desc=Drink some water.
+achievement.semifluid=It's like a fluid, but it's not
+achievement.semifluid.desc=Semifluids are confusing.
+achievement.earlywasher=Simple Ore Washer
+achievement.earlywasher.desc=Runs on ULV only.
+achievement.advancedsteam=Alternative Steam options
+achievement.advancedsteam.desc=Smart fuel consumption
+achievement.pollutionremoval=Pollution, no more!
+achievement.pollutionremoval.desc=POLLUTION IS BAD
+achievement.hiampxform=High Amp Transformers
+achievement.hiampxform.desc=Advanced power transformation
+achievement.multi.pss=Power Sub-Station [PSS]
+achievement.multi.pss.desc=Grid Power Storage.
+achievement.multi.cyclo=Cyclotron
+achievement.multi.cyclo.desc=Advanced Science
+achievement.multi.sifter=Industrial Sifter
+achievement.multi.sifter.desc=Faster than a turtle.
+achievement.multi.cokeoven=Industrial Coke Oven [ICO]
+achievement.multi.cokeoven.desc=Better than a Pyrolyse
+achievement.multi.boiler.thermal=Thermal Boiler
+achievement.multi.boiler.thermal.desc=Pahoehoe works too!
+achievement.multi.zhuhai=Zhuhai, Fishing Port
+achievement.multi.zhuhai.desc=Actually exists
+achievement.casing.abs=Slow Progress
+achievement.casing.abs.desc=Eventually, you will have your ABS.
+achievement.casing.cyclotron.coil=Slower Progress
+achievement.casing.cyclotron.coil.desc=Consider why you're even doing this..
+achievement.casing.multiuse=I'm going to make lots of these
+achievement.casing.multiuse.desc=Don't start counting.
+achievement.casing.containment=What's this for?
+achievement.casing.containment.desc=I should probably try find out.
+achievement.decay.neptunium238=Neptunium 238
+achievement.decay.neptunium238.desc=Cyclotron Product
+achievement.decay.radium226=Radium 226
+achievement.decay.radium226.desc=Cyclotron Product
+achievement.decay.molybdenum99=Molybdenum 99
+achievement.decay.molybdenum99.desc=Cyclotron Product
+achievement.decay.technetium99m=Technetium 99M
+achievement.decay.technetium99m.desc=Cyclotron Product
+achievement.decay.technetium99=Technetium 99
+achievement.decay.technetium99.desc=Cyclotron Product
+
+# 24/11/19
+achievement.gt.blockmachines.hatch.turbine.input.tier.00=Turbine Housing
+achievement.gt.blockmachines.hatch.turbine.input.tier.00.desc=[AL] Pickup this item to see the recipe in NEI
+
+# Added 6/12/21
+achievement.gt.blockmachines.gtpp.multimachine.flotationcell=Flotation Cell
+achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.gtpp.multimachine.isamill=IsaMill
+achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL] Pickup this item to see the recipe in NEI
+
+# 2023-1-13
+achievement.gt.blockmachines.industrialalloysmelter.controller.tier.mega=Fast Pikachu-Alloy at last
+
+# 2023-4-8
+tooltip.flotationCell.lockedTo=Locked to:
+tooltip.large_macerator.tier=Tier: §6%s
+tooltip.large_distill_tower.upgraded=§6Upgraded
+
+# 2023-7-12
+achievement.gtplusplus.blockcasings.5.3=Elemental Confinement Shell
+achievement.gtplusplus.blockcasings.5.3.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.7=Neutron Pulse Manipulator
+achievement.gtplusplus.blockcasings.5.7.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.8=Cosmic Fabric Manipulator
+achievement.gtplusplus.blockcasings.5.8.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.9=Infinity Infused Manipulator
+achievement.gtplusplus.blockcasings.5.9.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.10=SpaceTime Continuum Manipulator
+achievement.gtplusplus.blockcasings.5.10.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.11=Neutron Shielding Core
+achievement.gtplusplus.blockcasings.5.11.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.12=Cosmic Fabric Shielding Core
+achievement.gtplusplus.blockcasings.5.12.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.13=Infinity Infused Shielding Core
+achievement.gtplusplus.blockcasings.5.13.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gtplusplus.blockcasings.5.14=SpaceTime Bending Core
+achievement.gtplusplus.blockcasings.5.14.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.sparge.controller.single=Sparge Tower
+achievement.gt.blockmachines.sparge.controller.single.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.industrialsalloyamelter.controller.tier.mega=Mega Alloy Blast Smelter
+achievement.gt.blockmachines.industrialsalloyamelter.controller.tier.mega.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.moleculartransformer.controller.tier.single=Molecular Transformer
+achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
+achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 

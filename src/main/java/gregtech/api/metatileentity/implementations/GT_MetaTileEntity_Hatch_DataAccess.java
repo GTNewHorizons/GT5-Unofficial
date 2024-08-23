@@ -2,6 +2,10 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -139,9 +143,18 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
         GT_AssemblyLineUtils.processDataStick(aStack);
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
+    public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
+        ArrayList<ItemStack> items = new ArrayList<>();
+        IGregTechTileEntity te = getBaseMetaTileEntity();
+        for (int i = 0; i < te.getSizeInventory(); ++i) {
+            ItemStack slot = te.getStackInSlot(i);
+            if (slot != null) {
+                if (filter != null && filter.test(slot)) {
+                    items.add(slot);
+                }
+            }
+        }
+        return items;
     }
 
     @Override

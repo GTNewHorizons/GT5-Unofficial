@@ -26,6 +26,12 @@ as version and steps to reproduce.
 Please do! However, please take a note of
 [current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
 
+You don't need to clone the repository with full history to contribute, to save disk space and bandwidth you can clone:
+```bash
+git clone --depth 3 https://github.com/GTNewHorizons/GT5-Unofficial.git GT5-Unofficial
+```
+This way you'll get the last 3 commits of history in your local checkout, instead of all of it.
+
 It is suggested to run `./gradlew build` inside your cloned repository before importing it to your IDE. This will reduce
 the chance of strange errors.
 
@@ -33,6 +39,22 @@ the chance of strange errors.
 
 Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno
 for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
+
+## Music duration metadata
+
+The electric jukebox requires duration metadata to specify how many milliseconds each disk plays for.
+These can be included in mods' jar resources under `soundmeta/durations.json`, or in the pack config directory at `config/soundmeta/durations.json`.
+The format is a simple key-value map of sound IDs mapping to millisecond counts, and can be generated from the client automatically using `/gt dump_music_durations`.
+
+```json
+{
+  "soundDurationsMs": {
+    "minecraft:11": 71112,
+    "minecraft:13": 178086,
+    "minecraft:blocks": 345914
+  }
+}
+```
 
 ## License
 

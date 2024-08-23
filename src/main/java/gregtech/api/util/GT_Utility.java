@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.GT;
@@ -137,6 +138,7 @@ import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
@@ -172,6 +174,8 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -531,6 +535,8 @@ public class GT_Utility {
         byte tier = getTier(voltage);
         if (tier < 0) {
             return "";
+        } else if (tier == 0) {
+            return " (" + GT_Values.VN[1] + ")";
         } else if (tier >= GT_Values.VN.length - 1) {
             return " (MAX+)";
         }
@@ -1771,12 +1777,12 @@ public class GT_Utility {
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
         return aStack1 != null && aStack2 != null
             && aStack1.getItem() == aStack2.getItem()
-            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
-                && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
-                    .equals(aStack2.getTagCompound()))))
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
                 || Items.feather.getDamage(aStack1) == W
-                || Items.feather.getDamage(aStack2) == W);
+                || Items.feather.getDamage(aStack2) == W)
+            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
+                && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
+                    .equals(aStack2.getTagCompound()))));
     }
 
     public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {
@@ -2306,24 +2312,6 @@ public class GT_Utility {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     * @Deprecated Use {@link #doSoundAtClient(ResourceLocation, int, float, float, double, double, double)}
-     */
-    @Deprecated
-    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength,
-        float aSoundModulation, double aX, double aY, double aZ) {
-        if (isStringInvalid(aSoundName)) return false;
-        return doSoundAtClient(
-            new ResourceLocation(aSoundName),
-            aTimeUntilNextSound,
-            aSoundStrength,
-            aSoundModulation,
-            aX,
-            aY,
-            aZ);
-    }
-
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength,
         float aSoundModulation, int aX, int aY, int aZ) {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
@@ -2426,11 +2414,6 @@ public class GT_Utility {
         return rList;
     }
 
-    @Deprecated // why do you use Objects?
-    public static Block getBlock(Object aBlock) {
-        return (Block) aBlock;
-    }
-
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2438,16 +2421,6 @@ public class GT_Utility {
 
     public static Block getBlockFromItem(Item item) {
         return Block.getBlockFromItem(item);
-    }
-
-    @Deprecated // why do you use Objects? And if you want to check your block to be not null, check it directly!
-    public static boolean isBlockValid(Object aBlock) {
-        return (aBlock instanceof Block);
-    }
-
-    @Deprecated // why do you use Objects? And if you want to check your block to be null, check it directly!
-    public static boolean isBlockInvalid(Object aBlock) {
-        return !(aBlock instanceof Block);
     }
 
     public static boolean isStringValid(Object aString) {
@@ -2601,16 +2574,6 @@ public class GT_Utility {
                 + "="
                 + (startIndex + blockMeta)
                 + "]");
-    }
-
-    /**
-     * Return texture id from item stack, unoptimized but readable?
-     *
-     * @return casing texture 0 to 16383
-     */
-    @Deprecated
-    public static int getTextureId(ItemStack stack) {
-        return getTextureId(Block.getBlockFromItem(stack.getItem()), (byte) stack.getItemDamage());
     }
 
     /**
@@ -2896,13 +2859,6 @@ public class GT_Utility {
         return false;
     }
 
-    @Deprecated
-    public static ItemStack setStack(Object aSetStack, Object aToStack) {
-        if (aSetStack instanceof ItemStack setStack && aToStack instanceof ItemStack toStack)
-            return setStack(setStack, toStack);
-        return null;
-    }
-
     public static ItemStack setStack(ItemStack aSetStack, ItemStack aToStack) {
         if (isStackInvalid(aSetStack) || isStackInvalid(aToStack)) return null;
         aSetStack.func_150996_a(aToStack.getItem());
@@ -2985,14 +2941,6 @@ public class GT_Utility {
         return rStack;
     }
 
-    /**
-     * @deprecated use {@link #multiplyStack(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack multiplyStack(long aMultiplier, Object... aStacks) {
-        return multiplyStack((int) aMultiplier, firstStackOrNull(aStacks));
-    }
-
     public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -3002,14 +2950,6 @@ public class GT_Utility {
         else if (tAmount < 0) tAmount = 0;
         rStack.stackSize = (byte) tAmount;
         return rStack;
-    }
-
-    /**
-     * @deprecated use {@link #copyAmountUnsafe(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
-        return copyAmountUnsafe((int) aAmount, firstStackOrNull(aStacks));
     }
 
     /**
@@ -3023,27 +2963,11 @@ public class GT_Utility {
         return rStack;
     }
 
-    /**
-     * @deprecated use {@link #copyMetaData(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
-        return copyMetaData((int) aMetaData, firstStackOrNull(aStacks));
-    }
-
     public static ItemStack copyMetaData(int aMetaData, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
         Items.feather.setDamage(rStack, aMetaData);
         return rStack;
-    }
-
-    /**
-     * @deprecated use {@link #copyAmountAndMetaData(int, int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, Object... aStacks) {
-        return copyAmountAndMetaData(aAmount, aMetaData, firstStackOrNull(aStacks));
     }
 
     /**
@@ -3059,14 +2983,6 @@ public class GT_Utility {
         if (isStackInvalid(rStack)) return null;
         Items.feather.setDamage(rStack, aMetaData);
         return rStack;
-    }
-
-    /**
-     * @deprecated use {@link #mul(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack mul(long aMultiplier, Object... aStacks) {
-        return mul((int) aMultiplier, firstStackOrNull(aStacks));
     }
 
     /**
@@ -3484,6 +3400,7 @@ public class GT_Utility {
                 EnumChatFormatting.GOLD + GT_Utility.trans("166", "Is valid Beacon Pyramid Material")
                     + EnumChatFormatting.RESET);
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this block's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3512,6 +3429,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this tile's fluid tank info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3527,6 +3445,7 @@ public class GT_Utility {
                 if (temp != null) tList.addAll(temp);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this block's debug info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3571,7 +3490,8 @@ public class GT_Utility {
     private static int addForestryLeavesInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
+            if (Mods.Forestry.isModLoaded()
+                && tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
                 final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
                 if (tree != null) {
                     rEUAmount += 1000;
@@ -3580,6 +3500,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this leaves' info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3631,6 +3552,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this crop's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3642,6 +3564,7 @@ public class GT_Utility {
                 tList.addAll(Arrays.asList(info.getInfoData()));
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3655,6 +3578,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's owner.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3697,6 +3621,7 @@ public class GT_Utility {
                         + " EU");
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's energy info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3711,6 +3636,7 @@ public class GT_Utility {
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's covers.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3742,6 +3668,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's progress.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3757,6 +3684,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's upgrades.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3778,6 +3706,7 @@ public class GT_Utility {
                         + " EU");
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's IC2 energy info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3794,6 +3723,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's EU conduction info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3821,6 +3751,7 @@ public class GT_Utility {
                             + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3840,6 +3771,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's alignment info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3864,6 +3796,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this reactor's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -4074,12 +4007,42 @@ public class GT_Utility {
         return -1;
     }
 
+    public static Map<GT_Utility.ItemId, Long> convertItemListToMap(Collection<ItemStack> itemStacks) {
+        Map<GT_Utility.ItemId, Long> result = new Object2LongOpenHashMap<>();
+        for (ItemStack itemStack : itemStacks) {
+            if (itemStack != null && itemStack.stackSize > 0) {
+                GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(itemStack);
+                result.merge(itemId, (long) itemStack.stackSize, Long::sum);
+            }
+        }
+        return result;
+    }
+
+    public static Map<Fluid, Long> convertFluidListToMap(Collection<FluidStack> fluidStacks) {
+        Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
+        for (FluidStack fluidStack : fluidStacks) {
+            if (fluidStack != null && fluidStack.amount > 0) {
+                result.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+            }
+        }
+        return result;
+    }
+
     /**
      * @return Supplied collection that doesn't contain invalid MetaTileEntities
      */
     public static <T extends Collection<E>, E extends MetaTileEntity> T filterValidMTEs(T metaTileEntities) {
         metaTileEntities.removeIf(mte -> mte == null || !mte.isValid());
         return metaTileEntities;
+    }
+
+    public static ForgeDirection getSideFromPlayerFacing(Entity player) {
+        if (player == null) return ForgeDirection.UNKNOWN;
+        if (player.rotationPitch >= 65) return ForgeDirection.UP;
+        if (player.rotationPitch <= -65) return ForgeDirection.DOWN;
+        final byte facing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * player.rotationYaw / 360.0F)
+            & 0x3];
+        return ForgeDirection.getOrientation(facing);
     }
 
     public static class ItemNBT {
@@ -4388,86 +4351,6 @@ public class GT_Utility {
         }
     }
 
-    /**
-     * THIS IS BULLSHIT!!! WHY DO I HAVE TO DO THIS SHIT JUST TO HAVE ENCHANTS PROPERLY!?!
-     */
-    public static class GT_EnchantmentHelper {
-
-        private static final BullshitIteratorA mBullshitIteratorA = new BullshitIteratorA();
-        private static final BullshitIteratorB mBullshitIteratorB = new BullshitIteratorB();
-
-        private static void applyBullshit(IBullshit aBullshitModifier, ItemStack aStack) {
-            if (aStack != null) {
-                NBTTagList nbttaglist = aStack.getEnchantmentTagList();
-                if (nbttaglist != null) {
-                    try {
-                        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                            short short1 = nbttaglist.getCompoundTagAt(i)
-                                .getShort("id");
-                            short short2 = nbttaglist.getCompoundTagAt(i)
-                                .getShort("lvl");
-                            if (Enchantment.enchantmentsList[short1] != null)
-                                aBullshitModifier.calculateModifier(Enchantment.enchantmentsList[short1], short2);
-                        }
-                    } catch (Throwable e) {
-                        /**/
-                    }
-                }
-            }
-        }
-
-        private static void applyArrayOfBullshit(IBullshit aBullshitModifier, ItemStack[] aStacks) {
-            for (ItemStack itemstack : aStacks) {
-                applyBullshit(aBullshitModifier, itemstack);
-            }
-        }
-
-        public static void applyBullshitA(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
-            mBullshitIteratorA.mPlayer = aPlayer;
-            mBullshitIteratorA.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorA, aPlayer.getLastActiveItems());
-            if (aStack != null) applyBullshit(mBullshitIteratorA, aStack);
-        }
-
-        public static void applyBullshitB(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
-            mBullshitIteratorB.mPlayer = aPlayer;
-            mBullshitIteratorB.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorB, aPlayer.getLastActiveItems());
-            if (aStack != null) applyBullshit(mBullshitIteratorB, aStack);
-        }
-
-        interface IBullshit {
-
-            void calculateModifier(Enchantment aEnchantment, int aLevel);
-        }
-
-        static final class BullshitIteratorA implements IBullshit {
-
-            public EntityLivingBase mPlayer;
-            public Entity mEntity;
-
-            BullshitIteratorA() {}
-
-            @Override
-            public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151367_b(mPlayer, mEntity, aLevel);
-            }
-        }
-
-        static final class BullshitIteratorB implements IBullshit {
-
-            public EntityLivingBase mPlayer;
-            public Entity mEntity;
-
-            BullshitIteratorB() {}
-
-            @Override
-            public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151368_a(mPlayer, mEntity, aLevel);
-            }
-        }
-    }
-
     public static String toSubscript(long no) {
         char[] chars = Long.toString(no)
             .toCharArray();
@@ -4737,16 +4620,6 @@ public class GT_Utility {
         return null;
     }
 
-    /**
-     * @deprecated typo in method name. use {@link #isAnyIntegratedCircuit(ItemStack)} instead.
-     */
-    @Deprecated
-    public static boolean checkIfSameIntegratedCircuit(ItemStack itemStack) {
-        if (itemStack == null) return false;
-        for (int i = 0; i < 25; i++) if (itemStack.isItemEqual(GT_Utility.getIntegratedCircuit(i))) return true;
-        return false;
-    }
-
     public static boolean isAnyIntegratedCircuit(ItemStack itemStack) {
         if (itemStack == null) return false;
         return itemStack.getItem() == ItemList.Circuit_Integrated.getItem() && 0 <= itemStack.getItemDamage()
@@ -4946,6 +4819,7 @@ public class GT_Utility {
             return tag;
         }
 
+        @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
             itemStack.setTagCompound(nbt());
@@ -4965,18 +4839,21 @@ public class GT_Utility {
         return 0;
     }
 
-    public static MovingObjectPosition getPlayerLookingTarget() {
-        // Basically copied from waila, thanks Caedis for such challenge
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityLivingBase viewpoint = mc.renderViewEntity;
-        if (viewpoint == null) return null;
-
-        float reachDistance = mc.playerController.getBlockReachDistance();
-        Vec3 posVec = viewpoint.getPosition(0);
+    public static MovingObjectPosition getPlayerLookingTarget(EntityPlayer viewpoint) {
+        double reachDistance = viewpoint instanceof EntityPlayerMP mp ? mp.theItemInWorldManager.getBlockReachDistance()
+            : getClientReachDistance();
+        Vec3 posVec = Vec3.createVectorHelper(
+            viewpoint.posX,
+            viewpoint.posY + (viewpoint.getEyeHeight() - viewpoint.getDefaultEyeHeight()),
+            viewpoint.posZ);
         Vec3 lookVec = viewpoint.getLook(0);
         Vec3 modifiedPosVec = posVec
             .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
         return viewpoint.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+    }
+
+    public static float getClientReachDistance() {
+        return Minecraft.getMinecraft().playerController.getBlockReachDistance();
     }
 }

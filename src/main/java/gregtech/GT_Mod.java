@@ -5,6 +5,7 @@ import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GT_Recipe.setItemStacks;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -46,12 +47,10 @@ import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -64,6 +63,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
@@ -81,11 +81,10 @@ import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
 import gregtech.common.covers.GT_Cover_FacadeAE;
-import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
+import gregtech.common.misc.spaceprojects.commands.SpaceProject_Command;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.holoinventory.HoloInventory;
@@ -168,15 +167,7 @@ import ic2.api.recipe.RecipeOutput;
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
-    @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = VERSION_MAJOR, SUBVERSION = VERSION_MINOR;
-
-    @Deprecated
-    public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
-
-    @Deprecated
-    public static final int REQUIRED_IC2 = 624;
 
     @Mod.Instance(Mods.Names.GREG_TECH)
     public static GT_Mod instance;
@@ -186,6 +177,7 @@ public class GT_Mod implements IGT_Mod {
         clientSide = "gregtech.common.GT_Client",
         serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
+    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
 
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
@@ -216,11 +208,6 @@ public class GT_Mod implements IGT_Mod {
         Textures.ItemIcons.VOID.name();
     }
 
-    @SuppressWarnings("unused") // TODO: Delete this method
-    public static int calculateTotalGTVersion(int minorVersion) {
-        return calculateTotalGTVersion(VERSION, minorVersion);
-    }
-
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
         return calculateTotalGTVersion(majorVersion, minorVersion, 0);
     }
@@ -245,7 +232,6 @@ public class GT_Mod implements IGT_Mod {
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
-        GT_PreLoad.initCompat();
         GT_PreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
                 .getParentFile(),
@@ -271,9 +257,6 @@ public class GT_Mod implements IGT_Mod {
                 .getParentFile());
         GT_PreLoad.adjustScrap();
 
-        EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
-        EntityRegistry
-            .registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
         AEApi.instance()
             .registries()
             .interfaceTerminal()
@@ -294,6 +277,9 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
+
+        // populate itemstack instance for NBT check in GT_Recipe
+        setItemStacks();
 
         GT_PreLoad.sortToTheEnd();
         GregTech_API.sPreloadFinished = true;
@@ -353,17 +339,19 @@ public class GT_Mod implements IGT_Mod {
 
         new GT_Loader_MetaTileEntities_Recipes().run();
 
-        if (gregtechproxy.mSortToTheEnd) {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        new GT_ItemIterator().run();
+        gregtechproxy.registerUnificationEntries();
+        new GT_FuelLoader().run();
+
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
+
+        LHECoolantRegistry.registerBaseCoolants();
+
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");
@@ -383,6 +371,7 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
+        // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
             try {
                 tRunnable.run();
@@ -393,20 +382,18 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onPostLoad();
 
-        final int bound = GregTech_API.METATILEENTITIES.length;
-        for (int i1 = 1; i1 < bound; i1++) {
-            if (GregTech_API.METATILEENTITIES[i1] != null) {
-                GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
+        if (DEBUG) {
+            // Prints all the used MTE id and their associated TE name, turned on with -Dgt.debug=true in jvm args
+            final int bound = GregTech_API.METATILEENTITIES.length;
+            for (int i1 = 1; i1 < bound; i1++) {
+                if (GregTech_API.METATILEENTITIES[i1] != null) {
+                    GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
+                }
             }
         }
 
-        if (gregtechproxy.mSortToTheEnd) {
-            gregtechproxy.registerUnificationEntries();
-        } else {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        gregtechproxy.registerUnificationEntries();
+
         new GT_BookAndLootLoader().run();
         new GT_ItemMaxStacksizeLoader().run();
         new GT_BlockResistanceLoader().run();
@@ -439,14 +426,12 @@ public class GT_Mod implements IGT_Mod {
                 null,
                 null),
             new ItemData(Materials.Tin, 10886400L));
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, "tile.glowstone", false)) {
-            GT_ModHandler.removeRecipe(
-                new ItemStack(Items.glowstone_dust, 1),
-                new ItemStack(Items.glowstone_dust, 1),
-                null,
-                new ItemStack(Items.glowstone_dust, 1),
-                new ItemStack(Items.glowstone_dust, 1));
-        }
+        GT_ModHandler.removeRecipe(
+            new ItemStack(Items.glowstone_dust, 1),
+            new ItemStack(Items.glowstone_dust, 1),
+            null,
+            new ItemStack(Items.glowstone_dust, 1),
+            new ItemStack(Items.glowstone_dust, 1));
         GT_ModHandler.removeRecipeDelayed(
             new ItemStack(Blocks.wooden_slab, 1, 0),
             new ItemStack(Blocks.wooden_slab, 1, 1),
@@ -484,9 +469,7 @@ public class GT_Mod implements IGT_Mod {
                         .getDisplayName()));
         }
         new GT_CraftingRecipeLoader().run();
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2forgehammer", true)) {
-            GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
-        }
+        GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1L));
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("machine", 1L),
@@ -517,8 +500,6 @@ public class GT_Mod implements IGT_Mod {
                 new String[] { "blastfurnace", "blockcutter", "inductionFurnace", "generator", "windMill", "waterMill",
                     "solarPanel", "centrifuge", "electrolyzer", "compressor", "electroFurnace", "extractor",
                     "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator", })
-            .filter(
-                tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true))
             .map(tName -> GT_ModHandler.getIC2Item(tName, 1L))
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 
@@ -763,6 +744,7 @@ public class GT_Mod implements IGT_Mod {
         aEvent.registerServerCommand(new GT_Command());
         aEvent.registerServerCommand(new SP_Command());
         aEvent.registerServerCommand(new SPM_Command());
+        aEvent.registerServerCommand(new SpaceProject_Command());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         GT_Runnable_MachineBlockUpdate.initExecutorService();
     }

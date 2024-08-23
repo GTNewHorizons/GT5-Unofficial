@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
@@ -54,6 +55,8 @@ public class GT_MetaTileEntity_MultiFurnace
     private int mLevel = 0;
     private int mCostDiscount = 1;
 
+    private static final long RECIPE_EUT = 4;
+    private static final int RECIPE_DURATION = 512;
     private static final int CASING_INDEX = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
@@ -153,50 +156,84 @@ public class GT_MetaTileEntity_MultiFurnace
         ArrayList<ItemStack> tInputList = getAllStoredInputs();
         if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
-        int tMaxParallel = this.mLevel;
-        int tCurrentParallel = 0;
-        ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
-        ArrayList<Integer> outputStackSizes = new ArrayList<>();
+        long inputVoltage = getMaxInputVoltage();
+
+        int fakeOriginalMaxParallel = 1;
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setEUt(inputVoltage)
+            .setRecipeEUt(RECIPE_EUT)
+            .setDuration(RECIPE_DURATION)
+            .setParallel(fakeOriginalMaxParallel);
+
+        int maxParallel = this.mLevel;
+        int originalMaxParallel = maxParallel;
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+        if (tickTimeAfterOC < 1) {
+            maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
+        }
+
+        int maxParallelBeforeBatchMode = maxParallel;
+        if (isBatchModeEnabled()) {
+            maxParallel = GT_Utility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
+        }
+
+        // Calculate parallel
+        int currentParallel = 0;
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                smeltedOutputs.add(smeltedOutput);
-                if (item.stackSize <= (tMaxParallel - tCurrentParallel)) {
-                    tCurrentParallel += item.stackSize;
-                    outputStackSizes.add(smeltedOutput.stackSize * item.stackSize);
-                    item.stackSize = 0;
+                if (item.stackSize <= (maxParallel - currentParallel)) {
+                    currentParallel += item.stackSize;
                 } else {
-                    int remainingStackSize = tCurrentParallel + item.stackSize - tMaxParallel;
-                    outputStackSizes.add(smeltedOutput.stackSize * (item.stackSize - remainingStackSize));
-                    item.stackSize = remainingStackSize;
+                    currentParallel = maxParallel;
                     break;
                 }
             }
-            if (tCurrentParallel == tMaxParallel) {
-                break;
+        }
+        if (currentParallel <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
+        int fakeCurrentParallel = (int) Math.ceil((double) currentParallelBeforeBatchMode / originalMaxParallel);
+
+        calculator.setCurrentParallel(fakeCurrentParallel)
+            .calculate();
+
+        double batchMultiplierMax = 1;
+        // In case batch mode enabled
+        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
+            batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
+            batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
+        }
+        int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+
+        // Consume inputs and generate outputs
+        ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
+        int remainingCost = finalParallel;
+        for (ItemStack item : tInputList) {
+            ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
+            if (smeltedOutput != null) {
+                if (remainingCost >= item.stackSize) {
+                    remainingCost -= item.stackSize;
+                    smeltedOutput.stackSize *= item.stackSize;
+                    item.stackSize = 0;
+                    smeltedOutputs.add(smeltedOutput);
+                } else {
+                    smeltedOutput.stackSize *= remainingCost;
+                    item.stackSize -= remainingCost;
+                    smeltedOutputs.add(smeltedOutput);
+                    break;
+                }
             }
         }
-        this.mOutputItems = new ItemStack[smeltedOutputs.size()];
-        for (int i = 0; i < this.mOutputItems.length; i++) {
-            ItemStack tNewStack = smeltedOutputs.get(i);
-            tNewStack.stackSize = outputStackSizes.get(i);
-            this.mOutputItems[i] = tNewStack;
-        }
+        this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
 
-        if (this.mOutputItems.length > 0) {
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMultiInternal(4, 512, 1, mVolatage, false);
-            // In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                return CheckRecipeResultRegistry.NO_RECIPE;
+        this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
+        this.mEfficiencyIncrease = 10000;
+        this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
+        this.lEUt = calculator.getConsumption();
 
-            this.mEUt = GT_Utility.safeInt(((long) mEUt) * (this.mLevel / 8) / (long) this.mCostDiscount, 1);
-            if (mEUt == Integer.MAX_VALUE - 1) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (this.lEUt > 0) this.lEUt = -this.lEUt;
 
-            if (this.mEUt > 0) this.mEUt = (-this.mEUt);
-        }
         updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -283,7 +320,7 @@ public class GT_MetaTileEntity_MultiFurnace
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-mEUt)
+                + GT_Utility.formatNumbers(-lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
@@ -331,5 +368,10 @@ public class GT_MetaTileEntity_MultiFurnace
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 }

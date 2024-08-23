@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -112,7 +113,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     doNormalMaintain();
                 } else {
                     // Centre offline? ...do nothing.
-                    // doRandomIssue();
+                    // machine.causeMaintenanceIssue();
                 }
             } else {
                 // If the connection invalid, set it to null.
@@ -122,7 +123,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     tryFindConnection();
                     // Let's have some "surprise". Sorry, surprise party is over.
                     // if (this.machine != null && this.machine.isValid()) {
-                    // doRandomIssue();
+                    // machine.causeMaintenanceIssue();
                 }
             }
         }
@@ -200,17 +201,6 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
         }
     }
 
-    private void doRandomIssue() {
-        switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-            case 0 -> machine.mWrench = !machine.mWrench;
-            case 1 -> machine.mScrewdriver = !machine.mScrewdriver;
-            case 2 -> machine.mSoftHammer = !machine.mSoftHammer;
-            case 3 -> machine.mCrowbar = !machine.mCrowbar;
-            case 4 -> machine.mSolderingTool = !connection.machine.mSolderingTool;
-            case 5 -> machine.mHardHammer = !connection.machine.mHardHammer;
-        }
-    }
-
     // Find mainframe. Mainly from a method in GT_API——This will cause performance issue! Do not call it frequently.
     private GT_MetaTileEntity_MultiBlockBase tryFindCoreGTMultiBlock() {
         Queue<ChunkCoordinates> tQueue = new LinkedList<>();
@@ -225,10 +215,14 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             final TileEntity tTileEntity;
             final boolean isMachineBlock;
             tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-            isMachineBlock = GregTech_API.isMachineBlock(
-                world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ),
-                world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
-
+            Block block = world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
+            // Plascrete block isn't registered as machineBlock, therefore we have to check it manually so that drone
+            // can work with cleanroom.
+            // Todo: loading cleanroom's config for other blocks
+            isMachineBlock = GregTech_API
+                .isMachineBlock(block, world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ))
+                || (block == GregTech_API.sBlockReinforced
+                    && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == 2);
             // See if the block itself is MultiBlock, also the one we need.
             if (tTileEntity instanceof IGregTechTileEntity te
                 && te.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiBlockBase mte)
@@ -289,7 +283,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     .setPos(0, 5)
                     .setSize(150, 8))
             .widget(
-                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName())
+                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName(false))
                     .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
                     .setTextAlignment(Alignment.CenterLeft)
                     .setTextColor(Color.WHITE.dark(1))

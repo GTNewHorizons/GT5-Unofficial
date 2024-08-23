@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.ConfigCategories.Recipes.harderrecipes;
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.NI;
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -16,6 +16,7 @@ import static gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLIS
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -27,7 +28,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -125,17 +125,15 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
 
         if (aMaterial == Materials.Paper) {
-
             GT_ModHandler.addCraftingRecipe(
-                GT_Utility.copyAmount(GregTech_API.sRecipeFile.get(harderrecipes, aStack, true) ? 2 : 3, aStack),
+                GT_Utility.copyAmount(2, aStack),
                 BUFFERED,
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, W) });
         }
 
         if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial) {
 
-            if (!aNoSmashing
-                && GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
+            if (!aNoSmashing) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
@@ -166,8 +164,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
 
-            if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE))
-                && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
+            if (aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
@@ -218,21 +215,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!aNoSmashing) {
-            if (GregTech_API.sRecipeFile.get(
-                gregtech.api.enums.ConfigCategories.Tools.hammerdoubleplate,
-                OrePrefixes.plate.get(aMaterial)
-                    .toString(),
-                true)) {
-
-                Object aPlateStack = OrePrefixes.plate.get(aMaterial);
-
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { "I", "B", "h", // craftingToolHardHammer
-                            'I', aPlateStack, 'B', aPlateStack });
-                }
+            Object aPlateStack = OrePrefixes.plate.get(aMaterial);
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                GT_ModHandler.addCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { "I", "B", "h", // craftingToolHardHammer
+                        'I', aPlateStack, 'B', aPlateStack });
             }
         }
     }
@@ -276,28 +265,19 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!aNoSmashing) {
-            if (GregTech_API.sRecipeFile.get(
-                gregtech.api.enums.ConfigCategories.Tools.hammertripleplate,
-                OrePrefixes.plate.get(aMaterial)
-                    .toString(),
-                true)) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                Object aPlateStack = OrePrefixes.plate.get(aMaterial);
+                GT_ModHandler.addCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { "I", "B", "h", // craftingToolHardHammer
+                        'I', OrePrefixes.plateDouble.get(aMaterial), 'B', aPlateStack });
 
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-
-                    Object aPlateStack = OrePrefixes.plate.get(aMaterial);
-
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { "I", "B", "h", // craftingToolHardHammer
-                            'I', OrePrefixes.plateDouble.get(aMaterial), 'B', aPlateStack });
-
-                    GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack,
-                            aPlateStack, aPlateStack });
-                }
+                GT_ModHandler.addShapelessCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack,
+                        aPlateStack });
             }
         }
 
@@ -366,27 +346,19 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(assemblerRecipes);
         }
         if (!aNoSmashing) {
-            if (GregTech_API.sRecipeFile.get(
-                gregtech.api.enums.ConfigCategories.Tools.hammerquadrupleplate,
-                OrePrefixes.plate.get(aMaterial)
-                    .toString(),
-                true)) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                Object aPlateStack = OrePrefixes.plate.get(aMaterial);
+                GT_ModHandler.addCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { "I", "B", "h", // craftingToolHardHammer
+                        'I', OrePrefixes.plateTriple.get(aMaterial), 'B', aPlateStack });
 
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    Object aPlateStack = OrePrefixes.plate.get(aMaterial);
-
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { "I", "B", "h", // craftingToolHardHammer
-                            'I', OrePrefixes.plateTriple.get(aMaterial), 'B', aPlateStack });
-
-                    GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack,
-                            aPlateStack, aPlateStack, aPlateStack });
-                }
+                GT_ModHandler.addShapelessCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack,
+                        aPlateStack, aPlateStack });
             }
         }
     }
@@ -420,27 +392,19 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(assemblerRecipes);
         }
         if (!aNoSmashing) {
-            if (GregTech_API.sRecipeFile.get(
-                gregtech.api.enums.ConfigCategories.Tools.hammerquintupleplate,
-                OrePrefixes.plate.get(aMaterial)
-                    .toString(),
-                true)) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                Object aPlateStack = OrePrefixes.plate.get(aMaterial);
+                GT_ModHandler.addCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { "I", "B", "h", // craftingToolHardHammer
+                        'I', OrePrefixes.plateQuadruple.get(aMaterial), 'B', aPlateStack });
 
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    Object aPlateStack = OrePrefixes.plate.get(aMaterial);
-
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { "I", "B", "h", // craftingToolHardHammer
-                            'I', OrePrefixes.plateQuadruple.get(aMaterial), 'B', aPlateStack });
-
-                    GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                        new Object[] { ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack,
-                            aPlateStack, aPlateStack });
-                }
+                GT_ModHandler.addShapelessCraftingRecipe(
+                    GT_Utility.copyAmount(1, aStack),
+                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
+                    new Object[] { ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack,
+                        aPlateStack, aPlateStack });
             }
         }
     }
@@ -480,9 +444,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial
-            && !aNoSmashing
-            && GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
+        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
 
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_ModHandler.addCraftingRecipe(
@@ -592,20 +554,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(alloySmelterRecipes);
             }
             case "plateAlloyAdvanced" -> {
-                GT_ModHandler.addAlloySmelterRecipe(
-                    GT_Utility.copyAmount(1, aStack),
-                    new ItemStack(Blocks.glass, 3, W),
-                    GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                    400,
-                    4,
-                    false);
-                GT_ModHandler.addAlloySmelterRecipe(
-                    GT_Utility.copyAmount(1, aStack),
-                    Materials.Glass.getDust(3),
-                    GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                    400,
-                    4,
-                    false);
+                RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
+                    .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .duration(20 * SECONDS)
+                    .eut(4)
+                    .addTo(alloySmelterRecipes);
+                RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), Materials.Glass.getDust(3))
+                    .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .duration(20 * SECONDS)
+                    .eut(4)
+                    .addTo(alloySmelterRecipes);
             }
             case "plateAlloyIridium" ->
 
