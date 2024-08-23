@@ -20,7 +20,7 @@ class SingleUseToolRecipeLoader implements Runnable {
     @Override
     public void run() {
         ToolDictNames[] hardTools = new ToolDictNames[] { craftingToolHardHammer, craftingToolScrewdriver,
-            craftingToolWrench, craftingToolCrowbar, craftingToolWireCutter, craftingToolFile };
+            craftingToolWrench, craftingToolCrowbar, craftingToolWireCutter, craftingToolFile, craftingToolSaw };
         ToolDictNames[] softTools = new ToolDictNames[] { craftingToolSoftHammer };
         addSingleUseToolRecipe(Materials.Steel, hardTools);
         addSingleUseToolRecipe(Materials.Silver, 5000, hardTools);

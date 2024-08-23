@@ -73,13 +73,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
                 "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
     }
 
-    @Deprecated
-    // having too many constructors is bad, don't be so lazy, use GT_MetaTileEntity_Hatch_InputBus(String, int,
-    // String[], ITexture[][][])
-    public GT_MetaTileEntity_Hatch_InputBus(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, ArrayExt.of(aDescription), aTextures);
-    }
-
     public GT_MetaTileEntity_Hatch_InputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         this(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
     }
@@ -274,11 +267,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
     @Override
     public int getCircuitSlot() {
         return getSlots(mTier);
-    }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
     }
 
     private void addSortStacksButton(ModularWindow.Builder builder) {

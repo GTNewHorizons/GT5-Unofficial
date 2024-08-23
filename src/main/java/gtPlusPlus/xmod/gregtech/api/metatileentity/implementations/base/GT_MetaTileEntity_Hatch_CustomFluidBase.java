@@ -199,11 +199,6 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     protected FluidSlotWidget createFluidSlot() {
         return super.createFluidSlot().setFilter(f -> f == mLockedFluid);
     }

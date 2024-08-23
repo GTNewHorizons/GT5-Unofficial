@@ -45,12 +45,10 @@ public class GregtechMetaTileEntity_IndustrialWireMill
 
     public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
-        inputSeparation = true;
     }
 
     public GregtechMetaTileEntity_IndustrialWireMill(final String aName) {
         super(aName);
-        inputSeparation = true;
     }
 
     @Override

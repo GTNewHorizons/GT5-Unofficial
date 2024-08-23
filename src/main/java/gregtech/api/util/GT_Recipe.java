@@ -50,6 +50,16 @@ import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 public class GT_Recipe implements Comparable<GT_Recipe> {
 
+    private static ItemStack dataStick;
+    private static ItemStack dataOrb;
+    private static ItemStack ic2FluidCell;
+
+    public static void setItemStacks() {
+        ic2FluidCell = Ic2Items.FluidCell.copy();
+        dataStick = ItemList.Tool_DataStick.get(1L);
+        dataOrb = ItemList.Tool_DataOrb.get(1L);
+    }
+
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
@@ -584,9 +594,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     private boolean shouldCheckNBT(ItemStack item) {
         if (GTppRecipeHelper) {
-            return GT_Utility.areStacksEqual(item, Ic2Items.FluidCell.copy(), true)
-                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataStick.get(1L), true)
-                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataOrb.get(1L), true);
+            return GT_Utility.areStacksEqual(item, ic2FluidCell, true)
+                || GT_Utility.areStacksEqual(item, dataStick, true)
+                || GT_Utility.areStacksEqual(item, dataOrb, true);
         }
         return false;
     }
@@ -653,15 +663,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         // then dry recipes
         // then with fewer inputs
         if (this.mEUt != recipe.mEUt) {
-            return this.mEUt - recipe.mEUt;
+            return Integer.compare(this.mEUt, recipe.mEUt);
         } else if (this.mDuration != recipe.mDuration) {
-            return this.mDuration - recipe.mDuration;
+            return Integer.compare(this.mDuration, recipe.mDuration);
         } else if (this.mSpecialValue != recipe.mSpecialValue) {
-            return this.mSpecialValue - recipe.mSpecialValue;
+            return Integer.compare(this.mSpecialValue, recipe.mSpecialValue);
         } else if (this.mFluidInputs.length != recipe.mFluidInputs.length) {
-            return this.mFluidInputs.length - recipe.mFluidInputs.length;
+            return Integer.compare(this.mFluidInputs.length, recipe.mFluidInputs.length);
         } else if (this.mInputs.length != recipe.mInputs.length) {
-            return this.mInputs.length - recipe.mInputs.length;
+            return Integer.compare(this.mInputs.length, recipe.mInputs.length);
         }
         return 0;
     }

@@ -224,9 +224,6 @@ public final class MainMod {
             recipesAdded = true;
         }
 
-        StaticRecipeChangeLoaders.fixEnergyRequirements();
-        // StaticRecipeChangeLoaders.synchroniseCircuitUseMulti();
-
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()
             .forEach(

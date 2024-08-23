@@ -35,16 +35,6 @@ public enum OrePrefixes {
     ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
         1, -1),
 
-    @Deprecated
-    pulp("Pulps", "", "", false, false, false, false, false, false, false, false, false, false,
-        B[0] | B[1] | B[2] | B[3], -1, 64, -1),
-    @Deprecated
-    leaves("Leaves", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    @Deprecated
-    sapling("Saplings", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    @Deprecated
-    itemDust("Dusts", "", "", false, false, false, false, false, false, false, false, false, false,
-        B[0] | B[1] | B[2] | B[3], -1, 64, -1),
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false,
         false, true, B[3], -1, 64, -1),
@@ -63,9 +53,6 @@ public enum OrePrefixes {
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
     oreNether("Nether Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3],
         -1, 64, -1),
-    @Deprecated
-    denseore("Dense Ores", "", "", false, false, false, false, false, true, false, false, false, true, B[3], -1, 64,
-        -1),
     /** Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
     oreDense("Dense Ores", "Dense ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1,
         64, -1),
@@ -87,8 +74,6 @@ public enum OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64,
         -1),
-    @Deprecated
-    oreGem("Ores", "", "", false, false, false, false, false, true, false, false, false, true, B[3], -1, 64, -1),
     /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
     ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68),
     crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true,
@@ -118,9 +103,6 @@ public enum OrePrefixes {
     /** A quadruple Ingot. */
     ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, true, true, false,
         false, B[1], M * 4, 64, 15),
-    @Deprecated
-    ingotQuad("4x Ingots", "Quadruple ", " Ingot", false, false, false, false, false, false, false, false, false, false,
-        B[1], -1, 64, 15),
     /** A triple Ingot. */
     ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, true, false, false, false,
         B[1], M * 3, 64, 14),
@@ -147,9 +129,6 @@ public enum OrePrefixes {
         false, B[2], M * 4, 64, 62),
     /** A regular Gem worth one Dust. Introduced by Eloraam */
     gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8),
-    @Deprecated
-    dustDirty("Impure Dusts", "", "", false, false, false, false, false, false, false, false, false, true, B[3], -1, 64,
-        3),
     /** 1/9th of a Dust. */
     dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false,
         B[0] | B[1] | B[2] | B[3], M / 9, 64, 0),
@@ -181,9 +160,6 @@ public enum OrePrefixes {
         false, B[1], M * 5, 64, 21),
     plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false,
         false, B[1], M * 4, 64, 20),
-    @Deprecated
-    plateQuad("4x Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 64,
-        20),
     plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false,
         B[1], M * 3, 64, 19),
     plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false,
@@ -391,14 +367,8 @@ public enum OrePrefixes {
     /** Mossy Cobble. */
     stoneMossy("Mossy Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
         -1),
-    @Deprecated
-    stoneBricksMossy("Mossy Stone Bricks", "", "", false, false, false, false, false, true, false, false, false, false,
-        0, -1, 64, -1),
     /** Stone Bricks. */
     stoneBricks("Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
-    @Deprecated
-    stoneBrick("Stone Bricks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64,
         -1),
     /** Cracked Bricks. */
     stoneCracked("Cracked Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1,
@@ -655,18 +625,6 @@ public enum OrePrefixes {
         cellSteamCracked3);
 
     static {
-        pulp.mPrefixInto = dust;
-        oreGem.mPrefixInto = ore;
-        leaves.mPrefixInto = treeLeaves;
-        sapling.mPrefixInto = treeSapling;
-        itemDust.mPrefixInto = dust;
-        dustDirty.mPrefixInto = dustImpure;
-        denseore.mPrefixInto = oreDense;
-        ingotQuad.mPrefixInto = ingotQuadruple;
-        plateQuad.mPrefixInto = plateQuadruple;
-        stoneBrick.mPrefixInto = stoneBricks;
-        stoneBricksMossy.mPrefixInto = stoneMossyBricks;
-
         ingotHot.mHeatDamage = 3.0F;
         cellMolten.mHeatDamage = 3;
         cellPlasma.mHeatDamage = 6.0F;
@@ -977,7 +935,7 @@ public enum OrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GregTech_API.MATERIAL_UNIT to
+     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to
      * get the Amounts in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
     public final long mMaterialAmount;
@@ -1232,20 +1190,21 @@ public enum OrePrefixes {
             return;
         }
 
-        if ((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
-            && GT_Utility.isStackValid(aStack)) {
-            // if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
-            for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-                if (D2) GT_Log.ore.println(
-                    "Processing '" + aOreDictName
-                        + "' with the Prefix '"
-                        + name()
-                        + "' and the Material '"
-                        + aMaterial.mName
-                        + "' at "
-                        + GT_Utility.getClassName(tRegistrator));
-                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
-            }
+        if (!((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
+            && GT_Utility.isStackValid(aStack))) {
+            return;
+        }
+
+        for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
+            if (D2) GT_Log.ore.println(
+                "Processing '" + aOreDictName
+                    + "' with the Prefix '"
+                    + name()
+                    + "' and the Material '"
+                    + aMaterial.mName
+                    + "' at "
+                    + GT_Utility.getClassName(tRegistrator));
+            tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
         }
     }
 

@@ -33,11 +33,6 @@ public final class RecipeMapBackendPropertiesBuilder {
     @Nullable
     private Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer;
 
-    @Nullable
-    private String recipeConfigCategory;
-    @Nullable
-    private Function<? super GT_Recipe, String> recipeConfigKeyConvertor;
-
     RecipeMapBackendPropertiesBuilder() {}
 
     RecipeMapBackendProperties build() {
@@ -47,9 +42,7 @@ public final class RecipeMapBackendPropertiesBuilder {
             specialSlotSensitive,
             disableOptimize,
             recipeEmitter,
-            recipeTransformer,
-            recipeConfigCategory,
-            recipeConfigKeyConvertor);
+            recipeTransformer);
     }
 
     public RecipeMapBackendPropertiesBuilder minItemInputs(int minItemInputs) {
@@ -94,13 +87,6 @@ public final class RecipeMapBackendPropertiesBuilder {
     public RecipeMapBackendPropertiesBuilder chainRecipeTransformer(
         Function<? super GT_Recipe, ? extends GT_Recipe> func) {
         this.recipeTransformer = this.recipeTransformer == null ? func : this.recipeTransformer.andThen(func);
-        return this;
-    }
-
-    public RecipeMapBackendPropertiesBuilder recipeConfigFile(String category,
-        Function<? super GT_Recipe, String> keyConvertor) {
-        this.recipeConfigCategory = category;
-        this.recipeConfigKeyConvertor = keyConvertor;
         return this;
     }
 

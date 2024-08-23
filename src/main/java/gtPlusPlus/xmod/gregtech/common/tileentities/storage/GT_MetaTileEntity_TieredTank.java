@@ -186,9 +186,4 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
             }
         }
     }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 }

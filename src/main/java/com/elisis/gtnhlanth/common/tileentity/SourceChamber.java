@@ -203,8 +203,6 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
                                 // when produced by this
                                 // multiblock
         float maxMaterialEnergy = tRecipe.maxEnergy; // The maximum energy for the recipe processed
-        // outputEnergy = (float) ((-maxEnergy) * Math.pow(1.001, -(tRecipe.energyRatio)*(tVoltage-tRecipe.mEUt))) +
-        // maxEnergy;
         outputEnergy = (float) Math.min(
             (-maxMaterialEnergy) * Math.pow(1.001, -(tRecipe.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
                 + maxMaterialEnergy,
