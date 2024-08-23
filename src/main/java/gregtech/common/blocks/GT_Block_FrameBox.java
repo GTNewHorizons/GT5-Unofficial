@@ -75,8 +75,7 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     public ItemStack getStackForm(int amount, int meta) {
-        Item item = GameRegistry.findItem(GregTech.ID, getUnlocalizedName());
-        return new ItemStack(item, amount, meta);
+        return new ItemStack(this, amount, meta);
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
