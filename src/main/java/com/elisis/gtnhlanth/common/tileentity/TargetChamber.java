@@ -304,10 +304,12 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
         if (inputParticle != tRecipe.particleId) return false;
 
-        this.mMaxProgresstime = Math.round((tRecipe.amount / inputRate * 10 * TickTime.SECOND)); // 10 seconds per
-                                                                                                 // integer multiple
+        this.mMaxProgresstime = Math.max(Math.round((tRecipe.amount / inputRate * 5 * TickTime.SECOND)), 1); // 5
+                                                                                                             // seconds
+                                                                                                             // per
+        // integer multiple
         // over the rate. E.g., 100a, 10r
-        // would equal 100 seconds
+        // would equal 50 seconds
         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
 
         mEUt = (int) -tVoltage;
