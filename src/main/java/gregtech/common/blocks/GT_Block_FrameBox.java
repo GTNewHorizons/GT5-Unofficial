@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
 import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,11 +64,9 @@ public class GT_Block_FrameBox extends BlockContainer {
             if (material != null && (material.mTypes & 0x02) != 0) {
                 GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_NAME,
-                    GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material)
-                        : getLocalizedName(material));
-                GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
-                    material.getToolTip());
+                    GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
+                GT_LanguageManager
+                    .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
             }
         }
     }
