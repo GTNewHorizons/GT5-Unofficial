@@ -543,7 +543,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public final GT_BlockMap<Boolean> mCTMBlockCache = new GT_BlockMap<>();
     public boolean mDisableVanillaOres = true;
     public boolean mAllowSmallBoilerAutomation = false;
-    public boolean mSortToTheEnd = true;
     public boolean mCraftingUnification = true;
     public boolean mInventoryUnification = true;
     public boolean mIncreaseDungeonLoot = true;
@@ -551,7 +550,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mNerfedVanillaTools = true;
-    public boolean mHardRock = false;
     public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
@@ -563,7 +561,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public boolean mHideUnusedOres = true;
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
-    public boolean mUseGreatlyShrukenReplacementList = true;
     public int mMaxEqualEntitiesAtOneSpot = 3;
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
