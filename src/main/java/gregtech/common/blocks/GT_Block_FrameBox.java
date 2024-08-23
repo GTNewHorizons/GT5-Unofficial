@@ -102,7 +102,7 @@ public class GT_Block_FrameBox extends BlockContainer {
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
         // Obtain metadata to grab proper material identifier
         int meta = worldIn.getBlockMetadata(x, y, z);
-        Materials material = GregTech_API.sGeneratedMaterials[meta];
+        Materials material = getMaterial(meta);
         GT_MetaPipeEntity_Frame frame = new GT_MetaPipeEntity_Frame("GT_Frame_" + material, material);
         baseMte.setMetaTileEntity(frame);
         frame.setBaseMetaTileEntity(baseMte);
