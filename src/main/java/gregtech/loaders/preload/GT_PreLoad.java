@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
 import gregtech.common.config.gregtech.ConfigMachines;
 import gregtech.common.config.gregtech.ConfigOreDropBehavior;
 import gregtech.common.config.gregtech.ConfigPollution;
@@ -149,8 +150,6 @@ public class GT_PreLoad {
 
         GregTech_API.sWorldgenFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
-        GregTech_API.sMaterialProperties = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "MaterialProperties.cfg")));
         GregTech_API.sUnification = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
         GregTech_API.sSpecialFile = new GT_Config(
@@ -554,26 +553,6 @@ public class GT_PreLoad {
         } catch (IllegalArgumentException e) {
             GT_Log.err.println(e);
             GT_Mod.gregtechproxy.oreDropSystem = GT_Proxy.OreDropSystem.FortuneItem;
-        }
-
-        // MaterialProperties
-        GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
-            .get("havestLevel", "activateHarvestLevelChange", false); // TODO CHECK
-        if (GT_Mod.gregtechproxy.mChangeHarvestLevels) {
-            GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties
-                .get("havestLevel", "graniteHarvestLevel", 3);
-            GT_Mod.gregtechproxy.mMaxHarvestLevel = Math
-                .min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel", 7));
-            Materials.getMaterialsMap()
-                .values()
-                .parallelStream()
-                .filter(
-                    tMaterial -> tMaterial != null && tMaterial.mToolQuality > 0
-                        && tMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length
-                        && tMaterial.mMetaItemSubID >= 0)
-                .forEach(
-                    tMaterial -> GT_Mod.gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties
-                        .get("materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality));
         }
 
         // features

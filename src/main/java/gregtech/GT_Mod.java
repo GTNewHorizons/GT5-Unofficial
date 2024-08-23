@@ -20,6 +20,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
 import gregtech.common.config.gregtech.ConfigMachines;
 import gregtech.common.config.gregtech.ConfigOreDropBehavior;
 import gregtech.common.config.gregtech.ConfigPollution;
@@ -195,6 +196,7 @@ public class GT_Mod implements IGT_Mod {
             ConfigurationManager.registerConfig(ConfigPollution.class);
             ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
             ConfigurationManager.registerConfig(ConfigFeatures.class);
+            ConfigurationManager.registerConfig(ConfigHarvestLevel.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);
