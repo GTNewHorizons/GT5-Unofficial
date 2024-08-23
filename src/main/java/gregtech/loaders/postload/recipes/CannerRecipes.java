@@ -140,7 +140,7 @@ public class CannerRecipes implements Runnable {
                 ItemList.BatteryHull_UV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UV_Full.get(1L))
             .duration(15 * SECONDS)
-            .eut(7860)
+            .eut(TierEU.RECIPE_IV)
             .addTo(cannerRecipes);
         // UHV 2097152
 
@@ -160,7 +160,7 @@ public class CannerRecipes implements Runnable {
                 ItemList.BatteryHull_UEV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UEV_Full.get(1L))
             .duration(20 * SECONDS)
-            .eut(31440)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(cannerRecipes);
         // UIV 33554432
 
@@ -180,7 +180,7 @@ public class CannerRecipes implements Runnable {
                 ItemList.BatteryHull_UMV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UMV_Full.get(1L))
             .duration(25 * SECONDS)
-            .eut(125760)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(cannerRecipes);
         // UxV 536870912
 

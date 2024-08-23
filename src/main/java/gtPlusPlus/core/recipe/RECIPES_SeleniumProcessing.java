@@ -9,6 +9,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
@@ -43,7 +44,7 @@ public class RECIPES_SeleniumProcessing {
             .fluidInputs(FluidUtils.getHotWater(4000))
             .fluidOutputs(MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(1000))
             .duration(24 * SECONDS)
-            .eut(2048)
+            .eut(TierEU.RECIPE_EV)
             .addTo(pyrolyseRecipes);
 
         // Make Selenium
@@ -53,7 +54,7 @@ public class RECIPES_SeleniumProcessing {
             .outputChances(100_00, 20_00)
             .fluidInputs(MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8000))
             .fluidOutputs(ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1))
-            .eut(7200)
+            .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }

@@ -56,33 +56,31 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 public class GT_PreLoad {
 
     public static void sortToTheEnd() {
-        if (GT_Mod.gregtechproxy.mSortToTheEnd) {
-            try {
-                GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
-                LoadController tLoadController = (LoadController) GT_Utility
-                    .getFieldContent(Loader.instance(), "modController", true, true);
-                assert tLoadController != null;
-                List<ModContainer> tModList = tLoadController.getActiveModList();
-                List<ModContainer> tNewModsList = new ArrayList<>();
-                ModContainer tGregTech = null;
-                short tModList_sS = (short) tModList.size();
-                for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
-                    ModContainer tMod = tModList.get(i);
-                    if (tMod.getModId()
-                        .equalsIgnoreCase(GregTech.ID)) {
-                        tGregTech = tMod;
-                    } else {
-                        tNewModsList.add(tMod);
-                    }
+        try {
+            GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
+            LoadController tLoadController = (LoadController) GT_Utility
+                .getFieldContent(Loader.instance(), "modController", true, true);
+            assert tLoadController != null;
+            List<ModContainer> tModList = tLoadController.getActiveModList();
+            List<ModContainer> tNewModsList = new ArrayList<>();
+            ModContainer tGregTech = null;
+            short tModList_sS = (short) tModList.size();
+            for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
+                ModContainer tMod = tModList.get(i);
+                if (tMod.getModId()
+                    .equalsIgnoreCase(GregTech.ID)) {
+                    tGregTech = tMod;
+                } else {
+                    tNewModsList.add(tMod);
                 }
-                if (tGregTech != null) {
-                    tNewModsList.add(tGregTech);
-                }
-                Objects.requireNonNull(GT_Utility.getField(tLoadController, "activeModList", true, true))
-                    .set(tLoadController, tNewModsList);
-            } catch (Throwable e) {
-                GT_Mod.logStackTrace(e);
             }
+            if (tGregTech != null) {
+                tNewModsList.add(tGregTech);
+            }
+            Objects.requireNonNull(GT_Utility.getField(tLoadController, "activeModList", true, true))
+                .set(tLoadController, tNewModsList);
+        } catch (Throwable e) {
+            GT_Mod.logStackTrace(e);
         }
     }
 
@@ -520,8 +518,6 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mNerfedVanillaTools = tMainConfig
             .get(GT_Mod.aTextGeneral, "smallerVanillaToolDurability", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mSortToTheEnd = tMainConfig.get(GT_Mod.aTextGeneral, "EnsureToBeLoadedLast", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mAchievements = tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true)
             .getBoolean(true);
