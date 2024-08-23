@@ -416,9 +416,14 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     @Override
+    public int getRenderColor(int meta) {
+        Materials material = getMaterial(meta);
+        short[] rgba = material.mRGBa;
+        return (rgba[0] << 24) + (rgba[1] << 16) + (rgba[2] << 8) + rgba[3];
+    }
+
+    @Override
     public IIcon getIcon(int side, int meta) {
-        // This doesn't apply the frame color so AE2 facades look bad, but it renders fine in inventory and in world.
-        // It's probably fine, who makes facades out of frame boxes anyway.
         Materials material = GregTech_API.sGeneratedMaterials[meta];
         if (material == null) return null;
         return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
