@@ -6,12 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-
-import org.apache.commons.lang3.StringUtils;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_LanguageManager;
 
 public class GT_Item_Frames extends ItemBlock {
 
@@ -44,12 +42,7 @@ public class GT_Item_Frames extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String formula = StatCollector.translateToLocal(
-            this.block()
-                .getUnlocalizedName() + '.'
-                + getDamage(aStack)
-                + ".tooltip");
-        if (!StringUtils.isBlank(formula)) aList.add(formula);
+        aList.add(GT_LanguageManager.getTranslation("gt.blockmachines.gt_frame.desc.format"));
     }
 
     @Override
