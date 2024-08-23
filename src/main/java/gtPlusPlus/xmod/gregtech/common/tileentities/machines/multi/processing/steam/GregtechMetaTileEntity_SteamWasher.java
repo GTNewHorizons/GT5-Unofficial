@@ -476,7 +476,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (mUpdate < 0) mUpdate = 300;
+            if (mUpdate < -250) mUpdate = 50;
             if ((aTick % 1200) == 0) {
                 isBroken = true;
             }
