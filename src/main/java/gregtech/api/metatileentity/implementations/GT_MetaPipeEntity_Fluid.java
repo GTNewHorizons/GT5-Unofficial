@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.config.other.ConfigGeneral;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -512,7 +513,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
                 boolean wasActionPerformed = false;
 
-                int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeWrenchingChainRange", 64);
+                int limit = ConfigGeneral.pipeWrenchingChainRange;
                 for (int connected = 0; connected < limit; connected++) {
 
                     TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);

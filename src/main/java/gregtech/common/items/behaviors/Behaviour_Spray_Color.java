@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.common.config.other.ConfigGeneral;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.player.EntityPlayer;
@@ -96,7 +97,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             tUses = this.mUses;
         }
         int painted = 0;
-        int maxPainted = GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256);
+        int maxPainted = ConfigGeneral.sprayCanChainRange;
         ForgeDirection lookSide;
         Vec3 look = aPlayer.getLookVec();
         double absX = Math.abs(look.xCoord);
@@ -208,10 +209,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         aList.add(this.mTooltipChain);
-        aList.add(
-            String.format(
-                this.mTooltipChainAmount,
-                GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256)));
+        aList.add(String.format(this.mTooltipChainAmount, ConfigGeneral.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
             : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");

@@ -200,6 +200,9 @@ public class GT_Mod implements IGT_Mod {
 
             // OverPoweredStuff
             ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
+
+            // Other
+            ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);

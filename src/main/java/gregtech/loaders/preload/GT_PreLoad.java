@@ -152,9 +152,6 @@ public class GT_PreLoad {
             new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
         GregTech_API.sUnification = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
-        GregTech_API.sSpecialFile = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "Other.cfg")));
-
         GregTech_API.sClientDataFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
     }
@@ -526,13 +523,6 @@ public class GT_PreLoad {
             .get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
         GT_Mod.gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile
             .get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
-
-        // Others.cfg
-        Calendar now = Calendar.getInstance();
-        GT_Mod.gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(
-            ConfigCategories.general,
-            "AprilFool",
-            now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
 
         // OverpoweredStuff.cfg
         GregTech_API.mOutputRF = gregtech.common.config.opstuff.ConfigGeneral.outputRF;
