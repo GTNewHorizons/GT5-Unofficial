@@ -269,10 +269,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
             && tCountCasing > 55
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mInputHatches.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
@@ -280,15 +277,19 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
             && tCountCasing > 55
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mInputHatches.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
         return false;
+    }
+
+    private boolean checkHatches() {
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && mOutputHatches.isEmpty()
+            && !mInputHatches.isEmpty();
     }
 
     @Override
