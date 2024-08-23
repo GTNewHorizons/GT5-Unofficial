@@ -484,6 +484,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Crystalizer;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTech_API;
