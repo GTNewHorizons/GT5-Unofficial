@@ -22,8 +22,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -200,6 +202,14 @@ public class GT_RecipeConstants {
 
     public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
         .create(Integer.class, "decay_ticks");
+
+    public static final RecipeMetadataKey<Boolean> NOBLE_GASES = SimpleRecipeMetadataKey
+        .create(Boolean.class, "noble_gases");
+
+    public static final RecipeMetadataKey<Boolean> ANAEROBE_GASES = SimpleRecipeMetadataKey
+        .create(Boolean.class, "anaerobe_gases");
+
+    public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
@@ -510,6 +520,74 @@ public class GT_RecipeConstants {
         tRecipe.setPersistentHash(tPersistentHash);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
+        return ret;
+    });
+
+    /**
+     * Adds an Electric Blast Furnace recipe that might use gas.
+     */
+    public static final IRecipeMap BlastFurnaceWithGas = IRecipeMap.newRecipeMap(builder -> {
+        Collection<GT_Recipe> ret = new ArrayList<>();
+        int basicGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 1000);
+        double durationBase = builder.getDuration();
+        ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
+        int circuitConfig = 1;
+        if (items.size() == 1) {// Set circuit config if it is a dust -> ingot recipe.
+            ItemData data = GT_OreDictUnificator.getAssociation(items.get(0));
+            if (data != null) {
+                OrePrefixes prefix = data.mPrefix;
+                if (OrePrefixes.dust.equals(prefix)) {
+                    circuitConfig = 1;
+                } else if (OrePrefixes.dustSmall.equals(prefix)) {
+                    circuitConfig = 4;
+                } else if (OrePrefixes.dustTiny.equals(prefix)) {
+                    circuitConfig = 9;
+                }
+            }
+        } else { // Set circuit config if there is an integrated circuit
+            for (int i = 0; i < items.size(); i++) {
+                if (GT_Utility.isAnyIntegratedCircuit(items.get(i))) {
+                    circuitConfig = items.get(i)
+                        .getItemDamage();
+                    items.remove(i--);
+                }
+            }
+        }
+
+        if (builder.getMetadataOrDefault(NO_GAS, false)) {
+            items.add(GT_Utility.getIntegratedCircuit(circuitConfig));
+            ret.addAll(
+                builder.copy()
+                    .itemInputs(items.toArray(new ItemStack[0]))
+                    .fluidInputs()
+                    .duration((int) Math.max(durationBase * 1.1, 1))
+                    .addTo(RecipeMaps.blastFurnaceRecipes));
+            items.remove(items.size() - 1);
+            circuitConfig += 10;
+        }
+
+        items.add(GT_Utility.getIntegratedCircuit(circuitConfig));
+        boolean nobleGases = builder.getMetadataOrDefault(NOBLE_GASES, false);
+        boolean anaerobeGases = builder.getMetadataOrDefault(ANAEROBE_GASES, false);
+        Collection<BlastFurnaceGasStat> gases = new ArrayList<>();
+
+        if (nobleGases && anaerobeGases) {
+            gases = BlastFurnaceGasStat.getNobleAndAnaerobeGases();
+        } else if (nobleGases) {
+            gases = BlastFurnaceGasStat.getNobleGases();
+        } else if (anaerobeGases) {
+            gases = BlastFurnaceGasStat.getAnaerobeGases();
+        }
+        for (BlastFurnaceGasStat gas : gases) {
+            int gasAmount = (int) (gas.recipeConsumedAmountMultiplier * basicGasAmount);
+            int duration = (int) Math.max(gas.recipeTimeMultiplier * durationBase, 1);
+            ret.addAll(
+                builder.copy()
+                    .itemInputs(items.toArray(new ItemStack[0]))
+                    .fluidInputs(GT_Utility.copyAmount(gasAmount, gas.gas))
+                    .duration(duration)
+                    .addTo(RecipeMaps.blastFurnaceRecipes));
+        }
         return ret;
     });
 
