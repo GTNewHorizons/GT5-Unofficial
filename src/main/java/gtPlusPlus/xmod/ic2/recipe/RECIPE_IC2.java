@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.ic2.recipe;
 
 import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolHardHammer;
 import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolWrench;
 
@@ -11,11 +15,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
@@ -144,21 +148,21 @@ public class RECIPE_IC2 {
 
         // Shaft Extruder Recipe
         GT_ModHandler.addCraftingRecipe(
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]),
+            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
                 Character.valueOf('X'), OrePrefixes.plate.get(Materials.DarkSteel), Character.valueOf('S'),
                 OrePrefixes.screw.get(Materials.DarkSteel) });
         GT_ModHandler.addCraftingRecipe(
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]),
+            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
                 Character.valueOf('X'), OrePrefixes.plate.get(Materials.TungstenSteel), Character.valueOf('S'),
                 OrePrefixes.screw.get(Materials.TungstenSteel) });
         GT_ModHandler.addCraftingRecipe(
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]),
+            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
@@ -166,99 +170,69 @@ public class RECIPE_IC2 {
                 OrePrefixes.screw.get(Materials.Molybdenum) });
         Logger.INFO("Added recipe item for GT5 Extruder: Shaft Shape");
 
-        // Custm Recipes for Iron and Steel
-        ItemStack mShaftIron = ItemList.IC2_ShaftIron.get(1);
-        ItemStack mShaftSteel = ItemList.IC2_ShaftSteel.get(1);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L)),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            mShaftIron,
-            32 * 20,
-            120);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L)),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            mShaftIron,
-            32 * 20,
-            120);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.WroughtIron, 1L)),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            mShaftIron,
-            32 * 20,
-            120);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L)),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            mShaftIron,
-            32 * 20,
-            120);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L)),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            mShaftSteel,
-            64 * 20,
-            120);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Steel, 1L)),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            mShaftSteel,
-            64 * 20,
-            120);
-
         // Shaft Recipes
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, block_T1),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T1,
-            2560,
-            250);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, shaft_block_T1),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T1,
-            2560,
-            250);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(9L, block_T1), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T1)
+            .duration(2 * MINUTES + 8 * SECONDS)
+            .eut(250)
+            .addTo(extruderRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(1L, shaft_block_T1),
+                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T1)
+            .duration(2 * MINUTES + 8 * SECONDS)
+            .eut(250)
+            .addTo(extruderRecipes);
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Energetic]");
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, block_T2),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T2,
-            5120,
-            500);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, shaft_block_T2),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T2,
-            5120,
-            500);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(9L, block_T2), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T2)
+            .duration(4 * MINUTES + 16 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(extruderRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(1L, shaft_block_T2),
+                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T2)
+            .duration(4 * MINUTES + 16 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(extruderRecipes);
 
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [TungstenSteel]");
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, block_T3),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T3,
-            10240,
-            2000);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, shaft_block_T3),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T3,
-            10240,
-            2000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(9L, block_T3), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T3)
+            .duration(8 * MINUTES + 32 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(extruderRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(1L, shaft_block_T3),
+                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T3)
+            .duration(8 * MINUTES + 32 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(extruderRecipes);
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Vibrant]");
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(9L, block_T4),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T4,
-            20480,
-            4000);
-        GT_Values.RA.addExtruderRecipe(
-            GT_Utility.copyAmount(1L, shaft_block_T4),
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]),
-            shaft_T4,
-            20480,
-            4000);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(9L, block_T4), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T4)
+            .duration(17 * MINUTES + 4 * SECONDS)
+            .eut(4000)
+            .addTo(extruderRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(1L, shaft_block_T4),
+                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
+            .itemOutputs(shaft_T4)
+            .duration(17 * MINUTES + 4 * SECONDS)
+            .eut(4000)
+            .addTo(extruderRecipes);
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Iridium]");
 
         RecipeUtils.addShapedRecipe(
@@ -326,40 +300,58 @@ public class RECIPE_IC2 {
         ItemStack aGearPotin = ALLOY.TUMBAGA.getGear(1);
         ItemStack aGearSiliconCarbide = ALLOY.SILICON_CARBIDE.getGear(1);
 
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[0],
-                ItemUtils.getSimpleStack(aYellowWool, 16), ItemUtils.getSimpleStack(aPlateCobalt, 4),
-                ItemUtils.getSimpleStack(aCoilIC2, 8), ItemUtils.getSimpleStack(aGearSmallAluminium, 4), },
-            aRubber.getFluidStack(144 * 4),
-            GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1),
-            30 * 20,
-            MaterialUtils.getVoltageForTier(2));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(2),
+                aBasicHazmatPieces[0],
+                ItemUtils.getSimpleStack(aYellowWool, 16),
+                ItemUtils.getSimpleStack(aPlateCobalt, 4),
+                ItemUtils.getSimpleStack(aCoilIC2, 8),
+                ItemUtils.getSimpleStack(aGearSmallAluminium, 4))
+            .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
+            .fluidInputs(aRubber.getFluidStack(144 * 4))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(2),
+                aBasicHazmatPieces[1],
+                ItemUtils.getSimpleStack(aYellowWool, 64),
+                ItemUtils.getSimpleStack(aCoilIC2, 32),
+                ItemUtils.getSimpleStack(aPlateCobalt, 16),
+                ItemUtils.getSimpleStack(aGearSiliconCarbide, 8))
+            .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
+            .fluidInputs(aRubber.getFluidStack(144 * 10))
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(2),
+                aBasicHazmatPieces[2],
+                ItemUtils.getSimpleStack(aYellowWool, 32),
+                ItemUtils.getSimpleStack(aCoilIC2, 16),
+                ItemUtils.getSimpleStack(aPlateCobalt, 8),
+                ItemUtils.getSimpleStack(aGearSiliconCarbide, 4))
+            .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
+            .fluidInputs(aRubber.getFluidStack(144 * 8))
+            .duration(1 * MINUTES + 15 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(2),
+                aBasicHazmatPieces[3],
+                ItemUtils.getSimpleStack(aBlackWool, 16),
+                ItemUtils.getSimpleStack(aCoilIC2, 6),
+                ItemUtils.getSimpleStack(aGearSmallSteel, 8),
+                ItemUtils.getSimpleStack(aGearPotin, 4))
+            .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
+            .fluidInputs(aRubber.getFluidStack(144 * 6))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
 
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[1],
-                ItemUtils.getSimpleStack(aYellowWool, 64), ItemUtils.getSimpleStack(aCoilIC2, 32),
-                ItemUtils.getSimpleStack(aPlateCobalt, 16), ItemUtils.getSimpleStack(aGearSiliconCarbide, 8), },
-            aRubber.getFluidStack(144 * 10),
-            GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1),
-            90 * 20,
-            MaterialUtils.getVoltageForTier(2));
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[2],
-                ItemUtils.getSimpleStack(aYellowWool, 32), ItemUtils.getSimpleStack(aCoilIC2, 16),
-                ItemUtils.getSimpleStack(aPlateCobalt, 8), ItemUtils.getSimpleStack(aGearSiliconCarbide, 4), },
-            aRubber.getFluidStack(144 * 8),
-            GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1),
-            75 * 20,
-            MaterialUtils.getVoltageForTier(2));
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[3],
-                ItemUtils.getSimpleStack(aBlackWool, 16), ItemUtils.getSimpleStack(aCoilIC2, 6),
-                ItemUtils.getSimpleStack(aGearSmallSteel, 8), ItemUtils.getSimpleStack(aGearPotin, 4), },
-            aRubber.getFluidStack(144 * 6),
-            GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1),
-            45 * 20,
-            MaterialUtils.getVoltageForTier(2));
     }
 }

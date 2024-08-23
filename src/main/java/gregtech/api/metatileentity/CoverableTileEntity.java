@@ -58,7 +58,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GT_Packet_RequestCoverData;
 import gregtech.api.net.GT_Packet_SendCoverData;
-import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -192,6 +191,22 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
 
         return true;
+    }
+
+    protected void onCoverUnload() {
+        byte validCoversMask = this.validCoversMask;
+        if (validCoversMask == 0) return;
+
+        for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
+            if (((validCoversMask >>> i) & 1) == 0) continue;
+            onCoverUnloadAtSide(ForgeDirection.VALID_DIRECTIONS[i]);
+        }
+    }
+
+    public void onCoverUnloadAtSide(ForgeDirection side) {
+        final CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (!coverInfo.isValid()) return;
+        coverInfo.onCoverUnload();
     }
 
     public boolean tickCoverAtSide(ForgeDirection side) {
@@ -735,23 +750,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void onTabClicked(Widget.ClickData ignoredClickData, Widget widget, ForgeDirection side) {
         if (isClientSide()) return;
-        final CoverInfo coverInfo = getCoverInfoAtSide(side);
-        if (coverInfo.useModularUI()) {
-            widget.getContext()
-                .openSyncedWindow(side.ordinal() + COVER_WINDOW_ID_START);
-        } else {
-            final GT_Packet_TileEntityCoverGUI packet = new GT_Packet_TileEntityCoverGUI(
-                coverInfo,
-                getWorld().provider.dimensionId,
-                widget.getContext()
-                    .getPlayer()
-                    .getEntityId(),
-                0);
-            GT_Values.NW.sendToPlayer(
-                packet,
-                (EntityPlayerMP) widget.getContext()
-                    .getPlayer());
-        }
+        widget.getContext()
+            .openSyncedWindow(side.ordinal() + COVER_WINDOW_ID_START);
     }
 
     @NotNull

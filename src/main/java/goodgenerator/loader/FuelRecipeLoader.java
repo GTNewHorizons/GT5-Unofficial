@@ -1,10 +1,15 @@
 package goodgenerator.loader;
 
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefineFactoryRecipes;
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelTime;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelVoltage;
-import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
+import static gregtech.api.util.GT_RecipeConstants.NFR_COIL_TIER;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -12,158 +17,188 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
-import goodgenerator.util.MyRecipeAdder;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.ELEMENT;
 
 public class FuelRecipeLoader {
 
     public static void RegisterFuel() {
-        // MyRecipeAdder.instance.addLiquidMentalFuel(Materials.NaquadahEnriched.getMolten(1L),Materials.Naquadah.getMolten(1L),32768,100);
-        // MyRecipeAdder.instance.addLiquidMentalFuel(Materials.Naquadria.getMolten(1L),Materials.Naquadah.getMolten(1L),262144,120);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(1),
-            MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[0],
-            NaquadahFuelTime[0]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
+        FluidStack[] inputs = new FluidStack[] { MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(1),
             MyMaterial.thoriumBasedLiquidFuelExcited.getFluidOrGas(1),
-            MyMaterial.thoriumBasedLiquidFuelDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[1],
-            NaquadahFuelTime[1]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
             MyMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(1),
+            MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(1), MyMaterial.naquadahBasedFuelMkII.getFluidOrGas(1),
+            MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(1), MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(1),
+            MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(1), MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1) };
+
+        FluidStack[] outputs = new FluidStack[] { MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1),
+            MyMaterial.thoriumBasedLiquidFuelDepleted.getFluidOrGas(1),
             MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[2],
-            NaquadahFuelTime[2]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(1),
             MyMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[3],
-            NaquadahFuelTime[3]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.naquadahBasedFuelMkII.getFluidOrGas(1),
             MyMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[4],
-            NaquadahFuelTime[4]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(1),
             MyMaterial.naquadahBasedFuelMkIIIDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[5],
-            NaquadahFuelTime[5]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(1),
             MyMaterial.naquadahBasedFuelMkIVDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[6],
-            NaquadahFuelTime[6]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(1),
             MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[7],
-            NaquadahFuelTime[7]);
-        MyRecipeAdder.instance.addLiquidMentalFuel(
-            MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1),
-            MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1),
-            NaquadahFuelVoltage[8],
-            NaquadahFuelTime[8]);
+            MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
+        for (int i = 0; i < 9; i++) {
+            GT_Values.RA.stdBuilder()
+                .fluidInputs(inputs[i])
+                .fluidOutputs(outputs[i])
+                .duration(NaquadahFuelTime[i])
+                .eut(0)
+                .metadata(LNG_BASIC_OUTPUT, NaquadahFuelVoltage[i])
+                .addTo(naquadahReactorFuels);
+        }
+
         // MK III Naquadah Fuel
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
-                MyMaterial.lightNaquadahFuel.getFluidOrGas(1000), },
-            new ItemStack[] { MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 4),
-                WerkstoffLoader.Tiberium.get(OrePrefixes.dust, 27), ItemRefer.High_Density_Uranium.get(2),
-                ItemRefer.High_Density_Plutonium.get(1), },
-            MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100),
-            1100000,
-            100,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 4),
+                WerkstoffLoader.Tiberium.get(OrePrefixes.dust, 27),
+                ItemRefer.High_Density_Uranium.get(2),
+                ItemRefer.High_Density_Plutonium.get(1))
+            .fluidInputs(
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(1000))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100))
+            .duration(5 * SECONDS)
+            .eut(1_100_000)
+            .metadata(NFR_COIL_TIER, 1)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternative higher tier recipe
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
-                MyMaterial.lightNaquadahFuel.getFluidOrGas(1000), },
-            new ItemStack[] { MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustChromaticGlass", 9),
-                ItemRefer.High_Density_Uranium.get(2), ItemRefer.High_Density_Plutonium.get(1), },
-            MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(200),
-            2100000,
-            100,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
+                CHRONOMATIC_GLASS.getDust(9),
+                ItemRefer.High_Density_Uranium.get(2),
+                ItemRefer.High_Density_Plutonium.get(1))
+            .fluidInputs(
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(1000))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(200))
+            .duration(5 * SECONDS)
+            .eut(2_100_000)
+            .metadata(NFR_COIL_TIER, 1)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
+
         // MK IV Naquadah Fuel
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
-                Materials.Praseodymium.getMolten(9216L) },
-            new ItemStack[] { MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 27),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 27),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 64),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                MyMaterial.orundum.get(OrePrefixes.dust, 32), },
-            MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250),
-            46000000,
-            160,
-            2);
+                MyMaterial.orundum.get(OrePrefixes.dust, 32))
+            .fluidInputs(MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000), Materials.Praseodymium.getMolten(9216L))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
+            .duration(8 * SECONDS)
+            .eut(46_000_000)
+            .metadata(NFR_COIL_TIER, 2)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternate higher tier recipe
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
-                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 1440) },
-            new ItemStack[] { MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 27),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 27),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 64),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                MyMaterial.orundum.get(OrePrefixes.dust, 64), },
-            MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(500),
-            75000000,
-            160,
-            2);
+                MyMaterial.orundum.get(OrePrefixes.dust, 64))
+            .fluidInputs(
+                MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
+                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 720))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(500))
+            .duration(8 * SECONDS)
+            .eut(75_000_000)
+            .metadata(NFR_COIL_TIER, 2)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
+
+        // One-step recipe to allow easier scaling for MK VI
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 54),
+                MyMaterial.orundum.get(OrePrefixes.dust, 32),
+                ItemRefer.High_Density_Uranium.get(10),
+                ItemRefer.High_Density_Plutonium.get(5))
+            .fluidInputs(
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(4000),
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(5000),
+                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 360),
+                new FluidStack(FluidRegistry.getFluid("molten.chromaticglass"), 6480))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
+            .duration(10 * TICKS)
+            .eut(350_000_000)
+            .metadata(NFR_COIL_TIER, 4)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
 
         // MK V Naquadah Fuel
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("heavyradox", 1000), },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 16),
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32), },
-            MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(500),
-            100000000,
-            200,
-            2);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8),
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32))
+            .fluidInputs(
+                MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
+                FluidRegistry.getFluidStack("heavyradox", 250))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(500))
+            .duration(10 * SECONDS)
+            .eut(100_000_000)
+            .metadata(NFR_COIL_TIER, 2)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternate higher tier recipe
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("heavyradox", 1000), },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 8),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 4),
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
-                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48), },
-            MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(750),
-            300000000,
-            200,
-            3);
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48))
+            .fluidInputs(
+                MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
+                FluidRegistry.getFluidStack("heavyradox", 250))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))
+            .duration(5 * SECONDS)
+            .eut(300_000_000)
+            .metadata(NFR_COIL_TIER, 3)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
 
         // MK VI Naquadah Fuel
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("molten.shirabon", 1440), },
-            new ItemStack[] { ELEMENT.STANDALONE.ASTRAL_TITANIUM.getDust(64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32), },
-            MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(500),
-            320000000,
-            240,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ELEMENT.STANDALONE.ASTRAL_TITANIUM.getDust(64),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32))
+            .fluidInputs(
+                MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
+                FluidRegistry.getFluidStack("molten.shirabon", 360))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(500))
+            .duration(12 * SECONDS)
+            .eut(320_000_000)
+            .metadata(NFR_COIL_TIER, 3)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternate higher tier recipe
-        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
-            new FluidStack[] { MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("molten.shirabon", 1440), },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 8),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 4),
                 ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48), },
-            MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750),
-            530000000,
-            240,
-            4);
-
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
+            .fluidInputs(
+                MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
+                FluidRegistry.getFluidStack("molten.shirabon", 1440))
+            .fluidOutputs(MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .metadata(NFR_COIL_TIER, 4)
+            .noOptimize()
+            .addTo(naquadahFuelRefineFactoryRecipes);
     }
 }

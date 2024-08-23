@@ -507,25 +507,31 @@ gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
 gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
 gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
 
-gt.blockmachines.hatch.datain.tier.07.name=Optical Slave Connector
+gt.blockmachines.hatch.datain.tier.07.name=Optical Reception Connector
 gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
 gt.blockmachines.hatch.datain.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.datain.desc.2=Must be painted to work
 
-gt.blockmachines.hatch.dataout.tier.07.name=Optical Master Connector
+gt.blockmachines.hatch.dataout.tier.07.name=Optical Transmission Connector
 gt.blockmachines.hatch.dataout.desc.0=Quantum Data Output for Multiblocks
 gt.blockmachines.hatch.dataout.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.dataout.desc.2=Must be painted to work
 
-gt.blockmachines.hatch.datainass.tier.07.name=Assembly line Slave Connector
+gt.blockmachines.hatch.datainass.tier.07.name=Assembly line Reception Connector
 gt.blockmachines.hatch.datainass.desc.0=ItemStack Data Input for Multiblocks
 gt.blockmachines.hatch.datainass.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.datainass.desc.2=Must be painted to work
 
-gt.blockmachines.hatch.dataoutass.tier.07.name=Data Bank Master Connector
+gt.blockmachines.hatch.datainasswireless.desc.0=Wireless ItemStack Data Input for Multiblocks
+gt.blockmachines.hatch.datainasswireless.desc.1=High speed internet connection
+
+gt.blockmachines.hatch.dataoutass.tier.07.name=Data Bank Transmission Connector
 gt.blockmachines.hatch.dataoutass.desc.0=ItemStack Data Output for Multiblocks
 gt.blockmachines.hatch.dataoutass.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.dataoutass.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.wirelessdataoutass.desc.0=Wireless ItemStack Data Output for Multiblocks
+gt.blockmachines.hatch.wirelessdataoutass.desc.1=High speed internet connection
 
 gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
 gt.blockmachines.hatch.rack.desc.0=4 Slot Rack
@@ -684,6 +690,7 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=Energy Capacity display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Energy Stored display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 
 gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
 gt.blockmachines.multimachine.em.switch.hint=1 - Classic/Data Hatches or Computer casing
@@ -702,6 +709,7 @@ gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
 gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
 gt.blockmachines.multimachine.em.computer.desc.0=Controller block of the Quantum Computer
 gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (and heat)
+gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
@@ -709,6 +717,7 @@ gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Maste
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
 gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembling Lines with more Data Sticks
 gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembling Lines access to the same Data Stick
+gt.blockmachines.multimachine.em.databank.desc.3=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.junction.name=Matter Junction
 gt.blockmachines.multimachine.em.junction.hint.0=1 - Classic Hatches or High Power Casing
@@ -1072,6 +1081,10 @@ gt.blockmachines.pipe.energystream.desc.1=Bright Vacuum!!!
 gt.blockmachines.pipe.energystream.desc.2=Must be painted to work
 gt.blockmachines.pipe.energystream.desc.3=Do not split or turn
 
+gt.blockmachines.pipe.energymirror.name=Laser Vacuum Mirror
+gt.blockmachines.pipe.energymirror.desc.0=Laser reflection device.
+gt.blockmachines.pipe.energymirror.desc.1=Can turn but not split
+
 gt.blockmachines.pipe.datastream.name=Optical Fiber Cable
 gt.blockmachines.pipe.datastream.desc.0=Advanced data transmission
 gt.blockmachines.pipe.datastream.desc.1=Don't stare at the beam!
@@ -1165,6 +1178,8 @@ GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
 GT5U.gui.text.missing_upgrades=§7Missing upgrades
 GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.researching_item=§fResearching: §b%s
+GT5U.gui.text.research_progress=§fComputation: %d/%d (%s%%)
 
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony
@@ -1225,6 +1240,7 @@ tt.keyword.Structure.EssentiaStorage=Essentia Storage
 tt.keyword.Structure.DataConnector=Data Connector
 tt.keyword.Structure.SuperconductingCoilBlock=Superconducting Coil Block
 tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
+tt.wirelessInputData.config.text=Configure how much computation to pull from wireless network
 
 
 tt.keyphrase.Hint_Details=Hint Details

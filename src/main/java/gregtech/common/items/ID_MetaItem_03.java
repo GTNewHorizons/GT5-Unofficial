@@ -183,6 +183,15 @@ public enum ID_MetaItem_03 {
     NuclearStar(230),
     IndustrialApiary_Upgrade_UNLIGHT(231),
     Cover_Metrics_Transmitter(232),
+    Activated_Carbon_Filter_Mesh(233),
+    Quark_Catalyst_Housing(234),
+    Quark_Creation_Catalyst_Up(235),
+    Quark_Creation_Catalyst_Down(236),
+    Quark_Creation_Catalyst_Strange(237),
+    Quark_Creation_Catalyst_Charm(238),
+    Quark_Creation_Catalyst_Bottom(239),
+    Quark_Creation_Catalyst_Top(240),
+    Quark_Creation_Catalyst_Unaligned(241),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
@@ -219,7 +228,8 @@ public enum ID_MetaItem_03 {
     White_Dwarf_Shape_Extruder_Small_Gear(754),
     White_Dwarf_Shape_Extruder_Turbine_Blade(755),
     White_Dwarf_Shape_Extruder_ToolHeadDrill(756),
-    Timepiece(757);
+    Timepiece(757),
+    Transdimensional_Alignment_Matrix(758);
 
     public final int ID;
 

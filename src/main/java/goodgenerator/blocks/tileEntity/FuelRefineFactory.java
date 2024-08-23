@@ -1,6 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
@@ -188,10 +191,10 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
             .beginStructureBlock(3, 15, 15, false)
-            .addInputHatch("The casings adjoin the field restriction glass.")
-            .addInputBus("The casings adjoin the field restriction glass.", 1)
-            .addOutputHatch("The casings adjoin the field restriction glass.", 1)
-            .addEnergyHatch("The casings adjoin the field restriction glass.", 1)
+            .addInputHatch("The casings adjacent to field restriction glass.")
+            .addInputBus("The casings adjacent to field restriction glass.", 1)
+            .addOutputHatch("The casings adjacent to field restriction glass.", 1)
+            .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
             .toolTipFinisher("Good Generator");
         return tt;
     }
@@ -257,7 +260,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
                 int overclockAmount = Tier - recipe.mSpecialValue;
                 return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
             }
-        }.setOverclock(1, 1); // Set Overclock to be 2/2
+        }.setOverclock(2.0, 2.0); // Set Overclock to be 2/2
     }
 
     @Override

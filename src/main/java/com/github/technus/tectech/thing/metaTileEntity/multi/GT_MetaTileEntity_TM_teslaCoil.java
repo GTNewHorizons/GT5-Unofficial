@@ -18,7 +18,6 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_WRONG;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_WTF;
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -27,6 +26,7 @@ import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;
@@ -310,8 +310,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         transferRadiusTransceiverSetting, transferRadiusCoverUltimateSetting, outputVoltageSetting,
         outputCurrentSetting, sortTimeMinSetting, overDriveSetting;
     protected Parameters.Group.ParameterOut popogaDisplay, transferRadiusTowerDisplay, transferRadiusTransceiverDisplay,
-        transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, energyCapacityDisplay,
-        energyStoredDisplay, energyFractionDisplay, sortTimeDisplay;
+        transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, outputMaxDisplay,
+        energyCapacityDisplay, energyStoredDisplay, energyFractionDisplay, sortTimeDisplay;
 
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0"); // Hysteresis low setting
@@ -350,6 +350,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     // display
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3"); // Output voltage display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_MAX_DISPLAY_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9"); // Output max display
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4"); // Output current display
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME = (base,
@@ -784,7 +786,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         transferRadiusCoverUltimateDisplay = hatch_3
             .makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
         outputVoltageDisplay = hatch_4.makeOutParameter(0, 0, OUTPUT_VOLTAGE_DISPLAY_NAME, POWER_STATUS);
-        popogaDisplay = hatch_4.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
+        outputMaxDisplay = hatch_4.makeOutParameter(1, 0, OUTPUT_MAX_DISPLAY_NAME, POWER_STATUS);
         outputCurrentDisplay = hatch_5.makeOutParameter(0, 0, OUTPUT_CURRENT_DISPLAY_NAME, POWER_STATUS);
         energyCapacityDisplay = hatch_5.makeOutParameter(1, 0, ENERGY_CAPACITY_DISPLAY_NAME, ENERGY_STATUS);
         energyStoredDisplay = hatch_6.makeOutParameter(0, 0, ENERGY_STORED_DISPLAY_NAME, ENERGY_STATUS);
@@ -822,6 +824,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         setEUVar(0);
         energyStoredDisplay.set(0);
         energyFractionDisplay.set(0);
+        outputMaxDisplay.set(0);
     }
 
     @Override
@@ -861,7 +864,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         // Power transfer
         outputCurrentDisplay.set(powerTeslaNodeMap(this));
-
+        outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
         // TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0 && visualEffect) {

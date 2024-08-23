@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.QuantumForceTransformer;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -12,7 +14,7 @@ public class GregtechQuantumForceTransformer {
         if (CORE.ConfigSwitches.enableMultiblock_QuantumForceTransformer) {
             GregtechItemList.QuantumForceTransformer.set(
                 new GregtechMetaTileEntity_QuantumForceTransformer(
-                    31151,
+                    QuantumForceTransformer.ID,
                     "quantumforcetransformer.controller.tier.single",
                     "Quantum Force Transformer").getStackForm(1L));
         }

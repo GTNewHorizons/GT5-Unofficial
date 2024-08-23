@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_ZPM;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Sparge_Tower;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ThoriumReactor;
+
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
@@ -22,11 +29,12 @@ public class GregtechLFTR {
     private static void run1() {
         // LFTR
         GregtechItemList.ThoriumReactor.set(
-            new GregtechMTE_NuclearReactor(751, "lftr.controller.single", "Thorium Reactor [LFTR]").getStackForm(1L));
+            new GregtechMTE_NuclearReactor(ThoriumReactor.ID, "lftr.controller.single", "Thorium Reactor [LFTR]")
+                .getStackForm(1L));
         // Reactor Processing Units
         GregtechItemList.ReactorProcessingUnit_IV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                31031,
+                ReactorProcessingUnit_IV.ID,
                 "rpu.tier.01",
                 "Reactor Processing Unit I",
                 5,
@@ -41,7 +49,7 @@ public class GregtechLFTR {
                 null).getStackForm(1L));
         GregtechItemList.ReactorProcessingUnit_ZPM.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                31032,
+                ReactorProcessingUnit_ZPM.ID,
                 "rpu.tier.02",
                 "Reactor Processing Unit II",
                 7,
@@ -57,7 +65,7 @@ public class GregtechLFTR {
         // Cold Traps
         GregtechItemList.ColdTrap_IV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                31033,
+                ColdTrap_IV.ID,
                 "coldtrap.tier.01",
                 "Cold Trap I",
                 5,
@@ -72,7 +80,7 @@ public class GregtechLFTR {
                 null).getStackForm(1L));
         GregtechItemList.ColdTrap_ZPM.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                31034,
+                ColdTrap_ZPM.ID,
                 "coldtrap.tier.02",
                 "Cold Trap II",
                 7,
@@ -87,7 +95,9 @@ public class GregtechLFTR {
                 null).getStackForm(1L));
         // Sparge Tower
         GregtechItemList.Controller_Sparge_Tower.set(
-            new GregtechMetaTileEntity_SpargeTower(31035, "sparge.controller.single", "Sparge Tower Controller")
-                .getStackForm(1L));
+            new GregtechMetaTileEntity_SpargeTower(
+                Controller_Sparge_Tower.ID,
+                "sparge.controller.single",
+                "Sparge Tower Controller").getStackForm(1L));
     }
 }

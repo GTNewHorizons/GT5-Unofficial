@@ -31,13 +31,6 @@ import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_LuV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_MV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_ZPM;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.client.GT_TooltipHandler.Tier.ERV;
 import static gregtech.client.GT_TooltipHandler.Tier.EV;
 import static gregtech.client.GT_TooltipHandler.Tier.HV;
@@ -46,413 +39,16 @@ import static gregtech.client.GT_TooltipHandler.Tier.LV;
 import static gregtech.client.GT_TooltipHandler.Tier.LuV;
 import static gregtech.client.GT_TooltipHandler.Tier.MAX;
 import static gregtech.client.GT_TooltipHandler.Tier.MV;
+import static gregtech.client.GT_TooltipHandler.Tier.UEV;
+import static gregtech.client.GT_TooltipHandler.Tier.UHV;
+import static gregtech.client.GT_TooltipHandler.Tier.UIV;
 import static gregtech.client.GT_TooltipHandler.Tier.ULV;
 import static gregtech.client.GT_TooltipHandler.Tier.UMV;
 import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Holy_Water;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison_Strong;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Weakness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Weakness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Holy_Water;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Poison;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Poison_Strong;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Slowness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Slowness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Weakness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Weakness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Holy_Water;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Poison;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Poison_Strong;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_HV;
-import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_LV;
-import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_MV;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Cadmium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Lithium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Sodium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Cadmium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Lithium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Sodium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Cadmium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Lithium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Sodium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_ULV_Tantalum;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_HV_Mercury;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_HV_Sulfuric_Acid;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Mercury;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Sulfuric_Acid;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Mercury;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Sulfuric_Acid;
-import static gregtech.common.items.ID_MetaItem_01.Book_Written_01;
-import static gregtech.common.items.ID_MetaItem_01.Book_Written_02;
-import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Data;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Good;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Master;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Master;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Wetware;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Primitive;
-import static gregtech.common.items.ID_MetaItem_01.Component_Filter;
-import static gregtech.common.items.ID_MetaItem_01.Component_Grinder_Diamond;
-import static gregtech.common.items.ID_MetaItem_01.Component_Grinder_Tungsten;
-import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Iron;
-import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
-import static gregtech.common.items.ID_MetaItem_01.Component_Sawblade_Diamond;
-import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_EV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_HV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_IV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_LV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_MV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Cover_ActivityDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Controller;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Crafting;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Drain;
-import static gregtech.common.items.ID_MetaItem_01.Cover_EnergyDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_FLuidStorageMonitor;
-import static gregtech.common.items.ID_MetaItem_01.Cover_FluidDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_FluidLimiter;
-import static gregtech.common.items.ID_MetaItem_01.Cover_ItemDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_NeedsMaintenance;
-import static gregtech.common.items.ID_MetaItem_01.Cover_PlayerDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneReceiverExternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneReceiverInternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneTransmitterExternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneTransmitterInternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Screen;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Shutter;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_8V;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_EV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_HV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_IV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_LV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_MV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_UV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Crate_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Duct_Tape;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_EV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_HV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_IV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_LV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_MV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_EV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_HV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_IV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_LV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_MV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_EV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_HV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_IV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_LV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_MV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_EV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_HV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_IV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_LV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_MV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Empty_Board_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Empty_Board_Elite;
-import static gregtech.common.items.ID_MetaItem_01.EnergisedTesseract;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Cluster;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_Orb;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_orb_2;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Module;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_EV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_HV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_IV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_LV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_MV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Firebrick;
-import static gregtech.common.items.ID_MetaItem_01.FluidFilter;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_EV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_HV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_IV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_LV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_LuV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_MV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_UV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Filled;
-import static gregtech.common.items.ID_MetaItem_01.GigaChad;
-import static gregtech.common.items.ID_MetaItem_01.Gravistar;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy1;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy2;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy3;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Iridium_Alloy;
-import static gregtech.common.items.ID_MetaItem_01.ItemFilter_Export;
-import static gregtech.common.items.ID_MetaItem_01.ItemFilter_Import;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Aluminium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Chrome;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Iridium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Neutronium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Osmium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_StainlessSteel;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Steel;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Titanium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_TungstenSteel;
-import static gregtech.common.items.ID_MetaItem_01.McGuffium_239;
-import static gregtech.common.items.ID_MetaItem_01.NC_SensorKit;
-import static gregtech.common.items.ID_MetaItem_01.NaquadriaSupersolid;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Page;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Pages;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Printed_Pages;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Encoded;
-import static gregtech.common.items.ID_MetaItem_01.QuantumEye;
-import static gregtech.common.items.ID_MetaItem_01.QuantumStar;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_EV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_HV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_IV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_LV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_MV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Schematic;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_1by1;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_2by2;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_3by3;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_Crafting;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_Dust;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_EV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_HV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_IV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_LV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_MV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Axe;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Block;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Bolt;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Bottle;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Casing;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Cell;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_File;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Gear;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Hammer;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Hoe;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Ingot;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pickaxe;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Huge;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Large;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Medium;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Small;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Tiny;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Plate;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Ring;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Rod;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Rotor;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Saw;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Shovel;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Small_Gear;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Sword;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Tool_Head_Drill;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Turbine_Blade;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Wire;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Anvil;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Arrow;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Baguette;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ball;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Block;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bolt;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bottle;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bread;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bun;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Casing;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Credit;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Cylinder;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Gear;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Gear_Small;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ingot;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Name;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Nugget;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Huge;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Large;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Medium;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Small;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Tiny;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Plate;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ring;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rod;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rod_Long;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rotor;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Round;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Screw;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Tool_Head_Drill;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Turbine_Blade;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Flat;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Stripes;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_0;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_1;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_10;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_11;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_12;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_13;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_14;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_15;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_2;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_3;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_4;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_5;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_6;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_7;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_8;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_9;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_0;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_1;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_10;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_11;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_12;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_13;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_14;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_15;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_2;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_3;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_4;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_5;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_6;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_7;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_8;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_9;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Empty;
-import static gregtech.common.items.ID_MetaItem_01.StableAdhesive;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_EV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_HV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_IV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_LV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_MV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_EV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_HV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_IV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_LV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_MV;
-import static gregtech.common.items.ID_MetaItem_01.SuperconductorComposite;
-import static gregtech.common.items.ID_MetaItem_01.Tesseract;
-import static gregtech.common.items.ID_MetaItem_01.Thermos_Can_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Cheat;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Cover_Copy_Paste;
-import static gregtech.common.items.ID_MetaItem_01.Tool_DataOrb;
-import static gregtech.common.items.ID_MetaItem_01.Tool_DataStick;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Full;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Used;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Full;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Used;
-import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Full;
-import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Used;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Matches;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Scanner;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Sonictron;
-import static gregtech.common.items.ID_MetaItem_01.Upgrade_Lock;
-import static gregtech.common.items.ID_MetaItem_01.Upgrade_Muffler;
-import static gregtech.common.items.ID_MetaItem_01.ZPM2;
-import static gregtech.common.items.ID_MetaItem_01.ZPM3;
-import static gregtech.common.items.ID_MetaItem_01.ZPM4;
-import static gregtech.common.items.ID_MetaItem_01.ZPM5;
-import static gregtech.common.items.ID_MetaItem_01.ZPM6;
+import static gregtech.common.items.ID_MetaItem_01.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -464,13 +60,14 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -479,7 +76,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -495,6 +92,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.GT_Cover_Arm;
+import gregtech.common.covers.GT_Cover_Chest;
 import gregtech.common.covers.GT_Cover_ControlsWork;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Crafting;
@@ -520,7 +118,6 @@ import gregtech.common.covers.GT_Cover_Shutter;
 import gregtech.common.covers.GT_Cover_SolarPanel;
 import gregtech.common.covers.GT_Cover_SteamRegulator;
 import gregtech.common.covers.GT_Cover_SteamValve;
-import gregtech.common.items.behaviors.Behaviour_Arrow_Potion;
 import gregtech.common.items.behaviors.Behaviour_Cover_Tool;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
@@ -532,15 +129,13 @@ import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator.MagnetTiers;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
     public static GT_MetaGenerated_Item_01 INSTANCE;
     private final String mToolTipPurify = GT_LanguageManager
         .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
-    private static final String aTextArrow = "  A";
-    private static final String aTextStick = " S ";
-    private static final String aTextFeather = "F  ";
     private static final String aTextEmptyRow = "   ";
     private static final String aTextShape = " P ";
     private static final String PartCoverText = " L/t (";
@@ -696,217 +291,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.stick.get(Materials.Steel) });
 
         ItemList.CompressedFireclay.set(addItem(Compressed_Fireclay.ID, "Compressed Fireclay", "Brick-shaped"));
+        GT_OreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
+
         ItemList.Firebrick.set(addItem(Firebrick.ID, "Firebrick", "Heat resistant"));
-
-        ItemList.Arrow_Head_Glass_Emtpy.set(
-            addItem(
-                Arrow_Head_Glass_Empty.ID,
-                "Empty Glass Arrow Head",
-                "Fill with Potions before use",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
-        ItemList.Arrow_Head_Glass_Poison.set(
-            addItem(
-                Arrow_Head_Glass_Poison.ID,
-                "Poison Glass Arrow Head",
-                "Glass Arrow filled with Poison",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Poison_Long.set(
-            addItem(
-                Arrow_Head_Glass_Poison_Long.ID,
-                "Poison Glass Arrow Head",
-                "Glass Arrow filled with stretched Poison",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Poison_Strong.set(
-            addItem(
-                Arrow_Head_Glass_Poison_Strong.ID,
-                "Poison Glass Arrow Head",
-                "Glass Arrow filled with strong Poison",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Slowness.set(
-            addItem(
-                Arrow_Head_Glass_Slowness.ID,
-                "Slowness Glass Arrow Head",
-                "Glass Arrow filled with Laming Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Slowness_Long.set(
-            addItem(
-                Arrow_Head_Glass_Slowness_Long.ID,
-                "Slowness Glass Arrow Head",
-                "Glass Arrow filled with stretched Laming Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Weakness.set(
-            addItem(
-                Arrow_Head_Glass_Weakness.ID,
-                "Weakness Glass Arrow Head",
-                "Glass Arrow filled with Weakening Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Weakness_Long.set(
-            addItem(
-                Arrow_Head_Glass_Weakness_Long.ID,
-                "Weakness Glass Arrow Head",
-                "Glass Arrow filled with stretched Weakening Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Holy_Water.set(
-            addItem(
-                Arrow_Head_Glass_Holy_Water.ID,
-                "Holy Water Glass Arrow Head",
-                "Glass Arrow filled with Holy Water",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
-
-        ItemList.Arrow_Wooden_Glass_Emtpy.set(
-            addItem(
-                Arrow_Wooden_Glass_Empty.ID,
-                "Regular Glass Vial Arrow",
-                "Empty Glass Arrow",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
-        ItemList.Arrow_Wooden_Glass_Poison.set(
-            addItem(
-                Arrow_Wooden_Glass_Poison.ID,
-                "Regular Poison Arrow",
-                "Glass Arrow filled with Poison",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.poison.id, 450, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Poison_Long.set(
-            addItem(
-                Arrow_Wooden_Glass_Poison_Long.ID,
-                "Regular Poison Arrow",
-                "Glass Arrow filled with stretched Poison",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.poison.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Poison_Strong.set(
-            addItem(
-                Arrow_Wooden_Glass_Poison_Strong.ID,
-                "Regular Poison Arrow",
-                "Glass Arrow filled with strong Poison",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.poison.id, 450, 1, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Slowness.set(
-            addItem(
-                Arrow_Wooden_Glass_Slowness.ID,
-                "Regular Slowness Arrow",
-                "Glass Arrow filled with Laming Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.moveSlowdown.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Slowness_Long.set(
-            addItem(
-                Arrow_Wooden_Glass_Slowness_Long.ID,
-                "Regular Slowness Arrow",
-                "Glass Arrow filled with stretched Laming Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.moveSlowdown.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Weakness.set(
-            addItem(
-                Arrow_Wooden_Glass_Weakness.ID,
-                "Regular Weakness Arrow",
-                "Glass Arrow filled with Weakening Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.weakness.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Weakness_Long.set(
-            addItem(
-                Arrow_Wooden_Glass_Weakness_Long.ID,
-                "Regular Weakness Arrow",
-                "Glass Arrow filled with stretched Weakening Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.weakness.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Holy_Water.set(
-            addItem(
-                Arrow_Wooden_Glass_Holy_Water.ID,
-                "Regular Holy Water Arrow",
-                "Glass Arrow filled with Holy Water",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Enchantment.smite, 10),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
-
-        ItemList.Arrow_Plastic_Glass_Emtpy.set(
-            addItem(
-                Arrow_Plastic_Glass_Empty.ID,
-                "Light Glass Vial Arrow",
-                "Empty Glass Arrow",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
-        ItemList.Arrow_Plastic_Glass_Poison.set(
-            addItem(
-                Arrow_Plastic_Glass_Poison.ID,
-                "Light Poison Arrow",
-                "Glass Arrow filled with Poison",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.poison.id, 450, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Poison_Long.set(
-            addItem(
-                Arrow_Plastic_Glass_Poison_Long.ID,
-                "Light Poison Arrow",
-                "Glass Arrow filled with stretched Poison",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.poison.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Poison_Strong.set(
-            addItem(
-                Arrow_Plastic_Glass_Poison_Strong.ID,
-                "Light Poison Arrow",
-                "Glass Arrow filled with strong Poison",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.poison.id, 450, 1, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Slowness.set(
-            addItem(
-                Arrow_Plastic_Glass_Slowness.ID,
-                "Light Slowness Arrow",
-                "Glass Arrow filled with Laming Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.moveSlowdown.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Slowness_Long.set(
-            addItem(
-                Arrow_Plastic_Glass_Slowness_Long.ID,
-                "Light Slowness Arrow",
-                "Glass Arrow filled with stretched Laming Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.moveSlowdown.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Weakness.set(
-            addItem(
-                Arrow_Plastic_Glass_Weakness.ID,
-                "Light Weakness Arrow",
-                "Glass Arrow filled with Weakening Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.weakness.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Weakness_Long.set(
-            addItem(
-                Arrow_Plastic_Glass_Weakness_Long.ID,
-                "Light Weakness Arrow",
-                "Glass Arrow filled with stretched Weakening Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.weakness.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Holy_Water.set(
-            addItem(
-                Arrow_Plastic_Glass_Holy_Water.ID,
-                "Light Holy Water Arrow",
-                "Glass Arrow filled with Holy Water",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Enchantment.smite, 10),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
+        GT_OreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Shape_Empty.set(
             addItem(
@@ -1667,11 +1055,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Lapotronic_Orb.ID,
                 "Lapotronic Energy Orb",
                 "Reusable battery",
-                "batteryIV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.IV)));
 
         // ZPM Module
         ItemList.ZPM.set(
@@ -1690,11 +1077,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Lapotronic_orb_2.ID,
                 "Lapotronic Energy Orb Cluster",
                 "Reusable battery",
-                "batteryLuV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.LuV)));
 
         // UV Battery
         ItemList.ZPM2.set(
@@ -1757,11 +1143,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Module.ID,
                 "Energy Module",
                 "Reusable battery",
-                "batteryZPM",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.ZPM)));
 
         // UV Cluster
         ItemList.Energy_Cluster.set(
@@ -1769,10 +1154,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Cluster.ID,
                 "Energy Cluster",
                 "Reusable battery",
-                "batteryUV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
+                OrePrefixes.battery.get(Materials.UV)));
 
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(
@@ -2292,13 +1677,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.ItemFilter_Export.set(
             addItem(
                 ItemFilter_Export.ID,
-                "Item Filter Cover (Export)",
+                "Filtered Conveyor Cover (Export)",
                 "Right click with an item to set filter (Only supports Export Mode)"));
 
         ItemList.ItemFilter_Import.set(
             addItem(
                 ItemFilter_Import.ID,
-                "Item Filter Cover (Import)",
+                "Filtered Conveyor Cover (Import)",
                 "Right click with an item to set filter (Only supports Import Mode)"));
 
         ItemList.Cover_FluidLimiter
@@ -2923,49 +2308,49 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Primitive.ID,
                 "Vacuum Tube",
                 "A very simple Circuit",
-                OrePrefixes.circuit.get(Materials.Primitive),
+                OrePrefixes.circuit.get(Materials.ULV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Basic.set(
             addItem(
                 Circuit_Basic.ID,
                 "Integrated Logic Circuit",
                 "A Basic Circuit",
-                OrePrefixes.circuit.get(Materials.Basic),
+                OrePrefixes.circuit.get(Materials.LV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Good.set(
             addItem(
                 Circuit_Good.ID,
                 "Good Electronic Circuit",
                 "A Good Circuit",
-                OrePrefixes.circuit.get(Materials.Good),
+                OrePrefixes.circuit.get(Materials.MV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Advanced.set(
             addItem(
                 Circuit_Advanced.ID,
                 "Processor Assembly",
                 "An Advanced Circuit",
-                OrePrefixes.circuit.get(Materials.Advanced),
+                OrePrefixes.circuit.get(Materials.HV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Data.set(
             addItem(
                 Circuit_Data.ID,
                 "Workstation",
                 "An Extreme Circuit",
-                OrePrefixes.circuit.get(Materials.Data),
+                OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Elite.set(
             addItem(
                 Circuit_Elite.ID,
                 "Mainframe",
                 "An Elite Circuit",
-                OrePrefixes.circuit.get(Materials.Elite),
+                OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Master.set(
             addItem(
                 Circuit_Master.ID,
                 "Nanoprocessor Mainframe",
                 "A Master Circuit",
-                OrePrefixes.circuit.get(Materials.Master),
+                OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         // Backwards compatibility.
@@ -3131,6 +2516,24 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_Chest_Basic.set(
+            addItem(
+                Cover_Chest_Basic.ID,
+                "Basic Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
+        ItemList.Cover_Chest_Good.set(
+            addItem(
+                Cover_Chest_Good.ID,
+                "Good Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
+        ItemList.Cover_Chest_Advanced.set(
+            addItem(
+                Cover_Chest_Advanced.ID,
+                "Advanced Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
 
         ItemList.Cover_Screen.set(
             addItem(
@@ -3373,6 +2776,228 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
+        ItemList.Electromagnet_Iron.set(
+            addItem(
+                Electromagnet_Iron.ID,
+                "Iron Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Steel.set(
+            addItem(
+                Electromagnet_Steel.ID,
+                "Steel Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 16)));
+        ItemList.Electromagnet_Neodymium.set(
+            addItem(
+                Electromagnet_Neodymium.ID,
+                "Neodymium Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 24)));
+        ItemList.Electromagnet_Samarium.set(
+            addItem(
+                Electromagnet_Samarium.ID,
+                EnumChatFormatting.YELLOW + "Samarium Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
+        ItemList.Electromagnet_Tengam.set(
+            addItem(
+                Electromagnet_Tengam.ID,
+                EnumChatFormatting.GREEN + "Tengam Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
+
+        // Empty battery hulls
+        ItemList.BatteryHull_EV.set(
+            addItem(
+                BatteryHull_EV.ID,
+                "Small Sunnarium Battery (Empty)",
+                "An empty EV Battery Container",
+                new ItemData(Materials.BlueSteel, OrePrefixes.plate.mMaterialAmount * 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 8L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L)));
+        ItemList.BatteryHull_IV.set(
+            addItem(
+                BatteryHull_IV.ID,
+                "Medium Sunnarium Battery (Empty)",
+                "An empty IV Battery Container",
+                new ItemData(Materials.RoseGold, OrePrefixes.plate.mMaterialAmount * 6L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 16L)));
+        ItemList.BatteryHull_LuV.set(
+            addItem(
+                BatteryHull_LuV.ID,
+                "Large Sunnarium Battery (Empty)",
+                "An empty LuV Battery Container",
+                new ItemData(Materials.RedSteel, OrePrefixes.plate.mMaterialAmount * 18L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 32L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 32L)));
+        ItemList.BatteryHull_ZPM.set(
+            addItem(
+                BatteryHull_ZPM.ID,
+                "Medium Naquadria Battery (Empty)",
+                "An empty ZPM Energy Storage",
+                new ItemData(Materials.Europium, OrePrefixes.plate.mMaterialAmount * 6L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 64L)));
+        ItemList.BatteryHull_UV.set(
+            addItem(
+                BatteryHull_UV.ID,
+                "Large Naquadria Battery (Empty)",
+                "An empty UV Energy Storage",
+                new ItemData(Materials.Americium, OrePrefixes.plate.mMaterialAmount * 18L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 128L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 128L)));
+        ItemList.BatteryHull_UHV.set(
+            addItem(
+                BatteryHull_UHV.ID,
+                "Small Neutronium Battery (Empty)",
+                "An empty UHV Energy Storage",
+                new ItemData(Materials.Naquadah, OrePrefixes.plate.mMaterialAmount * 24L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 256L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 256L)));
+        ItemList.BatteryHull_UEV.set(
+            addItem(
+                BatteryHull_UEV.ID,
+                "Medium Neutronium Battery (Empty)",
+                "An empty UEV Energy Storage",
+                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.mMaterialAmount * 36L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 512L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 512L)));
+        ItemList.BatteryHull_UIV.set(
+            addItem(
+                BatteryHull_UIV.ID,
+                "Large Neutronium Battery (Empty)",
+                "An empty UIV Energy Storage",
+                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.mMaterialAmount * 48L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1024L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1024L)));
+        ItemList.BatteryHull_UMV.set(
+            addItem(
+                BatteryHull_UMV.ID,
+                "Medium Plasma Battery (Empty)",
+                "An empty UMV Energy Storage",
+                new ItemData(Materials.Neutronium, OrePrefixes.plate.mMaterialAmount * 56L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2048L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2048L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2048L)));
+        ItemList.BatteryHull_UxV.set(
+            addItem(
+                BatteryHull_UxV.ID,
+                "Large Plasma Battery (Empty)",
+                "An empty UXV Energy Storage",
+                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.mMaterialAmount * 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4096L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4096L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4096L)));
+
+        ItemList.BatteryHull_EV_Full.set(
+            addItem(
+                BatteryHull_EV_Full.ID,
+                "Small Sunnarium Battery",
+                "Reusable",
+                "batteryEV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_IV_Full.set(
+            addItem(
+                BatteryHull_IV_Full.ID,
+                "Medium Sunnarium Battery",
+                "Reusable",
+                "batteryIV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_LuV_Full.set(
+            addItem(
+                BatteryHull_LuV_Full.ID,
+                "Large Sunnarium Battery",
+                "Reusable",
+                "batteryLuV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_ZPM_Full.set(
+            addItem(
+                BatteryHull_ZPM_Full.ID,
+                "Medium Naquadria Battery",
+                "Reusable",
+                "batteryZPM",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UV_Full.set(
+            addItem(
+                BatteryHull_UV_Full.ID,
+                "Large Naquadria Battery",
+                "Reusable",
+                "batteryUV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UHV_Full.set(
+            addItem(
+                BatteryHull_UHV_Full.ID,
+                "Small Neutronium Battery",
+                "Reusable",
+                "batteryUHV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UEV_Full.set(
+            addItem(
+                BatteryHull_UEV_Full.ID,
+                "Medium Neutronium Battery",
+                "Reusable",
+                "batteryUEV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UIV_Full.set(
+            addItem(
+                BatteryHull_UIV_Full.ID,
+                "Large Neutronium Battery",
+                "Reusable",
+                "batteryUIV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UMV_Full.set(
+            addItem(
+                BatteryHull_UMV_Full.ID,
+                "Medium Infinity Battery",
+                "Reusable",
+                "batteryUMV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UxV_Full.set(
+            addItem(
+                BatteryHull_UxV_Full.ID,
+                "Large Infinity Battery",
+                "Reusable",
+                "batteryUXV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
 
         removeRecipes();
         setBurnValues();
@@ -3383,13 +3008,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setAllElectricStats();
         registerTieredTooltips();
 
-        compressorRecipes();
         craftingShapedRecipes();
         craftingShapelessRecipes();
-        assemblerRecipes();
-        cannerRecipes();
-        packagerRecipes();
-        extractorRecipes();
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
@@ -3525,19 +3145,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setFluidContainerStats(32000 + Large_Fluid_Cell_Iridium.ID, 8_192_000L, 2L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Osmium.ID, 32_768_000L, 1L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Neutronium.ID, 131_072_000L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Iron.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Steel.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
     }
 
     private void oredictBlacklistEntries() {
         GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
-    }
-
-    private void compressorRecipes() {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
-            .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
     }
 
     private void registerCovers() {
@@ -3749,6 +3365,18 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new GT_Cover_ControlsWork(TextureFactory.of(OVERLAY_CONTROLLER)));
 
         GregTech_API.registerCover(
+            ItemList.Cover_Chest_Basic.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
+            new GT_Cover_Chest(9, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)));
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Good.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
+            new GT_Cover_Chest(12, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)));
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Advanced.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
+            new GT_Cover_Chest(15, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)));
+        GregTech_API.registerCover(
             ItemList.Cover_ActivityDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
             new GT_Cover_DoesWork(doesWorkCoverTexture));
@@ -3884,538 +3512,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new ItemStack(Blocks.glass),
             null,
             new ItemStack(Blocks.glass));
-    }
-
-    private void assemblerRecipes() {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Spray_Empty.get(1L))
-            .duration(40 * SECONDS)
-            .eut(1)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Aluminium, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.ThermosCan_Empty.get(1L))
-            .duration(40 * SECONDS)
-            .eut(1)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.AnyBronze, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Steel.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Platinum, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Silver, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Aluminium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Electrum, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_StainlessSteel.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.RoseGold, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Titanium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(256)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Palladium, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Chrome.get(1L))
-            .duration(10 * SECONDS)
-            .eut(1024)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Naquadah, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Iridium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.ElectrumFlux, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Osmium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(4096)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Draconium, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Neutronium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                ItemList.Large_Fluid_Cell_Aluminium.get(1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1L))
-            .duration(40 * SECONDS)
-            .eut(1)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(1L))
-            .duration(16 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TricalciumPhosphate, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(1L))
-            .duration(16 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(4L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(4L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 2L),
-                new ItemStack(Items.flint, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Lighter_Invar_Empty.get(1L))
-            .duration(12 * SECONDS + 16 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 2L),
-                new ItemStack(Items.flint, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Lighter_Platinum_Empty.get(1L))
-            .duration(12 * SECONDS + 16 * TICKS)
-            .eut(256)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Lock.get(1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Lock.get(1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Lock.get(1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Sensor_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_PlayerDetector.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                ItemList.Cover_Drain.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                ItemList.Cover_Drain.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                ItemList.Cover_Drain.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
-                new ItemStack(Blocks.iron_bars, 2),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L),
-                new ItemStack(Blocks.iron_bars, 2),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L),
-                new ItemStack(Blocks.iron_bars, 2),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                new ItemStack(Blocks.crafting_table, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                new ItemStack(Blocks.crafting_table, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                new ItemStack(Blocks.crafting_table, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_Screen.get(1L),
-                ItemList.Cover_FluidDetector.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_FluidStorageMonitor.get(1L))
-            .duration(40 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.NC_SensorKit.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Emitter_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_RedstoneTransmitterExternal.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Sensor_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_RedstoneReceiverExternal.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Emitter_MV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_NeedsMaintainance.get(1L))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
-                ItemList.Component_Filter.get(1L),
-                ItemList.Conveyor_Module_LV.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.ItemFilter_Export.get(1L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
-                ItemList.Component_Filter.get(1L),
-                ItemList.Conveyor_Module_LV.get(1L),
-                GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.ItemFilter_Import.get(1L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-    }
-
-    private void cannerRecipes() {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
-                ItemList.Battery_Hull_LV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
-            .duration(5 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
-                ItemList.Battery_Hull_LV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_LV_Lithium.get(1L))
-            .duration(5 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
-                ItemList.Battery_Hull_LV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_LV_Sodium.get(1L))
-            .duration(5 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
-                ItemList.Battery_Hull_MV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
-                ItemList.Battery_Hull_MV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_MV_Lithium.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
-                ItemList.Battery_Hull_MV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_MV_Sodium.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
-                ItemList.Battery_Hull_HV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
-                ItemList.Battery_Hull_HV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_HV_Lithium.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
-                ItemList.Battery_Hull_HV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_HV_Sodium.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-    }
-
-    private void packagerRecipes() {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Tool_Matches.get(16L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
-            .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(packagerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Tool_MatchBox_Full.get(1L))
-            .itemOutputs(ItemList.Tool_Matches.get(16L))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(16)
-            .addTo(packagerRecipes);
-    }
-
-    private void extractorRecipes() {
-        GT_ModHandler
-            .addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler
-            .addExtractionRecipe(ItemList.Battery_SU_MV_SulfuricAcid.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_MV_Mercury.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler
-            .addExtractionRecipe(ItemList.Battery_SU_HV_SulfuricAcid.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_HV_Mercury.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Cadmium.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Lithium.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Sodium.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_MV_Cadmium.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_MV_Lithium.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_MV_Sodium.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Cadmium.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Lithium.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Sodium.get(1L), ItemList.Battery_Hull_HV.get(1L));
     }
 
     private void craftingShapedRecipes() {
@@ -4642,70 +3738,70 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Steel), 'M',
                 ItemList.Electric_Motor_LV, 'P', ItemList.Electric_Piston_LV, 'E',
-                OrePrefixes.circuit.get(Materials.Basic), 'C', OrePrefixes.cableGt01.get(Materials.Tin) });
+                OrePrefixes.circuit.get(Materials.LV), 'C', OrePrefixes.cableGt01.get(Materials.Tin) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Aluminium), 'M',
                 ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV, 'E',
-                OrePrefixes.circuit.get(Materials.Good), 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
+                OrePrefixes.circuit.get(Materials.MV), 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.StainlessSteel), 'M',
                 ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV, 'E',
-                OrePrefixes.circuit.get(Materials.Advanced), 'C', OrePrefixes.cableGt01.get(Materials.Gold) });
+                OrePrefixes.circuit.get(Materials.HV), 'C', OrePrefixes.cableGt01.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_EV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Titanium), 'M',
                 ItemList.Electric_Motor_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                OrePrefixes.circuit.get(Materials.Data), 'C', OrePrefixes.cableGt01.get(Materials.Aluminium) });
+                OrePrefixes.circuit.get(Materials.EV), 'C', OrePrefixes.cableGt01.get(Materials.Aluminium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.TungstenSteel), 'M',
                 ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV, 'E',
-                OrePrefixes.circuit.get(Materials.Elite), 'C', OrePrefixes.cableGt01.get(Materials.Tungsten) });
+                OrePrefixes.circuit.get(Materials.IV), 'C', OrePrefixes.cableGt01.get(Materials.Tungsten) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_LV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'S',
-                OrePrefixes.stick.get(Materials.Brass), 'C', OrePrefixes.circuit.get(Materials.Basic), 'W',
+                OrePrefixes.stick.get(Materials.Brass), 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tin) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.EnderPearl), 'S',
-                OrePrefixes.stick.get(Materials.Electrum), 'C', OrePrefixes.circuit.get(Materials.Good), 'W',
+                OrePrefixes.stick.get(Materials.Electrum), 'C', OrePrefixes.circuit.get(Materials.MV), 'W',
                 OrePrefixes.cableGt01.get(Materials.AnyCopper) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.EnderEye), 'S',
-                OrePrefixes.stick.get(Materials.Chrome), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W',
+                OrePrefixes.stick.get(Materials.Chrome), 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_EV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumEye, 'S',
-                OrePrefixes.stick.get(Materials.Platinum), 'C', OrePrefixes.circuit.get(Materials.Data), 'W',
+                OrePrefixes.stick.get(Materials.Platinum), 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Aluminium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumStar, 'S',
-                OrePrefixes.stick.get(Materials.Iridium), 'C', OrePrefixes.circuit.get(Materials.Elite), 'W',
+                OrePrefixes.stick.get(Materials.Iridium), 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tungsten) });
 
         GT_ModHandler.addCraftingRecipe(
@@ -4714,35 +3810,35 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'S',
                 OrePrefixes.stick.get(Materials.Brass), 'P', OrePrefixes.plate.get(Materials.Steel), 'C',
-                OrePrefixes.circuit.get(Materials.Basic) });
+                OrePrefixes.circuit.get(Materials.LV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.get(Materials.Emerald), 'S',
                 OrePrefixes.stick.get(Materials.Electrum), 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C',
-                OrePrefixes.circuit.get(Materials.Good) });
+                OrePrefixes.circuit.get(Materials.MV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.get(Materials.EnderEye), 'S',
                 OrePrefixes.stick.get(Materials.Chrome), 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'C',
-                OrePrefixes.circuit.get(Materials.Advanced) });
+                OrePrefixes.circuit.get(Materials.HV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_EV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumEye, 'S',
                 OrePrefixes.stick.get(Materials.Platinum), 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
-                OrePrefixes.circuit.get(Materials.Data) });
+                OrePrefixes.circuit.get(Materials.EV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumStar, 'S',
                 OrePrefixes.stick.get(Materials.Iridium), 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'C',
-                OrePrefixes.circuit.get(Materials.Elite) });
+                OrePrefixes.circuit.get(Materials.IV) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Component_Sawblade_Diamond.get(1L),
@@ -4775,7 +3871,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             ItemList.Tool_Scanner.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "EPR", "CSC", "PBP", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'P',
+            new Object[] { "EPR", "CSC", "PBP", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 OrePrefixes.plate.get(Materials.Aluminium), 'E', ItemList.Emitter_MV, 'R', ItemList.Sensor_MV, 'S',
                 ItemList.Cover_Screen, 'B', ItemList.Battery_RE_MV_Lithium });
 
@@ -4796,117 +3892,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new Object[] { "PSP", "PCP", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S',
                 ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B',
                 ItemList.Battery_RE_MV_Lithium.get(1L) });
-
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Emtpy.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Emtpy, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Poison.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Poison_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Poison_Strong.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Strong, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Slowness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Slowness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Weakness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Weakness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Holy_Water.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Holy_Water, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Emtpy.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Emtpy, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Poison.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Poison_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Poison_Strong.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Strong, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Slowness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Slowness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Weakness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Weakness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Holy_Water.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Holy_Water, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-
     }
 
     private void craftingShapelessRecipes() {
@@ -5135,10 +4120,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Spray_Empty.get(1L),
                 ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
                 ItemList.SPRAY_CAN_DYES[i].get(1L),
-                512L,
+                GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanUses", 512),
                 i);
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
-            addItemBehavior(32001 + Spray_Colors_Used[i], behaviourSprayColor);
+            addItemBehavior(32000 + Spray_Colors_Used[i], behaviourSprayColor);
         }
     }
 
@@ -5172,6 +4157,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + Tool_Cover_Copy_Paste.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
         setElectricStats(32000 + Tool_Cheat.ID, -2000000000L, 1000000000L, -1L, -3L, false);
         setElectricStats(32000 + Tool_Scanner.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
+        setElectricStats(32000 + BatteryHull_EV_Full.ID, 6400000L, GT_Values.V[4], 4L, -3L, true);
+        setElectricStats(32000 + BatteryHull_IV_Full.ID, 25600000L, GT_Values.V[5], 5L, -3L, true);
+        setElectricStats(32000 + BatteryHull_LuV_Full.ID, 102400000L, GT_Values.V[6], 6L, -3L, true);
+        setElectricStats(32000 + BatteryHull_ZPM_Full.ID, 409600000L, GT_Values.V[7], 7L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UV_Full.ID, 1638400000L, GT_Values.V[8], 8L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UHV_Full.ID, 6553600000L, GT_Values.V[9], 9L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UEV_Full.ID, 26214400000L, GT_Values.V[10], 10L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UIV_Full.ID, 104857600000L, GT_Values.V[11], 11L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UMV_Full.ID, 419430400000L, GT_Values.V[12], 12L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UxV_Full.ID, 1677721600000L, GT_Values.V[13], 13L, -3L, true);
     }
 
     private void registerTieredTooltips() {
@@ -5208,6 +4203,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_Data.get(1), EV);
         registerTieredTooltip(ItemList.Circuit_Elite.get(1), IV);
         registerTieredTooltip(ItemList.Circuit_Master.get(1), LuV);
+        registerTieredTooltip(ItemList.BatteryHull_EV_Full.get(1), EV);
+        registerTieredTooltip(ItemList.BatteryHull_IV_Full.get(1), IV);
+        registerTieredTooltip(ItemList.BatteryHull_LuV_Full.get(1), LuV);
+        registerTieredTooltip(ItemList.BatteryHull_ZPM_Full.get(1), ZPM);
+        registerTieredTooltip(ItemList.BatteryHull_UV_Full.get(1), UV);
+        registerTieredTooltip(ItemList.BatteryHull_UHV_Full.get(1), UHV);
+        registerTieredTooltip(ItemList.BatteryHull_UEV_Full.get(1), UEV);
+        registerTieredTooltip(ItemList.BatteryHull_UIV_Full.get(1), UIV);
+        registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
+        registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
     }
 }

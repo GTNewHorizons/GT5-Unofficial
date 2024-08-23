@@ -4,9 +4,9 @@ import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -15,9 +15,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +30,7 @@ import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputDataItems;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputDataItems;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessOutputDataItems;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
@@ -47,15 +50,20 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataA
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.WirelessComputationPacket;
+import gregtech.common.WirelessDataStore;
 
 public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM
     implements ISurvivalConstructable {
 
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
+    private final ArrayList<GT_MetaTileEntity_Hatch_WirelessOutputDataItems> eWirelessStacksDataOutputs = new ArrayList<>();
     private final ArrayList<IInventory> eDataAccessHatches = new ArrayList<>();
     private boolean slave = false;
+    private boolean wirelessModeEnabled = false;
     // endregion
 
     // region structure
@@ -81,10 +89,13 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         .addElement(
             'D',
             buildHatchAdder(GT_MetaTileEntity_EM_dataBank.class)
-                .atLeast(DataBankHatches.OutboundConnector, DataBankHatches.InboundConnector)
+                .atLeast(
+                    DataBankHatches.OutboundConnector,
+                    DataBankHatches.InboundConnector,
+                    DataBankHatches.WirelessOutboundConnector)
                 .casingIndex(textureOffset + 1)
                 .dot(2)
-                .buildAndChain(DataBankHatches.DataStick.newAny(textureOffset + 1, 2), ofBlock(sBlockCasingsTT, 1)))
+                .buildAndChain(DataBankHatches.DataStick.newAnyOrCasing(textureOffset + 1, 2, sBlockCasingsTT, 1)))
         .build();
     // endregion
 
@@ -111,8 +122,11 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
                                                                                            // Assembling Lines
             // with more Data Sticks
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling
-            // Lines access to the same Data
+                                                                                           // Assembling Lines access to
+                                                                                           // the same Data
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to toggle
+                                                                                           // wireless mode
+
             // Stick
             .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
             .addSeparator()
@@ -138,6 +152,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
+        eWirelessStacksDataOutputs.clear();
         slave = false;
         return structureCheck_EM("main", 2, 1, 0);
     }
@@ -145,9 +160,10 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
-        if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
+        if (eDataAccessHatches.size() > 0 && (eStacksDataOutputs.size() > 0 || eWirelessStacksDataOutputs.size() > 0)) {
             mEUt = -(int) V[slave ? 6 : 4];
-            eAmpereFlow = 1 + (long) eStacksDataOutputs.size() * eDataAccessHatches.size();
+            eAmpereFlow = 1
+                + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size()) * eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             return SimpleCheckRecipeResult.ofSuccess("providing_data");
@@ -172,9 +188,17 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             for (GT_MetaTileEntity_Hatch_OutputDataItems hatch : eStacksDataOutputs) {
                 hatch.q = new InventoryDataPacket(arr);
             }
+            if (wirelessModeEnabled) {
+                for (GT_MetaTileEntity_Hatch_WirelessOutputDataItems hatch : eWirelessStacksDataOutputs) {
+                    hatch.dataPacket = new InventoryDataPacket(arr);
+                }
+            }
         } else {
             for (GT_MetaTileEntity_Hatch_OutputDataItems hatch : eStacksDataOutputs) {
                 hatch.q = null;
+            }
+            for (GT_MetaTileEntity_Hatch_WirelessOutputDataItems hatch : eWirelessStacksDataOutputs) {
+                hatch.dataPacket = null;
             }
         }
     }
@@ -207,6 +231,10 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         if (aMetaTileEntity == null) {
             return false;
         }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_WirelessOutputDataItems) {
+            ((GT_MetaTileEntity_Hatch_WirelessOutputDataItems) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eWirelessStacksDataOutputs.add((GT_MetaTileEntity_Hatch_WirelessOutputDataItems) aMetaTileEntity);
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputDataItems) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataItems) aMetaTileEntity);
@@ -220,6 +248,53 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
                 return eDataAccessHatches.add(aMetaTileEntity);
             }
         return false;
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+        // Every 200 ticks, clear wireless data store so hatches need to provide their data again in
+        // their onPostTick() call. This also happens every 200 ticks
+        if (mMachine && aBaseMetaTileEntity.isActive() && wirelessModeEnabled && aTick % 200 == 0) {
+            WirelessDataStore wirelessStore = WirelessDataStore
+                .getWirelessDataSticks(aBaseMetaTileEntity.getOwnerUuid());
+            wirelessStore.clearData();
+
+            // After reset, clear uploadedSinceReset of all connected hatches
+            for (GT_MetaTileEntity_Hatch_WirelessOutputDataItems hatch : eWirelessStacksDataOutputs) {
+                hatch.uploadedSinceReset = false;
+            }
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            wirelessModeEnabled = !wirelessModeEnabled;
+            if (wirelessModeEnabled) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
+                WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
+                WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
+            }
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("wirelessModeEnabled", wirelessModeEnabled);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("wirelessModeEnabled")) {
+            wirelessModeEnabled = aNBT.getBoolean("wirelessModeEnabled");
+        } else {
+            wirelessModeEnabled = false;
+        }
     }
 
     @Override
@@ -264,6 +339,13 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             @Override
             public long count(GT_MetaTileEntity_EM_dataBank t) {
                 return t.eDataAccessHatches.size();
+            }
+        },
+        WirelessOutboundConnector(GT_MetaTileEntity_Hatch_WirelessOutputDataItems.class) {
+
+            @Override
+            public long count(GT_MetaTileEntity_EM_dataBank t) {
+                return t.eWirelessStacksDataOutputs.size();
             }
         };
 

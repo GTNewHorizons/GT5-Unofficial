@@ -1,5 +1,9 @@
 package gtPlusPlus.core.tileentities.general;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -7,12 +11,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.SyncHandlers;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.inventories.Inventory_DecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory {
+public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory, IGuiHolder {
 
     private final Inventory_DecayablesChest inventoryContents;
 
@@ -32,6 +49,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     public float prevLidAngle;
     /** The number of players currently using this chest */
     public int numPlayersUsing;
+    private final Set<EntityPlayer> playersUsing = Collections.newSetFromMap(new WeakHashMap<>());
 
     private String customName;
 
@@ -374,5 +392,41 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         ItemUtils.organiseInventory(getInventory());
         cachedChestType = 0;
         return cachedChestType;
+    }
+
+    @Override
+    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager) {
+        final SlotGroup SLOT_GROUP = new SlotGroup("decayables", 5);
+        syncManager.registerSlotGroup(SLOT_GROUP);
+        syncManager.addOpenListener(player -> {
+            if (playersUsing.add(player)) {
+                this.openInventory();
+            }
+        });
+        syncManager.addCloseListener(player -> {
+            if (playersUsing.remove(player)) {
+                this.closeInventory();
+            }
+        });
+        final InvWrapper contents = new InvWrapper(inventoryContents);
+        final ModularPanel panel = ModularPanel.defaultPanel("decayablesChest");
+        panel.bindPlayerInventory();
+        panel.child(
+            new TextWidget(IKey.lang("tile.blockDecayablesChest.name")).top(5)
+                .left(5));
+        panel.child(
+            SlotGroupWidget.builder()
+                .matrix("IIIII", "IIIII", "IIIII")
+                .key(
+                    'I',
+                    index -> new ItemSlot().slot(
+                        SyncHandlers.itemSlot(contents, index)
+                            .slotGroup(SLOT_GROUP)))
+                .build()
+                .flex(
+                    flex -> flex.anchor(Alignment.TopCenter)
+                        .marginTop(15)
+                        .leftRelAnchor(0.5f, 0.5f)));
+        return panel;
     }
 }

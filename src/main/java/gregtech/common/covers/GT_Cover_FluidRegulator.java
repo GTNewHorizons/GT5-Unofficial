@@ -152,17 +152,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         return aCoverVariable;
     }
 
-    @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            adjustSpeed(aPlayer, aCoverVariable, 1);
-        } else {
-            adjustSpeed(aPlayer, aCoverVariable, -1);
-        }
-        return true;
-    }
-
     protected boolean canTransferFluid(FluidStack fluid) {
         return true;
     }
@@ -231,11 +220,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 
     @Override
     public boolean hasCoverGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean useModularUI() {
         return true;
     }
 

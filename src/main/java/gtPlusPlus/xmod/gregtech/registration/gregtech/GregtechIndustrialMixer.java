@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Mixer;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +20,7 @@ public class GregtechIndustrialMixer {
         // Industrial Mixer Multiblock
         GregtechItemList.Industrial_Mixer.set(
             new GregtechMetaTileEntity_IndustrialMixer(
-                811,
+                Industrial_Mixer.ID,
                 "industrialmixer.controller.tier.single",
                 "Industrial Mixing Machine").getStackForm(1L));
     }

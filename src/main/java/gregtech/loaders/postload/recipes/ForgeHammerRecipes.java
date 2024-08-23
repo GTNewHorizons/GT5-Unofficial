@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -18,6 +17,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ForgeHammerRecipes implements Runnable {
 
@@ -124,7 +124,7 @@ public class ForgeHammerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Firebrick.get(1))
-            .itemOutputs(Materials.Brick.getDust(1))
+            .itemOutputs(Materials.Fireclay.getDust(1))
             .duration(10 * TICKS)
             .eut(16)
             .addTo(hammerRecipes);
@@ -137,7 +137,7 @@ public class ForgeHammerRecipes implements Runnable {
             .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Tesseract.get(1L), getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
+            .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
             .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(2880L))
             .fluidOutputs(MaterialsUEVplus.Space.getMolten(1440L), MaterialsUEVplus.Time.getMolten(1440L))
             .duration(10 * SECONDS)

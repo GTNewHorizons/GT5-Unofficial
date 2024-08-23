@@ -8,7 +8,9 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -180,8 +182,8 @@ public class CI {
     public static ItemStack explosiveITNT;
 
     public static Materials[] tieredMaterials = new Materials[] { Materials.Iron, Materials.Steel, Materials.Aluminium,
-        Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium,
-        Materials.Osmium, Materials.Neutronium };
+        Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel,
+        ExternalMaterials.getRhodiumPlatedPalladium(), Materials.Iridium, Materials.Osmium, Materials.Neutronium };
 
     public static void preInit() {
 
@@ -251,10 +253,6 @@ public class CI {
         } else {
             return "circuitPrimitive";
         }
-    }
-
-    public static ItemStack getNumberedCircuit(int Meta) {
-        return ItemUtils.getGregtechCircuit(Meta);
     }
 
     private static Object getMaterialFromTier(int tier) {
@@ -415,7 +413,7 @@ public class CI {
     }
 
     private static final Material[] aMaterial_Main = new Material[] { ALLOY.POTIN, ALLOY.TUMBAGA, ALLOY.EGLIN_STEEL,
-        ALLOY.INCONEL_625, ALLOY.INCOLOY_DS, ALLOY.NITINOL_60, ALLOY.ZERON_100, ALLOY.PIKYONIUM,
+        ALLOY.TANTALUM_CARBIDE, ALLOY.INCOLOY_DS, ALLOY.INCONEL_625, ALLOY.ZERON_100, ALLOY.PIKYONIUM,
         ELEMENT.STANDALONE.ADVANCED_NITINOL, ALLOY.ABYSSAL, ALLOY.QUANTUM, ELEMENT.STANDALONE.HYPOGEN };
 
     private static final Material[] aMaterial_Secondary = new Material[] { ALLOY.STEEL, ALLOY.SILICON_CARBIDE,
@@ -432,9 +430,9 @@ public class CI {
         Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome, Materials.Platinum,
         Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium, Materials.SuperconductorUHV, };
 
-    private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.Primitive, Materials.Basic,
-        Materials.Good, Materials.Advanced, Materials.Data, Materials.Data, Materials.Elite, Materials.Master,
-        Materials.Ultimate, Materials.SuperconductorUHV, Materials.Infinite, };
+    private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.ULV, Materials.LV, Materials.MV,
+        Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM, Materials.UV, Materials.UHV,
+        Materials.UEV, };
 
     private static final Material[][] aMaster = new Material[][] { aMaterial_Main, aMaterial_Secondary,
         aMaterial_Tertiary };
@@ -452,14 +450,6 @@ public class CI {
     }
 
     public static FluidStack getTieredFluid(int aTier, int aAmount, int aType) {
-        // Weird Legacy handling
-        /*
-         * ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1); FluidStack a =
-         * GT_Utility.getFluidForFilledItem(aCell, true); if (a == null) { a = aMaster[aType][aTier].getFluid(aAmount);
-         * }
-         */
-
-        // Modern Handling
         FluidStack a = aMaster[aType][aTier].getFluidStack(aAmount);
         if (a == null) {
             ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
@@ -527,11 +517,7 @@ public class CI {
         }
 
         if (aPrefix == OrePrefixes.circuit) {
-            /*
-             * if (aTier == 4) { return ItemUtils.getSimpleStack(CI.getDataStick(), aAmount); } else if (aTier == 5) {
-             * return ItemUtils.getSimpleStack(CI.getDataOrb(), aAmount); }
-             */
-            return ItemUtils.getOrePrefixStack(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
+            return GT_OreDictUnificator.get(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
         }
 
         // Check for Cables first, catch SuperConductor case and swap to wire.
@@ -978,7 +964,7 @@ public class CI {
 
     /**
      * Aluminium + Silver Catalyst
-     * 
+     *
      * @param aAmount - Stacksize
      * @return - A Catalyst stack of given size
      */
@@ -988,7 +974,7 @@ public class CI {
 
     /**
      * Iridium + Ruthenium Catalyst
-     * 
+     *
      * @param aAmount - Stacksize
      * @return - A Catalyst stack of given size
      */
@@ -998,7 +984,7 @@ public class CI {
 
     /**
      * Platinum + Rhodium Catalyst
-     * 
+     *
      * @param aAmount - Stacksize
      * @return - A Catalyst stack of given size
      */

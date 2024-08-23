@@ -233,13 +233,6 @@ public class GT_BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(
             "pyramidJungleDispenser",
             new WeightedRandomChestContent(new ItemStack(Items.fire_charge, 1), 2, 8, 30));
-        ChestGenHooks.addItem(
-            "pyramidJungleDispenser",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.DamascusSteel, 1L),
-                8,
-                16,
-                20));
 
         ChestGenHooks.addItem(
             "mineshaftCorridor",
@@ -371,20 +364,6 @@ public class GT_BookAndLootLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.DamascusSteel, 1L),
                 1,
                 4,
-                6));
-        ChestGenHooks.addItem(
-            "strongholdCorridor",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.DamascusSteel, 1L),
-                16,
-                48,
-                6));
-        ChestGenHooks.addItem(
-            "strongholdCorridor",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.SterlingSilver, 1L),
-                8,
-                24,
                 6));
     }
 }

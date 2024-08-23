@@ -235,11 +235,6 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
@@ -316,12 +311,15 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
         int[] yPos = new int[] { 4, 22, 40, 62, 80, 98 };
         for (int i = 0; i < yPos.length; i++) {
             final int index = i; // needed for lambda
-            builder.widget(
-                new ButtonWidget()
-                    .setOnClick((clickData, widget) -> numbers[index] += clickData.shift ? addNumberShift : addNumber)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
-                    .setSize(18, 18)
-                    .setPos(xPos, yPos[index]));
+            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                numbers[index] += clickData.shift ? addNumberShift : addNumber;
+                if (index >= 3) {
+                    numbers[index] = (short) Math.max(numbers[index], 0);
+                }
+            })
+                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setSize(18, 18)
+                .setPos(xPos, yPos[index]));
         }
     }
 

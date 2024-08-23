@@ -6,7 +6,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
 import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
-import static com.github.technus.tectech.util.CommonValues.VN;
+import static gregtech.api.enums.GT_Values.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;
@@ -309,11 +309,6 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
                 }
             }
         }
-    }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
     }
 
     @Override

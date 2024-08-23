@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -154,16 +153,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         mName = aName;
         inventoryHandler = new ItemStackHandler(mInventory);
         colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
-    }
-
-    /**
-     * This method will only be called on client side
-     *
-     * @return whether the secondary description should be display. default is false
-     */
-    @Deprecated
-    public boolean isDisplaySecondaryDescription() {
-        return false;
     }
 
     @Override
@@ -1079,24 +1068,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         //
     }
 
-    /**
-     * @deprecated Use ModularUI
-     */
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    /**
-     * @deprecated Use ModularUI
-     */
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
     @Override
     public boolean connectsToItemPipe(ForgeDirection side) {
         return false;
@@ -1185,11 +1156,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     @Override
     public boolean allowGeneralRedstoneOutput() {
         return false;
-    }
-
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
     }
 
     @Override

@@ -14,7 +14,6 @@ import static goodgenerator.util.ItemRefer.Compassline_Casing_UV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_ZPM;
 import static goodgenerator.util.ItemRefer.Component_Assembly_Line;
-import static goodgenerator.util.Log.LOGGER;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -31,8 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.logging.log4j.Level;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
@@ -53,7 +50,7 @@ import gtPlusPlus.core.recipe.common.CI;
 public class ComponentAssemblyLineMiscRecipes {
 
     public static final String[] circuitTierMaterials = { "Primitive", "Basic", "Good", "Advanced", "Data", "Elite",
-        "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Piko", "Quantum" };
+        "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Exotic", "Cosmic" };
 
     static final HashMap<String, Integer> NameToTier = new HashMap<>();
 
@@ -64,20 +61,6 @@ public class ComponentAssemblyLineMiscRecipes {
 
         generateCasingRecipes();
         generateWrapRecipes();
-        // Try and find the ZPM Fluid solidifier
-        ItemStack solidifier;
-        try {
-            Class<?> c = Class.forName("com.dreammaster.gthandler.CustomItemList");
-            Object maybeSolidifier = c.getMethod("valueOf", String.class)
-                .invoke(null, "FluidSolidifierZPM");
-            solidifier = (ItemStack) (c.getMethod("get", long.class, Object[].class)
-                .invoke(maybeSolidifier, 16L, null));
-            if (GT_Utility.isStackValid(solidifier)) LOGGER.log(Level.INFO, "ZPM Fluid Solidifier found.");
-            else throw new NullPointerException();
-        } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "ZPM Fluid Solidifier not found, falling back to IV.", e);
-            solidifier = ItemList.Machine_IV_FluidSolidifier.get(16);
-        }
 
         // The controller itself
         GT_Values.RA.stdBuilder()
@@ -95,7 +78,7 @@ public class ComponentAssemblyLineMiscRecipes {
                     .get(32),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Iridium, 32),
-                solidifier,
+                ItemList.FluidSolidifierZPM.get(16L),
                 getALCircuit(8, 16),
                 getALCircuit(7, 20),
                 getALCircuit(6, 24))

@@ -7,6 +7,8 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -158,7 +160,7 @@ public class DistillationTower extends StackableController<DistillationTower, Di
 
     @Override
     public String getLocalName() {
-        return "Distillation Tower";
+        return StatCollector.translateToLocal(getTileEntityName());
     }
 
     @Override

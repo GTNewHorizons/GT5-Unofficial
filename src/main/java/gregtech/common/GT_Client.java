@@ -35,6 +35,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -84,21 +85,22 @@ import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_MusicSystem;
 import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.GT_Item_Machines;
-import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
 import gregtech.common.render.GT_FluidDisplayStackRenderer;
+import gregtech.common.render.GT_LaserRenderer;
 import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_RenderDrone;
 import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.common.render.GT_WormholeRenderer;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
@@ -106,6 +108,8 @@ import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.NEI_GT_Config;
 import ic2.api.tile.IWrenchable;
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.SoundSystemException;
 
 // Referenced classes of package gregtech.common:
 // GT_Proxy
@@ -625,6 +629,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
+        new GT_LaserRenderer();
+        new GT_WormholeRenderer();
+
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
@@ -633,8 +640,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             metaGeneratedItemRenderer.registerItem(GT_Bees.combs);
         }
         new GT_MetaGenerated_Tool_Renderer();
-        new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow");
-        new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
         MinecraftForge.EVENT_BUS.register(new NEI_GT_Config());
@@ -692,6 +697,16 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
     }
 
+    @SubscribeEvent
+    @SuppressWarnings("unused") // used by the event bus
+    public void onSoundSetup(SoundSetupEvent event) {
+        try {
+            SoundSystemConfig.setCodec(SeekingOggCodec.EXTENSION, SeekingOggCodec.class);
+        } catch (SoundSystemException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Downloading Cape List.");
@@ -727,6 +742,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         mFirstTick = true;
         mReloadCount++;
+        GT_MusicSystem.ClientSystem.reset();
         // For utility methods elsewhere.
         calculateMaxPlasmaTurbineEfficiency();
     }
@@ -891,6 +907,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @SubscribeEvent
     public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
         if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
+            GT_MusicSystem.ClientSystem.tick();
+
             if (changeDetected > 0) changeDetected--;
             final int newHideValue = shouldHeldItemHideThings();
             if (newHideValue != hideValue) {

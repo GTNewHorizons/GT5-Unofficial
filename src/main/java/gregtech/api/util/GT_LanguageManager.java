@@ -541,6 +541,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
+        addStringLocalization("Interaction_DESCRIPTION_Index_400", "Running mode: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");

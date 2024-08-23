@@ -14,6 +14,7 @@ public enum Mods {
     AFSU(Names.A_F_S_U),
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
     AdventureBackpack(Names.ADVENTURE_BACKPACK),
+    AkashicTome(Names.AKASHIC_TOME),
     AppleCore(Names.APPLE_CORE),
     AppliedEnergistics2(Names.APPLIED_ENERGISTICS2),
     ArchitectureCraft(Names.ARCHITECTURE_CRAFT),
@@ -61,6 +62,7 @@ public enum Mods {
     EnderZoo(Names.ENDER_ZOO),
     EnhancedLootBags(Names.ENHANCED_LOOT_BAGS),
     EternalSingularity(Names.ETERNAL_SINGULARITY),
+    EtFuturumRequiem(Names.ET_FUTURUM_REQUIEM),
     ExtraBees(Names.EXTRA_BEES),
     ExtraCells2(Names.EXTRA_CELLS2),
     ExtraTrees(Names.EXTRA_TREES),
@@ -70,6 +72,7 @@ public enum Mods {
     Forestry(Names.FORESTRY),
     ForgeMicroblocks(Names.FORGE_MICROBLOCKS),
     ForgeRelocation(Names.FORGE_RELOCATION),
+    GGFab(Names.G_G_FAB),
     GTNHIntergalactic(Names.G_T_N_H_INTERGALACTIC),
     GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
     GTPlusPlus(Names.G_T_PLUS_PLUS),
@@ -108,6 +111,7 @@ public enum Mods {
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
     Minecraft(Names.MINECRAFT),
     MineTweaker(Names.MINE_TWEAKER),
+    MobsInfo(Names.MOBS_INFO),
     NEICustomDiagrams(Names.N_E_I_CUSTOM_DIAGRAMS),
     NEIOrePlugin(Names.N_E_I_ORE_PLUGIN),
     Natura(Names.NATURA),
@@ -164,6 +168,7 @@ public enum Mods {
     TravellersGear(Names.TRAVELLERS_GEAR),
     TwilightForest(Names.TWILIGHT_FOREST),
     UniversalSingularities(Names.UNIVERSAL_SINGULARITIES),
+    VisualProspecting(Names.VISUAL_PROSPECTING),
     Waila(Names.WAILA),
     WarpTheory(Names.WARP_THEORY),
     WirelessRedstoneCBEAddons(Names.WIRELESS_REDSTONE_CBE_ADDONS),
@@ -194,6 +199,7 @@ public enum Mods {
         public static final String A_F_S_U = "AFSU";
         public static final String ADVANCED_SOLAR_PANEL = "AdvancedSolarPanel";
         public static final String ADVENTURE_BACKPACK = "adventurebackpack";
+        public static final String AKASHIC_TOME = "akashictome";
         public static final String APPLE_CORE = "AppleCore";
         public static final String APPLIED_ENERGISTICS2 = "appliedenergistics2";
         public static final String ARCHITECTURE_CRAFT = "ArchitectureCraft";
@@ -241,6 +247,7 @@ public enum Mods {
         public static final String ENDER_ZOO = "EnderZoo";
         public static final String ENHANCED_LOOT_BAGS = "enhancedlootbags";
         public static final String ETERNAL_SINGULARITY = "eternalsingularity";
+        public static final String ET_FUTURUM_REQUIEM = "etfuturum";
         public static final String EXTRA_BEES = "ExtraBees";
         public static final String EXTRA_CELLS2 = "extracells";
         public static final String EXTRA_TREES = "ExtraTrees";
@@ -250,6 +257,7 @@ public enum Mods {
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";
         public static final String FORGE_RELOCATION = "ForgeRelocation";
+        public static final String G_G_FAB = "ggfab";
         public static final String G_T_N_H_INTERGALACTIC = "gtnhintergalactic";
         public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
         public static final String G_T_PLUS_PLUS = "miscutils";
@@ -288,6 +296,7 @@ public enum Mods {
         public static final String MINE_AND_BLADE_BATTLE_GEAR2 = "battlegear2";
         public static final String MINECRAFT = "minecraft";
         public static final String MINE_TWEAKER = "MineTweaker3";
+        public static final String MOBS_INFO = "mobsinfo";
         public static final String N_E_I_CUSTOM_DIAGRAMS = "neicustomdiagram";
         public static final String N_E_I_ORE_PLUGIN = "gtneioreplugin";
         public static final String NATURA = "Natura";
@@ -344,6 +353,7 @@ public enum Mods {
         public static final String TRAVELLERS_GEAR = "TravellersGear";
         public static final String TWILIGHT_FOREST = "TwilightForest";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA = "Waila";
         public static final String WARP_THEORY = "WarpTheory";
         public static final String WIRELESS_REDSTONE_CBE_ADDONS = "WR-CBE|Addons";

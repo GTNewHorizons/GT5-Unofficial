@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.ToLongFunction;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -64,7 +66,19 @@ public interface IHatchElement<T> {
             .casingIndex(aCasingIndex)
             .dot(aDot)
             .continueIfSuccess()
+            .exclusive()
             .build();
+    }
+
+    default <T2 extends T> IStructureElement<T2> newAnyOrCasing(int aCasingIndex, int aDot, Block casingBlock,
+        int casingMeta) {
+        if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
+        return GT_StructureUtility.<T2>buildHatchAdder()
+            .anyOf(this)
+            .casingIndex(aCasingIndex)
+            .dot(aDot)
+            .continueIfSuccess()
+            .buildAndChain(StructureUtility.ofBlock(casingBlock, casingMeta));
     }
 
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot, ForgeDirection... allowedFacings) {
@@ -75,6 +89,7 @@ public interface IHatchElement<T> {
             .dot(aDot)
             .continueIfSuccess()
             .allowOnly(allowedFacings)
+            .exclusive()
             .build();
     }
 

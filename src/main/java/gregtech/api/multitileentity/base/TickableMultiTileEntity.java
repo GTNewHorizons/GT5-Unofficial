@@ -15,13 +15,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 
-public abstract class TickableMultiTileEntity extends MultiTileEntity implements TaskHost, IMTE_OnNeighborBlockChange {
+public abstract class TickableMultiTileEntity extends MultiTileEntity implements TaskHost {
 
     /** Variable for seeing if the Tick Function is called right now. */
     public boolean isRunningTick = false;
