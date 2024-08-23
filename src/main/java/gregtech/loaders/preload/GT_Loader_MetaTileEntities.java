@@ -11896,8 +11896,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static void generateWiresAndPipes() {
         for (int meta = 0; meta < GregTech_API.sGeneratedMaterials.length; meta++) {
             Materials material = GregTech_API.sGeneratedMaterials[meta];
-            if ((material != null && (material.mTypes & 0x2) != 0)
-                || material == Materials.Wood) {
+            if ((material != null && (material.mTypes & 0x2) != 0) || material == Materials.Wood) {
                 new GT_MetaPipeEntity_Frame(
                     4096 + meta,
                     "GT_Frame_" + GregTech_API.sGeneratedMaterials[meta],
