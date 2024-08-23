@@ -57,23 +57,23 @@ import gregtech.api.util.GT_Utility;
 
 public class BW_Meta_Items {
 
-    public static BW_Meta_Items.BW_GT_MetaGenCircuits getNEWCIRCUITS() {
-        return BW_Meta_Items.NEWCIRCUITS;
+    public static BW_Meta_Items.BW_GT_MetaGenCircuits getCircuitParts() {
+        return BW_Meta_Items.NEW_CIRCUIT_PARTS;
     }
 
-    private static final BW_Meta_Items.BW_GT_MetaGenCircuits NEWCIRCUITS = new BW_Meta_Items.BW_GT_MetaGenCircuits();
+    private static final BW_Meta_Items.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS = new BW_Meta_Items.BW_GT_MetaGenCircuits();
 
     static {
-        BW_Meta_Items.NEWCIRCUITS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
-        BW_Meta_Items.NEWCIRCUITS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
-        BW_Meta_Items.NEWCIRCUITS.addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
-        BW_Meta_Items.NEWCIRCUITS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
-            .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2))
+            .itemOutputs(BW_Meta_Items.NEW_CIRCUIT_PARTS.getStack(2))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(formingPressRecipes);
@@ -81,8 +81,8 @@ public class BW_Meta_Items {
         RecipeMaps.autoclaveRecipes.add(
             new GT_Recipe(
                 false,
-                new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(2) },
-                new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(3) },
+                new ItemStack[] { BW_Meta_Items.NEW_CIRCUIT_PARTS.getStack(2) },
+                new ItemStack[] { BW_Meta_Items.NEW_CIRCUIT_PARTS.getStack(3) },
                 null,
                 new int[] { 7500 },
                 new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
@@ -116,7 +116,7 @@ public class BW_Meta_Items {
         public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
             if (aCreativeTab == this.getCreativeTab())
                 for (NBTTagCompound tag : CircuitImprintLoader.recipeTagMap.keySet()) {
-                    ItemStack stack = new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, 0);
+                    ItemStack stack = new ItemStack(BW_Meta_Items.NEW_CIRCUIT_PARTS, 1, 0);
                     stack.setTagCompound(tag);
                     aList.add(stack);
                 }

@@ -327,7 +327,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             if (this.type.equals(new NBTTagCompound()) && !this.imprintMachine(this.getControllerSlot()))
                 return SimpleCheckRecipeResult.ofFailure("no_imprint");
             if (this.imprintedItemName == null || this.imprintedStack == null) {
-                this.imprintedStack = new ItemStack(BW_Meta_Items.getNEWCIRCUITS(), 1, 0);
+                this.imprintedStack = new ItemStack(BW_Meta_Items.getCircuitParts(), 1, 0);
                 this.imprintedStack.setTagCompound(this.type);
                 this.imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(this.imprintedStack);
             }

@@ -468,7 +468,7 @@ public class AdditionalRecipes {
         // ULV
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gem),
                 ItemList.NandChip.get(1),
@@ -476,7 +476,7 @@ public class AdditionalRecipes {
                 ItemList.Circuit_Parts_CapacitorSMD.get(4),
                 ItemList.Circuit_Parts_TransistorSMD.get(4))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(4))
             .fluidInputs(Materials.SolderingAlloy.getMolten(36))
             .duration(37 * SECONDS + 10 * TICKS)
@@ -489,16 +489,16 @@ public class AdditionalRecipes {
         for (int i = 1; i <= 4; i++) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    BW_Meta_Items.getNEWCIRCUITS()
+                    BW_Meta_Items.getCircuitParts()
                         .getStack(3),
                     WerkstoffLoader.MagnetoResonaticDust.get(gem),
-                    BW_Meta_Items.getNEWCIRCUITS()
+                    BW_Meta_Items.getCircuitParts()
                         .getStack(i + 3),
                     ItemList.Circuit_Parts_DiodeSMD.get((i + 1) * 4),
                     ItemList.Circuit_Parts_CapacitorSMD.get((i + 1) * 4),
                     ItemList.Circuit_Parts_TransistorSMD.get((i + 1) * 4))
                 .itemOutputs(
-                    BW_Meta_Items.getNEWCIRCUITS()
+                    BW_Meta_Items.getCircuitParts()
                         .getStack(i + 4))
                 .fluidInputs(Materials.SolderingAlloy.getMolten((i + 1) * 36))
                 .duration((i + 1) * (37 * SECONDS + 10 * TICKS))
@@ -509,16 +509,16 @@ public class AdditionalRecipes {
         // IV-LuV
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gem),
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(8),
                 ItemList.Circuit_Parts_DiodeASMD.get(24),
                 ItemList.Circuit_Parts_CapacitorASMD.get(24),
                 ItemList.Circuit_Parts_TransistorASMD.get(24))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(9))
             .fluidInputs(new FluidStack(solderIndalloy, 216))
             .duration(3 * MINUTES + 45 * SECONDS)
@@ -528,16 +528,16 @@ public class AdditionalRecipes {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gem),
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(9),
                 ItemList.Circuit_Parts_DiodeASMD.get(28),
                 ItemList.Circuit_Parts_CapacitorASMD.get(28),
                 ItemList.Circuit_Parts_TransistorASMD.get(28))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(12))
             .fluidInputs(new FluidStack(solderIndalloy, 252))
             .duration(4 * MINUTES + 22 * SECONDS + 10 * TICKS)
@@ -548,16 +548,16 @@ public class AdditionalRecipes {
         // ZPM
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(10),
                 ItemList.Circuit_Parts_DiodeASMD.get(52),
                 ItemList.Circuit_Parts_CapacitorASMD.get(52),
                 ItemList.Circuit_Parts_TransistorASMD.get(52))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(11))
             .fluidInputs(new FluidStack(solderIndalloy, 288))
             .duration(10 * MINUTES)
@@ -569,16 +569,16 @@ public class AdditionalRecipes {
         // UV
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(11),
                 ItemList.Circuit_Parts_DiodeASMD.get(56),
                 ItemList.Circuit_Parts_CapacitorASMD.get(56),
                 ItemList.Circuit_Parts_TransistorASMD.get(56))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(12))
             .fluidInputs(new FluidStack(solderUEV, 324))
             .duration(11 * MINUTES + 15 * SECONDS)
@@ -590,16 +590,16 @@ public class AdditionalRecipes {
         // UHV-UEV
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(12),
                 ItemList.Circuit_Parts_DiodeXSMD.get(60),
                 ItemList.Circuit_Parts_CapacitorXSMD.get(60),
                 ItemList.Circuit_Parts_TransistorXSMD.get(60))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(13))
             .fluidInputs(new FluidStack(solderUEV, 360))
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -610,16 +610,16 @@ public class AdditionalRecipes {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(3),
                 WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(13),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
                 ItemList.Circuit_Parts_CapacitorXSMD.get(64),
                 ItemList.Circuit_Parts_TransistorXSMD.get(64))
             .itemOutputs(
-                BW_Meta_Items.getNEWCIRCUITS()
+                BW_Meta_Items.getCircuitParts()
                     .getStack(14))
             .fluidInputs(new FluidStack(solderUEV, 396))
             .duration(13 * MINUTES + 45 * SECONDS)
