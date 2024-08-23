@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,6 +18,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -41,14 +43,23 @@ import gregtech.api.util.item.ItemHolder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import ic2.core.Ic2Items;
-import it.unimi.dsi.fastutil.objects.Object2LongArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2LongArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 public class GT_Recipe implements Comparable<GT_Recipe> {
+
+    private static ItemStack dataStick;
+    private static ItemStack dataOrb;
+    private static ItemStack ic2FluidCell;
+
+    public static void setItemStacks() {
+        ic2FluidCell = Ic2Items.FluidCell.copy();
+        dataStick = ItemList.Tool_DataStick.get(1L);
+        dataOrb = ItemList.Tool_DataOrb.get(1L);
+    }
 
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
@@ -123,6 +134,46 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     // BW wants to overwrite it, so no final
     public List<List<String>> stackTraces = new ArrayList<>();
+
+    /** Used for simple cache validation */
+    private ItemStack[] inputsAtCacheTime = null;
+    /** Unified and type-merged stacks of mInputs, each item is guaranteed to be unique */
+    private RecipeItemInput[] mergedInputCache = null;
+    private static final RecipeItemInput[] EMPTY_INPUT_CACHE = new RecipeItemInput[0];
+
+    /** A single recipe input, used for an internal cache to speed up recipe matching */
+    public static final class RecipeItemInput {
+
+        /** Item count is ignored on this stack, do not mutate it either */
+        public final ItemStack unifiedStack;
+        /** Number of input items required */
+        public long inputAmount;
+        /** True if the input is NBT-sensitive */
+        public final boolean usesNbtMatching;
+
+        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
+            Objects.requireNonNull(stack);
+            this.inputAmount = stack.stackSize;
+            final boolean stackNeedsNBT = GT_Recipe.shouldCheckNBT(stack);
+            this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
+            if (stackNeedsNBT) {
+                this.unifiedStack = stack;
+            } else {
+                this.unifiedStack = GT_OreDictUnificator.get_nocopy(true, stack);
+                if (!this.usesNbtMatching) {
+                    this.unifiedStack.setTagCompound(null);
+                }
+            }
+        }
+
+        /**
+         * @return True if the passed in stack is of the same item type as this input (respecting
+         *         {@link RecipeItemInput#usesNbtMatching}).
+         */
+        public boolean matchesType(final ItemStack other) {
+            return GT_Utility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
+        }
+    }
 
     private GT_Recipe(GT_Recipe aRecipe, boolean shallow) {
         mInputs = shallow ? aRecipe.mInputs : GT_Utility.copyItemArray(aRecipe.mInputs);
@@ -406,6 +457,53 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public static boolean GTppRecipeHelper;
 
     /**
+     * @return Computes a (cached) array of all input items, combined by type into stacks. Do not mutate.
+     */
+    private @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
+        if (mergedInputCache != null) {
+            if (mInputs != inputsAtCacheTime) {
+                throw new IllegalStateException(
+                    "Inputs to this recipe have been modified since first recipe match: " + this);
+            }
+            return mergedInputCache;
+        }
+
+        synchronized (this) {
+            // In case another thread initialized it while this synchronized block was locked:
+            if (mergedInputCache != null) {
+                if (mInputs != inputsAtCacheTime) {
+                    throw new IllegalStateException(
+                        "Inputs to this recipe have been modified since first recipe match: " + this);
+                }
+                return mergedInputCache;
+            }
+
+            final ItemStack[] inputs = mInputs;
+            inputsAtCacheTime = inputs;
+            if (inputs == null || inputs.length == 0) {
+                mergedInputCache = EMPTY_INPUT_CACHE;
+                return mergedInputCache;
+            }
+            final ObjectArrayList<@NotNull RecipeItemInput> newCache = ObjectArrayList
+                .wrap(new RecipeItemInput[inputs.length], 0);
+            for (final ItemStack itemStack : inputs) {
+                if (itemStack == null) continue;
+                final RecipeItemInput existingInput = newCache.stream()
+                    .filter(existing -> existing.matchesType(itemStack))
+                    .findAny()
+                    .orElse(null);
+                if (existingInput == null) {
+                    newCache.add(new RecipeItemInput(itemStack, isNBTSensitive));
+                } else {
+                    existingInput.inputAmount = Math.addExact(existingInput.inputAmount, itemStack.stackSize);
+                }
+            }
+            mergedInputCache = newCache.toArray(new RecipeItemInput[0]);
+            return mergedInputCache;
+        }
+    }
+
+    /**
      * WARNING: Do not call this method with both {@code aDecreaseStacksizeBySuccess} and {@code aDontCheckStackSizes}
      * set to {@code true}! You'll get weird behavior.
      */
@@ -430,12 +528,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (amountMultiplier <= 0) return;
 
-        long remainingCost;
-
         if (aFluidInputs != null) {
             for (FluidStack recipeFluidCost : mFluidInputs) {
                 if (recipeFluidCost != null) {
-                    remainingCost = (long) recipeFluidCost.amount * amountMultiplier;
+                    long remainingCost = (long) recipeFluidCost.amount * amountMultiplier;
 
                     for (FluidStack providedFluid : aFluidInputs) {
                         if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
@@ -452,36 +548,36 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
         }
 
-        if (aInputs != null) {
-            for (ItemStack recipeItemCost : mInputs) {
-                ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
-                if (unifiedItemCost != null) {
-                    remainingCost = (long) recipeItemCost.stackSize * amountMultiplier;
+        if (aInputs == null || aInputs.length == 0) {
+            return;
+        }
 
-                    for (ItemStack providedItem : aInputs) {
-                        if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
-                            continue;
-                        } else if (!isNBTSensitive
-                            && !GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
-                                continue;
-                            }
+        final ItemStack[] unifiedProvidedInputs = new ItemStack[aInputs.length];
+        for (int i = 0; i < aInputs.length; i++) {
+            unifiedProvidedInputs[i] = GT_OreDictUnificator.get_nocopy(true, aInputs[i]);
+        }
+        final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
-                        if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
-                            if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
-                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true)
-                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
-                                if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false)) continue;
-                            }
-                        }
+        for (final RecipeItemInput recipeItemCost : combinedInputs) {
+            long remainingCost = recipeItemCost.inputAmount * amountMultiplier;
 
-                        if (providedItem.stackSize >= remainingCost) {
-                            providedItem.stackSize -= remainingCost;
-                            break;
-                        } else {
-                            remainingCost -= providedItem.stackSize;
-                            providedItem.stackSize = 0;
-                        }
-                    }
+            for (int iProvided = 0; iProvided < aInputs.length && remainingCost > 0; iProvided++) {
+                final ItemStack providedItem = aInputs[iProvided];
+                if (providedItem == null || providedItem.stackSize == 0) {
+                    continue;
+                }
+
+                final ItemStack providedUnifiedItem = unifiedProvidedInputs[iProvided];
+                if (!recipeItemCost.matchesType(providedUnifiedItem)) {
+                    continue;
+                }
+
+                if (providedItem.stackSize >= remainingCost) {
+                    providedItem.stackSize -= (int) remainingCost;
+                    break;
+                } else {
+                    remainingCost -= providedItem.stackSize;
+                    providedItem.stackSize = 0;
                 }
             }
         }
@@ -526,67 +622,51 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         if (mInputs.length > 0) {
-            double remainingCost;
-            long providedAmount;
-            Object2LongMap<GT_Utility.ItemId> itemCostMap = new Object2LongArrayMap<>(2);
+            final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
-            for (ItemStack itemStack : mInputs) {
-                if (itemStack == null) continue;
-                if (shouldCheckNBT(itemStack)) {
-                    GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(itemStack);
-                    itemCostMap.mergeLong(itemId, itemStack.stackSize, Long::sum);
-                    continue;
-                }
-                ItemStack unifiedItem = GT_OreDictUnificator.get_nocopy(true, itemStack);
-                if (unifiedItem != null) {
-                    GT_Utility.ItemId unifiedId;
-                    if (isNBTSensitive) unifiedId = GT_Utility.ItemId.createNoCopy(unifiedItem);
-                    else unifiedId = GT_Utility.ItemId.createWithoutNBT(unifiedItem);
-                    itemCostMap.mergeLong(unifiedId, itemStack.stackSize, Long::sum);
-                }
+            if (aInputs.length < combinedInputs.length) {
+                // Fewer item types provided than required by the recipe, making it impossible to satisfy.
+                return 0;
+            }
+            final ItemStack[] unifiedProvidedInputs = new ItemStack[aInputs.length];
+            for (int i = 0; i < aInputs.length; i++) {
+                unifiedProvidedInputs[i] = GT_OreDictUnificator.get_nocopy(true, aInputs[i]);
             }
 
-            ItemStack unifiedItemCost;
-            nextRecipeItemCost: for (Map.Entry<GT_Utility.ItemId, Long> costEntry : itemCostMap.entrySet()) {
-                unifiedItemCost = costEntry.getKey()
-                    .getItemStack();
-                if (unifiedItemCost != null) {
-                    remainingCost = costEntry.getValue() * currentParallel;
-                    providedAmount = 0;
+            recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {
+                double remainingCost = combinedInput.inputAmount * currentParallel;
+                long providedAmount = 0;
 
-                    for (ItemStack providedItem : aInputs) {
-                        if (!areInputStackAndRecipeCostMatched(providedItem, unifiedItemCost)) continue;
-                        // for non-consumed input
-                        if (costEntry.getValue() == 0) continue nextRecipeItemCost;
-
-                        providedAmount += providedItem.stackSize;
-
-                        if (providedAmount >= remainingCost) continue nextRecipeItemCost;
+                for (int i = 0; i < unifiedProvidedInputs.length; i++) {
+                    final ItemStack providedUnifiedItem = unifiedProvidedInputs[i];
+                    final ItemStack providedItem = aInputs[i];
+                    if (!combinedInput.matchesType(providedUnifiedItem)) {
+                        continue;
                     }
-                    if (providedAmount == 0) return 0;
-                    currentParallel = Math.min(currentParallel, (double) providedAmount / costEntry.getValue());
+
+                    providedAmount += providedItem.stackSize;
+
+                    if (providedAmount >= remainingCost) {
+                        continue recipeItemLoop;
+                    }
                 }
+                if (providedAmount == 0) {
+                    return 0;
+                }
+                currentParallel = Math.min(currentParallel, (double) providedAmount / combinedInput.inputAmount);
             }
         }
         return currentParallel;
     }
 
-    private boolean areInputStackAndRecipeCostMatched(ItemStack providedItem, ItemStack unifiedItemCost) {
-        if (isNBTSensitive || shouldCheckNBT(providedItem)) {
-            return GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false);
-        } else {
-            return GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost);
-        }
-    }
-
     /**
      * Please see JavaDoc on {@link #GTppRecipeHelper} for why this is here.
      */
-    private boolean shouldCheckNBT(ItemStack item) {
+    private static boolean shouldCheckNBT(ItemStack item) {
         if (GTppRecipeHelper) {
-            return GT_Utility.areStacksEqual(item, Ic2Items.FluidCell.copy(), true)
-                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataStick.get(1L), true)
-                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataOrb.get(1L), true);
+            return GT_Utility.areStacksEqual(item, ic2FluidCell, true)
+                || GT_Utility.areStacksEqual(item, dataStick, true)
+                || GT_Utility.areStacksEqual(item, dataOrb, true);
         }
         return false;
     }
@@ -653,15 +733,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         // then dry recipes
         // then with fewer inputs
         if (this.mEUt != recipe.mEUt) {
-            return this.mEUt - recipe.mEUt;
+            return Integer.compare(this.mEUt, recipe.mEUt);
         } else if (this.mDuration != recipe.mDuration) {
-            return this.mDuration - recipe.mDuration;
+            return Integer.compare(this.mDuration, recipe.mDuration);
         } else if (this.mSpecialValue != recipe.mSpecialValue) {
-            return this.mSpecialValue - recipe.mSpecialValue;
+            return Integer.compare(this.mSpecialValue, recipe.mSpecialValue);
         } else if (this.mFluidInputs.length != recipe.mFluidInputs.length) {
-            return this.mFluidInputs.length - recipe.mFluidInputs.length;
+            return Integer.compare(this.mFluidInputs.length, recipe.mFluidInputs.length);
         } else if (this.mInputs.length != recipe.mInputs.length) {
-            return this.mInputs.length - recipe.mInputs.length;
+            return Integer.compare(this.mInputs.length, recipe.mInputs.length);
         }
         return 0;
     }
