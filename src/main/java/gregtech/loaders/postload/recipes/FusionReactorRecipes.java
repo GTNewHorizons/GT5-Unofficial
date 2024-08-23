@@ -40,7 +40,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(2048)
+            .eut(TierEU.RECIPE_EV)
             .metadata(FUSION_THRESHOLD, 60000000)
             .addTo(fusionRecipes); // FT1 Expensive //
 
@@ -64,7 +64,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Silicon.getMolten(16), Materials.Magnesium.getMolten(16))
             .fluidOutputs(Materials.Iron.getPlasma(144))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8192)
+            .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 360000000)
             .addTo(fusionRecipes); // FT1++ Cheap //
 
@@ -137,7 +137,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Manganese.getMolten(16), Materials.Hydrogen.getGas(16))
             .fluidOutputs(Materials.Iron.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8192)
+            .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 120000000)
             .addTo(fusionRecipes); // FT1 - utility
 
@@ -145,7 +145,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Magnesium.getMolten(128), Materials.Oxygen.getGas(128))
             .fluidOutputs(Materials.Calcium.getPlasma(16))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(8192)
+            .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 120000000)
             .addTo(fusionRecipes); //
 

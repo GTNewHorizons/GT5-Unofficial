@@ -186,6 +186,7 @@ public enum MetaTileEntityIDs {
     Controller_SteamCentrifugeMulti(31080),
     Controller_SteamWasherMulti(31082),
     ControllerSteamForgeHammer(31083),
+    ControllerSteamMixerMulti(31084),
     GT4_Electric_Auto_Workbench_LV(31091),
     GT4_Electric_Auto_Workbench_MV(31092),
     GT4_Electric_Auto_Workbench_HV(31093),
