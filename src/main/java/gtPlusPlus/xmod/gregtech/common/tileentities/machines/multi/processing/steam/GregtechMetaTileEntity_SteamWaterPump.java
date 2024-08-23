@@ -302,6 +302,11 @@ public class GregtechMetaTileEntity_SteamWaterPump
     }
 
     @Override
+    public int getTierRecipes() {
+        return 0;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
