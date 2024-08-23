@@ -19,6 +19,7 @@ import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_AssemblyLineUtils;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
@@ -54,10 +55,32 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         researchAmperage = GT_Utility.clamp(researchAmperage, 1, Short.MAX_VALUE);
         computationRequiredPerSec = GT_Utility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
+
+        GT_Recipe_AssemblyLine recipeGT = new GT_Recipe.GT_Recipe_AssemblyLine(
+            CustomItemList.UnusedStuff.get(1),
+            totalComputationRequired / computationRequiredPerSec,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
+        GT_Recipe_AssemblyLine recipeTT = new GT_Recipe.GT_Recipe_AssemblyLine(
+            aResearchItem,
+            totalComputationRequired / computationRequiredPerSec,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
+        TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
+
+        ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, recipeTT, false);
         GT_Values.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
+            .special(writesDataStick)
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -66,35 +89,18 @@ public class TT_recipeAdder extends GT_RecipeAdder {
             .fake()
             .addTo(researchStationFakeRecipes);
 
+        ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, recipeTT, false);
         GT_Values.RA.stdBuilder()
             .itemInputs(aInputs)
             .itemOutputs(aOutput)
             .fluidInputs(aFluidInputs)
-            .special(ItemList.Tool_DataStick.getWithName(1L, "Reads Research result"))
+            .special(readsDataStick)
             .duration(assDuration)
             .eut(assEUt)
             .ignoreCollision()
             .fake()
             .addTo(assemblylineVisualRecipes);
-
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(
-            new GT_Recipe.GT_Recipe_AssemblyLine(
-                CustomItemList.UnusedStuff.get(1),
-                totalComputationRequired / computationRequiredPerSec,
-                aInputs,
-                aFluidInputs,
-                aOutput,
-                assDuration,
-                assEUt));
-        TecTechRecipeMaps.researchableALRecipeList.add(
-            new GT_Recipe.GT_Recipe_AssemblyLine(
-                aResearchItem,
-                totalComputationRequired / computationRequiredPerSec,
-                aInputs,
-                aFluidInputs,
-                aOutput,
-                assDuration,
-                assEUt));
         return true;
     }
 
@@ -190,30 +196,6 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         tPersistentHash = tPersistentHash * 31 + assDuration;
         tPersistentHash = tPersistentHash * 31 + assEUt;
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(aResearchItem)
-            .itemOutputs(aOutput)
-            .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
-            .duration(totalComputationRequired)
-            .eut(researchEUt)
-            .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-            .noOptimize()
-            .ignoreCollision()
-            .fake()
-            .addTo(researchStationFakeRecipes);
-
-        assemblylineVisualRecipes.addFakeRecipe(
-            false,
-            tInputs,
-            new ItemStack[] { aOutput },
-            new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result") },
-            aFluidInputs,
-            null,
-            assDuration,
-            assEUt,
-            0,
-            tAlts,
-            false);
         GT_Recipe_AssemblyLine recipeGT = new GT_Recipe_AssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
@@ -236,6 +218,35 @@ public class TT_recipeAdder extends GT_RecipeAdder {
             tAlts);
         recipeTT.setPersistentHash(tPersistentHash);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
+
+        ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, recipeTT, false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aResearchItem)
+            .itemOutputs(aOutput)
+            .special(writesDataStick)
+            .duration(totalComputationRequired)
+            .eut(researchEUt)
+            .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
+            .noOptimize()
+            .ignoreCollision()
+            .fake()
+            .addTo(researchStationFakeRecipes);
+
+        ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, recipeTT, false);
+        assemblylineVisualRecipes.addFakeRecipe(
+            false,
+            tInputs,
+            new ItemStack[] { aOutput },
+            new ItemStack[] { readsDataStick },
+            aFluidInputs,
+            null,
+            assDuration,
+            assEUt,
+            0,
+            tAlts,
+            false);
         return true;
     }
 }

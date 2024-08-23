@@ -59,7 +59,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
             final IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
             mUpdated = false;
-            mUpdate = 100;
+            mUpdate = 50;
             if (getBaseMetaTileEntity().isServerSide()
                 && !GregTech_API.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
