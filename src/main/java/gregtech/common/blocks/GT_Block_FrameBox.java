@@ -287,17 +287,13 @@ public class GT_Block_FrameBox extends BlockContainer {
             return true;
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity != null) {
-            if (tTileEntity instanceof BaseMetaTileEntity) {
-                return true;
-            }
-            if (tTileEntity instanceof BaseMetaPipeEntity baseMetaPipe
-                && (baseMetaPipe.mConnections & 0xFFFFFFC0) != 0) {
-                return true;
-            }
-            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(side) != 0;
+        if (tTileEntity instanceof BaseMetaTileEntity) {
+            return true;
         }
-        return false;
+        if (tTileEntity instanceof BaseMetaPipeEntity baseMetaPipe && (baseMetaPipe.mConnections & 0xFFFFFFC0) != 0) {
+            return true;
+        }
+        return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(side) != 0;
     }
 
     @Override // THIS
