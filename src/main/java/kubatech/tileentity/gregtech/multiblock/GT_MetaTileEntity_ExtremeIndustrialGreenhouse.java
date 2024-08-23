@@ -1039,7 +1039,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder));
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);

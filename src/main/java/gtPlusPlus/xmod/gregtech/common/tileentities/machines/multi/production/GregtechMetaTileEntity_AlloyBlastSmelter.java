@@ -80,7 +80,6 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Alloy Blast Smelter")
-            .addInfo("20% Faster than the Electric Blast Furnace")
             .addInfo("Allows Complex GT++ alloys to be created")
             .addInfo("Accepts only one Energy Hatch")
             .addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
