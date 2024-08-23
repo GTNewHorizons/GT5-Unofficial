@@ -32,6 +32,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -172,6 +173,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public boolean matchesType(final ItemStack other) {
             return GT_Utility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
+        }
+
+        /**
+         * @return True if the given input+oredict data for that input can be used as a valid recipe ingredient.
+         */
+        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
+            if (usesNbtMatching) {
+                return GT_Utility.areStacksEqual(this.unifiedStack, other, false);
+            } else {
+                return GT_OreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
+            }
         }
     }
 
@@ -552,9 +564,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return;
         }
 
-        final ItemStack[] unifiedProvidedInputs = new ItemStack[aInputs.length];
+        final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
         for (int i = 0; i < aInputs.length; i++) {
-            unifiedProvidedInputs[i] = GT_OreDictUnificator.get_nocopy(true, aInputs[i]);
+            unifiedProvidedInputs[i] = GT_OreDictUnificator.getAssociation(aInputs[i]);
         }
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
@@ -567,8 +579,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     continue;
                 }
 
-                final ItemStack providedUnifiedItem = unifiedProvidedInputs[iProvided];
-                if (!recipeItemCost.matchesType(providedUnifiedItem)) {
+                final ItemData providedUnifiedItem = unifiedProvidedInputs[iProvided];
+                if (!recipeItemCost.matchesRecipe(providedUnifiedItem, providedItem)) {
                     continue;
                 }
 
@@ -628,9 +640,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 // Fewer item types provided than required by the recipe, making it impossible to satisfy.
                 return 0;
             }
-            final ItemStack[] unifiedProvidedInputs = new ItemStack[aInputs.length];
+            final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
             for (int i = 0; i < aInputs.length; i++) {
-                unifiedProvidedInputs[i] = GT_OreDictUnificator.get_nocopy(true, aInputs[i]);
+                unifiedProvidedInputs[i] = GT_OreDictUnificator.getAssociation(aInputs[i]);
             }
 
             recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {
@@ -638,9 +650,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 long providedAmount = 0;
 
                 for (int i = 0; i < unifiedProvidedInputs.length; i++) {
-                    final ItemStack providedUnifiedItem = unifiedProvidedInputs[i];
+                    final ItemData providedUnifiedItem = unifiedProvidedInputs[i];
                     final ItemStack providedItem = aInputs[i];
-                    if (!combinedInput.matchesType(providedUnifiedItem)) {
+                    if (!combinedInput.matchesRecipe(providedUnifiedItem, providedItem)) {
                         continue;
                     }
 
