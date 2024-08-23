@@ -220,8 +220,7 @@ public class GT_Block_FrameBox extends BlockContainer {
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE
-            && gtTE.getMetaTileEntity() != null) {
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
             gtTE.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
             return;
         }
