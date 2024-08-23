@@ -535,7 +535,7 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(1000)
             .fluidOutputs(Materials.Lava.getFluid(800L))
             .duration(12 * SECONDS + 16 * TICKS)
-            .eut(128)
+            .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
 
         // Beecombs fluid extractor recipes

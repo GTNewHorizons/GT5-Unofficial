@@ -728,7 +728,7 @@ public class GenericChem extends ItemPackage {
             .fluidInputs(FluidUtils.getFluidStack(NitroBenzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
             .fluidOutputs(FluidUtils.getFluidStack(Aniline, 1000))
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
@@ -746,7 +746,7 @@ public class GenericChem extends ItemPackage {
                 FluidUtils.getDistilledWater(10000))
             .fluidOutputs(FluidUtils.getFluidStack(NitroBenzene, 5000))
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 
@@ -791,7 +791,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4))
             .duration(100 * SECONDS)
-            .eut(120)
+            .eut(TierEU.RECIPE_MV)
             .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }

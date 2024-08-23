@@ -249,9 +249,7 @@ public class GregtechMetaTileEntity_SteamForgeHammer
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierSimpleBlock == 1
             && tCountCasing > 35
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mSteamInputFluids.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
@@ -259,14 +257,19 @@ public class GregtechMetaTileEntity_SteamForgeHammer
         if (tierPipeCasing == 2 && tierMachineCasing == 2
             && tierSimpleBlock == 2
             && tCountCasing > 35
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mSteamInputFluids.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
         return false;
+    }
+
+    private boolean checkHatches() {
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && mOutputHatches.isEmpty()
+            && mInputHatches.isEmpty();
     }
 
     @Override
