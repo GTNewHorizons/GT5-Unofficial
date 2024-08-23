@@ -1777,12 +1777,12 @@ public class GT_Utility {
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
         return aStack1 != null && aStack2 != null
             && aStack1.getItem() == aStack2.getItem()
-            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
-                && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
-                    .equals(aStack2.getTagCompound()))))
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
                 || Items.feather.getDamage(aStack1) == W
-                || Items.feather.getDamage(aStack2) == W);
+                || Items.feather.getDamage(aStack2) == W)
+            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
+                && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
+                    .equals(aStack2.getTagCompound()))));
     }
 
     public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {

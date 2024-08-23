@@ -140,7 +140,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.BioMediumSterilized.getFluid(2000))
             .fluidOutputs(getFluidStack("mutagen", 2000))
             .duration(60 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
@@ -4742,7 +4742,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Methanol.getFluid(1000), Materials.Ammonia.getGas(1000))
             .fluidOutputs(MaterialsKevlar.Methylamine.getGas(1000), Materials.Water.getFluid(1000))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -4754,7 +4754,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(MaterialsKevlar.Ethyleneglycol.getFluid(4000), MaterialsKevlar.SiliconOil.getFluid(1000))
             .fluidOutputs(MaterialsKevlar.PolyurethaneResin.getFluid(1000))
             .duration(10 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -4766,7 +4766,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(MaterialsKevlar.Ethyleneglycol.getFluid(36000), MaterialsKevlar.SiliconOil.getFluid(9000))
             .fluidOutputs(MaterialsKevlar.PolyurethaneResin.getFluid(9000))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // 3NH3 + 6CH4O =Al2O3,SiO2= CH5N + C2H7N + C3H9N + 6H2O
@@ -5628,7 +5628,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Radon.getGas(16000))
             .fluidOutputs(Materials.EnrichedNaquadria.getFluid(9216))
             .duration(30 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
@@ -5783,7 +5783,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.IVNitroaniline.getFluid(1000))
             .fluidOutputs(Materials.Water.getFluid(2000))
             .duration(20 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // C4H10O2 =Cu= C4H6O2 + 4H
@@ -5850,7 +5850,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Hydrogen.getGas(4000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000))
             .duration(15 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -5864,7 +5864,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.LiquidCrystalKevlar.getFluid(9000),
                 Materials.DilutedHydrochloricAcid.getFluid(2000))
             .duration(30 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -5878,7 +5878,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.LiquidCrystalKevlar.getFluid(63000),
                 Materials.DilutedHydrochloricAcid.getFluid(14000))
             .duration(2 * MINUTES + 55 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // Na2B4O7(H2O)10 + 2HCl = 2NaCl + 4H3BO3 + 5H2O
@@ -5935,7 +5935,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
             .fluidOutputs(Materials.Hydrogen.getGas(11000))
             .duration(40 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // 2NaOH + N2H4 =Mn= 2N + 2H2O + 2NaH
