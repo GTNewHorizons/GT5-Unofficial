@@ -62,7 +62,7 @@ public class RecipeLoader_GlueLine {
                 FluidUtils.getFluidStack("methylacetate", 1000))
             .fluidOutputs(MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000))
             .duration(10 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
@@ -129,7 +129,7 @@ public class RecipeLoader_GlueLine {
                 FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100))
             .fluidOutputs(MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000))
             .duration(10 * SECONDS)
-            .eut(8000)
+            .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
         // CH4 + NH3 + 3O = HCN + 3H2O
@@ -141,7 +141,7 @@ public class RecipeLoader_GlueLine {
                 FluidUtils.getFluidStack("oxygen", 6000))
             .fluidOutputs(MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(2000), FluidUtils.getWater(6000))
             .duration(10 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
@@ -234,7 +234,7 @@ public class RecipeLoader_GlueLine {
             .fluidInputs(MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100))
             .fluidOutputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100))
             .duration(45 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(fluidHeaterRecipes);
     }
 

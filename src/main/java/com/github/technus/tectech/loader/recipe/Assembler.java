@@ -52,7 +52,7 @@ public class Assembler implements Runnable {
             .itemOutputs(new ItemStack(QuantumGlassBlock.INSTANCE, 1))
             .fluidInputs(getOrDefault("Trinium", Materials.Osmium).getMolten(576))
             .duration(10 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         // recipe for assline data hatches
@@ -122,7 +122,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.eM_Containment.get(1))
             .fluidInputs(Materials.Osmium.getMolten(1296))
             .duration(40 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
         // Tesla Base
         GT_Values.RA.stdBuilder()
@@ -292,7 +292,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UHV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(2304))
                     .duration(5 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Dynamo UEV 4A
                 GT_Values.RA.stdBuilder()
@@ -304,7 +304,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UEV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(4608))
                     .duration(5 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Dynamo UIV 4A
                 GT_Values.RA.stdBuilder()
@@ -316,7 +316,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UIV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(9216))
                     .duration(5 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 // Dynamo UMV 4A
                 GT_Values.RA.stdBuilder()
@@ -327,7 +327,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(9216))
                     .duration(5 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 // Dynamo UXV 4A
                 GT_Values.RA.stdBuilder()
@@ -418,7 +418,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UHV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(2304))
                     .duration(10 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Dynamo UEV 16A
                 GT_Values.RA.stdBuilder()
@@ -431,7 +431,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UEV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(4608))
                     .duration(10 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Dynamo UIV 16A
                 GT_Values.RA.stdBuilder()
@@ -444,7 +444,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UIV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(9216))
                     .duration(10 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 // Dynamo UMV 16A
                 GT_Values.RA.stdBuilder()
@@ -456,7 +456,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(9216))
                     .duration(10 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 // Dynamo UXV 16A
                 GT_Values.RA.stdBuilder()
@@ -548,7 +548,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UHV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(2304))
                     .duration(20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Dynamo UEV 64A
                 GT_Values.RA.stdBuilder()
@@ -561,7 +561,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UEV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(4608))
                     .duration(20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Dynamo UIV 64A
                 GT_Values.RA.stdBuilder()
@@ -574,7 +574,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UIV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(9216))
                     .duration(20 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 // Dynamo UMV 64A
                 GT_Values.RA.stdBuilder()
@@ -586,7 +586,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(9216))
                     .duration(20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 // Dynamo UXV 64A
                 GT_Values.RA.stdBuilder()
@@ -675,7 +675,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti4_UHV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(2304))
                     .duration(5 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UEV 4A
                 GT_Values.RA.stdBuilder()
@@ -687,7 +687,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti4_UEV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(4608))
                     .duration(5 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UIV 4A
                 GT_Values.RA.stdBuilder()
@@ -699,7 +699,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti4_UIV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(9216))
                     .duration(5 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UMV 4A
                 GT_Values.RA.stdBuilder()
@@ -710,7 +710,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(9216))
                     .duration(5 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UXV 4A
                 GT_Values.RA.stdBuilder()
@@ -801,7 +801,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti16_UHV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(2304))
                     .duration(10 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UEV 16A
                 GT_Values.RA.stdBuilder()
@@ -814,7 +814,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti16_UEV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(4608))
                     .duration(10 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UIV 16A
                 GT_Values.RA.stdBuilder()
@@ -827,7 +827,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti16_UIV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(9216))
                     .duration(10 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UMV 16A
                 GT_Values.RA.stdBuilder()
@@ -839,7 +839,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(9216))
                     .duration(10 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UXV 16A
                 GT_Values.RA.stdBuilder()
@@ -931,7 +931,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti64_UHV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(2304))
                     .duration(20 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UEV 64A
                 GT_Values.RA.stdBuilder()
@@ -944,7 +944,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti64_UEV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(4608))
                     .duration(20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UIV 64A
                 GT_Values.RA.stdBuilder()
@@ -957,7 +957,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti64_UIV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(9216))
                     .duration(20 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UMV 64A
                 GT_Values.RA.stdBuilder()
@@ -969,7 +969,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(9216))
                     .duration(20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 // Energy Hatch UXV 64A
                 GT_Values.RA.stdBuilder()
@@ -1045,7 +1045,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.Machine_BuckConverter_UV.get(1))
             .fluidInputs(Materials.Osmium.getMolten(288))
             .duration(5 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
         // Buck Converter UHV
         GT_Values.RA.stdBuilder()
@@ -1059,7 +1059,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.Machine_BuckConverter_UHV.get(1))
             .fluidInputs(Materials.Neutronium.getMolten(288))
             .duration(5 * SECONDS)
-            .eut(2000000)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
         // Buck Converter UEV
         GT_Values.RA.stdBuilder()
@@ -1073,7 +1073,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
             .fluidInputs(getOrDefault("Bedrockium", Materials.Neutronium).getMolten(288))
             .duration(5 * SECONDS)
-            .eut(8000000)
+            .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
         // Buck Converter UIV
         GT_Values.RA.stdBuilder()
@@ -1087,7 +1087,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
             .fluidInputs(getOrDefault("BlackPlutonium", Materials.Neutronium).getMolten(288))
             .duration(10 * SECONDS)
-            .eut(8000000)
+            .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
 
         // Laser Dynamo
@@ -1140,7 +1140,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1152,7 +1152,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UHV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1164,7 +1164,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UEV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1176,7 +1176,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UIV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1188,7 +1188,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UMV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1200,7 +1200,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UXV.get(1))
                     .duration(50 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1241,7 +1241,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1253,7 +1253,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UHV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1265,7 +1265,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UEV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1277,7 +1277,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UIV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1289,7 +1289,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UMV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1301,7 +1301,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UXV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1330,7 +1330,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1342,7 +1342,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UHV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1354,7 +1354,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UEV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1366,7 +1366,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UIV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1378,7 +1378,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UMV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1390,7 +1390,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UXV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1407,7 +1407,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1419,7 +1419,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UHV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1431,7 +1431,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UEV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1443,7 +1443,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UIV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1455,7 +1455,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UMV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1467,7 +1467,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UXV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1484,7 +1484,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UHV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1496,7 +1496,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UEV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1508,7 +1508,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UIV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1520,7 +1520,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UMV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1532,7 +1532,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UXV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1549,7 +1549,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UEV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1561,7 +1561,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UIV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1573,7 +1573,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UMV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1585,7 +1585,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UXV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1602,7 +1602,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UIV.get(1))
                     .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1614,7 +1614,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UMV.get(1))
                     .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1626,7 +1626,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UXV.get(1))
                     .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1682,7 +1682,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1694,7 +1694,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UHV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1706,7 +1706,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UEV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1718,7 +1718,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UIV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1730,7 +1730,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UMV.get(1))
                     .duration(50 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1742,7 +1742,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UXV.get(1))
                     .duration(50 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1783,7 +1783,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1795,7 +1795,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UHV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1807,7 +1807,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UEV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1819,7 +1819,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UIV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1831,7 +1831,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UMV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1843,7 +1843,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UXV.get(1))
                     .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1872,7 +1872,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1884,7 +1884,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UHV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1896,7 +1896,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UEV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1908,7 +1908,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UIV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1920,7 +1920,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UMV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1932,7 +1932,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UXV.get(1))
                     .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -1949,7 +1949,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(500000)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1961,7 +1961,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UHV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1973,7 +1973,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UEV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1985,7 +1985,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UIV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1997,7 +1997,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UMV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2009,7 +2009,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UXV.get(1))
                     .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -2026,7 +2026,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UHV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(2000000)
+                    .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2038,7 +2038,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UEV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2050,7 +2050,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UIV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2062,7 +2062,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UMV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2074,7 +2074,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UXV.get(1))
                     .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -2091,7 +2091,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UEV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(8000000)
+                    .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2103,7 +2103,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UIV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2115,7 +2115,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UMV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2127,7 +2127,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UXV.get(1))
                     .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -2144,7 +2144,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UIV.get(1))
                     .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(32000000)
+                    .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2156,7 +2156,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UMV.get(1))
                     .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(128000000)
+                    .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -2168,7 +2168,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UXV.get(1))
                     .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut((int) TierEU.RECIPE_UXV)
+                    .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
             }
@@ -2901,7 +2901,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.LASERpipe.get(1))
             .requiresCleanRoom()
             .duration(5 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
         // Laser Casing
         GT_Values.RA.stdBuilder()

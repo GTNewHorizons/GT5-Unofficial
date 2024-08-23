@@ -45,6 +45,25 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM
     implements ISurvivalConstructable {
 
+    // Gives a one-chance grace period for deforming the multi. This is to allow you to hotswap hatches without
+    // powerfailing due to an unlucky tick timing - this grace period is already a part of base TecTech but the
+    // tick timer is essentially random, so it was extremely unreliable. Now you are guaranteed the length
+    // of one structure check to finish your hotswap before it deforms.
+    private boolean grace = false;
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        casingCount = 0;
+        if (structureCheck_EM("main", 1, 1, 0) && casingCount >= 5) {
+            grace = true;
+            return true;
+        } else if (grace) {
+            grace = false;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         if (!mMachine) {
@@ -81,23 +100,17 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     public GT_MetaTileEntity_EM_transformer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        eDismantleBoom = true;
+        eDismantleBoom = false;
     }
 
     public GT_MetaTileEntity_EM_transformer(String aName) {
         super(aName);
-        eDismantleBoom = true;
+        eDismantleBoom = false;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_transformer(mName);
-    }
-
-    @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        casingCount = 0;
-        return structureCheck_EM("main", 1, 1, 0) && casingCount >= 5;
     }
 
     @Override
