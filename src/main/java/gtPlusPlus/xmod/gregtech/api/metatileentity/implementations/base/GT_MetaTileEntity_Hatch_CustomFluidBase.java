@@ -32,7 +32,12 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 
     public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final int aID, final String aName,
         final String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3,
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            3,
             new String[] { "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;

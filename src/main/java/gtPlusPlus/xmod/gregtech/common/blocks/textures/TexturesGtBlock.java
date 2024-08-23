@@ -71,7 +71,7 @@ public class TexturesGtBlock {
      */
 
     // PlaceHolder Texture
-    public static final CustomIcon _PlaceHolder  = new CustomIcon("TileEntities/_PlaceHolder");
+    public static final CustomIcon _PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");
     public static final CustomIcon OVERLAY_ENERGY_OUT_MULTI_BUFFER = new CustomIcon(
         "iconsets/OVERLAY_ENERGY_OUT_MULTI_BUFFER");
 
@@ -83,8 +83,7 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Machine_Advanced = new CustomIcon("TileEntities/high_adv_machine");
     public static final CustomIcon Casing_Machine_Ultra = new CustomIcon("TileEntities/adv_machine_lesu");
     // Dimensional - Non Overlay
-    public static final CustomIcon Casing_Machine_Dimensional = new CustomIcon(
-        "TileEntities/adv_machine_dimensional");
+    public static final CustomIcon Casing_Machine_Dimensional = new CustomIcon("TileEntities/adv_machine_dimensional");
 
     // Material Casings
     public static final CustomIcon Casing_Material_Tantalloy61 = new CustomIcon(
@@ -95,14 +94,12 @@ public class TexturesGtBlock {
         "TileEntities/MACHINE_CASING_STABLE_STELLITE");
     public static final CustomIcon Casing_Material_Talonite = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_TALONITE");
-    public static final CustomIcon Turbine_SC_Material_Casing = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE");
+    public static final CustomIcon Turbine_SC_Material_Casing = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE");
     public static final CustomIcon Casing_Material_Tumbaga = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_TUMBAGA");
     public static final CustomIcon Casing_Material_Zeron100 = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_ZERON100");
-    public static final CustomIcon Casing_Material_Potin = new CustomIcon(
-        "TileEntities/MACHINE_CASING_STABLE_POTIN");
+    public static final CustomIcon Casing_Material_Potin = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_POTIN");
 
     public static final CustomIcon Casing_Material_Grisium = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_GRISIUM");
@@ -116,8 +113,7 @@ public class TexturesGtBlock {
         "TileEntities/MACHINE_CASING_STABLE_HASTELLOY_N");
     public static final CustomIcon Casing_Material_Fluid_IncoloyDS = new CustomIcon(
         "TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
-    public static final CustomIcon Casing_Material_Laurenium = new CustomIcon(
-        "TileEntities/MACHINE_CASING_LAURENIUM");
+    public static final CustomIcon Casing_Material_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
 
     // Trinium Alloys
     public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon(
@@ -132,8 +128,7 @@ public class TexturesGtBlock {
     // Misc Casings
     public static final CustomIcon Casing_Machine_Redstone_Off = new CustomIcon(
         "TileEntities/cover_redstone_conductor");
-    public static final CustomIcon Casing_Machine_Redstone_On = new CustomIcon(
-        "TileEntities/cover_redstone_emitter");
+    public static final CustomIcon Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 
     // Redox Cells
     public static final CustomIcon Casing_Redox_1 = new CustomIcon("redox/redox1");
@@ -192,7 +187,7 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");
 
     // Structural Blocks
-    public static final CustomIcon Casing_Machine_Metal_Grate_A  = new CustomIcon("chrono/MetalGrate");
+    public static final CustomIcon Casing_Machine_Metal_Grate_A = new CustomIcon("chrono/MetalGrate");
     public static final CustomIcon Casing_Machine_Metal_Panel_A = new CustomIcon("chrono/MetalPanel");
     public static final CustomIcon Casing_Machine_Metal_Sheet_A = new CustomIcon("chrono/MetalSheet");
     public static final CustomIcon Casing_Machine_Metal_Sheet_H = new CustomIcon("chrono/MetalSheet8");
@@ -204,12 +199,10 @@ public class TexturesGtBlock {
         "TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
     public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon(
         "TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
-    public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon(
-        "TileEntities/MACHINE_CASING_ROCKETDYNE");
+    public static final CustomIcon TEXTURE_CASING_ROCKETDYNE = new CustomIcon("TileEntities/MACHINE_CASING_ROCKETDYNE");
     public static final CustomIcon TEXTURE_CASING_GRINDING_MILL = new CustomIcon(
         "TileEntities/MACHINE_CASING_GRINDING_FACTORY");
-    public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon(
-        "TileEntities/MACHINE_CASING_FLOTATION");
+    public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon("TileEntities/MACHINE_CASING_FLOTATION");
 
     // Redstone blocks
     public static final CustomIcon Casing_Redstone_Top_Off = new CustomIcon(
@@ -244,25 +237,21 @@ public class TexturesGtBlock {
         "TileEntities/gt4/OVERLAY_RED_REDSTONE");
 
     // Custom Pipes
-    public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon(
-        "TileEntities/MACHINE_CASING_PIPE_T1");
+    public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");
     public static final CustomIcon TEXTURE_PIPE_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_PIPE_GENERIC");
 
     // Custom Gearboxes
     public static final CustomIcon TEXTURE_GEARBOX_GRINDING_MILL = new CustomIcon(
         "TileEntities/MACHINE_CASING_GEARBOX_T1");
-    public static final CustomIcon TEXTURE_GEARBOX_GENERIC = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_GENERIC");
+    public static final CustomIcon TEXTURE_GEARBOX_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_GEARBOX_GENERIC");
 
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II = new CustomIcon(
-        "iconsets/MACHINE_CASING_FUSION_3");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II = new CustomIcon("iconsets/MACHINE_CASING_FUSION_3");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_INNER = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_COIL_II");
     public static final CustomIcon TEXTURE_CASING_FUSION_CASING_ULTRA = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_GLASS_ULTRA");
 
-    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III = new CustomIcon(
-        "iconsets/MACHINE_CASING_FUSION_4");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III = new CustomIcon("iconsets/MACHINE_CASING_FUSION_4");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_INNER = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_COIL_III");
     public static final CustomIcon TEXTURE_CASING_FUSION_CASING_HYPER = new CustomIcon(
@@ -297,8 +286,7 @@ public class TexturesGtBlock {
 
     // Overlays
     // Fan Textures
-    public static final CustomIcon Overlay_Machine_Vent = new CustomIcon(
-        "TileEntities/machine_top_vent_rotating");
+    public static final CustomIcon Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");
     public static final CustomIcon Overlay_Machine_Vent_Fast = new CustomIcon(
         "TileEntities/machine_top_vent_rotating_fast");
     // Diesel Engines
@@ -311,48 +299,39 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Diesel_Horizontal_Active = new CustomIcon(
         "TileEntities/machine_top_dieselmotor2_active");
     // Computer Screens
-    public static final CustomIcon Casing_Machine_Screen_1 = new CustomIcon(
-        "TileEntities/adv_machine_screen_random1");
-    public static final CustomIcon Casing_Machine_Screen_2 = new CustomIcon(
-        "TileEntities/adv_machine_screen_random2");
-    public static final CustomIcon Casing_Machine_Screen_3 = new CustomIcon(
-        "TileEntities/adv_machine_screen_random3");
+    public static final CustomIcon Casing_Machine_Screen_1 = new CustomIcon("TileEntities/adv_machine_screen_random1");
+    public static final CustomIcon Casing_Machine_Screen_2 = new CustomIcon("TileEntities/adv_machine_screen_random2");
+    public static final CustomIcon Casing_Machine_Screen_3 = new CustomIcon("TileEntities/adv_machine_screen_random3");
 
-    public static final CustomIcon Casing_Machine_Screen_Rainbow = new CustomIcon(
-        "TileEntities/overlay_rainbowscreen");
+    public static final CustomIcon Casing_Machine_Screen_Rainbow = new CustomIcon("TileEntities/overlay_rainbowscreen");
     public static final CustomIcon Casing_Machine_Screen_Frequency = new CustomIcon(
         "TileEntities/adv_machine_screen_frequency");
-    public static final CustomIcon Overlay_Machine_Screen_Logo = new CustomIcon(
-        "TileEntities/adv_machine_screen_logo");
+    public static final CustomIcon Overlay_Machine_Screen_Logo = new CustomIcon("TileEntities/adv_machine_screen_logo");
 
     // Machine Controller Overlays
     // public static final CustomIcon Overlay_Machine_Controller_Default = new CustomIcon(
-        // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED");
+    // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED");
     // public static final CustomIcon Overlay_Machine_Controller_Default_Active = new CustomIcon(
-        // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED_ACTIVE");
+    // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED_ACTIVE");
 
-    //oMCD = Overlay_Machine_Controller_Default
+    // oMCD = Overlay_Machine_Controller_Default
     public static final CustomIcon oMCDSolarTower = new CustomIcon("iconsets/controllerFaces/solarTower");
-    public static final CustomIcon oMCDSolarTowerActive = new CustomIcon(
-        "iconsets/controllerFaces/solarTowerActive");
+    public static final CustomIcon oMCDSolarTowerActive = new CustomIcon("iconsets/controllerFaces/solarTowerActive");
 
     public static final CustomIcon oMCDIndustrialWireMill = new CustomIcon(
         "iconsets/controllerFaces/industrialWiremill");
     public static final CustomIcon oMCDIndustrialWireMillActive = new CustomIcon(
         "iconsets/controllerFaces/industrialWiremillActive");
 
-    public static final CustomIcon oMCDIndustrialSifter = new CustomIcon(
-        "iconsets/controllerFaces/industrialSifter");
+    public static final CustomIcon oMCDIndustrialSifter = new CustomIcon("iconsets/controllerFaces/industrialSifter");
     public static final CustomIcon oMCDIndustrialSifterActive = new CustomIcon(
         "iconsets/controllerFaces/industrialSifterActive");
 
-    public static final CustomIcon oMCDAlgaePondBase = new CustomIcon(
-        "iconsets/controllerFaces/algaePondBase");
+    public static final CustomIcon oMCDAlgaePondBase = new CustomIcon("iconsets/controllerFaces/algaePondBase");
     public static final CustomIcon oMCDAlgaePondBaseActive = new CustomIcon(
         "iconsets/controllerFaces/algaePondBaseActive");
 
-    public static final CustomIcon oMCDIndustrialMixer = new CustomIcon(
-        "iconsets/controllerFaces/industrialMixer");
+    public static final CustomIcon oMCDIndustrialMixer = new CustomIcon("iconsets/controllerFaces/industrialMixer");
     public static final CustomIcon oMCDIndustrialMixerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialMixerActive");
 
@@ -371,8 +350,7 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCDIndustrialWashPlantActive = new CustomIcon(
         "iconsets/controllerFaces/industrialWashPlantActive");
 
-    public static final CustomIcon oMCDAlloyBlastSmelter = new CustomIcon(
-        "iconsets/controllerFaces/alloyBlastSmelter");
+    public static final CustomIcon oMCDAlloyBlastSmelter = new CustomIcon("iconsets/controllerFaces/alloyBlastSmelter");
     public static final CustomIcon oMCDAlloyBlastSmelterActive = new CustomIcon(
         "iconsets/controllerFaces/alloyBlastSmelterActive");
 
@@ -406,10 +384,9 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
 
-    //oMCA = Overlay_Machine_Controller_Advanced
+    // oMCA = Overlay_Machine_Controller_Advanced
     public static final CustomIcon oMCACokeOven = new CustomIcon("iconsets/controllerFaces/cokeOven");
-    public static final CustomIcon oMCACokeOvenActive = new CustomIcon(
-        "iconsets/controllerFaces/cokeOvenActive");
+    public static final CustomIcon oMCACokeOvenActive = new CustomIcon("iconsets/controllerFaces/cokeOvenActive");
 
     public static final CustomIcon oMCAChemicalPlant = new CustomIcon("iconsets/controllerFaces/chemicalPlant");
     public static final CustomIcon oMCAChemicalPlantActive = new CustomIcon(
@@ -421,8 +398,7 @@ public class TexturesGtBlock {
         "iconsets/controllerFaces/megaAlloyBlastSmelterActive");
 
     public static final CustomIcon oMCATreeFarm = new CustomIcon("iconsets/controllerFaces/treeFarm");
-    public static final CustomIcon oMCATreeFarmActive = new CustomIcon(
-        "iconsets/controllerFaces/treeFarmActive");
+    public static final CustomIcon oMCATreeFarmActive = new CustomIcon("iconsets/controllerFaces/treeFarmActive");
 
     public static final CustomIcon oMCAIndustrialRockBreaker = new CustomIcon(
         "iconsets/controllerFaces/industrialRockBreaker");
@@ -434,13 +410,11 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCAAdvancedHeatExchangerActive = new CustomIcon(
         "iconsets/controllerFaces/advancedHeatExchangerActive");
 
-    public static final CustomIcon oMCALargeRocketEngine = new CustomIcon(
-        "iconsets/controllerFaces/largeRocketEngine");
+    public static final CustomIcon oMCALargeRocketEngine = new CustomIcon("iconsets/controllerFaces/largeRocketEngine");
     public static final CustomIcon oMCALargeRocketEngineActive = new CustomIcon(
         "iconsets/controllerFaces/largeRocketEngineActive");
 
-    public static final CustomIcon oMCAIndustrialChisel = new CustomIcon(
-        "iconsets/controllerFaces/industrialChisel");
+    public static final CustomIcon oMCAIndustrialChisel = new CustomIcon("iconsets/controllerFaces/industrialChisel");
     public static final CustomIcon oMCAIndustrialChiselActive = new CustomIcon(
         "iconsets/controllerFaces/industrialChiselActive");
 
@@ -455,11 +429,9 @@ public class TexturesGtBlock {
         "iconsets/controllerFaces/elementalDuplicatorActive");
 
     public static final CustomIcon oMCAFluidHeater = new CustomIcon("iconsets/controllerFaces/fluidHeater");
-    public static final CustomIcon oMCAFluidHeaterActive = new CustomIcon(
-        "iconsets/controllerFaces/fluidHeaterActive");
+    public static final CustomIcon oMCAFluidHeaterActive = new CustomIcon("iconsets/controllerFaces/fluidHeaterActive");
 
-    public static final CustomIcon oMCAAmazonPackager = new CustomIcon(
-        "iconsets/controllerFaces/amazonPackager");
+    public static final CustomIcon oMCAAmazonPackager = new CustomIcon("iconsets/controllerFaces/amazonPackager");
     public static final CustomIcon oMCAAmazonPackagerActive = new CustomIcon(
         "iconsets/controllerFaces/amazonPackagerActive");
 
@@ -474,12 +446,10 @@ public class TexturesGtBlock {
         "iconsets/controllerFaces/industrialForgeHammerActive");
 
     public static final CustomIcon oMCAAdvancedEBF = new CustomIcon("iconsets/controllerFaces/advancedEBF");
-    public static final CustomIcon oMCAAdvancedEBFActive = new CustomIcon(
-        "iconsets/controllerFaces/advancedEBFActive");
+    public static final CustomIcon oMCAAdvancedEBFActive = new CustomIcon("iconsets/controllerFaces/advancedEBFActive");
 
     public static final CustomIcon oMCASpargeTower = new CustomIcon("iconsets/controllerFaces/spargeTower");
-    public static final CustomIcon oMCASpargeTowerActive = new CustomIcon(
-        "iconsets/controllerFaces/spargeTowerActive");
+    public static final CustomIcon oMCASpargeTowerActive = new CustomIcon("iconsets/controllerFaces/spargeTowerActive");
 
     public static final CustomIcon oMCAIndustrialVacuumFreezer = new CustomIcon(
         "iconsets/controllerFaces/industrialVacuumFreezer");
@@ -499,8 +469,7 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCAIndustrialMultiMachineActive = new CustomIcon(
         "iconsets/controllerFaces/industrialMultiMachineActive");
 
-    public static final CustomIcon oMCAAdvancedImplosion = new CustomIcon(
-        "iconsets/controllerFaces/advancedImplosion");
+    public static final CustomIcon oMCAAdvancedImplosion = new CustomIcon("iconsets/controllerFaces/advancedImplosion");
     public static final CustomIcon oMCAAdvancedImplosionActive = new CustomIcon(
         "iconsets/controllerFaces/advancedImplosionActive");
 
@@ -521,8 +490,7 @@ public class TexturesGtBlock {
     // Advanced Muffler
     public static final CustomIcon Overlay_Hatch_Muffler_Adv = new CustomIcon("iconsets/OVERLAY_MUFFLER_ADV");
     // Milling Ball Bus
-    public static final CustomIcon Overlay_Bus_Milling_Balls = new CustomIcon(
-        "iconsets/OVERLAY_MILLING_BALL_BUS");
+    public static final CustomIcon Overlay_Bus_Milling_Balls = new CustomIcon("iconsets/OVERLAY_MILLING_BALL_BUS");
     // Catalyst Bus
     public static final CustomIcon Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
     // Data Orb Hatch
@@ -570,43 +538,25 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_STONE_RED_A = new CustomIcon("metro/TEXTURE_STONE_RED_A");
     public static final CustomIcon TEXTURE_STONE_RED_B = new CustomIcon("metro/TEXTURE_STONE_RED_B");
 
-    public static final CustomIcon OVERLAY_SC_TURBINE1 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL1");
-    public static final CustomIcon OVERLAY_SC_TURBINE2 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL2");
-    public static final CustomIcon OVERLAY_SC_TURBINE3 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL3");
-    public static final CustomIcon OVERLAY_SC_TURBINE4 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL4");
-    public static final CustomIcon OVERLAY_SC_TURBINE5 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL5");
-    public static final CustomIcon OVERLAY_SC_TURBINE6 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL6");
-    public static final CustomIcon OVERLAY_SC_TURBINE7 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL7");
-    public static final CustomIcon OVERLAY_SC_TURBINE8 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL8");
-    public static final CustomIcon OVERLAY_SC_TURBINE9 = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE_IDEL9");
+    public static final CustomIcon OVERLAY_SC_TURBINE1 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL1");
+    public static final CustomIcon OVERLAY_SC_TURBINE2 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL2");
+    public static final CustomIcon OVERLAY_SC_TURBINE3 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL3");
+    public static final CustomIcon OVERLAY_SC_TURBINE4 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL4");
+    public static final CustomIcon OVERLAY_SC_TURBINE5 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL5");
+    public static final CustomIcon OVERLAY_SC_TURBINE6 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL6");
+    public static final CustomIcon OVERLAY_SC_TURBINE7 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL7");
+    public static final CustomIcon OVERLAY_SC_TURBINE8 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL8");
+    public static final CustomIcon OVERLAY_SC_TURBINE9 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL9");
 
-    public static final CustomIcon OVERLAY_SC_TURBINE1_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE1");
-    public static final CustomIcon OVERLAY_SC_TURBINE2_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE2");
-    public static final CustomIcon OVERLAY_SC_TURBINE3_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE3");
-    public static final CustomIcon OVERLAY_SC_TURBINE4_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE4");
-    public static final CustomIcon OVERLAY_SC_TURBINE5_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE5");
-    public static final CustomIcon OVERLAY_SC_TURBINE6_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE6");
-    public static final CustomIcon OVERLAY_SC_TURBINE7_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE7");
-    public static final CustomIcon OVERLAY_SC_TURBINE8_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE8");
-    public static final CustomIcon OVERLAY_SC_TURBINE9_ACTIVE = new TexturesGtBlock.CustomIcon(
-        "iconsets/SC_TURBINE9");
+    public static final CustomIcon OVERLAY_SC_TURBINE1_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE1");
+    public static final CustomIcon OVERLAY_SC_TURBINE2_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE2");
+    public static final CustomIcon OVERLAY_SC_TURBINE3_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE3");
+    public static final CustomIcon OVERLAY_SC_TURBINE4_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE4");
+    public static final CustomIcon OVERLAY_SC_TURBINE5_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE5");
+    public static final CustomIcon OVERLAY_SC_TURBINE6_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE6");
+    public static final CustomIcon OVERLAY_SC_TURBINE7_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE7");
+    public static final CustomIcon OVERLAY_SC_TURBINE8_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE8");
+    public static final CustomIcon OVERLAY_SC_TURBINE9_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE9");
     public static final CustomIcon TEXTURE_TECH_A = new CustomIcon("metro/TEXTURE_TECH_A");
     public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
     public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
