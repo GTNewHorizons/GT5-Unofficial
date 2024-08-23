@@ -16,31 +16,18 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
-import static gregtech.api.enums.Mods.Botany;
-import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Minecraft;
-import static gregtech.api.enums.Mods.Natura;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.RandomThings;
-import static gregtech.api.enums.Mods.TecTech;
-import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.enums.Mods.Witchery;
-import static gregtech.api.enums.Mods.ZTones;
 
 import java.util.Map;
 
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.GlassTier;
-
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 
 // Register all your glasses here.
 public class RegisterGlassTiers {

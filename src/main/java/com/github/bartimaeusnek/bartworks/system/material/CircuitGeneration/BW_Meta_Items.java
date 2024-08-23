@@ -66,7 +66,8 @@ public class BW_Meta_Items {
     static {
         BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
-        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
+        BW_Meta_Items.NEW_CIRCUIT_PARTS
+            .addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
         BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
 
         GT_Values.RA.stdBuilder()
@@ -133,8 +134,7 @@ public class BW_Meta_Items {
                         i,
                         0,
                         2,
-                        aIconRegister.registerIcon(
-                            "gregtech:" + this.getUnlocalizedName() + "/" + i),
+                        aIconRegister.registerIcon("gregtech:" + this.getUnlocalizedName() + "/" + i),
                         this.mIconList);
                 }
             }

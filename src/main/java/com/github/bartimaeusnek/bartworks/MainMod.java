@@ -19,8 +19,6 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
-import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -37,6 +35,7 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.ArtificialMicaLine;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
@@ -70,6 +69,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Version;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
@@ -159,7 +159,6 @@ public final class MainMod {
         RecipeLoader.run();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
-
 
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
