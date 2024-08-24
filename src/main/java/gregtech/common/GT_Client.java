@@ -649,24 +649,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onPostLoad() {
         super.onPostLoad();
 
-        if (GregTech_API.sClientDataFile.get("debug", "PrintMetaIDs", false)) {
-            try {
-                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    try {
-                        if (GregTech_API.METATILEENTITIES[i] != null) {
-                            GregTech_API.METATILEENTITIES[i].getStackForm(1L)
-                                .getTooltip(null, true);
-                            GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
-                    }
-                }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
-        }
-
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
         ((IReloadableResourceManager) Minecraft.getMinecraft()
