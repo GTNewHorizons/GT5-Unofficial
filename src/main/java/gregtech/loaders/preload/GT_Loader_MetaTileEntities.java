@@ -43,6 +43,9 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -54,6 +57,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
@@ -80,7 +85,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Ha
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ItemDistributor;
@@ -11886,19 +11894,40 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateWiresAndPipes() {
-        for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
-            if (((GregTech_API.sGeneratedMaterials[i] != null)
-                && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))
-                || (GregTech_API.sGeneratedMaterials[i] == Materials.Wood)) {
+        for (int meta = 0; meta < GregTech_API.sGeneratedMaterials.length; meta++) {
+            Materials material = GregTech_API.sGeneratedMaterials[meta];
+            // This check is separated out because IntelliJ thinks Materials.Wood can be null.
+            if (material == null) continue;
+            if ((material.mTypes & 0x2) != 0 || material == Materials.Wood) {
                 new GT_MetaPipeEntity_Frame(
-                    4096 + i,
-                    "GT_Frame_" + GregTech_API.sGeneratedMaterials[i],
-                    (GT_LanguageManager.i18nPlaceholder ? "%material"
-                        : GregTech_API.sGeneratedMaterials[i] != null
-                            ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
-                            : "")
-                        + " Frame Box",
-                    GregTech_API.sGeneratedMaterials[i]);
+                    4096 + meta,
+                    "GT_Frame_" + material,
+                    (GT_LanguageManager.i18nPlaceholder ? "%material" : material.mDefaultLocalName)
+                        + " Frame Box (TileEntity)",
+                    material);
+
+                // Generate recipes for frame box
+                GT_Block_FrameBox block = (GT_Block_FrameBox) GregTech_API.sBlockFrames;
+                GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, material, block.getStackForm(1, meta));
+                if (material.getProcessingMaterialTierEU() < TierEU.IV) {
+                    GT_ModHandler.addCraftingRecipe(
+                        block.getStackForm(2, meta),
+                        GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(material) });
+                }
+
+                if (!material.contains(SubTag.NO_RECIPES)
+                    && GT_OreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
+                    // Auto generate frame box recipe in an assembler.
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.stick, material, 4),
+                            GT_Utility.getIntegratedCircuit(4))
+                        .itemOutputs(block.getStackForm(1, meta))
+                        .duration(3 * SECONDS + 4 * TICKS)
+                        .eut(calculateRecipeEU(material, 7))
+                        .addTo(assemblerRecipes);
+                }
             }
         }
 
