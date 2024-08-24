@@ -50,6 +50,7 @@ public class GT_Item_Frames extends ItemBlock {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(GT_LanguageManager.getTranslation("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
+        aList.add(GT_LanguageManager.getTranslation("gt.blockmachines.gt_frame.desc.format"));
     }
 
     @Override

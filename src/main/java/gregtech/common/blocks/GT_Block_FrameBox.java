@@ -65,9 +65,8 @@ public class GT_Block_FrameBox extends BlockContainer {
                 GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_NAME,
                     GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
-                GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
-                    "Just something you can put covers on.");
+                GT_LanguageManager
+                    .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
             }
         }
     }
