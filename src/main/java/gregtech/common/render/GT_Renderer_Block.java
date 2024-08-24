@@ -52,6 +52,7 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
@@ -108,6 +109,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             textureArray[5] = texturedTileEntity.getTexture(aBlock, EAST);
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
         }
+
         return false;
     }
 
@@ -569,6 +571,18 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             && (GregTech_API.METATILEENTITIES[aMeta] != null)
             && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
+            } else if (aBlock instanceof GT_Block_FrameBox) {
+                ITexture[] texture = ((GT_Block_FrameBox) aBlock).getTexture(aMeta);
+                aBlock.setBlockBoundsForItemRender();
+                aRenderer.setRenderBoundsFromBlock(aBlock);
+                // spotless:off
+                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                // spotless:on
             }
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
@@ -714,7 +728,25 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
 
         final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+
+        // If this block does not have a TE, render it as a normal block.
+        // Otherwise, render the TE instead.
+        if (tileEntity == null && aBlock instanceof GT_Block_FrameBox frameBlock) {
+            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+            ITexture[] texture = frameBlock.getTexture(meta);
+            if (texture == null) return false;
+            textureArray[0] = texture;
+            textureArray[1] = texture;
+            textureArray[2] = texture;
+            textureArray[3] = texture;
+            textureArray[4] = texture;
+            textureArray[5] = texture;
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            return true;
+        }
+
         if (tileEntity == null) return false;
+
         if (tileEntity instanceof IGregTechTileEntity) {
             final IMetaTileEntity metaTileEntity;
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null
