@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -51,7 +50,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -304,6 +303,18 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         return new GT_MetaTileEntity_MultiAutoclave(this.mName);
     }
 
+    public float euModifier(int fluidPipeTier) {
+        return (float) (12 - fluidPipeTier) / 12;
+    }
+
+    public float speedBoost(int coilTier) {
+        return (float) 1 / (Math.max(1, (coilTier + 1) / 3));
+    }
+
+    public int getMaxParallelRecipes() {
+        return itemPipeTier * 12;
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -311,15 +322,11 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             @Override
             @Nonnull
             public CheckRecipeResult process() {
-                euModifier = (float) 1 / (fluidPipeTier);
-                speedBoost = 1F / (Math.min(1, (getCoilTier() + 1) / 2));
+                euModifier = euModifier(fluidPipeTier);
+                speedBoost = speedBoost(getCoilTier());
                 return super.process();
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
-    }
-
-    public int getMaxParallelRecipes() {
-        return itemPipeTier * 12;
     }
 
     @Override
@@ -338,8 +345,11 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(StatCollector.translateToLocal("GT5U.machines.oreprocessor1"));
         currenttip.add("Fluid Pipe Tier: " + EnumChatFormatting.WHITE + tag.getInteger("fluidPipeTier"));
+        currenttip.add("EU Modifier: " + EnumChatFormatting.WHITE + euModifier(tag.getInteger("fluidPipeTier")));
         currenttip.add("Item Pipe Tier: " + EnumChatFormatting.WHITE + tag.getInteger("itemPipeTier"));
+        currenttip.add("Speed Boost: " + EnumChatFormatting.WHITE + speedBoost(tag.getInteger("coilTier")));
         currenttip.add("Heating Coil Level: " + EnumChatFormatting.WHITE + tag.getInteger("coilTier"));
+        currenttip.add("Max Parallel Recipes: " + EnumChatFormatting.WHITE + getMaxParallelRecipes());
     }
 
     @Override
