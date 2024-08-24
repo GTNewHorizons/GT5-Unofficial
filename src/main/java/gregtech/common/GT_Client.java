@@ -843,8 +843,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
                 || aTileEntity instanceof IWrenchable
-                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated()))
-                drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
+                || (aBlock instanceof GT_Block_FrameBox)) drawGrid(aEvent, false, true, aEvent.player.isSneaking());
             return;
         }
 
