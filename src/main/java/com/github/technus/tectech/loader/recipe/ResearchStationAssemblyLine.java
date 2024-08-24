@@ -3050,7 +3050,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Particle.getBaseParticle(Particle.GRAVITON)
                             .getItem(),
                         8),
-                    ItemList.Field_Generator_UEV.get(4),
+                    ItemList.Field_Generator_UEV.get(2),
                     // Artificial Gravity Generator
                     getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
                 new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
@@ -3068,8 +3068,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { CustomItemList.Godforge_BoundlessStructureCasing.get(1), ItemList.ZPM2.get(1),
-                GregtechItemList.CosmicFabricManipulator.get(1), ItemList.Field_Generator_UEV.get(4),
-                ItemList.Emitter_UIV.get(8), GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 6),
+                GregtechItemList.CosmicFabricManipulator.get(1), ItemList.Field_Generator_UEV.get(2),
+                ItemList.Emitter_UIV.get(3), GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 6),
                 GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.Creon, 8),
                 GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.Mellion, 8) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
