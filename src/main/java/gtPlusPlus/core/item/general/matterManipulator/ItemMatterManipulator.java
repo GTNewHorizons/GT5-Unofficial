@@ -2,14 +2,21 @@ package gtPlusPlus.core.item.general.matterManipulator;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -50,7 +57,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -285,18 +291,63 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         return EnumAction.bow;
     }
 
+    static final Map<EntityPlayer, PendingBuild> PENDING_BUILDS = new MapMaker()
+        .weakKeys()
+        .makeMap();
+
+    private static final ExecutorService BUILD_ASSEMBLING_POOL = new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+
+    @Override
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
+        
+        var pending = new PendingBuild();
+        pending.pendingBlocks = null;
+        pending.placingPlayer = player;
+        pending.manipulator = getState(stack);
+
+        pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
+            var blocks = pending.manipulator.getPendingBlocks();
+            blocks.sort((a, b) -> Integer.compare(a.buildOrder, b.buildOrder));
+            
+            return new LinkedList<>(blocks);
+        });
+
+        PENDING_BUILDS.put(player, pending);
+
+        return false;
+    }
+
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int itemUseCount) {
+        if(world.isRemote) {
+            // play startup sound
+        } else {
+            var build = PENDING_BUILDS.remove(player);
+    
+            if(build != null && build.assembleTask != null) {
+                build.assembleTask.cancel(true);
+            }
+        }
+    }
+
     @Override
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-        new Exception().printStackTrace();
-
         int ticksUsed = Integer.MAX_VALUE - count;
 
-        if(player.worldObj.isRemote && ticksUsed > 0 && (ticksUsed % (2 * 20)) == 0) {
-            player.worldObj.playSoundAtEntity(
-                player,
-                SoundResource.MOB_ENDERMEN_PORTAL.name(),
-                1.0F, 1.0F
-            );
+        if(ticksUsed >= 40 && (ticksUsed % 10) == 0) {
+            if(player.worldObj.isRemote) {
+                Minecraft.getMinecraft().theWorld.playSound(
+                    player.posX + 0.5,
+                    player.posY + 0.5,
+                    player.posZ + 0.5,
+                    SoundResource.MOB_ENDERMEN_PORTAL.toString(),
+                    1.0f,
+                    1.0f,
+                    false);
+            } else {
+                PENDING_BUILDS.get(player).tryPlaceBlocks(stack, player);
+            }
         }
     }
 
@@ -308,7 +359,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     @Override
     public void setEncryptionKey(ItemStack item, String encKey, String name) {
         withState(item, state -> {
-            state.encKey = encKey;
+            try {
+                state.encKey = "0x" + Long.toHexString(Long.parseLong(encKey));
+            } catch (NumberFormatException e) {
+                state.encKey = null;
+            }
 
             if(state.hasMEConnection()) {
                 state.connectToMESystem();
