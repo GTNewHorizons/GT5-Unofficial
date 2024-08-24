@@ -429,7 +429,7 @@ public class AdditionalRecipes {
             .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9))
             .outputChances(90_00)
             .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000))
-            .duration(3 * MINUTES + 45 * SECONDS)
+            .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
 
@@ -437,7 +437,7 @@ public class AdditionalRecipes {
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
             .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gem))
             .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000))
-            .duration(3 * MINUTES + 45 * SECONDS)
+            .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
 
