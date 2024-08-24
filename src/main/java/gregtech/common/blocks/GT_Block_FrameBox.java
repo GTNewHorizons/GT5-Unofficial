@@ -425,6 +425,7 @@ public class GT_Block_FrameBox extends BlockContainer {
 
     public ITexture[] getTexture(int meta) {
         Materials material = getMaterial(meta);
+        if (material == null) return null;
         return new ITexture[] { TextureFactory.of(
             material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
             Dyes.getModulation(-1, material.mRGBa)) };

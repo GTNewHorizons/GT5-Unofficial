@@ -734,6 +734,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (tileEntity == null && aBlock instanceof GT_Block_FrameBox frameBlock) {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
             ITexture[] texture = frameBlock.getTexture(meta);
+            if (texture == null) return false;
             textureArray[0] = texture;
             textureArray[1] = texture;
             textureArray[2] = texture;
