@@ -113,7 +113,7 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     // Get the material that this frame box is made of
-    public Materials getMaterial(int meta) {
+    public static Materials getMaterial(int meta) {
         return GregTech_API.sGeneratedMaterials[meta];
     }
 
@@ -415,13 +415,6 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     @Override
-    public int getRenderColor(int meta) {
-        Materials material = getMaterial(meta);
-        short[] rgba = material.mRGBa;
-        return (rgba[0] << 24) + (rgba[1] << 16) + (rgba[2] << 8) + rgba[3];
-    }
-
-    @Override
     public IIcon getIcon(int side, int meta) {
         Materials material = GregTech_API.sGeneratedMaterials[meta];
         if (material == null) return null;
@@ -429,7 +422,7 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     public ITexture[] getTexture(int meta) {
-        Materials material = GregTech_API.sGeneratedMaterials[meta];
+        Materials material = getMaterial(meta);
         return new ITexture[] { TextureFactory.of(
             material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
             Dyes.getModulation(-1, material.mRGBa)) };

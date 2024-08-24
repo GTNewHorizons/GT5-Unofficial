@@ -41,6 +41,13 @@ public class GT_Item_Frames extends ItemBlock {
     }
 
     @Override
+    public int getColorFromItemStack(ItemStack aStack, int aPass) {
+        int meta = aStack.getItemDamage();
+        Materials material = GT_Block_FrameBox.getMaterial(meta);
+        return (material.mRGBa[0] << 16) | (material.mRGBa[1] << 8) | material.mRGBa[2];
+    }
+
+    @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(GT_LanguageManager.getTranslation("gt.blockmachines.gt_frame.desc.format"));
     }
