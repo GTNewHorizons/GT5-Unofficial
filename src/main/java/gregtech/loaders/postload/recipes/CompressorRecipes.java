@@ -7,6 +7,7 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator.sapling_Rainforest;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -147,6 +148,13 @@ public class CompressorRecipes implements Runnable {
             .itemOutputs(ItemList.CompressedFireclay.get(1))
             .duration(4 * SECONDS)
             .eut(4)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.gem, 9))
+            .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
             .addTo(compressorRecipes);
 
         if (Railcraft.isModLoaded()) {
