@@ -186,22 +186,29 @@ import ic2.api.recipe.RecipeOutput;
 public class GT_Mod implements IGT_Mod {
     static {
         try{
+            // Client
+            ConfigurationManager.registerConfig(ConfigColorModulation.class);
+            ConfigurationManager.registerConfig(ConfigInterface.class);
+            ConfigurationManager.registerConfig(ConfigPreference.class);
+            ConfigurationManager.registerConfig(ConfigRender.class);
+            ConfigurationManager.registerConfig(ConfigWaila.class);
+
             // GregTech.cfg
-            ConfigurationManager.registerConfig(ConfigGeneral.class);
-            ConfigurationManager.registerConfig(ConfigMachines.class);
             ConfigurationManager.registerConfig(ConfigDebug.class);
-            ConfigurationManager.registerConfig(ConfigPollution.class);
-            ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
             ConfigurationManager.registerConfig(ConfigFeatures.class);
+            ConfigurationManager.registerConfig(ConfigGeneral.class);
             ConfigurationManager.registerConfig(ConfigHarvestLevel.class);
+            ConfigurationManager.registerConfig(ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
+            ConfigurationManager.registerConfig(ConfigPollution.class);
 
             // MachineStats.cfg
             ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
-            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
-            ConfigurationManager.registerConfig(ConfigTeleporter.class);
             ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
             ConfigurationManager.registerConfig(ConfigMassFabricator.class);
             ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
+            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigTeleporter.class);
 
             // OverPoweredStuff
             ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
@@ -209,12 +216,7 @@ public class GT_Mod implements IGT_Mod {
             // Other
             ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
 
-            // Client
-            ConfigurationManager.registerConfig(ConfigColorModulation.class);
-            ConfigurationManager.registerConfig(ConfigInterface.class);
-            ConfigurationManager.registerConfig(ConfigPreference.class);
-            ConfigurationManager.registerConfig(ConfigRender.class);
-            ConfigurationManager.registerConfig(ConfigWaila.class);
+
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);

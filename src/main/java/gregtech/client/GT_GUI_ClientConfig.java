@@ -13,6 +13,18 @@ import gregtech.common.config.client.ConfigInterface;
 import gregtech.common.config.client.ConfigPreference;
 import gregtech.common.config.client.ConfigRender;
 import gregtech.common.config.client.ConfigWaila;
+import gregtech.common.config.gregtech.ConfigDebug;
+import gregtech.common.config.gregtech.ConfigFeatures;
+import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
+import gregtech.common.config.gregtech.ConfigMachines;
+import gregtech.common.config.gregtech.ConfigOreDropBehavior;
+import gregtech.common.config.gregtech.ConfigPollution;
+import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
+import gregtech.common.config.machinestats.ConfigTeleporter;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
@@ -34,7 +46,22 @@ public class GT_GUI_ClientConfig extends SimpleGuiConfig {
             ConfigInterface.class,
             ConfigPreference.class,
             ConfigRender.class,
-            ConfigWaila.class
+            ConfigWaila.class,
+            ConfigDebug.class,
+            ConfigFeatures.class,
+            ConfigGeneral.class,
+            ConfigHarvestLevel.class,
+            ConfigMachines.class,
+            ConfigOreDropBehavior.class,
+            ConfigPollution.class,
+            ConfigBronzeSolarBoiler.class,
+            gregtech.common.config.machinestats.ConfigMachines.class,
+            ConfigMassFabricator.class,
+            ConfigMicrowaveEnergyTransmitter.class,
+            ConfigSteelSolarBoiler.class,
+            ConfigTeleporter.class,
+            gregtech.common.config.opstuff.ConfigGeneral.class,
+            gregtech.common.config.other.ConfigGeneral.class
         );
     }
 }
