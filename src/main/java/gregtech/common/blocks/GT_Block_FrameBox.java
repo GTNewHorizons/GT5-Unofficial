@@ -214,7 +214,16 @@ public class GT_Block_FrameBox extends BlockContainer {
             gtTE.onBlockDestroyed();
             mTemporaryTileEntity.set(gtTE);
         }
+        // Cause structure update
+        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, int x, int y, int z) {
+        // Cause structure update
+        GregTech_API.causeMachineUpdate(worldIn, x, y, z);
+        super.onBlockAdded(worldIn, x, y, z);
     }
 
     @Override
