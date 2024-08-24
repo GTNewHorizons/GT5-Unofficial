@@ -90,6 +90,7 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.SeekingOggCodec;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
@@ -844,6 +845,14 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || aTileEntity instanceof IWrenchable
                 || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated()))
                 drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+            return;
+        }
+
+        // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
+        if (aTileEntity == null && aBlock instanceof GT_Block_FrameBox) {
+            if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
+                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
+            }
             return;
         }
 
