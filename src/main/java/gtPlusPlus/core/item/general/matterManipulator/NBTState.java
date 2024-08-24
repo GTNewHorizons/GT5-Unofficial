@@ -481,6 +481,7 @@ class NBTState {
     static class PendingBlock {
         public Location location;
         public ItemStack block;
+        public int renderOrder, buildOrder;
         
         public PendingBlock() {
 
