@@ -37,6 +37,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -50,6 +51,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -152,6 +154,16 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
             .addInfo("Steam - Outputs 50% more cracked fluid")
             .addInfo("(Values compared to cracking in the Chemical Reactor)")
             .addInfo("Place the appropriate circuit in the controller or an input bus")
+            .addInfo(
+                GT_Values.TIER_COLORS[8] + GT_Values.VN[8]
+                    + EnumChatFormatting.GRAY
+                    + "-tier glass required for "
+                    + EnumChatFormatting.BLUE
+                    + "Tec"
+                    + EnumChatFormatting.DARK_BLUE
+                    + "Tech"
+                    + EnumChatFormatting.GRAY
+                    + " Laser Hatches.")
             .addSeparator()
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
