@@ -237,7 +237,6 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
         if (mCasingAmount < 128) return false;
-        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
             && itemPipeTier >= 0
             && mEnergyHatches.size() >= 1
