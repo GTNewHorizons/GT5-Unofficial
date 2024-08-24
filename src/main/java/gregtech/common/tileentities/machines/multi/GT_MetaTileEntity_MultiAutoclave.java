@@ -203,6 +203,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             .addInfo("Each pipe casing (bronze, steel, titanium, tungstensteel)")
             .addInfo("decreases the EU usageby 1/pipe tier.")
             .addInfo("Heating Coils increase speed by 1/((tier + 1) / 2).")
+            .addInfo("Needs a minimum of 128 Pressure Containment Casings.")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
@@ -235,7 +236,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        // if (mCasingAmount < 8) return false;
+        if (mCasingAmount < 128) return false;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
             && itemPipeTier >= 0
