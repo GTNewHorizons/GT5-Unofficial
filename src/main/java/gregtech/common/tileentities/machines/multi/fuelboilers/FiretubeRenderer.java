@@ -85,7 +85,6 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
 
                 // The water texture is 32x1024 - write the first 16x16 slice as the base UVs, but upload the max size
                 // to the shader too. Then, the shader can animate by switching between which slice is being shown
-                final float minU = Blocks.flowing_water.getBlockTextureFromSide(0).getMinU();
                 final IIcon waterFlow = Blocks.flowing_water.getBlockTextureFromSide(2);
                 final float minU = waterFlow.getMinU();
                 final float maxU = waterFlow.getMaxU();
