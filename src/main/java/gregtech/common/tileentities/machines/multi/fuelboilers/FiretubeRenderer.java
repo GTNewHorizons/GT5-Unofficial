@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.*;
@@ -85,11 +86,13 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 // The water texture is 32x1024 - write the first 16x16 slice as the base UVs, but upload the max size
                 // to the shader too. Then, the shader can animate by switching between which slice is being shown
                 final float minU = Blocks.flowing_water.getBlockTextureFromSide(0).getMinU();
-                final float maxU = Blocks.flowing_water.getBlockTextureFromSide(0).getMaxU();
-                final float minV = Blocks.flowing_water.getBlockTextureFromSide(0).getMinV();
+                final IIcon waterFlow = Blocks.flowing_water.getBlockTextureFromSide(2);
+                final float minU = waterFlow.getMinU();
+                final float maxU = waterFlow.getMaxU();
+                final float minV = waterFlow.getMinV();
 
                 // Stop at 61/64 of the way to the bottom, since we display a 3-long slice
-                final float maxV = Blocks.flowing_water.getBlockTextureFromSide(0).getMaxV(); // * 61 / 64;
+                final float maxV = waterFlow.getMaxV(); // * 61 / 64;
 
                 final float dU = maxU - minU;
                 final float dV = maxV - minV;
@@ -116,7 +119,7 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 // Register uniforms
                 uBlockAtlas = steamProgram.getUniformLocation("u_BlockAtlas");
                 uModelProjection = steamProgram.getUniformLocation("u_ModelProjection");
-                uTime = steamProgram.getUniformLocation("u_Time");
+                //uTime = steamProgram.getUniformLocation("u_Time");
                 uHeight = steamProgram.getUniformLocation("u_Height");
                 uminUV = steamProgram.getUniformLocation("u_minUV");
                 udUV = steamProgram.getUniformLocation("u_dUV");
@@ -145,9 +148,7 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
             steamProgram.use();
 
             // Load uniforms
-            GL20.glUniform1f(
-                uTime,
-                ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
+            //GL20.glUniform1f(uTime, ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
             GL20.glUniform1f(uHeight, 1.5f);
 
             modelProjectionMatrix.identity();
@@ -162,13 +163,16 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
             GL20.glVertexAttribPointer(aPos, POS_W, GL_FLOAT, false, STRIDE * BYTES_P_FLOAT, 0);
             GL20.glVertexAttribPointer(aUV, UV_W, GL_FLOAT, false, STRIDE * BYTES_P_FLOAT, POS_W * BYTES_P_FLOAT);
             GL11.glEnableClientState(GL_VERTEX_ARRAY);
+            GL11.glEnable(GL_BLEND);
+            GL11.glDisable(GL_CULL_FACE);
 
-            GL11.glDisableClientState(GL_CULL_FACE);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, VERTEX_COUNT);
-            GL11.glEnableClientState(GL_CULL_FACE);
 
+            GL11.glEnable(GL_CULL_FACE);
+            GL11.glDisable(GL_BLEND);
             GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-            GL20.glDisableVertexAttribArray(0);
+            GL20.glDisableVertexAttribArray(aPos);
+            GL20.glDisableVertexAttribArray(aUV);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
             ShaderProgram.clear();
