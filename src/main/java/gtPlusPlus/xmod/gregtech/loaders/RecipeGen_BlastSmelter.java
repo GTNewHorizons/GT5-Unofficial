@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.enums.GT_Values.VP;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
@@ -29,7 +30,6 @@ import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
@@ -76,13 +76,14 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
         // This Bad boy here is what dictates unique recipes.
         ItemStack circuitGT;
 
-        long aVoltage = MaterialUtils.getVoltageForTier(M.vTier);
+        int tier = Math.max(1, M.vTier);
+        long aVoltage = VP[tier];
 
         // Set a duration
-        int duration = 120 * M.vTier * 10;
+        int duration = 120 * tier * 10;
 
-        if (M.vTier <= 4) {
-            duration = 20 * M.vTier * 10;
+        if (tier <= 4) {
+            duration = 20 * tier * 10;
         }
 
         int mMaterialListSize = 0;
@@ -97,11 +98,6 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
             }
         } else {
             mMaterialListSize = 1;
-        }
-
-        if (duration <= 0) {
-            final int second = 20;
-            duration = 14 * second * mMaterialListSize * 8;
         }
 
         Logger.WARNING("[BAS] Size: " + mMaterialListSize);
