@@ -3,7 +3,7 @@ package gregtech.common.config.gregtech;
 import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "general",configSubDirectory = "GregTech",filename = "GregTech")
+@Config(modid = Mods.Names.GREG_TECH, category = "debug",configSubDirectory = "GregTech",filename = "GregTech")
 public class ConfigDebug {
 
     @Config.Comment("enable D1 flag (a set of debug logs)")
