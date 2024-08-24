@@ -17,6 +17,11 @@ import java.util.function.Predicate;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import gregtech.common.config.client.ConfigColorModulation;
+import gregtech.common.config.client.ConfigInterface;
+import gregtech.common.config.client.ConfigPreference;
+import gregtech.common.config.client.ConfigRender;
+import gregtech.common.config.client.ConfigWaila;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
@@ -203,6 +208,13 @@ public class GT_Mod implements IGT_Mod {
 
             // Other
             ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
+
+            // Client
+            ConfigurationManager.registerConfig(ConfigColorModulation.class);
+            ConfigurationManager.registerConfig(ConfigInterface.class);
+            ConfigurationManager.registerConfig(ConfigPreference.class);
+            ConfigurationManager.registerConfig(ConfigRender.class);
+            ConfigurationManager.registerConfig(ConfigWaila.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);

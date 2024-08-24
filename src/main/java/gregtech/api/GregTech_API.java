@@ -231,7 +231,7 @@ public class GregTech_API {
     /**
      * The Configuration Objects
      */
-    public static GT_Config sWorldgenFile = null, sUnification = null, sClientDataFile;
+    public static GT_Config sWorldgenFile = null, sUnification = null, NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -772,14 +772,7 @@ public class GregTech_API {
     }
 
     public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
-        return Comparator.comparingInt((ItemStack is) -> {
-            // By default, the Programmed Circuit should be the earliest configuration circuit to which the
-            // player is exposed
-            if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
-                return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
-            return GT_Mod.gregtechproxy.mCircuitsOrder
-                .getOrDefault(String.valueOf(GameRegistry.findUniqueIdentifierFor(is.getItem())), Integer.MAX_VALUE);
-        })
+        return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1)
             .thenComparing(ItemStack::getUnlocalizedName)
             .thenComparing(ItemStack::getItemDamage);
     }

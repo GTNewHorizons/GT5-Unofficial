@@ -728,10 +728,8 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public boolean mWailaTransformerVoltageTier = true;
 
     /**
-     * What is the order of the circuits when they are selected?
+     * This enables showing the cpu load in nanoseconds via waila.
      */
-    public Map<String, Integer> mCircuitsOrder = new HashMap<>();
-
     public boolean wailaAverageNS = false;
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15

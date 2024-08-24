@@ -18,6 +18,10 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import gregtech.common.config.client.ConfigColorModulation;
+import gregtech.common.config.client.ConfigInterface;
+import gregtech.common.config.client.ConfigRender;
+import gregtech.common.config.client.ConfigWaila;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
@@ -149,8 +153,9 @@ public class GT_PreLoad {
             new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
         GregTech_API.sUnification = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
-        GregTech_API.sClientDataFile = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
+        GregTech_API.NEIClientFIle = new GT_Config(
+            new Configuration(new File(new File(configDir, "GregTech"), "NEIClient.cfg")));
+
     }
 
     public static void createLogFiles(File parentFile) {
@@ -559,55 +564,51 @@ public class GT_PreLoad {
         GT_RecipeBuilder.onConfigLoad();
     }
 
+    public static void parseHex(Dyes dye, String hexString){
+        dye.mRGBa[0] = Short.parseShort(hexString.substring(1, 3), 16);
+        dye.mRGBa[1] = Short.parseShort(hexString.substring(3, 5), 16);
+        dye.mRGBa[2] = Short.parseShort(hexString.substring(5), 16);
+    }
+
     public static void loadClientConfig() {
-        final String sBDye0 = "ColorModulation.";
         Arrays.stream(Dyes.values())
-            .filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0))
-            .forEach(tDye -> {
-                String sBDye1 = sBDye0 + tDye;
-                tDye.mRGBa[0] = ((short) Math
-                    .min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "R", tDye.mOriginalRGBa[0]))));
-                tDye.mRGBa[1] = ((short) Math
-                    .min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "G", tDye.mOriginalRGBa[1]))));
-                tDye.mRGBa[2] = ((short) Math
-                    .min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "B", tDye.mOriginalRGBa[2]))));
+            .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))
+            .forEach(dye -> {
+                switch (dye.toString().toLowerCase()) {
+                    case "cable_insulation" -> parseHex(dye, ConfigColorModulation.cableInsulation);
+                    case "construction_foam" -> parseHex(dye, ConfigColorModulation.constructionFoam);
+                    case "machine_metal" -> parseHex(dye, ConfigColorModulation.machineMetal);
+                    default -> {
+                        GT_FML_LOGGER.warn("unknown color modulation entry: "+dye+". Report this pls, as config is missing this entry being parsed in code.");
+                    }
+                }
             });
-        GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile
-            .get("render", "TileAmbientOcclusion", true);
-        GT_Mod.gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
-        GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile
-            .get("render", "RenderFlippedMachinesFlipped", true);
-        GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile
-            .get("render", "RenderIndicatorsOnHatch", true);
-        GT_Mod.gregtechproxy.mRenderDirtParticles = GregTech_API.sClientDataFile
-            .get("render", "RenderDirtParticles", true);
-        GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile
-            .get("render", "RenderPollutionFog", true);
-        GT_Mod.gregtechproxy.mRenderItemDurabilityBar = GregTech_API.sClientDataFile
-            .get("render", "RenderItemDurabilityBar", true);
-        GT_Mod.gregtechproxy.mRenderItemChargeBar = GregTech_API.sClientDataFile
-            .get("render", "RenderItemChargeBar", true);
-        GT_Mod.gregtechproxy.mUseBlockUpdateHandler = GregTech_API.sClientDataFile
-            .get("render", "UseBlockUpdateHandler", false);
+        GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = ConfigRender.renderTileAmbientOcclusion;
+        GT_Mod.gregtechproxy.mRenderGlowTextures = ConfigRender.renderGlowTextures;
+        GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped = ConfigRender.renderFlippedMachinesFlipped;
+        GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch = ConfigRender.renderIndicatorsOnHatch;
+        GT_Mod.gregtechproxy.mRenderDirtParticles = ConfigRender.renderDirtParticles;
+        GT_Mod.gregtechproxy.mRenderPollutionFog = ConfigRender.renderPollutionFog;
+        GT_Mod.gregtechproxy.mRenderItemDurabilityBar = ConfigRender.renderItemDurabilityBar;
+        GT_Mod.gregtechproxy.mRenderItemChargeBar = ConfigRender.renderItemChargeBar;
+        GT_Mod.gregtechproxy.mUseBlockUpdateHandler = ConfigRender.useBlockUpdateHandler;
 
-        GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile
-            .get("interface", "DisplayCoverTabs", true);
-        GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
-        GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
-        GT_Mod.gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile
-            .get("interface", "TooltipShiftVerbosity", 3);
-        GT_Mod.gregtechproxy.mTitleTabStyle = GregTech_API.sClientDataFile.get("interface", "TitleTabStyle", 0);
+        GT_Mod.gregtechproxy.mCoverTabsVisible = ConfigInterface.coverTabsVisible;
+        GT_Mod.gregtechproxy.mCoverTabsFlipped = ConfigInterface.coverTabsFlipped;
+        GT_Mod.gregtechproxy.mTooltipVerbosity = ConfigInterface.tooltipVerbosity;
+        GT_Mod.gregtechproxy.mTooltipShiftVerbosity = ConfigInterface.tooltipShiftVerbosity;
+        GT_Mod.gregtechproxy.mTitleTabStyle = ConfigInterface.titleTabStyle;
 
-        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("nei", "RecipeSecondMode", true);
-        GT_Mod.gregtechproxy.mNEIRecipeOwner = GregTech_API.sClientDataFile.get("nei", "RecipeOwner", false);
-        GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace = GregTech_API.sClientDataFile
+        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.NEIClientFIle.get("nei", "RecipeSecondMode", true);
+        GT_Mod.gregtechproxy.mNEIRecipeOwner = GregTech_API.NEIClientFIle.get("nei", "RecipeOwner", false);
+        GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace = GregTech_API.NEIClientFIle
             .get("nei", "RecipeOwnerStackTrace", false);
-        GT_Mod.gregtechproxy.mNEIOriginalVoltage = GregTech_API.sClientDataFile.get("nei", "OriginalVoltage", false);
+        GT_Mod.gregtechproxy.mNEIOriginalVoltage = GregTech_API.NEIClientFIle.get("nei", "OriginalVoltage", false);
 
         GT_Mod.gregtechproxy.recipeCategorySettings.clear();
         for (RecipeCategory recipeCategory : findRecipeCategories()) {
             RecipeCategorySetting setting = RecipeCategorySetting.find(
-                GregTech_API.sClientDataFile.getWithValidValues(
+                GregTech_API.NEIClientFIle.getWithValidValues(
                     "nei.recipe_categories",
                     recipeCategory.unlocalizedName,
                     RecipeCategorySetting.NAMES,
@@ -616,15 +617,8 @@ public class GT_PreLoad {
             GT_Mod.gregtechproxy.recipeCategorySettings.put(recipeCategory, setting);
         }
 
-        GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile
-            .get("waila", "WailaTransformerVoltageTier", true);
-        GT_Mod.gregtechproxy.wailaAverageNS = GregTech_API.sClientDataFile.get("waila", "WailaAverageNS", false);
-
-        final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder");
-        GT_Mod.gregtechproxy.mCircuitsOrder.clear();
-        for (int i = 0; i < Circuits.length; i++) {
-            GT_Mod.gregtechproxy.mCircuitsOrder.putIfAbsent(Circuits[i], i);
-        }
+        GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = ConfigWaila.wailaTransformerVoltageTier;
+        GT_Mod.gregtechproxy.wailaAverageNS = ConfigWaila.wailaAverageNS;
 
         GT_Mod.gregtechproxy.reloadNEICache();
     }
