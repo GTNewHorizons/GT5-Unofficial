@@ -215,7 +215,7 @@ public final class ModItems {
 
     public static ItemMagicFeather itemMagicFeather;
 
-    public static Item itemMatterManipulator;
+    public static ItemMatterManipulator itemMatterManipulator;
 
     static {
         Logger.INFO("Items!");
