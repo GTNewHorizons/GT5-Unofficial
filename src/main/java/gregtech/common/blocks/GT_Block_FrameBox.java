@@ -56,6 +56,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
+
         GameRegistry.registerBlock(this, GT_Item_Frames.class, getUnlocalizedName());
 
         for (int meta = 1; meta < GregTech_API.sGeneratedMaterials.length; meta++) {
@@ -64,8 +65,9 @@ public class GT_Block_FrameBox extends BlockContainer {
                 GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_NAME,
                     GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
-                GT_LanguageManager
-                    .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
+                GT_LanguageManager.addStringLocalization(
+                    getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
+                    "Just something you can put covers on.");
             }
         }
     }
@@ -229,8 +231,8 @@ public class GT_Block_FrameBox extends BlockContainer {
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return tTileEntity instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tTileEntity).privateAccess()
-            && !((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
+        return (tTileEntity instanceof BaseMetaTileEntity baseMTE) && baseMTE.privateAccess()
+            && !baseMTE.playerOwnsThis(aPlayer, true) ? -1.0F
                 : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
     }
 
@@ -292,7 +294,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         if (tTileEntity instanceof BaseMetaPipeEntity baseMetaPipe && (baseMetaPipe.mConnections & 0xFFFFFFC0) != 0) {
             return true;
         }
-        return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(side) != 0;
+        return (tTileEntity instanceof ICoverable coverable) && coverable.getCoverIDAtSide(side) != 0;
     }
 
     @Override // THIS
