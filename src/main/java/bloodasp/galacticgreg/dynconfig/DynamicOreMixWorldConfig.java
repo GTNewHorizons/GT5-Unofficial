@@ -9,6 +9,7 @@ import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.common.OreMixBuilder;
+import gregtech.common.SmallOreBuilder;
 
 /**
  * This is the dynamic config class for every ore-vein that will generate config values according to the dimension and
@@ -51,6 +52,26 @@ public class DynamicOreMixWorldConfig {
                     tDimIdentifier);
                 else {
                     boolean tFlag = mix.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
+                    _mDynWorldConfigMap.put(tDimIdentifier, tFlag);
+                }
+            }
+        }
+    }
+
+    public DynamicOreMixWorldConfig(String worldGenName, SmallOreBuilder ore){
+        _mWorldGenName = worldGenName;
+        _mDynWorldConfigMap = new HashMap<>();
+        _mConfigName = String.format("worldgen.%s", _mWorldGenName);
+        for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
+            if (!mc.getEnabled()) continue;
+
+            for (ModDimensionDef mdd : mc.getDimensionList()) {
+                String tDimIdentifier = mdd.getDimIdentifier();
+                if (_mDynWorldConfigMap.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
+                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                    tDimIdentifier);
+                else {
+                    boolean tFlag = ore.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
                     _mDynWorldConfigMap.put(tDimIdentifier, tFlag);
                 }
             }

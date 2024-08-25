@@ -1,6 +1,7 @@
 package bloodasp.galacticgreg;
 
 import gregtech.api.enums.OreMixes;
+import gregtech.api.enums.SmallOres;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 
@@ -13,14 +14,8 @@ public class WorldGenGaGT implements Runnable {
         /*
          * This part here enables every GT Small Ore for Space Dims.
          */
-        for (int k = 0; k < GT_Worldgen_GT_Ore_SmallPieces.sList.size(); ++k) {
-            new GT_Worldgen_GT_Ore_SmallPieces_Space(
-                GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mWorldGenName,
-                GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mEnabled,
-                GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mMinY,
-                GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mMaxY,
-                GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mAmount,
-                GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mMeta);
+        for (SmallOres ore : SmallOres.values()) {
+            ore.addGaGregSmallOre();
         }
 
         /*
