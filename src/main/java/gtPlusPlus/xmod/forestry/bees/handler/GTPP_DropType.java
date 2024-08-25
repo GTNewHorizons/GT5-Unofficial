@@ -9,7 +9,7 @@ import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPP_DropType {
 
-    DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
+    DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
     FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
 
     public boolean mShowInList;

@@ -406,7 +406,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
             }
         }
         // Cost is exponential in function of amount of duplicate catalysts
-        return (int) (Math.pow(2, count + 1) * CATALYST_BASE_COST);
+        return (int) (Math.pow(2, count) * CATALYST_BASE_COST);
     }
 
     // Returns the first index of a valid combination, or -1 if there is no valid combination in the sequence
