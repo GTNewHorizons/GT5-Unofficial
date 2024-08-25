@@ -1150,7 +1150,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_IndustrialExtractor(
                 INDUSTRIAL_EXTRACTOR_CONTROLLER.ID,
                 "multimachine.extractor",
-                "Dissection Engine").getStackForm(1));
+                "Dissection Apparatus").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(

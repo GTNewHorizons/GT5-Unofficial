@@ -167,7 +167,7 @@ public class GT_MetaTileEntity_IndustrialExtractor
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Extractor")
-            .addInfo("Controller Block for the Dissection Engine")
+            .addInfo("Controller Block for the Dissection Apparatus")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Only uses 85% of the EU/t normally required")
             .addInfo("Gains 8 parallels per tier of Item Pipe Casing")
