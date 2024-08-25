@@ -3,13 +3,101 @@ package gregtech.loaders.postload;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import bloodasp.galacticgreg.WorldGenGaGT;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Materials.*;
 import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.GT_Worldgen_Stone;
 import gregtech.common.GT_Worldgenerator;
+import gregtech.common.OreMixBuilder;
+
+import static gregtech.api.enums.Materials.Almandine;
+import static gregtech.api.enums.Materials.Aluminium;
+import static gregtech.api.enums.Materials.Apatite;
+import static gregtech.api.enums.Materials.BandedIron;
+import static gregtech.api.enums.Materials.Barite;
+import static gregtech.api.enums.Materials.Bastnasite;
+import static gregtech.api.enums.Materials.Bauxite;
+import static gregtech.api.enums.Materials.Bentonite;
+import static gregtech.api.enums.Materials.Beryllium;
+import static gregtech.api.enums.Materials.BrownLimonite;
+import static gregtech.api.enums.Materials.Calcite;
+import static gregtech.api.enums.Materials.Cassiterite;
+import static gregtech.api.enums.Materials.CertusQuartz;
+import static gregtech.api.enums.Materials.Chalcopyrite;
+import static gregtech.api.enums.Materials.Cinnabar;
+import static gregtech.api.enums.Materials.Coal;
+import static gregtech.api.enums.Materials.Cobaltite;
+import static gregtech.api.enums.Materials.Cooperite;
+import static gregtech.api.enums.Materials.Copper;
+import static gregtech.api.enums.Materials.Diamond;
+import static gregtech.api.enums.Materials.Emerald;
+import static gregtech.api.enums.Materials.Galena;
+import static gregtech.api.enums.Materials.Garnierite;
+import static gregtech.api.enums.Materials.Glauconite;
+import static gregtech.api.enums.Materials.Gold;
+import static gregtech.api.enums.Materials.Graphite;
+import static gregtech.api.enums.Materials.GreenSapphire;
+import static gregtech.api.enums.Materials.Grossular;
+import static gregtech.api.enums.Materials.Ilmenite;
+import static gregtech.api.enums.Materials.Iridium;
+import static gregtech.api.enums.Materials.Iron;
+import static gregtech.api.enums.Materials.Lapis;
+import static gregtech.api.enums.Materials.Lazurite;
+import static gregtech.api.enums.Materials.Lead;
+import static gregtech.api.enums.Materials.Lepidolite;
+import static gregtech.api.enums.Materials.Lignite;
+import static gregtech.api.enums.Materials.Lithium;
+import static gregtech.api.enums.Materials.Magnesite;
+import static gregtech.api.enums.Materials.Magnetite;
+import static gregtech.api.enums.Materials.Malachite;
+import static gregtech.api.enums.Materials.Molybdenite;
+import static gregtech.api.enums.Materials.Molybdenum;
+import static gregtech.api.enums.Materials.Monazite;
+import static gregtech.api.enums.Materials.Neodymium;
+import static gregtech.api.enums.Materials.NetherQuartz;
+import static gregtech.api.enums.Materials.Nickel;
+import static gregtech.api.enums.Materials.Oilsands;
+import static gregtech.api.enums.Materials.Olivine;
+import static gregtech.api.enums.Materials.Palladium;
+import static gregtech.api.enums.Materials.Pentlandite;
+import static gregtech.api.enums.Materials.Pitchblende;
+import static gregtech.api.enums.Materials.Platinum;
+import static gregtech.api.enums.Materials.Powellite;
+import static gregtech.api.enums.Materials.Pyrite;
+import static gregtech.api.enums.Materials.Pyrochlore;
+import static gregtech.api.enums.Materials.Pyrolusite;
+import static gregtech.api.enums.Materials.Pyrope;
+import static gregtech.api.enums.Materials.Quartzite;
+import static gregtech.api.enums.Materials.Redstone;
+import static gregtech.api.enums.Materials.RockSalt;
+import static gregtech.api.enums.Materials.Ruby;
+import static gregtech.api.enums.Materials.Salt;
+import static gregtech.api.enums.Materials.Sapphire;
+import static gregtech.api.enums.Materials.Scheelite;
+import static gregtech.api.enums.Materials.Silver;
+import static gregtech.api.enums.Materials.Soapstone;
+import static gregtech.api.enums.Materials.Sodalite;
+import static gregtech.api.enums.Materials.Spessartine;
+import static gregtech.api.enums.Materials.Sphalerite;
+import static gregtech.api.enums.Materials.Spodumene;
+import static gregtech.api.enums.Materials.Stibnite;
+import static gregtech.api.enums.Materials.Sulfur;
+import static gregtech.api.enums.Materials.Talc;
+import static gregtech.api.enums.Materials.Tantalite;
+import static gregtech.api.enums.Materials.Tetrahedrite;
+import static gregtech.api.enums.Materials.Thorium;
+import static gregtech.api.enums.Materials.Tin;
+import static gregtech.api.enums.Materials.TricalciumPhosphate;
+import static gregtech.api.enums.Materials.Tungstate;
+import static gregtech.api.enums.Materials.Uraninite;
+import static gregtech.api.enums.Materials.Uranium;
+import static gregtech.api.enums.Materials.VanadiumMagnetite;
+import static gregtech.api.enums.Materials.Wulfenite;
+import static gregtech.api.enums.Materials.YellowLimonite;
 
 public class GT_Worldgenloader implements Runnable {
 
@@ -597,7 +685,7 @@ public class GT_Worldgenloader implements Runnable {
             false,
             false,
             false,
-            Materials.Coal);
+            Coal);
         new GT_Worldgen_GT_Ore_SmallPieces(
             "ore.small.iron",
             true,
@@ -1168,486 +1256,400 @@ public class GT_Worldgenloader implements Runnable {
 
         // GT Default Veins
 
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.naquadah",
-            true,
-            10,
-            90,
-            30,
-            4,
-            32,
-            false,
-            false,
-            false,
-            Materials.Naquadah,
-            Materials.Naquadah,
-            Materials.Naquadah,
-            Materials.NaquadahEnriched);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.lignite",
-            true,
-            80,
-            210,
-            160,
-            7,
-            32,
-            true,
-            false,
-            false,
-            Materials.Lignite,
-            Materials.Lignite,
-            Materials.Lignite,
-            Materials.Coal);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.coal",
-            true,
-            30,
-            80,
-            80,
-            5,
-            32,
-            true,
-            false,
-            false,
-            Materials.Coal,
-            Materials.Coal,
-            Materials.Coal,
-            Materials.Lignite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.magnetite",
-            true,
-            60,
-            180,
-            160,
-            2,
-            32,
-            true,
-            false,
-            false,
-            Materials.Magnetite,
-            Materials.Magnetite,
-            Materials.Iron,
-            Materials.VanadiumMagnetite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.gold",
-            true,
-            30,
-            60,
-            160,
-            2,
-            32,
-            true,
-            false,
-            true,
-            Materials.Magnetite,
-            Materials.Magnetite,
-            Materials.VanadiumMagnetite,
-            Materials.Gold);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.iron",
-            true,
-            10,
-            40,
-            120,
-            3,
-            24,
-            true,
-            true,
-            false,
-            Materials.BrownLimonite,
-            Materials.YellowLimonite,
-            Materials.BandedIron,
-            Materials.Malachite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.cassiterite",
-            true,
-            60,
-            220,
-            50,
-            4,
-            24,
-            true,
-            false,
-            true,
-            Materials.Tin,
-            Materials.Tin,
-            Materials.Cassiterite,
-            Materials.Tin);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.tetrahedrite",
-            true,
-            80,
-            120,
-            70,
-            3,
-            24,
-            false,
-            true,
-            true,
-            Materials.Tetrahedrite,
-            Materials.Tetrahedrite,
-            Materials.Copper,
-            Materials.Stibnite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.netherquartz",
-            true,
-            40,
-            80,
-            80,
-            4,
-            24,
-            false,
-            true,
-            false,
-            Materials.NetherQuartz,
-            Materials.NetherQuartz,
-            Materials.NetherQuartz,
-            Materials.Quartzite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.sulfur",
-            true,
-            5,
-            20,
-            100,
-            4,
-            24,
-            false,
-            true,
-            false,
-            Materials.Sulfur,
-            Materials.Sulfur,
-            Materials.Pyrite,
-            Materials.Sphalerite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.copper",
-            true,
-            5,
-            60,
-            80,
-            3,
-            24,
-            true,
-            true,
-            true,
-            Materials.Chalcopyrite,
-            Materials.Iron,
-            Materials.Pyrite,
-            Materials.Copper);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.bauxite",
-            true,
-            10,
-            80,
-            80,
-            3,
-            24,
-            false,
-            false,
-            false,
-            Materials.Bauxite,
-            Materials.Ilmenite,
-            Materials.Aluminium,
-            Materials.Ilmenite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.salts",
-            true,
-            50,
-            70,
-            50,
-            2,
-            24,
-            true,
-            false,
-            false,
-            Materials.RockSalt,
-            Materials.Salt,
-            Materials.Lepidolite,
-            Materials.Spodumene);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.redstone",
-            true,
-            5,
-            40,
-            60,
-            2,
-            24,
-            true,
-            true,
-            false,
-            Materials.Redstone,
-            Materials.Redstone,
-            Materials.Ruby,
-            Materials.Cinnabar);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.soapstone",
-            true,
-            20,
-            50,
-            40,
-            2,
-            16,
-            true,
-            false,
-            false,
-            Materials.Soapstone,
-            Materials.Talc,
-            Materials.Glauconite,
-            Materials.Pentlandite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.nickel",
-            true,
-            10,
-            40,
-            40,
-            2,
-            16,
-            false,
-            false,
-            true,
-            Materials.Garnierite,
-            Materials.Nickel,
-            Materials.Cobaltite,
-            Materials.Pentlandite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.platinum",
-            true,
-            40,
-            50,
-            5,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Cooperite,
-            Materials.Palladium,
-            Materials.Platinum,
-            Materials.Iridium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.pitchblende",
-            true,
-            30,
-            60,
-            40,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Pitchblende,
-            Materials.Pitchblende,
-            Materials.Uraninite,
-            Materials.Uraninite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.monazite",
-            true,
-            20,
-            40,
-            30,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Bastnasite,
-            Materials.Bastnasite,
-            Materials.Monazite,
-            Materials.Neodymium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.molybdenum",
-            true,
-            20,
-            50,
-            5,
-            2,
-            16,
-            false,
-            true,
-            true,
-            Materials.Wulfenite,
-            Materials.Molybdenite,
-            Materials.Molybdenum,
-            Materials.Powellite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.tungstate",
-            true,
-            20,
-            60,
-            10,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Scheelite,
-            Materials.Scheelite,
-            Materials.Tungstate,
-            Materials.Lithium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.sapphire",
-            true,
-            10,
-            40,
-            60,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Almandine,
-            Materials.Pyrope,
-            Materials.Sapphire,
-            Materials.GreenSapphire);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.manganese",
-            true,
-            20,
-            30,
-            20,
-            2,
-            16,
-            true,
-            true,
-            false,
-            Materials.Grossular,
-            Materials.Spessartine,
-            Materials.Pyrolusite,
-            Materials.Tantalite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.quartz",
-            true,
-            80,
-            120,
-            30,
-            2,
-            16,
-            false,
-            true,
-            false,
-            Materials.Quartzite,
-            Materials.Barite,
-            Materials.CertusQuartz,
-            Materials.CertusQuartz);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.diamond",
-            true,
-            5,
-            20,
-            40,
-            1,
-            16,
-            true,
-            false,
-            false,
-            Materials.Graphite,
-            Materials.Graphite,
-            Materials.Diamond,
-            Materials.Coal);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.olivine",
-            true,
-            10,
-            40,
-            60,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Bentonite,
-            Materials.Magnesite,
-            Materials.Olivine,
-            Materials.Glauconite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.apatite",
-            true,
-            40,
-            60,
-            60,
-            2,
-            16,
-            true,
-            false,
-            false,
-            Materials.Apatite,
-            Materials.Apatite,
-            Materials.TricalciumPhosphate,
-            Materials.Pyrochlore);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.galena",
-            true,
-            5,
-            45,
-            40,
-            4,
-            16,
-            false,
-            false,
-            false,
-            Materials.Galena,
-            Materials.Galena,
-            Materials.Silver,
-            Materials.Lead);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.lapis",
-            true,
-            20,
-            50,
-            40,
-            4,
-            16,
-            true,
-            false,
-            false,
-            Materials.Lazurite,
-            Materials.Sodalite,
-            Materials.Lapis,
-            Materials.Calcite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.beryllium",
-            true,
-            5,
-            30,
-            30,
-            2,
-            16,
-            false,
-            true,
-            true,
-            Materials.Beryllium,
-            Materials.Beryllium,
-            Materials.Emerald,
-            Materials.Thorium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.uranium",
-            true,
-            20,
-            30,
-            20,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Uraninite,
-            Materials.Uraninite,
-            Materials.Uranium,
-            Materials.Uranium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.oilsand",
-            true,
-            50,
-            80,
-            40,
-            5,
-            16,
-            true,
-            false,
-            false,
-            Materials.Oilsands,
-            Materials.Oilsands,
-            Materials.Oilsands,
-            Materials.Oilsands);
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.naquadah")
+            .heightRange(10,90)
+            .weight(30)
+            .density(4)
+            .size(32)
+            .primary(Materials.Naquadah)
+            .secondary(Materials.Naquadah)
+            .inBetween(Materials.Naquadah)
+            .sporadic(Materials.NaquadahEnriched)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.lignite")
+            .heightRange(80,210)
+            .weight(160)
+            .density(7)
+            .size(32)
+            .inOverworld()
+            .primary(Materials.Lignite)
+            .secondary(Materials.Lignite)
+            .inBetween(Materials.Lignite)
+            .sporadic(Coal)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.coal")
+            .heightRange(30,80)
+            .weight(80)
+            .density(5)
+            .size(32)
+            .inOverworld()
+            .primary(Coal)
+            .secondary(Coal)
+            .inBetween(Coal)
+            .sporadic(Lignite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.magnetite")
+            .heightRange(60,180)
+            .weight(160)
+            .density(2)
+            .size(32)
+            .inOverworld()
+            .primary(Magnetite)
+            .secondary(Magnetite)
+            .inBetween(Iron)
+            .sporadic(VanadiumMagnetite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.gold")
+            .heightRange(30,60)
+            .weight(160)
+            .density(2)
+            .size(32)
+            .inOverworld()
+            .inEnd()
+            .primary(Magnetite)
+            .secondary(Magnetite)
+            .inBetween(VanadiumMagnetite)
+            .sporadic(Gold)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.iron")
+            .heightRange(10,40)
+            .weight(120)
+            .density(3)
+            .size(24)
+            .inOverworld()
+            .inNether()
+            .primary(BrownLimonite)
+            .secondary(YellowLimonite)
+            .inBetween(BandedIron)
+            .sporadic(Malachite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.cassiterite")
+            .heightRange(60,220)
+            .weight(50)
+            .density(4)
+            .size(24)
+            .inOverworld()
+            .inEnd()
+            .primary(Tin)
+            .secondary(Tin)
+            .inBetween(Cassiterite)
+            .sporadic(Tin)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.tetrahedrite")
+            .heightRange(80,120)
+            .weight(70)
+            .density(3)
+            .size(24)
+            .inNether()
+            .inEnd()
+            .primary(Tetrahedrite)
+            .secondary(Tetrahedrite)
+            .inBetween(Copper)
+            .sporadic(Stibnite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.netherquartz")
+            .heightRange(40,80)
+            .weight(80)
+            .density(4)
+            .size(24)
+            .inNether()
+            .primary(NetherQuartz)
+            .secondary(NetherQuartz)
+            .inBetween(NetherQuartz)
+            .sporadic(Quartzite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.sulfur")
+            .heightRange(5,20)
+            .weight(100)
+            .density(4)
+            .size(24)
+            .inNether()
+            .primary(Sulfur)
+            .secondary(Sulfur)
+            .inBetween(Pyrite)
+            .sporadic(Sphalerite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.copper")
+            .heightRange(5,60)
+            .weight(80)
+            .density(3)
+            .size(24)
+            .inOverworld()
+            .inNether()
+            .inEnd()
+            .primary(Chalcopyrite)
+            .secondary(Iron)
+            .inBetween(Pyrite)
+            .sporadic(Copper)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.bauxite")
+            .heightRange(10,80)
+            .weight(80)
+            .density(3)
+            .size(24)
+            .primary(Bauxite)
+            .secondary(Ilmenite)
+            .inBetween(Aluminium)
+            .sporadic(Ilmenite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.salts")
+            .heightRange(50,70)
+            .weight(50)
+            .density(2)
+            .size(24)
+            .inOverworld()
+            .primary(RockSalt)
+            .secondary(Salt)
+            .inBetween(Lepidolite)
+            .sporadic(Spodumene)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.redstone")
+            .heightRange(5,40)
+            .weight(60)
+            .density(2)
+            .size(24)
+            .inOverworld()
+            .inNether()
+            .primary(Redstone)
+            .secondary(Redstone)
+            .inBetween(Ruby)
+            .sporadic(Cinnabar)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.soapstone")
+            .heightRange(20,50)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .inOverworld()
+            .primary(Soapstone)
+            .secondary(Talc)
+            .inBetween(Glauconite)
+            .sporadic(Pentlandite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.nickel")
+            .heightRange(10,40)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .inEnd()
+            .primary(Garnierite)
+            .secondary(Nickel)
+            .inBetween(Cobaltite)
+            .sporadic(Pentlandite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.platinum")
+            .heightRange(40,50)
+            .weight(5)
+            .density(2)
+            .size(16)
+            .primary(Cooperite)
+            .secondary(Palladium)
+            .inBetween(Platinum)
+            .sporadic(Iridium)
+            .add();
+
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.pitchblende")
+            .heightRange(60,60)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .primary(Pitchblende)
+            .secondary(Pitchblende)
+            .inBetween(Uraninite)
+            .sporadic(Uraninite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.monazite")
+            .heightRange(20,40)
+            .weight(30)
+            .density(2)
+            .size(16)
+            .primary(Bastnasite)
+            .secondary(Bastnasite)
+            .inBetween(Monazite)
+            .sporadic(Neodymium)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.molybdenum")
+            .heightRange(20,50)
+            .weight(5)
+            .density(2)
+            .size(16)
+            .inNether()
+            .inEnd()
+            .primary(Wulfenite)
+            .secondary(Molybdenite)
+            .inBetween(Molybdenum)
+            .sporadic(Powellite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.tungstate")
+            .heightRange(20,60)
+            .weight(10)
+            .density(2)
+            .size(16)
+            .primary(Scheelite)
+            .secondary(Scheelite)
+            .inBetween(Tungstate)
+            .sporadic(Lithium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.sapphire")
+            .heightRange(10,40)
+            .weight(60)
+            .density(2)
+            .size(16)
+            .primary(Almandine)
+            .secondary(Pyrope)
+            .inBetween(Sapphire)
+            .sporadic(GreenSapphire)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.manganese")
+            .heightRange(20,30)
+            .weight(20)
+            .density(2)
+            .size(16)
+            .inOverworld()
+            .inNether()
+            .primary(Grossular)
+            .secondary(Spessartine)
+            .inBetween(Pyrolusite)
+            .sporadic(Tantalite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.quartz")
+            .heightRange(80,120)
+            .weight(20)
+            .density(2)
+            .size(16)
+            .inNether()
+            .primary(Quartzite)
+            .secondary(Barite)
+            .inBetween(CertusQuartz)
+            .sporadic(CertusQuartz)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.diamond")
+            .heightRange(5,20)
+            .weight(40)
+            .density(1)
+            .size(16)
+            .inOverworld()
+            .primary(Graphite)
+            .secondary(Graphite)
+            .inBetween(Diamond)
+            .sporadic(Coal)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.olivine")
+            .heightRange(10,40)
+            .weight(60)
+            .density(2)
+            .size(16)
+            .primary(Bentonite)
+            .secondary(Magnesite)
+            .inBetween(Olivine)
+            .sporadic(Glauconite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.apatite")
+            .heightRange(40,60)
+            .weight(60)
+            .density(2)
+            .size(16)
+            .inOverworld()
+            .primary(Apatite)
+            .secondary(Apatite)
+            .inBetween(TricalciumPhosphate)
+            .sporadic(Pyrochlore)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.galena")
+            .heightRange(5,45)
+            .weight(40)
+            .density(4)
+            .size(16)
+            .primary(Galena)
+            .secondary(Galena)
+            .inBetween(Silver)
+            .sporadic(Lead)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.lapis")
+            .heightRange(20,50)
+            .weight(40)
+            .density(4)
+            .size(16)
+            .inOverworld()
+            .primary(Lazurite)
+            .secondary(Sodalite)
+            .inBetween(Lapis)
+            .sporadic(Calcite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.beryllium")
+            .heightRange(5,30)
+            .weight(30)
+            .density(2)
+            .size(16)
+            .inNether()
+            .inEnd()
+            .primary(Beryllium)
+            .secondary(Beryllium)
+            .inBetween(Emerald)
+            .sporadic(Thorium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.uranium")
+            .heightRange(20,30)
+            .weight(20)
+            .density(2)
+            .size(16)
+            .primary(Uraninite)
+            .secondary(Uraninite)
+            .inBetween(Uranium)
+            .sporadic(Uranium)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.oilsand")
+            .heightRange(50,80)
+            .weight(40)
+            .density(5)
+            .size(16)
+            .inOverworld()
+            .primary(Oilsands)
+            .secondary(Oilsands)
+            .inBetween(Oilsands)
+            .sporadic(Oilsands)
+            .add();
 
         /*
          * TODO: custom GTNH OreMixes WARNING: NO DUPLICATES IN aName OR DEPRECATED MATERIALS IN HERE. Materials can be
@@ -1656,729 +1658,572 @@ public class GT_Worldgenloader implements Runnable {
 
         // aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, aOverworld, aNether, aEnd, aPrimary, aSecondary,
         // aBetween, aSporadic
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.neutronium",
-            true,
-            5,
-            30,
-            10,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Neutronium,
-            Materials.Adamantium,
-            Materials.Naquadah,
-            Materials.Titanium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.aquaignis",
-            true,
-            5,
-            35,
-            16,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.InfusedWater,
-            Materials.InfusedFire,
-            Materials.Amber,
-            Materials.Cinnabar);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.terraaer",
-            true,
-            5,
-            35,
-            16,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.InfusedEarth,
-            Materials.InfusedAir,
-            Materials.Amber,
-            Materials.Cinnabar);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.perditioordo",
-            true,
-            5,
-            35,
-            16,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.InfusedEntropy,
-            Materials.InfusedOrder,
-            Materials.Amber,
-            Materials.Cinnabar);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.coppertin",
-            true,
-            80,
-            200,
-            80,
-            3,
-            24,
-            true,
-            false,
-            false,
-            Materials.Chalcopyrite,
-            Materials.Vermiculite,
-            Materials.Cassiterite,
-            Materials.Alunite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.titaniumchrome",
-            true,
-            10,
-            70,
-            16,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Ilmenite,
-            Materials.Chromite,
-            Materials.Uvarovite,
-            Materials.Perlite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.mineralsand",
-            true,
-            50,
-            60,
-            80,
-            3,
-            24,
-            true,
-            false,
-            false,
-            Materials.BasalticMineralSand,
-            Materials.GraniticMineralSand,
-            Materials.FullersEarth,
-            Materials.Gypsum);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.garnettin",
-            true,
-            50,
-            60,
-            80,
-            3,
-            24,
-            true,
-            false,
-            false,
-            Materials.CassiteriteSand,
-            Materials.GarnetSand,
-            Materials.Asbestos,
-            Materials.Diatomite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.kaolinitezeolite",
-            true,
-            50,
-            70,
-            60,
-            4,
-            16,
-            true,
-            false,
-            false,
-            Materials.Kaolinite,
-            Materials.Zeolite,
-            Materials.FullersEarth,
-            Materials.GlauconiteSand);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.mica",
-            true,
-            20,
-            40,
-            20,
-            2,
-            16,
-            true,
-            false,
-            false,
-            Materials.Kyanite,
-            Materials.Mica,
-            Materials.Cassiterite,
-            Materials.Pollucite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.dolomite",
-            true,
-            150,
-            200,
-            40,
-            4,
-            24,
-            true,
-            false,
-            false,
-            Materials.Dolomite,
-            Materials.Wollastonite,
-            Materials.Trona,
-            Materials.Andradite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.platinumchrome",
-            true,
-            5,
-            30,
-            10,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Platinum,
-            Materials.Chrome,
-            Materials.Cooperite,
-            Materials.Palladium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.iridiummytryl",
-            true,
-            15,
-            40,
-            10,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Nickel,
-            Materials.Iridium,
-            Materials.Palladium,
-            Materials.Mithril);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.osmium",
-            true,
-            5,
-            30,
-            10,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Nickel,
-            Materials.Osmium,
-            Materials.Iridium,
-            Materials.Nickel);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.saltpeterelectrotine",
-            true,
-            5,
-            45,
-            40,
-            3,
-            16,
-            false,
-            true,
-            false,
-            Materials.Saltpeter,
-            Materials.Diatomite,
-            Materials.Electrotine,
-            Materials.Alunite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.desh",
-            true,
-            5,
-            40,
-            30,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Desh,
-            Materials.Desh,
-            Materials.Scheelite,
-            Materials.Tungstate);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.draconium",
-            true,
-            20,
-            40,
-            40,
-            1,
-            16,
-            false,
-            false,
-            false,
-            Materials.Draconium,
-            Materials.Electrotine,
-            Materials.Jade,
-            Materials.Vinteum);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.quantium",
-            true,
-            5,
-            25,
-            30,
-            3,
-            24,
-            false,
-            false,
-            false,
-            Materials.Quantium,
-            Materials.Amethyst,
-            Materials.Rutile,
-            Materials.Ardite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.callistoice",
-            true,
-            40,
-            60,
-            40,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.CallistoIce,
-            Materials.Topaz,
-            Materials.BlueTopaz,
-            Materials.Alduorite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.mytryl",
-            true,
-            10,
-            30,
-            40,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Mytryl,
-            Materials.Jasper,
-            Materials.Ceruclase,
-            Materials.Vulcanite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.ledox",
-            true,
-            55,
-            65,
-            30,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.Ledox,
-            Materials.Opal,
-            Materials.Orichalcum,
-            Materials.Rubracium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.oriharukon",
-            true,
-            30,
-            60,
-            40,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Oriharukon,
-            Materials.Tanzanite,
-            Materials.Vyroxeres,
-            Materials.Mirabilite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.blackplutonium",
-            true,
-            5,
-            25,
-            40,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.BlackPlutonium,
-            Materials.GarnetRed,
-            Materials.GarnetYellow,
-            Materials.Borax);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.infusedgold",
-            true,
-            15,
-            40,
-            30,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Gold,
-            Materials.Gold,
-            Materials.InfusedGold,
-            Materials.Platinum);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.niobium",
-            true,
-            5,
-            30,
-            60,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.Niobium,
-            Materials.Yttrium,
-            Materials.Gallium,
-            Materials.Gallium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.tungstenirons",
-            true,
-            5,
-            25,
-            16,
-            2,
-            30,
-            false,
-            false,
-            false,
-            Materials.Tungsten,
-            Materials.Silicon,
-            Materials.DeepIron,
-            Materials.ShadowIron);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.uraniumgtnh",
-            true,
-            10,
-            30,
-            60,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.Thorium,
-            Materials.Uranium,
-            Materials.Plutonium241,
-            Materials.Uranium235);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.vanadiumgold",
-            true,
-            10,
-            50,
-            60,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.Vanadium,
-            Materials.Magnetite,
-            Materials.Gold,
-            Materials.Chrome);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.netherstar",
-            true,
-            20,
-            60,
-            60,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.GarnetSand,
-            Materials.NetherStar,
-            Materials.GarnetRed,
-            Materials.GarnetYellow);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.garnet",
-            true,
-            10,
-            30,
-            40,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.GarnetRed,
-            Materials.GarnetYellow,
-            Materials.Chrysotile,
-            Materials.Realgar);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.rareearth",
-            true,
-            30,
-            60,
-            40,
-            2,
-            24,
-            false,
-            false,
-            false,
-            Materials.Cadmium,
-            Materials.Caesium,
-            Materials.Lanthanum,
-            Materials.Cerium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.richnuclear",
-            true,
-            55,
-            120,
-            5,
-            2,
-            8,
-            false,
-            false,
-            false,
-            Materials.Uranium,
-            Materials.Plutonium,
-            Materials.Thorium,
-            Materials.Thorium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.heavypentele",
-            true,
-            40,
-            60,
-            60,
-            5,
-            32,
-            false,
-            false,
-            false,
-            Materials.Arsenic,
-            Materials.Bismuth,
-            Materials.Antimony,
-            Materials.Antimony);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.europa",
-            true,
-            55,
-            65,
-            110,
-            4,
-            24,
-            false,
-            false,
-            false,
-            Materials.Magnesite,
-            Materials.BandedIron,
-            Materials.Sulfur,
-            Materials.Opal);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.europacore",
-            true,
-            5,
-            15,
-            5,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Chrome,
-            Materials.Tungstate,
-            Materials.Molybdenum,
-            Materials.Manganese);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.secondlanthanid",
-            true,
-            10,
-            40,
-            10,
-            3,
-            24,
-            false,
-            false,
-            false,
-            Materials.Samarium,
-            Materials.Neodymium,
-            Materials.Tartarite,
-            Materials.Tartarite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.quartzspace",
-            true,
-            40,
-            80,
-            20,
-            3,
-            16,
-            false,
-            false,
-            false,
-            Materials.Quartzite,
-            Materials.Barite,
-            Materials.CertusQuartz,
-            Materials.CertusQuartz);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.rutile",
-            true,
-            5,
-            20,
-            8,
-            4,
-            12,
-            false,
-            false,
-            false,
-            Materials.Rutile,
-            Materials.Titanium,
-            Materials.Bauxite,
-            Materials.MeteoricIron);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.tfgalena",
-            true,
-            5,
-            35,
-            40,
-            4,
-            16,
-            false,
-            false,
-            false,
-            Materials.Galena,
-            Materials.Silver,
-            Materials.Lead,
-            Materials.Cryolite);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.luvtantalite",
-            true,
-            20,
-            30,
-            10,
-            4,
-            16,
-            false,
-            false,
-            false,
-            Materials.Pyrolusite,
-            Materials.Apatite,
-            Materials.Tantalite,
-            Materials.Pyrochlore);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.certusquartz",
-            true,
-            40,
-            80,
-            60,
-            5,
-            32,
-            false,
-            false,
-            false,
-            Materials.CertusQuartz,
-            Materials.CertusQuartz,
-            Materials.CertusQuartzCharged,
-            Materials.QuartzSand);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.infinitycatalyst",
-            true,
-            5,
-            20,
-            15,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Neutronium,
-            Materials.Adamantium,
-            Materials.InfinityCatalyst,
-            Materials.Bedrockium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.cosmicneutronium",
-            true,
-            5,
-            20,
-            15,
-            2,
-            16,
-            false,
-            false,
-            false,
-            Materials.Neutronium,
-            Materials.CosmicNeutronium,
-            Materials.BlackPlutonium,
-            Materials.Bedrockium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.dilithium",
-            true,
-            30,
-            100,
-            30,
-            3,
-            24,
-            false,
-            false,
-            false,
-            Materials.Dilithium,
-            Materials.Dilithium,
-            Materials.MysteriousCrystal,
-            Materials.Vinteum);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.naquadria",
-            true,
-            10,
-            90,
-            40,
-            4,
-            24,
-            false,
-            false,
-            false,
-            Materials.Naquadah,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.Trinium);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.awakeneddraconium",
-            true,
-            20,
-            40,
-            20,
-            3,
-            16,
-            false,
-            false,
-            false,
-            Materials.Draconium,
-            Materials.Draconium,
-            Materials.DraconiumAwakened,
-            Materials.NetherStar);
-        new GT_Worldgen_GT_Ore_Layer(
-            "ore.mix.tengam",
-            true,
-            30,
-            180,
-            80,
-            2,
-            32,
-            false,
-            false,
-            false,
-            Materials.TengamRaw,
-            Materials.TengamRaw,
-            Materials.Electrotine,
-            Materials.Samarium);
 
-        // DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there),
-        // which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also, Reflexion is slow.
-        try {
-            Class<?> clazz = Class.forName("bloodasp.galacticgreg.WorldGenGaGT");
-            Constructor<?> constructor = clazz.getConstructor();
-            Method method = clazz.getMethod("run");
-            method.invoke(constructor.newInstance());
-            GT_Log.out.println("Started Galactic Greg ore gen code");
-            // this function calls Galactic Greg and enables its generation.
-        } catch (Exception e) {
-            // ClassNotFound is expected if Galactic Greg is absent, so only report if other problem
-            if (!(e instanceof ClassNotFoundException)) {
-                GT_Log.err.println("Unable to start Galactic Greg ore gen code");
-                e.printStackTrace(GT_Log.err);
-            }
-        }
-        // DO NOT DELETE ^ THIS ^
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.neutronium")
+            .heightRange(5,30)
+            .weight(10)
+            .density(2)
+            .size(16)
+            .primary(Materials.Neutronium)
+            .secondary(Materials.Adamantium)
+            .inBetween(Materials.Naquadah)
+            .sporadic(Materials.Titanium)
+            .add();
 
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.aquaignis")
+            .heightRange(5,35)
+            .weight(16)
+            .density(2)
+            .size(16)
+            .primary(Materials.InfusedWater)
+            .secondary(Materials.InfusedFire)
+            .inBetween(Materials.Amber)
+            .sporadic(Materials.Cinnabar)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.terraaer")
+            .heightRange(5,35)
+            .weight(16)
+            .density(2)
+            .size(16)
+            .primary(Materials.InfusedEarth)
+            .secondary(Materials.InfusedAir)
+            .inBetween(Materials.Amber)
+            .sporadic(Materials.Cinnabar)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.perditioordo")
+            .heightRange(5,35)
+            .weight(16)
+            .density(2)
+            .size(16)
+            .primary(Materials.InfusedEntropy)
+            .secondary(Materials.InfusedOrder)
+            .inBetween(Materials.Amber)
+            .sporadic(Materials.Cinnabar)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.coppertin")
+            .heightRange(80,200)
+            .weight(80)
+            .density(3)
+            .size(24)
+            .inOverworld()
+            .primary(Materials.Chalcopyrite)
+            .secondary(Materials.Vermiculite)
+            .inBetween(Materials.Cassiterite)
+            .sporadic(Materials.Alunite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.titaniumchrome")
+            .heightRange(10,70)
+            .weight(16)
+            .density(2)
+            .size(16)
+            .primary(Materials.Ilmenite)
+            .secondary(Materials.Chromite)
+            .inBetween(Materials.Uvarovite)
+            .sporadic(Materials.Perlite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.mineralsand")
+            .heightRange(50,60)
+            .weight(80)
+            .density(3)
+            .size(24)
+            .inOverworld()
+            .primary(Materials.BasalticMineralSand)
+            .secondary(Materials.GraniticMineralSand)
+            .inBetween(Materials.FullersEarth)
+            .sporadic(Materials.Gypsum)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.garnettin")
+            .heightRange(50,60)
+            .weight(80)
+            .density(3)
+            .size(24)
+            .inOverworld()
+            .primary(Materials.CassiteriteSand)
+            .secondary(Materials.GarnetSand)
+            .inBetween(Materials.Asbestos)
+            .sporadic(Materials.Diatomite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.kaolinitezeolite")
+            .heightRange(50,70)
+            .weight(60)
+            .density(4)
+            .size(16)
+            .inOverworld()
+            .primary(Materials.Kaolinite)
+            .secondary(Materials.Zeolite)
+            .inBetween(Materials.FullersEarth)
+            .sporadic(Materials.GlauconiteSand)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.mica")
+            .heightRange(20,40)
+            .weight(20)
+            .density(2)
+            .size(16)
+            .inOverworld()
+            .primary(Materials.Kyanite)
+            .secondary(Materials.Mica)
+            .inBetween(Materials.Cassiterite)
+            .sporadic(Materials.Pollucite)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.dolomite")
+            .heightRange(150,200)
+            .weight(40)
+            .density(4)
+            .size(24)
+            .inOverworld()
+            .primary(Materials.Dolomite)
+            .secondary(Materials.Wollastonite)
+            .inBetween(Materials.Trona)
+            .sporadic(Materials.Andradite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.platinumchrome")
+            .heightRange(5,30)
+            .weight(10)
+            .density(2)
+            .size(16)
+            .primary(Materials.Platinum)
+            .secondary(Materials.Chrome)
+            .inBetween(Materials.Cooperite)
+            .sporadic(Materials.Palladium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.iridiummytryl")
+            .heightRange(15,40)
+            .weight(10)
+            .density(2)
+            .size(16)
+            .primary(Materials.Nickel)
+            .secondary(Materials.Iridium)
+            .inBetween(Materials.Palladium)
+            .sporadic(Materials.Mithril)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.osmium")
+            .heightRange(5,30)
+            .weight(10)
+            .density(2)
+            .size(16)
+            .primary(Materials.Nickel)
+            .secondary(Materials.Osmium)
+            .inBetween(Materials.Iridium)
+            .sporadic(Materials.Nickel)
+            .add();
+
+        new OreMixBuilder().name("ore.mix.saltpeterelectrotine")
+            .heightRange(5,45)
+            .weight(40)
+            .density(3)
+            .size(16)
+            .inNether()
+            .primary(Materials.Saltpeter)
+            .secondary(Materials.Diatomite)
+            .inBetween(Materials.Electrotine)
+            .sporadic(Materials.Alunite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.desh")
+            .heightRange(5,40)
+            .weight(30)
+            .density(2)
+            .size(16)
+            .primary(Materials.Desh)
+            .secondary(Materials.Desh)
+            .inBetween(Materials.Scheelite)
+            .sporadic(Materials.Tungstate)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.draconium")
+            .heightRange(20,40)
+            .weight(40)
+            .density(1)
+            .size(16)
+            .primary(Materials.Draconium)
+            .secondary(Materials.Electrotine)
+            .inBetween(Materials.Jade)
+            .sporadic(Materials.Vinteum)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.quantium")
+            .heightRange(5,25)
+            .weight(30)
+            .density(3)
+            .size(24)
+            .primary(Materials.Quantium)
+            .secondary(Materials.Amethyst)
+            .inBetween(Materials.Rutile)
+            .sporadic(Materials.Ardite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.callistoice")
+            .heightRange(40,60)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .primary(Materials.CallistoIce)
+            .secondary(Materials.Topaz)
+            .inBetween(Materials.BlueTopaz)
+            .sporadic(Materials.Alduorite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.mytryl")
+            .heightRange(10,30)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .primary(Materials.Mytryl)
+            .secondary(Materials.Jasper)
+            .inBetween(Materials.Ceruclase)
+            .sporadic(Materials.Vulcanite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.ledox")
+            .heightRange(55,65)
+            .weight(30)
+            .density(2)
+            .size(24)
+            .primary(Materials.Ledox)
+            .secondary(Materials.Opal)
+            .inBetween(Materials.Orichalcum)
+            .sporadic(Materials.Rubracium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.oriharukon")
+            .heightRange(30,60)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .primary(Materials.Oriharukon)
+            .secondary(Materials.Tanzanite)
+            .inBetween(Materials.Vyroxeres)
+            .sporadic(Materials.Mirabilite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.blackplutonium")
+            .heightRange(5,25)
+            .weight(40)
+            .density(2)
+            .size(24)
+            .primary(Materials.BlackPlutonium)
+            .secondary(Materials.GarnetRed)
+            .inBetween(Materials.GarnetYellow)
+            .sporadic(Materials.Borax)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.infusedgold")
+            .heightRange(15,40)
+            .weight(30)
+            .density(2)
+            .size(16)
+            .primary(Materials.Gold)
+            .secondary(Materials.Gold)
+            .inBetween(Materials.InfusedGold)
+            .sporadic(Materials.Platinum)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.niobium")
+            .heightRange(5,30)
+            .weight(60)
+            .density(2)
+            .size(24)
+            .primary(Materials.Niobium)
+            .secondary(Materials.Yttrium)
+            .inBetween(Materials.Gallium)
+            .sporadic(Materials.Gallium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.tungstenirons")
+            .heightRange(5,25)
+            .weight(16)
+            .density(2)
+            .size(30)
+            .primary(Materials.Tungsten)
+            .secondary(Materials.Silicon)
+            .inBetween(Materials.DeepIron)
+            .sporadic(Materials.ShadowIron)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.uraniumgtnh")
+            .heightRange(10,30)
+            .weight(60)
+            .density(2)
+            .size(24)
+            .primary(Materials.Thorium)
+            .secondary(Materials.Uranium)
+            .inBetween(Materials.Plutonium241)
+            .sporadic(Materials.Uranium235)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.vanadiumgold")
+            .heightRange(10,50)
+            .weight(60)
+            .density(2)
+            .size(24)
+            .primary(Materials.Vanadium)
+            .secondary(Materials.Magnetite)
+            .inBetween(Materials.Gold)
+            .sporadic(Materials.Chrome)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.netherstar")
+            .heightRange(20,60)
+            .weight(60)
+            .density(2)
+            .size(24)
+            .primary(Materials.GarnetSand)
+            .secondary(Materials.NetherStar)
+            .inBetween(Materials.GarnetRed)
+            .sporadic(Materials.GarnetYellow)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.garnet")
+            .heightRange(10,30)
+            .weight(40)
+            .density(2)
+            .size(16)
+            .primary(Materials.GarnetRed)
+            .secondary(Materials.GarnetYellow)
+            .inBetween(Materials.Chrysotile)
+            .sporadic(Materials.Realgar)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.rareearth")
+            .heightRange(30,60)
+            .weight(40)
+            .density(2)
+            .size(24)
+            .primary(Materials.Cadmium)
+            .secondary(Materials.Caesium)
+            .inBetween(Materials.Lanthanum)
+            .sporadic(Materials.Cerium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.richnuclear")
+            .heightRange(55,120)
+            .weight(5)
+            .density(2)
+            .size(8)
+            .primary(Materials.Uranium)
+            .secondary(Materials.Plutonium)
+            .inBetween(Materials.Thorium)
+            .sporadic(Materials.Thorium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.heavypentele")
+            .heightRange(40,60)
+            .weight(60)
+            .density(5)
+            .size(32)
+            .primary(Materials.Arsenic)
+            .secondary(Materials.Bismuth)
+            .inBetween(Materials.Antimony)
+            .sporadic(Materials.Antimony)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.europa")
+            .heightRange(55,65)
+            .weight(110)
+            .density(4)
+            .size(24)
+            .primary(Materials.Magnesite)
+            .secondary(Materials.BandedIron)
+            .inBetween(Materials.Sulfur)
+            .sporadic(Materials.Opal)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.europacore")
+            .heightRange(5,15)
+            .weight(5)
+            .density(2)
+            .size(16)
+            .primary(Materials.Chrome)
+            .secondary(Materials.Tungstate)
+            .inBetween(Materials.Molybdenum)
+            .sporadic(Materials.Manganese)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.secondlanthanid")
+            .heightRange(10,40)
+            .weight(10)
+            .density(3)
+            .size(24)
+            .primary(Materials.Samarium)
+            .secondary(Materials.Neodymium)
+            .inBetween(Materials.Tartarite)
+            .sporadic(Materials.Tartarite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.quartzspace")
+            .heightRange(40,80)
+            .weight(20)
+            .density(3)
+            .size(16)
+            .primary(Materials.Quartzite)
+            .secondary(Materials.Barite)
+            .inBetween(Materials.CertusQuartz)
+            .sporadic(Materials.CertusQuartz)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.rutile")
+            .heightRange(5,20)
+            .weight(8)
+            .density(4)
+            .size(12)
+            .primary(Materials.Rutile)
+            .secondary(Materials.Titanium)
+            .inBetween(Materials.Bauxite)
+            .sporadic(Materials.MeteoricIron)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.tfgalena")
+            .heightRange(5,35)
+            .weight(40)
+            .density(4)
+            .size(16)
+            .primary(Materials.Galena)
+            .secondary(Materials.Silver)
+            .inBetween(Materials.Lead)
+            .sporadic(Materials.Cryolite)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.luvtantalite")
+            .heightRange(20,30)
+            .weight(10)
+            .density(4)
+            .size(16)
+            .primary(Materials.Pyrolusite)
+            .secondary(Materials.Apatite)
+            .inBetween(Materials.Tantalite)
+            .sporadic(Materials.Pyrochlore)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.certusquartz")
+            .heightRange(40,80)
+            .weight(60)
+            .density(5)
+            .size(32)
+            .primary(Materials.CertusQuartz)
+            .secondary(Materials.CertusQuartz)
+            .inBetween(Materials.CertusQuartzCharged)
+            .sporadic(Materials.QuartzSand)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.infinitycatalyst")
+            .heightRange(5,20)
+            .weight(15)
+            .density(2)
+            .size(16)
+            .primary(Materials.Neutronium)
+            .secondary(Materials.Adamantium)
+            .inBetween(Materials.InfinityCatalyst)
+            .sporadic(Materials.Bedrockium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.cosmicneutronium")
+            .heightRange(5,20)
+            .weight(15)
+            .density(2)
+            .size(16)
+            .primary(Materials.Neutronium)
+            .secondary(Materials.CosmicNeutronium)
+            .inBetween(Materials.BlackPlutonium)
+            .sporadic(Materials.Bedrockium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.dilithium")
+            .heightRange(30,100)
+            .weight(30)
+            .density(3)
+            .size(24)
+            .primary(Materials.Dilithium)
+            .secondary(Materials.Dilithium)
+            .inBetween(Materials.MysteriousCrystal)
+            .sporadic(Materials.Vinteum)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.naquadria")
+            .heightRange(10,90)
+            .weight(40)
+            .density(4)
+            .size(24)
+            .primary(Materials.Naquadah)
+            .secondary(Materials.NaquadahEnriched)
+            .inBetween(Materials.Naquadria)
+            .sporadic(Materials.Trinium)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.awakeneddraconium")
+            .heightRange(20,40)
+            .weight(20)
+            .density(3)
+            .size(16)
+            .primary(Materials.Draconium)
+            .secondary(Materials.Draconium)
+            .inBetween(Materials.DraconiumAwakened)
+            .sporadic(Materials.NetherStar)
+            .add();
+
+        // handled by gagreg
+        new OreMixBuilder().name("ore.mix.tengam")
+            .heightRange(30,180)
+            .weight(80)
+            .density(2)
+            .size(32)
+            .primary(Materials.TengamRaw)
+            .secondary(Materials.TengamRaw)
+            .inBetween(Materials.Electrotine)
+            .sporadic(Materials.Samarium)
+            .add();
+
+        new WorldGenGaGT().run();
+        GT_Log.out.println("Started Galactic Greg ore gen code");
     }
 }

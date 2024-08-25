@@ -54,27 +54,6 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
 
     public Class[] mAllowedProviders;
 
-    @Deprecated
-    public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
-        int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2,
-        boolean GC_UNUSED3, Materials aPrimary, Materials aSecondary, Materials aBetween, Materials aSporadic) {
-        this(
-            aName,
-            aDefault,
-            aMinY,
-            aMaxY,
-            aWeight,
-            aDensity,
-            aSize,
-            aOverworld,
-            aNether,
-            aEnd,
-            aPrimary,
-            aSecondary,
-            aBetween,
-            aSporadic);
-    }
-
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
         int aSize, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary, Materials aSecondary,
         Materials aBetween, Materials aSporadic) {
