@@ -1478,6 +1478,8 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_HIPCompressor,
     Machine_Multi_NeutroniumCompressor,
     Machine_Multi_BlackHoleCompressor,
+    Compressor_Casing,
+    Compressor_Pipe_Casing,
     Black_Hole_Opener,
     Black_Hole_Closer,
 

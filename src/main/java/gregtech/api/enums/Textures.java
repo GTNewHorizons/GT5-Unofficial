@@ -1441,7 +1441,9 @@ public class Textures {
         GLASS_QUARK_CONTAINMENT,
         BLOCK_QUARK_PIPE,
         BLOCK_QUARK_RELEASE_CHAMBER,
-        BLOCK_QUARK_CONTAINMENT_CASING,;
+        BLOCK_QUARK_CONTAINMENT_CASING,
+        COMPRESSOR_CASING,
+        COMPRESSOR_PIPE_CASING;
 
         /**
          * Icon for Fresh CFoam

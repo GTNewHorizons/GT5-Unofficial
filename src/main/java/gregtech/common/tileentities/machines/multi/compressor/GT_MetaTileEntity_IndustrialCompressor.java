@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import gregtech.common.blocks.GT_Block_Casings10;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -68,12 +69,12 @@ public class GT_MetaTileEntity_IndustrialCompressor
         .addElement(
             'B',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class).atLeast(Maintenance, Energy)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(4))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings2, 0))))
+                        ofBlock(GregTech_API.sBlockCasings10, 4))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
@@ -108,7 +109,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
                         .extFacing()
@@ -121,7 +122,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
                         .extFacing()
@@ -134,7 +135,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)) };
         }
         return rTexture;
     }

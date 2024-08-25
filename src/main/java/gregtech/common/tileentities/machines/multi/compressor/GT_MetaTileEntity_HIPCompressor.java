@@ -87,7 +87,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_HIPCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings2, 0))))
+                        ofBlock(GregTech_API.sBlockCasings10, 4))))
         .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 12))
         .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 15))
         .addElement('E', ofBlock(GregTech_API.sBlockCasings4, 1))
@@ -102,13 +102,13 @@ public class GT_MetaTileEntity_HIPCompressor extends
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_HIPCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings8, 5))))
+                        ofBlock(GregTech_API.sBlockCasings10, 5))))
         .build();
 
     private final ArrayList<GT_MetaTileEntity_HeatSensor> sensorHatches = new ArrayList<>();
 
     private HeatingCoilLevel heatLevel;
-    private int coilTier = 0;
+    private int      coilTier = 0;
 
     private float heat = 0;
     private boolean cooling = false;
@@ -156,7 +156,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
             if (cooling) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING)
                         .extFacing()
@@ -169,7 +169,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
             } else if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
                         .extFacing()
@@ -182,7 +182,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
                         .extFacing()
@@ -195,7 +195,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 4)) };
         }
         return rTexture;
     }
