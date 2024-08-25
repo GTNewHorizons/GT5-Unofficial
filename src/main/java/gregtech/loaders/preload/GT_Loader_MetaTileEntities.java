@@ -476,7 +476,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialExtractor;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -573,6 +572,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;

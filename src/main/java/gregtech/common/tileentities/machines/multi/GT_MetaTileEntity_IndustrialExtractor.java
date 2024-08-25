@@ -3,19 +3,15 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +21,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -32,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -43,37 +41,65 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings2;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.common.blocks.GT_Block_Casings4;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_IndustrialExtractor extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialExtractor> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_IndustrialExtractor
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialExtractor>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialExtractor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_IndustrialExtractor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (transpose(
-                new String[][] { { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " },
-                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                    { "       ", "  B B  ", " BA~AB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                    { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " } })))
+            (new String[][] { { "  A  ", " BBB ", "AB~BA", " BBB " }, { "  A  ", " BBB ", "AB BA", " BBB " },
+                { "  A  ", " BBB ", "AB BA", " BBB " }, { "  A  ", " BBB ", "ABBBA", " BBB " },
+                { "  A  ", "  A  ", "AAAAA", "     " } }))
         .addElement(
-            'A',
+            'B',
             buildHatchAdder(GT_MetaTileEntity_IndustrialExtractor.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .atLeast(InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_IndustrialExtractor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings2, 0))))
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings2, 13))
+                        ofBlock(GregTech_API.sBlockCasings4, 1))))
+        .addElement(
+            'A',
+            ofBlocksTiered(
+                GT_MetaTileEntity_IndustrialExtractor::getItemPipeTierFromMeta,
+                ImmutableList.of(
+                    Pair.of(GregTech_API.sBlockCasings11, 0),
+                    Pair.of(GregTech_API.sBlockCasings11, 1),
+                    Pair.of(GregTech_API.sBlockCasings11, 2),
+                    Pair.of(GregTech_API.sBlockCasings11, 3),
+                    Pair.of(GregTech_API.sBlockCasings11, 4),
+                    Pair.of(GregTech_API.sBlockCasings11, 5),
+                    Pair.of(GregTech_API.sBlockCasings11, 6),
+                    Pair.of(GregTech_API.sBlockCasings11, 7)),
+                -2,
+                GT_MetaTileEntity_IndustrialExtractor::setItemPipeTier,
+                GT_MetaTileEntity_IndustrialExtractor::getItemPipeTier))
         .build();
+
+    private int itemPipeTier = 0;
+
+    private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
+        if (block != GregTech_API.sBlockCasings11) return -1;
+        if (metaID < 0 || metaID > 7) return -1;
+        return metaID + 1;
+    }
+
+    private void setItemPipeTier(int tier) {
+        itemPipeTier = tier;
+    }
+
+    private int getItemPipeTier() {
+        return itemPipeTier;
+    }
 
     public GT_MetaTileEntity_IndustrialExtractor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,39 +126,39 @@ public class GT_MetaTileEntity_IndustrialExtractor extends
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 1)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 1)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
+                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
+                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 1)) };
         }
         return rTexture;
     }
@@ -142,18 +168,17 @@ public class GT_MetaTileEntity_IndustrialExtractor extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Extractor")
             .addInfo("Controller Block for the Dissection Engine")
-            .addInfo("100% faster than single block machines of the same voltage")
-            .addInfo("Gains 8 parallels per voltage tier")
+            .addInfo("200% faster than single block machines of the same voltage")
+            .addInfo("Only uses 85% of the EU/t normally required")
+            .addInfo("Gains 8 parallels per tier of Item Pipe Casing")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(5, 4, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
+            .addCasingInfoMin("Solid Steel Machine Casing", 24, false)
+            .addCasingInfoExactly("Item Pipe Casing", 19, true)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
             .toolTipFinisher("GregTech");
@@ -162,13 +187,13 @@ public class GT_MetaTileEntity_IndustrialExtractor extends
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 2, 2);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 2, 2, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -180,21 +205,39 @@ public class GT_MetaTileEntity_IndustrialExtractor extends
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
+        itemPipeTier = -2;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
-        if (mCasingAmount < 85) return false;
-
-        return true;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
+        return mCasingAmount >= 24;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 3F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setEuModifier(0.85F);
     }
 
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return 8 * itemPipeTier;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("maxParallelRecipes"));
     }
 
     @Override
