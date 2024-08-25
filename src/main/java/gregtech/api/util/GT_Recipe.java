@@ -510,8 +510,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     existingInput.inputAmount = Math.addExact(existingInput.inputAmount, itemStack.stackSize);
                 }
             }
-            mergedInputCache = newCache.toArray(new RecipeItemInput[0]);
-            return mergedInputCache;
+            final RecipeItemInput[] frozenCache = newCache.toArray(new RecipeItemInput[0]);
+            if (GregTech_API.sFullLoadFinished) {
+                mergedInputCache = frozenCache;
+            }
+            return frozenCache;
         }
     }
 
