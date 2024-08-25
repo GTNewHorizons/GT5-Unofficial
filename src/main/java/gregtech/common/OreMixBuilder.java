@@ -1,11 +1,19 @@
 package gregtech.common;
 
+import bloodasp.galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OreMixBuilder {
+    public static final String OW = "Overworld";
+    public static final String NETHER = "Nether";
+    public static final String THE_END = "TheEnd";
+    public static final String TWILIGHT_FOREST = "Twilight Forest";
     public String oreMixName;
     public boolean enabledByDefault = true;
-    public boolean inOverworld = false, inNether = false, inEnd = false, inEndAsteroids = false;
+    public Map<String, Boolean> dimsEnabled = new HashMap<>();
     public int minY, maxY, weight, density, size;
     public Materials primary, secondary, between, sporadic;
 
@@ -19,23 +27,17 @@ public class OreMixBuilder {
         return this;
     }
 
-    public OreMixBuilder inOverworld(){
-        this.inOverworld = true;
+    public OreMixBuilder enableInDim(DimensionDef... dims){
+        for (DimensionDef dim: dims){
+            this.dimsEnabled.put(dim.modDimensionDef.getDimensionName(), true);
+        }
         return this;
     }
 
-    public OreMixBuilder inNether(){
-        this.inNether = true;
-        return this;
-    }
-
-    public OreMixBuilder inEnd(){
-        this.inEnd = true;
-        return this;
-    }
-
-    public OreMixBuilder inEndAsteroids(){
-        this.inEnd = true;
+    public OreMixBuilder enableInDim(String... dims){
+        for (String dim: dims) {
+            this.dimsEnabled.put(dim, true);
+        }
         return this;
     }
 

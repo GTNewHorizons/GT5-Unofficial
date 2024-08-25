@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
+import bloodasp.galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.OreMixes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -38,7 +39,6 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     public final short mSecondaryMeta;
     public final short mBetweenMeta;
     public final short mSporadicMeta;
-    // public final String mBiome;
     public final String mRestrictBiome;
     public final boolean mOverworld;
     public final boolean mNether;
@@ -50,18 +50,16 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     public static final int NO_OVERLAP = 3;
     public static final int ORE_PLACED = 4;
     public static final int NO_OVERLAP_AIR_BLOCK = 5;
-
-    public final boolean mMoon = false, mMars = false, mAsteroid = false;
     public final String aTextWorldgen = "worldgen.";
 
     public Class[] mAllowedProviders;
 
     public GT_Worldgen_GT_Ore_Layer(OreMixBuilder mix){
         super(mix.oreMixName, sList, mix.enabledByDefault);
-        this.mOverworld = mix.inOverworld;
-        this.mNether = mix.inNether;
-        this.mEnd = mix.inEnd;
-        this.mEndAsteroid = mix.inEnd;
+        this.mOverworld = mix.dimsEnabled.getOrDefault(OreMixBuilder.OW, false);
+        this.mNether = mix.dimsEnabled.getOrDefault(OreMixBuilder.NETHER, false);
+        this.mEnd = mix.dimsEnabled.getOrDefault(OreMixBuilder.THE_END, false);
+        this.mEndAsteroid = mix.dimsEnabled.getOrDefault(DimensionDef.EndAsteroids.modDimensionDef.getDimensionName(), false);
         this.mMinY = ((short) mix.minY);
         short mMaxY = ((short) mix.maxY);
         if (mMaxY < (this.mMinY + 9)) {
@@ -77,57 +75,6 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         this.mBetweenMeta = (short)mix.between.mMetaItemSubID;
         this.mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
         this.mRestrictBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
-
-        if (this.mEnabled) {
-            sWeight += this.mWeight;
-        }
-
-        List<Class> allowedProviders = new ArrayList<>();
-        if (this.mNether) {
-            allowedProviders.add(WorldProviderHell.class);
-        }
-
-        if (this.mOverworld) {
-            allowedProviders.add(WorldProviderSurface.class);
-        }
-
-        if (this.mEnd) {
-            allowedProviders.add(WorldProviderEnd.class);
-        }
-        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
-    }
-
-    public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
-        int aSize, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary, Materials aSecondary,
-        Materials aBetween, Materials aSporadic) {
-        super(aName, sList, aDefault);
-        this.mOverworld = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
-        this.mEndAsteroid = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "EndAsteroid", aEnd);
-        this.mMinY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
-        short mMaxY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY));
-        if (mMaxY < (this.mMinY + 9)) {
-            GT_Log.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
-            mMaxY = (short) (this.mMinY + 9);
-        }
-        this.mMaxY = mMaxY;
-        this.mWeight = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math
-            .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
-        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
-        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
-        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
-        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
-        this.mRestrictBiome = GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
 
         if (this.mEnabled) {
             sWeight += this.mWeight;
