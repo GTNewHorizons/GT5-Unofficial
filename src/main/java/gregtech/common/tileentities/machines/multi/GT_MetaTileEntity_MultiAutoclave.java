@@ -20,6 +20,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -308,7 +309,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     }
 
     public float speedBoost(int coilTier) {
-        return (float) 1 / (Math.max(1, (coilTier + 1) / 3));
+        return (float) 1 / (1 + 0.25f * coilTier);
     }
 
     public int getMaxParallelRecipes() {
@@ -336,20 +337,42 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         tag.setInteger("fluidPipeTier", getFluidPipeTier());
         tag.setInteger("itemPipeTier", getItemPipeTier());
         tag.setInteger("coilTier", getCoilTier());
+        tag.setFloat("getMaxParallelRecipes", getMaxParallelRecipes());
     }
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(StatCollector.translateToLocal("GT5U.machines.oreprocessor1"));
-        currenttip.add("Fluid Pipe Tier: " + EnumChatFormatting.WHITE + tag.getInteger("fluidPipeTier"));
-        currenttip.add("EU Modifier: " + EnumChatFormatting.WHITE + euModifier(tag.getInteger("fluidPipeTier")));
-        currenttip.add("Item Pipe Tier: " + EnumChatFormatting.WHITE + tag.getInteger("itemPipeTier"));
-        currenttip.add("Speed Boost: " + EnumChatFormatting.WHITE + speedBoost(tag.getInteger("coilTier")));
-        currenttip.add("Heating Coil Level: " + EnumChatFormatting.WHITE + tag.getInteger("coilTier"));
-        currenttip.add("Max Parallel Recipes: " + EnumChatFormatting.WHITE + getMaxParallelRecipes());
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.fluidPipeTier") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("fluidPipeTier"));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
+                + EnumChatFormatting.WHITE
+                + df.format(euModifier(tag.getInteger("fluidPipeTier")) * 100)
+                + "%");
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("itemPipeTier"));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getFloat("getMaxParallelRecipes"));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("coilTier"));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+                + EnumChatFormatting.WHITE
+                + df.format(100 / speedBoost(tag.getInteger("coilTier")))
+                + "%");
     }
 
     @Override
