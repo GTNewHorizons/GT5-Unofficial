@@ -30,6 +30,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         // Recipes from the old ic2 recipe maps
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("reactorDepletedMOXSimple", 1))
@@ -40,6 +41,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("reactorDepletedMOXDual", 1))
             .itemOutputs(
@@ -49,6 +51,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("reactorDepletedMOXQuad", 1))
             .itemOutputs(
@@ -58,6 +61,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("reactorDepletedUraniumSimple", 1))
             .itemOutputs(
@@ -67,6 +71,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("reactorDepletedUraniumDual", 1))
             .itemOutputs(
@@ -76,6 +81,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("reactorDepletedUraniumQuad", 1))
             .itemOutputs(
@@ -85,6 +91,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("RTGPellets", 1))
             .itemOutputs(
@@ -93,6 +100,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 2))
             .itemOutputs(
@@ -100,6 +108,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 4))
             .itemOutputs(
@@ -107,6 +116,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1))
             .itemOutputs(
