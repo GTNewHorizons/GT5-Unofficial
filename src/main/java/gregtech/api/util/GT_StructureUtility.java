@@ -44,10 +44,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Item_Machines;
 
 public class GT_StructureUtility {
@@ -74,11 +73,11 @@ public class GT_StructureUtility {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
-                TileEntity tBase = world.getTileEntity(x, y, z);
-                if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
-                    if (tPipeBase.isInvalidTileEntity()) return false;
-                    if (tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame)
-                        return aFrameMaterial == ((GT_MetaPipeEntity_Frame) tPipeBase.getMetaTileEntity()).mMaterial;
+                Block block = world.getBlock(x, y, z);
+                if (block instanceof GT_Block_FrameBox frameBox) {
+                    int meta = world.getBlockMetadata(x, y, z);
+                    Materials material = frameBox.getMaterial(meta);
+                    return aFrameMaterial == material;
                 }
                 return false;
             }
