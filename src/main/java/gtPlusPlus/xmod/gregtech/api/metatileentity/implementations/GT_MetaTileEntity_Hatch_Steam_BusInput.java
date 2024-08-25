@@ -268,11 +268,6 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add2by2Slots(builder);
     }

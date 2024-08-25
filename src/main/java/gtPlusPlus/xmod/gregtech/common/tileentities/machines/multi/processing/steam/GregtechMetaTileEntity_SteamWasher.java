@@ -269,10 +269,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
             && tCountCasing > 55
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mInputHatches.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
@@ -280,15 +277,19 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
             && tCountCasing > 55
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mInputHatches.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
         return false;
+    }
+
+    private boolean checkHatches() {
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && mOutputHatches.isEmpty()
+            && !mInputHatches.isEmpty();
     }
 
     @Override
@@ -321,9 +322,9 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 if (isBroken) {
                     checkForWater();
                     isBroken = false;
-                } else {
-                    return CheckRecipeResultRegistry.SUCCESSFUL;
-                }
+                } else if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                } else return CheckRecipeResultRegistry.SUCCESSFUL;
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
 
@@ -338,15 +339,21 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     }
 
     @Override
+    public int getTierRecipes() {
+        return tierMachine == 1 ? 1 : 2;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Washer")
-            .addInfo("Runs recipes up to LV tier")
             .addInfo("33.3% faster than a single block steam machine would run.")
             .addInfo(
                 "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
-            .addInfo("Washes up to 8 x Tier things at a time.")
+            .addInfo("Bronze tier runs recipes up to LV tier")
+            .addInfo("Steel tier runs recipes up to MV tier")
+            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -469,7 +476,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (mUpdate < 0) mUpdate = 300;
+            if (mUpdate < -250) mUpdate = 50;
             if ((aTick % 1200) == 0) {
                 isBroken = true;
             }

@@ -539,11 +539,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         else if (tag.hasKey("mFluid")) tag.removeTag("mFluid");
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override

@@ -11,8 +11,6 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -209,12 +207,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> chainRecipeTransformer(Consumer<GT_Recipe> recipeTransformer) {
         return chainRecipeTransformer(withIdentityReturn(recipeTransformer));
-    }
-
-    public RecipeMapBuilder<B> recipeConfigFile(String category, Function<? super GT_Recipe, String> keyConvertor) {
-        if (StringUtils.isBlank(category)) throw new IllegalArgumentException();
-        backendPropertiesBuilder.recipeConfigFile(category, keyConvertor);
-        return this;
     }
 
     // endregion
