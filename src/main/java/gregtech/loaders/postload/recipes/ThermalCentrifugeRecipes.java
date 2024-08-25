@@ -15,8 +15,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 
-import java.rmi.MarshalException;
-
 public class ThermalCentrifugeRecipes implements Runnable {
 
     @Override
@@ -94,33 +92,28 @@ public class ThermalCentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getIC2Item("RTGPellets", 1))
-            .itemOutputs(
-                getIC2Item("Plutonium", 3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 54))
+            .itemOutputs(getIC2Item("Plutonium", 3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 54))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 2))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 4))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);

@@ -527,8 +527,8 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_EnergyCrystal, 1)
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Energized, 9))
+            .itemInputs(ItemList.IC2_EnergyCrystal.get(1))
+            .itemOutputs(getIC2Item("energiumDust", 9))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);

@@ -61,7 +61,6 @@ import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
@@ -590,21 +589,7 @@ public class GT_Mod implements IGT_Mod {
         }
 
         gregtechproxy.onServerStarting();
-        // Check for more IC2 recipes on ServerStart to also catch MineTweaker additions
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getMaceratorRecipeList(), RecipeMaps.maceratorRecipes, true, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getCompressorRecipeList(), RecipeMaps.compressorRecipes, true, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getExtractorRecipeList(), RecipeMaps.extractorRecipes, true, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getOreWashingRecipeList(), RecipeMaps.oreWasherRecipes, false, true, true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getThermalCentrifugeRecipeList(),
-            RecipeMaps.thermalCentrifugeRecipes,
-            true,
-            true,
-            true);
+        GT_ModHandler.removeAllIC2Recipes();
         GT_Log.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
         GT_Log.out.println("GT_Mod: IC2 Machines");
