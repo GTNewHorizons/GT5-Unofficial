@@ -4,12 +4,12 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.ChunkProviderEnd;
 
@@ -27,52 +27,18 @@ import bloodasp.galacticgreg.api.SpecialBlockComb;
  * case, find me on github and create an issue please)
  */
 public class SpaceDimRegisterer {
-
-    private static Method registerModContainer;
-
-    /**
-     * Use loose binding of the register-method. Should be enough to provide support for GGreg without the requirement
-     * to have it in a modpack at all
-     *
-     * @param pModContainer
-     */
-    public static void registerModContainer(ModContainer pModContainer) {
-        try {
-            registerModContainer.invoke(null, pModContainer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Try to get the instance of GalacticGregs registry in order to register stuff
-     *
-     * @return {@code false} if GalacticGreg is not installed or something went wrong
-     */
-    public boolean init() {
-        try {
-            Class<?> gGregRegistry = Class.forName("bloodasp.galacticgreg.registry.GalacticGregRegistry");
-            registerModContainer = gGregRegistry.getMethod("registerModContainer", ModContainer.class);
-
-            return true;
-        } catch (Exception e) {
-            // GalacticGreg is not installed or something is wrong
-            return false;
-        }
-    }
-
-    public void register() {
-        registerModContainer(setupVanilla());
-        registerModContainer(setupGalactiCraftCore());
-        registerModContainer(setupGalactiCraftPlanets());
-        registerModContainer(setupGalaxySpace());
-        registerModContainer(setupAmunRa());
+    public static void register() {
+        GalacticGregRegistry.registerModContainer(setupVanilla());
+        GalacticGregRegistry.registerModContainer(setupGalactiCraftCore());
+        GalacticGregRegistry.registerModContainer(setupGalactiCraftPlanets());
+        GalacticGregRegistry.registerModContainer(setupGalaxySpace());
+        GalacticGregRegistry.registerModContainer(setupAmunRa());
     }
 
     /**
      * Vanilla MC (End Asteroids)
      */
-    private ModContainer setupVanilla() {
+    private static ModContainer setupVanilla() {
         // --- Mod Vanilla (Heh, "mod")
         ModContainer modMCVanilla = new ModContainer("Vanilla");
 
@@ -102,7 +68,7 @@ public class SpaceDimRegisterer {
     /**
      * Mod GalactiCraft
      */
-    private ModContainer setupGalactiCraftCore() {
+    private static ModContainer setupGalactiCraftCore() {
         ModContainer modGCraftCore = new ModContainer(GalacticraftCore.ID);
         ModDBMDef DBMMoon = new ModDBMDef("tile.moonBlock", 4);
 
@@ -119,7 +85,7 @@ public class SpaceDimRegisterer {
     /**
      * As GalactiCraftPlanets is an optional mod, don't hardlink it here
      */
-    private ModContainer setupGalactiCraftPlanets() {
+    private static ModContainer setupGalactiCraftPlanets() {
         ModContainer modGCraftPlanets = new ModContainer(GalacticraftMars.ID);
         ModDBMDef DBMMars = new ModDBMDef("tile.mars", 9);
         ModDimensionDef dimMars = new ModDimensionDef(
@@ -147,7 +113,7 @@ public class SpaceDimRegisterer {
     /**
      * Mod GalaxySpace by BlesseNtumble
      */
-    private ModContainer setupGalaxySpace() {
+    private static ModContainer setupGalaxySpace() {
         // First, we create a mod-container that will be populated with dimensions later.
         // The Name must match your ID, as it is checked if this mod is loaded, in order
         // to enable/disable the parsing/registering of dimensions
@@ -359,7 +325,7 @@ public class SpaceDimRegisterer {
     /**
      * Mod Amun-Ra
      */
-    private ModContainer setupAmunRa() {
+    private static ModContainer setupAmunRa() {
         ModContainer modAmunRa = new ModContainer("GalacticraftAmunRa");
 
         final List<ModDBMDef> DBMNeper = Arrays
