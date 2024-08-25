@@ -182,11 +182,7 @@ public class VoidMinerUtility {
             case -1 -> gt_worldgen -> gt_worldgen.mNether;
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
             case 1 -> gt_worldgen -> gt_worldgen.mEnd || gt_worldgen.mEndAsteroid;
-            /*
-             * explicitly giving different dim numbers so that it default to false in the config, keeping compat with
-             * the current worldgen config
-             */
-            case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed("Twilight Forest", 0, 7);
+            case 7 -> gt_worldgen -> gt_worldgen.twilightForest;
             default -> throw new IllegalStateException();
         };
     }

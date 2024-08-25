@@ -44,6 +44,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     public final boolean mNether;
     public final boolean mEnd;
     public final boolean mEndAsteroid;
+    public final boolean twilightForest;
     public static final int WRONG_BIOME = 0;
     public static final int WRONG_DIMENSION = 1;
     public static final int NO_ORE_IN_BOTTOM_LAYER = 2;
@@ -60,6 +61,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         this.mNether = mix.dimsEnabled.getOrDefault(OreMixBuilder.NETHER, false);
         this.mEnd = mix.dimsEnabled.getOrDefault(OreMixBuilder.THE_END, false);
         this.mEndAsteroid = mix.dimsEnabled.getOrDefault(DimensionDef.EndAsteroids.modDimensionDef.getDimensionName(), false);
+        this.twilightForest = mix.dimsEnabled.getOrDefault(OreMixBuilder.TWILIGHT_FOREST, false);
         this.mMinY = ((short) mix.minY);
         short mMaxY = ((short) mix.maxY);
         if (mMaxY < (this.mMinY + 9)) {
