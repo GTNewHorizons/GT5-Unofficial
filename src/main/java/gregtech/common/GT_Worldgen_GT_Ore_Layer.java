@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
+import gregtech.api.enums.OreMixes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -53,6 +55,47 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     public final String aTextWorldgen = "worldgen.";
 
     public Class[] mAllowedProviders;
+
+    public GT_Worldgen_GT_Ore_Layer(OreMixBuilder mix){
+        super(mix.oreMixName, sList, mix.enabledByDefault);
+        this.mOverworld = mix.inOverworld;
+        this.mNether = mix.inNether;
+        this.mEnd = mix.inEnd;
+        this.mEndAsteroid = mix.inEnd;
+        this.mMinY = ((short) mix.minY);
+        short mMaxY = ((short) mix.maxY);
+        if (mMaxY < (this.mMinY + 9)) {
+            GT_Log.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
+            mMaxY = (short) (this.mMinY + 9);
+        }
+        this.mMaxY = mMaxY;
+        this.mWeight = (short) mix.weight;
+        this.mDensity = (short) mix.density;
+        this.mSize = (short) Math.max(1, mix.size);
+        this.mPrimaryMeta = (short) mix.primary.mMetaItemSubID;
+        this.mSecondaryMeta = (short) mix.secondary.mMetaItemSubID;
+        this.mBetweenMeta = (short)mix.between.mMetaItemSubID;
+        this.mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
+        this.mRestrictBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
+
+        if (this.mEnabled) {
+            sWeight += this.mWeight;
+        }
+
+        List<Class> allowedProviders = new ArrayList<>();
+        if (this.mNether) {
+            allowedProviders.add(WorldProviderHell.class);
+        }
+
+        if (this.mOverworld) {
+            allowedProviders.add(WorldProviderSurface.class);
+        }
+
+        if (this.mEnd) {
+            allowedProviders.add(WorldProviderEnd.class);
+        }
+        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
+    }
 
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
         int aSize, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary, Materials aSecondary,

@@ -46,7 +46,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static HashSet<Long> ProcChunks = new HashSet<>();
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
-    public static GT_Worldgen_GT_Ore_Layer noOresInVein = new OreMixBuilder().name("NoOresInVein")
+    public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer(new OreMixBuilder().name("NoOresInVein")
                                                                     .disabledByDefault()
                                                                     .heightRange(0,255)
                                                                     .weight(0)
@@ -56,7 +56,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                                     .secondary(Materials.Aluminium)
                                                                     .inBetween(Materials.Aluminium)
                                                                     .sporadic(Materials.Aluminium)
-                                                                    .add();
+    );
+
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();

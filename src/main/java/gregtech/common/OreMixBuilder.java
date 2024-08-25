@@ -3,15 +3,11 @@ package gregtech.common;
 import gregtech.api.enums.Materials;
 
 public class OreMixBuilder {
-    private String oreMixName;
-    private boolean enabledByDefault = true;
-    private boolean inOverworld = false, inNether = false, inEnd = false;
-    private int minY, maxY, weight, density, size;
-    private Materials primary, secondary, between, sporadic;
-
-    public GT_Worldgen_GT_Ore_Layer add(){
-        return new GT_Worldgen_GT_Ore_Layer(oreMixName, enabledByDefault, minY, maxY, weight, density, size, inOverworld, inNether, inEnd, primary, secondary, between, sporadic);
-    }
+    public String oreMixName;
+    public boolean enabledByDefault = true;
+    public boolean inOverworld = false, inNether = false, inEnd = false, inEndAsteroids = false;
+    public int minY, maxY, weight, density, size;
+    public Materials primary, secondary, between, sporadic;
 
     public OreMixBuilder name(String name){
         this.oreMixName = name;
@@ -34,6 +30,11 @@ public class OreMixBuilder {
     }
 
     public OreMixBuilder inEnd(){
+        this.inEnd = true;
+        return this;
+    }
+
+    public OreMixBuilder inEndAsteroids(){
         this.inEnd = true;
         return this;
     }
