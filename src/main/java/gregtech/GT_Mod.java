@@ -5,6 +5,7 @@ import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GT_Recipe.setItemStacks;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -109,6 +110,7 @@ import gregtech.loaders.postload.GT_PostLoad;
 import gregtech.loaders.postload.GT_RecyclerBlacklistLoader;
 import gregtech.loaders.postload.GT_ScrapboxDropLoader;
 import gregtech.loaders.postload.GT_Worldgenloader;
+import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
 import gregtech.loaders.preload.GT_Loader_ItemData;
 import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
@@ -166,15 +168,7 @@ import ic2.api.recipe.RecipeOutput;
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
-    @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = VERSION_MAJOR, SUBVERSION = VERSION_MINOR;
-
-    @Deprecated
-    public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
-
-    @Deprecated
-    public static final int REQUIRED_IC2 = 624;
 
     @Mod.Instance(Mods.Names.GREG_TECH)
     public static GT_Mod instance;
@@ -184,6 +178,7 @@ public class GT_Mod implements IGT_Mod {
         clientSide = "gregtech.common.GT_Client",
         serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
+    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
 
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
@@ -214,11 +209,6 @@ public class GT_Mod implements IGT_Mod {
         Textures.ItemIcons.VOID.name();
     }
 
-    @SuppressWarnings("unused") // TODO: Delete this method
-    public static int calculateTotalGTVersion(int minorVersion) {
-        return calculateTotalGTVersion(VERSION, minorVersion);
-    }
-
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
         return calculateTotalGTVersion(majorVersion, minorVersion, 0);
     }
@@ -243,7 +233,6 @@ public class GT_Mod implements IGT_Mod {
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
-        GT_PreLoad.initCompat();
         GT_PreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
                 .getParentFile(),
@@ -289,6 +278,9 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
+
+        // populate itemstack instance for NBT check in GT_Recipe
+        setItemStacks();
 
         GT_PreLoad.sortToTheEnd();
         GregTech_API.sPreloadFinished = true;
@@ -348,11 +340,10 @@ public class GT_Mod implements IGT_Mod {
 
         new GT_Loader_MetaTileEntities_Recipes().run();
 
-        if (gregtechproxy.mSortToTheEnd) {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        new GT_ItemIterator().run();
+        gregtechproxy.registerUnificationEntries();
+        new GT_FuelLoader().run();
+
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
@@ -381,6 +372,7 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
+        // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
             try {
                 tRunnable.run();
@@ -391,20 +383,18 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onPostLoad();
 
-        final int bound = GregTech_API.METATILEENTITIES.length;
-        for (int i1 = 1; i1 < bound; i1++) {
-            if (GregTech_API.METATILEENTITIES[i1] != null) {
-                GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
+        if (DEBUG) {
+            // Prints all the used MTE id and their associated TE name, turned on with -Dgt.debug=true in jvm args
+            final int bound = GregTech_API.METATILEENTITIES.length;
+            for (int i1 = 1; i1 < bound; i1++) {
+                if (GregTech_API.METATILEENTITIES[i1] != null) {
+                    GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
+                }
             }
         }
 
-        if (gregtechproxy.mSortToTheEnd) {
-            gregtechproxy.registerUnificationEntries();
-        } else {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        gregtechproxy.registerUnificationEntries();
+
         new GT_BookAndLootLoader().run();
         new GT_ItemMaxStacksizeLoader().run();
         new GT_BlockResistanceLoader().run();
@@ -515,6 +505,9 @@ public class GT_Mod implements IGT_Mod {
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 
         GT_PostLoad.nerfVanillaTools();
+
+        // Register postea transformers
+        new PosteaTransformers().run();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the

@@ -29,9 +29,9 @@ public class ModDBMDef {
 
     /**
      * Internal function
-     * 
+     *
      * Check if the given Block is equal to the block in this instance
-     * 
+     *
      * @param pBlock the Block in question
      * @return
      */
@@ -45,9 +45,9 @@ public class ModDBMDef {
 
     /**
      * Internal function
-     * 
+     *
      * Check if the given Block is equal to the block in this instance and matches the metadata
-     * 
+     *
      * @param pBlock the block in question
      * @param pMeta  the metadata in question
      * @return
@@ -73,7 +73,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition. Meta defaults to 0 here
-     * 
+     *
      * @param pTargetBlockName The unlocalizedName of the block
      */
     public ModDBMDef(String pTargetBlockName) {
@@ -82,7 +82,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition
-     * 
+     *
      * @param pTargetBlockName The unlocalizedName of the block
      * @param pMetaData        The blocks metadata
      */
@@ -92,7 +92,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition
-     * 
+     *
      * @param pTargetBlock The instance of the block that can be replaced
      * @param pMetaData    The blocks metadata
      */
@@ -102,7 +102,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition. Meta defaults to 0 here
-     * 
+     *
      * @param pTargetBlock The instance of the block that can be replaced
      */
     public ModDBMDef(Block pTargetBlock) {
@@ -111,7 +111,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition
-     * 
+     *
      * @param pTargetBlock
      * @param pCanAlwaysReplace set to true if this block can always be replaced, regardless of it's metavalue. Like:
      *                          [block]:*
@@ -122,7 +122,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition
-     * 
+     *
      * @param pTargetBlockName  The unlocalizedName of the block
      * @param pCanAlwaysReplace set to true if this block can always be replaced, regardless of it's metavalue. Like:
      *                          [block]:*
@@ -133,7 +133,7 @@ public class ModDBMDef {
 
     /**
      * Create a new "Block that can be replaced by ores" definition
-     * 
+     *
      * @param pTargetBlockName  The unlocalizedName of the block
      * @param pMetaData         The blocks metadata
      * @param pCanAlwaysReplace set to true if this block can always be replaced, regardless of it's metavalue. Like:
@@ -148,18 +148,14 @@ public class ModDBMDef {
     /**
      * Internal function Never run this function. It is used to update the blocks name when GalacticGreg is initializing
      * its internal structures
-     * 
+     *
      * @param pParentModName The modname to be attached to the block-name
      */
     public void updateBlockName(String pParentModName) {
         // Do we already have a FQBN? then do nothing
         if (_targetBlockName.contains(":")) {
-            // GalacticGreg.Logger.trace("Not updating blockname, as it already contains a mods name: %s",
-            // _targetBlockName);
             return;
         }
-        // GalacticGreg.Logger.trace("Updating blockname: Old: %s new: %s:%s", _targetBlockName, pParentModName,
-        // _targetBlockName);
         _targetBlockName = String.format("%s:%s", pParentModName, _targetBlockName);
     }
 }

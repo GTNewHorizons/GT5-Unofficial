@@ -367,7 +367,12 @@ public class GT_AssemblyLineUtils {
      * @return Did we set the new recipe data & Recipe Hash String on the Data Stick?
      */
     public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GT_Recipe_AssemblyLine aNewRecipe) {
-        if (isItemDataStick(aDataStick)) {
+        return setAssemblyLineRecipeOnDataStick(aDataStick, aNewRecipe, true);
+    }
+
+    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GT_Recipe_AssemblyLine aNewRecipe,
+        boolean setUpdateTime) {
+        if (isItemDataStick(aDataStick) && aNewRecipe.mOutput != null) {
             String s = aNewRecipe.mOutput.getDisplayName();
             if (FMLCommonHandler.instance()
                 .getEffectiveSide()
@@ -419,29 +424,8 @@ public class GT_AssemblyLineUtils {
             tNBT.setTag("output", aNewRecipe.mOutput.writeToNBT(new NBTTagCompound()));
             tNBT.setInteger("time", aNewRecipe.mDuration);
             tNBT.setInteger("eu", aNewRecipe.mEUt);
-            for (int i = 0; i < aNewRecipe.mInputs.length; i++) {
-                tNBT.setTag("" + i, aNewRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
-            }
-            for (int i = 0; i < aNewRecipe.mOreDictAlt.length; i++) {
-                if (aNewRecipe.mOreDictAlt[i] != null && aNewRecipe.mOreDictAlt[i].length > 0) {
-                    tNBT.setInteger("a" + i, aNewRecipe.mOreDictAlt[i].length);
-                    for (int j = 0; j < aNewRecipe.mOreDictAlt[i].length; j++) {
-                        tNBT.setTag("a" + i + ":" + j, aNewRecipe.mOreDictAlt[i][j].writeToNBT(new NBTTagCompound()));
-                    }
-                }
-            }
-            for (int i = 0; i < aNewRecipe.mFluidInputs.length; i++) {
-                tNBT.setTag("f" + i, aNewRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
-            }
             tNBT.setString("author", author);
             NBTTagList tNBTList = new NBTTagList();
-            s = aNewRecipe.mOutput.getDisplayName();
-            if (FMLCommonHandler.instance()
-                .getEffectiveSide()
-                .isServer()) {
-                s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mOutput.getDisplayName());
-                if (s == null) s = aNewRecipe.mOutput.getDisplayName();
-            }
             tNBTList.appendTag(
                 new NBTTagString(
                     "Construction plan for " + aNewRecipe.mOutput.stackSize
@@ -452,11 +436,17 @@ public class GT_AssemblyLineUtils {
                         + " Production time: "
                         + (aNewRecipe.mDuration / 20)));
             for (int i = 0; i < aNewRecipe.mInputs.length; i++) {
-                if (aNewRecipe.mOreDictAlt[i] != null) {
+                boolean hasSetOreDictAlt = false;
+
+                if (aNewRecipe.mOreDictAlt[i] != null && aNewRecipe.mOreDictAlt[i].length > 0) {
+                    tNBT.setInteger("a" + i, aNewRecipe.mOreDictAlt[i].length);
                     int count = 0;
                     StringBuilder tBuilder = new StringBuilder("Input Bus " + (i + 1) + ": ");
-                    for (ItemStack tStack : aNewRecipe.mOreDictAlt[i]) {
+                    for (int j = 0; j < aNewRecipe.mOreDictAlt[i].length; j++) {
+                        ItemStack tStack = aNewRecipe.mOreDictAlt[i][j];
                         if (tStack != null) {
+                            tNBT.setTag("a" + i + ":" + j, tStack.writeToNBT(new NBTTagCompound()));
+
                             s = tStack.getDisplayName();
                             if (FMLCommonHandler.instance()
                                 .getEffectiveSide()
@@ -472,21 +462,33 @@ public class GT_AssemblyLineUtils {
                             count++;
                         }
                     }
-                    if (count > 0) tNBTList.appendTag(new NBTTagString(tBuilder.toString()));
-                } else if (aNewRecipe.mInputs[i] != null) {
-                    s = aNewRecipe.mInputs[i].getDisplayName();
-                    if (FMLCommonHandler.instance()
-                        .getEffectiveSide()
-                        .isServer()) {
-                        s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mInputs[i].getDisplayName());
-                        if (s == null) s = aNewRecipe.mInputs[i].getDisplayName();
+                    if (count > 0) {
+                        tNBTList.appendTag(new NBTTagString(tBuilder.toString()));
+                        hasSetOreDictAlt = true;
                     }
-                    tNBTList.appendTag(
-                        new NBTTagString("Input Bus " + (i + 1) + ": " + aNewRecipe.mInputs[i].stackSize + " " + s));
+                }
+
+                if (aNewRecipe.mInputs[i] != null) {
+                    tNBT.setTag("" + i, aNewRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
+
+                    if (!hasSetOreDictAlt) {
+                        s = aNewRecipe.mInputs[i].getDisplayName();
+                        if (FMLCommonHandler.instance()
+                            .getEffectiveSide()
+                            .isServer()) {
+                            s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mInputs[i].getDisplayName());
+                            if (s == null) s = aNewRecipe.mInputs[i].getDisplayName();
+                        }
+                        tNBTList.appendTag(
+                            new NBTTagString(
+                                "Input Bus " + (i + 1) + ": " + aNewRecipe.mInputs[i].stackSize + " " + s));
+                    }
                 }
             }
             for (int i = 0; i < aNewRecipe.mFluidInputs.length; i++) {
                 if (aNewRecipe.mFluidInputs[i] != null) {
+                    tNBT.setTag("f" + i, aNewRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
+
                     s = aNewRecipe.mFluidInputs[i].getLocalizedName();
                     if (FMLCommonHandler.instance()
                         .getEffectiveSide()
@@ -500,7 +502,7 @@ public class GT_AssemblyLineUtils {
                 }
             }
             tNBT.setTag("pages", tNBTList);
-            tNBT.setLong("lastUpdate", System.currentTimeMillis());
+            if (setUpdateTime) tNBT.setLong("lastUpdate", System.currentTimeMillis());
             aDataStick.setTagCompound(tNBT);
             // Set recipe hash
             setRecipeHashOnDataStick(aDataStick, aHash);

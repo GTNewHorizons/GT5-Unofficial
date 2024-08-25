@@ -301,17 +301,6 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     /**
-     * Added for compability reasons
-     *
-     * @return true if the state is 0 false otherwise.
-     * @deprecated compatibility reason
-     */
-    @Deprecated
-    protected boolean tryLowerPipe() {
-        return tryLowerPipeState(false) == 0;
-    }
-
-    /**
      * @return 0 for succeeded, 1 for invalid block, 2 for not having mining pipes, 3 for event canceled.
      */
     protected int tryLowerPipeState() {
@@ -665,23 +654,6 @@ public abstract class GT_MetaTileEntity_DrillerBase
         return true;
     }
 
-    @Deprecated
-    protected boolean checkCasingBlock(int xOff, int yOff, int zOff) {
-        return checkBlockAndMetaOffset(xOff, yOff, zOff, casingBlock, casingMeta);
-    }
-
-    // meta of frame is getTileEntityBaseType; frame should be checked using its drops (possible a high weight
-    // operation)
-    @Deprecated
-    protected boolean checkFrameBlock(int xOff, int yOff, int zOff) {
-        return checkBlockAndMetaOffset(xOff, yOff, zOff, GregTech_API.sBlockMachines, frameMeta);
-    }
-
-    @Deprecated
-    protected boolean checkBlockAndMetaOffset(int xOff, int yOff, int zOff, Block block, int meta) {
-        return checkBlockAndMeta(xDrill + xOff, yDrill + yOff, zDrill + zOff, block, meta);
-    }
-
     private boolean checkBlockAndMeta(int x, int y, int z, Block block, int meta) {
         return (meta == W || getBaseMetaTileEntity().getMetaID(x, y, z) == meta)
             && getBaseMetaTileEntity().getBlock(x, y, z) == block;
@@ -717,11 +689,6 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     protected abstract ItemList getCasingBlockItem();
-
-    @Deprecated
-    protected String getCasingName() {
-        return null;
-    }
 
     protected abstract Materials getFrameMaterial();
 

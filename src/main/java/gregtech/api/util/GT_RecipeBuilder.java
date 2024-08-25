@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Contract;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
@@ -36,11 +37,19 @@ public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
     private static final boolean DEBUG_MODE_NULL;
+    // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.null=true
     private static boolean PANIC_MODE_NULL;
     private static final boolean DEBUG_MODE_INVALID;
+    private static final boolean DEBUG_MODE_FULL_ENERGY;
+    // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.invalid=true
     private static final boolean PANIC_MODE_INVALID;
     private static final boolean DEBUG_MODE_COLLISION;
+
+    // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
     private static final boolean PANIC_MODE_COLLISION;
+
+    // This should only be enabled in non stable instances only with -Dgt.recipebuilder.recipe_collision_check=true
+    public static final boolean ENABLE_COLLISION_CHECK;
 
     public static final int WILDCARD = 32767;
 
@@ -70,11 +79,13 @@ public class GT_RecipeBuilder {
         DEBUG_MODE_NULL = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.null");
         DEBUG_MODE_INVALID = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.invalid");
         DEBUG_MODE_COLLISION = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.collision");
+        DEBUG_MODE_FULL_ENERGY = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.fullenergy");
 
         final boolean panicAll = Boolean.getBoolean("gt.recipebuilder.panic");
         PANIC_MODE_NULL = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.null");
         PANIC_MODE_INVALID = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.invalid");
         PANIC_MODE_COLLISION = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.collision");
+        ENABLE_COLLISION_CHECK = Boolean.getBoolean("gt.recipebuilder.recipe_collision_check");
     }
 
     protected ItemStack[] inputsBasic = new ItemStack[0];
@@ -345,13 +356,23 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder eut(int eut) {
+        if (DEBUG_MODE_FULL_ENERGY) {
+            // Ignores ULV voltage
+            for (int i = 1; i < GT_Values.VP.length; i++) {
+                if (eut <= GT_Values.V[i] && eut > GT_Values.VP[i]) {
+                    GT_Log.err.println(
+                        "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GT_Values.VP[i]);
+                    new IllegalArgumentException().printStackTrace(GT_Log.err);
+                    break;
+                }
+            }
+        }
         this.eut = eut;
         return this;
     }
 
     public GT_RecipeBuilder eut(long eut) {
-        this.eut = (int) eut;
-        return this;
+        return eut((int) eut);
     }
 
     /**

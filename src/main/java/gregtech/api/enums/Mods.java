@@ -72,6 +72,7 @@ public enum Mods {
     Forestry(Names.FORESTRY),
     ForgeMicroblocks(Names.FORGE_MICROBLOCKS),
     ForgeRelocation(Names.FORGE_RELOCATION),
+    GGFab(Names.G_G_FAB),
     GTNHIntergalactic(Names.G_T_N_H_INTERGALACTIC),
     GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
     GTPlusPlus(Names.G_T_PLUS_PLUS),
@@ -256,6 +257,7 @@ public enum Mods {
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";
         public static final String FORGE_RELOCATION = "ForgeRelocation";
+        public static final String G_G_FAB = "ggfab";
         public static final String G_T_N_H_INTERGALACTIC = "gtnhintergalactic";
         public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
         public static final String G_T_PLUS_PLUS = "miscutils";

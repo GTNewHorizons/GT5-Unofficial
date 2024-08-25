@@ -1,5 +1,7 @@
 package gregtech.api.recipe;
 
+import static gregtech.api.util.GT_RecipeBuilder.ENABLE_COLLISION_CHECK;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +127,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         aRecipe.mFakeRecipe = aFakeRecipe;
         if (aRecipe.mFluidInputs.length < backend.properties.minFluidInputs
             && aRecipe.mInputs.length < backend.properties.minItemInputs) return null;
-        if (aCheckForCollisions && backend.checkCollision(aRecipe)) return null;
+        if (aCheckForCollisions && ENABLE_COLLISION_CHECK && backend.checkCollision(aRecipe)) return null;
         return backend.compileRecipe(aRecipe);
     }
 
@@ -133,26 +135,6 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes!
      * findRecipe won't find fake Recipes, containsInput WILL find fake Recipes
      */
-    @Deprecated
-    @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
-        @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addFakeRecipe(
-            aCheckForCollisions,
-            new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                null,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
     @Deprecated
     @Nullable
     public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,

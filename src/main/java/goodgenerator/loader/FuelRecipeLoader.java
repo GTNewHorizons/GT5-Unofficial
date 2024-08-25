@@ -4,11 +4,11 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefin
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelTime;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelVoltage;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GT_RecipeConstants.NFR_COIL_TIER;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,7 +21,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.ELEMENT;
 
@@ -75,7 +75,7 @@ public class FuelRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustChromaticGlass", 9),
+                CHRONOMATIC_GLASS.getDust(9),
                 ItemRefer.High_Density_Uranium.get(2),
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(
@@ -196,7 +196,7 @@ public class FuelRecipeLoader {
                 FluidRegistry.getFluidStack("molten.shirabon", 1440))
             .fluidOutputs(MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
             .duration(4 * SECONDS)
-            .eut(530_000_000)
+            .eut(TierEU.RECIPE_UXV)
             .metadata(NFR_COIL_TIER, 4)
             .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);

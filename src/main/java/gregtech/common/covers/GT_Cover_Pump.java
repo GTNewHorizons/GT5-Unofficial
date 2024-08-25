@@ -165,11 +165,6 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new PumpUIFactory(buildContext).createWindow();
     }

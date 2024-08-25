@@ -264,11 +264,6 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     public static final UITexture PICTURE_KUBATECH_LOGO = UITexture.fullImage(Tags.MODID, "gui/logo_13x15_dark");
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)
@@ -289,6 +284,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     @Override
     public Pos2d getPowerSwitchButtonPos() {
         return new Pos2d(174, 166 - (slotWidgets.size() * 18));
+    }
+
+    @Override
+    public Pos2d getStructureUpdateButtonPos() {
+        return new Pos2d(174, 148 - (slotWidgets.size() * 18));
     }
 
     @Override
@@ -317,7 +317,8 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder));
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);

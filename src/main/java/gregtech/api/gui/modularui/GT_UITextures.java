@@ -298,6 +298,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
     public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
     public static final UITexture OVERLAY_BUTTON_LOCKED = UITexture
@@ -338,6 +340,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down");
     public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic");
+    public static final UITexture OVERLAY_BUTTON_SHUFFLE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/shuffle");
     public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/emit_energy");
     public static final UITexture OVERLAY_BUTTON_EMIT_REDSTONE = UITexture

@@ -1,16 +1,10 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.HodgePodge;
-import static gregtech.api.enums.Mods.IndustrialCraft2Classic;
-import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.enums.Mods.Translocator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,33 +56,31 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 public class GT_PreLoad {
 
     public static void sortToTheEnd() {
-        if (GT_Mod.gregtechproxy.mSortToTheEnd) {
-            try {
-                GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
-                LoadController tLoadController = (LoadController) GT_Utility
-                    .getFieldContent(Loader.instance(), "modController", true, true);
-                assert tLoadController != null;
-                List<ModContainer> tModList = tLoadController.getActiveModList();
-                List<ModContainer> tNewModsList = new ArrayList<>();
-                ModContainer tGregTech = null;
-                short tModList_sS = (short) tModList.size();
-                for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
-                    ModContainer tMod = tModList.get(i);
-                    if (tMod.getModId()
-                        .equalsIgnoreCase(GregTech.ID)) {
-                        tGregTech = tMod;
-                    } else {
-                        tNewModsList.add(tMod);
-                    }
+        try {
+            GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
+            LoadController tLoadController = (LoadController) GT_Utility
+                .getFieldContent(Loader.instance(), "modController", true, true);
+            assert tLoadController != null;
+            List<ModContainer> tModList = tLoadController.getActiveModList();
+            List<ModContainer> tNewModsList = new ArrayList<>();
+            ModContainer tGregTech = null;
+            short tModList_sS = (short) tModList.size();
+            for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
+                ModContainer tMod = tModList.get(i);
+                if (tMod.getModId()
+                    .equalsIgnoreCase(GregTech.ID)) {
+                    tGregTech = tMod;
+                } else {
+                    tNewModsList.add(tMod);
                 }
-                if (tGregTech != null) {
-                    tNewModsList.add(tGregTech);
-                }
-                Objects.requireNonNull(GT_Utility.getField(tLoadController, "activeModList", true, true))
-                    .set(tLoadController, tNewModsList);
-            } catch (Throwable e) {
-                GT_Mod.logStackTrace(e);
             }
+            if (tGregTech != null) {
+                tNewModsList.add(tGregTech);
+            }
+            Objects.requireNonNull(GT_Utility.getField(tLoadController, "activeModList", true, true))
+                .set(tLoadController, tNewModsList);
+        } catch (Throwable e) {
+            GT_Mod.logStackTrace(e);
         }
     }
 
@@ -158,16 +150,6 @@ public class GT_PreLoad {
         GregTech_API.sClientDataFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
         return tMainConfig;
-    }
-
-    public static void initCompat() {
-        GregTech_API.mIC2Classic = IndustrialCraft2Classic.isModLoaded();
-        GregTech_API.mGTPlusPlus = GTPlusPlus.isModLoaded();
-        GregTech_API.mTranslocator = Translocator.isModLoaded();
-        GregTech_API.mTConstruct = TinkerConstruct.isModLoaded();
-        GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
-        GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
-        GregTech_API.mAvaritia = Avaritia.isModLoaded();
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
@@ -429,6 +411,11 @@ public class GT_PreLoad {
         // GT_Values.oreveinMaxSize = tMainConfig.get(aTextGeneral, "oreveinMaxSize_64",64).getInt(64);
         GT_Values.ticksBetweenSounds = tMainConfig.get("machines", "TicksBetweenSounds", 30)
             .getInt(30);
+        GT_Values.blacklistedTileEntiyClassNamesForWA = tMainConfig.getStringList(
+            "blacklistedTileEntiyClassNamesForWA",
+            "machines",
+            GT_Values.blacklistedTileEntiyClassNamesForWA,
+            "class names to be blacklisted from the world accelerator");
         GT_Values.cleanroomGlass = (float) tMainConfig.get("machines", "ReinforcedGlassPercentageForCleanroom", 5D)
             .getDouble(5D);
         GT_Values.enableChunkloaders = tMainConfig.get("machines", "enableChunkloaders", true)
@@ -511,23 +498,15 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = tMainConfig
             .get(GT_Mod.aTextGeneral, "AllowSmallBoilerAutomation", false)
             .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardMachineCasings = tMainConfig.get(GT_Mod.aTextGeneral, "HardMachineCasings", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mDisableVanillaOres = tMainConfig.get(GT_Mod.aTextGeneral, "DisableVanillaOres", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfDustCrafting = tMainConfig.get(GT_Mod.aTextGeneral, "NerfDustCrafting", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mIncreaseDungeonLoot = tMainConfig.get(GT_Mod.aTextGeneral, "IncreaseDungeonLoot", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mHardcoreCables = tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false)
-            .getBoolean(false);
         GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false)
             .getBoolean(false);
         GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false)
             .getBoolean(false);
         GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true)
             .getBoolean(true);
@@ -540,20 +519,9 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mNerfedVanillaTools = tMainConfig
             .get(GT_Mod.aTextGeneral, "smallerVanillaToolDurability", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mSortToTheEnd = tMainConfig.get(GT_Mod.aTextGeneral, "EnsureToBeLoadedLast", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mDisableIC2Cables = tMainConfig.get(GT_Mod.aTextGeneral, "DisableIC2Cables", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mAchievements = tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedCombs = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCombs", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedCrops = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCrops", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed = tMainConfig
-            .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
             .getBoolean(false);
@@ -801,8 +769,6 @@ public class GT_PreLoad {
             Blocks.mob_spawner.setHardness(500.0F)
                 .setResistance(6000000.0F);
         }
-        GT_Mod.gregtechproxy.mOnline = tMainConfig.get(GT_Mod.aTextGeneral, "online", true)
-            .getBoolean(false);
 
         GT_Mod.gregtechproxy.mUpgradeCount = Math.min(
             64,

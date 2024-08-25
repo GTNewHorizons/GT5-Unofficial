@@ -225,11 +225,6 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         return true;
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected abstract class AdvancedWirelessRedstoneBaseUIFactory extends UIFactory {
 
         protected static final int startX = 10;

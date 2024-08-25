@@ -35,6 +35,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -84,9 +85,12 @@ import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_MusicSystem;
 import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.client.SeekingOggCodec;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
@@ -105,6 +109,8 @@ import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.NEI_GT_Config;
 import ic2.api.tile.IWrenchable;
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.SoundSystemException;
 
 // Referenced classes of package gregtech.common:
 // GT_Proxy
@@ -692,6 +698,16 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
     }
 
+    @SubscribeEvent
+    @SuppressWarnings("unused") // used by the event bus
+    public void onSoundSetup(SoundSetupEvent event) {
+        try {
+            SoundSystemConfig.setCodec(SeekingOggCodec.EXTENSION, SeekingOggCodec.class);
+        } catch (SoundSystemException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Downloading Cape List.");
@@ -727,6 +743,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         mFirstTick = true;
         mReloadCount++;
+        GT_MusicSystem.ClientSystem.reset();
         // For utility methods elsewhere.
         calculateMaxPlasmaTurbineEfficiency();
     }
@@ -826,8 +843,16 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
                 || aTileEntity instanceof IWrenchable
-                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated()))
-                drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
+                || (aBlock instanceof GT_Block_FrameBox)) drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+            return;
+        }
+
+        // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
+        if (aTileEntity == null && aBlock instanceof GT_Block_FrameBox) {
+            if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
+                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
+            }
             return;
         }
 
@@ -891,6 +916,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @SubscribeEvent
     public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
         if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
+            GT_MusicSystem.ClientSystem.tick();
+
             if (changeDetected > 0) changeDetected--;
             final int newHideValue = shouldHeldItemHideThings();
             if (newHideValue != hideValue) {
