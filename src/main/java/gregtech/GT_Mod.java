@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import bloodasp.galacticgreg.SpaceDimRegisterer;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import gregtech.common.config.client.ConfigColorModulation;
@@ -242,6 +243,8 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
+    private static SpaceDimRegisterer SpaceDimReg;
+
     @SuppressWarnings("deprecation")
     public GT_Mod() {
         GT_Values.GT = this;
@@ -402,6 +405,15 @@ public class GT_Mod implements IGT_Mod {
         }
 
         LHECoolantRegistry.registerBaseCoolants();
+
+        SpaceDimReg = new SpaceDimRegisterer();
+        if (!SpaceDimReg.init()) {
+            GT_FML_LOGGER.error(
+                "Unable to register SpaceDimensions; You are probably using the wrong Version of GalacticGreg");
+        } else {
+            GT_FML_LOGGER.debug("Registering SpaceDimensions");
+            SpaceDimReg.register();
+        }
 
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
