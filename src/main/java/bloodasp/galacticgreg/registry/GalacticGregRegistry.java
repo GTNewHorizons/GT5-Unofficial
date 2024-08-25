@@ -115,6 +115,7 @@ public class GalacticGregRegistry {
      */
     private static void InitModContainers() {
         for (ModContainer mc : _mModContainers.values()) {
+            // todo: rename Vanilla mod container name from "Vanilla" to "minecraft"
             if (!Loader.isModLoaded(mc.getModName()) && !mc.getModName().equals(Vanilla.modContainer.getModName())) {
                 GalacticGreg.Logger.warn(
                     "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
