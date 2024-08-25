@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import gregtech.common.OreMixBuilder;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -40,59 +41,24 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     private long mProfilingEnd;
 
     private DynamicOreMixWorldConfig _mDynWorldConfig;
+    public GT_Worldgen_GT_Ore_Layer_Space(OreMixBuilder mix){
+        super(mix.oreMixName, GalacticGreg.oreVeinWorldgenList, mix.enabledByDefault);
 
-    public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight,
-        int pDensity, int pSize, Materials pPrimary, Materials pSecondary, Materials pBetween, Materials pSporadic) {
-        super(pName, GalacticGreg.oreVeinWorldgenList, pDefault);
-        mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
-        mMaxY = ((short) Math
-            .max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
-        mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", pWeight));
-        mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", pDensity));
-        mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", pSize)));
-        mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary.mMetaItemSubID));
-        mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary.mMetaItemSubID));
-        mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween.mMetaItemSubID));
-        mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic.mMetaItemSubID));
+        mMinY = (short) mix.minY;
+        mMaxY = (short) Math.max(this.mMinY + 5, mix.maxY);
+        mWeight = (short) mix.weight;
+        mDensity = (short) mix.density;
+        mSize = (short) Math.max(1, mix.size);
+        mPrimaryMeta = (short) mix.primary.mMetaItemSubID;
+        mSecondaryMeta = (short) mix.secondary.mMetaItemSubID;
+        mBetweenMeta = (short) mix.between.mMetaItemSubID;
+        mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
 
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
-        _mDynWorldConfig.InitDynamicConfig();
+        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName, mix);
 
-        GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
 
-        if (mEnabled) GT_Worldgen_GT_Ore_Layer_Space.sWeight += this.mWeight;
-
-    }
-
-    public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight,
-        int pDensity, int pSize, short pPrimary, short pSecondary, short pBetween, short pSporadic) {
-        super(pName, GalacticGreg.oreVeinWorldgenList, pDefault);
-        mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
-        mMaxY = ((short) Math
-            .max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
-        mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", pWeight));
-        mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", pDensity));
-        mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", pSize)));
-        mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary));
-        mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary));
-        mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween));
-        mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic));
-
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
-        _mDynWorldConfig.InitDynamicConfig();
-
-        GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
-
+        GalacticGreg.Logger.trace("Initialized new OreLayer: %s", mix.oreMixName);
         if (mEnabled) sWeight += this.mWeight;
-
     }
 
     /**

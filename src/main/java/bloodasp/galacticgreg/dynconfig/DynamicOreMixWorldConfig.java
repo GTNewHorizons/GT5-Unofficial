@@ -8,6 +8,7 @@ import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.common.OreMixBuilder;
 
 /**
  * This is the dynamic config class for every ore-vein that will generate config values according to the dimension and
@@ -23,6 +24,7 @@ public class DynamicOreMixWorldConfig {
 
     private Map<String, Boolean> _mDynWorldConfigMap;
     private final String _mConfigName;
+    private boolean alreadyInit = false;
 
     private String getConfigKeyName(ModContainer pMC, ModDimensionDef pMDD) {
         return getConfigKeyName(pMC, pMDD, "");
@@ -35,9 +37,29 @@ public class DynamicOreMixWorldConfig {
         return tRet;
     }
 
+    public DynamicOreMixWorldConfig(String worldGenName, OreMixBuilder mix){
+        _mWorldGenName = worldGenName;
+        _mDynWorldConfigMap = new HashMap<>();
+        _mConfigName = String.format("worldgen.%s", _mWorldGenName);
+        for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
+            if (!mc.getEnabled()) continue;
+
+            for (ModDimensionDef mdd : mc.getDimensionList()) {
+                String tDimIdentifier = mdd.getDimIdentifier();
+                if (_mDynWorldConfigMap.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
+                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                    tDimIdentifier);
+                else {
+                    boolean tFlag = mix.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
+                    _mDynWorldConfigMap.put(tDimIdentifier, tFlag);
+                }
+            }
+        }
+    }
+
     /**
      * Init a new dynamic config for a given world-generator
-     * 
+     *
      * @param pWorldGenName
      */
     public DynamicOreMixWorldConfig(String pWorldGenName) {
@@ -54,7 +76,7 @@ public class DynamicOreMixWorldConfig {
 
     /**
      * Check if this OreGen is enabled for a given Dimension, represented by pMDD
-     * 
+     *
      * @param pMDD The dimension in question
      * @return true or false if *this* oregen is enabled in the worldgen config
      */
@@ -65,10 +87,14 @@ public class DynamicOreMixWorldConfig {
 
     /**
      * Initializes the dynamic oregen config. This must be called *AFTER* InitModContainers() has done its work
-     * 
+     *
      * @return true or false if the config init was successfull
      */
     public boolean InitDynamicConfig() {
+        if (alreadyInit){
+            return true;
+        }
+
         try {
             for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
                 if (!mc.getEnabled()) continue;

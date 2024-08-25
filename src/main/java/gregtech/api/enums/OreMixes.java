@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
 import bloodasp.galacticgreg.api.enums.DimensionDef;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.OreMixBuilder;
@@ -12,6 +13,7 @@ import static gregtech.common.OreMixBuilder.TWILIGHT_FOREST;
 
 public enum OreMixes {
 
+    // spotless : off
     Naquadah(new OreMixBuilder().name("ore.mix.naquadah")
         .heightRange(10, 90)
         .weight(30)
@@ -911,6 +913,8 @@ public enum OreMixes {
         .inBetween(Materials.Electrotine)
         .sporadic(Materials.Samarium));
 
+    // spotless : on
+
     public final OreMixBuilder oreMixBuilder;
 
     private OreMixes(OreMixBuilder oreMixBuilder) {
@@ -920,4 +924,9 @@ public enum OreMixes {
     public GT_Worldgen_GT_Ore_Layer addGTOreLayer() {
         return new GT_Worldgen_GT_Ore_Layer(this.oreMixBuilder);
     }
+
+    public GT_Worldgen_GT_Ore_Layer_Space addGaGregOreLayer(){
+        return new GT_Worldgen_GT_Ore_Layer_Space(this.oreMixBuilder);
+    }
 }
+
