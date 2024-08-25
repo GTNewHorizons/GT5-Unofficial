@@ -573,6 +573,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GregTech_API.sGTCompleteLoad = null;
+        GregTech_API.sFullLoadFinished = true;
     }
 
     @Mod.EventHandler
