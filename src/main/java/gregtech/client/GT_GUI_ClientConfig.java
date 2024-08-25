@@ -46,22 +46,7 @@ public class GT_GUI_ClientConfig extends SimpleGuiConfig {
             ConfigInterface.class,
             ConfigPreference.class,
             ConfigRender.class,
-            ConfigWaila.class,
-            ConfigDebug.class,
-            ConfigFeatures.class,
-            ConfigGeneral.class,
-            ConfigHarvestLevel.class,
-            ConfigMachines.class,
-            ConfigOreDropBehavior.class,
-            ConfigPollution.class,
-            ConfigBronzeSolarBoiler.class,
-            gregtech.common.config.machinestats.ConfigMachines.class,
-            ConfigMassFabricator.class,
-            ConfigMicrowaveEnergyTransmitter.class,
-            ConfigSteelSolarBoiler.class,
-            ConfigTeleporter.class,
-            gregtech.common.config.opstuff.ConfigGeneral.class,
-            gregtech.common.config.other.ConfigGeneral.class
+            ConfigWaila.class
         );
     }
 }
