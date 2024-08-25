@@ -175,12 +175,12 @@ public class GT_MetaTileEntity_IndustrialExtractor
             .addSeparator()
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 24, false)
+            .addCasingInfoMin("Stainless Steel Machine Casing", 24, false)
             .addCasingInfoExactly("Item Pipe Casing", 19, true)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addInputBus("Any Stainless Steel Casing", 1)
+            .addOutputBus("Any Stainless Steel Casing", 1)
+            .addEnergyHatch("Any Stainless Steel Casing", 1)
+            .addMaintenanceHatch("Any Stainless Steel Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
