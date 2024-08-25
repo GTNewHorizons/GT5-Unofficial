@@ -491,7 +491,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = ConfigPollution.pollutionHighPressureLavaBoilerPerSecond;
         GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = ConfigPollution.pollutionHighPressureCoalBoilerPerSecond;
         GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = ConfigPollution.pollutionBaseDieselGeneratorPerSecond;
-        double[] mPollutionDieselGeneratorReleasedByTier = Arrays.stream(ConfigPollution.pollutionDieselGeneratorReleasedByTier).mapToDouble(Double::parseDouble).toArray();
+        double[] mPollutionDieselGeneratorReleasedByTier = ConfigPollution.pollutionDieselGeneratorReleasedByTier;
         if (mPollutionDieselGeneratorReleasedByTier.length == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
         } else {
@@ -499,7 +499,7 @@ public class GT_PreLoad {
                 .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = ConfigPollution.pollutionBaseGasTurbinePerSecond;
-        double[] mPollutionGasTurbineReleasedByTier = Arrays.stream(ConfigPollution.pollutionGasTurbineReleasedByTier).mapToDouble(Double::parseDouble).toArray();
+        double[] mPollutionGasTurbineReleasedByTier = ConfigPollution.pollutionGasTurbineReleasedByTier;
         if (mPollutionGasTurbineReleasedByTier.length == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
         } else {

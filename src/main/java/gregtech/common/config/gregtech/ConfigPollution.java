@@ -109,14 +109,14 @@ public class ConfigPollution {
         "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
         "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc."
     })
-    @Config.DefaultStringList({
-        "0.1",
-        "1.0",
-        "0.9",
-        "0.8"
+    @Config.DefaultDoubleList({
+        0.1,
+        1.0,
+        0.9,
+        0.8
     })
     @Config.RequiresMcRestart
-    public static String[] pollutionDieselGeneratorReleasedByTier;
+    public static double[] pollutionDieselGeneratorReleasedByTier;
 
     @Config.Comment("Controls the pollution released per second by the base gas turbine.")
     @Config.DefaultInt(40)
@@ -128,14 +128,14 @@ public class ConfigPollution {
         "Pollution released by tier, with the following formula: PollutionBaseGasTurbinePerSecond * PollutionGasTurbineReleasedByTier[Tier]",
         "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc."
     })
-    @Config.DefaultStringList({
-        "0.1",
-        "1.0",
-        "0.9",
-        "0.8",
-        "0.7",
-        "0.6"
+    @Config.DefaultDoubleList({
+        0.1,
+        1.0,
+        0.9,
+        0.8,
+        0.7,
+        0.6
     })
     @Config.RequiresMcRestart
-    public static String[] pollutionGasTurbineReleasedByTier;
+    public static double[] pollutionGasTurbineReleasedByTier;
 }
