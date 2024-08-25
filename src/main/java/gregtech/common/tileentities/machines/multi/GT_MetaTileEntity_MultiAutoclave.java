@@ -208,7 +208,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Pressure Containment Casings", 1, false)
+            .addCasingInfoMin("Pressure Containment Casings", 128, false)      
             .addCasingInfoExactly("Item Pipe Casings", 7, true)
             .addCasingInfoExactly("Pipe Casings", 14, true)
             .addCasingInfoExactly("Heating Coils", 7, true)
