@@ -167,6 +167,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Plasma;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiAutoclave;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
@@ -734,6 +735,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_LATHE_CONTROLLER.ID,
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
+
+        ItemList.Machine_Multi_Autoclave.set(
+            new GT_MetaTileEntity_MultiAutoclave(
+                MULTI_AUTOCLAVE_CONTROLLER.ID,
+                "multimachine.autoclave",
+                "Industrial Autoclave").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
