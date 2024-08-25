@@ -61,7 +61,7 @@ public class DynamicDimensionConfig {
 
                 for (ModDimensionDef mdd : mc.getDimensionList()) {
                     DimensionType dt = mdd.getDimensionType();
-                    if (dt != DimensionType.Asteroid && dt != DimensionType.AsteroidAndPlanet) {
+                    if (dt != DimensionType.Asteroid) {
                         continue;
                     }
                     String tDimIdentifier = mdd.getDimIdentifier();
@@ -111,15 +111,6 @@ public class DynamicDimensionConfig {
                         aConf.LootChestTable = 1;
                         aConf.NumLootItems = 0;
                         aConf.RandomizeNumLootItems = false;
-                    }
-
-                    if (dt == DimensionType.AsteroidAndPlanet) {
-                        int tDefaultMaxY = mdd.getPreConfiguratedGroundOreMaxY();
-                        int tDefaultMinY = mdd.getPreConfiguratedFloatingAsteroidMinY();
-                        aConf.OreGenMaxY = GregTech_API.sWorldgenFile
-                            .get(getConfigKeyName(mc, mdd, "floating"), "OreGenMaxY", tDefaultMaxY);
-                        aConf.FloatingAsteroidMinY = GregTech_API.sWorldgenFile
-                            .get(getConfigKeyName(mc, mdd, "floating"), "FloatingAsteroidMinY", tDefaultMinY);
                     }
 
                     if (aConf.MaxSize > 50) GalacticGreg.Logger.warn(
