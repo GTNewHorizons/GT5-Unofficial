@@ -909,6 +909,43 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "GT_Recipe{" + "inputs="
+            + Arrays.toString(mInputs)
+            + ", outputs="
+            + Arrays.toString(mOutputs)
+            + ", fluidInputs="
+            + Arrays.toString(mFluidInputs)
+            + ", fluidOutputs="
+            + Arrays.toString(mFluidOutputs)
+            + ", chances="
+            + Arrays.toString(mChances)
+            + ", specialItems="
+            + mSpecialItems
+            + ", duration="
+            + mDuration
+            + ", EUt="
+            + mEUt
+            + ", specialValue="
+            + mSpecialValue
+            + ", enabled="
+            + mEnabled
+            + ", hidden="
+            + mHidden
+            + ", isNBTSensitive="
+            + isNBTSensitive
+            + ", metadataStorage="
+            + metadataStorage
+            + ", recipeCategory="
+            + recipeCategory
+            + ", owners="
+            + owners
+            + ", fakeRecipe="
+            + mFakeRecipe
+            + '}';
+    }
+
     public static class GT_Recipe_AssemblyLine {
 
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();

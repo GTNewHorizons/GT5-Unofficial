@@ -31,6 +31,7 @@ import com.google.common.collect.SetMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.store.RecipeTrie;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
@@ -72,6 +73,8 @@ public class RecipeMapBackend {
      * All the properties specific to this backend.
      */
     protected final RecipeMapBackendProperties properties;
+
+    private final RecipeTrie trie = new RecipeTrie();
 
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
@@ -120,6 +123,10 @@ public class RecipeMapBackend {
     @Unmodifiable
     public Map<RecipeCategory, Collection<GT_Recipe>> getRecipeCategoryMap() {
         return Collections.unmodifiableMap(recipesByCategory);
+    }
+
+    public RecipeTrie trie() {
+        return trie;
     }
 
     // region add recipe
@@ -194,6 +201,12 @@ public class RecipeMapBackend {
             builder.clearInvalid();
             for (IRecipeMap downstream : downstreams) {
                 downstream.doAdd(builder);
+            }
+        }
+        for (GT_Recipe recipe : ret) {
+            if (!trie.add(recipe)) {
+                // TODO uncomment when collisions are reduced
+                // handleCollision(recipe);
             }
         }
         return ret;
