@@ -51,7 +51,7 @@ import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
 
 public enum GTPP_BeeDefinition implements IBeeDefinition {
 
-    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true,
+    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragonblood", STANDALONE.DRAGON_METAL, true,
         Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
             beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
             beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPP_CombType.DRAGONBLOOD), 0.10f);
