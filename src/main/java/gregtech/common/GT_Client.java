@@ -97,6 +97,7 @@ import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_RenderDrone;
 import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.GT_WormholeRenderer;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
@@ -624,6 +625,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
         new GT_LaserRenderer();
+        new GT_WormholeRenderer();
+
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

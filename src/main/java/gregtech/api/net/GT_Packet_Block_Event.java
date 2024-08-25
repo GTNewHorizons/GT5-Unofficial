@@ -58,6 +58,6 @@ public class GT_Packet_Block_Event extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 2;
+        return GT_PacketTypes.BLOCK_EVENT.id;
     }
 }

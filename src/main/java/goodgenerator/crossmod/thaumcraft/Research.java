@@ -69,23 +69,6 @@ public class Research {
             new Object[] { "research.ESSENTIA_GENERATOR.page.0",
                 GregTech_API.sThaumcraftCompat.addInfusionRecipe(
                     "ESSENTIA_GENERATOR",
-                    ItemList.Hull_HV.get(1),
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
-                        new ItemStack(ConfigBlocks.blockJar, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Thaumium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L),
-                        new ItemStack(ConfigBlocks.blockWoodenDevice, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Manyullyn, 1L), Ic2Items.teslaCoil,
-                        ItemList.Sensor_MV.get(1) },
-                    ItemRefer.Large_Essentia_Generator.get(1),
-                    6,
-                    Arrays.asList(
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 32),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 32))),
-                GregTech_API.sThaumcraftCompat.addInfusionRecipe(
-                    "ESSENTIA_GENERATOR",
                     ItemList.Hatch_Input_HV.get(1),
                     new ItemStack[] { new ItemStack(ConfigBlocks.blockJar, 1), ItemRefer.Magic_Casing.get(1),
                         new ItemStack(ConfigBlocks.blockTube, 1), ItemList.Electric_Pump_MV.get(1L) },

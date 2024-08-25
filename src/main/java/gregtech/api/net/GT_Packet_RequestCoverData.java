@@ -66,7 +66,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 17;
+        return GT_PacketTypes.REQUEST_COVER_DATA.id;
     }
 
     @Override

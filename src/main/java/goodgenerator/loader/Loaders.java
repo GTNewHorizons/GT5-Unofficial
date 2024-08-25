@@ -418,7 +418,7 @@ public class Loaders {
             Loaders.LEG = new LargeEssentiaGenerator(
                 IDs_GoodGenerator.LargeEssentiaGenerator.ID,
                 "LargeEssentiaGenerator",
-                "Large Essentia Generator").getStackForm(1L);
+                "Large Essentia Generator - Marked for Deprecation").getStackForm(1L);
             Loaders.LES = new LargeEssentiaSmeltery(
                 IDs_GoodGenerator.LargeEssentiaSmeltery.ID,
                 "LargeEssentiaSmeltery",
