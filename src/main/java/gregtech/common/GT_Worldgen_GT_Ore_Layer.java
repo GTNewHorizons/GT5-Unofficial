@@ -76,7 +76,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         this.mSecondaryMeta = (short) mix.secondary.mMetaItemSubID;
         this.mBetweenMeta = (short)mix.between.mMetaItemSubID;
         this.mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
-        this.mRestrictBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
+        this.mRestrictBiome = "None";
 
         if (this.mEnabled) {
             sWeight += this.mWeight;
