@@ -401,7 +401,7 @@ public class MixerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.HSSE, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(35 * SECONDS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV)
             .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
