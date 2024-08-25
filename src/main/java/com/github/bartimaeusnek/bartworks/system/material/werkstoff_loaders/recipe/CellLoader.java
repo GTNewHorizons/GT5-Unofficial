@@ -17,9 +17,11 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.OrePrefixes.capsule;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -223,6 +225,22 @@ public class CellLoader implements IWerkstoffRunnable {
             werkstoff.get(cell),
             Materials.Empty.getCells(1));
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Empty.getCells(1))
+            .itemOutputs(werkstoff.get(cell))
+            .fluidInputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000))
+            .duration(16 * TICKS)
+            .eut(2)
+            .addTo(fluidCannerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(werkstoff.get(cell))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000))
+            .duration(16 * TICKS)
+            .eut(2)
+            .addTo(fluidCannerRecipes);
+
         if (Forestry.isModLoaded()) {
             FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
                 new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
@@ -231,6 +249,13 @@ public class CellLoader implements IWerkstoffRunnable {
                 true);
             GT_Utility.addFluidContainerData(emptyData);
             FluidContainerRegistry.registerFluidContainer(emptyData);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(capsule))
+                .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000))
+                .duration(16 * TICKS)
+                .eut(2)
+                .addTo(fluidCannerRecipes);
         }
 
         if (werkstoff.hasItemType(dust)) {
