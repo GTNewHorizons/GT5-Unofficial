@@ -231,7 +231,7 @@ public class GregTech_API {
     /**
      * The Configuration Objects
      */
-    public static GT_Config sWorldgenFile = null, sUnification = null, NEIClientFIle;
+    public static GT_Config sUnification = null, NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**

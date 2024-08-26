@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import bloodasp.galacticgreg.api.ModContainer;
 import gregtech.common.OreMixBuilder;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -16,11 +17,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.auxiliary.GTOreGroup;
-import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
 import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 
@@ -39,6 +37,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
+    private Map<String, Boolean> allowedDims;
 
     private DynamicOreMixWorldConfig _mDynWorldConfig;
     public GT_Worldgen_GT_Ore_Layer_Space(OreMixBuilder mix){
@@ -54,8 +53,22 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
         mBetweenMeta = (short) mix.between.mMetaItemSubID;
         mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
 
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName, mix);
+        allowedDims= new HashMap<>();
 
+        for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
+            if (!mc.getEnabled()) continue;
+
+            for (ModDimensionDef mdd : mc.getDimensionList()) {
+                String tDimIdentifier = mdd.getDimIdentifier();
+                if (allowedDims.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
+                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                    tDimIdentifier);
+                else {
+                    boolean tFlag = mix.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
+                    allowedDims.put(tDimIdentifier, tFlag);
+                }
+            }
+        }
 
         GalacticGreg.Logger.trace("Initialized new OreLayer: %s", mix.oreMixName);
         if (mEnabled) sWeight += this.mWeight;
@@ -68,33 +81,8 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
      * @return
      */
     public boolean isEnabledForDim(ModDimensionDef pDimensionDef) {
-        return _mDynWorldConfig.isEnabledInDim(pDimensionDef);
+        return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
     }
-
-    private static Map<String, Integer> _mBufferedVeinCountList = new HashMap<>();
-
-    /**
-     * Get the number of enabled OreMixes for given Dimension. This query is buffered and will only consume calculation
-     * time on the first run for each dimension
-     *
-     * @param pDimensionDef
-     * @return
-     */
-    private static int getNumOremixedForDim(ModDimensionDef pDimensionDef) {
-        int tVal = 0;
-        if (_mBufferedVeinCountList.containsKey(pDimensionDef.getDimIdentifier()))
-            tVal = _mBufferedVeinCountList.get(pDimensionDef.getDimIdentifier());
-        else {
-            for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
-                if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                    && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef)) tVal++;
-
-            _mBufferedVeinCountList.put(pDimensionDef.getDimIdentifier(), tVal);
-        }
-
-        return tVal;
-    }
-
     private static Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
 
     /**
@@ -114,25 +102,11 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
                     && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
                     tReturn.add(tWorldGen.mWorldGenName);
-                else if (tWorldGen instanceof BW_Worldgen_Ore_Layer_Space
-                    && ((BW_Worldgen_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
-                    tReturn.add(tWorldGen.mWorldGenName);
 
             _mBufferedVeinList.put(pDimensionDef.getDimIdentifier(), tReturn);
         }
 
         return tReturn;
-    }
-
-    private static short getMaxWeightForDim(ModDimensionDef pDimensionDef) {
-        short tVal = 0;
-        for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
-            if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef)
-                && tVal < ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight)
-                tVal = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
-
-        return tVal;
     }
 
     /**
@@ -147,8 +121,6 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
         short secondaryMeta = 0;
         short betweenMeta = 0;
         short sporadicMeta = 0;
-
-        // int tRangeSplit = getMaxWeightForDim(pDimensionDef) / 2;
 
         if (pIgnoreWeight) {
             List<String> tEnabledVeins = getOreMixIDsForDim(pDimensionDef);
@@ -215,7 +187,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
             return false;
         }
 
-        if (!_mDynWorldConfig.isEnabledInDim(tMDD)) {
+        if (!isEnabledForDim(tMDD)) {
             GalacticGreg.Logger
                 .trace("OreGen for %s is disallowed in dimension %s, skipping", mWorldGenName, tMDD.getDimensionName());
             return false;

@@ -1,13 +1,15 @@
 package bloodasp.galacticgreg;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
+import bloodasp.galacticgreg.api.ModContainer;
 import gregtech.common.SmallOreBuilder;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.world.GT_Worldgen;
 
@@ -20,7 +22,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
-    private DynamicOreMixWorldConfig _mDynWorldConfig;
+    private Map<String, Boolean> allowedDims;
 
     public GT_Worldgen_GT_Ore_SmallPieces_Space(SmallOreBuilder ore) {
         super(ore.smallOreName, GalacticGreg.smallOreWorldgenList, ore.enabledByDefault);
@@ -30,8 +32,21 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
         mAmount = (short) Math.max(1, ore.amount);
         mMeta = (short) ore.ore.mMetaItemSubID;
 
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName, ore);
-        _mDynWorldConfig.InitDynamicConfig();
+        allowedDims = new HashMap<>();
+        for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
+            if (!mc.getEnabled()) continue;
+
+            for (ModDimensionDef mdd : mc.getDimensionList()) {
+                String tDimIdentifier = mdd.getDimIdentifier();
+                if (allowedDims.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
+                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                    tDimIdentifier);
+                else {
+                    boolean tFlag = ore.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
+                    allowedDims.put(tDimIdentifier, tFlag);
+                }
+            }
+        }
 
         GalacticGreg.Logger.trace("Initialized new OreLayer: %s", ore.smallOreName);
     }
@@ -43,7 +58,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
      * @return
      */
     public boolean isEnabledForDim(ModDimensionDef pDimensionDef) {
-        return _mDynWorldConfig.isEnabledInDim(pDimensionDef);
+        return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
     }
 
     @Override
@@ -57,7 +72,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
             return false;
         }
 
-        if (!_mDynWorldConfig.isEnabledInDim(tMDD)) {
+        if (!isEnabledForDim(tMDD)) {
             GalacticGreg.Logger
                 .trace("OreGen for %s is disallowed in dimension %s, skipping", mWorldGenName, tMDD.getDimensionName());
             return false;

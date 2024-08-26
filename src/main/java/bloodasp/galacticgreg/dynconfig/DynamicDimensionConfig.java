@@ -14,11 +14,6 @@ import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.GregTech_API;
 
-/**
- * This dynamic config is different to the OreMix one. This is used/bound to the ModDimensionDef, and the
- * OreMixWorldConfig is bound to the veins. Don't get confused!
- *
- */
 public class DynamicDimensionConfig {
 
     public static class AsteroidConfig {
@@ -31,8 +26,6 @@ public class DynamicDimensionConfig {
         public int SpecialBlockChance;
         public int SmallOreChance;
         public boolean ObeyHeightLimits;
-        public int OreGenMaxY;
-        public int FloatingAsteroidMinY;
         public boolean HiddenOres;
         public int LootChestChance;
         public int LootChestTable;
@@ -41,14 +34,6 @@ public class DynamicDimensionConfig {
     }
 
     private static Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<>();
-
-    private static String getConfigKeyName(ModContainer pMC, ModDimensionDef pMDD) {
-        return String.format("galacticgreg.asteroids.%s.%s", pMC.getModName(), pMDD.getDimensionName());
-    }
-
-    private static String getConfigKeyName(ModContainer pMC, ModDimensionDef pMDD, String pSubCat) {
-        return String.format("%s.%s", getConfigKeyName(pMC, pMDD), pSubCat);
-    }
 
     public static AsteroidConfig getAsteroidConfig(ModDimensionDef pDimDef) {
         return _mDynamicAsteroidMap.getOrDefault(pDimDef.getDimIdentifier(), null);

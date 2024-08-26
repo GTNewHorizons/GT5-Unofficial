@@ -149,8 +149,6 @@ public class GT_PreLoad {
         GT_Config.undergroundFluidsFile.load();
         GT_Config.undergroundFluidsFile.save();
 
-        GregTech_API.sWorldgenFile = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
         GregTech_API.sUnification = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
         GregTech_API.NEIClientFIle = new GT_Config(
@@ -513,18 +511,12 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(GT_Config.undergroundFluidsFile, "undergroundfluid");
 
         // Worldgeneration.cfg
-        GT_Mod.gregtechproxy.enableUndergroundGravelGen = GregTech_API.sWorldgenFile
-            .get("general", "enableUndergroundGravelGen", GT_Mod.gregtechproxy.enableUndergroundGravelGen);
-        GT_Mod.gregtechproxy.enableUndergroundDirtGen = GregTech_API.sWorldgenFile
-            .get("general", "enableUndergroundDirtGen", GT_Mod.gregtechproxy.enableUndergroundDirtGen);
-        GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile
-            .get("general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
-        GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile
-            .get("general", "enableRedGraniteOres", GT_Mod.gregtechproxy.enableRedGraniteOres);
-        GT_Mod.gregtechproxy.enableMarbleOres = GregTech_API.sWorldgenFile
-            .get("general", "enableMarbleOres", GT_Mod.gregtechproxy.enableMarbleOres);
-        GT_Mod.gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile
-            .get("general", "enableBasaltOres", GT_Mod.gregtechproxy.enableBasaltOres);
+        GT_Mod.gregtechproxy.enableUndergroundGravelGen = gregtech.common.config.worldgen.ConfigGeneral.generateUndergroundGravelGen;
+        GT_Mod.gregtechproxy.enableUndergroundDirtGen = gregtech.common.config.worldgen.ConfigGeneral.generateUndergroundDirtGen;
+        GT_Mod.gregtechproxy.enableBlackGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateBlackGraniteOres;
+        GT_Mod.gregtechproxy.enableRedGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateBlackGraniteOres;
+        GT_Mod.gregtechproxy.enableMarbleOres = gregtech.common.config.worldgen.ConfigGeneral.generateMarbleOres;
+        GT_Mod.gregtechproxy.enableBasaltOres = gregtech.common.config.worldgen.ConfigGeneral.generateBasaltOres;
 
         // OverpoweredStuff.cfg
         GregTech_API.mOutputRF = gregtech.common.config.opstuff.ConfigGeneral.outputRF;
