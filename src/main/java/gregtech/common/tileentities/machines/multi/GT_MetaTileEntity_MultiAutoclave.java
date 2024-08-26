@@ -237,8 +237,8 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        if (mCasingAmount < 128) return false;
         return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
+            && mCasingAmount >= 128
             && itemPipeTier >= 0
             && mEnergyHatches.size() >= 1
             && mMufflerHatches.size() == 1;
@@ -341,7 +341,8 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         tag.setFloat("getMaxParallelRecipes", getMaxParallelRecipes());
     }
 
-    private static final DecimalFormat df = new DecimalFormat("0.00");
+    private static final DecimalFormat dfTwo = new DecimalFormat("0.00");
+    private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
@@ -355,7 +356,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
                 + EnumChatFormatting.WHITE
-                + df.format(euModifier(tag.getInteger("fluidPipeTier")) * 100)
+                + dfTwo.format(euModifier(tag.getInteger("fluidPipeTier")) * 100)
                 + "%");
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
@@ -364,7 +365,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getFloat("getMaxParallelRecipes"));
+                + dfNone.format(tag.getFloat("getMaxParallelRecipes")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE
@@ -372,7 +373,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
-                + df.format(100 / speedBoost(tag.getInteger("coilTier")))
+                + dfNone.format(100 / speedBoost(tag.getInteger("coilTier")))
                 + "%");
     }
 
