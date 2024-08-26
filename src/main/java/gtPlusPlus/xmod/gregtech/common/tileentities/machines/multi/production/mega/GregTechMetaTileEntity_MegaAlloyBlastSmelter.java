@@ -486,6 +486,11 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
     public boolean supportsBatchMode() {
         return true;
     }
