@@ -35,6 +35,7 @@ import gregtech.common.config.machinestats.ConfigMassFabricator;
 import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
 import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
 import gregtech.common.config.machinestats.ConfigTeleporter;
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -216,6 +217,9 @@ public class GT_Mod implements IGT_Mod {
 
             // Other
             ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
+
+            // WorldGeneration
+            ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
 
 
         }

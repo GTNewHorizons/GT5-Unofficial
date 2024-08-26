@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -64,10 +65,10 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
     public GT_Worldgenerator() {
-        endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
-        endMinSize = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidMinSize", 50);
-        endMaxSize = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidMaxSize", 200);
-        mEndAsteroidProbability = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidProbability", 300);
+        endAsteroids = ConfigEndAsteroids.generateEndAsteroids;
+        endMinSize = ConfigEndAsteroids.EndAsteroidMinSize;
+        endMaxSize = ConfigEndAsteroids.EndAsteroidMaxSize;
+        mEndAsteroidProbability = ConfigEndAsteroids.EndAsteroidProbability;
         GameRegistry.registerWorldGenerator(this, 1073741823);
         if (debugWorldGen) {
             GT_Log.out.println("GT_Worldgenerator created");
