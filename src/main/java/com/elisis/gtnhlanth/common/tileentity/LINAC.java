@@ -178,15 +178,20 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Particle Accelerator")
             .addInfo("Controller block for the LINAC")
+            .addInfo("Accelerates charged particles to higher energies")
+            .addInfo("Increasing length increases output energy, but decreases focus")
+            .addInfo("Use a lower temperature coolant to improve focus")
             // .addInfo("Extendable, with a minimum length of 18 blocks")
             .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 
         // Valid coolant list
-        for (Fluid fluid : BeamlineRecipeLoader.coolantMap.keySet()) {
+        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
 
-            tt.addInfo("- " + fluid.getLocalizedName(new FluidStack(fluid, 1)));
+            tt.addInfo(
+                "- " + FluidRegistry.getFluid(fluidName)
+                    .getLocalizedName(null));
 
         }
 
@@ -334,17 +339,27 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                                                  // weigh the former by the latter
 
         long voltage = this.getMaxInputVoltage();
-        voltageFactor = calculateVoltageFactor(voltage);
+        // voltageFactor = calculateVoltageFactor(voltage);
 
-        machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
+        // machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
+
+        machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
-        outputEnergy = Math.min(
-            (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
-                .maxSourceEnergy()) * machineEnergy,
-            120_000); // TODO more complex calculation than just
-        // addition
+        /*
+         * outputEnergy = Math.min(
+         * (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
+         * .maxSourceEnergy()) * machineEnergy,
+         * 120_000); // TODO more complex calculation than just
+         * // addition
+         */
+
+        outputEnergy = (float) Math.pow(
+            10,
+            1 + inputEnergy / Particle.getParticleFromId(outputParticle)
+                .maxSourceEnergy())
+            * machineEnergy;
 
         inputRate = this.getInputInformation()
             .getRate();
@@ -359,13 +374,17 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         primFluid.amount -= fluidConsumed;
 
-        FluidStack fluidOutput = new FluidStack(
-            BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()),
-            fluidConsumed);
+        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(
+            primFluid.getFluid()
+                .getName());
 
         if (Objects.isNull(fluidOutput)) return false;
 
-        this.addFluidOutputs(new FluidStack[] { fluidOutput });
+        FluidStack fluidOutputStack = new FluidStack(fluidOutput, fluidConsumed);
+
+        if (Objects.isNull(fluidOutputStack)) return false;
+
+        this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 
@@ -552,11 +571,12 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         return factor;
     }
 
-    private static float calculateVoltageFactor(long voltage) {
-
-        float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
-        return factor;
-    }
+    /*
+     * private static float calculateVoltageFactor(long voltage) {
+     * float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
+     * return factor;
+     * }
+     */
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {

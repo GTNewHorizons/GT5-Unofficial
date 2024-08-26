@@ -360,4 +360,33 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
         }
         return (ButtonWidget) button;
     }
+
+    Pos2d getStructureUpdateButtonPos();
+
+    int getStructureUpdateTime();
+
+    void setStructureUpdateTime(int time);
+
+    default ButtonWidget createStructureUpdateButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> { setStructureUpdateTime(1); })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (getStructureUpdateTime() > -20) {
+                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                } else {
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                }
+                ret.add(GT_UITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(
+                new FakeSyncWidget.IntegerSyncer(this::getStructureUpdateTime, this::setStructureUpdateTime),
+                builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.structure_update"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(getStructureUpdateButtonPos())
+            .setSize(16, 16);
+        return (ButtonWidget) button;
+    }
 }

@@ -35,7 +35,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.loaders.StaticRecipeChangeLoaders;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -1031,8 +1030,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
         /**
          * The generated EBF recipes using this gas will have their duration multiplied by this number. If set to a
-         * negative value, the default proton count-based logic is used. For GT Materials gases, add the overrides to
-         * {@link StaticRecipeChangeLoaders#addEBFGasRecipes()}
+         * negative value, the default proton count-based logic is used. See also
+         * {@link gregtech.api.util.BlastFurnaceGasStat}
          */
         public Werkstoff.Stats setEbfGasRecipeTimeMultiplier(double timeMultiplier) {
             this.ebfGasRecipeTimeMultiplier = timeMultiplier;
@@ -1044,8 +1043,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         /**
-         * The generated EBF recipes using this gas will have the amount of gas consumed multiplied by this number. For
-         * GT Materials gases, add the overrides to {@link StaticRecipeChangeLoaders#addEBFGasRecipes()}
+         * The generated EBF recipes using this gas will have the amount of gas consumed multiplied by this number. See
+         * also {@link gregtech.api.util.BlastFurnaceGasStat}
          */
         public Werkstoff.Stats setEbfGasRecipeConsumedAmountMultiplier(double amountMultiplier) {
             this.ebfGasRecipeConsumedAmountMultiplier = amountMultiplier;
