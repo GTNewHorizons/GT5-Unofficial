@@ -144,6 +144,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pi
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Crystalizer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
