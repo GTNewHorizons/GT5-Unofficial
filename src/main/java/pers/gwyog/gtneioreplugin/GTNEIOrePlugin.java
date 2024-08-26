@@ -1,5 +1,6 @@
 package pers.gwyog.gtneioreplugin;
 
+import gregtech.GT_Version;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -29,7 +30,7 @@ public class GTNEIOrePlugin {
 
     public static final String MODID = "gtneioreplugin";
     public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
-    public static final String VERSION = Tags.VERSION;
+    public static final String VERSION = GT_Version.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
     public static boolean csv = false;
     public static String CSVname;
