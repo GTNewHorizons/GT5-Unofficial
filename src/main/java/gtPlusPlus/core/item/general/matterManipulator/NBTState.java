@@ -1,7 +1,9 @@
 package gtPlusPlus.core.item.general.matterManipulator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,7 +11,10 @@ import javax.annotation.Nullable;
 import org.joml.Vector3d;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGrid;
@@ -19,11 +24,25 @@ import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import codechicken.nei.util.NBTJson;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,13 +54,14 @@ class NBTState {
     public NBTState.Config config = new NBTState.Config();
 
     public String encKey;
+    public double charge;
 
     public transient IGrid grid;
     public transient IStorageGrid storageGrid;
     public transient IMEMonitor<IAEItemStack> itemStorage;
 
     public static NBTState load(NBTTagCompound tag) {
-        var state = GSON.fromJson(NBTJson.toJsonObject(tag), NBTState.class);
+        var state = GSON.fromJson(toJsonObject(tag), NBTState.class);
 
         if(state == null) state = new NBTState();
         if(state.config == null) state.config = new NBTState.Config();
@@ -50,7 +70,7 @@ class NBTState {
     }
 
     public NBTTagCompound save() {
-        return (NBTTagCompound)NBTJson.toNbt(GSON.toJsonTree(this));
+        return (NBTTagCompound)toNbt(GSON.toJsonTree(this));
     }
 
     public boolean hasMEConnection() {
@@ -129,8 +149,6 @@ class NBTState {
             }
         }
 
-        pending.removeIf(b -> b.block == null);
-
         return pending;
     }
 
@@ -141,7 +159,7 @@ class NBTState {
         int sx = x1 < x2 ? 1 : -1, sy = y1 < y2 ? 1 : -1, sz = z1 < z2 ? 1 : -1;
 
         pending.add(new PendingBlock(
-            new Location(config.coordA.worldId, x1, y1, z1),
+            config.coordA.worldId, x1, y1, z1,
             edges
         ));
 
@@ -165,7 +183,7 @@ class NBTState {
                 p2 += 2 * dz;
 
                 pending.add(new PendingBlock(
-                    new Location(config.coordA.worldId, x1, y1, z1),
+                    config.coordA.worldId, x1, y1, z1,
                     edges
                 ));
             }
@@ -189,7 +207,7 @@ class NBTState {
                 p2 += 2 * dz;
                 
                 pending.add(new PendingBlock(
-                    new Location(config.coordA.worldId, x1, y1, z1),
+                    config.coordA.worldId, x1, y1, z1,
                     edges
                 ));
             }
@@ -213,7 +231,7 @@ class NBTState {
                 p2 += 2 * dx;
                 
                 pending.add(new PendingBlock(
-                    new Location(config.coordA.worldId, x1, y1, z1),
+                    config.coordA.worldId, x1, y1, z1,
                     edges
                 ));
             }
@@ -243,12 +261,12 @@ class NBTState {
                         default -> null;
                     };
 
-                    if(selection != null) {
-                        pending.add(new PendingBlock(
-                            new Location(config.coordA.worldId, x, y, z),
-                            selection
-                        ));
-                    }
+                    pending.add(new PendingBlock(
+                        config.coordA.worldId, x, y, z,
+                        selection,
+                        insideCount,
+                        insideCount
+                    ));
                 }
             }
         }
@@ -279,8 +297,9 @@ class NBTState {
 
                     if(distance <= 1) {
                         var block = new PendingBlock(
-                            new Location(config.coordA.worldId, x + minX, y + minY, z + minZ),
-                            volumes
+                            config.coordA.worldId, x + minX, y + minY, z + minZ,
+                            volumes,
+                            1, 1
                         );
 
                         present[x + 1][y + 1][z + 1] = true;
@@ -308,12 +327,12 @@ class NBTState {
         }
 
         for(var block : pending) {
-            if(block != null) {
-                for(var dir : directions) {
-                    if(!present[block.location.x - minX + 1 + dir.offsetX][block.location.y - minY + 1 + dir.offsetY][block.location.z - minZ + 1 + dir.offsetZ]) {
-                        block.block = faces;
-                        break;
-                    }
+            for(var dir : directions) {
+                if(!present[block.x - minX + 1 + dir.offsetX][block.y - minY + 1 + dir.offsetY][block.z - minZ + 1 + dir.offsetZ]) {
+                    block.setBlock(faces);
+                    block.buildOrder = 0;
+                    block.renderOrder = 0;
+                    break;
                 }
             }
         }
@@ -325,12 +344,15 @@ class NBTState {
         public PendingAction action;
         public CoordMode coordMode = CoordMode.SET_INTERLEAVED;
         public BlockSelectMode blockSelectMode = BlockSelectMode.ALL;
+        public BlockRemoveMode removeMode = BlockRemoveMode.NONE;
+        public PlaceMode placeMode = PlaceMode.GEOMETRY;
     
         public Location coordA, coordB;
+        public Region copy, cut, paste;
         public Vector3d coordAStart, coordBStart;
         public Shape shape = Shape.LINE;
         public JsonElement corners, edges, faces, volumes;
-    
+
         private static JsonElement saveStack(ItemStack stack) {
             return stack == null ? null : NBTJson.toJsonObject(stack.writeToNBT(new NBTTagCompound()));
         }
@@ -478,18 +500,54 @@ class NBTState {
         ALL,
     }
 
-    static class PendingBlock {
-        public Location location;
-        public ItemStack block;
+    static enum BlockRemoveMode {
+        NONE,
+        REPLACEABLE,
+        ALL
+    }
+
+    static enum PlaceMode {
+        GEOMETRY,
+        COPYING
+    }
+
+    static class PendingBlock extends Location {
+        @Nonnull
+        public Block block;
+        public int metadata;
+        @Nullable
+        public NBTTagCompound nbt;
         public int renderOrder, buildOrder;
         
-        public PendingBlock() {
-
+        public PendingBlock(int worldId, int x, int y, int z, ItemStack block) {
+            super(worldId, x, y, z);
+            this.block = block == null ? Blocks.air : ((ItemBlock)block.getItem()).field_150939_a;
+            this.metadata = block == null ? 0 : block.getItemDamage();
+            this.nbt = block == null ? null : block.getTagCompound();
         }
-        
-        public PendingBlock(Location location, ItemStack block) {
-            this.location = location;
-            this.block = block;
+
+        public PendingBlock(int worldId, int x, int y, int z, ItemStack block, int renderOrder, int buildOrder) {
+            this(worldId, x, y, z, block);
+            this.renderOrder = renderOrder;
+            this.buildOrder = buildOrder;
+        }
+
+        public void setBlock(ItemStack block) {
+            if(block == null) {
+                this.block = Blocks.air;
+                this.metadata = 0;
+                this.nbt = null;
+            } else {
+                this.block = block.getItem() == null ? Blocks.air : ((ItemBlock)block.getItem()).field_150939_a;
+                this.metadata = block.getItemDamage();
+                this.nbt = block.getTagCompound();
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "PendingBlock [location=" + super.toString() + ", block=" + block + ", renderOrder=" + renderOrder
+                    + ", buildOrder=" + buildOrder + "]";
         }
     }
 
@@ -578,6 +636,165 @@ class NBTState {
                 return false;
             return true;
         }
+    }
+
+    static class Region {
+        public Location a, b;
+
+        public Region() {
         
+        }
+
+        public Region(Location a, Location b) {
+            this.a = a;
+            this.b = b;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static JsonElement toJsonObject(NBTBase nbt) {
+        if (nbt instanceof NBTTagCompound) {
+            // NBTTagCompound
+            final NBTTagCompound nbtTagCompound = (NBTTagCompound) nbt;
+            final Map<String, NBTBase> tagMap = (Map<String, NBTBase>) nbtTagCompound.tagMap;
+
+            JsonObject root = new JsonObject();
+
+            for (Map.Entry<String, NBTBase> nbtEntry : tagMap.entrySet()) {
+                root.add(nbtEntry.getKey(), toJsonObject(nbtEntry.getValue()));
+            }
+
+            return root;
+        } else if (nbt instanceof NBTTagByte) {
+            // Number (byte)
+            return new JsonPrimitive(((NBTTagByte) nbt).func_150290_f());
+        } else if (nbt instanceof NBTTagShort) {
+            // Number (short)
+            return new JsonPrimitive(((NBTTagShort) nbt).func_150289_e());
+        } else if (nbt instanceof NBTTagInt) {
+            // Number (int)
+            return new JsonPrimitive(((NBTTagInt) nbt).func_150287_d());
+        } else if (nbt instanceof NBTTagLong) {
+            // Number (long)
+            return new JsonPrimitive(((NBTTagLong) nbt).func_150291_c());
+        } else if (nbt instanceof NBTTagFloat) {
+            // Number (float)
+            return new JsonPrimitive(((NBTTagFloat) nbt).func_150288_h());
+        } else if (nbt instanceof NBTTagDouble) {
+            // Number (double)
+            return new JsonPrimitive(((NBTTagDouble) nbt).func_150286_g());
+        } else if (nbt instanceof NBTBase.NBTPrimitive) {
+            // Number
+            return new JsonPrimitive(((NBTBase.NBTPrimitive) nbt).func_150286_g());
+        } else if (nbt instanceof NBTTagString) {
+            // String
+            return new JsonPrimitive(((NBTTagString) nbt).func_150285_a_());
+        } else if (nbt instanceof NBTTagList) {
+            // Tag List
+            final NBTTagList list = (NBTTagList) nbt;
+
+            JsonArray arr = new JsonArray();
+            list.tagList.forEach(c -> arr.add(toJsonObject((NBTBase) c)));
+            return arr;
+        } else if (nbt instanceof NBTTagIntArray) {
+            // Int Array
+            final NBTTagIntArray list = (NBTTagIntArray) nbt;
+
+            JsonArray arr = new JsonArray();
+
+            for (int i : list.func_150302_c()) {
+                arr.add(new JsonPrimitive(i));
+            }
+
+            return arr;
+        } else if (nbt instanceof NBTTagByteArray) {
+            // Byte Array
+            final NBTTagByteArray list = (NBTTagByteArray) nbt;
+
+            JsonArray arr = new JsonArray();
+
+            for (byte i : list.func_150292_c()) {
+                arr.add(new JsonPrimitive(i));
+            }
+
+            return arr;
+        } else {
+            throw new IllegalArgumentException("Unsupported NBT Tag: " + NBTBase.NBTTypes[nbt.getId()] + " - " + nbt);
+        }
+    }
+
+    public static NBTBase toNbt(JsonElement jsonElement) {
+        if (jsonElement instanceof JsonPrimitive) {
+            final JsonPrimitive jsonPrimitive = (JsonPrimitive) jsonElement;
+
+            if(jsonPrimitive.isNumber()) {
+                if (jsonPrimitive.getAsBigDecimal().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+                    long lval = jsonPrimitive.getAsLong();
+
+                    if(lval >= Byte.MIN_VALUE && lval <= Byte.MAX_VALUE) {
+                        return new NBTTagByte((byte) lval);
+                    }
+
+                    if(lval >= Short.MIN_VALUE && lval <= Short.MAX_VALUE) {
+                        return new NBTTagShort((short) lval);
+                    }
+
+                    if(lval >= Integer.MIN_VALUE && lval <= Integer.MAX_VALUE) {
+                        return new NBTTagInt((int) lval);
+                    }
+
+                    return new NBTTagLong(lval);
+                } else {
+                    double dval = jsonPrimitive.getAsDouble();
+                    float fval = (float) dval;
+
+                    if(Math.abs(dval - fval) < 0.0001) {
+                        return new NBTTagFloat(fval);
+                    }
+
+                    return new NBTTagDouble(dval);
+                }
+            } else {
+                return new NBTTagString(jsonPrimitive.getAsString());
+            }
+        } else if (jsonElement instanceof JsonArray) {
+            // NBTTagIntArray or NBTTagList
+            final JsonArray jsonArray = (JsonArray) jsonElement;
+            final List<NBTBase> nbtList = new ArrayList<>();
+
+            for (JsonElement element : jsonArray) {
+                nbtList.add(toNbt(element));
+            }
+
+            if (nbtList.stream().allMatch(n -> n instanceof NBTTagInt)) {
+                return new NBTTagIntArray(nbtList.stream().mapToInt(i -> ((NBTTagInt) i).func_150287_d()).toArray());
+            } else if (nbtList.stream().allMatch(n -> n instanceof NBTTagByte)) {
+                final byte[] abyte = new byte[nbtList.size()];
+
+                for (int i = 0; i < nbtList.size(); i++) {
+                    abyte[i] = ((NBTTagByte) nbtList.get(i)).func_150290_f();
+                }
+
+                return new NBTTagByteArray(abyte);
+            } else {
+                NBTTagList nbtTagList = new NBTTagList();
+                nbtList.forEach(nbtTagList::appendTag);
+
+                return nbtTagList;
+            }
+        } else if (jsonElement instanceof JsonObject) {
+            // NBTTagCompound
+            final JsonObject jsonObject = (JsonObject) jsonElement;
+
+            NBTTagCompound nbtTagCompound = new NBTTagCompound();
+
+            for (Map.Entry<String, JsonElement> jsonEntry : jsonObject.entrySet()) {
+                nbtTagCompound.setTag(jsonEntry.getKey(), toNbt(jsonEntry.getValue()));
+            }
+
+            return nbtTagCompound;
+        }
+
+        throw new IllegalArgumentException("Unhandled element " + jsonElement);
     }
 }

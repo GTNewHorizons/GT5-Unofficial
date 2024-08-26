@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.general.matterManipulator;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,9 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import appeng.api.features.INetworkEncodable;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,11 +38,16 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GT_Packet_UpdateItem;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockRemoveMode;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockSelectMode;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.CoordMode;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.Location;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingAction;
+import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
+import gtPlusPlus.core.item.general.matterManipulator.NBTState.PlaceMode;
+import gtPlusPlus.core.item.general.matterManipulator.NBTState.Region;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -51,12 +59,14 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -73,6 +83,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
         GameRegistry.registerItem(this, "itemMatterManipulator");
         MinecraftForge.EVENT_BUS.register(this);
+        FMLCommonHandler.instance().bus().register(this);
     }
 
     //#region Energy
@@ -94,7 +105,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public int getTier(ItemStack itemStack) {
-        return 8; // ZPM
+        return 7; // ZPM
     }
 
     @Override
@@ -112,9 +123,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTab, List<ItemStack> subItems) {
         final ItemStack stack = new ItemStack(this, 1);
-        ElectricItem.manager.charge(stack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-        final ItemStack fullStack = new ItemStack(this, 1, this.getMaxDamage());
-        subItems.add(fullStack);
+        subItems.add(stack.copy());
+        ElectricItem.manager.charge(stack, getMaxCharge(null), Integer.MAX_VALUE, true, false);
+        subItems.add(stack);
     }
 
     @Override
@@ -147,11 +158,27 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
+    /**
+     * Only called on the server when the player changes some config (via the radial menu).
+     */
     @Override
     public boolean receive(ItemStack stack, EntityPlayerMP player, NBTTagCompound tag) {
         getOrCreateNbtData(stack).setTag("config", tag);
 
         return true;
+    }
+
+    @SubscribeEvent
+    public void stopClientClearUsing(PlayerTickEvent event) {
+        if (event.player.getItemInUse() != null && event.player.getItemInUse().getItem() == this && event.player.inventory.getCurrentItem() != null && event.player.inventory.getCurrentItem().getItem() == this && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            NBTTagCompound inInventory = event.player.inventory.getCurrentItem().getTagCompound();
+            NBTTagCompound using = (NBTTagCompound)event.player.getItemInUse().getTagCompound().copy();
+
+            // only the charge has changed
+            if(inInventory.equals(using)) {
+                event.player.setItemInUse(event.player.inventory.getCurrentItem(), event.player.getItemInUseCount());
+            }
+        }
     }
 
     public static NBTTagCompound getOrCreateNbtData(ItemStack itemStack) {
@@ -209,18 +236,30 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 switch(state.config.blockSelectMode) {
                     case CORNERS: {
                         state.config.setCorners(selected.orElse(null));
+                        if(!world.isRemote) {
+                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set corners to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
+                        }
                         break;
                     }
                     case EDGES: {
                         state.config.setEdges(selected.orElse(null));
+                        if(!world.isRemote) {
+                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set edges to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
+                        }
                         break;
                     }
                     case FACES: {
                         state.config.setFaces(selected.orElse(null));
+                        if(!world.isRemote) {
+                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set faces to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
+                        }
                         break;
                     }
                     case VOLUMES: {
                         state.config.setVolumes(selected.orElse(null));
+                        if(!world.isRemote) {
+                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set volumes to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
+                        }
                         break;
                     }
                     case ALL: {
@@ -228,6 +267,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                         state.config.setEdges(selected.orElse(null));
                         state.config.setFaces(selected.orElse(null));
                         state.config.setVolumes(selected.orElse(null));
+                        if(!world.isRemote) {
+                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set all blocks to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
+                        }
                         break;
                     }
                 }
@@ -237,19 +279,35 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         } else if(state.config.action == null) {
             switch(state.config.coordMode) {
                 case SET_A: {
-                    state.config.coordA = new Location(world, x, y, z).offset(DirectionUtil.fromSide(side));
+                    state.config.coordA = new Location(world, x, y, z);
+
+                    if(!player.isSneaking()) {
+                        state.config.coordA.offset(DirectionUtil.fromSide(side));
+                    }
                     break;
                 }
                 case SET_B: {
-                    state.config.coordB = new Location(world, x, y, z).offset(DirectionUtil.fromSide(side));
+                    state.config.coordB = new Location(world, x, y, z);
+
+                    if(!player.isSneaking()) {
+                        state.config.coordB.offset(DirectionUtil.fromSide(side));
+                    }
                     break;
                 }
                 case SET_INTERLEAVED: {
                     if(state.config.coordB != null) {
-                        state.config.coordA = new Location(world, x, y, z).offset(DirectionUtil.fromSide(side));
+                        state.config.coordA = new Location(world, x, y, z);
                         state.config.coordB = null;
+
+                        if(!player.isSneaking()) {
+                            state.config.coordA.offset(DirectionUtil.fromSide(side));
+                        }
                     } else {
-                        state.config.coordB = new Location(world, x, y, z).offset(DirectionUtil.fromSide(side));
+                        state.config.coordB = new Location(world, x, y, z);
+
+                        if(!player.isSneaking()) {
+                            state.config.coordB.offset(DirectionUtil.fromSide(side));
+                        }
                     }
                     break;
                 }
@@ -298,31 +356,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private static final ExecutorService BUILD_ASSEMBLING_POOL = new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ) {
-        
-        var pending = new PendingBuild();
-        pending.pendingBlocks = null;
-        pending.placingPlayer = player;
-        pending.manipulator = getState(stack);
-
-        pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
-            var blocks = pending.manipulator.getPendingBlocks();
-            blocks.sort((a, b) -> Integer.compare(a.buildOrder, b.buildOrder));
-            
-            return new LinkedList<>(blocks);
-        });
-
-        PENDING_BUILDS.put(player, pending);
-
-        return false;
-    }
-
-    @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int itemUseCount) {
-        if(world.isRemote) {
-            // play startup sound
-        } else {
+        if(!world.isRemote) {
             var build = PENDING_BUILDS.remove(player);
     
             if(build != null && build.assembleTask != null) {
@@ -335,19 +370,37 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
         int ticksUsed = Integer.MAX_VALUE - count;
 
-        if(ticksUsed >= 40 && (ticksUsed % 10) == 0) {
+        if(ticksUsed == 1) {
             if(player.worldObj.isRemote) {
-                Minecraft.getMinecraft().theWorld.playSound(
-                    player.posX + 0.5,
-                    player.posY + 0.5,
-                    player.posZ + 0.5,
-                    SoundResource.MOB_ENDERMEN_PORTAL.toString(),
-                    1.0f,
-                    1.0f,
-                    false);
+                // play startup sound
             } else {
-                PENDING_BUILDS.get(player).tryPlaceBlocks(stack, player);
+                var pending = new PendingBuild();
+                pending.pendingBlocks = null;
+                pending.placingPlayer = player;
+                pending.manipulator = getState(stack);
+        
+                pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
+                    var blocks = pending.manipulator.getPendingBlocks();
+                    blocks.sort(Comparator.comparingInt((PendingBlock p) -> p.buildOrder)
+                        .thenComparing((PendingBlock p) -> p.block.hashCode()));
+                    
+                    return new LinkedList<>(blocks);
+                });
+        
+                PENDING_BUILDS.put(player, pending);
             }
+        }
+
+        if(ticksUsed >= 40 && (ticksUsed % 10) == 0 && !player.worldObj.isRemote) {
+            GT_Utility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.MOB_ENDERMEN_PORTAL,
+                1.0F,
+                -1,
+                (int) (player.posX + 0.5),
+                (int) (player.posY + 0.5),
+                (int) (player.posZ + 0.5));
+            PENDING_BUILDS.get(player).tryPlaceBlocks(stack, player);
         }
     }
 
@@ -392,6 +445,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     private RadialMenuBuilder getMenuOptions(UIBuildContext buildContext, ItemStack heldStack) {
+        var initialState = getState(heldStack);
+
         return new RadialMenuBuilder(buildContext)
             .innerIcon(new ItemStack(this))
             .branch()
@@ -462,6 +517,51 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             .done()
             .branch()
                 .label("Set Mode")
+                .branch()
+                    .label("Set Remove Mode")
+                    .option()
+                        .label("Remove None")
+                        .onClicked(() -> {
+                            withState(heldStack, state -> {
+                                state.config.removeMode = BlockRemoveMode.NONE;
+                            });
+                        })
+                    .done()
+                    .option()
+                        .label("Remove Replaceable")
+                        .onClicked(() -> {
+                            withState(heldStack, state -> {
+                                state.config.removeMode = BlockRemoveMode.REPLACEABLE;
+                            });
+                        })
+                    .done()
+                    .option()
+                        .label("Remove All")
+                        .onClicked(() -> {
+                            withState(heldStack, state -> {
+                                state.config.removeMode = BlockRemoveMode.ALL;
+                            });
+                        })
+                    .done()
+                .done()
+                .option()
+                    .label("Geometry")
+                    .onClicked(() -> {
+
+                    })
+                .done()
+                .option()
+                    .label("Cut + Paste")
+                    .onClicked(() -> {
+
+                    })
+                .done()
+                .option()
+                    .label("Copy + Paste")
+                    .onClicked(() -> {
+                        
+                    })
+                .done()
             .done()
             .branch()
                 .label("Select Blocks")
@@ -549,6 +649,62 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                         });
                     })
                 .done()
+            .done()
+            .branch()
+                .label("Copy & Paste")
+                .disabled(initialState.config.placeMode != PlaceMode.COPYING)
+                .option()
+                    .label("Mark Cut Region")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            if (state.config.coordA == null || state.config.coordB == null) {
+                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "A & B must be set."));
+                            } else {
+                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Set cut region."));
+                                
+                                if (state.config.copy != null) {
+                                    buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Cleared copy region."));
+                                }
+
+                                state.config.cut = new Region(state.config.coordA, state.config.coordB);
+                                state.config.copy = null;
+                            }
+                        });
+                    })
+                .done()
+                .option()
+                    .label("Mark Copy Region")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            if (state.config.coordA == null || state.config.coordB == null) {
+                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "A & B must be set."));
+                            } else {
+                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Set copy region."));
+                                
+                                if (state.config.cut != null) {
+                                    buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Cleared cut region."));
+                                }
+
+                                state.config.copy = new Region(state.config.coordA, state.config.coordB);
+                                state.config.cut = null;
+                            }
+                        });
+                    })
+                .done()
+                .option()
+                    .label("Mark Paste Region")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            if (state.config.coordA == null || state.config.coordB == null) {
+                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "A & B must be set."));
+                            } else {
+                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Set paste region."));
+                                
+                                state.config.paste = new Region(state.config.coordA, state.config.coordB);
+                            }
+                        });
+                    })
+                .done()
             .done();
     }
 
@@ -613,12 +769,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     StructureLibAPI.startHinting(player.worldObj);
         
                     for(var block : state.getPendingBlocks()) {
-                        if(block.location.worldId == player.worldObj.provider.dimensionId) {
+                        if(block.worldId == player.worldObj.provider.dimensionId && block.block != Blocks.air) {
                             StructureLibAPI.hintParticle(
                                 player.worldObj,
-                                block.location.x, block.location.y, block.location.z,
-                                ((ItemBlock)block.block.getItem()).field_150939_a,
-                                block.block.getItemDamage()
+                                block.x, block.y, block.z,
+                                block.block,
+                                block.metadata
                             );
                         }
                     }
