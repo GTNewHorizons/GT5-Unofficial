@@ -96,8 +96,6 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
                 .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 5)))
         // Crafting storage block
         .addElement('F', ofBlock(getCraftingStorageBlock(), getCraftingStorageMeta()))
-        // .addElement('F', ofSpecificTileAdder(GT_MetaTileEntity_NanochipAssemblyComplex::addCraftingStorage,
-        // TileCraftingStorageTile.class, getCraftingStorageBlock(), getCraftingStorageMeta()))
         .addElement('G', ofFrame(Materials.Naquadah))
         // Energy Hatch
         .addElement(
