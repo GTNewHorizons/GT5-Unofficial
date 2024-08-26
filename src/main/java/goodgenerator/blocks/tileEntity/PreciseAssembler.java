@@ -120,19 +120,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                             { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
                 .addElement(
                     'C',
-                    GT_HatchElementBuilder.<PreciseAssembler>builder()
-                        .atLeast(
-                            InputBus,
-                            InputHatch,
-                            OutputHatch,
-                            OutputBus,
-                            Maintenance,
-                            Muffler,
-                            ExoticEnergy.or(Energy))
-                        .adder(PreciseAssembler::addToPAssList)
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(
+                    withChannel(
+                        "unit casing",
+                        ofChain(
                             onElementPass(
                                 x -> x.casingAmount++,
                                 StructureUtility.ofBlocksTiered(
@@ -146,19 +136,35 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                                         Pair.of(Loaders.preciseUnitCasing, 3)),
                                     -2,
                                     PreciseAssembler::setCasingTier,
-                                    PreciseAssembler::getCasingTier))))
+                                    PreciseAssembler::getCasingTier)),
+                            GT_HatchElementBuilder.<PreciseAssembler>builder()
+                                .atLeast(
+                                    InputBus,
+                                    InputHatch,
+                                    OutputHatch,
+                                    OutputBus,
+                                    Maintenance,
+                                    Muffler,
+                                    ExoticEnergy.or(Energy))
+                                .adder(PreciseAssembler::addToPAssList)
+                                .casingIndex(CASING_INDEX)
+                                .dot(1)
+                                .build())))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
-                .addElement('G', ofGlassTieredMixed((byte) 4, (byte) 127, 2))
+                .addElement('G', withChannel("glass", ofGlassTieredMixed((byte) 4, (byte) 127, 2)))
                 .addElement(
                     'M',
-                    StructureUtility.ofBlocksTiered(
-                        (block, meta) -> block == GregTech_API.sBlockCasings1 ? meta : -2,
-                        IntStream.range(0, 10)
-                            .mapToObj(meta -> org.apache.commons.lang3.tuple.Pair.of(GregTech_API.sBlockCasings1, meta))
-                            .collect(Collectors.toList()),
-                        -1,
-                        PreciseAssembler::setMachineTier,
-                        PreciseAssembler::getMachineTier))
+                    withChannel(
+                        "machine casing",
+                        StructureUtility.ofBlocksTiered(
+                            (block, meta) -> block == GregTech_API.sBlockCasings1 ? meta : -2,
+                            IntStream.range(0, 10)
+                                .mapToObj(
+                                    meta -> org.apache.commons.lang3.tuple.Pair.of(GregTech_API.sBlockCasings1, meta))
+                                .collect(Collectors.toList()),
+                            -1,
+                            PreciseAssembler::setMachineTier,
+                            PreciseAssembler::getMachineTier)))
                 .build();
         }
         return multiDefinition;

@@ -8,6 +8,7 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -138,7 +139,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
-    private @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -161,7 +162,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
-    private long mLastWorkingTick = 0;
+    protected long mLastWorkingTick = 0, mTotalRunTime = 0;
     private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
@@ -243,6 +244,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return mMaxProgresstime;
     }
 
+    public long getTotalRuntimeInTicks() {
+        return mTotalRunTime;
+    }
+
     @Override
     public int increaseProgress(int aProgress) {
         return aProgress;
@@ -257,6 +262,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+        aNBT.setLong("mTotalRunTime", mTotalRunTime);
+        aNBT.setLong("mLastWorkingTick", mLastWorkingTick);
+        aNBT.setString("checkRecipeResultID", checkRecipeResult.getID());
+        aNBT.setTag("checkRecipeResult", checkRecipeResult.writeToNBT(new NBTTagCompound()));
 
         if (supportsMachineModeSwitch()) {
             aNBT.setInteger("machineMode", machineMode);
@@ -303,6 +312,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
+        mTotalRunTime = aNBT.getLong("mTotalRunTime");
+        mLastWorkingTick = aNBT.getLong("mLastWorkingTick");
+
+        String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
+        if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
+            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(checkRecipeResultID)
+                .newInstance();
+            result.readFromNBT(aNBT.getCompoundTag("checkRecipeResult"));
+            checkRecipeResult = result;
+        }
+
         if (aNBT.hasKey("machineMode")) {
             machineMode = aNBT.getInteger("machineMode");
         }
@@ -440,6 +460,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            // Time Counter
+            mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
             if (mUpdated) {
                 // duct tape fix for too many updates on an overloaded server, causing the structure check to not run
@@ -492,8 +514,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public void checkMaintenance() {
         if (!shouldCheckMaintenance()) return;
 
-        boolean broken = !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar);
-        if (broken) {
+        if (getRepairStatus() != getIdealStatus()) {
             for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
                 if (tHatch.mAuto) tHatch.autoMaintainance();
                 if (tHatch.mWrench) mWrench = true;
@@ -551,9 +572,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (shouldCheck) return true;
 
         // Perform more frequent recipe change after the machine just shuts down.
-        long timeElapsed = aTick - mLastWorkingTick;
+        long timeElapsed = mTotalRunTime - mLastWorkingTick;
 
-        if (timeElapsed >= CHECK_INTERVAL) return (aTick + randomTickOffset) % CHECK_INTERVAL == 0;
+        if (timeElapsed >= CHECK_INTERVAL) return (mTotalRunTime + randomTickOffset) % CHECK_INTERVAL == 0;
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
@@ -610,7 +631,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
-                    mLastWorkingTick = aTick;
+                    mLastWorkingTick = mTotalRunTime;
                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                         checkRecipe();
                     }
@@ -983,6 +1004,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (!ShutDownReasonRegistry.isRegistered(reason.getID())) {
             throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
         }
+        mLastWorkingTick = mTotalRunTime;
         mOutputItems = null;
         mOutputFluids = null;
         mEUt = 0;
@@ -2620,6 +2642,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
+            return StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.shutdown_duration",
+                time.toHours(),
+                time.toMinutes() % 60,
+                time.getSeconds() % 60);
+        })
+            .setEnabled(
+                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                    && getBaseMetaTileEntity().wasShutdown()))
+            .widget(new FakeSyncWidget.LongSyncer(() -> mTotalRunTime, time -> mTotalRunTime = time))
+            .widget(new FakeSyncWidget.LongSyncer(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
         screenElements.widget(
             TextWidget.dynamicString(
                 () -> getBaseMetaTileEntity().getLastShutDownReason()

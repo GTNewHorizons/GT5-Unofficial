@@ -4,8 +4,11 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
@@ -25,7 +28,7 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     }
 
     @Override
-    public String getID() {
+    public @NotNull String getID() {
         return "simple_result";
     }
 
@@ -36,13 +39,28 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
 
     @Override
     @Nonnull
-    public String getDisplayString() {
+    public @NotNull String getDisplayString() {
         return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text." + key));
     }
 
     @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setBoolean("success", success);
+        tag.setString("key", key);
+        tag.setBoolean("persistsOnShutdown", persistsOnShutdown);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        success = tag.getBoolean("success");
+        key = tag.getString("key");
+        persistsOnShutdown = tag.getBoolean("persistsOnShutdown");
+    }
+
+    @Override
     @Nonnull
-    public CheckRecipeResult newInstance() {
+    public @NotNull CheckRecipeResult newInstance() {
         return new SimpleCheckRecipeResult(false, "", false);
     }
 
