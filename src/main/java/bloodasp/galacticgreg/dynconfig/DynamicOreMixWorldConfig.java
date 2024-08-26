@@ -15,6 +15,7 @@ import gregtech.common.SmallOreBuilder;
  * This is the dynamic config class for every ore-vein that will generate config values according to the dimension and
  * mod name
  */
+@Deprecated
 public class DynamicOreMixWorldConfig {
 
     private String _mWorldGenName;
