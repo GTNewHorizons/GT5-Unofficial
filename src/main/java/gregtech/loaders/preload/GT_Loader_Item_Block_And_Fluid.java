@@ -2059,59 +2059,34 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Iron, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0));
-        } else {
-            GT_OreDictUnificator.set(
+        GT_OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.Iron,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
                 false,
                 false);
-        }
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateSteel", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Steel, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1));
-        } else {
-            GT_OreDictUnificator.set(
+        GT_OreDictUnificator.set(
                 OrePrefixes.plate,
                 Materials.Steel,
                 GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
                 false,
                 false);
-        }
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateTinAlloy", true)) {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.TinAlloy,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.TinAlloy,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.TinAlloy,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Copper, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Copper,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Copper,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
+            false,
+            false);
+
 
         GT_OreDictUnificator.set(
             OrePrefixes.dust,
