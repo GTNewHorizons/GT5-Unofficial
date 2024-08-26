@@ -248,6 +248,7 @@ public class GregTech_API {
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
+    public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
@@ -276,7 +277,8 @@ public class GregTech_API {
      * Getting assigned by the Mod loading
      */
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
+        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
+        sFullLoadFinished = false;
 
     private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 

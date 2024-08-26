@@ -20,7 +20,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,8 +28,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -58,6 +55,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -69,7 +67,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_AssemblyLineUtils;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -98,8 +95,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     // Used to sync currently researching item to GUI
     private String clientOutputName;
-
-    private static LinkedHashMap<String, String> lServerNames;
 
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -148,183 +143,17 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     private void makeStick() {
         mInventory[1].setTagCompound(new NBTTagCompound());
-        mInventory[1].setStackDisplayName(
-            GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
-        GT_Utility.ItemNBT.setBookTitle(
-            mInventory[1],
-            GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
-        NBTTagCompound tNBT = mInventory[1].getTagCompound(); // code above makes it not null
-
-        tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
-        tNBT.setInteger("time", tRecipe.mDuration);
-        tNBT.setInteger("eu", tRecipe.mEUt);
-        for (int i = 0; i < tRecipe.mInputs.length; i++) {
-            tNBT.setTag(String.valueOf(i), tRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
-        }
-        for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
-            tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
-        }
-        tNBT.setString(
-            "author",
-            EnumChatFormatting.BLUE + "Tec"
-                + EnumChatFormatting.DARK_BLUE
-                + "Tech"
-                + EnumChatFormatting.WHITE
-                + " Assembling Line Recipe Generator");
-        NBTTagList tNBTList = new NBTTagList();
-        tNBTList.appendTag(
-            new NBTTagString(
-                "Construction plan for " + tRecipe.mOutput.stackSize
+        mInventory[1].getTagCompound()
+            .setString(
+                "author",
+                EnumChatFormatting.BLUE + "Tec"
+                    + EnumChatFormatting.DARK_BLUE
+                    + "Tech"
+                    + EnumChatFormatting.WHITE
                     + ' '
-                    + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName())
-                    + ". Needed EU/t: "
-                    + tRecipe.mEUt
-                    + " Production time: "
-                    + tRecipe.mDuration / 20));
-        for (int i = 0; i < tRecipe.mInputs.length; i++) {
-            if (tRecipe.mInputs[i] != null) {
-                tNBTList.appendTag(
-                    new NBTTagString(
-                        "Input Bus " + (i + 1)
-                            + ": "
-                            + tRecipe.mInputs[i].stackSize
-                            + ' '
-                            + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
-            }
-        }
-        for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
-            if (tRecipe.mFluidInputs[i] != null) {
-                tNBTList.appendTag(
-                    new NBTTagString(
-                        "Input Hatch " + (i + 1)
-                            + ": "
-                            + tRecipe.mFluidInputs[i].amount
-                            + "L "
-                            + GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
-            }
-        }
-        tNBT.setTag("pages", tNBTList);
-    }
-
-    static {
-        try {
-            Class<?> GT_Assemblyline_Server = Class.forName("gregtech.api.util.GT_Assemblyline_Server");
-            lServerNames = (LinkedHashMap<String, String>) GT_Assemblyline_Server.getField("lServerNames")
-                .get(null);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-            lServerNames = null;
-        }
-    }
-
-    private void makeStick2() {
-        String s = tRecipe.mOutput.getDisplayName();
-        if (getBaseMetaTileEntity().isServerSide()) {
-            if (lServerNames != null) {
-                s = lServerNames.get(tRecipe.mOutput.getDisplayName());
-                if (s == null) {
-                    s = tRecipe.mOutput.getDisplayName();
-                }
-            } else {
-                s = tRecipe.mOutput.getDisplayName();
-            }
-        }
-        mInventory[1].setTagCompound(new NBTTagCompound());
-        mInventory[1].setStackDisplayName(s + " Construction Data");
-        GT_Utility.ItemNBT.setBookTitle(mInventory[1], s + " Construction Data");
-
-        NBTTagCompound tNBT = mInventory[1].getTagCompound();
-
-        tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
-        tNBT.setInteger("time", tRecipe.mDuration);
-        tNBT.setInteger("eu", tRecipe.mEUt);
-        for (int i = 0; i < tRecipe.mInputs.length; i++) {
-            tNBT.setTag("" + i, tRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
-        }
-        for (int i = 0; i < tRecipe.mOreDictAlt.length; i++) {
-            if (tRecipe.mOreDictAlt[i] != null && tRecipe.mOreDictAlt[i].length > 0) {
-                tNBT.setInteger("a" + i, tRecipe.mOreDictAlt[i].length);
-                for (int j = 0; j < tRecipe.mOreDictAlt[i].length; j++) {
-                    tNBT.setTag("a" + i + ":" + j, tRecipe.mOreDictAlt[i][j].writeToNBT(new NBTTagCompound()));
-                }
-            }
-        }
-        for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
-            tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
-        }
-        tNBT.setString(
-            "author",
-            EnumChatFormatting.BLUE + "Tec"
-                + EnumChatFormatting.DARK_BLUE
-                + "Tech"
-                + EnumChatFormatting.WHITE
-                + ' '
-                + machineType
-                + " Recipe Generator");
-        NBTTagList tNBTList = new NBTTagList();
-        s = tRecipe.mOutput.getDisplayName();
-        if (getBaseMetaTileEntity().isServerSide()) {
-            s = lServerNames.get(tRecipe.mOutput.getDisplayName());
-            if (s == null) {
-                s = tRecipe.mOutput.getDisplayName();
-            }
-        }
-        tNBTList.appendTag(
-            new NBTTagString(
-                "Construction plan for " + tRecipe.mOutput.stackSize
-                    + " "
-                    + s
-                    + ". Needed EU/t: "
-                    + tRecipe.mEUt
-                    + " Production time: "
-                    + (tRecipe.mDuration / 20)));
-        for (int i = 0; i < tRecipe.mInputs.length; i++) {
-            if (tRecipe.mOreDictAlt[i] != null) {
-                int count = 0;
-                StringBuilder tBuilder = new StringBuilder("Input Bus " + (i + 1) + ": ");
-                for (ItemStack tStack : tRecipe.mOreDictAlt[i]) {
-                    if (tStack != null) {
-                        s = tStack.getDisplayName();
-                        if (getBaseMetaTileEntity().isServerSide()) {
-                            s = lServerNames.get(tStack.getDisplayName());
-                            if (s == null) s = tStack.getDisplayName();
-                        }
-
-                        tBuilder.append(count == 0 ? "" : "\nOr ")
-                            .append(tStack.stackSize)
-                            .append(" ")
-                            .append(s);
-                        count++;
-                    }
-                }
-                if (count > 0) tNBTList.appendTag(new NBTTagString(tBuilder.toString()));
-            } else if (tRecipe.mInputs[i] != null) {
-                s = tRecipe.mInputs[i].getDisplayName();
-                if (getBaseMetaTileEntity().isServerSide()) {
-                    s = lServerNames.get(tRecipe.mInputs[i].getDisplayName());
-                    if (s == null) {
-                        s = tRecipe.mInputs[i].getDisplayName();
-                    }
-                }
-                tNBTList.appendTag(
-                    new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + s));
-            }
-        }
-        for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
-            if (tRecipe.mFluidInputs[i] != null) {
-                s = tRecipe.mFluidInputs[i].getLocalizedName();
-                if (getBaseMetaTileEntity().isServerSide()) {
-                    s = lServerNames.get(tRecipe.mFluidInputs[i].getLocalizedName());
-                    if (s == null) {
-                        s = tRecipe.mFluidInputs[i].getLocalizedName();
-                    }
-                }
-                tNBTList.appendTag(
-                    new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + s));
-            }
-        }
-        tNBT.setTag("pages", tNBTList);
-
-        mInventory[1].setTagCompound(tNBT);
+                    + machineType
+                    + " Recipe Generator");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
     }
 
     private boolean iterateRecipes() {
@@ -392,16 +221,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                                     return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
                                 }
                                 this.tRecipe = assRecipe;
-                                // Scanner mode should consume item first
-                                eHolders.get(0).mInventory[0] = null;
-                                mInventory[1] = null;
                                 // Set property
                                 computationRequired = computationRemaining = assRecipe.mResearchTime;
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
-                                mEUt = -524288;
+                                mEUt = (int) -TierEU.RECIPE_UV;
                                 eHolders.get(0)
                                     .getBaseMetaTileEntity()
                                     .setActive(true);
@@ -435,31 +261,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public void outputAfterRecipe_EM() {
         if (!eHolders.isEmpty()) {
-            switch (machineType) {
-                case assembly -> {
-                    if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        eHolders.get(0)
-                            .getBaseMetaTileEntity()
-                            .setActive(false);
-                        eHolders.get(0).mInventory[0] = null;
-                        if (lServerNames == null) {
-                            makeStick();
-                        } else {
-                            try {
-                                makeStick2();
-                            } catch (NoSuchFieldError e) {
-                                makeStick();
-                            }
-                        }
-                    }
-                }
-                case scanner -> {
-                    mInventory[1] = ItemList.Tool_DataStick.get(1);
-                    GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
-                    eHolders.get(0)
-                        .getBaseMetaTileEntity()
-                        .setActive(false);
-                }
+            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                eHolders.get(0)
+                    .getBaseMetaTileEntity()
+                    .setActive(false);
+                eHolders.get(0).mInventory[0] = null;
+                makeStick();
             }
         }
         computationRequired = computationRemaining = 0;
@@ -470,8 +277,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.name")) // Machine Type: Research
-                                                                                              // Station
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type")) // Machine Type: Research
+                                                                                              // Station, Scanner
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
                                                                                            // the Research Station
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
@@ -482,6 +289,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the
                                                                                            // item until
             // the Data Stick is written
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change
+                                                                                           // mode
             .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
             .addSeparator()
             .beginStructureBlock(3, 7, 7, false)

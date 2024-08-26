@@ -64,6 +64,7 @@ import gregtech.common.blocks.GT_Block_Casings8;
 import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Block_Glass1;
 import gregtech.common.blocks.GT_Block_Granites;
 import gregtech.common.blocks.GT_Block_Laser;
@@ -554,6 +555,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
+        GregTech_API.sBlockFrames = new GT_Block_FrameBox();
         GregTech_API.sDroneRender = new GT_Block_Drone();
         GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
         GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();

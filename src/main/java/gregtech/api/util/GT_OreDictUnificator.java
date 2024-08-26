@@ -255,24 +255,32 @@ public class GT_OreDictUnificator {
      * false.
      */
     public static boolean isInputStackEqual(ItemStack aStack, ItemStack unified_tStack) {
+        if (GT_Utility.isStackInvalid(aStack)) return false;
+        return isInputStackEqual(aStack, getAssociation(aStack), unified_tStack);
+    }
+
+    /**
+     * Compares the first argument against an already-unificated second argument as if aUseBlackList was both true and
+     * false.
+     */
+    public static boolean isInputStackEqual(ItemStack aStack, ItemData aStackPrefixData, ItemStack unified_tStack) {
         boolean alreadyCompared = false;
         if (GT_Utility.isStackInvalid(aStack)) return false;
-        ItemData tPrefixMaterial = getAssociation(aStack);
         ItemStack rStack = null;
-        if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData())
+        if (aStackPrefixData == null || !aStackPrefixData.hasValidPrefixMaterialData())
             return GT_Utility.areStacksEqual(aStack, unified_tStack, true);
-        else if (tPrefixMaterial.mBlackListed) {
+        else if (aStackPrefixData.mBlackListed) {
             if (GT_Utility.areStacksEqual(aStack, unified_tStack, true)) return true;
             else alreadyCompared = true;
         }
         if (!alreadyCompared && !GregTech_API.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
-            tPrefixMaterial.mBlackListed = true;
+            aStackPrefixData.mBlackListed = true;
             if (GT_Utility.areStacksEqual(aStack, unified_tStack, true)) return true;
             else alreadyCompared = true;
         }
-        if (tPrefixMaterial.mUnificationTarget == null)
-            tPrefixMaterial.mUnificationTarget = sName2StackMap.get(tPrefixMaterial.toString());
-        rStack = tPrefixMaterial.mUnificationTarget;
+        if (aStackPrefixData.mUnificationTarget == null)
+            aStackPrefixData.mUnificationTarget = sName2StackMap.get(aStackPrefixData.toString());
+        rStack = aStackPrefixData.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack))
             return !alreadyCompared && GT_Utility.areStacksEqual(aStack, unified_tStack, true);
         return GT_Utility.areStacksEqual(rStack, unified_tStack, true);

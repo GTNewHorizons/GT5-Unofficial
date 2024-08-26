@@ -28,16 +28,15 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,15 +44,9 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -78,26 +71,19 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -107,11 +93,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.blocks.GT_Item_Machines;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM
     implements ISurvivalConstructable, ITeslaConnectable {
@@ -245,63 +228,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 .dot(1)
                 .casingIndex(textureOffset + 16 + 6)
                 .buildAndChain(sBlockCasingsBA0, 6))
-        .addElement('F', new IStructureElement<GT_MetaTileEntity_TM_teslaCoil>() {
-
-            private IIcon[] mIcons;
-
-            @Override
-            public boolean check(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z) {
-                TileEntity tBase = world.getTileEntity(x, y, z);
-                if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
-                    if (tPipeBase.isInvalidTileEntity()) return false;
-                    return tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean spawnHint(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z,
-                ItemStack trigger) {
-                if (mIcons == null) {
-                    mIcons = new IIcon[6];
-                    Arrays
-                        .fill(mIcons, Materials._NULL.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
-                }
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, Materials._NULL.mRGBa);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z,
-                ItemStack trigger) {
-                ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1);
-                if (!GT_Utility.isStackValid(tFrameStack)
-                    || !(tFrameStack.getItem() instanceof ItemBlock tFrameStackItem)) return false;
-                return tFrameStackItem
-                    .placeBlockAt(tFrameStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrameStack));
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z,
-                ItemStack trigger, IItemSource source, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
-                if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                ItemStack tFrameStack = source
-                    .takeOne(s -> GT_Item_Machines.getMetaTileEntity(s) instanceof GT_MetaPipeEntity_Frame, true);
-                if (tFrameStack == null) return PlaceResult.REJECT;
-                return StructureUtility.survivalPlaceBlock(
-                    tFrameStack,
-                    ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS,
-                    null,
-                    false,
-                    world,
-                    x,
-                    y,
-                    z,
-                    source,
-                    actor,
-                    chatter);
-            }
-        })
+        .addElement('F', ofFrame(Materials.Titanium))
         .build();
     // endregion
 
@@ -815,7 +742,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : filterValidMTEs(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
         }
