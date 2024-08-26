@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex.CASING_INDEX_BASE;
+import static gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex.CASING_INDEX_WHITE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
@@ -54,9 +53,11 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
-    protected static final String[][] base_structure = new String[][] { { "V~V" }, { "VVV" }, { "VVV" } };
+    protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
+        { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { "VVVVVVV", " ZZZZZ ", "VVVVVVV" },
+        { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { " VVVVV ", "       ", " VVVVV " } };
 
-    protected static final int BASE_STRUCTURE_OFFSET_X = 1;
+    protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
 
@@ -83,9 +84,10 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
                 'V',
                 GT_HatchElementBuilder.<B>builder()
                     .atLeast(ModuleHatchElement.VacuumConveyorHatch)
-                    .casingIndex(CASING_INDEX_BASE)
+                    .casingIndex(CASING_INDEX_WHITE)
                     .dot(2)
-                    .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)));
+                    .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 5)))
+            .addElement('Z', ofBlock(GregTech_API.sBlockCasings8, 10));
     }
 
     public enum ModuleHatchElement implements IHatchElement<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> {
@@ -437,21 +439,6 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
-    }
-
-    @Override
-    public boolean isRotationChangeAllowed() {
-        return false;
-    }
-
-    @Override
-    public boolean isFlipChangeAllowed() {
-        return false;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d == ForgeDirection.UP && r == Rotation.COUNTER_CLOCKWISE;
     }
 
     @Override
