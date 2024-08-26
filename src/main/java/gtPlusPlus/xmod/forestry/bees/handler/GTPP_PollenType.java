@@ -9,7 +9,7 @@ import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPP_PollenType {
 
-    DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20));
+    DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20));
 
     public boolean mShowInList;
     public final Material mMaterial;
