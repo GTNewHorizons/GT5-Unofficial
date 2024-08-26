@@ -1323,6 +1323,81 @@ public final class RecipeMaps {
         .of("gt.recipe.nanochip.assemblymatrix")
         .maxIO(9, 1, 4, 0)
         .minInputs(0, 0)
+        .disableOptimize()
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            if (output.realCircuit != null) {
+                AssemblyMatrix.registerLocalName(output.realCircuit, output);
+            }
+            return recipe;
+        })
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.smdprocessor")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            SMDProcessor.registerLocalName(input.getLocalizedName(), output);
+            return recipe;
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.boardprocessor")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            BoardProcessor.registerLocalName(input.getLocalizedName(), output);
+            return recipe;
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
+        .of("gt.recipe.nanochip.etchingarray")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            EtchingArray.registerLocalName(input.getLocalizedName(), output);
+            return recipe;
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
+        .of("gt.recipe.nanochip.cuttingchamber")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            CuttingChamber.registerLocalName(input.getLocalizedName(), output);
+            return recipe;
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.wiretracer")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            WireTracer.registerLocalName(input.getLocalizedName(), output);
+            return recipe;
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
+        .of("gt.recipe.nanochip.superconductorsplitter")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
         .build();
 
     static {
