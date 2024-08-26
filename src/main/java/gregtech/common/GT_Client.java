@@ -78,7 +78,6 @@ import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeCategory;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
@@ -772,37 +771,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
                 if (!Minecraft.getMinecraft()
                     .isSingleplayer()) {
-                    // Check for more IC2 recipes to also catch MineTweaker additions
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getMaceratorRecipeList(),
-                        RecipeMaps.maceratorRecipes,
-                        true,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getCompressorRecipeList(),
-                        RecipeMaps.compressorRecipes,
-                        true,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getExtractorRecipeList(),
-                        RecipeMaps.extractorRecipes,
-                        true,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getOreWashingRecipeList(),
-                        RecipeMaps.oreWasherRecipes,
-                        false,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getThermalCentrifugeRecipeList(),
-                        RecipeMaps.thermalCentrifugeRecipes,
-                        true,
-                        true,
-                        true);
+                    GT_ModHandler.removeAllIC2Recipes();
                 }
             }
             afterSomeTime++;
