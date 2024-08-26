@@ -686,7 +686,6 @@ public class GT_ModHandler {
     }
 
     /**
-     * 1
      * IC2-OreWasher Recipe. Overloads old Recipes automatically
      */
     @Deprecated
