@@ -65,11 +65,9 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             1,
             1,
             TextureFactory.of(
-                TextureFactory
-                    .of(OVERLAY_SIDE_SCANNER_ACTIVE),
+                TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(
-                        OVERLAY_SIDE_SCANNER_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_SIDE_SCANNER_ACTIVE_GLOW)
                     .glow()
                     .build()),
             TextureFactory.of(
@@ -79,11 +77,9 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(OVERLAY_FRONT_SCANNER_ACTIVE),
+                TextureFactory.of(OVERLAY_FRONT_SCANNER_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(
-                        OVERLAY_FRONT_SCANNER_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_SCANNER_ACTIVE_GLOW)
                     .glow()
                     .build()),
             TextureFactory.of(
@@ -93,11 +89,9 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(OVERLAY_TOP_SCANNER_ACTIVE),
+                TextureFactory.of(OVERLAY_TOP_SCANNER_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(
-                        OVERLAY_TOP_SCANNER_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_TOP_SCANNER_ACTIVE_GLOW)
                     .glow()
                     .build()),
             TextureFactory.of(
@@ -107,11 +101,9 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(OVERLAY_BOTTOM_SCANNER_ACTIVE),
+                TextureFactory.of(OVERLAY_BOTTOM_SCANNER_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(
-                        OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW)
                     .glow()
                     .build()),
             TextureFactory.of(
