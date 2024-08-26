@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Random;
 
+import gregtech.api.world.GT_Worldgen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -16,11 +17,10 @@ import net.minecraft.world.chunk.IChunkProvider;
 import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
-import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 
-public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
+public class GT_Worldgen_Stone extends GT_Worldgen {
 
     static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
                                                                                                                          // the
@@ -35,6 +35,12 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                                                                                                          // dikes
                                                                                                                          // or
                                                                                                                          // sills.
+
+    public final int mBlockMeta, mAmount, mSize, mMinY, mMaxY, mProbability, mDimensionType;
+    public final Block mBlock;
+    public final Collection<String> mBiomeList;
+    public final boolean mAllowToGenerateinVoid;
+    private final String aTextWorldgen = "worldgen.";
 
     public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
 
@@ -61,19 +67,18 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
     public GT_Worldgen_Stone(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType,
         int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList,
         boolean aAllowToGenerateinVoid) {
-        super(
-            aName,
-            aDefault,
-            aBlock,
-            aBlockMeta,
-            aDimensionType,
-            aAmount,
-            aSize,
-            aProbability,
-            aMinY,
-            aMaxY,
-            aBiomeList,
-            aAllowToGenerateinVoid);
+        super(aName, GregTech_API.sWorldgenList, aDefault);
+        mDimensionType = aDimensionType;
+        mBlock = aBlock;
+        mBlockMeta = Math.min(Math.max(aBlockMeta, 0), 15);
+        mProbability = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Probability", aProbability);
+        mAmount = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Amount", aAmount);
+        mSize = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Size", aSize);
+        mMinY = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "MinHeight", aMinY);
+        mMaxY = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "MaxHeight", aMaxY);
+        if (aBiomeList == null) mBiomeList = new ArrayList<>();
+        else mBiomeList = aBiomeList;
+        mAllowToGenerateinVoid = aAllowToGenerateinVoid;
     }
 
     @Override
