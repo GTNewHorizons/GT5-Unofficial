@@ -11,6 +11,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
+import goodgenerator.blocks.regularBlock.AntimatterRenderBlock;
 import goodgenerator.blocks.regularBlock.Casing;
 import goodgenerator.blocks.regularBlock.ComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.Frame;
@@ -43,6 +44,7 @@ import goodgenerator.blocks.tileEntity.PreciseAssembler;
 import goodgenerator.blocks.tileEntity.SupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.UniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.YottaFluidTank;
+import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEI_Config;
@@ -239,6 +241,7 @@ public class Loaders {
     public static final Block antimatterAnnihilationMatrix = new Casing(
         "antimatterAnnihilationMatrix",
         new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
+    public static final Block antimatterRenderBlock = new AntimatterRenderBlock();
     public static final Block essentiaFilterCasing = new Casing(
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
@@ -412,6 +415,8 @@ public class Loaders {
         GameRegistry.registerBlock(gravityStabilizationCasing, MyItemBlocks.class, "gravityStabilizationCasing");
         GameRegistry.registerBlock(protomatterActivationCoil, MyItemBlocks.class, "protomatterActivationCoil");
         GameRegistry.registerBlock(antimatterAnnihilationMatrix, MyItemBlocks.class, "antimatterAnnihilationMatrix");
+        GameRegistry.registerBlock(antimatterRenderBlock, "antimatterRenderBlock");
+
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -444,6 +449,8 @@ public class Loaders {
         GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
+
+        GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
     }
 
     public static void compactMod() {
