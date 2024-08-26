@@ -719,7 +719,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
-                "Hyper-Intensity Laser Emitter").getStackForm(1));
+                "Hyper-Intensity Laser Engraver").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
