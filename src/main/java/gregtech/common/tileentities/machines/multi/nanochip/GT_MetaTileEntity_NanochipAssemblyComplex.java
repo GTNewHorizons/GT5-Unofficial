@@ -113,7 +113,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             'M',
             GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
                 .atLeast(AssemblyHatchElement.AssemblyModule)
-                .casingIndex(CASING_INDEX_BASE)
+                .casingIndex(CASING_INDEX_WHITE)
                 .dot(1)
                 // Base casing or assembly module
                 .buildAndChain(GregTech_API.sBlockCasings8, 10))
