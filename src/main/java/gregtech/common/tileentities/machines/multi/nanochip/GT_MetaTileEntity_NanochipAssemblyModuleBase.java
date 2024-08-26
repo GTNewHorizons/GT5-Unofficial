@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -66,6 +68,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     private long availableEUt = 0;
 
     private final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
+    private FluidStack[] fluidInputs = null;
     private final ArrayList<ItemStack> outputFakeItems = new ArrayList<>();
     private byte outputColor = -1;
     private int currentParallel;
@@ -83,7 +86,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
             .addElement(
                 'V',
                 GT_HatchElementBuilder.<B>builder()
-                    .atLeast(ModuleHatchElement.VacuumConveyorHatch)
+                    .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
                     .dot(2)
                     .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 5)))
@@ -261,9 +264,10 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      */
     protected GT_Recipe findRecipe(ArrayList<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
+        this.fluidInputs = getStoredFluids().toArray(new FluidStack[] {});
         return recipeMap.findRecipeQuery()
             .items(inputs.toArray(new ItemStack[] {}))
-            .fluids(getStoredFluids().toArray(new FluidStack[] {}))
+            .fluids(fluidInputs)
             .find();
     }
 
@@ -272,6 +276,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      */
     protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe, ItemInputInformation info) {
         return new GT_ParallelHelper().setItemInputs(this.inputFakeItems.toArray(new ItemStack[] {}))
+            .setFluidInputs(fluidInputs)
             .setAvailableEUt(this.availableEUt)
             .enableBatchMode(0)
             .setRecipe(recipe)
@@ -316,7 +321,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         GT_ParallelHelper parallelHelper = createParallelHelper(recipe, inputInfo);
         // Add item consumer to parallel helper and make it consume the input items while it builds
         parallelHelper.setConsumption(true)
-            .setInputConsumer(new CCInputConsumer(this.vacuumConveyorInputs))
+            .setInputConsumer(new CCInputConsumer(this.vacuumConveyorInputs, this))
             .build();
         CheckRecipeResult result = parallelHelper.getResult();
         if (result.wasSuccessful()) {
