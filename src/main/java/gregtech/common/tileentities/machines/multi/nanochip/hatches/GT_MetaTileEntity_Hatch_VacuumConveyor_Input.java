@@ -72,8 +72,10 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Input extends GT_MetaTileEnt
             // If found, consume as much as possible
             int toConsume = Math.min(amount, stack.stackSize);
             amount -= toConsume;
-            // Remove component from inventory if it is fully drained
-            if (amount == 0) {
+            if (amount > 0) {
+                inventory.put(component, amount);
+            } else {
+                // Remove component from inventory if it is fully drained
                 inventory.remove(component);
             }
             return toConsume;
