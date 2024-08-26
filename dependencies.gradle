@@ -56,7 +56,6 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
 
-    implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.3.3:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.51:dev")
     // this is required because forestry is an hidden hard dep, revert this if you fixed the hidden hard dep
     implementation("com.github.GTNewHorizons:ForestryMC:4.9.7:dev") { transitive = false }
@@ -102,6 +101,9 @@ dependencies {
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
+
+    // for GT NEI Ore Plugin
+    compileOnly('com.opencsv:opencsv:4.0')
 
     // For testing iApiary
     //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.7:dev")
