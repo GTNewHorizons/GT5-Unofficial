@@ -155,6 +155,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
@@ -728,7 +729,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
-                "Hyper-Intensity Laser Emitter").getStackForm(1));
+                "Hyper-Intensity Laser Engraver").getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialExtractor.set(
+            new GT_MetaTileEntity_IndustrialExtractor(
+                INDUSTRIAL_EXTRACTOR_CONTROLLER.ID,
+                "multimachine.extractor",
+                "Dissection Apparatus").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
