@@ -36,14 +36,24 @@ public class RadialMenu extends Widget implements Interactable {
     public void draw(float partialTicks) {
         double weightSum = 0;
 
-        for(var opt : options) {
-            weightSum += opt.weight;
+        for(var option : options) {
+            option.isDisabled = option.disabled.getAsBoolean();
+
+            if (option.isDisabled) {
+                weightSum += option.weight;
+            }
         }
 
         double currentAngle = 0;
 
         for(int i = 0; i < options.size(); i++) {
             var option = options.get(i);
+
+            if (option.isDisabled) {
+                option.startTheta = 0;
+                option.endTheta = 0;
+                continue;
+            }
 
             double sliceSize = option.weight / weightSum * Math.PI * 2;
 
@@ -52,11 +62,13 @@ public class RadialMenu extends Widget implements Interactable {
             option.endTheta = currentAngle;
         }
 
-        double offset = options.isEmpty() ? 0 : (options.get(0).startTheta - options.get(0).endTheta) / 2 * -1;
-
-        for(var option : options) {
-            option.startTheta += offset;
-            option.endTheta += offset;
+        if(!options.isEmpty()) {
+            double offset = (options.get(0).startTheta - options.get(0).endTheta) / 2;
+    
+            for(var option : options) {
+                option.startTheta -= offset;
+                option.endTheta -= offset;
+            }
         }
 
         this.pos = getPos();
@@ -67,7 +79,7 @@ public class RadialMenu extends Widget implements Interactable {
         GlStateManager.translate(
             pos.getX() + size.width / 2,
             pos.getY() + size.height /2,
-            150 * getWindowLayer()
+            0
         );
 
         if(innerIcon != null) {
@@ -84,6 +96,10 @@ public class RadialMenu extends Widget implements Interactable {
         var mouseTheta = mouse.y;
 
         for(var option : options) {
+            if (option.isDisabled) {
+                continue;
+            }
+            
             boolean isHoveredOver =
                 mouseRadius >= innerRadius && mouseRadius <= outerRadius &&
                 isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
@@ -115,6 +131,10 @@ public class RadialMenu extends Widget implements Interactable {
         GlStateManager.popMatrix();
 
         for(var option : options) {
+            if (option.isDisabled) {
+                continue;
+            }
+
             radialText(
                 (innerRadius + outerRadius) / 2,
                 (option.startTheta + option.endTheta) / 2,
@@ -242,6 +262,8 @@ public class RadialMenu extends Widget implements Interactable {
         public double weight = 1;
 
         public BooleanSupplier disabled = () -> false;
+
+        boolean isDisabled;
 
         public RadialMenuClickHandler onClick;
 
