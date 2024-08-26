@@ -315,7 +315,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
-            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(checkRecipeResultID);
+            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(checkRecipeResultID)
+                .newInstance();
             result.readFromNBT(aNBT.getCompoundTag("checkRecipeResult"));
             checkRecipeResult = result;
         }
