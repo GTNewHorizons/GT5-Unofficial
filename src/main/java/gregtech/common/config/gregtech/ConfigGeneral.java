@@ -71,11 +71,6 @@ public class ConfigGeneral {
     @Config.RequiresMcRestart
     public static boolean allowSmallBoilerAutomation;
 
-    @Config.Comment("If true, disables vanilla oregen.")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean disableVanillaOres;
-
     @Config.Comment("If true, increases dungeon loots in vanilla structures.")
     @Config.DefaultBoolean(false)
     @Config.RequiresMcRestart

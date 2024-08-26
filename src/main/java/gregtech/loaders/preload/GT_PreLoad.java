@@ -404,7 +404,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mFlintChance = ConfigGeneral.flintChance;
         GT_Mod.gregtechproxy.mItemDespawnTime = ConfigGeneral.itemDespawnTime;
         GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = ConfigGeneral.allowSmallBoilerAutomation;
-        GT_Mod.gregtechproxy.mDisableVanillaOres = ConfigGeneral.disableVanillaOres;
+        GT_Mod.gregtechproxy.mDisableVanillaOres = gregtech.common.config.worldgen.ConfigGeneral.disableVanillaOres;
         GT_Mod.gregtechproxy.mIncreaseDungeonLoot = ConfigGeneral.increaseDungeonLoot;
         GT_Mod.gregtechproxy.mAxeWhenAdventure = ConfigGeneral.axeWhenAdventure;
         GT_Mod.gregtechproxy.mSurvivalIntoAdventure = ConfigGeneral.survivalIntoAdventure;

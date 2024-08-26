@@ -220,6 +220,7 @@ public class GT_Mod implements IGT_Mod {
 
             // WorldGeneration
             ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.worldgen.ConfigGeneral.class);
 
 
         }
