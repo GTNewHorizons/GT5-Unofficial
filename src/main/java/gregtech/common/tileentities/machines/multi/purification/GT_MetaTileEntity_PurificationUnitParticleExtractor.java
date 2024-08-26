@@ -425,11 +425,6 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
-        // Do nothing to avoid hatches being annoying
-    }
-
-    @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
         // Every 20 ticks, add all catalysts from the input bus to the internal inventory.
