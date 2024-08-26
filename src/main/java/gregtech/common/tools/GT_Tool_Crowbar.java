@@ -10,7 +10,6 @@ import net.minecraft.util.IChatComponent;
 
 import com.google.common.base.Strings;
 
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
@@ -62,17 +61,17 @@ public class GT_Tool_Crowbar extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.RANDOM_BREAK.toString();
+        return null;
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.RANDOM_BREAK.toString();
+        return null;
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.RANDOM_BREAK.toString();
+        return null;
     }
 
     @Override
