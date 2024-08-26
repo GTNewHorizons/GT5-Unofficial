@@ -16,6 +16,7 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -262,6 +263,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         RecipeMap<?> recipeMap = this.getRecipeMap();
         return recipeMap.findRecipeQuery()
             .items(inputs.toArray(new ItemStack[] {}))
+            .fluids(getStoredFluids().toArray(new FluidStack[] {}))
             .find();
     }
 
