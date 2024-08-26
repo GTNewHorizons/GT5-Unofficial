@@ -1094,6 +1094,19 @@ public class RECIPES_Machines {
             aBronzeBricks,
             GregtechItemList.Controller_SteamCentrifugeMulti.get(1));
 
+        // Steam Forge Hammer Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aBronzeBricks,
+            "plateWroughtIron",
+            aBronzeBricks,
+            "plateWroughtIron",
+            Blocks.anvil,
+            "plateWroughtIron",
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getFrameBox(1),
+            aBronzeBricks,
+            GregtechItemList.Controller_SteamForgeHammerMulti.get(1));
+
         // Steam Compressor Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
