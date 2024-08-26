@@ -57,6 +57,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.ManualOreDictTweaks;
 import gregtech.common.config.opstuff.ConfigGeneral;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -2713,8 +2714,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     }
 
     public void registerUnificationEntries() {
-        GregTech_API.sUnification.mConfig.save();
-        GregTech_API.sUnification.mConfig.load();
         GT_OreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {
             if ((!(tOre.mEvent.Ore.getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null)
@@ -2731,10 +2730,7 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                                 tOre.mPrefix,
                                 tOre.mMaterial,
                                 tOre.mEvent.Ore,
-                                (GregTech_API.sUnification.get(
-                                    ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                    tOre.mEvent.Name,
-                                    true)),
+                                ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
                                 true);
                             continue;
                         }
@@ -2748,10 +2744,7 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                         tOre.mPrefix,
                         tOre.mMaterial,
                         tOre.mEvent.Ore,
-                        (checkModID) && (GregTech_API.sUnification.get(
-                            ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                            tOre.mEvent.Name,
-                            false)),
+                        checkModID && ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
                         true);
                 }
             }
@@ -2769,18 +2762,12 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                         tOre.mPrefix,
                         tOre.mMaterial,
                         tOre.mEvent.Ore,
-                        (tOre.mModID != null) && (GregTech_API.sUnification.get(
-                            new StringBuilder().append(ConfigCategories.specialunificationtargets)
-                                .append(".")
-                                .append(tOre.mModID),
-                            tOre.mEvent.Name,
-                            false)),
+                        (tOre.mModID != null) && ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
                         true);
                 }
             }
         }
         GregTech_API.sUnificationEntriesRegistered = true;
-        GregTech_API.sUnification.mConfig.save();
         GT_Recipe.reInit();
     }
 

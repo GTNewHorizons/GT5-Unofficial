@@ -149,8 +149,6 @@ public class GT_PreLoad {
         GT_Config.undergroundFluidsFile.load();
         GT_Config.undergroundFluidsFile.save();
 
-        GregTech_API.sUnification = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
         GregTech_API.NEIClientFIle = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "NEIClient.cfg")));
 
