@@ -523,7 +523,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Ha
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_TooltipHandler;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ItemDistributor;
@@ -627,7 +629,11 @@ import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_Va
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
@@ -1186,6 +1192,31 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 NANOCHIP_MODULE_SMD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
+        ItemList.NanoChipModule_BoardProcessor.set(
+            new BoardProcessor(
+                NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.boadprocessor",
+                "Full-Board Immersion Device").getStackForm(1));
+        ItemList.NanoChipModule_EtchingArray.set(
+            new EtchingArray(
+                NANOCHIP_MODULE_ETCHING_ARRAY.ID,
+                "multimachine.nanochipmodule.etchingarray",
+                "Ultra-high Energy Etching Array").getStackForm(1));
+        ItemList.NanoChipModule_CuttingChamber.set(
+            new CuttingChamber(
+                NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
+                "multimachine.nanochipmodule.cuttingchamber",
+                "Nanoprecision Cutting Chamber").getStackForm(1));
+        ItemList.NanoChipModule_WireTracer.set(
+            new WireTracer(
+                NANOCHIP_MODULE_WIRE_TRACER.ID,
+                "multimachine.nanochipmodule.wiretracer",
+                "Nanoprecision Wire Tracer").getStackForm(1));
+        ItemList.Machine_Multi_Autoclave.set(
+            new GT_MetaTileEntity_MultiAutoclave(
+                MULTI_AUTOCLAVE_CONTROLLER.ID,
+                "multimachine.autoclave",
+                "Industrial Autoclave").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
