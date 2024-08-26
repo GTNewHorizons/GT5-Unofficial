@@ -11,6 +11,7 @@ import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorVolence;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
@@ -145,7 +146,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_MultiAutoclave.class)
-                .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Muffler, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler, Energy)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
