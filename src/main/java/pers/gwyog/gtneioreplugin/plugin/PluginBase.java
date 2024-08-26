@@ -1,6 +1,6 @@
 package pers.gwyog.gtneioreplugin.plugin;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
@@ -29,9 +29,7 @@ public abstract class PluginBase extends TemplateRecipeHandler {
     public void loadTransferRects() {
         int stringLength = GuiDraw.getStringWidth(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"));
         transferRects.add(
-                new RecipeTransferRect(
-                        new Rectangle(getGuiWidth() - stringLength - 3, 5, stringLength, 9),
-                        getOutputId()));
+            new RecipeTransferRect(new Rectangle(getGuiWidth() - stringLength - 3, 5, stringLength, 9), getOutputId()));
     }
 
     public abstract String getOutputId();
@@ -45,10 +43,10 @@ public abstract class PluginBase extends TemplateRecipeHandler {
      */
     protected void drawSeeAllRecipesLabel() {
         GuiDraw.drawStringR(
-                EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"),
-                getGuiWidth() - 3,
-                5,
-                0x404040,
-                false);
+            EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"),
+            getGuiWidth() - 3,
+            5,
+            0x404040,
+            false);
     }
 }

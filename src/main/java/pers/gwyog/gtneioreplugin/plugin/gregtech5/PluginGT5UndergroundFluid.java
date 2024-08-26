@@ -30,7 +30,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (Map.Entry<String, List<UndergroundFluidWrapper>> entry : GT5UndergroundFluidHelper.getAllEntries()
-                    .entrySet()) {
+                .entrySet()) {
                 Fluid fluid = FluidRegistry.getFluid(entry.getKey());
                 if (fluid != null) {
                     this.arecipes.add(new CachedUndergroundFluidRecipe(fluid, entry.getValue()));
@@ -67,7 +67,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         String dimension = ItemDimensionDisplay.getDimension(ingredient);
         if (dimension != null) {
             for (Map.Entry<String, List<UndergroundFluidWrapper>> entry : GT5UndergroundFluidHelper.getAllEntries()
-                    .entrySet()) {
+                .entrySet()) {
                 boolean found = false;
                 for (UndergroundFluidWrapper wrapper : entry.getValue()) {
                     if (wrapper.dimension.equals(dimension)) {
@@ -103,11 +103,14 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         for (int i = 0; i < recipe.dimensionDisplayItems.size(); i++) {
             GuiDraw.drawStringC(format.format((double) recipe.chances.get(i) / 100) + "%", xChance, y, black, false);
             GuiDraw.drawStringC(
-                    recipe.minAmounts.get(i).toString() + "-" + recipe.maxAmounts.get(i).toString(),
-                    xAmount,
-                    y,
-                    black,
-                    false);
+                recipe.minAmounts.get(i)
+                    .toString() + "-"
+                    + recipe.maxAmounts.get(i)
+                        .toString(),
+                xAmount,
+                y,
+                black,
+                false);
             y += lineSpace;
         }
     }
@@ -132,18 +135,18 @@ public class PluginGT5UndergroundFluid extends PluginBase {
 
         private CachedUndergroundFluidRecipe(Fluid fluid, List<UndergroundFluidWrapper> wrappers) {
             targetFluidDisplay = new PositionedStack(
-                    GT_Utility.getFluidDisplayStack(fluid),
-                    getGuiWidth() / 2 - halfItemLength,
-                    3);
+                GT_Utility.getFluidDisplayStack(fluid),
+                getGuiWidth() / 2 - halfItemLength,
+                3);
             int y = 50 - halfItemLength;
             for (UndergroundFluidWrapper wrapper : wrappers) {
                 ItemStack dimensionDisplay = ItemDimensionDisplay.getItem(wrapper.dimension);
                 if (dimensionDisplay != null) {
                     dimensionDisplayItems.add(
-                            new PositionedStack(
-                                    dimensionDisplay,
-                                    xDimensionDisplay - halfItemLength,
-                                    y + GuiDraw.fontRenderer.FONT_HEIGHT / 2));
+                        new PositionedStack(
+                            dimensionDisplay,
+                            xDimensionDisplay - halfItemLength,
+                            y + GuiDraw.fontRenderer.FONT_HEIGHT / 2));
                     y += lineSpace;
                     chances.add(wrapper.chance);
                     maxAmounts.add(wrapper.maxAmount);

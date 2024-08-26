@@ -24,7 +24,7 @@ public class StringPaddingHack {
     public static String[] stringsToSpacedColumns(String[] strings, int numColumns, int minColumnSpacing) {
         if (numColumns < 1) {
             throw new IllegalArgumentException(
-                    String.format("Argument numColumns must be 1 or higher, got value %d", numColumns));
+                String.format("Argument numColumns must be 1 or higher, got value %d", numColumns));
         }
         if (numColumns > 1) {
             int sliceSize = strings.length / numColumns;
@@ -40,7 +40,7 @@ public class StringPaddingHack {
                     extra = 1;
                 }
                 columns[i] = Arrays
-                        .copyOfRange(strings, (sliceSize * i) + totalExtra, (sliceSize * (i + 1) + totalExtra + extra));
+                    .copyOfRange(strings, (sliceSize * i) + totalExtra, (sliceSize * (i + 1) + totalExtra + extra));
 
                 totalExtra += extra;
             }

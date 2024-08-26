@@ -11,8 +11,11 @@ import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 public abstract class PluginGT5Base extends PluginBase {
 
     protected static String getLocalizedNameForItem(Materials aMaterial, String aFormat) {
-        return String.format(aFormat.replace("%s", "%temp").replace("%material", "%s"), aMaterial.mLocalizedName)
-                .replace("%temp", "%s");
+        return String.format(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            aMaterial.mLocalizedName)
+            .replace("%temp", "%s");
     }
 
     protected static String getLocalizedNameForItem(String aFormat, int aMaterialID) {
@@ -28,10 +31,10 @@ public abstract class PluginGT5Base extends PluginBase {
     public static String getGTOreLocalizedName(short index) {
 
         if (!getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000)
-                .contains("Awakened"))
+            .contains("Awakened"))
             return getLocalizedNameForItem(
-                    GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)),
-                    index % 1000);
+                GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)),
+                index % 1000);
         else return "Aw. Draconium Ore";
     }
 
@@ -46,11 +49,9 @@ public abstract class PluginGT5Base extends PluginBase {
     protected int getMaximumMaterialIndex(short meta, boolean smallOre) {
         int offset = smallOre ? 16000 : 0;
         if (!getGTOreLocalizedName((short) (meta + offset + 5000))
-                .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000))))
-            return 7;
+            .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 7;
         else if (!getGTOreLocalizedName((short) (meta + offset + 5000))
-                .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000))))
-            return 6;
+            .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 6;
         else return 5;
     }
 

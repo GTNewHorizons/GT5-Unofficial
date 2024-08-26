@@ -13,6 +13,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.GT_Version;
 import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.CSVMaker;
@@ -21,15 +22,15 @@ import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
 
 @Mod(
-        modid = GTNEIOrePlugin.MODID,
-        name = GTNEIOrePlugin.NAME,
-        version = GTNEIOrePlugin.VERSION,
-        dependencies = "required-after:gregtech;required-after:NotEnoughItems")
+    modid = GTNEIOrePlugin.MODID,
+    name = GTNEIOrePlugin.NAME,
+    version = GTNEIOrePlugin.VERSION,
+    dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
 
     public static final String MODID = "gtneioreplugin";
     public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
-    public static final String VERSION = Tags.VERSION;
+    public static final String VERSION = GT_Version.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
     public static boolean csv = false;
     public static String CSVname;
@@ -39,7 +40,8 @@ public class GTNEIOrePlugin {
 
         @Override
         public Item getTabIconItem() {
-            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null).getItem();
+            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null)
+                .getItem();
         }
     };
 
@@ -50,27 +52,27 @@ public class GTNEIOrePlugin {
     public void preinit(FMLPreInitializationEvent event) {
         Config c = new Config(event, MODID + ".cfg");
         csv = c.tConfig.getBoolean(
-                "print csv",
-                "ALL",
-                false,
-                "print csv, you need apache commons collections to be injected in the minecraft jar.");
+            "print csv",
+            "ALL",
+            false,
+            "print csv, you need apache commons collections to be injected in the minecraft jar.");
         CSVname = c.tConfig.getString(
-                "CSV_name",
-                "ALL",
-                event.getModConfigurationDirectory() + "/GTNH-Oresheet.csv",
-                "rename the oresheet here, it will appear in /config");
+            "CSV_name",
+            "ALL",
+            event.getModConfigurationDirectory() + "/GTNH-Oresheet.csv",
+            "rename the oresheet here, it will appear in /config");
         CSVnameSmall = c.tConfig.getString(
-                "CSV_name_for_Small_Ore_Sheet",
-                "ALL",
-                event.getModConfigurationDirectory() + "/GTNH-Small-Ores-Sheet.csv",
-                "rename the oresheet here, it will appear in /config");
+            "CSV_name_for_Small_Ore_Sheet",
+            "ALL",
+            event.getModConfigurationDirectory() + "/GTNH-Small-Ores-Sheet.csv",
+            "rename the oresheet here, it will appear in /config");
         maxTooltipLines = c.tConfig.getInt(
-                "MaxToolTipLines",
-                "ALL",
-                11,
-                1,
-                Integer.MAX_VALUE,
-                "Maximum number of lines the dimension names tooltip can have before it wraps around.");
+            "MaxToolTipLines",
+            "ALL",
+            11,
+            1,
+            Integer.MAX_VALUE,
+            "Maximum number of lines the dimension names tooltip can have before it wraps around.");
 
         c.save();
     }
