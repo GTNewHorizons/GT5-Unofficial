@@ -37,12 +37,19 @@ public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
     private static final boolean DEBUG_MODE_NULL;
+    // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.null=true
     private static boolean PANIC_MODE_NULL;
     private static final boolean DEBUG_MODE_INVALID;
     private static final boolean DEBUG_MODE_FULL_ENERGY;
+    // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.invalid=true
     private static final boolean PANIC_MODE_INVALID;
     private static final boolean DEBUG_MODE_COLLISION;
+
+    // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
     private static final boolean PANIC_MODE_COLLISION;
+
+    // This should only be enabled in non stable instances only with -Dgt.recipebuilder.recipe_collision_check=true
+    public static final boolean ENABLE_COLLISION_CHECK;
 
     public static final int WILDCARD = 32767;
 
@@ -78,6 +85,7 @@ public class GT_RecipeBuilder {
         PANIC_MODE_NULL = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.null");
         PANIC_MODE_INVALID = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.invalid");
         PANIC_MODE_COLLISION = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.collision");
+        ENABLE_COLLISION_CHECK = Boolean.getBoolean("gt.recipebuilder.recipe_collision_check");
     }
 
     protected ItemStack[] inputsBasic = new ItemStack[0];
