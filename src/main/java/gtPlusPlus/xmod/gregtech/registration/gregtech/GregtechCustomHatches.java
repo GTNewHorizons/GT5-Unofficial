@@ -52,29 +52,23 @@ public class GregtechCustomHatches {
         GregtechItemList.Hatch_Input_Cryotheum.set(
             new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 FluidUtils.getFluidStack("cryotheum", 1)
-                    .getFluid(), // Fluid
-                // to
-                // resitrct
-                // hatch
-                // to
+                    .getFluid(), // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Cryotheum.ID, // ID
                 "hatch.cryotheum.input.tier.00", // unlocal name
-                "Cryotheum Cooling Hatch" // Local name
+                "Cryotheum Cooling Hatch", // Local name
+                5 // Casing Texture
             ).getStackForm(1L));
 
         GregtechItemList.Hatch_Input_Pyrotheum.set(
             new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 FluidUtils.getFluidStack("pyrotheum", 1)
-                    .getFluid(), // Fluid
-                // to
-                // resitrct
-                // hatch
-                // to
+                    .getFluid(), // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name
-                "Pyrotheum Heating Vent" // Local name
+                "Pyrotheum Heating Vent", // Local name
+                5 // Casing texture
             ).getStackForm(1L));
 
         GregtechItemList.Hatch_Input_Naquadah.set(
@@ -117,15 +111,12 @@ public class GregtechCustomHatches {
         GregtechItemList.Hatch_Input_Steam.set(
             new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 FluidUtils.getSteam(1)
-                    .getFluid(), // Fluid
-                // to
-                // resitrct
-                // hatch
-                // to
+                    .getFluid(), // Fluid to restrict hatch to
                 64000, // Capacity
                 Hatch_Input_Steam.ID, // ID
                 "hatch.steam.input.tier.00", // unlocal name
-                "Steam Hatch" // Local name
+                "Steam Hatch", // Local name
+                0 // Casing texture
             ).getStackForm(1L));
     }
 
