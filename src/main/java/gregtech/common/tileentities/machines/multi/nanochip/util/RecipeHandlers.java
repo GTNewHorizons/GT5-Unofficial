@@ -313,8 +313,6 @@ public class RecipeHandlers {
 
         ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
         return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
-            // TODO: Properly translate fluid inputs
-            .fluidInputs()
             .itemOutputs(fakeOutput)
             .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     });
