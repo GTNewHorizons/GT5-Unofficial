@@ -480,33 +480,6 @@ public class GT_RecipeConstants {
         tPersistentHash = tPersistentHash * 31 + aResearchTime;
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
-        Collection<GT_Recipe> ret = new ArrayList<>(3);
-        ret.addAll(
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aResearchItem)
-                .itemOutputs(aOutput)
-                .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
-                .duration(aResearchTime)
-                .eut(TierEU.RECIPE_LV)
-                .specialValue(-201) // means it's scanned
-                .noOptimize()
-                .ignoreCollision()
-                .fake()
-                .addTo(scannerFakeRecipes));
-
-        ret.add(
-            RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
-                false,
-                r.mInputs,
-                new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result") },
-                r.mFluidInputs,
-                null,
-                r.mDuration,
-                r.mEUt,
-                0,
-                r.mOreDictAlt,
-                false));
 
         GT_Recipe.GT_Recipe_AssemblyLine tRecipe = new GT_Recipe.GT_Recipe_AssemblyLine(
             aResearchItem,
@@ -520,6 +493,39 @@ public class GT_RecipeConstants {
         tRecipe.setPersistentHash(tPersistentHash);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
+
+        ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, tRecipe, false);
+        Collection<GT_Recipe> ret = new ArrayList<>(3);
+        ret.addAll(
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aResearchItem)
+                .itemOutputs(aOutput)
+                .special(writesDataStick)
+                .duration(aResearchTime)
+                .eut(TierEU.RECIPE_LV)
+                .specialValue(-201) // means it's scanned
+                .noOptimize()
+                .ignoreCollision()
+                .fake()
+                .addTo(scannerFakeRecipes));
+
+        ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
+        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, tRecipe, false);
+        ret.add(
+            RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
+                false,
+                r.mInputs,
+                new ItemStack[] { aOutput },
+                new ItemStack[] { readsDataStick },
+                r.mFluidInputs,
+                null,
+                r.mDuration,
+                r.mEUt,
+                0,
+                r.mOreDictAlt,
+                false));
+
         return ret;
     });
 
