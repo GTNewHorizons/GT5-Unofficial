@@ -64,21 +64,18 @@ public class GT_Worldgen_Stone extends GT_Worldgen {
         }
     }
 
-    public GT_Worldgen_Stone(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType,
-        int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList,
-        boolean aAllowToGenerateinVoid) {
-        super(aName, GregTech_API.sWorldgenList, aDefault);
-        mDimensionType = aDimensionType;
-        mBlock = aBlock;
-        mBlockMeta = Math.min(Math.max(aBlockMeta, 0), 15);
-        mProbability = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Probability", aProbability);
-        mAmount = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Amount", aAmount);
-        mSize = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Size", aSize);
-        mMinY = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "MinHeight", aMinY);
-        mMaxY = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "MaxHeight", aMaxY);
-        if (aBiomeList == null) mBiomeList = new ArrayList<>();
-        else mBiomeList = aBiomeList;
-        mAllowToGenerateinVoid = aAllowToGenerateinVoid;
+    public GT_Worldgen_Stone(StoneBuilder stone) {
+        super(stone.stoneName, GregTech_API.sWorldgenList, stone.enabledByDefault);
+        mDimensionType = stone.dimension;
+        mBlock = stone.block;
+        mBlockMeta = Math.min(Math.max(stone.blockMeta, 0), 15);
+        mProbability = stone.probability;
+        mAmount = stone.amount;
+        mSize = stone.size;
+        mMinY = stone.minY;
+        mMaxY = stone.maxY;
+        mBiomeList = new ArrayList<>();
+        mAllowToGenerateinVoid = stone.allowToGenerateInVoid;
     }
 
     @Override
