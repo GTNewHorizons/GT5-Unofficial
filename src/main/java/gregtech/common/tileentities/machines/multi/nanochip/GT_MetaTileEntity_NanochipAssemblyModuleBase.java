@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex.CASING_INDEX_BASE;
 import static gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex.CASING_INDEX_WHITE;
 
 import java.util.ArrayList;
@@ -445,7 +444,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
@@ -455,7 +454,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                     .extFacing()
@@ -466,6 +465,6 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
     }
 }
