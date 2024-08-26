@@ -46,8 +46,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
-import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_Block_FrameBox;
+import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_Item_Machines;
 
 public class GT_StructureUtility {
