@@ -206,7 +206,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     public String getTypeForDisplay() {
 
-        if (this.type.equals(new NBTTagCompound())) return "";
+        if (!isImprinted()) return "";
         return GT_LanguageManager.getTranslation(
             GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
     }
@@ -221,15 +221,20 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super(aName);
     }
 
+    public boolean isImprinted() {
+        return !this.type.hasNoTags();
+    }
+
     private boolean imprintMachine(ItemStack itemStack) {
-        if (!this.type.equals(new NBTTagCompound())) return true;
+        if (isImprinted()) return true;
         if (!GT_Utility.isStackValid(itemStack)) return false;
         if (itemStack.getItem() instanceof BW_Meta_Items.BW_GT_MetaGenCircuits && itemStack.getItemDamage() == 0
-            && itemStack.getTagCompound() != null
-            && this.type.equals(new NBTTagCompound())) {
+            && itemStack.getTagCompound() != null) {
             this.type = itemStack.getTagCompound();
-            this.mInventory[1].stackSize -= 1;
-            if (this.mInventory[1].stackSize <= 0) this.mInventory[1] = null;
+            itemStack.stackSize -= 1;
+            if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
+                mInventory[getControllerSlotIndex()] = null;
+            }
             this.getBaseMetaTileEntity()
                 .issueBlockUpdate();
             return true;
@@ -264,17 +269,31 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
+        if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
         aNBT.setInteger(RUNNING_MODE_KEY, mode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
+        if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
         aNBT.setInteger(RUNNING_MODE_KEY, mode);
         aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (mode == 0 && !isImprinted() && getBaseMetaTileEntity().isServerSide()) {
+            ItemStack heldItem = aPlayer.getHeldItem();
+            if (imprintMachine(heldItem)) {
+                if (heldItem.stackSize <= 0) {
+                    aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+                }
+                return;
+            }
+        }
+        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override
@@ -319,7 +338,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     public CheckRecipeResult checkProcessing() {
         if (mode == 0) {
-            if (this.type.equals(new NBTTagCompound()) && !this.imprintMachine(this.getControllerSlot()))
+            if (!isImprinted() && !this.imprintMachine(this.getControllerSlot()))
                 return SimpleCheckRecipeResult.ofFailure("no_imprint");
             if (this.imprintedItemName == null || this.imprintedStack == null) {
                 this.imprintedStack = new ItemStack(BW_Meta_Items.getNEWCIRCUITS(), 1, 0);
