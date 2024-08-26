@@ -46,6 +46,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
@@ -203,24 +205,25 @@ public class GregtechMetaTileEntity_SteamCompressor
         tierMachineCasing = -1;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierMachineCasing < 0) return false;
-        if (tierMachineCasing == 1 && mCountCasing > 25
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()) {
+        if (tierMachineCasing == 1 && mCountCasing > 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierMachineCasing == 2 && mCountCasing > 25
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()) {
+        if (tierMachineCasing == 2 && mCountCasing > 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
 
         return false;
+    }
+
+    private boolean checkHatches() {
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && mOutputHatches.isEmpty()
+            && mInputHatches.isEmpty();
     }
 
     @Override
@@ -238,6 +241,15 @@ public class GregtechMetaTileEntity_SteamCompressor
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Nonnull
+            @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
             @Override
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
@@ -249,13 +261,20 @@ public class GregtechMetaTileEntity_SteamCompressor
     }
 
     @Override
+    public int getTierRecipes() {
+        return tierMachine == 1 ? 1 : 2;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Compressor")
             .addInfo("33.3% faster than using a single block Steam Compressor.")
             .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
-            .addInfo("Compresses up to 8 x Tier things at a time.")
+            .addInfo("Bronze tier runs recipes up to LV tier")
+            .addInfo("Steel tier runs recipes up to MV tier")
+            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
             .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)

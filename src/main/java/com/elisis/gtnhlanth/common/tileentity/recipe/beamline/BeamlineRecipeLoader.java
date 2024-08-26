@@ -22,7 +22,7 @@ import gtPlusPlus.core.material.ELEMENT;
 
 public class BeamlineRecipeLoader {
 
-    public static final HashMap<Fluid, Fluid> coolantMap = new HashMap<>();
+    public static final HashMap<String, Fluid> coolantMap = new HashMap<>();
 
     private static final ItemList[] VIABLE_WAFERS = new ItemList[] { ItemList.Circuit_Silicon_Wafer,
         ItemList.Circuit_Silicon_Wafer2, ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4,
@@ -36,18 +36,21 @@ public class BeamlineRecipeLoader {
 
         coolantMap.put(
             Materials.LiquidNitrogen.getGas(1L)
-                .getFluid(),
+                .getFluid()
+                .getName(),
             Materials.Nitrogen.getGas(1L)
                 .getFluid());
         coolantMap.put(
             Materials.LiquidOxygen.getGas(1L)
-                .getFluid(),
+                .getFluid()
+                .getName(),
             Materials.Oxygen.getGas(1L)
                 .getFluid());
-        coolantMap.put(FluidRegistry.getFluid("ic2coolant"), FluidRegistry.getFluid("ic2hotcoolant"));
+        coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
             Materials.SuperCoolant.getFluid(1L)
-                .getFluid(),
+                .getFluid()
+                .getName(),
             Materials.Water.getFluid(1L)
                 .getFluid());
 

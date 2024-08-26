@@ -21,6 +21,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.ELEMENT;
 
@@ -195,7 +196,7 @@ public class FuelRecipeLoader {
                 FluidRegistry.getFluidStack("molten.shirabon", 1440))
             .fluidOutputs(MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
             .duration(4 * SECONDS)
-            .eut(530_000_000)
+            .eut(TierEU.RECIPE_UXV)
             .metadata(NFR_COIL_TIER, 4)
             .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
