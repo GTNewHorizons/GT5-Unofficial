@@ -17,7 +17,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.auxiliary.GTOreGroup;
-import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
@@ -39,7 +38,6 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     private long mProfilingEnd;
     private Map<String, Boolean> allowedDims;
 
-    private DynamicOreMixWorldConfig _mDynWorldConfig;
     public GT_Worldgen_GT_Ore_Layer_Space(OreMixBuilder mix){
         super(mix.oreMixName, GalacticGreg.oreVeinWorldgenList, mix.enabledByDefault);
 
