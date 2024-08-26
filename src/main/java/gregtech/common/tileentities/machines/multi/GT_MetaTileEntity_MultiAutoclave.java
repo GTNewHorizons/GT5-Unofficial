@@ -352,28 +352,28 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.fluidPipeTier") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getInteger("fluidPipeTier"));
+                + Math.max(0, tag.getInteger("fluidPipeTier")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
                 + EnumChatFormatting.WHITE
-                + dfTwo.format(euModifier(tag.getInteger("fluidPipeTier")) * 100)
+                + dfTwo.format(Math.max(0, euModifier(tag.getInteger("fluidPipeTier")) * 100))
                 + "%");
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getInteger("itemPipeTier"));
+                + Math.max(0, tag.getInteger("itemPipeTier")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
-                + dfNone.format(tag.getFloat("getMaxParallelRecipes")));
+                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getInteger("coilTier"));
+                + Math.max(0, tag.getInteger("coilTier")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
-                + dfNone.format(100 / speedBoost(tag.getInteger("coilTier")))
+                + dfNone.format(Math.max(0, 100 / speedBoost(tag.getInteger("coilTier"))))
                 + "%");
     }
 
