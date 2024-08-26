@@ -224,17 +224,6 @@ public class BotRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
-        // Monomethylhydrazine
-        cells.stackSize = 1;
-        // C7H8 + CH4O = C8H10 + H2O
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Toluene.getFluid(1000), Materials.Methanol.getFluid(1000))
-            .fluidOutputs(OXylene.getFluidOrGas(1000))
-            .duration(30 * SECONDS)
-            .eut(4096)
-            .addTo(crackingRecipes);
-
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
