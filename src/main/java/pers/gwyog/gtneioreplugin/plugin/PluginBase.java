@@ -1,12 +1,11 @@
 package pers.gwyog.gtneioreplugin.plugin;
 
-import java.awt.*;
-
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.recipe.TemplateRecipeHandler;
+import java.awt.Rectangle;
 
 public abstract class PluginBase extends TemplateRecipeHandler {
 
