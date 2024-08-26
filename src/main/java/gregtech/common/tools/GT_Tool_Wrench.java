@@ -212,12 +212,13 @@ public class GT_Tool_Wrench extends GT_Tool {
             try {
                 LastEventFromThis = true;
                 player.setSneaking(true);
-                MovingObjectPosition mop = Platform.rayTrace(player, true, false);
-                if (mop == null) {
+                final MovingObjectPosition movObjPosition = Platform.rayTrace(player, true, false);
+                if (movObjPosition == null) {
                     event.setCanceled(true);
                     return;
                 }
-                final int sideHit = mop.sideHit;
+
+                final int sideHit = movObjPosition.sideHit;
                 if (tile instanceof IPartHost) {
                     if (sneak && PartPlacement.place(
                         player.getHeldItem(),
