@@ -1,0 +1,16 @@
+{
+	"modListVersion": 2,
+	"modList": [{
+		"modid": "${modId}",
+		"name": "${modName}",
+		"description": "A forge mod which adds NEI plugins for GregTech5's ores. Modded for GTNH",
+		"version": "${modVersion}",
+		"mcversion": "${minecraftVersion}",
+		"url": "",
+		"updateUrl": "",
+		"authorList": ["GWYOG", "bartimaeusnek"],
+		"credits": "",
+		"logoFile": "",
+		"screenshots": []
+	}]
+}
