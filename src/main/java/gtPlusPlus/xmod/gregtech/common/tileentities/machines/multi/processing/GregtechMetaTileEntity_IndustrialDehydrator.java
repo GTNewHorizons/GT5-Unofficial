@@ -155,12 +155,12 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAIndustrialDehydratorActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAIndustrialDehydrator;
     }
 
     @Override

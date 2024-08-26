@@ -11,6 +11,7 @@ import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorVolence;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
@@ -145,7 +146,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_MultiAutoclave.class)
-                .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Muffler, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler, Energy)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
@@ -236,8 +237,8 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        if (mCasingAmount < 128) return false;
         return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
+            && mCasingAmount >= 128
             && itemPipeTier >= 0
             && mEnergyHatches.size() >= 1
             && mMufflerHatches.size() == 1;
@@ -340,7 +341,8 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         tag.setFloat("getMaxParallelRecipes", getMaxParallelRecipes());
     }
 
-    private static final DecimalFormat df = new DecimalFormat("0.00");
+    private static final DecimalFormat dfTwo = new DecimalFormat("0.00");
+    private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
@@ -350,28 +352,28 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.fluidPipeTier") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getInteger("fluidPipeTier"));
+                + Math.max(0, tag.getInteger("fluidPipeTier")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
                 + EnumChatFormatting.WHITE
-                + df.format(euModifier(tag.getInteger("fluidPipeTier")) * 100)
+                + dfTwo.format(Math.max(0, euModifier(tag.getInteger("fluidPipeTier")) * 100))
                 + "%");
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getInteger("itemPipeTier"));
+                + Math.max(0, tag.getInteger("itemPipeTier")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getFloat("getMaxParallelRecipes"));
+                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE
-                + tag.getInteger("coilTier"));
+                + Math.max(0, tag.getInteger("coilTier")));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
-                + df.format(100 / speedBoost(tag.getInteger("coilTier")))
+                + dfNone.format(Math.max(0, 100 / speedBoost(tag.getInteger("coilTier"))))
                 + "%");
     }
 
