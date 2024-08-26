@@ -2723,53 +2723,21 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                 boolean checkModID = tOre.mModID != null;
 
                 if (checkModID) {
-                    switch (tOre.mModID) {
-                        case Names.ENDER_I_O -> {
-                            if (tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            }
+                    if (tOre.mModID.equals(Names.ENDER_I_O)) {
+                        if (tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
+                            GT_OreDictUnificator
+                                .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+                            GT_OreDictUnificator.set(
+                                tOre.mPrefix,
+                                tOre.mMaterial,
+                                tOre.mEvent.Ore,
+                                (GregTech_API.sUnification.get(
+                                    ConfigCategories.specialunificationtargets + "." + tOre.mModID,
+                                    tOre.mEvent.Name,
+                                    true)),
+                                true);
+                            continue;
                         }
-                        case Names.APPLIED_ENERGISTICS2 -> {
-                            if (tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.CertusQuartz) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            } else if (tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.CertusQuartz) {
-                                GT_OreDictUnificator
-                                    .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                                GT_OreDictUnificator.set(
-                                    tOre.mPrefix,
-                                    tOre.mMaterial,
-                                    tOre.mEvent.Ore,
-                                    (GregTech_API.sUnification.get(
-                                        ConfigCategories.specialunificationtargets + "." + tOre.mModID,
-                                        tOre.mEvent.Name,
-                                        true)),
-                                    true);
-                                continue;
-                            }
-                        }
-                        default -> {}
                     }
                 }
                 if (GT_OreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
