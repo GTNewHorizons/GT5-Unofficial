@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ControllerSteamForgeHammer;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ControllerSteamMixerMulti;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamCompressorMulti;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamMixerMulti;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamWasherMulti;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
@@ -48,12 +48,12 @@ public class GregtechSteamMultis {
                 "Steam Washer").getStackForm(1));
         GregtechItemList.Controller_SteamForgeHammerMulti.set(
             new GregtechMetaTileEntity_SteamForgeHammer(
-                ControllerSteamForgeHammer.ID,
+                Controller_SteamForgeHammer.ID,
                 "gtpp.multimachine.steam.forge.hammer",
                 "Steam Forge Hammer").getStackForm(1));
         GregtechItemList.Controller_SteamMixerMulti.set(
             new GregtechMetaTileEntity_SteamMixer(
-                ControllerSteamMixerMulti.ID,
+                Controller_SteamMixerMulti.ID,
                 "gtpp.multimachine.steam.mixer",
                 "Steam Mixer").getStackForm(1));
 
