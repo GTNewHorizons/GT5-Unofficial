@@ -11,6 +11,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import goodgenerator.blocks.regularBlock.BlockCasing;
 import goodgenerator.blocks.regularBlock.BlockComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.BlockFrame;
@@ -35,6 +36,9 @@ import goodgenerator.blocks.tileEntity.MTELargeFusionComputer3;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer4;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
 =======
+=======
+import goodgenerator.blocks.regularBlock.AntimatterRenderBlock;
+>>>>>>> 597a19f758 (Antimatter render work (#2956))
 import goodgenerator.blocks.regularBlock.Casing;
 import goodgenerator.blocks.regularBlock.ComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.Frame;
@@ -76,7 +80,11 @@ import goodgenerator.blocks.tileEntity.PreciseAssembler;
 import goodgenerator.blocks.tileEntity.SupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.UniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.YottaFluidTank;
+<<<<<<< HEAD
 >>>>>>> 3bd491c92e (Generator structure def do be crashing)
+=======
+import goodgenerator.blocks.tileEntity.render.TileAntimatter;
+>>>>>>> 597a19f758 (Antimatter render work (#2956))
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
@@ -279,6 +287,7 @@ public class Loaders {
     public static final Block antimatterAnnihilationMatrix = new Casing(
         "antimatterAnnihilationMatrix",
         new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
+    public static final Block antimatterRenderBlock = new AntimatterRenderBlock();
     public static final Block essentiaFilterCasing = new Casing(
 >>>>>>> 3bd491c92e (Generator structure def do be crashing)
         "essentiaFilterCasing",
@@ -489,7 +498,12 @@ public class Loaders {
 >>>>>>> ef58e42a27 (Add antimatter)
 =======
         GameRegistry.registerBlock(antimatterAnnihilationMatrix, MyItemBlocks.class, "antimatterAnnihilationMatrix");
+<<<<<<< HEAD
 >>>>>>> 3bd491c92e (Generator structure def do be crashing)
+=======
+        GameRegistry.registerBlock(antimatterRenderBlock, "antimatterRenderBlock");
+
+>>>>>>> 597a19f758 (Antimatter render work (#2956))
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -522,6 +536,8 @@ public class Loaders {
         GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
+
+        GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
     }
 
     public static void compactMod() {
