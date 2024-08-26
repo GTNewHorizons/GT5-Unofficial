@@ -278,7 +278,8 @@ public class GregTech_API {
      * Getting assigned by the Mod loading
      */
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
+        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
+        sFullLoadFinished = false;
 
     private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 
