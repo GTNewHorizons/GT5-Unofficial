@@ -540,7 +540,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UHV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(1152L))
                 .duration(5 * SECONDS)
-                .eut(500000)
+                .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -550,7 +550,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UEV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L))
                 .duration(10 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -560,7 +560,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UIV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(4608L))
                 .duration(15 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -570,7 +570,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(9216L))
                 .duration(30 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -580,7 +580,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.BatteryHull_UxV.get(1L))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(18432L))
                 .duration(60 * SECONDS)
-                .eut(2000000)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
         }
 
@@ -809,7 +809,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_UV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1339,7 +1339,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Hatch_Muffler_UV.get(1))
             .duration(10 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1351,7 +1351,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Hatch_Muffler_MAX.get(1))
             .duration(10 * SECONDS)
-            .eut(2000000)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2112,7 +2112,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.UV_Coil.get(1))
             .duration(10 * SECONDS)
-            .eut(500000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2122,7 +2122,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.UHV_Coil.get(1))
             .duration(10 * SECONDS)
-            .eut(2000000)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()

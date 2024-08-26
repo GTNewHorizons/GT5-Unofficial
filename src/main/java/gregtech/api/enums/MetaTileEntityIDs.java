@@ -1,10 +1,22 @@
 package gregtech.api.enums;
 
-/*
+/**
+ * An enum for all registered MetaTileEntities.
  * No more magic numbers about TE's IDs. Yay!!!
  * The entries are sorted by ID, so if you need to take one,
  * please, pretty please, insert it at the correct place.
+ * <p/>
+ * This does not list all used IDs. If you are looking for
+ * a free ID, you can use the java arg `-Dgt.debug=true` to
+ * list all that are in use.
+ * <p/>
+ * Additionally, some ID ranges are blocked for automatic
+ * generation, do not use these:
+ * <p/>
+ * 4096 - 5095 are used for GregTech Frames.
+ * 5096 - 6099 are used for GregTech Pipes.
  */
+
 public enum MetaTileEntityIDs {
 
     HULL_BRONZE(1),
@@ -483,6 +495,7 @@ public enum MetaTileEntityIDs {
     MINER_MV(680),
     MINER_HV(681),
     MULTI_LATHE_CONTROLLER(686),
+    MULTI_AUTOCLAVE_CONTROLLER(687),
     BATTERY_CHARGER_4_BY_4_ULV(690),
     BATTERY_CHARGER_4_BY_4_LV(691),
     BATTERY_CHARGER_4_BY_4_MV(692),
@@ -1301,15 +1314,15 @@ public enum MetaTileEntityIDs {
     lsc(13106),
     tfftHatch(13109),
     WORMHOLE_GENERATOR_CONTROLLER(13115),
+    MegaChemicalReactor(13366),
+    MegaOilCracker(13367),
+    ExtremeEntityCrusherController(14201),
+    ExtremeIndustrialApiaryController(14202),
     BETTER_JUKEBOX_LV(14301),
     BETTER_JUKEBOX_MV(14302),
     BETTER_JUKEBOX_HV(14303),
     BETTER_JUKEBOX_EV(14304),
     BETTER_JUKEBOX_IV(14305),
-    MegaChemicalReactor(13366),
-    MegaOilCracker(13367),
-    ExtremeEntityCrusherController(14201),
-    ExtremeIndustrialApiaryController(14202),
     EV4AWirelessEnergyHatch(15065),
     EV16AWirelessEnergyHatch(15066),
     EV64AWirelessEnergyHatch(15067),
