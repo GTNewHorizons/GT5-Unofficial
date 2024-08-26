@@ -159,6 +159,11 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         return true;
     }
 
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
     /**
      * Used to more easily grab a correct texture index from a block + meta.
      *

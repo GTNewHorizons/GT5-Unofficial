@@ -330,7 +330,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the pH Neutralization Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
                 "Initial pH value every cycle varies from " + EnumChatFormatting.RED

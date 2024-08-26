@@ -300,7 +300,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the Residual Decontaminant Degasser Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
                 "At the start of the operation, the " + EnumChatFormatting.WHITE

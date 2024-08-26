@@ -290,7 +290,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the Extreme Temperature Fluctuation Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
                 "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
