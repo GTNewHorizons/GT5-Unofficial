@@ -737,8 +737,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "multimachine.extractor",
                 "Dissection Apparatus").getStackForm(1));
 
-
-
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
                 MULTI_LATHE_CONTROLLER.ID,
@@ -756,7 +754,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "multimachine.autoclave",
                 "Industrial Autoclave").getStackForm(1));
 
-ItemList.Machine_Large_Crystalizer.set(
+        ItemList.Machine_Large_Crystalizer.set(
             new GT_MetaTileEntity_Crystalizer(LARGE_CRYSTALIZER.ID, "multimachine.crystalizer", "Large Crystalizer")
                 .getStackForm(1));
     }

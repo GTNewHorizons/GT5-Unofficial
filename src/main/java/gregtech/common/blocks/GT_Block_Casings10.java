@@ -51,7 +51,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_EMS.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_LASER.getIcon();
             case 2 -> Textures.BlockIcons.BLOCK_QUARK_CONTAINMENT_CASING.getIcon();
-	    case 3 -> Textures.BlockIcons.MACHINE_CASING_AUTOCLAVE.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_AUTOCLAVE.getIcon();
             case 4 -> Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_HV.getIcon();
             case 5 -> Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_EV.getIcon();
             case 6 -> Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_IV.getIcon();
