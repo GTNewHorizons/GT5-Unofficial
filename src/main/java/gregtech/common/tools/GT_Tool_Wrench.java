@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -211,7 +212,14 @@ public class GT_Tool_Wrench extends GT_Tool {
             try {
                 LastEventFromThis = true;
                 player.setSneaking(true);
-                final int sideHit = Platform.rayTrace(player, true, false).sideHit;
+
+                final MovingObjectPosition movObjPosition = Platform.rayTrace(player, true, false);
+                if (movObjPosition == null) {
+                    event.setCanceled(true);
+                    return;
+                }
+
+                final int sideHit = movObjPosition.sideHit;
                 if (tile instanceof IPartHost) {
                     if (sneak && PartPlacement.place(
                         player.getHeldItem(),
