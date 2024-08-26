@@ -7,14 +7,18 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
+import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
 
 public class CCInputConsumer implements GT_ParallelHelper.InputConsumer {
 
     private final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> inputConveyors;
+    private final GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module;
 
-    public CCInputConsumer(VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> inputConveyors) {
+    public CCInputConsumer(VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> inputConveyors,
+        GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module) {
         this.inputConveyors = inputConveyors;
+        this.module = module;
     }
 
     @Override
@@ -40,6 +44,11 @@ public class CCInputConsumer implements GT_ParallelHelper.InputConsumer {
                 }
                 if (done) break;
             }
+        }
+
+        // Consume fluid inputs in recipe
+        for (FluidStack fluid : aFluidInputs) {
+            module.depleteInput(fluid);
         }
     }
 }
