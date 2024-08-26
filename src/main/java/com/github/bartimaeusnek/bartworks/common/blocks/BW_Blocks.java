@@ -108,7 +108,7 @@ public class BW_Blocks extends Block {
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+        if (GregTech_API.isMachineBlock(this, aMetaData)) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }

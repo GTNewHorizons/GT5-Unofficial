@@ -1054,6 +1054,19 @@ public class RECIPES_Machines {
             aBronzeBricks,
             GregtechItemList.Controller_SteamWasherMulti.get(1));
 
+        // Steam Mixer Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getRing(1),
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getRotor(1),
+            ALLOY.TUMBAGA.getFrameBox(1),
+            ALLOY.TUMBAGA.getRotor(1),
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getRing(1),
+            aBronzeBricks,
+            GregtechItemList.Controller_SteamMixerMulti.get(1));
+
         ItemStack aWoodenCasing = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings9, 2, 1);
         // WaterPump
         RecipeUtils.addShapedGregtechRecipe(
@@ -1080,6 +1093,19 @@ public class RECIPES_Machines {
             "plateWroughtIron",
             aBronzeBricks,
             GregtechItemList.Controller_SteamCentrifugeMulti.get(1));
+
+        // Steam Forge Hammer Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aBronzeBricks,
+            "plateWroughtIron",
+            aBronzeBricks,
+            "plateWroughtIron",
+            Blocks.anvil,
+            "plateWroughtIron",
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getFrameBox(1),
+            aBronzeBricks,
+            GregtechItemList.Controller_SteamForgeHammerMulti.get(1));
 
         // Steam Compressor Multi
         RecipeUtils.addShapedGregtechRecipe(
