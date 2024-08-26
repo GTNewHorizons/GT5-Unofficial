@@ -62,7 +62,8 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        if (stack.getUnlocalizedName().startsWith("gt.blockores")) {
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockores")) {
             short oreMeta = (short) (stack.getItemDamage() % 1000);
             loadSmallOre(oreMeta, getMaximumMaterialIndex(oreMeta, true));
         } else if (GT5OreSmallHelper.mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
@@ -79,7 +80,8 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         }
 
         for (OreSmallWrapper oreVein : GT5OreSmallHelper.mapOreSmallWrapper.values()) {
-            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.oreGenName)).contains(dimension)) {
+            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.oreGenName))
+                .contains(dimension)) {
                 addSmallOre(oreVein, 7);
             }
         }
@@ -103,17 +105,17 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
     private void addSmallOre(OreSmallWrapper smallOre, int maximumIndex) {
         this.arecipes.add(
-                new CachedOreSmallRecipe(
-                        smallOre.oreGenName,
-                        smallOre.getMaterialDrops(maximumIndex),
-                        getStoneDusts(maximumIndex),
-                        GT5OreSmallHelper.mapOreMetaToOreDrops.get(smallOre.oreMeta)));
+            new CachedOreSmallRecipe(
+                smallOre.oreGenName,
+                smallOre.getMaterialDrops(maximumIndex),
+                getStoneDusts(maximumIndex),
+                GT5OreSmallHelper.mapOreMetaToOreDrops.get(smallOre.oreMeta)));
     }
 
     private List<ItemStack> getStoneDusts(int maximumIndex) {
         List<ItemStack> materialDustStackList = new ArrayList<>();
         for (int i = 0; i < maximumIndex; i++) materialDustStackList
-                .add(GT_OreDictUnificator.get(OrePrefixes.dust, GT5OreSmallHelper.getDroppedDusts()[i], 1L));
+            .add(GT_OreDictUnificator.get(OrePrefixes.dust, GT5OreSmallHelper.getDroppedDusts()[i], 1L));
         return materialDustStackList;
     }
 
@@ -130,7 +132,11 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreSmallWrapper oreSmall = GT5OreSmallHelper.mapOreSmallWrapper.get(veinName);
         String[] dims = DimensionHelper.parseDimNames(GT5OreSmallHelper.bufferedDims.get(oreSmall));
-        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(s)));
+        Arrays.sort(
+            dims,
+            Comparator.comparingInt(
+                s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
+                    .indexOf(s)));
         return dims;
     }
 
@@ -143,20 +149,17 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
         public CachedOreSmallRecipe(String oreGenName, List<ItemStack> stackList, List<ItemStack> materialDustStackList,
-                List<ItemStack> dropStackList) {
+            List<ItemStack> dropStackList) {
             this.oreGenName = oreGenName;
             this.positionedStackOreSmall = new PositionedStack(stackList, 2, 0);
             this.positionedStackMaterialDust = new PositionedStack(
-                    materialDustStackList,
-                    43,
-                    79 + getRestrictBiomeOffset());
+                materialDustStackList,
+                43,
+                79 + getRestrictBiomeOffset());
             List<PositionedStack> positionedDropStackList = new ArrayList<>();
             int i = 1;
             for (ItemStack stackDrop : dropStackList) positionedDropStackList.add(
-                    new PositionedStack(
-                            stackDrop,
-                            43 + 20 * (i % 4),
-                            79 + 16 * ((i++) / 4) + getRestrictBiomeOffset()));
+                new PositionedStack(stackDrop, 43 + 20 * (i % 4), 79 + 16 * ((i++) / 4) + getRestrictBiomeOffset()));
             this.positionedDropStackList = positionedDropStackList;
             setDimensionDisplayItems();
         }
@@ -193,7 +196,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
             List<PositionedStack> outputs = new ArrayList<>();
             positionedStackOreSmall.setPermutationToRender((cycleticks / 20) % positionedStackOreSmall.items.length);
             positionedStackMaterialDust
-                    .setPermutationToRender((cycleticks / 20) % positionedStackMaterialDust.items.length);
+                .setPermutationToRender((cycleticks / 20) % positionedStackMaterialDust.items.length);
             outputs.add(positionedStackOreSmall);
             outputs.add(positionedStackMaterialDust);
             outputs.addAll(positionedDropStackList);

@@ -15,23 +15,23 @@ public class IMCForNEI {
         sendHandler("pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat", "gregtech:gt.blockores:85");
 
         sendHandler(
-                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-                "gregtech:gt.metaitem.01:32619");
+            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+            "gregtech:gt.metaitem.01:32619");
         sendCatalyst(
-                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-                "gregtech:gt.blockmachines:1157");
+            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+            "gregtech:gt.blockmachines:1157");
         sendCatalyst(
-                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-                "gregtech:gt.blockmachines:141");
+            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+            "gregtech:gt.blockmachines:141");
         sendCatalyst(
-                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-                "gregtech:gt.blockmachines:142");
+            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+            "gregtech:gt.blockmachines:142");
         sendCatalyst(
-                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-                "gregtech:gt.blockmachines:149");
+            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+            "gregtech:gt.blockmachines:149");
         sendCatalyst(
-                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-                "gregtech:gt.blockmachines:148");
+            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+            "gregtech:gt.blockmachines:148");
     }
 
     private static void sendHandler(String name, String itemStack) {

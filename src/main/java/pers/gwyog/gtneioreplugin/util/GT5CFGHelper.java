@@ -49,8 +49,11 @@ public class GT5CFGHelper {
         HashSet<String> rawboolsset = new HashSet<>();
         if (!rawbools.isEmpty()) {
             for (String rawbool : rawbools) {
-                st = rawbool.replace("B:", "").replace("_true", "").replace("_false", "").replaceAll(" ", "")
-                        .replaceAll("\"", "");
+                st = rawbool.replace("B:", "")
+                    .replace("_true", "")
+                    .replace("_false", "")
+                    .replaceAll(" ", "")
+                    .replaceAll("\"", "");
                 rawboolsset.add(st);
             }
             rawbools = new ArrayList<>(rawboolsset);
@@ -58,13 +61,19 @@ public class GT5CFGHelper {
                 for (String rawbool : rawbools) {
                     st = rawbool;
                     if (st.contains(DimensionHelper.DimName[j]) && st.contains("=true")) {
-                        ret.append(DimensionHelper.DimNameDisplayed[j]).append(",");
+                        ret.append(DimensionHelper.DimNameDisplayed[j])
+                            .append(",");
                     }
                 }
             }
         }
-        ret = new StringBuilder(ret.toString().trim());
-        if (ret.toString().equals("") || ret.toString().equals(" ")) {
+        ret = new StringBuilder(
+            ret.toString()
+                .trim());
+        if (ret.toString()
+            .equals("")
+            || ret.toString()
+                .equals(" ")) {
             ret = new StringBuilder(oreVeinNotInAnyDim);
         }
         return ret.toString();
@@ -76,7 +85,8 @@ public class GT5CFGHelper {
             FMLLog.bigWarning("GT_CFG_NOT_found[0]");
             return "Error while Loading CFG";
         } else try {
-            int buffer = (int) (0.1 * Runtime.getRuntime().freeMemory());
+            int buffer = (int) (0.1 * Runtime.getRuntime()
+                .freeMemory());
             if (buffer > F.length()) {
                 buffer = (int) F.length();
             }
@@ -98,17 +108,20 @@ public class GT5CFGHelper {
                 // read until reached eof or mix {
                 st = reader.readLine();
                 // FMLLog.info("st: "+st);
-                if (st != null && st.trim().equals("mix {")) {
+                if (st != null && st.trim()
+                    .equals("mix {")) {
                     while (!(st == null || found[0])) {
                         // FMLLog.info("zweite");
                         st = reader.readLine();
                         // read until reached eof or Veinname {
                         // FMLLog.info("MIXst: "+st);
-                        if (st != null && st.trim().equals(Veinname + " {")) {
+                        if (st != null && st.trim()
+                            .equals(Veinname + " {")) {
                             // FMLLog.info("VEINNAMEst: "+st);
                             while (!(st == null || found[0])) {
                                 st = reader.readLine();
-                                if ((!(st == null)) && st.trim().equals("}")) {
+                                if ((!(st == null)) && st.trim()
+                                    .equals("}")) {
                                     found[0] = true;
                                 }
                                 // FMLLog.info("dritte");
@@ -119,21 +132,25 @@ public class GT5CFGHelper {
                     }
                 }
 
-                if (st != null && st.trim().equals("dimensions {")) {
+                if (st != null && st.trim()
+                    .equals("dimensions {")) {
                     while (!(st == null || found[1])) {
                         // FMLLog.info("zweite");
                         st = reader.readLine();
-                        if (st != null && (st.trim().equals("mix {"))) {
+                        if (st != null && (st.trim()
+                            .equals("mix {"))) {
                             while (!(st == null || found[1])) {
                                 // FMLLog.info("dritte");
                                 st = reader.readLine();
                                 // read until reached eof or Veinname {
                                 // FMLLog.info("MIXst: "+st);
-                                if (st != null && st.trim().equals(Veinname + " {")) {
+                                if (st != null && st.trim()
+                                    .equals(Veinname + " {")) {
                                     // FMLLog.info("VEINNAMEst: "+st);
                                     while (!(st == null || found[1])) {
                                         st = reader.readLine();
-                                        if ((!(st == null)) && st.trim().equals("}")) {
+                                        if ((!(st == null)) && st.trim()
+                                            .equals("}")) {
                                             found[1] = true;
                                         }
                                         // FMLLog.info("vierte");
@@ -169,8 +186,11 @@ public class GT5CFGHelper {
             if (!rawbools.isEmpty()) {
                 // remove dublicates
                 for (String rawbool : rawbools) {
-                    st = rawbool.replace("B:", "").replace("_true", "").replace("_false", "").replaceAll(" ", "")
-                            .replaceAll("\"", "");
+                    st = rawbool.replace("B:", "")
+                        .replace("_true", "")
+                        .replace("_false", "")
+                        .replaceAll(" ", "")
+                        .replaceAll("\"", "");
                     rawboolsset.add(st);
                 }
                 rawbools = new ArrayList<>(rawboolsset);
@@ -180,14 +200,20 @@ public class GT5CFGHelper {
                     for (String rawbool : rawbools) {
                         st = rawbool;
                         if (st.contains(DimensionHelper.DimName[j]) && st.contains("=true")) {
-                            ret.append(DimensionHelper.DimNameDisplayed[j]).append(",");
+                            ret.append(DimensionHelper.DimNameDisplayed[j])
+                                .append(",");
                         }
                     }
                 }
             }
-            ret = new StringBuilder(ret.toString().trim());
+            ret = new StringBuilder(
+                ret.toString()
+                    .trim());
             // FMLLog.info("ret:"+ret);
-            if (ret.toString().equals("") || ret.toString().equals(" ")) {
+            if (ret.toString()
+                .equals("")
+                || ret.toString()
+                    .equals(" ")) {
                 ret = new StringBuilder(oreVeinNotInAnyDim);
             }
             return ret.toString();

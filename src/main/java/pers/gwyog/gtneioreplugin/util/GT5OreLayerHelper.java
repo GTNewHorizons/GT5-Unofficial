@@ -62,7 +62,7 @@ public class GT5OreLayerHelper {
             for (String dim : dims.split(",")) {
                 if (!dim.isEmpty()) {
                     NormalOreDimensionWrapper dimensionOres = dimToOreWrapper
-                            .getOrDefault(dim, new NormalOreDimensionWrapper());
+                        .getOrDefault(dim, new NormalOreDimensionWrapper());
                     dimensionOres.internalDimOreList.add(veinInfo);
                     dimToOreWrapper.put(dim, dimensionOres);
                 }
@@ -70,14 +70,17 @@ public class GT5OreLayerHelper {
 
             // Calculate probabilities for each dim.
             for (String dim : dimToOreWrapper.keySet()) {
-                dimToOreWrapper.get(dim).calculateWeights();
+                dimToOreWrapper.get(dim)
+                    .calculateWeights();
             }
         });
         // --- End of handling for dimToOreWrapper ---
     }
 
     public static String getDims(OreLayerWrapper oreLayer) {
-        return GT5CFGHelper.GT5CFG(oreLayer.veinName.replace("ore.mix.custom" + ".", "").replace("ore.mix.", ""));
+        return GT5CFGHelper.GT5CFG(
+            oreLayer.veinName.replace("ore.mix.custom" + ".", "")
+                .replace("ore.mix.", ""));
     }
 
     public static class OreLayerWrapper {
@@ -100,16 +103,16 @@ public class GT5OreLayerHelper {
 
             // Black magic, don't ask me how it works, I have no idea.
             ItemData primaryVeinData = GT_OreDictUnificator
-                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta));
+                .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta));
             this.mPrimaryVeinMaterial = primaryVeinData != null ? primaryVeinData.mMaterial.mMaterial : null;
             ItemData secondaryVeinData = GT_OreDictUnificator
-                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta));
+                .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta));
             this.mSecondaryMaterial = secondaryVeinData != null ? secondaryVeinData.mMaterial.mMaterial : null;
             ItemData betweenVeinData = GT_OreDictUnificator
-                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta));
+                .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta));
             this.mBetweenMaterial = betweenVeinData != null ? betweenVeinData.mMaterial.mMaterial : null;
             ItemData sporadicVeinData = GT_OreDictUnificator
-                    .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta));
+                .getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta));
             this.mSporadicMaterial = sporadicVeinData != null ? sporadicVeinData.mMaterial.mMaterial : null;
 
             this.size = worldGen.mSize;
@@ -132,8 +135,8 @@ public class GT5OreLayerHelper {
 
         public boolean containsOre(short materialIndex) {
             return Meta[VEIN_PRIMARY] == materialIndex || Meta[VEIN_SECONDARY] == materialIndex
-                    || Meta[VEIN_BETWEEN] == materialIndex
-                    || Meta[VEIN_SPORADIC] == materialIndex;
+                || Meta[VEIN_BETWEEN] == materialIndex
+                || Meta[VEIN_SPORADIC] == materialIndex;
         }
     }
 }

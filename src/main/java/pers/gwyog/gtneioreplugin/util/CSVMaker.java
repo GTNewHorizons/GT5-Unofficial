@@ -34,8 +34,14 @@ public class CSVMaker implements Runnable {
                     step = (int) (step / 1.3);
                 }
                 for (int i = 0; i < list2.size() - step; i++) {
-                    if (list2.get(i).getOreName().substring(0, 3)
-                            .compareTo((list2.get(i + step).getOreName().substring(0, 3))) > 0) {
+                    if (list2.get(i)
+                        .getOreName()
+                        .substring(0, 3)
+                        .compareTo(
+                            (list2.get(i + step)
+                                .getOreName()
+                                .substring(0, 3)))
+                        > 0) {
                         Oremix tmp = list2.get(i);
                         list2.set(i, list2.get(i + step));
                         list2.set(i + step, tmp);
@@ -53,7 +59,8 @@ public class CSVMaker implements Runnable {
     public void runSmallOres() {
         try {
             Iterator<Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper>> it = GT5OreSmallHelper.mapOreSmallWrapper
-                    .entrySet().iterator();
+                .entrySet()
+                .iterator();
             List<Oremix> OreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 Oremix oremix = new Oremix();
@@ -113,13 +120,15 @@ public class CSVMaker implements Runnable {
             ColumnPositionMappingStrategy<Oremix> strat = new ColumnPositionMappingStrategy<>();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,mix,DENSITY,overworld,nether,end,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie,an,ho,np,mh,mb,se"
-                    .split("\\,");
+                .split("\\,");
             strat.setColumnMapping(columns);
             StatefulBeanToCsv<Oremix> beanToCsv = new StatefulBeanToCsvBuilder<Oremix>(one)
-                    .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withMappingStrategy(strat).build();
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withMappingStrategy(strat)
+                .build();
             List<Oremix> towrite = Combsort(OreVeins);
             one.write(
-                    "Ore Name,Primary,Secondary,Inbetween,Around,ID,Tier,Height,Density,Size,Weight,Overworld,Nether,End,End Asteroids,Twilight Forest,Moon,Mars,Phobos,Deimos,Asteroids,Ceres,Europa,Ganymede,Callisto,Io,Venus,Mercury,Enceladus,Titan,Miranda,Oberon,Proteus,Triton,Pluto,Kuiper Belt,Haumea,Makemake,Deep Dark,Centauri Bb,Vega B,Barnard C,Barnard E,Barnard F,T Ceti E,Anubis,Horus,Neper,Maahes,Mehen Belt,Seth");
+                "Ore Name,Primary,Secondary,Inbetween,Around,ID,Tier,Height,Density,Size,Weight,Overworld,Nether,End,End Asteroids,Twilight Forest,Moon,Mars,Phobos,Deimos,Asteroids,Ceres,Europa,Ganymede,Callisto,Io,Venus,Mercury,Enceladus,Titan,Miranda,Oberon,Proteus,Triton,Pluto,Kuiper Belt,Haumea,Makemake,Deep Dark,Centauri Bb,Vega B,Barnard C,Barnard E,Barnard F,T Ceti E,Anubis,Horus,Neper,Maahes,Mehen Belt,Seth");
             one.newLine();
             beanToCsv.write(towrite);
             one.flush();
@@ -138,7 +147,7 @@ public class CSVMaker implements Runnable {
     public void runVeins() {
         try {
             Iterator<Map.Entry<String, OreLayerWrapper>> it = GT5OreLayerHelper.mapOreLayerWrapper.entrySet()
-                    .iterator();
+                .iterator();
             List<Oremix> OreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 Oremix oremix = new Oremix();
@@ -156,12 +165,12 @@ public class CSVMaker implements Runnable {
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
                 oremix.setMix(
-                        Integer.toString(oreLayer.Meta[0]) + "|"
-                                + Integer.toString(oreLayer.Meta[1])
-                                + "|"
-                                + Integer.toString(oreLayer.Meta[2])
-                                + "|"
-                                + Integer.toString(oreLayer.Meta[3]));
+                    Integer.toString(oreLayer.Meta[0]) + "|"
+                        + Integer.toString(oreLayer.Meta[1])
+                        + "|"
+                        + Integer.toString(oreLayer.Meta[2])
+                        + "|"
+                        + Integer.toString(oreLayer.Meta[3]));
                 oremix.an = Dims.contains("An");
                 oremix.as = Dims.contains("As");
                 oremix.bc = Dims.contains("BC");
@@ -211,13 +220,15 @@ public class CSVMaker implements Runnable {
             ColumnPositionMappingStrategy<Oremix> strat = new ColumnPositionMappingStrategy<>();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,PRIMARY,SECONDARY,INBETWEEN,AROUND,mix,TIER,HEIGHT,DENSITY,SIZE,WEIGHT,overworld,nether,end,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie,an,ho,np,mh,mb,se"
-                    .split("\\,");
+                .split("\\,");
             strat.setColumnMapping(columns);
             StatefulBeanToCsv<Oremix> beanToCsv = new StatefulBeanToCsvBuilder<Oremix>(one)
-                    .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withMappingStrategy(strat).build();
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withMappingStrategy(strat)
+                .build();
             List<Oremix> towrite = Combsort(OreVeins);
             one.write(
-                    "Ore Name,Primary,Secondary,Inbetween,Around,ID,Tier,Height,Density,Size,Weight,Overworld,Nether,End,End Asteroids,Twilight Forest,Moon,Mars,Phobos,Deimos,Asteroids,Ceres,Europa,Ganymede,Callisto,Io,Venus,Mercury,Enceladus,Titan,Miranda,Oberon,Proteus,Triton,Pluto,Kuiper Belt,Haumea,Makemake,Deep Dark,Centauri Bb,Vega B,Barnard C,Barnard E,Barnard F,T Ceti E,Anubis,Horus,Neper,Maahes,Mehen Belt,Seth");
+                "Ore Name,Primary,Secondary,Inbetween,Around,ID,Tier,Height,Density,Size,Weight,Overworld,Nether,End,End Asteroids,Twilight Forest,Moon,Mars,Phobos,Deimos,Asteroids,Ceres,Europa,Ganymede,Callisto,Io,Venus,Mercury,Enceladus,Titan,Miranda,Oberon,Proteus,Triton,Pluto,Kuiper Belt,Haumea,Makemake,Deep Dark,Centauri Bb,Vega B,Barnard C,Barnard E,Barnard F,T Ceti E,Anubis,Horus,Neper,Maahes,Mehen Belt,Seth");
             one.newLine();
             beanToCsv.write(towrite);
             one.flush();

@@ -11,96 +11,98 @@ import net.minecraft.util.StatCollector;
 public class DimensionHelper {
 
     public static final String[] DimName = {
-            // Non GC dimensions in progression order instead of alphabetical
-            "Overworld", "Nether", "Twilight", "TheEnd", "Vanilla_EndAsteroids", "EndAsteroid",
-            // T1
-            "GalacticraftCore_Moon",
-            // T2
-            "GalaxySpace_Deimos", "GalacticraftMars_Mars", "GalaxySpace_Phobos",
-            // T3
-            "GalacticraftMars_Asteroids", "GalaxySpace_Callisto", "GalaxySpace_Ceres", "GalaxySpace_Europa",
-            "GalaxySpace_Ganymede", "Ross128b",
-            // T4
-            "GalaxySpace_Io", "GalaxySpace_Mercury", "GalaxySpace_Venus",
-            // T5
-            "GalaxySpace_Enceladus", "GalaxySpace_Miranda", "GalaxySpace_Oberon", "GalaxySpace_Titan", "Ross128ba",
-            // T6
-            "GalaxySpace_Proteus", "GalaxySpace_Triton",
-            // T7
-            "GalaxySpace_Haumea", "GalaxySpace_Kuiperbelt", "GalaxySpace_MakeMake", "GalaxySpace_Pluto",
-            // T8
-            "GalaxySpace_BarnardC", "GalaxySpace_BarnardE", "GalaxySpace_BarnardF", "GalaxySpace_CentauriA",
-            "GalaxySpace_TcetiE", "GalaxySpace_VegaB",
-            // T9
-            "GalacticraftAmunRa_Anubis", "GalacticraftAmunRa_Horus", "GalacticraftAmunRa_Maahes",
-            "GalacticraftAmunRa_MehenBelt", "GalacticraftAmunRa_Neper", "GalacticraftAmunRa_Seth",
-            // T10
-            "Underdark", };
+        // Non GC dimensions in progression order instead of alphabetical
+        "Overworld", "Nether", "Twilight", "TheEnd", "Vanilla_EndAsteroids", "EndAsteroid",
+        // T1
+        "GalacticraftCore_Moon",
+        // T2
+        "GalaxySpace_Deimos", "GalacticraftMars_Mars", "GalaxySpace_Phobos",
+        // T3
+        "GalacticraftMars_Asteroids", "GalaxySpace_Callisto", "GalaxySpace_Ceres", "GalaxySpace_Europa",
+        "GalaxySpace_Ganymede", "Ross128b",
+        // T4
+        "GalaxySpace_Io", "GalaxySpace_Mercury", "GalaxySpace_Venus",
+        // T5
+        "GalaxySpace_Enceladus", "GalaxySpace_Miranda", "GalaxySpace_Oberon", "GalaxySpace_Titan", "Ross128ba",
+        // T6
+        "GalaxySpace_Proteus", "GalaxySpace_Triton",
+        // T7
+        "GalaxySpace_Haumea", "GalaxySpace_Kuiperbelt", "GalaxySpace_MakeMake", "GalaxySpace_Pluto",
+        // T8
+        "GalaxySpace_BarnardC", "GalaxySpace_BarnardE", "GalaxySpace_BarnardF", "GalaxySpace_CentauriA",
+        "GalaxySpace_TcetiE", "GalaxySpace_VegaB",
+        // T9
+        "GalacticraftAmunRa_Anubis", "GalacticraftAmunRa_Horus", "GalacticraftAmunRa_Maahes",
+        "GalacticraftAmunRa_MehenBelt", "GalacticraftAmunRa_Neper", "GalacticraftAmunRa_Seth",
+        // T10
+        "Underdark", };
 
     public static final String[] DimNameTrimmed = Arrays.stream(DimName)
-            .map(
-                    n -> n.replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "")
-                            .replaceAll("GalaxySpace_", "").replaceAll("GalacticraftAmunRa_", "")
-                            .replaceAll("Vanilla_", "Vanilla "))
-            .toArray(String[]::new);
+        .map(
+            n -> n.replaceAll("GalacticraftCore_", "")
+                .replaceAll("GalacticraftMars_", "")
+                .replaceAll("GalaxySpace_", "")
+                .replaceAll("GalacticraftAmunRa_", "")
+                .replaceAll("Vanilla_", "Vanilla "))
+        .toArray(String[]::new);
 
     public static final String[] DimNameDisplayed = { // first 2 letters if one word else 1 letter of every word, except
-            // capital letter in
-            // name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
-            // Non GC dimensions in progression order instead of alphabetical
-            "Ow", // Overworld
-            "Ne", // Nether
-            "TF", // Twilight
-            "ED", // TheEnd because En = Encalus
-            "VA", // Vanilla_EndAsteroids
-            "EA", // EndAsteroid
-            // T1
-            "Mo", // GalacticraftCore_Moon
-            // T2
-            "De", // GalaxySpace_Deimos
-            "Ma", // GalacticraftMars_Mars
-            "Ph", // GalaxySpace_Phobos
-            // T3
-            "As", // GalacticraftMars_Asteroids
-            "Ca", // GalaxySpace_Callisto
-            "Ce", // GalaxySpace_Ceres
-            "Eu", // GalaxySpace_Europa
-            "Ga", // GalaxySpace_Ganymede
-            "Rb", // Ross128b
-            // T4
-            "Io", // GalaxySpace_Io
-            "Me", // GalaxySpace_Mercury
-            "Ve", // GalaxySpace_Venus
-            // T5
-            "En", // GalaxySpace_Enceladus
-            "Mi", // GalaxySpace_Miranda
-            "Ob", // GalaxySpace_Oberon
-            "Ti", // GalaxySpace_Titan
-            "Ra", // Ross128ba
-            // T6
-            "Pr", // GalaxySpace_Proteus
-            "Tr", // GalaxySpace_Triton
-            // T7
-            "Ha", // GalaxySpace_Haumea
-            "KB", // GalaxySpace_Kuiperbelt
-            "MM", // GalaxySpace_MakeMake
-            "Pl", // GalaxySpace_Pluto
-            // T8
-            "BC", // GalaxySpace_BarnardC
-            "BE", // GalaxySpace_BarnardE
-            "BF", // GalaxySpace_BarnardF
-            "CB", // GalaxySpace_CentauriA is actually α Centauri Bb
-            "TE", // GalaxySpace_TcetiE
-            "VB", // GalaxySpace_VegaB
-            // T9
-            "An", // GalacticraftAmunRa_Anubis
-            "Ho", // GalacticraftAmunRa_Horus
-            "Mh", // GalacticraftAmunRa_Maahes
-            "MB", // GalacticraftAmunRa_MehenBelt
-            "Np", // GalacticraftAmunRa_Neper
-            "Se", // GalacticraftAmunRa_Seth
-            // T10
-            "DD", // Underdark
+        // capital letter in
+        // name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
+        // Non GC dimensions in progression order instead of alphabetical
+        "Ow", // Overworld
+        "Ne", // Nether
+        "TF", // Twilight
+        "ED", // TheEnd because En = Encalus
+        "VA", // Vanilla_EndAsteroids
+        "EA", // EndAsteroid
+        // T1
+        "Mo", // GalacticraftCore_Moon
+        // T2
+        "De", // GalaxySpace_Deimos
+        "Ma", // GalacticraftMars_Mars
+        "Ph", // GalaxySpace_Phobos
+        // T3
+        "As", // GalacticraftMars_Asteroids
+        "Ca", // GalaxySpace_Callisto
+        "Ce", // GalaxySpace_Ceres
+        "Eu", // GalaxySpace_Europa
+        "Ga", // GalaxySpace_Ganymede
+        "Rb", // Ross128b
+        // T4
+        "Io", // GalaxySpace_Io
+        "Me", // GalaxySpace_Mercury
+        "Ve", // GalaxySpace_Venus
+        // T5
+        "En", // GalaxySpace_Enceladus
+        "Mi", // GalaxySpace_Miranda
+        "Ob", // GalaxySpace_Oberon
+        "Ti", // GalaxySpace_Titan
+        "Ra", // Ross128ba
+        // T6
+        "Pr", // GalaxySpace_Proteus
+        "Tr", // GalaxySpace_Triton
+        // T7
+        "Ha", // GalaxySpace_Haumea
+        "KB", // GalaxySpace_Kuiperbelt
+        "MM", // GalaxySpace_MakeMake
+        "Pl", // GalaxySpace_Pluto
+        // T8
+        "BC", // GalaxySpace_BarnardC
+        "BE", // GalaxySpace_BarnardE
+        "BF", // GalaxySpace_BarnardF
+        "CB", // GalaxySpace_CentauriA is actually α Centauri Bb
+        "TE", // GalaxySpace_TcetiE
+        "VB", // GalaxySpace_VegaB
+        // T9
+        "An", // GalacticraftAmunRa_Anubis
+        "Ho", // GalacticraftAmunRa_Horus
+        "Mh", // GalacticraftAmunRa_Maahes
+        "MB", // GalacticraftAmunRa_MehenBelt
+        "Np", // GalacticraftAmunRa_Neper
+        "Se", // GalacticraftAmunRa_Seth
+        // T10
+        "DD", // Underdark
     };
 
     private static final HashMap<String, List<String>> tooltipBuffer = new HashMap<>();
@@ -134,9 +136,9 @@ public class DimensionHelper {
 
         if (dims.length > maxTooltipLines) {
             dims = StringPaddingHack.stringsToSpacedColumns(
-                    dims,
-                    dims.length / maxTooltipLines + (dims.length % maxTooltipLines == 0 ? 0 : 1),
-                    2);
+                dims,
+                dims.length / maxTooltipLines + (dims.length % maxTooltipLines == 0 ? 0 : 1),
+                2);
         }
 
         return Arrays.asList(dims);
