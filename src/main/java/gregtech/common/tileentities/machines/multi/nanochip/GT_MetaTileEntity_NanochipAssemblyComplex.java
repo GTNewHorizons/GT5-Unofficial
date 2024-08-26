@@ -57,6 +57,7 @@ import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
 import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
@@ -355,7 +356,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         return false;
     }
 
-    private void processCircuitInputs() {
+    private void processRealItemInputs() {
         ArrayList<ItemStackWithSourceBus> inputs = getStoredInputsWithBus();
         // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
         for (ItemStackWithSourceBus stack : inputs) {
@@ -377,6 +378,31 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             // If successful, consume the input
             if (routed) {
                 this.depleteInput(stack.stack);
+            }
+        }
+    }
+
+    private void processComponentInputs() {
+        // Convert finished circuit CCs to real circuit items and add them as output.
+        for (ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> hatchList : this.vacuumConveyors.allHatches()) {
+            for (GT_MetaTileEntity_Hatch_VacuumConveyor hatch : filterValidMTEs(hatchList)) {
+                // For each vacuum conveyor input, loop over its contents and try to find a circuit component
+                if (hatch instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Input) {
+                    // Skip empty hatches
+                    if (hatch.contents == null) continue;
+                    Map<CircuitComponent, Integer> contents = hatch.contents.getComponents();
+                    for (Map.Entry<CircuitComponent, Integer> entry : contents.entrySet()) {
+                        CircuitComponent component = entry.getKey();
+                        Integer amount = entry.getValue();
+                        // If this entry has a real circuit, we have produced a circuit using the NAC!
+                        if (component.realCircuit != null) {
+                            ItemStack toOutput = GT_Utility.copyAmount(amount, component.realCircuit);
+                            // Add output and deplete from hatch
+                            addOutput(toOutput);
+                            contents.remove(component);
+                        }
+                    }
+                }
             }
         }
     }
@@ -442,7 +468,8 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             mMaxProgresstime = 1 * SECONDS;
 
             // Inside checkProcessing we can safely consume inputs from hatches
-            processCircuitInputs();
+            processRealItemInputs();
+            processComponentInputs();
 
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
