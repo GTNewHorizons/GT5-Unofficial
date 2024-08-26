@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
 
@@ -9,7 +8,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -21,19 +19,18 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 
 public class SMDProcessor extends GT_MetaTileEntity_NanochipAssemblyModuleBase<SMDProcessor> {
 
-    protected static final int STRUCTURE_OFFSET_X = 1;
-    protected static final int STRUCTURE_OFFSET_Y = 5;
-    protected static final int STRUCTURE_OFFSET_Z = 0;
+    protected static final int STRUCTURE_OFFSET_X = 3;
+    protected static final int STRUCTURE_OFFSET_Y = 3;
+    protected static final int STRUCTURE_OFFSET_Z = -2;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "   ", "   ", " B ", " B ", " A " },
-        { " B ", " B ", "BAB", "BAB", "AAA" }, { "   ", "   ", " B ", " B ", " A " } };
+    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
+        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
     public static final IStructureDefinition<SMDProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SMDProcessor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings8, 10))
-        .addElement('B', ofFrame(Materials.Adamantium))
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 0))
         .build();
 
     public SMDProcessor(int aID, String aName, String aNameRegional) {

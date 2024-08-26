@@ -35,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import appeng.api.AEApi;
-import appeng.tile.crafting.TileCraftingStorageTile;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -116,7 +115,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
                 .casingIndex(CASING_INDEX_WHITE)
                 .dot(1)
                 // Base casing or assembly module
-                .buildAndChain(GregTech_API.sBlockCasings8, 10))
+                .buildAndChain(GregTech_API.sBlockCasings8, 5))
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
@@ -255,11 +254,6 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             return true;
         }
         return false;
-    }
-
-    public boolean addCraftingStorage(TileCraftingStorageTile tile) {
-        // Only accept 16384k storage components
-        return tile.isStorage() && tile.getStorageBytes() >= 16384000;
     }
 
     private static Block getCraftingStorageBlock() {
