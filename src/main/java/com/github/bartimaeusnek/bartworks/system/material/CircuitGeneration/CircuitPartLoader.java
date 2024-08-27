@@ -164,11 +164,11 @@ public class CircuitPartLoader implements Runnable {
                         null,
                         toolTip,
                         true);
-            String tt = toolTip.size() > 0 ? toolTip.get(0) : "";
+            String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
             // tt += "Internal Name = "+single;
             String localised = GT_LanguageManager
                 .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
-            BW_Meta_Items.getNEWCIRCUITS()
+            BW_Meta_Items.getCircuitParts()
                 .addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised + "s", tt);
 
             GT_Values.RA.stdBuilder()
@@ -177,7 +177,7 @@ public class CircuitPartLoader implements Runnable {
                         .copy(),
                     GT_Utility.getIntegratedCircuit(16))
                 .itemOutputs(
-                    BW_Meta_Items.getNEWCIRCUITS()
+                    BW_Meta_Items.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))
                 .fluidInputs(Materials.Plastic.getMolten(72))
                 .duration(30 * SECONDS)

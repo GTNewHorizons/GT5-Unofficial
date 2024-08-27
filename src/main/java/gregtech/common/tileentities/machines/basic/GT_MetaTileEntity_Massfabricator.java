@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
 
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
@@ -39,11 +38,11 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
 
 public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMachine {
 
@@ -135,13 +134,12 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        super.onConfigLoad(aConfig);
-        sDurationMultiplier = aConfig
-            .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
-        sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
-        sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
-        sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
+    public void onConfigLoad() {
+        super.onConfigLoad();
+        sDurationMultiplier = ConfigMassFabricator.durationMultiplier;
+        sUUAperUUM = ConfigMassFabricator.UUAPerUUM;
+        sUUASpeedBonus = ConfigMassFabricator.UUASpeedBonus;
+        sRequiresUUA = ConfigMassFabricator.requiresUUA;
         Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
     }
 

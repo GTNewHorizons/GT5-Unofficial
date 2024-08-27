@@ -20,8 +20,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -372,13 +370,10 @@ public class GT_Achievements {
             "over9000",
             false);
         registerAchievement("denseaspossible", 6, 10, ItemList.FusionComputer_UV.get(1), "finalpreparations", false);
-        if (GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "EnableZPMandUVBatteries", false)) {
-            registerAchievement("zpmage", 8, 10, ItemList.Energy_Module.get(1), "denseaspossible", false);
-            registerAchievement("uvage", 10, 10, ItemList.Energy_Cluster.get(1), "zpmage", false);
-            registerAchievement("whatnow", 12, 10, ItemList.ZPM2.get(1), "uvage", false);
-        } else {
-            registerAchievement("whatnow", 8, 10, ItemList.ZPM2.get(1), "denseaspossible", false);
-        }
+
+        registerAchievement("zpmage", 8, 10, ItemList.Energy_Module.get(1), "denseaspossible", false);
+        registerAchievement("uvage", 10, 10, ItemList.Energy_Cluster.get(1), "zpmage", false);
+        registerAchievement("whatnow", 12, 10, ItemList.ZPM2.get(1), "uvage", false);
 
         if (GT_Mod.gregtechproxy.mAchievements) {
             AchievementPage.registerAchievementPage(

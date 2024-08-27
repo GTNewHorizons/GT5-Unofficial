@@ -34,7 +34,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.relauncher.Side;
@@ -74,7 +73,6 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

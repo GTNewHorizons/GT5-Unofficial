@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -23,17 +21,17 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
 
     public GT_MetaTileEntity_PlasmaGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Plasma into energy");
-        onConfigLoad();
+        setEfficiency();
     }
 
     public GT_MetaTileEntity_PlasmaGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        setEfficiency();
     }
 
     public GT_MetaTileEntity_PlasmaGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        setEfficiency();
     }
 
     @Override
@@ -133,11 +131,8 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
         return new GT_MetaTileEntity_PlasmaGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-            ConfigCategories.machineconfig,
-            "PlasmaGenerator.efficiency.tier." + this.mTier,
-            Math.max(10, 10 + Math.min(90, this.mTier * 10)));
+    public void setEfficiency() {
+        this.mEfficiency = Math.max(10, 10 + Math.min(90, this.mTier * 10));
     }
 
     @Override

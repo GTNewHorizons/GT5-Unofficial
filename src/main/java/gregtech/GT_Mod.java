@@ -25,7 +25,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,8 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import appeng.api.AEApi;
+import bloodasp.galacticgreg.SpaceDimRegisterer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -80,6 +82,24 @@ import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
+import gregtech.common.config.client.ConfigColorModulation;
+import gregtech.common.config.client.ConfigInterface;
+import gregtech.common.config.client.ConfigPreference;
+import gregtech.common.config.client.ConfigRender;
+import gregtech.common.config.client.ConfigWaila;
+import gregtech.common.config.gregtech.ConfigDebug;
+import gregtech.common.config.gregtech.ConfigFeatures;
+import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
+import gregtech.common.config.gregtech.ConfigMachines;
+import gregtech.common.config.gregtech.ConfigOreDropBehavior;
+import gregtech.common.config.gregtech.ConfigPollution;
+import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
+import gregtech.common.config.machinestats.ConfigTeleporter;
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
@@ -168,6 +188,47 @@ import ic2.api.recipe.RecipeOutput;
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
+    static {
+        try {
+            // Client
+            ConfigurationManager.registerConfig(ConfigColorModulation.class);
+            ConfigurationManager.registerConfig(ConfigInterface.class);
+            ConfigurationManager.registerConfig(ConfigPreference.class);
+            ConfigurationManager.registerConfig(ConfigRender.class);
+            ConfigurationManager.registerConfig(ConfigWaila.class);
+
+            // GregTech.cfg
+            ConfigurationManager.registerConfig(ConfigDebug.class);
+            ConfigurationManager.registerConfig(ConfigFeatures.class);
+            ConfigurationManager.registerConfig(ConfigGeneral.class);
+            ConfigurationManager.registerConfig(ConfigHarvestLevel.class);
+            ConfigurationManager.registerConfig(ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
+            ConfigurationManager.registerConfig(ConfigPollution.class);
+
+            // MachineStats.cfg
+            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
+            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
+            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigTeleporter.class);
+
+            // OverPoweredStuff
+            ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
+
+            // Other
+            ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
+
+            // WorldGeneration
+            ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.worldgen.ConfigGeneral.class);
+
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
     @Mod.Instance(Mods.Names.GREG_TECH)
@@ -182,6 +243,7 @@ public class GT_Mod implements IGT_Mod {
 
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
+    @Deprecated
     public static final String aTextGeneral = "general";
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
@@ -232,26 +294,22 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
+        GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
         GT_PreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
-                .getParentFile(),
-            tMainConfig);
+                .getParentFile());
 
         gregtechproxy.onPreLoad();
 
         GT_Log.out.println("GT_Mod: Setting Configs");
 
-        GT_PreLoad.loadConfig(tMainConfig);
+        GT_PreLoad.loadConfig();
 
         new Enchantment_Hazmat();
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
 
         Materials.init();
-
-        GT_Log.out.println("GT_Mod: Saving Main Config");
-        tMainConfig.save();
 
         GT_PreLoad.initLocalization(
             aEvent.getModConfigurationDirectory()
@@ -352,6 +410,9 @@ public class GT_Mod implements IGT_Mod {
         }
 
         LHECoolantRegistry.registerBaseCoolants();
+
+        GT_FML_LOGGER.debug("Registering SpaceDimensions");
+        SpaceDimRegisterer.register();
 
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
@@ -573,6 +634,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GregTech_API.sGTCompleteLoad = null;
+        GregTech_API.sFullLoadFinished = true;
     }
 
     @Mod.EventHandler

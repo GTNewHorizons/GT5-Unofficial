@@ -262,7 +262,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the Absolute Baryonic Perfection Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
                 "Insert " + EnumChatFormatting.WHITE
@@ -406,7 +406,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
             }
         }
         // Cost is exponential in function of amount of duplicate catalysts
-        return (int) (Math.pow(2, count + 1) * CATALYST_BASE_COST);
+        return (int) (Math.pow(2, count) * CATALYST_BASE_COST);
     }
 
     // Returns the first index of a valid combination, or -1 if there is no valid combination in the sequence
@@ -422,11 +422,6 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         }
         // No match found, return -1
         return -1;
-    }
-
-    @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
-        // Do nothing to avoid hatches being annoying
     }
 
     @Override
