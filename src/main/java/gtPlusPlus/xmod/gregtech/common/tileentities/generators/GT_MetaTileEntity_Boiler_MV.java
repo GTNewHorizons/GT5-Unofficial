@@ -5,7 +5,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Boiler_MV extends GT_MetaTileEntity_Boiler_Base {
 
@@ -36,7 +35,7 @@ public class GT_MetaTileEntity_Boiler_MV extends GT_MetaTileEntity_Boiler_Base {
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0], this.getCasingTexture(),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Tumbaga) };
+            new GT_RenderedTexture(Textures.BlockIcons.MACHINE_MV_TOP) };
     }
 
     @Override
