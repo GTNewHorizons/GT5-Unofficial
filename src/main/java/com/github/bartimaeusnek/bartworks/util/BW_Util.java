@@ -31,13 +31,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -53,6 +48,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -410,30 +406,6 @@ public class BW_Util {
         return ret;
     }
 
-    public static byte calculateGlassTier(@Nonnull Block block, @Nonnegative byte meta) {
-
-        byte boroTier = BorosilicateGlass.getTier(block, meta);
-        if (boroTier != -1) return boroTier;
-
-        if ("blockAlloyGlass".equals(block.getUnlocalizedName())) return 4;
-
-        if (block.equals(Blocks.glass)) return 3;
-
-        for (BioVatLogicAdder.BlockMetaPair B : BioVatLogicAdder.BioVatGlass.getGlassMap()
-            .keySet())
-            if (B.getBlock()
-                .equals(block)
-                && B.getaByte()
-                    .equals(meta))
-                return BioVatLogicAdder.BioVatGlass.getGlassMap()
-                    .get(B);
-
-        if (block.getMaterial()
-            .equals(Material.glass)) return 3;
-
-        return 0;
-    }
-
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
         BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
         return new IStructureElement<>() {
@@ -444,12 +416,16 @@ public class BW_Util {
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
                 if (world.isAirBlock(x, y, z)) return false;
-                byte glasstier = BW_Util
-                    .calculateGlassTier(world.getBlock(x, y, z), (byte) world.getBlockMetadata(x, y, z));
-                // is not a glass ?
-                if (glasstier == 0 || glasstier == notset || glasstier < mintier || glasstier > maxtier) return false;
-                if (getter.apply(te) == notset) setter.accept(te, glasstier);
-                return getter.apply(te) == glasstier;
+                Block block = world.getBlock(x, y, z);
+                int meta = world.getBlockMetadata(x, y, z);
+
+                int glassTier = GlassTier.getGlassTier(block, meta);
+
+                // If it is not a glass, the tier will be 0.
+                if (glassTier == 0 || glassTier == notset || glassTier < mintier || glassTier > maxtier) return false;
+
+                if (getter.apply(te) == notset) setter.accept(te, (byte) glassTier);
+                return getter.apply(te) == glassTier;
             }
 
             @Override
@@ -480,10 +456,12 @@ public class BW_Util {
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
                 if (world.isAirBlock(x, y, z)) return false;
-                byte glasstier = BW_Util
-                    .calculateGlassTier(world.getBlock(x, y, z), (byte) world.getBlockMetadata(x, y, z));
-                if (glasstier == 0) return false; // is not a glass ?
-                return glasstier >= mintier && glasstier <= maxtier;
+                Block block = world.getBlock(x, y, z);
+                int meta = world.getBlockMetadata(x, y, z);
+                int glassTier = GlassTier.getGlassTier(block, meta);
+
+                if (glassTier == 0) return false; // Not a glass.
+                return glassTier >= mintier && glassTier <= maxtier;
             }
 
             @Override

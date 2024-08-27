@@ -177,7 +177,7 @@ public class CircuitImprintLoader {
             false,
             in,
             new ItemStack[] { getOutputMultiplied(original) },
-            BW_Meta_Items.getNEWCIRCUITS()
+            BW_Meta_Items.getCircuitParts()
                 .getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]), 0, 0),
             null,
             original.mFluidInputs,
@@ -198,7 +198,7 @@ public class CircuitImprintLoader {
         int index) {
         for (ItemList il : inversed.keySet()) {
             if (GT_Utility.areStacksEqual(il.get(1), replaceCircuitParts(original.mInputs[index]))) {
-                in[index] = BW_Meta_Items.getNEWCIRCUITS()
+                in[index] = BW_Meta_Items.getCircuitParts()
                     .getStack(inversed.get(il), original.mInputs[index].stackSize);
             }
         }
@@ -314,7 +314,7 @@ public class CircuitImprintLoader {
         GT_Recipe slicingRecipe = new GT_Recipe(
             true,
             new ItemStack[] { stack, ItemList.Shape_Slicer_Flat.get(0) },
-            new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
+            new ItemStack[] { BW_Meta_Items.getCircuitParts()
                 .getStackWithNBT(tag, 1, 1) },
             null,
             null,
@@ -328,11 +328,11 @@ public class CircuitImprintLoader {
     }
 
     private static void makeAndAddCraftingRecipes(NBTTagCompound tag) {
-        ItemStack circuit = BW_Meta_Items.getNEWCIRCUITS()
+        ItemStack circuit = BW_Meta_Items.getCircuitParts()
             .getStackWithNBT(tag, 0, 1);
-        Object[] imprintRecipe = { " X ", "GPG", " X ", 'P', BW_Meta_Items.getNEWCIRCUITS()
+        Object[] imprintRecipe = { " X ", "GPG", " X ", 'P', BW_Meta_Items.getCircuitParts()
             .getStackWithNBT(tag, 1, 1), 'G', WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite, 1), 'X',
-            BW_Meta_Items.getNEWCIRCUITS()
+            BW_Meta_Items.getCircuitParts()
                 .getStack(3) };
 
         IRecipe bwrecipe = new BWNBTDependantCraftingRecipe(circuit, imprintRecipe);

@@ -20,7 +20,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -136,7 +135,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public void onConfigLoad(final GT_Config aConfig) {
+    public void onConfigLoad() {
         sInterDimensionalTesseractAllowed = true;
         TESSERACT_ENERGY_COST = 512;
         TESSERACT_ENERGY_COST_DIMENSIONAL = 2048;

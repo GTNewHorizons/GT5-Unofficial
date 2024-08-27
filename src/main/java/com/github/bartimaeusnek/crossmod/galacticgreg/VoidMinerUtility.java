@@ -23,8 +23,6 @@ import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
-import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -182,11 +180,7 @@ public class VoidMinerUtility {
             case -1 -> gt_worldgen -> gt_worldgen.mNether;
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
             case 1 -> gt_worldgen -> gt_worldgen.mEnd || gt_worldgen.mEndAsteroid;
-            /*
-             * explicitly giving different dim numbers so that it default to false in the config, keeping compat with
-             * the current worldgen config
-             */
-            case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed("Twilight Forest", 0, 7);
+            case 7 -> gt_worldgen -> gt_worldgen.twilightForest;
             default -> throw new IllegalStateException();
         };
     }
@@ -201,11 +195,7 @@ public class VoidMinerUtility {
             case -1 -> gt_worldgen -> gt_worldgen.mNether;
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
             case 1 -> gt_worldgen -> gt_worldgen.mEnd;
-            /*
-             * explicitly giving different dim numbers so that it default to false in the config, keeping compat with
-             * the current worldgen config
-             */
-            case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed("Twilight Forest", 0, 7);
+            case 7 -> gt_worldgen -> gt_worldgen.twilightForest;
             default -> throw new IllegalStateException();
         };
     }
@@ -259,34 +249,6 @@ public class VoidMinerUtility {
                     && oreSmallPiecesSpace.isEnabledForDim(finalDef))
             .map(gt_worldgen -> (GT_Worldgen_GT_Ore_SmallPieces_Space) gt_worldgen)
             .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
-
-        // BW Ore Veins
-        try {
-            GalacticGreg.oreVeinWorldgenList.stream()
-                .filter(
-                    gt_worldgen -> gt_worldgen.mEnabled
-                        && gt_worldgen instanceof BW_Worldgen_Ore_Layer_Space oreLayerSpace
-                        && oreLayerSpace.isEnabledForDim(finalDef))
-                .map(gt_worldgen -> (BW_Worldgen_Ore_Layer_Space) gt_worldgen)
-                .forEach(oreLayer -> {
-                    List<ItemStack> data = oreLayer.getStacks();
-                    dropMap.addDrop(data.get(0), oreLayer.mWeight);
-                    dropMap.addDrop(data.get(1), oreLayer.mWeight);
-                    dropMap.addDrop(data.get(2), oreLayer.mWeight / 8f);
-                    dropMap.addDrop(data.get(3), oreLayer.mWeight / 8f);
-                });
-        } catch (NullPointerException ignored) {}
-
-        // BW Small Ores
-        try {
-            GalacticGreg.smallOreWorldgenList.stream()
-                .filter(
-                    gt_worldgen -> gt_worldgen.mEnabled
-                        && gt_worldgen instanceof BW_Worldgen_Ore_SmallOre_Space smallOreSpace
-                        && smallOreSpace.isEnabledForDim(finalDef))
-                .map(gt_worldgen -> (BW_Worldgen_Ore_SmallOre_Space) gt_worldgen)
-                .forEach(element -> dropMap.addDrop(element.mPrimaryMeta, element.mDensity, element.bwOres != 0));
-        } catch (NullPointerException ignored) {}
         return dropMap;
     }
 

@@ -58,8 +58,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -94,6 +92,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
+import gregtech.common.config.machinestats.ConfigMachines;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -169,12 +168,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
         this.processingLogic = null;
-        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
-        this.damageFactorLow = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
-        this.damageFactorHigh = (float) GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
+        this.damageFactorLow = ConfigMachines.damageFactorLow;
+        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
         this.mNEI = "";
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
@@ -182,12 +178,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public GT_MetaTileEntity_MultiBlockBase(String aName) {
         super(aName, 2);
         this.processingLogic = createProcessingLogic();
-        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
-        this.damageFactorLow = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
-        this.damageFactorHigh = (float) GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
+        this.damageFactorLow = ConfigMachines.damageFactorLow;
+        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
 

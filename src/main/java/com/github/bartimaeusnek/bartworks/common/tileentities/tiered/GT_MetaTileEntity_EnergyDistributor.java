@@ -13,17 +13,13 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Transformer {
 
@@ -72,16 +68,6 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("tooltip.tile.energydistributor.0.name"),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(GT_Values.V[this.mTier]),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.maxAmperesIn()),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.maxAmperesOut()),
-            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+        return new String[] { StatCollector.translateToLocal("tooltip.tile.energydistributor.0.name") };
     }
 }
