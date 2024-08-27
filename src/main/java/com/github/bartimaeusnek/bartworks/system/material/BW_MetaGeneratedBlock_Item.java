@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -75,15 +74,6 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
             if (!tooltip.isEmpty()) {
                 aList.add(tooltip);
             }
-
-            String owner = werkstoff.getOwner();
-            if (owner != null) {
-                aList.add(BW_Tooltip_Reference.ADDED_VIA_BARTWORKS.apply(owner));
-            } else {
-                aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
-            }
-        } else {
-            aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }
     }
 
