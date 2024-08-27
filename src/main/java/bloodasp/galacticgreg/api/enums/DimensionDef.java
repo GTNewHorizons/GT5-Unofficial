@@ -186,6 +186,8 @@ public enum DimensionDef {
         public static final String PROTEUS = "Proteus";
         public static final String OBERON = "Oberon";
         public static final String TITAN = "Titan";
+        public static final String ROSS128B = "Ross128b";
+        public static final String ROSS128BA = "Ross128ba";
         public static final String CALLISTO = "Callisto";
         public static final String GANYMEDE = "Ganymede";
         public static final String CERES = "Ceres";

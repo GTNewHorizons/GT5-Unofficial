@@ -30,6 +30,8 @@ import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.OBERON;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PHOBOS;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PLUTO;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PROTEUS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ROSS128B;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ROSS128BA;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.SETH;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TCETIE;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
@@ -50,7 +52,7 @@ public class DimensionHelper {
 
     public static final String[] DimName = {
         // Non GC dimensions in progression order instead of alphabetical
-        "Overworld", "Nether", "Twilight", "TheEnd", "Vanilla_EndAsteroids", "EndAsteroid",
+        "Overworld", "Nether", "Twilight", "TheEnd", "EndAsteroid",
         // T1
         "GalacticraftCore_Moon",
         // T2
@@ -80,8 +82,7 @@ public class DimensionHelper {
             n -> n.replaceAll("GalacticraftCore_", "")
                 .replaceAll("GalacticraftMars_", "")
                 .replaceAll("GalaxySpace_", "")
-                .replaceAll("GalacticraftAmunRa_", "")
-                .replaceAll("Vanilla_", "Vanilla "))
+                .replaceAll("GalacticraftAmunRa_", ""))
         .toArray(String[]::new);
 
     public static final String[] DimNameDisplayed = { // first 2 letters if one word else 1 letter of every word, except
@@ -92,7 +93,6 @@ public class DimensionHelper {
         "Ne", // Nether
         "TF", // Twilight
         "ED", // TheEnd because En = Encalus
-        "VA", // Vanilla_EndAsteroids
         "EA", // EndAsteroid
         // T1
         "Mo", // GalacticraftCore_Moon
@@ -230,7 +230,6 @@ public class DimensionHelper {
             case OreMixBuilder.NETHER -> abbreviatedName=  "Ne"; // Nether
             case OreMixBuilder.TWILIGHT_FOREST -> abbreviatedName= "TF"; // Twilight
             case OreMixBuilder.THE_END -> abbreviatedName= "ED"; // TheEnd because En = Encalus
-            // "VA" seems to be another occurence of the end asteroid dims see Vanilla_EndAsteroids and EndAsteroid in old WorldGeneration.cfg
             case ENDASTEROIDS -> abbreviatedName= "EA"; // EndAsteroid
             // T1
             case MOON -> abbreviatedName= "Mo"; // GalacticraftCore_Moon
@@ -244,7 +243,7 @@ public class DimensionHelper {
             case CERES -> abbreviatedName= "Ce"; // GalaxySpace_Ceres
             case EUROPA -> abbreviatedName= "Eu"; // GalaxySpace_Europa
             case GANYMEDE -> abbreviatedName= "Ga"; // GalaxySpace_Ganymede
-            // todo case  -> abbreviatedName= "Rb"; // Ross128b
+            case ROSS128B -> abbreviatedName= "Rb"; // Ross128b
             // T4
             case IO -> abbreviatedName= "Io"; // GalaxySpace_Io
             case MERCURY -> abbreviatedName= "Me"; // GalaxySpace_Mercury
@@ -254,7 +253,7 @@ public class DimensionHelper {
             case MIRANDA -> abbreviatedName= "Mi"; // GalaxySpace_Miranda
             case OBERON -> abbreviatedName= "Ob"; // GalaxySpace_Oberon
             case TITAN -> abbreviatedName= "Ti"; // GalaxySpace_Titan
-            // todo case  -> abbreviatedName= "Ra"; // Ross128ba
+            case ROSS128BA -> abbreviatedName= "Ra"; // Ross128ba
             // T6
             case PROTEUS -> abbreviatedName= "Pr"; // GalaxySpace_Proteus
             case TRITON -> abbreviatedName= "Tr"; // GalaxySpace_Triton
@@ -282,6 +281,65 @@ public class DimensionHelper {
             default -> {throw new IllegalStateException("String: "+dimName+" has no abbredged name!");}
         }
         return abbreviatedName;
+    }
+
+    public static String getFullName(String dimName){
+
+        return switch (dimName){
+            case  "Ow" -> (OreMixBuilder.OW);   // Overworld
+            case    "Ne" -> OreMixBuilder.NETHER;  // Nether
+            case   "TF" -> OreMixBuilder.TWILIGHT_FOREST;  // Twilight
+            case   "ED" -> OreMixBuilder.THE_END;  // TheEnd because En = Encalus
+            case   "EA" -> ENDASTEROIDS;  // EndAsteroid
+            // T1
+            case   "Mo" -> MOON;  // GalacticraftCore_Moon
+            // T2
+            case   "De" -> DEIMOS;  // GalaxySpace_Deimos
+            case   "Ma" -> MARS;  // GalacticraftMars_Mars
+            case   "Ph" -> PHOBOS;  // GalaxySpace_Phobos
+            // T3
+            case   "As" -> ASTEROIDS;  // GalacticraftMars_Asteroids
+            case   "Ca" -> CALLISTO;  // GalaxySpace_Callisto
+            case   "Ce" -> CERES;  // GalaxySpace_Ceres
+            case   "Eu" -> EUROPA;  // GalaxySpace_Europa
+            case   "Ga" -> GANYMEDE;  // GalaxySpace_Ganymede
+            case   "Rb" -> ROSS128B; // Ross128b
+            // T4
+            case   "Io" -> IO;  // GalaxySpace_Io
+            case   "Me" -> MERCURY;  // GalaxySpace_Mercury
+            case   "Ve" -> VENUS;  // GalaxySpace_Venus
+            // T5
+            case   "En" -> ENCELADUS;  // GalaxySpace_Enceladus
+            case   "Mi" -> MIRANDA;  // GalaxySpace_Miranda
+            case   "Ob" -> OBERON;  // GalaxySpace_Oberon
+            case   "Ti" -> TITAN;  // GalaxySpace_Titan
+            case   "Ra" -> ROSS128BA; // Ross128ba
+            // T6
+            case   "Pr" -> PROTEUS;  // GalaxySpace_Proteus
+            case   "Tr" -> TRITON;  // GalaxySpace_Triton
+            // T7
+            case   "Ha" -> HAUMEA;  // GalaxySpace_Haumea
+            case   "KB" -> KUIPERBELT;  // GalaxySpace_Kuiperbelt
+            case   "MM" -> MAKEMAKE;  // GalaxySpace_MakeMake
+            case   "Pl" -> PLUTO;  // GalaxySpace_Pluto
+            // T8
+            case   "BC" -> BARNARDC;  // GalaxySpace_BarnardC
+            case   "BE" -> BARNARDE;  // GalaxySpace_BarnardE
+            case   "BF" -> BARNARDF;  // GalaxySpace_BarnardF
+            case   "CB" -> CENTAURIA;  // GalaxySpace_CentauriA is actually α Centauri Bb
+            case   "TE" -> TCETIE;  // GalaxySpace_TcetiE
+            case   "VB" -> VEGAB;  // GalaxySpace_VegaB
+            // T9
+            case   "An" -> ANUBIS;  // GalacticraftAmunRa_Anubis
+            case   "Ho" -> HORUS;  // GalacticraftAmunRa_Horus
+            case   "Mh" -> MAAHES;  // GalacticraftAmunRa_Maahes
+            case   "MB" -> MEHENBELT;  // GalacticraftAmunRa_MehenBelt
+            case   "Np" -> NEPER;  // GalacticraftAmunRa_Neper
+            case   "Se" -> SETH;  // GalacticraftAmunRa_Seth
+            // T10
+            case   "DD" -> DEEPDARK;  // Underdark
+            default -> {throw new IllegalStateException("String: "+dimName+" has no abbredged name!");}
+        };
     }
 
     public static List<String> convertCondensedStringToToolTip(String line) {
