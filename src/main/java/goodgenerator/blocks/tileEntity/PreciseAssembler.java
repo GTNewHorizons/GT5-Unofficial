@@ -144,7 +144,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                                         Pair.of(Loaders.preciseUnitCasing, 1),
                                         Pair.of(Loaders.preciseUnitCasing, 2),
                                         Pair.of(Loaders.preciseUnitCasing, 3)),
-                                    -2,
+                                    -3,
                                     PreciseAssembler::setCasingTier,
                                     PreciseAssembler::getCasingTier))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))

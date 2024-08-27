@@ -148,7 +148,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
                                 ImmutableList.of(
                                     Pair.of(GregTech_API.sBlockCasings4, 2),
                                     Pair.of(ModBlocks.blockCasingsMisc, 7)),
-                                0,
+                                -1,
                                 (m, t) -> m.structureTier = t,
                                 m -> m.structureTier))))
                 .build();
