@@ -35,10 +35,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -231,8 +229,7 @@ public class GregTech_API {
     /**
      * The Configuration Objects
      */
-    public static GT_Config sMachineFile = null, sWorldgenFile = null, sMaterialProperties = null, sUnification = null,
-        sSpecialFile = null, sClientDataFile, sOPStuff = null;
+    public static GT_Config NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -258,11 +255,10 @@ public class GregTech_API {
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sConstantEnergy = true,
-        sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
-        sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
-        sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
-        mServerStarted = false;
+        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
+        sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
+        sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
+        mInputRF = false, mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -775,14 +771,7 @@ public class GregTech_API {
     }
 
     public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
-        return Comparator.comparingInt((ItemStack is) -> {
-            // By default, the Programmed Circuit should be the earliest configuration circuit to which the
-            // player is exposed
-            if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
-                return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
-            return GT_Mod.gregtechproxy.mCircuitsOrder
-                .getOrDefault(String.valueOf(GameRegistry.findUniqueIdentifierFor(is.getItem())), Integer.MAX_VALUE);
-        })
+        return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1)
             .thenComparing(ItemStack::getUnlocalizedName)
             .thenComparing(ItemStack::getItemDamage);
     }

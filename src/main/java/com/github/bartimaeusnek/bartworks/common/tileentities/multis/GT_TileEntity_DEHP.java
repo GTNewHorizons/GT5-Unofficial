@@ -34,7 +34,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -59,7 +58,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     @SuppressWarnings("rawtypes")
-    public void onConfigLoad(GT_Config aConfig) {
+    public void onConfigLoad() {
         try {
             Class c = TileEntityNuclearReactorElectric.class;
             Field f = c.getDeclaredField("huOutputModifier");
@@ -69,7 +68,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             | IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
-        super.onConfigLoad(aConfig);
+        super.onConfigLoad();
     }
 
     @Override
