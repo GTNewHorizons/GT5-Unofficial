@@ -1,22 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_GLOW;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -49,51 +33,74 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             1,
             0,
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_POTIONBREWER_ACTIVE),
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_POTIONBREWER),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_POTIONBREWER_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_POTIONBREWER_ACTIVE),
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_POTIONBREWER),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_POTIONBREWER_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_POTIONBREWER_ACTIVE),
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_POTIONBREWER),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_POTIONBREWER_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE),
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon(
+                        "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_POTIONBREWER_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_GLOW"))
                     .glow()
                     .build()));
     }
@@ -136,31 +143,14 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
                     tInputName = tInputName.replaceFirst("." + tModifier, "");
                 }
                 if (GT_Utility.areStacksEqual(new ItemStack(Items.fermented_spider_eye, 1, 0), getInputAt(0))) {
-                    if (tInputName.equals("poison")) {
-                        return setOutput("potion.damage" + tModifier);
-                    }
-                    if (tInputName.equals("health")) {
-                        return setOutput("potion.damage" + tModifier);
-                    }
-                    if (tInputName.equals("waterbreathing")) {
-                        return setOutput("potion.damage" + tModifier);
-                    }
-                    if (tInputName.equals("nightvision")) {
-                        return setOutput("potion.invisibility" + tModifier);
-                    }
-                    if (tInputName.equals("fireresistance")) {
-                        return setOutput("potion.slowness" + tModifier);
-                    }
-                    if (tInputName.equals("speed")) {
-                        return setOutput("potion.slowness" + tModifier);
-                    }
-                    if (tInputName.equals("strength")) {
-                        return setOutput("potion.weakness" + tModifier);
-                    }
-                    if (tInputName.equals("regen")) {
-                        return setOutput("potion.poison" + tModifier);
-                    }
-                    return setOutput("potion.weakness");
+                    return switch (tInputName) {
+                        case "poison", "health", "waterbreathing" -> setOutput("potion.damage" + tModifier);
+                        case "nightvision" -> setOutput("potion.invisibility" + tModifier);
+                        case "fireresistance", "speed" -> setOutput("potion.slowness" + tModifier);
+                        case "strength" -> setOutput("potion.weakness" + tModifier);
+                        case "regen" -> setOutput("potion.poison" + tModifier);
+                        default -> setOutput("potion.weakness");
+                    };
                 }
                 if (GT_Utility.areStacksEqual(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),

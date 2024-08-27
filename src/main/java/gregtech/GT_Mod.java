@@ -110,6 +110,7 @@ import gregtech.loaders.postload.GT_PostLoad;
 import gregtech.loaders.postload.GT_RecyclerBlacklistLoader;
 import gregtech.loaders.postload.GT_ScrapboxDropLoader;
 import gregtech.loaders.postload.GT_Worldgenloader;
+import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
 import gregtech.loaders.preload.GT_Loader_ItemData;
 import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
@@ -505,6 +506,9 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
 
+        // Register postea transformers
+        new PosteaTransformers().run();
+
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the
          * removals in bulk, and then any deferred additions. The bulk removals in particular significantly speed up the
@@ -569,6 +573,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GregTech_API.sGTCompleteLoad = null;
+        GregTech_API.sFullLoadFinished = true;
     }
 
     @Mod.EventHandler

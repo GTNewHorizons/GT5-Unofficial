@@ -923,6 +923,9 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -934,6 +937,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
@@ -960,7 +965,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Ha
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ItemDistributor;
@@ -1011,7 +1019,57 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_TurboCharge
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
-import gregtech.common.tileentities.machines.multi.*;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AssemblyLine;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BrickedBlastFurnace;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer1;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer3;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialExtractor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Steel;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Titanium;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_TungstenSteel;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Gas;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_GasAdvanced;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Plasma;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiAutoclave;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill3;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill4;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrillInfinite;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant1;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant3;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant4;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PCBFactory;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
@@ -1551,7 +1609,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
-                "Hyper-Intensity Laser Emitter").getStackForm(1));
+                "Hyper-Intensity Laser Engraver").getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialExtractor.set(
+            new GT_MetaTileEntity_IndustrialExtractor(
+                INDUSTRIAL_EXTRACTOR_CONTROLLER.ID,
+                "multimachine.extractor",
+                "Dissection Apparatus").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
@@ -1562,6 +1626,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Large_Crystalizer.set(
             new GT_MetaTileEntity_Crystalizer(LARGE_CRYSTALIZER.ID, "multimachine.crystalizer", "Large Crystalizer")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_Autoclave.set(
+            new GT_MetaTileEntity_MultiAutoclave(
+                MULTI_AUTOCLAVE_CONTROLLER.ID,
+                "multimachine.autoclave",
+                "Industrial Autoclave").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -12722,19 +12792,40 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateWiresAndPipes() {
-        for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
-            if (((GregTech_API.sGeneratedMaterials[i] != null)
-                && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))
-                || (GregTech_API.sGeneratedMaterials[i] == Materials.Wood)) {
+        for (int meta = 0; meta < GregTech_API.sGeneratedMaterials.length; meta++) {
+            Materials material = GregTech_API.sGeneratedMaterials[meta];
+            // This check is separated out because IntelliJ thinks Materials.Wood can be null.
+            if (material == null) continue;
+            if ((material.mTypes & 0x2) != 0 || material == Materials.Wood) {
                 new GT_MetaPipeEntity_Frame(
-                    4096 + i,
-                    "GT_Frame_" + GregTech_API.sGeneratedMaterials[i],
-                    (GT_LanguageManager.i18nPlaceholder ? "%material"
-                        : GregTech_API.sGeneratedMaterials[i] != null
-                            ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
-                            : "")
-                        + " Frame Box",
-                    GregTech_API.sGeneratedMaterials[i]);
+                    4096 + meta,
+                    "GT_Frame_" + material,
+                    (GT_LanguageManager.i18nPlaceholder ? "%material" : material.mDefaultLocalName)
+                        + " Frame Box (TileEntity)",
+                    material);
+
+                // Generate recipes for frame box
+                GT_Block_FrameBox block = (GT_Block_FrameBox) GregTech_API.sBlockFrames;
+                GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, material, block.getStackForm(1, meta));
+                if (material.getProcessingMaterialTierEU() < TierEU.IV) {
+                    GT_ModHandler.addCraftingRecipe(
+                        block.getStackForm(2, meta),
+                        GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(material) });
+                }
+
+                if (!material.contains(SubTag.NO_RECIPES)
+                    && GT_OreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
+                    // Auto generate frame box recipe in an assembler.
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.stick, material, 4),
+                            GT_Utility.getIntegratedCircuit(4))
+                        .itemOutputs(block.getStackForm(1, meta))
+                        .duration(3 * SECONDS + 4 * TICKS)
+                        .eut(calculateRecipeEU(material, 7))
+                        .addTo(assemblerRecipes);
+                }
             }
         }
 
