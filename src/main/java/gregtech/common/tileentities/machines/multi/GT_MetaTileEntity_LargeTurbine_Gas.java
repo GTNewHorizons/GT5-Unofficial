@@ -57,8 +57,6 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
         tt.addMachineType("Gas Turbine")
             .addInfo("Controller block for the Large Gas Turbine")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
-            .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
             // .addInfo("The excess fuel that gets consumed will be voided!")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()

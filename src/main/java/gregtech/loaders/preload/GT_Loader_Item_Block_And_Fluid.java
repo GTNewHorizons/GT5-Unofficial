@@ -31,7 +31,6 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -40,6 +39,7 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_BreederCell_Item;
@@ -63,6 +63,7 @@ import gregtech.common.blocks.GT_Block_Casings8;
 import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Block_Glass1;
 import gregtech.common.blocks.GT_Block_Granites;
 import gregtech.common.blocks.GT_Block_Laser;
@@ -359,7 +360,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -373,7 +374,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -387,7 +388,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Depleted_MNq_1.set(new GT_DepletetCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
@@ -438,7 +439,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -452,7 +453,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -466,7 +467,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         ItemList.Uraniumcell_1.set(
@@ -553,6 +554,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
+        GregTech_API.sBlockFrames = new GT_Block_FrameBox();
         GregTech_API.sDroneRender = new GT_Block_Drone();
         GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
         GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
@@ -2058,59 +2060,33 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Iron, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Iron,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Iron,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateSteel", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Steel, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Steel,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Steel,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateTinAlloy", true)) {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.TinAlloy,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.TinAlloy,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.TinAlloy,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Copper, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Copper,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Copper,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
+            false,
+            false);
 
         GT_OreDictUnificator.set(
             OrePrefixes.dust,

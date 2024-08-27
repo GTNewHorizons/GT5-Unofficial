@@ -25,6 +25,104 @@ public class CompressorRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Cell_Empty.get(1))
+            .itemOutputs(ItemList.Cell_Air.get(1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.sand, 4))
+            .itemOutputs(new ItemStack(Blocks.sandstone, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("iridiumShard", 9))
+            .itemOutputs(GT_ModHandler.getIC2Item("iridiumOre", 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.clay_ball, 4))
+            .itemOutputs(new ItemStack(Blocks.clay, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.brick, 4))
+            .itemOutputs(new ItemStack(Blocks.brick_block, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.netherbrick, 4))
+            .itemOutputs(new ItemStack(Blocks.nether_brick, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("smallPlutonium", 9))
+            .itemOutputs(GT_ModHandler.getIC2Item("Plutonium", 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("smallUran235", 9))
+            .itemOutputs(GT_ModHandler.getIC2Item("Uran235", 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.water_bucket, 1))
+            .itemOutputs(new ItemStack(Blocks.snow, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.snowball, 4))
+            .itemOutputs(new ItemStack(Blocks.snow, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Cell_Water.get(1))
+            .itemOutputs(new ItemStack(Blocks.snow, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.snow, 1))
+            .itemOutputs(new ItemStack(Blocks.ice, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("carbonMesh", 1))
+            .itemOutputs(GT_ModHandler.getIC2Item("carbonPlate", 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("coalBall", 1))
+            .itemOutputs(ItemList.IC2_Compressed_Coal_Ball.get(1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L))
             .duration(15 * SECONDS)

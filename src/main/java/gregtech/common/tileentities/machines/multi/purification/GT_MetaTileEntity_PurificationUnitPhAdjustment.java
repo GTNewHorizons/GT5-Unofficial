@@ -243,12 +243,6 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
-        // Do nothing, we don't want to lock hatches to recipe maps since this can cause
-        // them to reject our catalyst fluids
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
             STRUCTURE_PIECE_MAIN,
@@ -330,7 +324,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the pH Neutralization Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
                 "Initial pH value every cycle varies from " + EnumChatFormatting.RED

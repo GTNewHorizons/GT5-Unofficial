@@ -14,6 +14,8 @@ public class GT_Config implements Runnable {
     public static boolean troll = false;
 
     public static Configuration sConfigFileIDs;
+    public static Configuration cleanroomFile;
+    public static Configuration undergroundFluidsFile;
     public final Configuration mConfig;
 
     public GT_Config(Configuration aConfig) {
@@ -38,7 +40,7 @@ public class GT_Config implements Runnable {
             aName.replaceAll("\\|", "."),
             aDefault);
         int rResult = tProperty.getInt(aDefault);
-        if (!tProperty.wasRead() && shouldSave()) sConfigFileIDs.save();
+        sConfigFileIDs.save();
         return rResult;
     }
 

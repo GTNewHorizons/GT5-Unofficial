@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import static gregtech.api.util.GT_RecipeBuilder.ENABLE_COLLISION_CHECK;
 import static gregtech.api.util.GT_RecipeBuilder.handleInvalidRecipe;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
@@ -179,7 +180,7 @@ public class RecipeMapBackend {
                 recipe = properties.recipeTransformer.apply(recipe);
             }
             if (recipe == null) continue;
-            if (builder.isCheckForCollision() && checkCollision(recipe)) {
+            if (builder.isCheckForCollision() && ENABLE_COLLISION_CHECK && checkCollision(recipe)) {
                 handleCollision(recipe);
                 continue;
             }

@@ -35,10 +35,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -112,44 +110,7 @@ public class GregTech_API {
     public static final CreativeTabs TAB_GREGTECH = new GT_CreativeTab("Main", "Main"),
         TAB_GREGTECH_MATERIALS = new GT_CreativeTab("Materials", "Materials"),
         TAB_GREGTECH_ORES = new GT_CreativeTab("Ores", "Ores");
-    /**
-     * A List of all registered MetaTileEntities
-     * <p/>
-     * 0 - 749 are used by GregTech.
-     * 750 - 999 are reserved for Alkalus.
-     * 1000 - 2047 are used by GregTech.
-     * 2048 - 2559 are reserved for OvermindDL.
-     * 2560 - 3071 are reserved for Immibis.
-     * 3072 - 3583 are reserved for LinusPhoenix.
-     * 3584 - 4095 are reserved for BloodyAsp.
-     * 4096 - 5095 are used for GregTech Frames.
-     * 5096 - 6099 are used for GregTech Pipes.
-     * 6100 - 8191 are used for GregTech Decoration Blocks.
-     * 8192 - 8703 are reserved for ZL123.
-     * 8704 - 9215 are reserved for Mr10Movie.
-     * 9216 - 9727 are used for GregTech Automation Machines.
-     * 9728 - 10239 are reserved for 28Smiles.
-     * 10240 - 10751 are reserved for VirMan.
-     * 10752 - 11263 are reserved for Briareos81.
-     * 11264 - 12000 are reserved for Quantum64.
-     * 12001 - 12500 are reserved for RedMage17.
-     * 12501 - 13000 are reserved for bartimaeusnek.
-     * 13001 - 13100 are reserved for Techlone.
-     * 13101 - 13500 are reserved for kekzdealer.
-     * 13501 - 14000 are reserved for glee8e.
-     * 14001 - 14100 are reserved for glowredman.
-     * 14101 - 14200 are reserved for MuXiu1997.
-     * 14201 - 14300 are reserved for kuba6000.
-     * 14301 - 14400 are reserved for eigenraven.
-     * 14401 - 14999 are currently free.
-     * 15000 - 16999 are reserved for TecTech.
-     * 17000 - 29999 are currently free.
-     * 30000 - 31999 are reserved for Alkalus.
-     * 32001 - 32766 are reserved for Glod.
-     * <p/>
-     * Contact me if you need a free ID-Range, which doesn't conflict with other Addons. You could make an ID-Config,
-     * but we all know what "stupid" customers think about conflicting ID's
-     */
+
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
     /**
      * The Icon List for Covers
@@ -268,8 +229,7 @@ public class GregTech_API {
     /**
      * The Configuration Objects
      */
-    public static GT_Config sMachineFile = null, sWorldgenFile = null, sMaterialProperties = null, sUnification = null,
-        sSpecialFile = null, sClientDataFile, sOPStuff = null;
+    public static GT_Config NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -286,6 +246,7 @@ public class GregTech_API {
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
+    public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
@@ -294,11 +255,10 @@ public class GregTech_API {
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sConstantEnergy = true,
-        sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
-        sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
-        sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
-        mServerStarted = false;
+        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
+        sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
+        sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
+        mInputRF = false, mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -314,7 +274,8 @@ public class GregTech_API {
      * Getting assigned by the Mod loading
      */
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
+        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
+        sFullLoadFinished = false;
 
     private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 
@@ -810,14 +771,7 @@ public class GregTech_API {
     }
 
     public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
-        return Comparator.comparingInt((ItemStack is) -> {
-            // By default, the Programmed Circuit should be the earliest configuration circuit to which the
-            // player is exposed
-            if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
-                return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
-            return GT_Mod.gregtechproxy.mCircuitsOrder
-                .getOrDefault(String.valueOf(GameRegistry.findUniqueIdentifierFor(is.getItem())), Integer.MAX_VALUE);
-        })
+        return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1)
             .thenComparing(ItemStack::getUnlocalizedName)
             .thenComparing(ItemStack::getItemDamage);
     }

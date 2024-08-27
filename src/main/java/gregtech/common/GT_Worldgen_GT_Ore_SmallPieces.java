@@ -13,7 +13,6 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
@@ -27,63 +26,26 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
     public final boolean mOverworld;
     public final boolean mNether;
     public final boolean mEnd;
-    public final boolean mMoon = false, mMars = false, mAsteroid = false;
+    public final boolean twilightForest;
     public final String mBiome;
-    public final String aTextWorldgen = "worldgen.";
     public static ArrayList<GT_Worldgen_GT_Ore_SmallPieces> sList = new ArrayList<>();
 
     public Class[] mAllowedProviders;
 
-    // TODO CHECK IF INSTANTIATION IS CORRECT
-    public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount,
-        boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary) {
-        super(aName, GregTech_API.sWorldgenList, aDefault);
-        this.mOverworld = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
-        this.mMinY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
-        this.mMaxY = ((short) Math.max(
-            this.mMinY + 1,
-            GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY)));
-        this.mAmount = ((short) Math
-            .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Amount", aAmount)));
-        this.mMeta = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
-        this.mBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "BiomeName", "None");
-        sList.add(this);
+    public GT_Worldgen_GT_Ore_SmallPieces(SmallOreBuilder ore) {
+        super(ore.smallOreName, GregTech_API.sWorldgenList, ore.enabledByDefault);
+        this.mOverworld = ore.dimsEnabled.getOrDefault(SmallOreBuilder.OW, false);
+        this.mNether = ore.dimsEnabled.getOrDefault(SmallOreBuilder.NETHER, false);
+        this.mEnd = ore.dimsEnabled.getOrDefault(SmallOreBuilder.THE_END, false);
+        this.twilightForest = ore.dimsEnabled.getOrDefault(SmallOreBuilder.TWILIGHT_FOREST, false);
 
-        List<Class> allowedProviders = new ArrayList<>();
-        if (this.mNether) {
-            allowedProviders.add(WorldProviderHell.class);
-        }
+        this.mMinY = (short) ore.minY;
+        this.mMaxY = (short) Math.max(this.mMinY + 1, ore.maxY);
+        this.mAmount = (short) Math.max(1, ore.amount);
+        this.mMeta = (short) ore.ore.mMetaItemSubID;
+        this.mBiome = "None";
 
-        if (this.mOverworld) {
-            allowedProviders.add(WorldProviderSurface.class);
-        }
-
-        if (this.mEnd) {
-            allowedProviders.add(WorldProviderEnd.class);
-        }
-        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
-    }
-
-    public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount,
-        boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2, boolean GC_UNUSED3,
-        Materials aPrimary) {
-        super(aName, GregTech_API.sWorldgenList, aDefault);
-        this.mOverworld = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
-        this.mMinY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
-        this.mMaxY = ((short) Math.max(
-            this.mMinY + 1,
-            GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY)));
-        this.mAmount = ((short) Math
-            .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Amount", aAmount)));
-        this.mMeta = ((short) GregTech_API.sWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
-        this.mBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "BiomeName", "None");
-        sList.add(this);
+        if (this.mEnabled) sList.add(this);
 
         List<Class> allowedProviders = new ArrayList<>();
         if (this.mNether) {

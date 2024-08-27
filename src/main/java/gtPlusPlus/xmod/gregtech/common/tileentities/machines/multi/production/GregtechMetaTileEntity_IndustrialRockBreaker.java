@@ -87,7 +87,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
             .addInfo("Circuit goes in the GUI slot")
             .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
-            .addInfo("Supply Water/Lava")
+            .addInfo("Needs Water and Lava in input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .beginStructureBlock(3, 4, 3, true)
@@ -154,12 +154,12 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAIndustrialRockBreakerActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAIndustrialRockBreaker;
     }
 
     @Override

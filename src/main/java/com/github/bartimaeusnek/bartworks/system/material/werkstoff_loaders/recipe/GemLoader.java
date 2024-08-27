@@ -287,7 +287,7 @@ public class GemLoader implements IWerkstoffRunnable {
                     .itemInputs(werkstoff.get(gemFlawless, 3), is)
                     .itemOutputs(werkstoff.get(gemExquisite, 1))
                     .duration(2 * MINUTES)
-                    .eut(2000)
+                    .eut(TierEU.RECIPE_EV)
                     .addTo(laserEngraverRecipes);
 
             }

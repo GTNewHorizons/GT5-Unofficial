@@ -5,6 +5,7 @@ import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GT_Recipe.setItemStacks;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -24,7 +25,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,8 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import appeng.api.AEApi;
+import bloodasp.galacticgreg.SpaceDimRegisterer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -61,7 +64,6 @@ import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
@@ -79,6 +81,24 @@ import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
+import gregtech.common.config.client.ConfigColorModulation;
+import gregtech.common.config.client.ConfigInterface;
+import gregtech.common.config.client.ConfigPreference;
+import gregtech.common.config.client.ConfigRender;
+import gregtech.common.config.client.ConfigWaila;
+import gregtech.common.config.gregtech.ConfigDebug;
+import gregtech.common.config.gregtech.ConfigFeatures;
+import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
+import gregtech.common.config.gregtech.ConfigMachines;
+import gregtech.common.config.gregtech.ConfigOreDropBehavior;
+import gregtech.common.config.gregtech.ConfigPollution;
+import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
+import gregtech.common.config.machinestats.ConfigTeleporter;
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
@@ -109,6 +129,7 @@ import gregtech.loaders.postload.GT_PostLoad;
 import gregtech.loaders.postload.GT_RecyclerBlacklistLoader;
 import gregtech.loaders.postload.GT_ScrapboxDropLoader;
 import gregtech.loaders.postload.GT_Worldgenloader;
+import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
 import gregtech.loaders.preload.GT_Loader_ItemData;
 import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
@@ -166,6 +187,47 @@ import ic2.api.recipe.RecipeOutput;
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
+    static {
+        try {
+            // Client
+            ConfigurationManager.registerConfig(ConfigColorModulation.class);
+            ConfigurationManager.registerConfig(ConfigInterface.class);
+            ConfigurationManager.registerConfig(ConfigPreference.class);
+            ConfigurationManager.registerConfig(ConfigRender.class);
+            ConfigurationManager.registerConfig(ConfigWaila.class);
+
+            // GregTech.cfg
+            ConfigurationManager.registerConfig(ConfigDebug.class);
+            ConfigurationManager.registerConfig(ConfigFeatures.class);
+            ConfigurationManager.registerConfig(ConfigGeneral.class);
+            ConfigurationManager.registerConfig(ConfigHarvestLevel.class);
+            ConfigurationManager.registerConfig(ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
+            ConfigurationManager.registerConfig(ConfigPollution.class);
+
+            // MachineStats.cfg
+            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
+            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
+            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
+            ConfigurationManager.registerConfig(ConfigTeleporter.class);
+
+            // OverPoweredStuff
+            ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
+
+            // Other
+            ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
+
+            // WorldGeneration
+            ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
+            ConfigurationManager.registerConfig(gregtech.common.config.worldgen.ConfigGeneral.class);
+
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
     @Mod.Instance(Mods.Names.GREG_TECH)
@@ -176,9 +238,11 @@ public class GT_Mod implements IGT_Mod {
         clientSide = "gregtech.common.GT_Client",
         serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
+    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
 
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
+    @Deprecated
     public static final String aTextGeneral = "general";
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
@@ -229,26 +293,22 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
+        GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
         GT_PreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
-                .getParentFile(),
-            tMainConfig);
+                .getParentFile());
 
         gregtechproxy.onPreLoad();
 
         GT_Log.out.println("GT_Mod: Setting Configs");
 
-        GT_PreLoad.loadConfig(tMainConfig);
+        GT_PreLoad.loadConfig();
 
         new Enchantment_Hazmat();
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
 
         Materials.init();
-
-        GT_Log.out.println("GT_Mod: Saving Main Config");
-        tMainConfig.save();
 
         GT_PreLoad.initLocalization(
             aEvent.getModConfigurationDirectory()
@@ -275,6 +335,9 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
+
+        // populate itemstack instance for NBT check in GT_Recipe
+        setItemStacks();
 
         GT_PreLoad.sortToTheEnd();
         GregTech_API.sPreloadFinished = true;
@@ -334,11 +397,10 @@ public class GT_Mod implements IGT_Mod {
 
         new GT_Loader_MetaTileEntities_Recipes().run();
 
-        if (gregtechproxy.mSortToTheEnd) {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        new GT_ItemIterator().run();
+        gregtechproxy.registerUnificationEntries();
+        new GT_FuelLoader().run();
+
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
@@ -347,6 +409,9 @@ public class GT_Mod implements IGT_Mod {
         }
 
         LHECoolantRegistry.registerBaseCoolants();
+
+        GT_FML_LOGGER.debug("Registering SpaceDimensions");
+        SpaceDimRegisterer.register();
 
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
@@ -367,6 +432,7 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
+        // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
             try {
                 tRunnable.run();
@@ -377,20 +443,18 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onPostLoad();
 
-        final int bound = GregTech_API.METATILEENTITIES.length;
-        for (int i1 = 1; i1 < bound; i1++) {
-            if (GregTech_API.METATILEENTITIES[i1] != null) {
-                GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
+        if (DEBUG) {
+            // Prints all the used MTE id and their associated TE name, turned on with -Dgt.debug=true in jvm args
+            final int bound = GregTech_API.METATILEENTITIES.length;
+            for (int i1 = 1; i1 < bound; i1++) {
+                if (GregTech_API.METATILEENTITIES[i1] != null) {
+                    GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
+                }
             }
         }
 
-        if (gregtechproxy.mSortToTheEnd) {
-            gregtechproxy.registerUnificationEntries();
-        } else {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        gregtechproxy.registerUnificationEntries();
+
         new GT_BookAndLootLoader().run();
         new GT_ItemMaxStacksizeLoader().run();
         new GT_BlockResistanceLoader().run();
@@ -502,6 +566,9 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
 
+        // Register postea transformers
+        new PosteaTransformers().run();
+
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the
          * removals in bulk, and then any deferred additions. The bulk removals in particular significantly speed up the
@@ -566,6 +633,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GregTech_API.sGTCompleteLoad = null;
+        GregTech_API.sFullLoadFinished = true;
     }
 
     @Mod.EventHandler
@@ -590,21 +658,7 @@ public class GT_Mod implements IGT_Mod {
         }
 
         gregtechproxy.onServerStarting();
-        // Check for more IC2 recipes on ServerStart to also catch MineTweaker additions
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getMaceratorRecipeList(), RecipeMaps.maceratorRecipes, true, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getCompressorRecipeList(), RecipeMaps.compressorRecipes, true, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getExtractorRecipeList(), RecipeMaps.extractorRecipes, true, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(GT_ModHandler.getOreWashingRecipeList(), RecipeMaps.oreWasherRecipes, false, true, true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getThermalCentrifugeRecipeList(),
-            RecipeMaps.thermalCentrifugeRecipes,
-            true,
-            true,
-            true);
+        GT_ModHandler.removeAllIC2Recipes();
         GT_Log.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
         GT_Log.out.println("GT_Mod: IC2 Machines");

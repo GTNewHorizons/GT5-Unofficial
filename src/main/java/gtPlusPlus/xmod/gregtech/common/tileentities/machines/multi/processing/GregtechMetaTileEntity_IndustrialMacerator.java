@@ -148,7 +148,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
                                 ImmutableList.of(
                                     Pair.of(GregTech_API.sBlockCasings4, 2),
                                     Pair.of(ModBlocks.blockCasingsMisc, 7)),
-                                0,
+                                -1,
                                 (m, t) -> m.structureTier = t,
                                 m -> m.structureTier))))
                 .build();
@@ -185,7 +185,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        structureTier = 0;
+        structureTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (structureTier < 1 || mCasing < 26 || !checkHatch()) return false;
         updateHatchTexture();

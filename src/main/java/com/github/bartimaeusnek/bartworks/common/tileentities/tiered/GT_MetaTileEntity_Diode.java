@@ -26,15 +26,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-
-import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -123,19 +119,7 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(GT_Values.V[this.mTier]),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.maxAmperesIn()),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.maxAmperesOut()),
-            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+        return ArrayUtils.addAll(this.mDescriptionArray);
     }
 }

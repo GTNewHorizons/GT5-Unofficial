@@ -218,12 +218,12 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+        return TexturesGtBlock.oMCDIndustrialArcFurnaceActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+        return TexturesGtBlock.oMCDIndustrialArcFurnace;
     }
 
     @Override
@@ -336,11 +336,6 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
         super.loadNBTData(aNBT);
         mPlasmaMode = aNBT.getBoolean("mPlasmaMode");
         mSize = aNBT.getInteger("mSize");
-    }
-
-    @Override
-    public void onMachineBlockUpdate() {
-        mUpdate = 100;
     }
 
     @Override

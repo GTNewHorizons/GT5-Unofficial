@@ -170,58 +170,6 @@ public class RECIPE_IC2 {
                 OrePrefixes.screw.get(Materials.Molybdenum) });
         Logger.INFO("Added recipe item for GT5 Extruder: Shaft Shape");
 
-        // Custm Recipes for Iron and Steel
-        ItemStack mShaftIron = ItemList.IC2_ShaftIron.get(1);
-        ItemStack mShaftSteel = ItemList.IC2_ShaftSteel.get(1);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(9L, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L)),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
-            .itemOutputs(mShaftIron)
-            .duration(32 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L)),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
-            .itemOutputs(mShaftIron)
-            .duration(32 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(9L, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.WroughtIron, 1L)),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
-            .itemOutputs(mShaftIron)
-            .duration(32 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L)),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
-            .itemOutputs(mShaftIron)
-            .duration(32 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(9L, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L)),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
-            .itemOutputs(mShaftSteel)
-            .duration(1 * MINUTES + 4 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Steel, 1L)),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
-            .itemOutputs(mShaftSteel)
-            .duration(1 * MINUTES + 4 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-
         // Shaft Recipes
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(9L, block_T1), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
@@ -243,7 +191,7 @@ public class RECIPE_IC2 {
             .itemInputs(GT_Utility.copyAmount(9L, block_T2), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
             .itemOutputs(shaft_T2)
             .duration(4 * MINUTES + 16 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -251,7 +199,7 @@ public class RECIPE_IC2 {
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
             .itemOutputs(shaft_T2)
             .duration(4 * MINUTES + 16 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
 
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [TungstenSteel]");
@@ -259,7 +207,7 @@ public class RECIPE_IC2 {
             .itemInputs(GT_Utility.copyAmount(9L, block_T3), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
             .itemOutputs(shaft_T3)
             .duration(8 * MINUTES + 32 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(extruderRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -267,7 +215,7 @@ public class RECIPE_IC2 {
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0L))
             .itemOutputs(shaft_T3)
             .duration(8 * MINUTES + 32 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(extruderRecipes);
         Logger.INFO("Added recipe for GT5 Extruder: Windmill Shaft [Vibrant]");
 
