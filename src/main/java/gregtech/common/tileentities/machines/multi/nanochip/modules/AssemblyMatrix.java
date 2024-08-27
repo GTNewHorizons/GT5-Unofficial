@@ -4,6 +4,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -12,7 +14,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.items.ID_MetaItem_01;
 import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -96,6 +103,30 @@ public class AssemblyMatrix extends GT_MetaTileEntity_NanochipAssemblyModuleBase
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new AssemblyMatrix(this.mName);
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+        int recipeTier = GT_Utility.getTier(recipe.mEUt);
+        int machineTier = getMachineTier();
+        if (machineTier >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
+        return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
+    }
+
+    private int getMachineTier() {
+        // Determine tier of machine based on tier of stack of robot arms in the controller.
+        ItemStack stack = this.getControllerSlot();
+        if (stack == null || stack.stackSize != 64) return 0;
+        int meta = stack.getItemDamage() - 32000;
+        // In the ID list, LV-UEV is a separate range from UIV-MAX
+        if (meta >= ID_MetaItem_01.Robot_Arm_LV.ID && meta <= ID_MetaItem_01.Robot_Arm_UEV.ID) {
+            // LV is tier 1
+            return meta - ID_MetaItem_01.Robot_Arm_LV.ID + 1;
+        } else if (meta >= ID_MetaItem_01.Robot_Arm_UIV.ID && meta <= ID_MetaItem_01.Robot_Arm_MAX.ID) {
+            // UIV is tier 11
+            return meta - ID_MetaItem_01.Robot_Arm_UIV.ID + 11;
+        }
+        return 0;
     }
 
     public static void registerLocalName(ItemStack stack, CircuitComponent component) {
