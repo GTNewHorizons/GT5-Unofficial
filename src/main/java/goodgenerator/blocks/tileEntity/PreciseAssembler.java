@@ -31,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -122,34 +123,33 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                     'C',
                     withChannel(
                         "unit casing",
-                        ofChain(
-                            onElementPass(
-                                x -> x.casingAmount++,
-                                StructureUtility.ofBlocksTiered(
-                                    (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
-                                        : block == Loaders.preciseUnitCasing ? meta : -2,
-                                    ImmutableList.of(
-                                        Pair.of(Loaders.impreciseUnitCasing, 0),
-                                        Pair.of(Loaders.preciseUnitCasing, 0),
-                                        Pair.of(Loaders.preciseUnitCasing, 1),
-                                        Pair.of(Loaders.preciseUnitCasing, 2),
-                                        Pair.of(Loaders.preciseUnitCasing, 3)),
-                                    -2,
-                                    PreciseAssembler::setCasingTier,
-                                    PreciseAssembler::getCasingTier)),
-                            GT_HatchElementBuilder.<PreciseAssembler>builder()
-                                .atLeast(
-                                    InputBus,
-                                    InputHatch,
-                                    OutputHatch,
-                                    OutputBus,
-                                    Maintenance,
-                                    Muffler,
-                                    ExoticEnergy.or(Energy))
-                                .adder(PreciseAssembler::addToPAssList)
-                                .casingIndex(CASING_INDEX)
-                                .dot(1)
-                                .build())))
+                        GT_HatchElementBuilder.<PreciseAssembler>builder()
+                            .atLeast(
+                                InputBus,
+                                InputHatch,
+                                OutputHatch,
+                                OutputBus,
+                                Maintenance,
+                                Muffler,
+                                ExoticEnergy.or(Energy))
+                            .adder(PreciseAssembler::addToPAssList)
+                            .casingIndex(CASING_INDEX)
+                            .dot(1)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> x.casingAmount++,
+                                    StructureUtility.ofBlocksTiered(
+                                        (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
+                                            : block == Loaders.preciseUnitCasing ? meta : -2,
+                                        ImmutableList.of(
+                                            Pair.of(Loaders.impreciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 1),
+                                            Pair.of(Loaders.preciseUnitCasing, 2),
+                                            Pair.of(Loaders.preciseUnitCasing, 3)),
+                                        -3,
+                                        PreciseAssembler::setCasingTier,
+                                        PreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
                 .addElement('G', withChannel("glass", ofGlassTieredMixed((byte) 4, (byte) 127, 2)))
                 .addElement(
@@ -310,8 +310,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.machineTier = -1;
         this.casingAmount = 0;
-        this.casingTier = -2;
+        this.casingTier = -3;
         this.energyHatchTier = 0;
+        StructureLibAPI.setDebugEnabled(true);
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
             if (casingTier >= -1) {
