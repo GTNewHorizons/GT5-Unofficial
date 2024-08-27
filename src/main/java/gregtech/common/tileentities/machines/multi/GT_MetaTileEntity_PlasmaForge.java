@@ -1175,7 +1175,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
             .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
             .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.1"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 129)
+            .setPos(174, 112)
             .setSize(16, 16)
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> convergence, (val) -> convergence = val), builder));
         super.addUIWidgets(builder, buildContext);
