@@ -286,6 +286,19 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
             .setCalculator(GT_OverclockCalculator.ofNoOverclock(recipe));
     }
 
+    /**
+     * Validate if a recipe can be run by this module. By default, always succeeds.
+     * Override this logic if you want to do recipe validation such as tiering of the module.
+     * This is called before finding output hatch space or checking parallels.
+     * 
+     * @param recipe The recipe the module is trying to run
+     * @return A successful CheckRecipeResult if the recipe should be accepted.
+     */
+    @NotNull
+    public CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -306,6 +319,10 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         // Now find a recipe with the fake inputs
         GT_Recipe recipe = findRecipe(this.inputFakeItems);
         if (recipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        // Validate it with custom logic, by default does nothing but can be overridden
+        // by the module
+        CheckRecipeResult validationResult = validateRecipe(recipe);
+        if (!validationResult.wasSuccessful()) return validationResult;
 
         // Now that we know the recipe, we can figure out the color the output hatch should have
         outputColor = findOutputColor(recipe, inputInfo.colors);
