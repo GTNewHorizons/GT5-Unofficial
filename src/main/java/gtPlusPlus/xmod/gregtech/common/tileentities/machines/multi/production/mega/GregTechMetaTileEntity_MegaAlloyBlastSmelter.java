@@ -401,13 +401,13 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
             if (aActive) {
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
                     TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
+                        .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActive)
                         .extFacing()
                         .build() };
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
                 TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
+                    .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelter)
                     .extFacing()
                     .build() };
         }

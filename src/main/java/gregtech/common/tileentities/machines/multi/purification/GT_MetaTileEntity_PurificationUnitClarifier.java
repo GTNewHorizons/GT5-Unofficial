@@ -186,7 +186,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the Clarifier Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo("Requires a filter made of Activated Carbon to work.")
             .addInfo(

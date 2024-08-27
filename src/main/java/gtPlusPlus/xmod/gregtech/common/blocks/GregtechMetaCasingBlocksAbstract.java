@@ -106,7 +106,7 @@ public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_
     @Override
     public void breakBlock(final World aWorld, final int aX, final int aY, final int aZ, final Block aBlock,
         final int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+        if (GregTech_API.isMachineBlock(this, aMetaData)) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }

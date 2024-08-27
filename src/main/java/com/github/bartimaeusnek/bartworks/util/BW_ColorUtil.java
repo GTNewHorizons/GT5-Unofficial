@@ -16,7 +16,6 @@ package com.github.bartimaeusnek.bartworks.util;
 import java.util.Arrays;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
 
 @SuppressWarnings("unused")
 public class BW_ColorUtil {
@@ -214,7 +213,4 @@ public class BW_ColorUtil {
         return (color[0] & 0x0ff) << 16 | (color[1] & 0x0ff) << 8 | color[2] & 0x0ff;
     }
 
-    public static String getColorForTier(int tier) {
-        return GT_Values.TIER_COLORS[tier];
-    }
 }
