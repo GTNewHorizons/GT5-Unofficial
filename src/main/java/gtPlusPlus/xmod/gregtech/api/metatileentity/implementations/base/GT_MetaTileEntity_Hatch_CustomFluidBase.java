@@ -31,21 +31,21 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     protected String mTempMod = null;
 
     public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final int aID, final String aName,
-        final String aNameRegional) {
+        final String aNameRegional, int aTier) {
         super(
             aID,
             aName,
             aNameRegional,
-            6,
+            aTier,
             3,
             new String[] { "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
 
-    public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final String aName,
+    public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final String aName, final int aTier,
         final String[] aDescription, final ITexture[][][] aTextures) {
-        super(aName, 6, 3, aDescription[0], aTextures);
+        super(aName, aTier, 3, aDescription[0], aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
@@ -198,6 +198,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
             this.mLockedFluid,
             this.mFluidCapacity,
             this.mName,
+            this.mTier,
             this.mDescriptionArray,
             this.mTextures);
     }

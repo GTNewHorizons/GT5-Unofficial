@@ -59,7 +59,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
@@ -618,10 +617,6 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
     }
 
     private void initCraftingShapelessRecipes() {
-        if (GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
-            return;
-        }
-
         GT_ModHandler.addShapelessCraftingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
@@ -718,37 +713,34 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
                 OrePrefixes.stick.get(Materials.IronWood) });
 
-        if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(SWORD.ID, 1, Materials.Flint, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "F", "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                    new ItemStack(Items.flint, 1) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(PICKAXE.ID, 1, Materials.Flint, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "FFF", " S ", " S ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                    new ItemStack(Items.flint, 1) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(SHOVEL.ID, 1, Materials.Flint, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "F", "S", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                    new ItemStack(Items.flint, 1) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(AXE.ID, 1, Materials.Flint, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "FF", "FS", " S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                    new ItemStack(Items.flint, 1) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(HOE.ID, 1, Materials.Flint, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "FF", " S", " S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                    new ItemStack(Items.flint, 1) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                    new ItemStack(Items.flint, 1) });
-        }
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(SWORD.ID, 1, Materials.Flint, Materials.Wood, null),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "F", "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
+                new ItemStack(Items.flint, 1) });
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(PICKAXE.ID, 1, Materials.Flint, Materials.Wood, null),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "FFF", " S ", " S ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
+                new ItemStack(Items.flint, 1) });
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(SHOVEL.ID, 1, Materials.Flint, Materials.Wood, null),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "F", "S", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
+                new ItemStack(Items.flint, 1) });
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(AXE.ID, 1, Materials.Flint, Materials.Wood, null),
+            GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "FF", "FS", " S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
+                new ItemStack(Items.flint, 1) });
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(HOE.ID, 1, Materials.Flint, Materials.Wood, null),
+            GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "FF", " S", " S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
+                new ItemStack(Items.flint, 1) });
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1) });
     }
 }

@@ -76,9 +76,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     public int mTransferredAmperage = 0;
 
-    public int mOverheat;
-    public static short mMaxOverheat = (short) (GT_Mod.gregtechproxy.mWireHeatingTicks * 100);
-
     public GT_MetaPipeEntity_Cable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aID, aName, aNameRegional, 0);
@@ -471,13 +468,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
 
         return new String[] {
-            "Heat: " + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(mOverheat)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxOverheat)
-                + EnumChatFormatting.RESET,
             "Amperage: " + EnumChatFormatting.GREEN
                 + GT_Utility.formatNumbers(currAmp)
                 + EnumChatFormatting.RESET

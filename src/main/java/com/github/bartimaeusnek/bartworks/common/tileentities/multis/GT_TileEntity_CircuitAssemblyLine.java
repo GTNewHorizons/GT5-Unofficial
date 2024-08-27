@@ -29,6 +29,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GT_Utility.getColoredTierNameFromTier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,18 +163,18 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addInfo("Change Mode with Screwdriver")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo(
-                "---------" + EnumChatFormatting.WHITE
+                "--------- " + EnumChatFormatting.GOLD
                     + StatCollector.translateToLocal("chat.cal.mode.0")
                     + EnumChatFormatting.GRAY
-                    + "--------")
+                    + " --------")
             .addInfo("Imprint this machine with a Circuit Imprint,")
             .addInfo("by putting the imprint in the controller")
             .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
             .addInfo(
-                "---------" + EnumChatFormatting.WHITE
+                "--------- " + EnumChatFormatting.GOLD
                     + StatCollector.translateToLocal("chat.cal.mode.1")
                     + EnumChatFormatting.GRAY
-                    + "--------")
+                    + " --------")
             .addInfo(
                 "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
                     + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
@@ -187,7 +188,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass")
+            .addStructureInfo(
+                "Layer 2 - " + getColoredTierNameFromTier((byte) 4)
+                    + "+ Tier Glass, Assembling Line Casing, "
+                    + getColoredTierNameFromTier((byte) 4)
+                    + "+ Tier Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing")
             .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
             .addController("Layer 3 first slice front")
@@ -198,7 +203,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addInputHatch("Any layer 1 casing", 2)
             .addInputBus("As specified on layer 1", 3, 4)
             .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5)
+            .addOtherStructurePart(getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
             .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
@@ -206,7 +211,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     public String getTypeForDisplay() {
 
-        if (this.type.equals(new NBTTagCompound())) return "";
+        if (!isImprinted()) return "";
         return GT_LanguageManager.getTranslation(
             GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
     }
@@ -221,15 +226,20 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super(aName);
     }
 
+    public boolean isImprinted() {
+        return !this.type.hasNoTags();
+    }
+
     private boolean imprintMachine(ItemStack itemStack) {
-        if (!this.type.equals(new NBTTagCompound())) return true;
+        if (isImprinted()) return true;
         if (!GT_Utility.isStackValid(itemStack)) return false;
         if (itemStack.getItem() instanceof BW_Meta_Items.BW_GT_MetaGenCircuits && itemStack.getItemDamage() == 0
-            && itemStack.getTagCompound() != null
-            && this.type.equals(new NBTTagCompound())) {
+            && itemStack.getTagCompound() != null) {
             this.type = itemStack.getTagCompound();
-            this.mInventory[1].stackSize -= 1;
-            if (this.mInventory[1].stackSize <= 0) this.mInventory[1] = null;
+            itemStack.stackSize -= 1;
+            if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
+                mInventory[getControllerSlotIndex()] = null;
+            }
             this.getBaseMetaTileEntity()
                 .issueBlockUpdate();
             return true;
@@ -264,17 +274,31 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
+        if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
         aNBT.setInteger(RUNNING_MODE_KEY, mode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
+        if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
         aNBT.setInteger(RUNNING_MODE_KEY, mode);
         aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (mode == 0 && !isImprinted() && getBaseMetaTileEntity().isServerSide()) {
+            ItemStack heldItem = aPlayer.getHeldItem();
+            if (imprintMachine(heldItem)) {
+                if (heldItem.stackSize <= 0) {
+                    aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+                }
+                return;
+            }
+        }
+        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override
@@ -319,10 +343,10 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     public CheckRecipeResult checkProcessing() {
         if (mode == 0) {
-            if (this.type.equals(new NBTTagCompound()) && !this.imprintMachine(this.getControllerSlot()))
+            if (!isImprinted() && !this.imprintMachine(this.getControllerSlot()))
                 return SimpleCheckRecipeResult.ofFailure("no_imprint");
             if (this.imprintedItemName == null || this.imprintedStack == null) {
-                this.imprintedStack = new ItemStack(BW_Meta_Items.getNEWCIRCUITS(), 1, 0);
+                this.imprintedStack = new ItemStack(BW_Meta_Items.getCircuitParts(), 1, 0);
                 this.imprintedStack.setTagCompound(this.type);
                 this.imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(this.imprintedStack);
             }

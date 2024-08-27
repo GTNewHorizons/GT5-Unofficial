@@ -304,7 +304,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             })
             .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 129)
+            .setPos(174, 112)
             .setSize(16, 16));
         super.addUIWidgets(builder, buildContext);
     }
