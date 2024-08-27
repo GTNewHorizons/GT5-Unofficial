@@ -42,8 +42,8 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.1.3-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.1:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-436-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.26-gtnh:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-438-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.29-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.9:dev")
 
@@ -72,7 +72,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
 
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.2.1-GTNH:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.6-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.8-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.15.2-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.2.1:dev") { transitive = false }
@@ -92,7 +92,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
 
-    compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:SC2:2.2.0:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.12:dev'){transitive=false}
