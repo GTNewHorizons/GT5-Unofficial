@@ -19,6 +19,7 @@ import static pers.gwyog.gtneioreplugin.Config.CSVName;
 import static pers.gwyog.gtneioreplugin.Config.CSVnameSmall;
 import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.instanceDir;
 
+// todo: yeet any opencsv usage.
 public class CSVMaker implements Runnable {
 
     public CSVMaker() {}
