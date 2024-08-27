@@ -71,6 +71,47 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.PerfectLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64))
+                    .requiresCleanRoom()
+                    .duration(60 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.CrudeLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Master.get(64))
+                    .requiresCleanRoom()
+                    .duration(15 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.StableLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(32))
+                    .requiresCleanRoom()
+                    .duration(30 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.GoodLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(48))
+                    .requiresCleanRoom()
+                    .duration(45 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Chip_CrystalCPU.get(1L), GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(1))
                     .requiresCleanRoom()
@@ -310,6 +351,20 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(1 * MINUTES + 15 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
+                    .addTo(WaferEngravingRecipes);
+
+                // dreamcraft:item.EngravedEnergyChip
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.PerfectRuby.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8, 0))
+                    .requiresCleanRoom()
+                    .duration(45 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
                     .addTo(WaferEngravingRecipes);
 
             }
