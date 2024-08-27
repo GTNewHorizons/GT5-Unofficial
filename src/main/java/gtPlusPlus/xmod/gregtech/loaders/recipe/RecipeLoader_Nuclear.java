@@ -508,6 +508,14 @@ public class RecipeLoader_Nuclear {
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
 
+        // Lithium Fluoride
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustBerylliumFluoride", 1))
+            .fluidOutputs(FLUORIDES.BERYLLIUM_FLUORIDE.getFluidStack(144))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(fluidExtractionRecipes);
+
         // LFTR Fuel 1
         GT_Values.RA.stdBuilder()
             .itemInputs(NUCLIDE.LiFBeF2ZrF4U235.getDust(1))
