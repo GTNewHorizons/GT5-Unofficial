@@ -1,5 +1,7 @@
 package bloodasp.galacticgreg.registry;
 
+import static bloodasp.galacticgreg.api.enums.ModContainers.Vanilla;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +29,7 @@ public class GalacticGregRegistry {
     /**
      * Register new ModContainer in the registry. Call this after you've populated it with Dimensions and Blocks Must be
      * called from your own PreInit or Init event
-     * 
+     *
      * @param pModContainer
      * @return
      */
@@ -55,7 +57,7 @@ public class GalacticGregRegistry {
     /**
      * Lookup the registered dimensions and try to find the DimensionDefinition that has the ChunkProvider that we have
      * here
-     * 
+     *
      * @param pChunkProvider
      * @return
      */
@@ -86,7 +88,7 @@ public class GalacticGregRegistry {
 
     /**
      * Get all registered modcontainers. Can only be done after the initialization process is done
-     * 
+     *
      * @return
      */
     public static Collection<ModContainer> getModContainers() {
@@ -113,8 +115,9 @@ public class GalacticGregRegistry {
      */
     private static void InitModContainers() {
         for (ModContainer mc : _mModContainers.values()) {
+            // todo: rename Vanilla mod container name from "Vanilla" to "minecraft"
             if (!Loader.isModLoaded(mc.getModName()) && !mc.getModName()
-                .equalsIgnoreCase("vanilla")) {
+                .equals(Vanilla.modContainer.getModName())) {
                 GalacticGreg.Logger.warn(
                     "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
                     mc.getModName());
@@ -134,8 +137,7 @@ public class GalacticGregRegistry {
                             .size());
 
                     // Register default generator if dimension is asteroid and no generator was added
-                    if (md.getDimensionType() == DimensionType.AsteroidAndPlanet
-                        || md.getDimensionType() == DimensionType.Asteroid) {
+                    if (md.getDimensionType() == DimensionType.Asteroid) {
                         if (md.getSpaceObjectGenerators()
                             .size() == 0) {
                             GalacticGreg.Logger.debug("No generators found, adding build-in ellipsoid generator");
@@ -156,7 +158,7 @@ public class GalacticGregRegistry {
 
     /**
      * Returns ModContainer for given DimensionDefinition
-     * 
+     *
      * @param pDimensionDefinition
      * @return
      */

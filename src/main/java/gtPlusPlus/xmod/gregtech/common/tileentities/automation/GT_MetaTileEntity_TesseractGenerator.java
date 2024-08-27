@@ -29,7 +29,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -172,7 +171,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
     }
 
     @Override
-    public void onConfigLoad(final GT_Config aConfig) {
+    public void onConfigLoad() {
         int J = 4;
         TESSERACT_ENERGY_COST = 128 * J;
         TESSERACT_ENERGY_COST_DIMENSIONAL = 512 * J;

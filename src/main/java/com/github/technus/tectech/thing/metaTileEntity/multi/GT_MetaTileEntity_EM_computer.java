@@ -133,11 +133,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 3, 5);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), .7, .8, 1.2, 2);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 3, 5);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), -10000, 0, 0, 5000);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 2000, 8000, 10000);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS = (base, p) -> {
         if (base.eAvailableData < 0) {
             return STATUS_TOO_LOW;
@@ -273,11 +273,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
         if (overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk) {
-            float eut = V[8] * (float) overVoltageRatio * (float) overClockRatio;
+            float eut = V[7] * (float) overClockRatio * (float) overVoltageRatio;
             if (eut < Integer.MAX_VALUE - 7) {
                 mEUt = -(int) eut;
             } else {
-                mEUt = -(int) V[8];
+                mEUt = -(int) V[7];
                 return CheckRecipeResultRegistry.POWER_OVERFLOW;
             }
             short thingsActive = 0;
@@ -313,7 +313,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 return SimpleCheckRecipeResult.ofSuccess("computing");
             } else {
                 eAvailableData = 0;
-                mEUt = -(int) V[8];
+                mEUt = -(int) V[7];
                 eAmpereFlow = 1;
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
@@ -459,7 +459,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     protected void extraExplosions_EM() {
         for (MetaTileEntity tTileEntity : eRacks) {
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(V[9]);
+                .doExplosion(V[8]);
         }
     }
 

@@ -63,17 +63,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
         } else {
-            registerStandardOreRecipes(
-                aPrefix,
-                aMaterial,
-                GT_Utility.copyAmount(1, aStack),
-                Math.max(
-                    1,
-                    gregtech.api.GregTech_API.sOPStuff.get(
-                        gregtech.api.enums.ConfigCategories.Materials.oreprocessingoutputmultiplier,
-                        aMaterial.toString(),
-                        1))
-                    * (tIsRich ? 2 : 1));
+            registerStandardOreRecipes(aPrefix, aMaterial, GT_Utility.copyAmount(1, aStack), tIsRich ? 2 : 1);
         }
     }
 
