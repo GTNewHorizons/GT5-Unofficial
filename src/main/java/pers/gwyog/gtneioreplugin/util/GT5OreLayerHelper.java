@@ -36,6 +36,7 @@ import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TRITON;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
+import static pers.gwyog.gtneioreplugin.util.DimensionHelper.getDims;
 import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
 
 import java.util.ArrayList;
@@ -107,82 +108,7 @@ public class GT5OreLayerHelper {
         // --- End of handling for dimToOreWrapper ---
     }
 
-    public static Map<String, Boolean> getDims(OreLayerWrapper oreLayer) {
-        Map<String, Boolean> enabledDims = new HashMap<>();
-        Map<String, Boolean> origNames = oreLayer.allowedDimWithOrigNames;
 
-        for (String dimName : origNames.keySet()){
-            String abbr = getDimAbbreviatedName(dimName);
-            if (!origNames.getOrDefault(dimName, false)){
-                continue;
-            }
-            enabledDims.put(abbr,true);
-        }
-        return enabledDims;
-    }
-
-
-
-    public static String getDimAbbreviatedName(String dimName){
-        String abbreviatedName;
-        switch (dimName){
-            case (OreMixBuilder.OW) -> abbreviatedName="Ow";  // Overworld
-            case OreMixBuilder.NETHER -> abbreviatedName=  "Ne"; // Nether
-            case OreMixBuilder.TWILIGHT_FOREST -> abbreviatedName= "TF"; // Twilight
-            case OreMixBuilder.THE_END -> abbreviatedName= "ED"; // TheEnd because En = Encalus
-            // "VA" seems to be another occurence of the end asteroid dims see Vanilla_EndAsteroids and EndAsteroid in old WorldGeneration.cfg
-            case ENDASTEROIDS -> abbreviatedName= "EA"; // EndAsteroid
-            // T1
-            case MOON -> abbreviatedName= "Mo"; // GalacticraftCore_Moon
-            // T2
-            case DEIMOS -> abbreviatedName= "De"; // GalaxySpace_Deimos
-            case MARS -> abbreviatedName= "Ma"; // GalacticraftMars_Mars
-            case PHOBOS -> abbreviatedName= "Ph"; // GalaxySpace_Phobos
-            // T3
-            case ASTEROIDS -> abbreviatedName= "As"; // GalacticraftMars_Asteroids
-            case CALLISTO -> abbreviatedName= "Ca"; // GalaxySpace_Callisto
-            case CERES -> abbreviatedName= "Ce"; // GalaxySpace_Ceres
-            case EUROPA -> abbreviatedName= "Eu"; // GalaxySpace_Europa
-            case GANYMEDE -> abbreviatedName= "Ga"; // GalaxySpace_Ganymede
-            // todo case  -> abbreviatedName= "Rb"; // Ross128b
-            // T4
-            case IO -> abbreviatedName= "Io"; // GalaxySpace_Io
-            case MERCURY -> abbreviatedName= "Me"; // GalaxySpace_Mercury
-            case VENUS -> abbreviatedName= "Ve"; // GalaxySpace_Venus
-            // T5
-            case ENCELADUS -> abbreviatedName= "En"; // GalaxySpace_Enceladus
-            case MIRANDA -> abbreviatedName= "Mi"; // GalaxySpace_Miranda
-            case OBERON -> abbreviatedName= "Ob"; // GalaxySpace_Oberon
-            case TITAN -> abbreviatedName= "Ti"; // GalaxySpace_Titan
-            // todo case  -> abbreviatedName= "Ra"; // Ross128ba
-            // T6
-            case PROTEUS -> abbreviatedName= "Pr"; // GalaxySpace_Proteus
-            case TRITON -> abbreviatedName= "Tr"; // GalaxySpace_Triton
-            // T7
-            case HAUMEA -> abbreviatedName= "Ha"; // GalaxySpace_Haumea
-            case KUIPERBELT -> abbreviatedName= "KB"; // GalaxySpace_Kuiperbelt
-            case MAKEMAKE -> abbreviatedName= "MM"; // GalaxySpace_MakeMake
-            case PLUTO -> abbreviatedName= "Pl"; // GalaxySpace_Pluto
-            // T8
-            case BARNARDC -> abbreviatedName= "BC"; // GalaxySpace_BarnardC
-            case BARNARDE -> abbreviatedName= "BE"; // GalaxySpace_BarnardE
-            case BARNARDF -> abbreviatedName= "BF"; // GalaxySpace_BarnardF
-            case CENTAURIA -> abbreviatedName= "CB"; // GalaxySpace_CentauriA is actually α Centauri Bb
-            case TCETIE -> abbreviatedName= "TE"; // GalaxySpace_TcetiE
-            case VEGAB -> abbreviatedName= "VB"; // GalaxySpace_VegaB
-            // T9
-            case ANUBIS -> abbreviatedName= "An"; // GalacticraftAmunRa_Anubis
-            case HORUS -> abbreviatedName= "Ho"; // GalacticraftAmunRa_Horus
-            case MAAHES -> abbreviatedName= "Mh"; // GalacticraftAmunRa_Maahes
-            case MEHENBELT -> abbreviatedName= "MB"; // GalacticraftAmunRa_MehenBelt
-            case NEPER -> abbreviatedName= "Np"; // GalacticraftAmunRa_Neper
-            case SETH -> abbreviatedName= "Se"; // GalacticraftAmunRa_Seth
-            // T10
-            case DEEPDARK -> abbreviatedName= "DD"; // Underdark
-            default -> {throw new IllegalStateException("String: "+dimName+" has no abbredged name!");}
-        }
-        return abbreviatedName;
-    }
 
     public static class OreLayerWrapper {
 

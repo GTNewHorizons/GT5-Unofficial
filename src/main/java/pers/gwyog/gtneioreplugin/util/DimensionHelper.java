@@ -1,11 +1,49 @@
 package pers.gwyog.gtneioreplugin.util;
 
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ANUBIS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.BARNARDC;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.BARNARDE;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.BARNARDF;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.CALLISTO;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.CENTAURIA;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.CERES;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.DEEPDARK;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.DEIMOS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ENCELADUS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ENDASTEROIDS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.EUROPA;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.GANYMEDE;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.HAUMEA;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.HORUS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.IO;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.KUIPERBELT;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MAAHES;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MAKEMAKE;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MARS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MEHENBELT;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MERCURY;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MIRANDA;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MOON;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.NEPER;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.OBERON;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PHOBOS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PLUTO;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PROTEUS;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.SETH;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TCETIE;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TRITON;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
+import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
 import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.maxTooltipLines;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import gregtech.common.OreMixBuilder;
 import net.minecraft.util.StatCollector;
 
 public class DimensionHelper {
@@ -153,6 +191,97 @@ public class DimensionHelper {
             dims[j] = s;
         }
         return dims;
+    }
+
+    public static Map<String, Boolean> getDims(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
+        Map<String, Boolean> enabledDims = new HashMap<>();
+        Map<String, Boolean> origNames = oreLayer.allowedDimWithOrigNames;
+
+        for (String dimName : origNames.keySet()){
+            String abbr = getDimAbbreviatedName(dimName);
+            if (!origNames.getOrDefault(dimName, false)){
+                continue;
+            }
+            enabledDims.put(abbr,true);
+        }
+        return enabledDims;
+    }
+
+    public static Map<String, Boolean> getDims(GT5OreSmallHelper.OreSmallWrapper ore) {
+        Map<String, Boolean> enabledDims = new HashMap<>();
+        Map<String, Boolean> origNames = ore.allowedDimWithOrigNames;
+
+        for (String dimName : origNames.keySet()){
+            String abbr = getDimAbbreviatedName(dimName);
+            if (!origNames.getOrDefault(dimName, false)){
+                continue;
+            }
+            enabledDims.put(abbr,true);
+        }
+        return enabledDims;
+    }
+
+
+
+    public static String getDimAbbreviatedName(String dimName){
+        String abbreviatedName;
+        switch (dimName){
+            case (OreMixBuilder.OW) -> abbreviatedName="Ow";  // Overworld
+            case OreMixBuilder.NETHER -> abbreviatedName=  "Ne"; // Nether
+            case OreMixBuilder.TWILIGHT_FOREST -> abbreviatedName= "TF"; // Twilight
+            case OreMixBuilder.THE_END -> abbreviatedName= "ED"; // TheEnd because En = Encalus
+            // "VA" seems to be another occurence of the end asteroid dims see Vanilla_EndAsteroids and EndAsteroid in old WorldGeneration.cfg
+            case ENDASTEROIDS -> abbreviatedName= "EA"; // EndAsteroid
+            // T1
+            case MOON -> abbreviatedName= "Mo"; // GalacticraftCore_Moon
+            // T2
+            case DEIMOS -> abbreviatedName= "De"; // GalaxySpace_Deimos
+            case MARS -> abbreviatedName= "Ma"; // GalacticraftMars_Mars
+            case PHOBOS -> abbreviatedName= "Ph"; // GalaxySpace_Phobos
+            // T3
+            case ASTEROIDS -> abbreviatedName= "As"; // GalacticraftMars_Asteroids
+            case CALLISTO -> abbreviatedName= "Ca"; // GalaxySpace_Callisto
+            case CERES -> abbreviatedName= "Ce"; // GalaxySpace_Ceres
+            case EUROPA -> abbreviatedName= "Eu"; // GalaxySpace_Europa
+            case GANYMEDE -> abbreviatedName= "Ga"; // GalaxySpace_Ganymede
+            // todo case  -> abbreviatedName= "Rb"; // Ross128b
+            // T4
+            case IO -> abbreviatedName= "Io"; // GalaxySpace_Io
+            case MERCURY -> abbreviatedName= "Me"; // GalaxySpace_Mercury
+            case VENUS -> abbreviatedName= "Ve"; // GalaxySpace_Venus
+            // T5
+            case ENCELADUS -> abbreviatedName= "En"; // GalaxySpace_Enceladus
+            case MIRANDA -> abbreviatedName= "Mi"; // GalaxySpace_Miranda
+            case OBERON -> abbreviatedName= "Ob"; // GalaxySpace_Oberon
+            case TITAN -> abbreviatedName= "Ti"; // GalaxySpace_Titan
+            // todo case  -> abbreviatedName= "Ra"; // Ross128ba
+            // T6
+            case PROTEUS -> abbreviatedName= "Pr"; // GalaxySpace_Proteus
+            case TRITON -> abbreviatedName= "Tr"; // GalaxySpace_Triton
+            // T7
+            case HAUMEA -> abbreviatedName= "Ha"; // GalaxySpace_Haumea
+            case KUIPERBELT -> abbreviatedName= "KB"; // GalaxySpace_Kuiperbelt
+            case MAKEMAKE -> abbreviatedName= "MM"; // GalaxySpace_MakeMake
+            case PLUTO -> abbreviatedName= "Pl"; // GalaxySpace_Pluto
+            // T8
+            case BARNARDC -> abbreviatedName= "BC"; // GalaxySpace_BarnardC
+            case BARNARDE -> abbreviatedName= "BE"; // GalaxySpace_BarnardE
+            case BARNARDF -> abbreviatedName= "BF"; // GalaxySpace_BarnardF
+            case CENTAURIA -> abbreviatedName= "CB"; // GalaxySpace_CentauriA is actually α Centauri Bb
+            case TCETIE -> abbreviatedName= "TE"; // GalaxySpace_TcetiE
+            case VEGAB -> abbreviatedName= "VB"; // GalaxySpace_VegaB
+            // T9
+            case ANUBIS -> abbreviatedName= "An"; // GalacticraftAmunRa_Anubis
+            case HORUS -> abbreviatedName= "Ho"; // GalacticraftAmunRa_Horus
+            case MAAHES -> abbreviatedName= "Mh"; // GalacticraftAmunRa_Maahes
+            case MEHENBELT -> abbreviatedName= "MB"; // GalacticraftAmunRa_MehenBelt
+            case NEPER -> abbreviatedName= "Np"; // GalacticraftAmunRa_Neper
+            case SETH -> abbreviatedName= "Se"; // GalacticraftAmunRa_Seth
+            // T10
+            case DEEPDARK -> abbreviatedName= "DD"; // Underdark
+            default -> {throw new IllegalStateException("String: "+dimName+" has no abbredged name!");}
+        }
+        return abbreviatedName;
     }
 
     public static List<String> convertCondensedStringToToolTip(String line) {
