@@ -313,6 +313,8 @@ public class RecipeHandlers {
 
         ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
         return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
+            // Note that we keep the EU/t of the original recipe, because we want to use this to tier the recipes
+            // and keep the overall power cost of assembling using CAL vs NAC similar.
             .itemOutputs(fakeOutput)
             .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     });
