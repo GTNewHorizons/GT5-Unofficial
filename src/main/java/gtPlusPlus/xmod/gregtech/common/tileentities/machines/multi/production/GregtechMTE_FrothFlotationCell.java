@@ -101,12 +101,12 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+        return TexturesGtBlock.oMCDFrothFlotationCellActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+        return TexturesGtBlock.oMCDFrothFlotationCell;
     }
 
     @Override

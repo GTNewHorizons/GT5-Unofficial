@@ -609,6 +609,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public static void addInstalledCoversInformation(NBTTagCompound aNBT, List<String> aList) {
         if (aNBT == null || aList == null) return;
         final NBTTagList tList = aNBT.getTagList(GT_Values.NBT.COVERS, 10);
+
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(null, tNBT);
@@ -645,6 +646,22 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                                 .format("Cover on %s side: %s", getTranslation(FACES[i]), coverStack.getDisplayName()));
                     }
                 }
+            }
+        }
+
+        byte strongRedstone = aNBT.getByte("mStrongRedstone");
+
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if ((strongRedstone & dir.flag) != 0) {
+                aList.add(String.format("Emits a strong redstone signal on the %s side", switch (dir) {
+                    case DOWN -> "bottom";
+                    case UP -> "top";
+                    case NORTH -> "north";
+                    case SOUTH -> "south";
+                    case WEST -> "west";
+                    case EAST -> "east";
+                    default -> "<unknown>";
+                }));
             }
         }
     }

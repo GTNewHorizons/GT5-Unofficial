@@ -231,9 +231,20 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (renderer != null) {
-            renderer.realism = !renderer.realism;
-            PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        } else {
+            if (renderer != null) {
+                renderer.realism = !renderer.realism;
+                PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+                return true;
+            }
         }
         return false;
     }
@@ -311,7 +322,6 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         if (renderer == null) return false;
         if (glassTier < GTVoltageIndex.UMV && laserSource.mTier > glassTier) return false;
 
-        // All checks passed!
         return true;
     }
 
