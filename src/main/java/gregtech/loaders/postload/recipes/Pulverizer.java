@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GT_ModHandler.getIC2Item;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -502,6 +503,48 @@ public class Pulverizer implements Runnable {
             .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.poisonous_potato, 1))
+            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.spider_eye, 1))
+            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.bone, 1))
+            .itemOutputs(new ItemStack(Items.dye, 4, 15))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_EnergyCrystal.get(1))
+            .itemOutputs(getIC2Item("energiumDust", 9))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(getIC2Item("biochaff", 1))
+            .itemOutputs(new ItemStack(Blocks.dirt, 1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.quartz_stairs, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 6))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
