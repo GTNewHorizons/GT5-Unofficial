@@ -164,8 +164,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     }
 
     int multiplier = 1;
-    int recipeDuration;
-    BigInteger finalConsumption;
+    BigInteger finalConsumption = BigInteger.ZERO;
 
     @Override
     public RecipeMap<?> getRecipeMap() {
@@ -184,6 +183,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                 BigInteger availableEU = getUserEU(ownerUUID);
                 recipeEU = BigInteger.valueOf(10L * recipe.mEUt * recipe.mDuration);
                 if (availableEU.compareTo(recipeEU) < 0) {
+                    finalConsumption = BigInteger.ZERO;
                     return CheckRecipeResultRegistry.insufficientStartupPower(recipeEU);
                 }
                 maxParallel = availableEU.divide(recipeEU)
@@ -203,7 +203,6 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                 }
                 // Energy consumed all at once from wireless net.
                 setCalculatedEut(0);
-                recipeDuration = recipe.mDuration;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -372,7 +371,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + toStandardForm(finalConsumption.divide(BigInteger.valueOf(-recipeDuration)))
+                + (mMaxProgresstime == 0 ? "0"
+                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
                 + EnumChatFormatting.RESET
                 + " EU/t" };
     }
