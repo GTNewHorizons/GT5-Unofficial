@@ -427,11 +427,11 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAQFTActive;
     }
 
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAQFT;
     }
 
     protected int getCasingTextureId() {

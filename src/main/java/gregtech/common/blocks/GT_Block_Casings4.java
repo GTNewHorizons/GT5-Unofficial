@@ -90,9 +90,9 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0, 12 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-            case 1, 10 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-            case 2, 11 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+            case 0 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
             case 3 -> ordinalSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon()
                 : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
             case 4 ->
@@ -105,6 +105,9 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
             case 7 -> Textures.BlockIcons.MACHINE_CASING_FUSION_COIL.getIcon();
             case 8 -> Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
             case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
+            case 12 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
             case 13 -> Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE.getIcon();
             case 14 -> Textures.BlockIcons.MACHINE_CASING_MINING_OSMIRIDIUM.getIcon();
             case 15 -> Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS.getIcon();
@@ -213,9 +216,9 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
                 }
             }
             return switch (tMeta) {
-                case 10 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-                case 11 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-                case 12 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                case 10 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
+                case 11 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
+                case 12 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
                 default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             };
         }

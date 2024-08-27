@@ -301,12 +301,12 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAThermalBoilerActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAThermalBoiler;
     }
 
     @Override
