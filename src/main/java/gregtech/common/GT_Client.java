@@ -619,7 +619,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         mPollutionRenderer.preLoad();
 
-        mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+        mPreference = new GT_ClientPreference();
 
         Materials.initClient();
     }
@@ -649,24 +649,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @Override
     public void onPostLoad() {
         super.onPostLoad();
-
-        if (GregTech_API.sClientDataFile.get("debug", "PrintMetaIDs", false)) {
-            try {
-                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    try {
-                        if (GregTech_API.METATILEENTITIES[i] != null) {
-                            GregTech_API.METATILEENTITIES[i].getStackForm(1L)
-                                .getTooltip(null, true);
-                            GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
-                    }
-                }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
-        }
 
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
@@ -825,9 +807,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
         if (GregTech.ID.equals(e.modID) && "client".equals(e.configID)) {
-            GregTech_API.sClientDataFile.mConfig.save();
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
-            mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+            mPreference = new GT_ClientPreference();
             GT_PreLoad.loadClientConfig();
             if (e.isWorldRunning) GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
         }

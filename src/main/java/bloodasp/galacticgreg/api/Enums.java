@@ -46,12 +46,6 @@ public class Enums {
          * The Dimension is a planet, and only ores shall be generated in the ground
          */
         Planet,
-
-        /**
-         * The Dimension is a special dim where Asteroids *and* ores shall spawn. Additional config values will be
-         * generated in worldconfig
-         */
-        AsteroidAndPlanet
     }
 
 }

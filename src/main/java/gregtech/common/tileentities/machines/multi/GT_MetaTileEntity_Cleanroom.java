@@ -482,6 +482,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         cfg.get("cleanroom_allowed_blocks.warded_glass", "Name", "tile.blockCosmeticOpaque");
         cfg.get("cleanroom_allowed_blocks.warded_glass", "Meta", 2);
         cfg.get("cleanroom_allowed_blocks.warded_glass", "Percentage", 50);
+        cfg.save();
     }
 
     public static void loadConfig(Configuration cfg) {
