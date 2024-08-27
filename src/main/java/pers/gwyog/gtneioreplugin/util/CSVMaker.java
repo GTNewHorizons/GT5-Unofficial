@@ -2,7 +2,6 @@ package pers.gwyog.gtneioreplugin.util;
 
 import java.io.BufferedWriter;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,9 +12,12 @@ import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
-import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+
+import static pers.gwyog.gtneioreplugin.Config.CSVName;
+import static pers.gwyog.gtneioreplugin.Config.CSVnameSmall;
+import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.instanceDir;
 
 public class CSVMaker implements Runnable {
 
@@ -116,7 +118,7 @@ public class CSVMaker implements Runnable {
                 System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
-            BufferedWriter one = Files.newBufferedWriter(Paths.get(GTNEIOrePlugin.CSVnameSmall));
+            BufferedWriter one = Files.newBufferedWriter(instanceDir.toPath().resolve(CSVnameSmall));
             ColumnPositionMappingStrategy<Oremix> strat = new ColumnPositionMappingStrategy<>();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,mix,DENSITY,overworld,nether,end,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie,an,ho,np,mh,mb,se"
@@ -216,7 +218,7 @@ public class CSVMaker implements Runnable {
                 System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
-            BufferedWriter one = Files.newBufferedWriter(Paths.get(GTNEIOrePlugin.CSVname));
+            BufferedWriter one = Files.newBufferedWriter(instanceDir.toPath().resolve(CSVName));
             ColumnPositionMappingStrategy<Oremix> strat = new ColumnPositionMappingStrategy<>();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,PRIMARY,SECONDARY,INBETWEEN,AROUND,mix,TIER,HEIGHT,DENSITY,SIZE,WEIGHT,overworld,nether,end,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie,an,ho,np,mh,mb,se"

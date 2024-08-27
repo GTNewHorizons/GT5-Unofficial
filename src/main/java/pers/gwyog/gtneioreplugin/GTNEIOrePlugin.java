@@ -1,5 +1,7 @@
 package pers.gwyog.gtneioreplugin;
 
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -21,21 +23,28 @@ import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
 
+import java.io.File;
+
 @Mod(
     modid = GTNEIOrePlugin.MODID,
     name = GTNEIOrePlugin.NAME,
     version = GTNEIOrePlugin.VERSION,
     dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
+    static {
+        try {
+            ConfigurationManager.registerConfig(Config.class);
+        }
+        catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static final String MODID = "gtneioreplugin";
     public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
     public static final String VERSION = GT_Version.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
-    public static boolean csv = false;
-    public static String CSVname;
-    public static String CSVnameSmall;
-    public static int maxTooltipLines = 11;
+    public static File instanceDir;
     public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
 
         @Override
@@ -50,31 +59,7 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        Config c = new Config(event, MODID + ".cfg");
-        csv = c.tConfig.getBoolean(
-            "print csv",
-            "ALL",
-            false,
-            "print csv, you need apache commons collections to be injected in the minecraft jar.");
-        CSVname = c.tConfig.getString(
-            "CSV_name",
-            "ALL",
-            event.getModConfigurationDirectory() + "/GTNH-Oresheet.csv",
-            "rename the oresheet here, it will appear in /config");
-        CSVnameSmall = c.tConfig.getString(
-            "CSV_name_for_Small_Ore_Sheet",
-            "ALL",
-            event.getModConfigurationDirectory() + "/GTNH-Small-Ores-Sheet.csv",
-            "rename the oresheet here, it will appear in /config");
-        maxTooltipLines = c.tConfig.getInt(
-            "MaxToolTipLines",
-            "ALL",
-            11,
-            1,
-            Integer.MAX_VALUE,
-            "Maximum number of lines the dimension names tooltip can have before it wraps around.");
-
-        c.save();
+        instanceDir = event.getModConfigurationDirectory().getParentFile();
     }
 
     @EventHandler
@@ -89,7 +74,7 @@ public class GTNEIOrePlugin {
         GT5OreSmallHelper.init();
         GT5UndergroundFluidHelper.init();
         if (event.getSide() == Side.CLIENT) {
-            if (csv) {
+            if (Config.printCsv) {
                 new CSVMaker().run();
             }
         }

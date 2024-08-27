@@ -36,7 +36,7 @@ import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TRITON;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
 import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
-import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.maxTooltipLines;
+import static pers.gwyog.gtneioreplugin.Config.maxTooltipLines;
 
 import java.util.Arrays;
 import java.util.HashMap;
