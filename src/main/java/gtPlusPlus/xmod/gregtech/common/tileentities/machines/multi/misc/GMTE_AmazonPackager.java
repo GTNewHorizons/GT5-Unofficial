@@ -126,12 +126,12 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAAmazonPackagerActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAAmazonPackager;
     }
 
     @Override

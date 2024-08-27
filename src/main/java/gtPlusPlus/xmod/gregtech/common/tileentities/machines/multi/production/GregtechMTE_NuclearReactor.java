@@ -141,12 +141,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             if (side == facing) {
                 if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
                     TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
+                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR_ACTIVE)
                         .extFacing()
                         .build() };
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
                     TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)
+                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR)
                         .extFacing()
                         .build() };
             }
@@ -155,12 +155,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             if (side == facing) {
                 if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
                     TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
+                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR_ACTIVE)
                         .extFacing()
                         .build() };
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
                     TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)
+                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR)
                         .extFacing()
                         .build() };
             }
@@ -435,7 +435,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     @Override
     public void explodeMultiblock() {
         this.mInventory[1] = null;
-        long explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+        long explodevalue;
         for (final MetaTileEntity tTileEntity : this.mInputBusses) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
@@ -486,11 +486,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         if (aBaseMetaTileEntity.getWorld().isRemote) {
             if (aBaseMetaTileEntity.isActive()) {
                 // Set casings active if we're warmed up.
-                if (this.mEfficiency == this.getMaxEfficiency(null)) {
-                    this.turnCasingActive(true);
-                } else {
-                    this.turnCasingActive(false);
-                }
+                this.turnCasingActive(this.mEfficiency == this.getMaxEfficiency(null));
             } else {
                 this.turnCasingActive(false);
             }
