@@ -34,6 +34,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
@@ -47,30 +48,27 @@ public class GT_Worldgenerator implements IWorldGenerator {
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
     public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer(
-        "NoOresInVein",
-        false,
-        0,
-        255,
-        0,
-        255,
-        16,
-        false,
-        false,
-        false,
-        Materials.Aluminium,
-        Materials.Aluminium,
-        Materials.Aluminium,
-        Materials.Aluminium);
+        new OreMixBuilder().name("NoOresInVein")
+            .disabledByDefault()
+            .heightRange(0, 255)
+            .weight(0)
+            .density(255)
+            .size(16)
+            .primary(Materials.Aluminium)
+            .secondary(Materials.Aluminium)
+            .inBetween(Materials.Aluminium)
+            .sporadic(Materials.Aluminium));
+
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
     public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
     public GT_Worldgenerator() {
-        endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
-        endMinSize = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidMinSize", 50);
-        endMaxSize = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidMaxSize", 200);
-        mEndAsteroidProbability = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidProbability", 300);
+        endAsteroids = ConfigEndAsteroids.generateEndAsteroids;
+        endMinSize = ConfigEndAsteroids.EndAsteroidMinSize;
+        endMaxSize = ConfigEndAsteroids.EndAsteroidMaxSize;
+        mEndAsteroidProbability = ConfigEndAsteroids.EndAsteroidProbability;
         GameRegistry.registerWorldGenerator(this, 1073741823);
         if (debugWorldGen) {
             GT_Log.out.println("GT_Worldgenerator created");

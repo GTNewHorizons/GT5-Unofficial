@@ -65,6 +65,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -81,10 +82,11 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input
-    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch, ISmartInputHatch {
+public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input implements IPowerChannelState,
+    IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable {
 
     private static final int SLOT_COUNT = 16;
+    public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
 
     protected final FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
     protected final FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
@@ -565,17 +567,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        if (!dataStick.hasTagCompound() || !"stockingHatch".equals(dataStick.stackTagCompound.getString("type")))
-            return false;
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
 
-        NBTTagCompound nbt = dataStick.stackTagCompound;
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
 
         if (autoPullAvailable) {
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
@@ -590,21 +588,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 storedFluids[i] = GT_Utility.loadFluid(stockingFluids.getCompoundTagAt(i));
             }
         }
-
-        updateValidGridProxySides();
-        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
         return true;
     }
 
     @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return;
-
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
-
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", "stockingHatch");
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setBoolean("autoPull", autoPullFluidList);
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
@@ -621,7 +611,33 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             }
             tag.setTag("fluidsToStock", stockingFluids);
         }
-        dataStick.stackTagCompound = tag;
+        return tag;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
+        if (!(aPlayer instanceof EntityPlayerMP))
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) return false;
+
+        updateValidGridProxySides();
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
         dataStick.setStackDisplayName("Stocking Input Hatch Configuration");
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
     }

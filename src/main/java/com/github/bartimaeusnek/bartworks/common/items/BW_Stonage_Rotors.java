@@ -28,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -94,7 +93,6 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         if (type != null) {
             info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type)));
         }
-        info.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

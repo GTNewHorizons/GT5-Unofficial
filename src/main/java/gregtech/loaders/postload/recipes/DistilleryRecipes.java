@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1201,16 +1200,6 @@ public class DistilleryRecipes implements Runnable {
             Materials.Carbon.getDustTiny(3),
             120,
             120);
-
-        if (GregTech_API.sSpecialFile.get("general", "EnableLagencyOilGalactiCraft", false)
-            && FluidRegistry.getFluid("oilgc") != null)
-            addUniversalDistillationRecipe(
-                new FluidStack(FluidRegistry.getFluid("oilgc"), 50),
-                new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(50),
-                    Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60) },
-                null,
-                20,
-                96);
     }
 
     public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,

@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,6 +33,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
@@ -2345,6 +2345,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Concrete.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
         ConstructionFoam.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
         ReinforceGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
+        BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+
         Redstone.add(
             SubTag.STONE,
             SubTag.NO_SMASHING,
@@ -2565,59 +2567,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
-    private static void addFuelValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mFuelPower = GregTech_API.sMaterialProperties.get(aConfigPath, "FuelPower", aMaterial.mFuelPower);
-        aMaterial.mFuelType = GregTech_API.sMaterialProperties.get(aConfigPath, "FuelType", aMaterial.mFuelType);
-    }
-
-    private static void addTemperatureValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mMeltingPoint = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "MeltingPoint", aMaterial.mMeltingPoint);
-        aMaterial.mBlastFurnaceRequired = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "BlastFurnaceRequired", aMaterial.mBlastFurnaceRequired);
-        aMaterial.mBlastFurnaceTemp = (short) GregTech_API.sMaterialProperties
-            .get(aConfigPath, "BlastFurnaceTemp", aMaterial.mBlastFurnaceTemp);
-        aMaterial.mGasTemp = GregTech_API.sMaterialProperties.get(aConfigPath, "GasTemp", aMaterial.mGasTemp);
-        aMaterial.setHeatDamage(
-            (float) GregTech_API.sMaterialProperties.get(aConfigPath, "HeatDamage", aMaterial.mHeatDamage));
-    }
-
-    private static void addDensityValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mDensityMultiplier = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "DensityMultiplier", aMaterial.mDensityMultiplier);
-        aMaterial.mDensityDivider = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "DensityDivider", aMaterial.mDensityDivider);
-        aMaterial.mDensity = (long) GregTech_API.sMaterialProperties.get(
-            aConfigPath,
-            "Density",
-            ((double) M * aMaterial.mDensityMultiplier)
-                / (aMaterial.mDensityDivider != 0 ? aMaterial.mDensityDivider : 1));
-    }
-
-    private static void addColorValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mTransparent = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "Transparent", aMaterial.mTransparent);
-        String aColor = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.toString());
-        aMaterial.mColor = aColor.equals("None") ? Dyes._NULL : Dyes.get(aColor);
-        String[] aRGBA = GregTech_API.sMaterialProperties.get(
-            aConfigPath,
-            "MatRGBA",
-            aMaterial.mRGBa[0] + "," + aMaterial.mRGBa[1] + "," + aMaterial.mRGBa[2] + "," + aMaterial.mRGBa[3] + ",")
-            .split(",");
-        aMaterial.mRGBa[0] = Short.parseShort(aRGBA[0]);
-        aMaterial.mRGBa[1] = Short.parseShort(aRGBA[1]);
-        aMaterial.mRGBa[2] = Short.parseShort(aRGBA[2]);
-        aMaterial.mRGBa[3] = Short.parseShort(aRGBA[3]);
-    }
-
-    private static void addToolValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mDurability = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ToolDurability", aMaterial.mDurability);
-        aMaterial.mToolSpeed = (float) GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ToolSpeed", aMaterial.mToolSpeed);
-        aMaterial.mToolQuality = (byte) GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ToolQuality", aMaterial.mToolQuality);
+    private static void addToolValues(Materials aMaterial) {
         // Moved from GT_Proxy? (Not sure)
         aMaterial.mHandleMaterial = (aMaterial == Desh ? aMaterial.mHandleMaterial
             : aMaterial == Diamond || aMaterial == Thaumium ? Wood
@@ -2644,79 +2594,26 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
-    private static void addEnchantmentValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mEnchantmentToolsLevel = (byte) GregTech_API.sMaterialProperties
-            .get(aConfigPath, "EnchantmentLevel", aMaterial.mEnchantmentToolsLevel);
-        String aEnchantmentName = GregTech_API.sMaterialProperties.get(
-            aConfigPath,
-            "Enchantment",
-            aMaterial.mEnchantmentTools != null ? aMaterial.mEnchantmentTools.getName() : "");
+    private static void addEnchantmentValues(Materials aMaterial) {
+        String aEnchantmentName = aMaterial.mEnchantmentTools != null ? aMaterial.mEnchantmentTools.getName() : "";
         if (aMaterial.mEnchantmentTools != null && !aEnchantmentName.equals(aMaterial.mEnchantmentTools.getName()))
             IntStream.range(0, Enchantment.enchantmentsList.length)
                 .filter(i -> aEnchantmentName.equals(Enchantment.enchantmentsList[i].getName()))
                 .forEach(i -> aMaterial.mEnchantmentTools = Enchantment.enchantmentsList[i]);
     }
 
-    private static void addProcessingIntoValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mSmeltInto = MATERIALS_MAP
-            .get(GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialSmeltInto", aMaterial.mSmeltInto.mName));
-        aMaterial.mMacerateInto = MATERIALS_MAP.get(
-            GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialMacerateInto", aMaterial.mMacerateInto.mName));
-        aMaterial.mArcSmeltInto = MATERIALS_MAP.get(
-            GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialArcSmeltInto", aMaterial.mArcSmeltInto.mName));
-        aMaterial.mDirectSmelting = MATERIALS_MAP.get(
-            GregTech_API.sMaterialProperties
-                .get(aConfigPath, "MaterialDirectSmeltInto", aMaterial.mDirectSmelting.mName));
-        aMaterial.mAutoGenerateBlastFurnaceRecipes = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "AutoGenerateBlastFurnaceRecipes", aMaterial.mAutoGenerateBlastFurnaceRecipes);
-    }
-
-    private static void addMultiplierValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mOreValue = GregTech_API.sMaterialProperties.get(aConfigPath, "OreValue", aMaterial.mOreValue);
-        aMaterial.setOreMultiplier(
-            GregTech_API.sMaterialProperties.get(aConfigPath, "OreMultiplier", aMaterial.mOreMultiplier));
-        aMaterial.setSmeltingMultiplier(
-            GregTech_API.sMaterialProperties.get(aConfigPath, "OreSmeltingMultiplier", aMaterial.mSmeltingMultiplier));
-        aMaterial.setByProductMultiplier(
-            GregTech_API.sMaterialProperties
-                .get(aConfigPath, "OreByProductMultiplier", aMaterial.mByProductMultiplier));
-    }
-
-    private static void addHasGasFluid(Materials aMaterial, String aConfigPath) {
-
-        if (!aMaterial.mIconSet.is_custom) {
-            aMaterial.mHasPlasma = GregTech_API.sMaterialProperties.get(aConfigPath, "AddPlasma", aMaterial.mHasPlasma);
-            if (aMaterial.mHasPlasma) {
-                GT_Mod.gregtechproxy.addAutogeneratedPlasmaFluid(aMaterial);
-            }
-            aMaterial.mHasGas = GregTech_API.sMaterialProperties.get(aConfigPath, "AddGas", aMaterial.mHasGas);
-            if (aMaterial.mHasGas) {
-                GT_FluidFactory
-                    .of(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
-            }
+    private static void addHasGasFluid(Materials aMaterial) {
+        if (aMaterial.mIconSet.is_custom) {
+            return;
         }
-    }
 
-    private static void addInternalStuff(Materials aMaterial, String aConfigPath) {
-        aMaterial.mMetaItemSubID = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "MaterialID", aMaterial.mCustomOre ? -1 : aMaterial.mMetaItemSubID);
-        aMaterial.mTypes = GregTech_API.sMaterialProperties.get(
-            aConfigPath,
-            "MaterialTypes",
-            aMaterial.mCustomOre ? 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 : aMaterial.mTypes);
-        aMaterial.mUnificatable = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "Unificatable", aMaterial.mUnificatable);
-        aMaterial.mHasParentMod = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "HasParentMod", aMaterial.mHasParentMod);
-    }
-
-    private static void addLocalisation(Materials aMaterial, String aConfigPath) {
-        aMaterial.mDefaultLocalName = GregTech_API.sMaterialProperties.get(
-            aConfigPath,
-            "MaterialName",
-            aMaterial.mCustomOre ? "CustomOre" + aMaterial.mCustomID : aMaterial.mDefaultLocalName);
-        aMaterial.mChemicalFormula = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ChemicalFormula", aMaterial.mChemicalFormula);
+        if (aMaterial.mHasPlasma) {
+            GT_Mod.gregtechproxy.addAutogeneratedPlasmaFluid(aMaterial);
+        }
+        if (aMaterial.mHasGas) {
+            GT_FluidFactory
+                .of(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
+        }
     }
 
     private static String getConfigPath(Materials aMaterial) {
@@ -2724,135 +2621,32 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return "materials." + aMaterial.mConfigSection + "." + cOre;
     }
 
-    private static void addHarvestLevelNerfs(Materials aMaterial, String aConfigPath) {
+    private static void addHarvestLevelNerfs(Materials aMaterial) {
         /* Moved the harvest level changes from GT_Mod to have fewer things iterating over MATERIALS_ARRAY */
         if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
             && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length
             && aMaterial.mMetaItemSubID >= 0) {
-            GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties
-                .get(aConfigPath, "HarvestLevel", aMaterial.mToolQuality);
+            GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
         }
     }
 
     private static void addHarvestLevels() {
-        GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
-            .get("harvestlevel", "ActivateHarvestLevelChange", false);
-        GT_Mod.gregtechproxy.mMaxHarvestLevel = Math
-            .min(15, GregTech_API.sMaterialProperties.get("harvestlevel", "MaxHarvestLevel", 7));
-        GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties
-            .get("harvestlevel", "GraniteHarvestLevel", 3);
+        GT_Mod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
+        GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
+        GT_Mod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {
         addHarvestLevels();
         for (Materials aMaterial : MATERIALS_MAP.values()) {
-            if (aMaterial != null && aMaterial != Materials._NULL && aMaterial != Materials.Empty) {
-
-                String aConfigPath = getConfigPath(aMaterial);
-
-                addFuelValues(aMaterial, aConfigPath);
-                addTemperatureValues(aMaterial, aConfigPath);
-                addDensityValues(aMaterial, aConfigPath);
-                addColorValues(aMaterial, aConfigPath);
-                addToolValues(aMaterial, aConfigPath);
-                addEnchantmentValues(aMaterial, aConfigPath);
-                addProcessingIntoValues(aMaterial, aConfigPath);
-                addMultiplierValues(aMaterial, aConfigPath);
-                addHasGasFluid(aMaterial, aConfigPath);
-                addInternalStuff(aMaterial, aConfigPath);
-                addLocalisation(aMaterial, aConfigPath);
-                SubTagCalculation(aMaterial, aConfigPath);
-                OreByProductsCalculation(aMaterial, aConfigPath);
-                OreReRegistrationsCalculation(aMaterial, aConfigPath);
-                aspectCalculation(aMaterial, aConfigPath);
-                addHarvestLevelNerfs(aMaterial, aConfigPath);
+            if (aMaterial == null || aMaterial == Materials._NULL || aMaterial == Materials.Empty) {
+                continue;
             }
-        }
-    }
 
-    private static void aspectCalculation(Materials aMaterial, String aConfigPath) {
-
-        String aDefaultAspectString = aMaterial.mAspects.stream()
-            .map(aAspectStack -> aAspectStack.mAspect.toString())
-            .collect(Collectors.joining(",", ",", ""));
-        String aDefaultAspectAmountString = aMaterial.mAspects.stream()
-            .map(aAspectStack -> String.valueOf(aAspectStack.mAmount))
-            .collect(Collectors.joining(",", ",", ""));
-
-        String aConfigAspectString = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ListTCAspects", aDefaultAspectString);
-        String aConfigAspectAmountString = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ListTCAspectAmounts", aDefaultAspectAmountString);
-
-        if (!aConfigAspectString.equals(aDefaultAspectString)
-            || !aConfigAspectAmountString.equals(aDefaultAspectAmountString)) {
-            aMaterial.mAspects.clear();
-            if (aConfigAspectString.length() > 0) {
-                String[] aAspects = aConfigAspectString.split(",");
-                String[] aAspectAmounts = aConfigAspectAmountString.split(",");
-                for (int i = 0; i < aAspects.length; i++) {
-                    String aAspectString = aAspects[i];
-                    long aAspectAmount = Long.parseLong(aAspectAmounts[i]);
-                    TC_AspectStack aAspectStack = new TC_AspectStack(TC_Aspects.valueOf(aAspectString), aAspectAmount);
-                    aMaterial.mAspects.add(aAspectStack);
-                }
-            }
-        }
-    }
-
-    private static void OreReRegistrationsCalculation(Materials aMaterial, String aConfigPath) {
-        String aDefaultMatReRegString = aMaterial.mOreReRegistrations.stream()
-            .map(aTag -> aTag.mName)
-            .collect(Collectors.joining(",", ",", ""));
-        String aConfigMatMatReRegString = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ListMaterialReRegistrations", aDefaultMatReRegString);
-        if (!aConfigMatMatReRegString.equals(aDefaultMatReRegString)) {
-            aMaterial.mOreReRegistrations.clear();
-            if (aConfigMatMatReRegString.length() > 0) {
-                Arrays.stream(aConfigMatMatReRegString.split(","))
-                    .map(MATERIALS_MAP::get)
-                    .filter(Objects::nonNull)
-                    .forEach(aMat -> aMaterial.mOreReRegistrations.add(aMat));
-            }
-        }
-    }
-
-    private static void OreByProductsCalculation(Materials aMaterial, String aConfigPath) {
-        String aDefaultMatByProString = aMaterial.mOreByProducts.stream()
-            .map(aTag -> aTag.mName)
-            .collect(Collectors.joining(",", ",", ""));
-        String aConfigMatByProString = GregTech_API.sMaterialProperties
-            .get(aConfigPath, "ListMaterialByProducts", aDefaultMatByProString);
-        if (!aConfigMatByProString.equals(aDefaultMatByProString)) {
-            aMaterial.mOreByProducts.clear();
-            if (aConfigMatByProString.length() > 0) {
-                Arrays.stream(aConfigMatByProString.split(","))
-                    .map(MATERIALS_MAP::get)
-                    .filter(Objects::nonNull)
-                    .forEach(aMat -> aMaterial.mOreByProducts.add(aMat));
-            }
-        }
-    }
-
-    /**
-     * Converts the pre-defined list of SubTags from a material into a list of SubTag names for setting/getting to/from
-     * the config. It is then converted to a String[] and finally to a singular String for insertion into the config If
-     * the config string is different from the default, we then want to clear the Materials SubTags and insert new ones
-     * from the config string.
-     */
-    private static void SubTagCalculation(Materials aMaterial, String aConfigPath) {
-        String aDefaultTagString = aMaterial.mSubTags.stream()
-            .map(aTag -> aTag.mName)
-            .collect(Collectors.joining(",", ",", ""));
-        String aConfigTagString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListSubTags", aDefaultTagString);
-        if (!aConfigTagString.equals(aDefaultTagString)) {
-            aMaterial.mSubTags.clear();
-            if (aConfigTagString.length() > 0) {
-                Arrays.stream(aConfigTagString.split(","))
-                    .map(SubTag.sSubTags::get)
-                    .filter(Objects::nonNull)
-                    .forEach(aTag -> aMaterial.mSubTags.add(aTag));
-            }
+            addToolValues(aMaterial);
+            addEnchantmentValues(aMaterial);
+            addHasGasFluid(aMaterial);
+            addHarvestLevelNerfs(aMaterial);
         }
     }
 

@@ -144,7 +144,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                                         Pair.of(Loaders.preciseUnitCasing, 1),
                                         Pair.of(Loaders.preciseUnitCasing, 2),
                                         Pair.of(Loaders.preciseUnitCasing, 3)),
-                                    -2,
+                                    -3,
                                     PreciseAssembler::setCasingTier,
                                     PreciseAssembler::getCasingTier))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
@@ -304,7 +304,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.machineTier = -1;
         this.casingAmount = 0;
-        this.casingTier = -2;
+        this.casingTier = -3;
         this.energyHatchTier = 0;
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
