@@ -31,7 +31,6 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -2062,18 +2061,18 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
         GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Iron,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
-                false,
-                false);
+            OrePrefixes.plate,
+            Materials.Iron,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
+            false,
+            false);
 
         GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Steel,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
-                false,
-                false);
+            OrePrefixes.plate,
+            Materials.Steel,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
+            false,
+            false);
 
         GT_OreDictUnificator.set(
             OrePrefixes.plate,
@@ -2088,7 +2087,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
             false,
             false);
-
 
         GT_OreDictUnificator.set(
             OrePrefixes.dust,

@@ -1,12 +1,14 @@
 package bloodasp.galacticgreg.api.enums;
 
-import bloodasp.galacticgreg.api.ModDBMDef;
-import net.minecraft.init.Blocks;
-
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.init.Blocks;
+
+import bloodasp.galacticgreg.api.ModDBMDef;
+
 public enum DimensionBlockMetaDefinitionList {
+
     Moon(new ModDBMDef("tile.moonBlock", 4)),
     Mars(new ModDBMDef("tile.mars", 9)),
     Phobos(new ModDBMDef("phobosblocks", 2)),
@@ -33,11 +35,11 @@ public enum DimensionBlockMetaDefinitionList {
     TcetiE(new ModDBMDef("tcetieblocks", 2)),
     Miranda(new ModDBMDef("mirandablocks", 2)),
     Europa(
-        //Europa top layer turned off bc ores are too easy to spot
-        new ModDBMDef("europagrunt", 1),  // Europa Ice Layer ~55-65 without top layer
-        new ModDBMDef(Blocks.water),
-        new ModDBMDef(Blocks.flowing_water),
-        new ModDBMDef(Blocks.ice), // Generates directly over bedrock
+        // Europa top layer turned off bc ores are too easy to spot
+        new ModDBMDef("europagrunt", 1), // Europa Ice Layer ~55-65 without top layer
+        new ModDBMDef(Blocks.water), new ModDBMDef(Blocks.flowing_water), new ModDBMDef(Blocks.ice), // Generates
+                                                                                                     // directly over
+                                                                                                     // bedrock
         new ModDBMDef(Blocks.packed_ice), // Generates directly over bedrock
         new ModDBMDef("europaunderwatergeyser") // Generates directly over bedrock
     ),
@@ -46,8 +48,10 @@ public enum DimensionBlockMetaDefinitionList {
     Anubis(new ModDBMDef("tile.baseBlockRock", 1)),
     Horus(new ModDBMDef(Blocks.obsidian)),
     Seth(new ModDBMDef(Blocks.hardened_clay));
+
     public final List<ModDBMDef> DBMDefList;
-    private DimensionBlockMetaDefinitionList(ModDBMDef... DBMDefArray){
+
+    private DimensionBlockMetaDefinitionList(ModDBMDef... DBMDefArray) {
         DBMDefList = Arrays.asList(DBMDefArray);
     }
 }

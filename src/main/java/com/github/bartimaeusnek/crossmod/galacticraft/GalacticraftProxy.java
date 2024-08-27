@@ -13,11 +13,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
-import java.io.File;
-
-import gregtech.api.util.GT_Config;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -29,10 +25,8 @@ import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarS
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.objects.GT_UO_DimensionList;
 
 public class GalacticraftProxy {
-
 
     private GalacticraftProxy() {}
 

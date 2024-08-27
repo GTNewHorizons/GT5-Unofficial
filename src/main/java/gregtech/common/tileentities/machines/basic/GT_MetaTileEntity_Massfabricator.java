@@ -22,12 +22,10 @@ import java.util.Arrays;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.common.config.machinestats.ConfigMassFabricator;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
 
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
@@ -40,11 +38,11 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
 
 public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMachine {
 

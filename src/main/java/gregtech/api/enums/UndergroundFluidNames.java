@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 public enum UndergroundFluidNames {
+
     carbonDioxide("carbondioxide"),
     carbonMonoxide("carbonmonoxide"),
     chlorobenzene("chlorobenzene"),
@@ -33,9 +34,10 @@ public enum UndergroundFluidNames {
     veryHeavyOil("liquid_extra_heavy_oil"),
 
     ;
+
     public final String name;
 
-    private UndergroundFluidNames(String name){
+    private UndergroundFluidNames(String name) {
         this.name = name;
     }
 }

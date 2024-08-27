@@ -35,10 +35,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -257,11 +255,10 @@ public class GregTech_API {
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false,
-        sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
-        sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
-        sMachineWireFire = true, mOutputRF = false, mInputRF = false, mRFExplosions = false,
-        mServerStarted = false;
+        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
+        sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
+        sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
+        mInputRF = false, mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 

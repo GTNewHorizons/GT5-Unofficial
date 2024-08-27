@@ -2,8 +2,6 @@ package bloodasp.galacticgreg;
 
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.SmallOres;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 
 public class WorldGenGaGT implements Runnable {
 
@@ -22,7 +20,7 @@ public class WorldGenGaGT implements Runnable {
          * This part here enables every GT Ore for Space Dims.
          */
 
-        for (OreMixes mix : OreMixes.values()){
+        for (OreMixes mix : OreMixes.values()) {
             mix.addGaGregOreLayer();
         }
     }

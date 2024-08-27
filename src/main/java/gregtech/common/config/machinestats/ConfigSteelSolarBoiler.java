@@ -1,12 +1,18 @@
 package gregtech.common.config.machinestats;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "steel_solar_boiler",configSubDirectory = "GregTech",filename = "MachineStats")
+@Config(
+    modid = Mods.Names.GREG_TECH,
+    category = "steel_solar_boiler",
+    configSubDirectory = "GregTech",
+    filename = "MachineStats")
 public class ConfigSteelSolarBoiler {
-    @Config.Comment({"Number of run-time ticks before boiler starts calcification.",
-        "100% calcification and minimal output will be reached at 2 times this."})
+
+    @Config.Comment({ "Number of run-time ticks before boiler starts calcification.",
+        "100% calcification and minimal output will be reached at 2 times this." })
     @Config.DefaultInt(1_080_000)
     @Config.RequiresMcRestart
     public static int calcificationTicks;

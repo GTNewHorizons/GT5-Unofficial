@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import gregtech.common.config.other.ConfigGeneral;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,14 +19,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.implementations.tiles.IColorableTile;
 import appeng.api.util.AEColor;
 import appeng.block.networking.BlockCableBus;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.config.other.ConfigGeneral;
 
 public class Behaviour_Spray_Color extends Behaviour_None {
 

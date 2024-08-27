@@ -12,7 +12,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,6 +34,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
@@ -47,17 +47,17 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static HashSet<Long> ProcChunks = new HashSet<>();
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
-    public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer(new OreMixBuilder().name("NoOresInVein")
-                                                                    .disabledByDefault()
-                                                                    .heightRange(0,255)
-                                                                    .weight(0)
-                                                                    .density(255)
-                                                                    .size(16)
-                                                                    .primary(Materials.Aluminium)
-                                                                    .secondary(Materials.Aluminium)
-                                                                    .inBetween(Materials.Aluminium)
-                                                                    .sporadic(Materials.Aluminium)
-    );
+    public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer(
+        new OreMixBuilder().name("NoOresInVein")
+            .disabledByDefault()
+            .heightRange(0, 255)
+            .weight(0)
+            .density(255)
+            .size(16)
+            .primary(Materials.Aluminium)
+            .secondary(Materials.Aluminium)
+            .inBetween(Materials.Aluminium)
+            .sporadic(Materials.Aluminium));
 
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;

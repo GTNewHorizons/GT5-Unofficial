@@ -1,12 +1,15 @@
 package pers.gwyog.gtneioreplugin;
 
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import java.io.File;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -23,19 +26,17 @@ import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
 
-import java.io.File;
-
 @Mod(
     modid = GTNEIOrePlugin.MODID,
     name = GTNEIOrePlugin.NAME,
     version = GTNEIOrePlugin.VERSION,
     dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
+
     static {
         try {
             ConfigurationManager.registerConfig(Config.class);
-        }
-        catch (ConfigException e) {
+        } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
     }
@@ -59,7 +60,8 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        instanceDir = event.getModConfigurationDirectory().getParentFile();
+        instanceDir = event.getModConfigurationDirectory()
+            .getParentFile();
     }
 
     @EventHandler

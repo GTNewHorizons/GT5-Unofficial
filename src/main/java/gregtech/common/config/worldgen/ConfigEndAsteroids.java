@@ -1,10 +1,16 @@
 package gregtech.common.config.worldgen;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "end_asteroids",configSubDirectory = "GregTech",filename = "WorldGeneration")
+@Config(
+    modid = Mods.Names.GREG_TECH,
+    category = "end_asteroids",
+    configSubDirectory = "GregTech",
+    filename = "WorldGeneration")
 public class ConfigEndAsteroids {
+
     @Config.Comment("The maximum size for the end asteroids.")
     @Config.DefaultInt(200)
     @Config.RequiresMcRestart

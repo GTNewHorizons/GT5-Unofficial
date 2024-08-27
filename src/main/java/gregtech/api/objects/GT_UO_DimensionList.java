@@ -1,14 +1,5 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.Dimensions;
-import gregtech.api.enums.UndergroundFluidNames;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.Configuration;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import static gregtech.api.enums.Dimensions.AlphaCentauriBb;
 import static gregtech.api.enums.Dimensions.BarnardaC;
 import static gregtech.api.enums.Dimensions.BarnardaE;
@@ -38,14 +29,11 @@ import static gregtech.api.enums.UndergroundFluidNames.deuterium;
 import static gregtech.api.enums.UndergroundFluidNames.distilledWater;
 import static gregtech.api.enums.UndergroundFluidNames.ethane;
 import static gregtech.api.enums.UndergroundFluidNames.ethylene;
-import static gregtech.api.enums.UndergroundFluidNames.hydrogen;
-import static gregtech.api.enums.UndergroundFluidNames.moltenTin;
-import static gregtech.api.enums.UndergroundFluidNames.unknownWater;
-import static gregtech.api.enums.UndergroundFluidNames.veryHeavyOil;
 import static gregtech.api.enums.UndergroundFluidNames.fluorine;
 import static gregtech.api.enums.UndergroundFluidNames.heavyOil;
 import static gregtech.api.enums.UndergroundFluidNames.helium3;
 import static gregtech.api.enums.UndergroundFluidNames.hydrofluoricAcid;
+import static gregtech.api.enums.UndergroundFluidNames.hydrogen;
 import static gregtech.api.enums.UndergroundFluidNames.hydrogenSulfide;
 import static gregtech.api.enums.UndergroundFluidNames.lava;
 import static gregtech.api.enums.UndergroundFluidNames.lightOil;
@@ -55,12 +43,25 @@ import static gregtech.api.enums.UndergroundFluidNames.methane;
 import static gregtech.api.enums.UndergroundFluidNames.moltenCopper;
 import static gregtech.api.enums.UndergroundFluidNames.moltenIron;
 import static gregtech.api.enums.UndergroundFluidNames.moltenLead;
+import static gregtech.api.enums.UndergroundFluidNames.moltenTin;
 import static gregtech.api.enums.UndergroundFluidNames.naturalGas;
 import static gregtech.api.enums.UndergroundFluidNames.nitrogen;
 import static gregtech.api.enums.UndergroundFluidNames.oil;
 import static gregtech.api.enums.UndergroundFluidNames.oxygen;
 import static gregtech.api.enums.UndergroundFluidNames.saltWater;
 import static gregtech.api.enums.UndergroundFluidNames.sulfuricAcid;
+import static gregtech.api.enums.UndergroundFluidNames.unknownWater;
+import static gregtech.api.enums.UndergroundFluidNames.veryHeavyOil;
+
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Configuration;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
+import gregtech.api.enums.Dimensions;
+import gregtech.api.enums.UndergroundFluidNames;
 
 public class GT_UO_DimensionList {
 
@@ -74,7 +75,7 @@ public class GT_UO_DimensionList {
         fDimensionList = HashBiMap.create();
     }
 
-    public void save(){
+    public void save() {
         fConfig.save();
     }
 
@@ -118,7 +119,7 @@ public class GT_UO_DimensionList {
         // IT IS IN BUCKETS!!!
     }
 
-    private void setOverworldValues(){
+    private void setOverworldValues() {
         new ConfigSetter().dimension(Overworld)
             .fluid(naturalGas)
             .chance(20)
@@ -160,7 +161,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setMoonValues(){
+    private void setMoonValues() {
         new ConfigSetter().dimension(Moon)
             .fluid(helium3)
             .chance(100)
@@ -178,7 +179,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setMercuryValues(){
+    private void setMercuryValues() {
         new ConfigSetter().dimension(Mercury)
             .fluid(helium3)
             .chance(100)
@@ -196,7 +197,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setVenusValues(){
+    private void setVenusValues() {
         new ConfigSetter().dimension(Venus)
             .fluid(moltenLead)
             .chance(100)
@@ -222,7 +223,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setMarsValues(){
+    private void setMarsValues() {
         new ConfigSetter().dimension(Mars)
             .fluid(saltWater)
             .chance(100)
@@ -240,7 +241,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setIoValues(){
+    private void setIoValues() {
         new ConfigSetter().dimension(Io)
             .fluid(moltenLead)
             .chance(20)
@@ -266,7 +267,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setEuropaValues(){
+    private void setEuropaValues() {
         new ConfigSetter().dimension(Europa)
             .fluid(saltWater)
             .chance(100)
@@ -292,7 +293,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setCallistoValues(){
+    private void setCallistoValues() {
         new ConfigSetter().dimension(Callisto)
             .fluid(oxygen)
             .chance(100)
@@ -310,7 +311,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setTitanValues(){
+    private void setTitanValues() {
         new ConfigSetter().dimension(Titan)
             .fluid(methane)
             .chance(100)
@@ -328,7 +329,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setMirandaValues(){
+    private void setMirandaValues() {
         new ConfigSetter().dimension(Miranda)
             .fluid(hydrogenSulfide)
             .chance(100)
@@ -338,7 +339,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setOberonValues(){
+    private void setOberonValues() {
         new ConfigSetter().dimension(Oberon)
             .fluid(carbonMonoxide)
             .chance(100)
@@ -348,7 +349,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setTritonValues(){
+    private void setTritonValues() {
         new ConfigSetter().dimension(Triton)
             .fluid(nitrogen)
             .chance(100)
@@ -366,7 +367,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setProteusValues(){
+    private void setProteusValues() {
         new ConfigSetter().dimension(Proteus)
             .fluid(deuterium)
             .chance(100)
@@ -376,7 +377,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setPlutoValues(){
+    private void setPlutoValues() {
         new ConfigSetter().dimension(Pluto)
             .fluid(nitrogen)
             .chance(100)
@@ -410,7 +411,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setMakeMakeValues(){
+    private void setMakeMakeValues() {
         new ConfigSetter().dimension(Makemake)
             .fluid(hydrofluoricAcid)
             .chance(80)
@@ -420,7 +421,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setAlphaCentauriBBValues(){
+    private void setAlphaCentauriBBValues() {
         new ConfigSetter().dimension(AlphaCentauriBb)
             .fluid(moltenCopper)
             .chance(10)
@@ -430,7 +431,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setBarnardaCValues(){
+    private void setBarnardaCValues() {
         new ConfigSetter().dimension(BarnardaC)
             .fluid(veryHeavyOil)
             .chance(100)
@@ -448,7 +449,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setBarnardaEValues(){
+    private void setBarnardaEValues() {
         new ConfigSetter().dimension(BarnardaE)
             .fluid(liquidAir)
             .chance(20)
@@ -458,7 +459,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setBarnardaFValues(){
+    private void setBarnardaFValues() {
         new ConfigSetter().dimension(BarnardaF)
             .fluid(moltenTin)
             .chance(15)
@@ -468,7 +469,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setTcetiEValues(){
+    private void setTcetiEValues() {
         new ConfigSetter().dimension(TCetiE)
             .fluid(veryHeavyOil)
             .chance(100)
@@ -494,7 +495,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setRoss128bValues(){
+    private void setRoss128bValues() {
         new ConfigSetter().dimension(Ross128b)
             .fluid(veryHeavyOil)
             .chance(40)
@@ -528,7 +529,7 @@ public class GT_UO_DimensionList {
             .writeToConfig();
     }
 
-    private void setRoss128baValues(){
+    private void setRoss128baValues() {
         new ConfigSetter().dimension(Ross128ba)
             .fluid(saltWater)
             .chance(40)
@@ -545,6 +546,7 @@ public class GT_UO_DimensionList {
             .minAmount(0)
             .writeToConfig();
     }
+
     public void setDefaultValues() {
         setOverworldValues();
         setMoonValues();
@@ -568,7 +570,7 @@ public class GT_UO_DimensionList {
         setTcetiEValues();
         setRoss128bValues();
         setRoss128baValues();
-        }
+    }
 
     public void getConfig(Configuration aConfig, String aCategory) {
         fCategory = aCategory;
@@ -592,7 +594,8 @@ public class GT_UO_DimensionList {
         save();
     }
 
-    public class ConfigSetter{
+    public class ConfigSetter {
+
         private int chance;
         private int decreaseAmount;
         private int maxAmount;
@@ -600,38 +603,46 @@ public class GT_UO_DimensionList {
         private UndergroundFluidNames fluid;
         private Dimensions dim;
 
-        public ConfigSetter chance(int chance){
+        public ConfigSetter chance(int chance) {
             this.chance = chance;
             return this;
         }
 
-        public ConfigSetter decreaseAmount(int decreaseAmount){
+        public ConfigSetter decreaseAmount(int decreaseAmount) {
             this.decreaseAmount = decreaseAmount;
             return this;
         }
 
-        public ConfigSetter maxAmount(int maxAmount){
+        public ConfigSetter maxAmount(int maxAmount) {
             this.maxAmount = maxAmount;
             return this;
         }
 
-        public ConfigSetter minAmount(int minAmount){
+        public ConfigSetter minAmount(int minAmount) {
             this.minAmount = minAmount;
             return this;
         }
 
-        public ConfigSetter fluid(UndergroundFluidNames fluid){
+        public ConfigSetter fluid(UndergroundFluidNames fluid) {
             this.fluid = fluid;
             return this;
         }
 
-        public ConfigSetter dimension(Dimensions dim){
+        public ConfigSetter dimension(Dimensions dim) {
             this.dim = dim;
             return this;
         }
 
-        public void writeToConfig(){
-            SetConfigValues(dim.toString(), dim.id, fluid.toString(), fluid.name, minAmount, maxAmount, chance, decreaseAmount);
+        public void writeToConfig() {
+            SetConfigValues(
+                dim.toString(),
+                dim.id,
+                fluid.toString(),
+                fluid.name,
+                minAmount,
+                maxAmount,
+                chance,
+                decreaseAmount);
         }
     }
 }

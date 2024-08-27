@@ -1,14 +1,13 @@
 package bloodasp.galacticgreg.api.enums;
 
-import bloodasp.galacticgreg.api.Enums;
-import bloodasp.galacticgreg.api.ModDimensionDef;
 import net.minecraft.world.gen.ChunkProviderEnd;
 
+import bloodasp.galacticgreg.api.Enums;
+import bloodasp.galacticgreg.api.ModDimensionDef;
+
 public enum DimensionDef {
-    EndAsteroids(new ModDimensionDef(
-        DimNames.ENDASTEROIDS,
-        ChunkProviderEnd.class,
-        Enums.DimensionType.Asteroid)),
+
+    EndAsteroids(new ModDimensionDef(DimNames.ENDASTEROIDS, ChunkProviderEnd.class, Enums.DimensionType.Asteroid)),
     Moon(new ModDimensionDef(
         DimNames.MOON,
         "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon",
@@ -68,7 +67,7 @@ public enum DimensionDef {
         "galaxyspace.SolarSystem.moons.deimos.dimension.ChunkProviderDeimos",
         Enums.DimensionType.Planet,
         DimensionBlockMetaDefinitionList.Deimos.DBMDefList)),
-    Enceladus( new ModDimensionDef(
+    Enceladus(new ModDimensionDef(
         DimNames.ENCELADUS,
         "galaxyspace.SolarSystem.moons.enceladus.dimension.ChunkProviderEnceladus",
         Enums.DimensionType.Planet,
@@ -162,21 +161,24 @@ public enum DimensionDef {
         DimNames.ANUBIS,
         "de.katzenpapst.amunra.world.anubis.AnubisChunkProvider",
         Enums.DimensionType.Planet,
-           DimensionBlockMetaDefinitionList.Anubis.DBMDefList)),
+        DimensionBlockMetaDefinitionList.Anubis.DBMDefList)),
     Horus(new ModDimensionDef(
         DimNames.HORUS,
         "de.katzenpapst.amunra.world.horus.HorusChunkProvider",
-        Enums.DimensionType.Planet, DimensionBlockMetaDefinitionList.Horus.DBMDefList)),
-    Seth( new ModDimensionDef(
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Horus.DBMDefList)),
+    Seth(new ModDimensionDef(
         DimNames.SETH,
         "de.katzenpapst.amunra.world.seth.SethChunkProvider",
-        Enums.DimensionType.Planet,DimensionBlockMetaDefinitionList.Seth.DBMDefList)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Seth.DBMDefList)),
     MehenBelt(new ModDimensionDef(
         DimNames.MEHENBELT,
-            "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
-              Enums.DimensionType.Asteroid));
+        "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
+        Enums.DimensionType.Asteroid));
 
-    public static class DimNames{
+    public static class DimNames {
+
         public static final String ENDASTEROIDS = "EndAsteroids";
         public static final String MOON = "Moon";
         public static final String MARS = "Mars";
@@ -217,8 +219,10 @@ public enum DimensionDef {
         public static final String DEEPDARK = "Underdark";
 
     }
+
     public final ModDimensionDef modDimensionDef;
-    private DimensionDef(ModDimensionDef modDimDef){
+
+    private DimensionDef(ModDimensionDef modDimDef) {
         this.modDimensionDef = modDimDef;
     }
 }

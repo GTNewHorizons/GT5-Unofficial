@@ -1,10 +1,16 @@
 package gregtech.common.config.worldgen;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "general",configSubDirectory = "GregTech",filename = "WorldGeneration")
+@Config(
+    modid = Mods.Names.GREG_TECH,
+    category = "general",
+    configSubDirectory = "GregTech",
+    filename = "WorldGeneration")
 public class ConfigGeneral {
+
     @Config.Comment("if true, enables basalt ore gen.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart

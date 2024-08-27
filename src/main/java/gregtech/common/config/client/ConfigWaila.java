@@ -1,11 +1,13 @@
 package gregtech.common.config.client;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "waila",configSubDirectory = "GregTech",filename = "Client")
+@Config(modid = Mods.Names.GREG_TECH, category = "waila", configSubDirectory = "GregTech", filename = "Client")
 
 public class ConfigWaila {
+
     /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */

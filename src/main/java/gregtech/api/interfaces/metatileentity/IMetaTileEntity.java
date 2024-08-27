@@ -35,7 +35,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Util;
 
 /**

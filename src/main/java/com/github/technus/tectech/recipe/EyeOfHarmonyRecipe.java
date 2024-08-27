@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.github.technus.tectech.TecTech;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

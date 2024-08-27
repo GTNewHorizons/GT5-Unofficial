@@ -3,16 +3,14 @@ package bloodasp.galacticgreg.dynconfig;
 import java.util.HashMap;
 import java.util.Map;
 
-import bloodasp.galacticgreg.api.enums.ModContainers;
-import bloodasp.galacticgreg.api.enums.properties.Asteroids;
 import net.minecraftforge.common.ChestGenHooks;
 
 import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
 import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
+import bloodasp.galacticgreg.api.enums.properties.Asteroids;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
-import gregtech.api.GregTech_API;
 
 public class DynamicDimensionConfig {
 
@@ -58,18 +56,24 @@ public class DynamicDimensionConfig {
                     }
 
                     Asteroids AsteroidProperties = null;
-                    for (Asteroids asteroidsConfig : Asteroids.values()){
-                        if (!asteroidsConfig.modContainers.modContainer.getModName().equals(mc.getModName())){
+                    for (Asteroids asteroidsConfig : Asteroids.values()) {
+                        if (!asteroidsConfig.modContainers.modContainer.getModName()
+                            .equals(mc.getModName())) {
                             continue;
                         }
-                        if (!asteroidsConfig.dimensionDef.modDimensionDef.getDimensionName().equals(mdd.getDimensionName())){
+                        if (!asteroidsConfig.dimensionDef.modDimensionDef.getDimensionName()
+                            .equals(mdd.getDimensionName())) {
                             continue;
                         }
                         AsteroidProperties = asteroidsConfig;
                         break;
                     }
-                    if (AsteroidProperties == null){
-                        GalacticGreg.Logger.error("Something went wrong! no properties are existing for Asteroid dim: "+mdd.getDimensionName()+" from mod container "+mc.getModName());
+                    if (AsteroidProperties == null) {
+                        GalacticGreg.Logger.error(
+                            "Something went wrong! no properties are existing for Asteroid dim: "
+                                + mdd.getDimensionName()
+                                + " from mod container "
+                                + mc.getModName());
                         continue;
                     }
 

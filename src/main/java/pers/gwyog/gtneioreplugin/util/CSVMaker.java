@@ -1,5 +1,9 @@
 package pers.gwyog.gtneioreplugin.util;
 
+import static pers.gwyog.gtneioreplugin.Config.CSVName;
+import static pers.gwyog.gtneioreplugin.Config.CSVnameSmall;
+import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.instanceDir;
+
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -11,12 +15,9 @@ import java.util.Map;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
-import static pers.gwyog.gtneioreplugin.Config.CSVName;
-import static pers.gwyog.gtneioreplugin.Config.CSVnameSmall;
-import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.instanceDir;
-
 // todo: yeet any opencsv usage.
 public class CSVMaker implements Runnable {
+
     public void runSmallOres() {
         try {
             Iterator<Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper>> it = GT5OreSmallHelper.mapOreSmallWrapper
@@ -42,13 +43,15 @@ public class CSVMaker implements Runnable {
                 it.remove(); // avoids a ConcurrentModificationException
             }
 
-            BufferedWriter one = Files.newBufferedWriter(instanceDir.toPath().resolve(CSVnameSmall));
+            BufferedWriter one = Files.newBufferedWriter(
+                instanceDir.toPath()
+                    .resolve(CSVnameSmall));
             Collections.sort(SmallOreVeins);
 
             // header first
             one.write(SmallOre.getCsvHeader());
             one.newLine();
-            for (SmallOre ore : SmallOreVeins){
+            for (SmallOre ore : SmallOreVeins) {
                 one.write(ore.getCsvEntry());
                 one.newLine();
             }
@@ -97,13 +100,15 @@ public class CSVMaker implements Runnable {
 
                 it.remove(); // avoids a ConcurrentModificationException
             }
-            BufferedWriter one = Files.newBufferedWriter(instanceDir.toPath().resolve(CSVName));
+            BufferedWriter one = Files.newBufferedWriter(
+                instanceDir.toPath()
+                    .resolve(CSVName));
             Collections.sort(OreVeins);
 
             // header first
             one.write(Oremix.getCsvHeader());
             one.newLine();
-            for (Oremix ore : OreVeins){
+            for (Oremix ore : OreVeins) {
                 one.write(ore.getCsvEntry());
                 one.newLine();
             }

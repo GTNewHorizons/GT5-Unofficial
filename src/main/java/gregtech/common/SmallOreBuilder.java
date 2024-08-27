@@ -1,12 +1,13 @@
 package gregtech.common;
 
-import bloodasp.galacticgreg.api.enums.DimensionDef;
-import gregtech.api.enums.Materials;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import bloodasp.galacticgreg.api.enums.DimensionDef;
+import gregtech.api.enums.Materials;
+
 public class SmallOreBuilder {
+
     public static final String OW = "Overworld";
     public static final String NETHER = "Nether";
     public static final String THE_END = "TheEnd";
@@ -17,42 +18,42 @@ public class SmallOreBuilder {
     public int minY, maxY, amount;
     public Materials ore;
 
-    public SmallOreBuilder name(String name){
+    public SmallOreBuilder name(String name) {
         this.smallOreName = name;
         return this;
     }
 
-    public SmallOreBuilder disabledByDefault(){
+    public SmallOreBuilder disabledByDefault() {
         this.enabledByDefault = false;
         return this;
     }
 
-    public SmallOreBuilder enableInDim(DimensionDef... dims){
-        for (DimensionDef dim: dims){
+    public SmallOreBuilder enableInDim(DimensionDef... dims) {
+        for (DimensionDef dim : dims) {
             this.dimsEnabled.put(dim.modDimensionDef.getDimensionName(), true);
         }
         return this;
     }
 
-    public SmallOreBuilder enableInDim(String... dims){
-        for (String dim: dims) {
+    public SmallOreBuilder enableInDim(String... dims) {
+        for (String dim : dims) {
             this.dimsEnabled.put(dim, true);
         }
         return this;
     }
 
-    public SmallOreBuilder heightRange(int minY, int maxY){
+    public SmallOreBuilder heightRange(int minY, int maxY) {
         this.minY = minY;
         this.maxY = maxY;
         return this;
     }
 
-    public SmallOreBuilder amount(int amount){
+    public SmallOreBuilder amount(int amount) {
         this.amount = amount;
         return this;
     }
 
-    public SmallOreBuilder ore(Materials ore){
+    public SmallOreBuilder ore(Materials ore) {
         this.ore = ore;
         return this;
     }

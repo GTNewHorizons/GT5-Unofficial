@@ -13,20 +13,19 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgenerator();
 
         // GT Stones
-        for (GTStones stone : GTStones.values()){
+        for (GTStones stone : GTStones.values()) {
             stone.addGTStone();
         }
 
         // GT Default Small Ores
-        for (SmallOres smallOre: SmallOres.values()){
+        for (SmallOres smallOre : SmallOres.values()) {
             smallOre.addGTSmallOre();
         }
 
         // GT Veins registration
-        for (OreMixes oreMix : OreMixes.values()){
+        for (OreMixes oreMix : OreMixes.values()) {
             oreMix.addGTOreLayer();
         }
-
 
         new WorldGenGaGT().run();
         GT_Log.out.println("Started Galactic Greg ore gen code");

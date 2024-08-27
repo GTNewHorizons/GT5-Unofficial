@@ -40,11 +40,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
         } else {
-            registerStandardOreRecipes(
-                aPrefix,
-                aMaterial,
-                GT_Utility.copyAmount(1, aStack),
-                1);
+            registerStandardOreRecipes(aPrefix, aMaterial, GT_Utility.copyAmount(1, aStack), 1);
         }
     }
 

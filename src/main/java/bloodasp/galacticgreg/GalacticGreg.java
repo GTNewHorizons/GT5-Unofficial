@@ -19,7 +19,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import gregtech.GT_Version;
-import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen;
 
 @Mod(

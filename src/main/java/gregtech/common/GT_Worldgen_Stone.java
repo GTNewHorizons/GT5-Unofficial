@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Random;
 
-import gregtech.api.world.GT_Worldgen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +16,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
+import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 

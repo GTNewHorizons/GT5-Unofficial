@@ -18,16 +18,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.config.client.ConfigColorModulation;
-import gregtech.common.config.client.ConfigInterface;
-import gregtech.common.config.client.ConfigRender;
-import gregtech.common.config.client.ConfigWaila;
-import gregtech.common.config.gregtech.ConfigDebug;
-import gregtech.common.config.gregtech.ConfigFeatures;
-import gregtech.common.config.gregtech.ConfigGeneral;
-import gregtech.common.config.gregtech.ConfigMachines;
-import gregtech.common.config.gregtech.ConfigOreDropBehavior;
-import gregtech.common.config.gregtech.ConfigPollution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -57,6 +47,16 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import gregtech.common.config.client.ConfigColorModulation;
+import gregtech.common.config.client.ConfigInterface;
+import gregtech.common.config.client.ConfigRender;
+import gregtech.common.config.client.ConfigWaila;
+import gregtech.common.config.gregtech.ConfigDebug;
+import gregtech.common.config.gregtech.ConfigFeatures;
+import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigMachines;
+import gregtech.common.config.gregtech.ConfigOreDropBehavior;
+import gregtech.common.config.gregtech.ConfigPollution;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
@@ -427,7 +427,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.ic2EnergySourceCompat = ConfigGeneral.ic2EnergySourceCompat;
         GT_Mod.gregtechproxy.costlyCableConnection = ConfigGeneral.costlyCableConnection;
         GT_Mod.gregtechproxy.crashOnNullRecipeInput = ConfigGeneral.crashOnNullRecipeInput;
-        if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")){
+        if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             GT_Mod.gregtechproxy.crashOnNullRecipeInput = false; // Use flags in GT_RecipeBuilder instead!
         }
         GT_LanguageManager.i18nPlaceholder = ConfigGeneral.i18nPlaceholder;
@@ -435,7 +435,8 @@ public class GT_PreLoad {
         GT_Values.mCTMEnabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMWhitelist));
         GT_Values.mCTMDisabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMBlacklist));
         if (ConfigGeneral.harderMobSpawner) {
-            Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
+            Blocks.mob_spawner.setHardness(500.0F)
+                .setResistance(6000000.0F);
         }
 
         // machines
@@ -446,7 +447,8 @@ public class GT_PreLoad {
         GT_Values.alwaysReloadChunkloaders = ConfigMachines.alwaysReloadChunkloaders;
         GT_Values.debugChunkloaders = ConfigDebug.debugChunkloaders;
         GT_Values.disableDigitalChestsExternalAccess = ConfigMachines.disableDigitalChestsExternalAccess;
-        GT_Values.enableMultiTileEntities = ConfigMachines.enableMultiTileEntities || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+        GT_Values.enableMultiTileEntities = ConfigMachines.enableMultiTileEntities
+            || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         GregTech_API.sMachineExplosions = ConfigMachines.machineExplosions;
         GregTech_API.sMachineFlammable = ConfigMachines.machineFlammable;
         GregTech_API.sMachineNonWrenchExplosions = ConfigMachines.machineNonWrenchExplosions;
@@ -488,7 +490,8 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = ConfigPollution.pollutionHighPressureCoalBoilerPerSecond;
         GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = ConfigPollution.pollutionBaseDieselGeneratorPerSecond;
         double[] mPollutionDieselGeneratorReleasedByTier = ConfigPollution.pollutionDieselGeneratorReleasedByTier;
-        if (mPollutionDieselGeneratorReleasedByTier.length == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
+        if (mPollutionDieselGeneratorReleasedByTier.length
+            == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
         } else {
             GT_FML_LOGGER
@@ -496,7 +499,8 @@ public class GT_PreLoad {
         }
         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = ConfigPollution.pollutionBaseGasTurbinePerSecond;
         double[] mPollutionGasTurbineReleasedByTier = ConfigPollution.pollutionGasTurbineReleasedByTier;
-        if (mPollutionGasTurbineReleasedByTier.length == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
+        if (mPollutionGasTurbineReleasedByTier.length
+            == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
             GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
         } else {
             GT_FML_LOGGER.error("The Length of the Gas Turbine Pollution Array Config must be the same as the Default");
@@ -547,14 +551,15 @@ public class GT_PreLoad {
                 || (tPrefix == OrePrefixes.log)) {
                     tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxLogStackSize)));
                 } else if (tPrefix.mIsUsedForBlocks) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxOtherBlocksStackSize)));
+                    tPrefix.mDefaultStackSize = ((byte) Math
+                        .min(64, Math.max(16, ConfigFeatures.maxOtherBlocksStackSize)));
                 }
         }
 
         GT_RecipeBuilder.onConfigLoad();
     }
 
-    public static void parseHex(Dyes dye, String hexString){
+    public static void parseHex(Dyes dye, String hexString) {
         dye.mRGBa[0] = Short.parseShort(hexString.substring(1, 3), 16);
         dye.mRGBa[1] = Short.parseShort(hexString.substring(3, 5), 16);
         dye.mRGBa[2] = Short.parseShort(hexString.substring(5), 16);
@@ -564,12 +569,15 @@ public class GT_PreLoad {
         Arrays.stream(Dyes.values())
             .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))
             .forEach(dye -> {
-                switch (dye.toString().toLowerCase()) {
+                switch (dye.toString()
+                    .toLowerCase()) {
                     case "cable_insulation" -> parseHex(dye, ConfigColorModulation.cableInsulation);
                     case "construction_foam" -> parseHex(dye, ConfigColorModulation.constructionFoam);
                     case "machine_metal" -> parseHex(dye, ConfigColorModulation.machineMetal);
                     default -> {
-                        GT_FML_LOGGER.warn("unknown color modulation entry: "+dye+". Report this pls, as config is missing this entry being parsed in code.");
+                        GT_FML_LOGGER.warn(
+                            "unknown color modulation entry: " + dye
+                                + ". Report this pls, as config is missing this entry being parsed in code.");
                     }
                 }
             });

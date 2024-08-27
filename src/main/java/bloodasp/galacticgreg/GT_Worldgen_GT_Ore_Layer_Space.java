@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import bloodasp.galacticgreg.api.ModContainer;
-import gregtech.common.OreMixBuilder;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.auxiliary.GTOreGroup;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.OreMixBuilder;
 
 public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
@@ -38,7 +38,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     private long mProfilingEnd;
     private Map<String, Boolean> allowedDims;
 
-    public GT_Worldgen_GT_Ore_Layer_Space(OreMixBuilder mix){
+    public GT_Worldgen_GT_Ore_Layer_Space(OreMixBuilder mix) {
         super(mix.oreMixName, GalacticGreg.oreVeinWorldgenList, mix.enabledByDefault);
 
         mMinY = (short) mix.minY;
@@ -51,7 +51,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
         mBetweenMeta = (short) mix.between.mMetaItemSubID;
         mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
 
-        allowedDims= new HashMap<>();
+        allowedDims = new HashMap<>();
 
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
             if (!mc.getEnabled()) continue;
@@ -81,6 +81,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     public boolean isEnabledForDim(ModDimensionDef pDimensionDef) {
         return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
     }
+
     private static Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
 
     /**

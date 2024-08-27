@@ -1,15 +1,15 @@
 package gregtech.api.enums;
 
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
-import bloodasp.galacticgreg.api.enums.DimensionDef;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-import gregtech.common.OreMixBuilder;
-
 import static bloodasp.galacticgreg.api.enums.DimensionDef.*;
 import static gregtech.common.OreMixBuilder.NETHER;
 import static gregtech.common.OreMixBuilder.OW;
 import static gregtech.common.OreMixBuilder.THE_END;
 import static gregtech.common.OreMixBuilder.TWILIGHT_FOREST;
+
+import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
+import bloodasp.galacticgreg.api.enums.DimensionDef;
+import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import gregtech.common.OreMixBuilder;
 
 public enum OreMixes {
 
@@ -19,7 +19,20 @@ public enum OreMixes {
         .weight(30)
         .density(4)
         .size(32)
-        .enableInDim(EndAsteroids, Maahes, Asteroids, BarnardE, BarnardF, Haumea, KuiperBelt, Mercury, Oberon, Pluto, Titan, VegaB, Venus)
+        .enableInDim(
+            EndAsteroids,
+            Maahes,
+            Asteroids,
+            BarnardE,
+            BarnardF,
+            Haumea,
+            KuiperBelt,
+            Mercury,
+            Oberon,
+            Pluto,
+            Titan,
+            VegaB,
+            Venus)
         .primary(Materials.Naquadah)
         .secondary(Materials.Naquadah)
         .inBetween(Materials.Naquadah)
@@ -149,7 +162,20 @@ public enum OreMixes {
         .weight(80)
         .density(3)
         .size(24)
-        .enableInDim(Seth, Moon, Asteroids, Ganymede, Haumea, KuiperBelt, MakeMake, Mercury, Phobos, Pluto, Proteus, TcetiE, Titan)
+        .enableInDim(
+            Seth,
+            Moon,
+            Asteroids,
+            Ganymede,
+            Haumea,
+            KuiperBelt,
+            MakeMake,
+            Mercury,
+            Phobos,
+            Pluto,
+            Proteus,
+            TcetiE,
+            Titan)
         .primary(Materials.Bauxite)
         .secondary(Materials.Ilmenite)
         .inBetween(Materials.Aluminium)
@@ -253,7 +279,21 @@ public enum OreMixes {
         .weight(10)
         .density(2)
         .size(16)
-        .enableInDim(EndAsteroids, Asteroids, Mars, Callisto, Deimos, Enceladus, Ganymede, Haumea, KuiperBelt, MakeMake, Oberon, Pluto, Triton, VegaB)
+        .enableInDim(
+            EndAsteroids,
+            Asteroids,
+            Mars,
+            Callisto,
+            Deimos,
+            Enceladus,
+            Ganymede,
+            Haumea,
+            KuiperBelt,
+            MakeMake,
+            Oberon,
+            Pluto,
+            Triton,
+            VegaB)
         .primary(Materials.Scheelite)
         .secondary(Materials.Scheelite)
         .inBetween(Materials.Tungstate)
@@ -370,7 +410,18 @@ public enum OreMixes {
         .weight(20)
         .density(2)
         .size(16)
-        .enableInDim(MehenBelt, BarnardE, Ceres, Deimos, Enceladus, Ganymede, Haumea, KuiperBelt, MakeMake, Phobos, Proteus)
+        .enableInDim(
+            MehenBelt,
+            BarnardE,
+            Ceres,
+            Deimos,
+            Enceladus,
+            Ganymede,
+            Haumea,
+            KuiperBelt,
+            MakeMake,
+            Phobos,
+            Proteus)
         .primary(Materials.Uraninite)
         .secondary(Materials.Uraninite)
         .inBetween(Materials.Uranium)
@@ -381,7 +432,7 @@ public enum OreMixes {
         .density(5)
         .size(16)
         .enableInDim(OW)
-        .enableInDim(BarnardC,TcetiE)
+        .enableInDim(BarnardC, TcetiE)
         .primary(Materials.Oilsands)
         .secondary(Materials.Oilsands)
         .inBetween(Materials.Oilsands)
@@ -925,8 +976,7 @@ public enum OreMixes {
         return new GT_Worldgen_GT_Ore_Layer(this.oreMixBuilder);
     }
 
-    public GT_Worldgen_GT_Ore_Layer_Space addGaGregOreLayer(){
+    public GT_Worldgen_GT_Ore_Layer_Space addGaGregOreLayer() {
         return new GT_Worldgen_GT_Ore_Layer_Space(this.oreMixBuilder);
     }
 }
-

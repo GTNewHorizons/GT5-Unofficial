@@ -1,9 +1,10 @@
 package gregtech.common.config.machinestats;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "machines",configSubDirectory = "GregTech",filename = "MachineStats")
+@Config(modid = Mods.Names.GREG_TECH, category = "machines", configSubDirectory = "GregTech", filename = "MachineStats")
 public class ConfigMachines {
 
     @Config.Comment("Controls the damageFactorLow variable in the maintenance damage equation.")

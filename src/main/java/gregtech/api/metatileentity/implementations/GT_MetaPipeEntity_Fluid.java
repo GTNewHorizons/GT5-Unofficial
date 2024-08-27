@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.common.config.other.ConfigGeneral;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,8 +40,6 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -67,6 +64,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Client;
+import gregtech.common.config.other.ConfigGeneral;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_Drain;
 import gregtech.common.covers.GT_Cover_FluidRegulator;

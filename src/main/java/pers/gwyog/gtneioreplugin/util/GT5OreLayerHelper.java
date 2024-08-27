@@ -1,41 +1,5 @@
 package pers.gwyog.gtneioreplugin.util;
 
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ANUBIS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.BARNARDC;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.BARNARDE;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.BARNARDF;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.CALLISTO;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.CENTAURIA;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.CERES;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.DEEPDARK;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.DEIMOS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ENCELADUS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.ENDASTEROIDS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.EUROPA;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.GANYMEDE;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.HAUMEA;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.HORUS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.IO;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.KUIPERBELT;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MAAHES;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MAKEMAKE;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MARS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MEHENBELT;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MERCURY;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MIRANDA;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.MOON;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.NEPER;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.OBERON;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PHOBOS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PLUTO;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.PROTEUS;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.SETH;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TCETIE;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.TRITON;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
 import static pers.gwyog.gtneioreplugin.util.DimensionHelper.getDims;
 import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
 
@@ -45,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.OreMixes;
-import gregtech.common.OreMixBuilder;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OreMixes;
+import gregtech.common.OreMixBuilder;
 
 public class GT5OreLayerHelper {
 
@@ -92,9 +56,9 @@ public class GT5OreLayerHelper {
         // Get dims as "Ow,Ne,Ma" etc.
         bufferedDims.forEach((veinInfo, dims) -> {
 
-
-            for ( String dim : dims.keySet()){
-                NormalOreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new NormalOreDimensionWrapper());
+            for (String dim : dims.keySet()) {
+                NormalOreDimensionWrapper dimensionOres = dimToOreWrapper
+                    .getOrDefault(dim, new NormalOreDimensionWrapper());
                 dimensionOres.internalDimOreList.add(veinInfo);
                 dimToOreWrapper.put(dim, dimensionOres);
             }
@@ -108,8 +72,6 @@ public class GT5OreLayerHelper {
         // --- End of handling for dimToOreWrapper ---
     }
 
-
-
     public static class OreLayerWrapper {
 
         public final String veinName, worldGenHeightRange;
@@ -122,7 +84,7 @@ public class GT5OreLayerHelper {
         public final Materials mBetweenMaterial;
         public final Materials mSporadicMaterial;
 
-        public OreLayerWrapper(OreMixBuilder mix){
+        public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
             this.Meta[0] = (short) mix.primary.mMetaItemSubID;
             this.Meta[1] = (short) mix.secondary.mMetaItemSubID;

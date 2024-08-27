@@ -1,5 +1,7 @@
 package bloodasp.galacticgreg.registry;
 
+import static bloodasp.galacticgreg.api.enums.ModContainers.Vanilla;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +15,6 @@ import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.dynconfig.DynamicDimensionConfig;
 import bloodasp.galacticgreg.generators.GenEllipsoid;
 import cpw.mods.fml.common.Loader;
-
-import static bloodasp.galacticgreg.api.enums.ModContainers.Vanilla;
 
 /**
  * GalacticGregs registry
@@ -116,7 +116,8 @@ public class GalacticGregRegistry {
     private static void InitModContainers() {
         for (ModContainer mc : _mModContainers.values()) {
             // todo: rename Vanilla mod container name from "Vanilla" to "minecraft"
-            if (!Loader.isModLoaded(mc.getModName()) && !mc.getModName().equals(Vanilla.modContainer.getModName())) {
+            if (!Loader.isModLoaded(mc.getModName()) && !mc.getModName()
+                .equals(Vanilla.modContainer.getModName())) {
                 GalacticGreg.Logger.warn(
                     "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
                     mc.getModName());

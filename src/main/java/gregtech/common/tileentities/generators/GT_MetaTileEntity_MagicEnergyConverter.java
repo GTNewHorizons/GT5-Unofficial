@@ -12,8 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;

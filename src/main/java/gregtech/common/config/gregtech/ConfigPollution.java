@@ -1,10 +1,12 @@
 package gregtech.common.config.gregtech;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "pollution",configSubDirectory = "GregTech",filename = "GregTech")
+@Config(modid = Mods.Names.GREG_TECH, category = "pollution", configSubDirectory = "GregTech", filename = "GregTech")
 public class ConfigPollution {
+
     @Config.Comment("if true, enables pollution in the game.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
@@ -107,14 +109,8 @@ public class ConfigPollution {
     // reading double as strings, not perfect, but better than nothing
     @Config.Comment({
         "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
-        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc."
-    })
-    @Config.DefaultDoubleList({
-        0.1,
-        1.0,
-        0.9,
-        0.8
-    })
+        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
+    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8 })
     @Config.RequiresMcRestart
     public static double[] pollutionDieselGeneratorReleasedByTier;
 
@@ -126,16 +122,8 @@ public class ConfigPollution {
     // reading double as strings, not perfect, but better than nothing
     @Config.Comment({
         "Pollution released by tier, with the following formula: PollutionBaseGasTurbinePerSecond * PollutionGasTurbineReleasedByTier[Tier]",
-        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc."
-    })
-    @Config.DefaultDoubleList({
-        0.1,
-        1.0,
-        0.9,
-        0.8,
-        0.7,
-        0.6
-    })
+        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
+    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 })
     @Config.RequiresMcRestart
     public static double[] pollutionGasTurbineReleasedByTier;
 }

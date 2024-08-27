@@ -1,10 +1,12 @@
 package gregtech.common.config.gregtech;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "features",configSubDirectory = "GregTech",filename = "GregTech")
+@Config(modid = Mods.Names.GREG_TECH, category = "features", configSubDirectory = "GregTech", filename = "GregTech")
 public class ConfigFeatures {
+
     @Config.Comment("Controls the stacksize of tree related blocks.")
     @Config.DefaultInt(64)
     @Config.RequiresMcRestart

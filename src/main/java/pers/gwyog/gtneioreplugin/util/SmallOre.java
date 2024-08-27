@@ -1,11 +1,11 @@
 package pers.gwyog.gtneioreplugin.util;
 
-import java.util.Map;
-
 import static pers.gwyog.gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
 
+import java.util.Map;
+
 @SuppressWarnings("unused")
-public class SmallOre  implements Comparable<SmallOre>{
+public class SmallOre implements Comparable<SmallOre> {
 
     private String oreName;
     private int oreMeta;
@@ -13,10 +13,9 @@ public class SmallOre  implements Comparable<SmallOre>{
     private String height = "";
     private static final int sizeData = 4; // hors dims
 
-
     private Map<String, Boolean> dimensions;
 
-    public void setDims(Map<String, Boolean> dims){
+    public void setDims(Map<String, Boolean> dims) {
         this.dimensions = dims;
     }
 
@@ -44,35 +43,34 @@ public class SmallOre  implements Comparable<SmallOre>{
         this.height = s;
     }
 
-
-    public void setAmount(int i){
+    public void setAmount(int i) {
         this.amount = i;
     }
 
-    public int getAmount(){
+    public int getAmount() {
         return this.amount;
     }
 
-    public static String getCsvHeader(){
-        String[] headers = new String[sizeData+DimNameDisplayed.length];
-        headers[0]="Ore Name";
-        headers[1]="Block Meta";
-        headers[2]="Height";
-        headers[3]="Amount Per Chunk";
-        for (int i = 0; i < DimNameDisplayed.length;i++){
-            headers[sizeData+i]=DimensionHelper.getFullName(DimNameDisplayed[i]);
+    public static String getCsvHeader() {
+        String[] headers = new String[sizeData + DimNameDisplayed.length];
+        headers[0] = "Ore Name";
+        headers[1] = "Block Meta";
+        headers[2] = "Height";
+        headers[3] = "Amount Per Chunk";
+        for (int i = 0; i < DimNameDisplayed.length; i++) {
+            headers[sizeData + i] = DimensionHelper.getFullName(DimNameDisplayed[i]);
         }
         return String.join(",", headers);
     }
 
-    public String getCsvEntry(){
-        String[] values = new String[sizeData+DimNameDisplayed.length];
-        values[0]= oreName;
-        values[1]= Integer.toString(oreMeta);
-        values[2]=getHeight();
-        values[3]=Integer.toString(amount);
-        for (int i = 0; i < DimNameDisplayed.length;i++){
-            values[sizeData+i]=Boolean.toString(dimensions.getOrDefault(DimNameDisplayed[i], false));
+    public String getCsvEntry() {
+        String[] values = new String[sizeData + DimNameDisplayed.length];
+        values[0] = oreName;
+        values[1] = Integer.toString(oreMeta);
+        values[2] = getHeight();
+        values[3] = Integer.toString(amount);
+        for (int i = 0; i < DimNameDisplayed.length; i++) {
+            values[sizeData + i] = Boolean.toString(dimensions.getOrDefault(DimNameDisplayed[i], false));
         }
         return String.join(",", values);
     }

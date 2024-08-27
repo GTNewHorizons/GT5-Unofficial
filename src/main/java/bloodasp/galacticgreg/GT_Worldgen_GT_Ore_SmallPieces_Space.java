@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import bloodasp.galacticgreg.api.ModContainer;
-import gregtech.common.SmallOreBuilder;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.SmallOreBuilder;
 
 public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 

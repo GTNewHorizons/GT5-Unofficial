@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.api.enums.SmallOres;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.WorldProviderHell;
@@ -14,7 +13,6 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
@@ -34,7 +32,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
 
     public Class[] mAllowedProviders;
 
-    public GT_Worldgen_GT_Ore_SmallPieces(SmallOreBuilder ore){
+    public GT_Worldgen_GT_Ore_SmallPieces(SmallOreBuilder ore) {
         super(ore.smallOreName, GregTech_API.sWorldgenList, ore.enabledByDefault);
         this.mOverworld = ore.dimsEnabled.getOrDefault(SmallOreBuilder.OW, false);
         this.mNether = ore.dimsEnabled.getOrDefault(SmallOreBuilder.NETHER, false);

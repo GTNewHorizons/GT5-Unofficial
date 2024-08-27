@@ -1,9 +1,14 @@
 package gregtech.common.config.machinestats;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "teleporter",configSubDirectory = "GregTech",filename = "MachineStats")
+@Config(
+    modid = Mods.Names.GREG_TECH,
+    category = "teleporter",
+    configSubDirectory = "GregTech",
+    filename = "MachineStats")
 public class ConfigTeleporter {
 
     @Config.Comment("if true, allows interdim tp")

@@ -57,8 +57,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import gregtech.api.enums.ManualOreDictTweaks;
-import gregtech.common.config.opstuff.ConfigGeneral;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -121,11 +119,11 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.ManualOreDictTweaks;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
@@ -167,6 +165,7 @@ import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.config.opstuff.ConfigGeneral;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;
@@ -2724,8 +2723,7 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                 if (checkModID) {
                     if (tOre.mModID.equals(Names.ENDER_I_O)) {
                         if (tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
-                            GT_OreDictUnificator
-                                .addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+                            GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
                             GT_OreDictUnificator.set(
                                 tOre.mPrefix,
                                 tOre.mMaterial,
@@ -2762,7 +2760,8 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                         tOre.mPrefix,
                         tOre.mMaterial,
                         tOre.mEvent.Ore,
-                        (tOre.mModID != null) && ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
+                        (tOre.mModID != null)
+                            && ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
                         true);
                 }
             }

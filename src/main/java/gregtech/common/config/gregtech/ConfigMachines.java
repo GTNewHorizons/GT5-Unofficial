@@ -1,18 +1,19 @@
 package gregtech.common.config.gregtech;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "machines",configSubDirectory = "GregTech",filename = "GregTech")
+@Config(modid = Mods.Names.GREG_TECH, category = "machines", configSubDirectory = "GregTech", filename = "GregTech")
 public class ConfigMachines {
+
     @Config.Comment("Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to mitigate lag and FPS drops.")
     @Config.DefaultInt(30)
     @Config.RequiresMcRestart
     public static int ticksBetweenSounds;
 
     @Config.Comment("This will set the blacklist for the world accelerator in TE mode.")
-    @Config.DefaultStringList({
-        "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry",
+    @Config.DefaultStringList({ "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry",
         "advsolar.common.tiles.TileEntityUltimateSolarPanel", "advsolar.common.tiles.TileEntitySolarPanel",
         "advsolar.common.tiles.TileEntityQuantumSolarPanel", "advsolar.common.tiles.TileEntityHybridSolarPanel",
         "advsolar.common.tiles.TileEntityAdvancedSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
@@ -72,7 +73,6 @@ public class ConfigMachines {
     @Config.DefaultFloat(5.0f)
     @Config.RequiresMcRestart
     public static float cleanroomGlass;
-
 
     @Config.Comment("This will let machines such as drills and pumps chunkload their work area.")
     @Config.DefaultBoolean(true)

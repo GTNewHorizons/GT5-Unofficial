@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
-import bloodasp.galacticgreg.api.enums.DimensionDef;
-import gregtech.api.enums.OreMixes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -20,8 +17,8 @@ import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import bloodasp.galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
@@ -55,12 +52,13 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
 
     public Class[] mAllowedProviders;
 
-    public GT_Worldgen_GT_Ore_Layer(OreMixBuilder mix){
+    public GT_Worldgen_GT_Ore_Layer(OreMixBuilder mix) {
         super(mix.oreMixName, sList, mix.enabledByDefault);
         this.mOverworld = mix.dimsEnabled.getOrDefault(OreMixBuilder.OW, false);
         this.mNether = mix.dimsEnabled.getOrDefault(OreMixBuilder.NETHER, false);
         this.mEnd = mix.dimsEnabled.getOrDefault(OreMixBuilder.THE_END, false);
-        this.mEndAsteroid = mix.dimsEnabled.getOrDefault(DimensionDef.EndAsteroids.modDimensionDef.getDimensionName(), false);
+        this.mEndAsteroid = mix.dimsEnabled
+            .getOrDefault(DimensionDef.EndAsteroids.modDimensionDef.getDimensionName(), false);
         this.twilightForest = mix.dimsEnabled.getOrDefault(OreMixBuilder.TWILIGHT_FOREST, false);
         this.mMinY = ((short) mix.minY);
         short mMaxY = ((short) mix.maxY);
@@ -74,7 +72,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         this.mSize = (short) Math.max(1, mix.size);
         this.mPrimaryMeta = (short) mix.primary.mMetaItemSubID;
         this.mSecondaryMeta = (short) mix.secondary.mMetaItemSubID;
-        this.mBetweenMeta = (short)mix.between.mMetaItemSubID;
+        this.mBetweenMeta = (short) mix.between.mMetaItemSubID;
         this.mSporadicMeta = (short) mix.sporadic.mMetaItemSubID;
         this.mRestrictBiome = "None";
 

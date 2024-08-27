@@ -59,7 +59,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
@@ -742,7 +741,6 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
         GT_ModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                new ItemStack(Items.flint, 1) });
+            new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1) });
     }
 }

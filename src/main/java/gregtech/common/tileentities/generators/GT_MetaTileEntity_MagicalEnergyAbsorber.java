@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.generators;
 
-import static gregtech.api.enums.ConfigCategories.machineconfig;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_DRAGONEGG;
@@ -31,7 +30,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.config.machinestats.ConfigMachines;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.enchantment.Enchantment;
@@ -53,7 +51,6 @@ import com.google.common.base.Enums;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.ITexture;
@@ -63,11 +60,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.config.machinestats.ConfigMachines;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.AspectSourceHelper;
@@ -135,12 +132,10 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         sActiveSiphon = aSiphon;
     }
 
-
     public void onConfigLoad() {
         sharedConfigLoad();
         mEfficiency = 100 - mTier * 10;
-        mMaxVisPerDrain = (int) Math.round(
-            Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * getEfficiency())));
+        mMaxVisPerDrain = (int) Math.round(Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * getEfficiency())));
         if (Math.pow(mMaxVisPerDrain, 2) * sEnergyFromVis * getEfficiency() < V[mTier]) {
             mMaxVisPerDrain += 1;
         }

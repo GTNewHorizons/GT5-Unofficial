@@ -5,7 +5,6 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
-import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +26,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -157,26 +157,26 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
              * maximum output per second, and return this or the minimum output per second
              */
             return getMaxOutputPerSecond()
-                - getMaxOutputPerSecond() * (mRunTimeTicks - getCalcificationTicks())
-                    / getCalcificationTicks();
+                - getMaxOutputPerSecond() * (mRunTimeTicks - getCalcificationTicks()) / getCalcificationTicks();
         } else {
             return getMaxOutputPerSecond();
         }
     }
 
-    protected int getCalcificationTicks(){
+    protected int getCalcificationTicks() {
         return calcificationTicks;
     }
 
-    protected int getCooldownTicks(){
+    protected int getCooldownTicks() {
         return cooldownTicks;
     }
 
-    protected int getMaxRuntimeTicks(){
+    protected int getMaxRuntimeTicks() {
         // After which min output is reached.
-        return (getMaxOutputPerSecond() - getMinOutputPerSecond()) * getCalcificationTicks()
-            / getMaxOutputPerSecond() + getCalcificationTicks();
+        return (getMaxOutputPerSecond() - getMinOutputPerSecond()) * getCalcificationTicks() / getMaxOutputPerSecond()
+            + getCalcificationTicks();
     }
+
     @Override
     protected int getMaxTemperature() {
         return 500;

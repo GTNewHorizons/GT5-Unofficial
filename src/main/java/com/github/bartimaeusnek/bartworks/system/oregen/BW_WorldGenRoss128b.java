@@ -50,8 +50,6 @@ import static gregtech.api.enums.Materials.Uraninite;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 

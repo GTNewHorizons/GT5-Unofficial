@@ -1,10 +1,12 @@
 package gregtech.common.config.gregtech;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "general",configSubDirectory = "GregTech",filename = "GregTech")
+@Config(modid = Mods.Names.GREG_TECH, category = "general", configSubDirectory = "GregTech", filename = "GregTech")
 public class ConfigGeneral {
+
     @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
     @Config.DefaultInt(100)
     @Config.RequiresMcRestart
@@ -29,7 +31,6 @@ public class ConfigGeneral {
     @Config.DefaultInt(2)
     @Config.RequiresMcRestart
     public static int oreveinPlacerOresMultiplier;
-
 
     @Config.Comment("If true, enables the timber axe (cuts down whole tree in a single hit).")
     @Config.DefaultBoolean(false)
@@ -227,13 +228,12 @@ public class ConfigGeneral {
     public static int minimalDistancePoints;
 
     @Config.Comment("This will set the blacklist of blocks for CTM blocks.")
-    @Config.DefaultStringList({"team.chisel.block.BlockRoadLine"})
+    @Config.DefaultStringList({ "team.chisel.block.BlockRoadLine" })
     @Config.RequiresMcRestart
     public static String[] CTMBlacklist;
 
     @Config.Comment("This will set the whitelist of blocks for CTM blocks.")
-    @Config.DefaultStringList({"team.chisel.block.BlockCarvable",
-        "team.chisel.block.BlockCarvableGlass" })
+    @Config.DefaultStringList({ "team.chisel.block.BlockCarvable", "team.chisel.block.BlockCarvableGlass" })
     @Config.RequiresMcRestart
     public static String[] CTMWhitelist;
 

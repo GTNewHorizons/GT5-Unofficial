@@ -1,10 +1,16 @@
 package gregtech.common.config.machinestats;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "mass_fabricator",configSubDirectory = "GregTech",filename = "MachineStats")
+@Config(
+    modid = Mods.Names.GREG_TECH,
+    category = "mass_fabricator",
+    configSubDirectory = "GregTech",
+    filename = "MachineStats")
 public class ConfigMassFabricator {
+
     @Config.Comment("if true, requires UUA to run the mass fab.")
     @Config.DefaultBoolean(false)
     @Config.RequiresMcRestart

@@ -1,18 +1,16 @@
 package gregtech.api.world;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 
-import gregtech.api.GregTech_API;
+import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 
 public abstract class GT_Worldgen {
 
@@ -45,6 +43,7 @@ public abstract class GT_Worldgen {
         int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return 4; // This is for the empty Orevein
     }
+
     /**
      *
      * @param aDimName              The Dimension Name
@@ -54,7 +53,7 @@ public abstract class GT_Worldgen {
      *         Overworld, Twilight Forest and Deep Dark)
      */
     public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
-        if (aDimName.equalsIgnoreCase("Underdark")){
+        if (aDimName.equalsIgnoreCase("Underdark")) {
             return false;
         }
         if (!(aDimName.equalsIgnoreCase("Overworld") || aDimName.equalsIgnoreCase("Nether")
@@ -87,7 +86,7 @@ public abstract class GT_Worldgen {
      */
     public boolean isGenerationAllowed(World aWorld, Class... aAllowedDimensionTypes) {
         String aDimName = aWorld.provider.getDimensionName();
-        if (aDimName.equalsIgnoreCase("Underdark")){
+        if (aDimName.equalsIgnoreCase("Underdark")) {
             return false;
         }
         if (!(aDimName.equalsIgnoreCase("Overworld") || aDimName.equalsIgnoreCase("Nether")
@@ -97,17 +96,17 @@ public abstract class GT_Worldgen {
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
             boolean value = false;
-            for (int i=0;i<aAllowedDimensionTypes.length;i++){
-                if (aAllowedDimensionTypes[i].isInstance(aWorld.provider)){
+            for (int i = 0; i < aAllowedDimensionTypes.length; i++) {
+                if (aAllowedDimensionTypes[i].isInstance(aWorld.provider)) {
                     value = true;
                 }
             }
 
             // ugly, but idk how to do it better without hard depping on tf provider in ore constructors
-            if (this instanceof GT_Worldgen_GT_Ore_SmallPieces){
+            if (this instanceof GT_Worldgen_GT_Ore_SmallPieces) {
                 value = ((GT_Worldgen_GT_Ore_SmallPieces) this).twilightForest && aWorld.provider.dimensionId == 7;
             }
-            if (this instanceof GT_Worldgen_GT_Ore_Layer){
+            if (this instanceof GT_Worldgen_GT_Ore_Layer) {
                 value = ((GT_Worldgen_GT_Ore_Layer) this).twilightForest && aWorld.provider.dimensionId == 7;
             }
 

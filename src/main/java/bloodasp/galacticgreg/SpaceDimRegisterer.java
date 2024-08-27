@@ -41,16 +41,14 @@ import static bloodasp.galacticgreg.api.enums.ModContainers.GalacticraftMars;
 import static bloodasp.galacticgreg.api.enums.ModContainers.GalaxySpace;
 import static bloodasp.galacticgreg.api.enums.ModContainers.Vanilla;
 
-import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.gen.ChunkProviderEnd;
 
 import bloodasp.galacticgreg.api.AsteroidBlockComb;
 import bloodasp.galacticgreg.api.Enums;
 import bloodasp.galacticgreg.api.GTOreTypes;
 import bloodasp.galacticgreg.api.ModContainer;
-import bloodasp.galacticgreg.api.ModDimensionDef;
 import bloodasp.galacticgreg.api.SpecialBlockComb;
+import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 
 /**
  * In this class, you'll find everything you need in order to tell GGreg what to do and where. Everything is done in
@@ -58,6 +56,7 @@ import bloodasp.galacticgreg.api.SpecialBlockComb;
  * case, find me on github and create an issue please)
  */
 public class SpaceDimRegisterer {
+
     public static void register() {
         GalacticGregRegistry.registerModContainer(setupVanilla());
         GalacticGregRegistry.registerModContainer(setupGalactiCraftCore());
@@ -81,7 +80,8 @@ public class SpaceDimRegisterer {
 
         // These Blocks will randomly be generated
         EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.glowstone));
-        EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
+        EndAsteroids.modDimensionDef
+            .addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
 
         Vanilla.modContainer.addDimensionDef(EndAsteroids.modDimensionDef);
 

@@ -9,8 +9,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
 import java.util.function.Consumer;
 
-import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
-import gregtech.common.config.machinestats.ConfigTeleporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +28,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -44,8 +41,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigTeleporter;
 
 public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEntity_BasicTank
     implements IAddGregtechLogo, IAddUIWidgets {

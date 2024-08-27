@@ -1,10 +1,12 @@
 package gregtech.common.config.client;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "render",configSubDirectory = "GregTech",filename = "Client")
+@Config(modid = Mods.Names.GREG_TECH, category = "render", configSubDirectory = "GregTech", filename = "Client")
 public class ConfigRender {
+
     @Config.Comment("if true, enables ambient-occlusion smooth lighting on tiles.")
     @Config.DefaultBoolean(true)
     public static boolean renderTileAmbientOcclusion;
@@ -40,6 +42,5 @@ public class ConfigRender {
     @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
     @Config.DefaultBoolean(false)
     public static boolean useBlockUpdateHandler;
-
 
 }

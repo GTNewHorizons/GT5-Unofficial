@@ -15,27 +15,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import bloodasp.galacticgreg.SpaceDimRegisterer;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-import gregtech.common.config.client.ConfigColorModulation;
-import gregtech.common.config.client.ConfigInterface;
-import gregtech.common.config.client.ConfigPreference;
-import gregtech.common.config.client.ConfigRender;
-import gregtech.common.config.client.ConfigWaila;
-import gregtech.common.config.gregtech.ConfigDebug;
-import gregtech.common.config.gregtech.ConfigFeatures;
-import gregtech.common.config.gregtech.ConfigGeneral;
-import gregtech.common.config.gregtech.ConfigHarvestLevel;
-import gregtech.common.config.gregtech.ConfigMachines;
-import gregtech.common.config.gregtech.ConfigOreDropBehavior;
-import gregtech.common.config.gregtech.ConfigPollution;
-import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
-import gregtech.common.config.machinestats.ConfigMassFabricator;
-import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
-import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
-import gregtech.common.config.machinestats.ConfigTeleporter;
-import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -53,8 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import appeng.api.AEApi;
+import bloodasp.galacticgreg.SpaceDimRegisterer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -100,6 +82,24 @@ import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
+import gregtech.common.config.client.ConfigColorModulation;
+import gregtech.common.config.client.ConfigInterface;
+import gregtech.common.config.client.ConfigPreference;
+import gregtech.common.config.client.ConfigRender;
+import gregtech.common.config.client.ConfigWaila;
+import gregtech.common.config.gregtech.ConfigDebug;
+import gregtech.common.config.gregtech.ConfigFeatures;
+import gregtech.common.config.gregtech.ConfigGeneral;
+import gregtech.common.config.gregtech.ConfigHarvestLevel;
+import gregtech.common.config.gregtech.ConfigMachines;
+import gregtech.common.config.gregtech.ConfigOreDropBehavior;
+import gregtech.common.config.gregtech.ConfigPollution;
+import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
+import gregtech.common.config.machinestats.ConfigMassFabricator;
+import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
+import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
+import gregtech.common.config.machinestats.ConfigTeleporter;
+import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
@@ -187,8 +187,9 @@ import ic2.api.recipe.RecipeOutput;
         + " after:Translocator;"
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
+
     static {
-        try{
+        try {
             // Client
             ConfigurationManager.registerConfig(ConfigColorModulation.class);
             ConfigurationManager.registerConfig(ConfigInterface.class);
@@ -223,9 +224,7 @@ public class GT_Mod implements IGT_Mod {
             ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
             ConfigurationManager.registerConfig(gregtech.common.config.worldgen.ConfigGeneral.class);
 
-
-        }
-        catch (ConfigException e) {
+        } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
     }
@@ -296,7 +295,9 @@ public class GT_Mod implements IGT_Mod {
         }
 
         GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
-        GT_PreLoad.createLogFiles(aEvent.getModConfigurationDirectory().getParentFile());
+        GT_PreLoad.createLogFiles(
+            aEvent.getModConfigurationDirectory()
+                .getParentFile());
 
         gregtechproxy.onPreLoad();
 
@@ -412,7 +413,6 @@ public class GT_Mod implements IGT_Mod {
 
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
-
 
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");

@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.boilers;
 
-import static gregtech.api.enums.ConfigCategories.machineconfig;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -9,7 +7,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
 import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
 
 public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boiler_Solar {
@@ -31,7 +28,7 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
         initBoilerStats();
     }
 
-    protected void initBoilerStats(){
+    protected void initBoilerStats() {
         calcificationTicks = ConfigSteelSolarBoiler.calcificationTicks;
         cooldownTicks = ConfigSteelSolarBoiler.cooldownTicks;
         maxOutputPerSecond = ConfigSteelSolarBoiler.maxOutputPerSecond;
@@ -69,10 +66,6 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boiler_Solar_Steel(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new GT_MetaTileEntity_Boiler_Solar_Steel(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 }

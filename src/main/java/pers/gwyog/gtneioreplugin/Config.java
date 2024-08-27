@@ -1,12 +1,9 @@
 package pers.gwyog.gtneioreplugin;
 
-import java.io.File;
-
-import net.minecraftforge.common.config.Configuration;
-
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-
-@com.gtnewhorizon.gtnhlib.config.Config(modid =  GTNEIOrePlugin.MODID, category = "general",filename =  GTNEIOrePlugin.MODID)
+@com.gtnewhorizon.gtnhlib.config.Config(
+    modid = GTNEIOrePlugin.MODID,
+    category = "general",
+    filename = GTNEIOrePlugin.MODID)
 public class Config {
 
     @com.gtnewhorizon.gtnhlib.config.Config.Comment("if true, generate both csv files.")

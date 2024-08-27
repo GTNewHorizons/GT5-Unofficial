@@ -1,10 +1,11 @@
 package pers.gwyog.gtneioreplugin.util;
 
-import java.util.Map;
-
 import static pers.gwyog.gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
 
-public class Oremix implements Comparable<Oremix>{
+import java.util.Map;
+
+public class Oremix implements Comparable<Oremix> {
+
     private String oreMixName;
 
     private String primary = "";
@@ -29,7 +30,7 @@ public class Oremix implements Comparable<Oremix>{
 
     private Map<String, Boolean> dimensions;
 
-    public void setDims(Map<String, Boolean> dims){
+    public void setDims(Map<String, Boolean> dims) {
         this.dimensions = dims;
     }
 
@@ -53,7 +54,6 @@ public class Oremix implements Comparable<Oremix>{
         this.inbetween = s;
     }
 
-
     public void setSporadic(String s) {
         this.sporadic = s;
     }
@@ -66,16 +66,13 @@ public class Oremix implements Comparable<Oremix>{
         this.height = s;
     }
 
-
     public void setDensity(int i) {
         this.density = i;
     }
 
-
     public void setSize(int i) {
         this.size = i;
     }
-
 
     public void setWeight(int i) {
         this.weight = i;
@@ -86,38 +83,38 @@ public class Oremix implements Comparable<Oremix>{
         return ore.oreMixName.compareTo(ore.oreMixName);
     }
 
-    public static String getCsvHeader(){
-        String[] headers = new String[sizeData+DimNameDisplayed.length];
-        headers[0]="Ore Mix Name";
-        headers[1]="Primary Ore";
-        headers[2]="Secondary Ore";
-        headers[3]="InBetween Ore";
-        headers[4]="Sporadic Ore";
-        headers[5]="Ore Meta IDs";
-        headers[6]="Height";
-        headers[7]="Density";
-        headers[8]="Size";
-        headers[9]="Weight";
-        for (int i = 0; i < DimNameDisplayed.length;i++){
-            headers[sizeData+i]=DimensionHelper.getFullName(DimNameDisplayed[i]);
+    public static String getCsvHeader() {
+        String[] headers = new String[sizeData + DimNameDisplayed.length];
+        headers[0] = "Ore Mix Name";
+        headers[1] = "Primary Ore";
+        headers[2] = "Secondary Ore";
+        headers[3] = "InBetween Ore";
+        headers[4] = "Sporadic Ore";
+        headers[5] = "Ore Meta IDs";
+        headers[6] = "Height";
+        headers[7] = "Density";
+        headers[8] = "Size";
+        headers[9] = "Weight";
+        for (int i = 0; i < DimNameDisplayed.length; i++) {
+            headers[sizeData + i] = DimensionHelper.getFullName(DimNameDisplayed[i]);
         }
         return String.join(",", headers);
     }
 
-    public String getCsvEntry(){
-        String[] values = new String[sizeData+DimNameDisplayed.length];
-        values[0]= oreMixName;
-        values[1]= primary;
-        values[2]= secondary;
-        values[3]= inbetween;
-        values[4]= sporadic;
-        values[5]= oreMixIDs;
-        values[6]= height;
-        values[7]= Integer.toString(density);
-        values[8]= Integer.toString(size);
-        values[9]= Integer.toString(weight);
-        for (int i = 0; i < DimNameDisplayed.length;i++){
-            values[sizeData+i]=Boolean.toString(dimensions.getOrDefault(DimNameDisplayed[i], false));
+    public String getCsvEntry() {
+        String[] values = new String[sizeData + DimNameDisplayed.length];
+        values[0] = oreMixName;
+        values[1] = primary;
+        values[2] = secondary;
+        values[3] = inbetween;
+        values[4] = sporadic;
+        values[5] = oreMixIDs;
+        values[6] = height;
+        values[7] = Integer.toString(density);
+        values[8] = Integer.toString(size);
+        values[9] = Integer.toString(weight);
+        for (int i = 0; i < DimNameDisplayed.length; i++) {
+            values[sizeData + i] = Boolean.toString(dimensions.getOrDefault(DimNameDisplayed[i], false));
         }
         return String.join(",", values);
     }
