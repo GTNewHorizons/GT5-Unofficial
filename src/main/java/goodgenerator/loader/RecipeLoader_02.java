@@ -1518,7 +1518,7 @@ public class RecipeLoader_02 {
                 FluidRegistry.getFluidStack("molten.energycrystal", 1152),
                 FluidRegistry.getFluidStack("molten.laurenium", 144))
             .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(520000)
+            .eut(TierEU.RECIPE_UV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
             .noOptimize()
             .addTo(preciseAssemblerRecipes);

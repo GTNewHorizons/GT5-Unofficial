@@ -20,7 +20,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Config;
 import gregtech.common.GT_Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
@@ -33,8 +32,8 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     protected int SLOT_FILTER = 0;
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        super.onConfigLoad(aConfig);
+    public void onConfigLoad() {
+        super.onConfigLoad();
         try {
             int a1 = GT_Mod.gregtechproxy.mPollutionSmogLimit;
             if (a1 > 0) {

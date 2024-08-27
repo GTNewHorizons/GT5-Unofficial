@@ -602,7 +602,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(3, aStack), is)
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L))
                         .duration(2 * MINUTES)
-                        .eut(2000)
+                        .eut(TierEU.RECIPE_EV)
                         .addTo(laserEngraverRecipes);
                 }
             }

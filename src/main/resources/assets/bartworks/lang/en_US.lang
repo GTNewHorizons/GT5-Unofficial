@@ -67,7 +67,7 @@ BW_GlasBlocks.14.name=Cosmic Neutronium Reinforced Borosilicate Glass Block
 BW_GlasBlocks.15.name=Infinity Reinforced Borosilicate Glass Block
 BW_GlasBlocks2.0.name=Transcendentally Reinforced Borosilicate Glass Block
 
-tooltip.glas.0.name=Glass-Tier:
+tooltip.glass_tier.0.name=Glass-Tier:
 tooltip.LESU.0.name=Maximum Capacity!
 tooltip.LESU.1.name=Multiple Controllers!
 
@@ -95,7 +95,6 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.kg.0.name=kg
 tooltip.bw.kg.1.name=kgs
 tooltip.bw.empty.name=Empty
-tooltip.bw.via.name=Added by %s§7 via §2BartWorks
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
 tooltip.teslastaff.0.name=No warranty!
@@ -127,7 +126,7 @@ tooltip.tile.tiereddsc.1.name=Amperage IN:
 tooltip.tile.tiereddsc.2.name=Amperage OUT:
 tooltip.tile.tiereddsc.3.name=Capacity:
 tooltip.tile.diode.0.name=A Simple diode that will allow Energy Flow in only one direction.
-tooltip.tile.energydistributor.0.name=Splits Amperage into several Sides.
+tooltip.tile.energydistributor.0.name=Splits Amperage into several sides.
 tooltip.tile.biolab.0.name=The BioLab, a Multi-Use Bioengineering Station
 tooltip.tile.radhatch.0.name=Radioactive Item Chamber for Multiblocks
 tooltip.tile.radhatch.1.name=Use a screwdriver to set the containment level

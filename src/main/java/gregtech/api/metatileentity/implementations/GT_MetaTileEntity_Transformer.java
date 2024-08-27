@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.EnderIO;
 import static mcp.mobius.waila.api.SpecialChars.BLUE;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -194,7 +195,7 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
                             .extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
-                    } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer powerContainer
+                    } else if (EnderIO.isModLoaded() && tTileEntity instanceof IPowerContainer powerContainer
                         && powerContainer.getEnergyStored() > 0) {
                             final int storedRF = powerContainer.getEnergyStored();
                             final int extractRF = GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU);
