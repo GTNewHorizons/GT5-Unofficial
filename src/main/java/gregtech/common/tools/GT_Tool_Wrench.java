@@ -212,7 +212,6 @@ public class GT_Tool_Wrench extends GT_Tool {
             try {
                 LastEventFromThis = true;
                 player.setSneaking(true);
-
                 final MovingObjectPosition movObjPosition = Platform.rayTrace(player, true, false);
                 if (movObjPosition == null) {
                     event.setCanceled(true);
