@@ -131,7 +131,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreSmallWrapper oreSmall = GT5OreSmallHelper.mapOreSmallWrapper.get(veinName);
-        String[] dims = DimensionHelper.parseDimNames(GT5OreSmallHelper.bufferedDims.get(oreSmall));
+        String[] dims = GT5OreSmallHelper.bufferedDims.get(oreSmall).keySet().toArray(new String[0]);
         Arrays.sort(
             dims,
             Comparator.comparingInt(
