@@ -10,12 +10,12 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofSolenoidCoil;
-import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
@@ -32,6 +32,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -45,7 +49,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_LargeFluidExtractor
@@ -57,13 +60,12 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     private static final int BASE_CASING_COUNT = 24 + 24 + 9;
     private static final int MAX_HATCHES_ALLOWED = 16;
 
-    private static final double BASE_SPEED_BONUS = 1.2;
-    private static final double BASE_EU_DISCOUNT = 0.8;
+    private static final double BASE_SPEED_BONUS = 1.5;
+    private static final double BASE_EU_MULTIPLIER = 0.8;
 
     private static final double SPEED_PER_COIL = 0.1;
     private static final int PARALLELS_PER_SOLENOID = 8;
-    private static final double SOLENOID_EU_PENALTY = 0.25;
-    private static final double HEATING_COIL_EU_DISCOUNT = 0.05;
+    private static final double HEATING_COIL_EU_MULTIPLIER = 0.9;
 
     // spotless:off
     private static final IStructureDefinition<GT_MetaTileEntity_LargeFluidExtractor> STRUCTURE_DEFINITION = StructureDefinition
@@ -131,7 +133,7 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     @Nullable
     private Byte mSolenoidLevel = null;
     private int mCasingAmount;
-    private boolean mBadStructure = false, mStructureBadGlassTier = false, mStructureBadCasingCount = false;
+    private boolean mStructureBadGlassTier = false, mStructureBadCasingCount = false;
 
     public GT_MetaTileEntity_LargeFluidExtractor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -151,7 +153,6 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         super.clearHatches();
 
         mCasingAmount = 0;
-        mBadStructure = false;
         mStructureBadGlassTier = false;
         mStructureBadCasingCount = false;
         mGlassTier = 0;
@@ -162,7 +163,6 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0)) {
-            mBadStructure = true;
             return false;
         }
 
@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_LargeFluidExtractor
                 continue;
             }
 
-            if (energyHatch.getTierForStructure() > mGlassTier) {
+            if (mGlassTier < 10 && energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
             }
         }
@@ -195,12 +195,17 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     }
 
     @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
+    }
+
+    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
+        super.setProcessingLogicPower(logic);
+        logic.setAvailableAmperage(mEnergyHatches.size());
         logic.setEuModifier((float) (getEUMultiplier()));
         logic.setMaxParallel(getParallels());
-        logic.setSpeedBonus((float) (getSpeedBonus()));
+        logic.setSpeedBonus(1.0f / (float) (getSpeedBonus()));
     }
 
     @Override
@@ -268,32 +273,30 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         tt.addMachineType("Fluid Extractor")
             .addInfo("Controller block for the Large Fluid Extractor")
             .addInfo(String.format(
-                "%d%% the speed of single block machines of the same voltage",
-                (int) (BASE_SPEED_BONUS * 100)
+                "%d%% faster than single block machines of the same voltage",
+                (int) Math.round((BASE_SPEED_BONUS - 1) * 100)
             ))
             .addInfo(String.format(
                 "Only uses %d%% of the EU/t normally required",
-                (int) (BASE_EU_DISCOUNT * 100)
+                (int) Math.round(BASE_EU_MULTIPLIER * 100)
             ))
             .addInfo(String.format(
-                "Every coil tier above Cupronickel gives +%d%% speed and a %d%% EU/t discount",
-                (int) (SPEED_PER_COIL * 100),
-                (int) (HEATING_COIL_EU_DISCOUNT * 100)
+                "Every coil tier gives a +%d%% speed bonus and a %d%% EU/t discount (multiplicative)",
+                (int) Math.round(SPEED_PER_COIL * 100),
+                (int) Math.round((1 - HEATING_COIL_EU_MULTIPLIER) * 100)
             ))
             .addInfo(String.format(
-                "Every solenoid tier gives +%d parallels and a %d%% EU/t penalty (multiplicative)",
-                (int) (PARALLELS_PER_SOLENOID),
-                (int) (SOLENOID_EU_PENALTY * 100)
+                "Every solenoid tier gives +%d parallels",
+                (int) PARALLELS_PER_SOLENOID
             ))
             .addInfo(String.format(
-                "The EU multiplier is %s%.2f * (%.2f ^ Solenoid Tier) * (1 - %.2f * Heating Coil Tier)%s, prior to overclocks",
+                "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
                 EnumChatFormatting.ITALIC,
-                BASE_EU_DISCOUNT,
-                1 + SOLENOID_EU_PENALTY,
-                HEATING_COIL_EU_DISCOUNT,
+                BASE_EU_MULTIPLIER,
+                HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addInfo("The energy hatch tier is limited by the glass tier")
+            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers.")
             .addSeparator()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
@@ -311,6 +314,40 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         // spotless:on
 
         return tt;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements.widgets(TextWidget.dynamicString(() -> {
+            if (mStructureBadCasingCount) {
+                return String.format(
+                    "%sNot enough casings: need %d, but\nhave %d.%s",
+                    EnumChatFormatting.DARK_RED,
+                    BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
+                    mCasingAmount,
+                    RESET);
+            }
+
+            if (mStructureBadGlassTier) {
+                int hatchTier = 0;
+
+                for (var hatch : mEnergyHatches) {
+                    if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
+                }
+
+                return String.format(
+                    "%sEnergy hatch tier (%s) is too high\nfor the glass tier (%s).%s",
+                    EnumChatFormatting.DARK_RED,
+                    VN[hatchTier],
+                    VN[mGlassTier],
+                    RESET);
+            }
+
+            return "";
+        })
+            .setTextAlignment(Alignment.CenterLeft));
     }
 
     @Override
@@ -354,38 +391,8 @@ public class GT_MetaTileEntity_LargeFluidExtractor
 
         data.addAll(Arrays.asList(super.getInfoData()));
 
-        if (mBadStructure) {
-            data.add(RED + "Malformed structure." + RESET);
-        }
-
-        if (mStructureBadGlassTier) {
-            int hatchTier = 0;
-
-            for (var hatch : mEnergyHatches) {
-                if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
-            }
-
-            data.add(
-                String.format(
-                    "%sEnergy hatch tier (%d) is too high for the glass tier (%d).%s",
-                    RED,
-                    hatchTier,
-                    mGlassTier,
-                    RESET));
-        }
-
-        if (mStructureBadCasingCount) {
-            data.add(
-                String.format(
-                    "%sNot enough casings: need %d, but have %d.%s",
-                    RED,
-                    BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                    mCasingAmount,
-                    RESET));
-        }
-
         data.add(String.format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
-        data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
+        data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getCoilSpeedBonus() * 100, RESET));
         data.add(String.format("Total Speed Multiplier: %s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
         data.add(String.format("Total EU/t Multiplier: %s%.0f%s %%", YELLOW, getEUMultiplier() * 100, RESET));
 
@@ -396,15 +403,17 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         return Math.max(1, mSolenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * mSolenoidLevel));
     }
 
+    public float getCoilSpeedBonus() {
+        return (float) ((mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier()));
+    }
+
     public float getSpeedBonus() {
-        return (float) (BASE_SPEED_BONUS + (mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier()));
+        return (float) (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
     public float getEUMultiplier() {
-        double heatingBonus = 1 - (mCoilLevel == null ? 0 : mCoilLevel.getTier() * HEATING_COIL_EU_DISCOUNT);
-        double solenoidPenalty = mSolenoidLevel == null ? 1
-            : Math.pow(1 + SOLENOID_EU_PENALTY, (double) mSolenoidLevel);
+        double heatingBonus = (mCoilLevel == null ? 0 : Math.pow(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
 
-        return (float) (BASE_EU_DISCOUNT * solenoidPenalty * heatingBonus);
+        return (float) (BASE_EU_MULTIPLIER * heatingBonus);
     }
 }
