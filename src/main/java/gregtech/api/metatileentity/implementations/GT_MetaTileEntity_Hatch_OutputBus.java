@@ -22,6 +22,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.widgets.GT_PhantomItemButton;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -31,7 +32,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch implements IAddUIWidgets, IItemLockable {
+public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch
+    implements IAddUIWidgets, IItemLockable, IDataCopyable {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -127,17 +129,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
             return super.onRightclick(aBaseMetaTileEntity, aPlayer);
         }
 
-        if (!dataStick.hasTagCompound() || !DATA_STICK_DATA_TYPE.equals(dataStick.stackTagCompound.getString("type"))) {
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.invalid"));
             return false;
         }
 
-        final NBTTagCompound nbt = dataStick.stackTagCompound;
-        if (nbt.hasKey(LOCKED_ITEM_NBT_KEY)) {
-            lockedItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(LOCKED_ITEM_NBT_KEY));
-        } else {
-            lockedItem = null;
-        }
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.loaded"));
         return true;
 
@@ -153,15 +149,35 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
             return;
         }
 
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        dataStick.setStackDisplayName("Output Bus Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.saved"));
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
         final NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("type", DATA_STICK_DATA_TYPE);
         if (lockedItem != null) {
             nbt.setTag(LOCKED_ITEM_NBT_KEY, lockedItem.writeToNBT(new NBTTagCompound()));
         }
+        return nbt;
+    }
 
-        dataStick.stackTagCompound = nbt;
-        dataStick.setStackDisplayName("Output Bus Configuration");
-        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.saved"));
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        if (nbt.hasKey(LOCKED_ITEM_NBT_KEY)) {
+            lockedItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(LOCKED_ITEM_NBT_KEY));
+        } else {
+            lockedItem = null;
+        }
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
     }
 
     /**
