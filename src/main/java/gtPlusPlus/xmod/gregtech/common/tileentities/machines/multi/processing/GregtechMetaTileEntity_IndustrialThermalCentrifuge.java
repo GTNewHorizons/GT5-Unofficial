@@ -125,12 +125,12 @@ public class GregtechMetaTileEntity_IndustrialThermalCentrifuge extends
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+        return TexturesGtBlock.oMCDIndustrialThermalCentrifugeActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+        return TexturesGtBlock.oMCDIndustrialThermalCentrifuge;
     }
 
     @Override

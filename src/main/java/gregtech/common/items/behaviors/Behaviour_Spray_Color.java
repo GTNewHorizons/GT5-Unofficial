@@ -19,14 +19,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.implementations.tiles.IColorableTile;
 import appeng.api.util.AEColor;
 import appeng.block.networking.BlockCableBus;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.config.other.ConfigGeneral;
 
 public class Behaviour_Spray_Color extends Behaviour_None {
 
@@ -96,7 +95,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             tUses = this.mUses;
         }
         int painted = 0;
-        int maxPainted = GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256);
+        int maxPainted = ConfigGeneral.sprayCanChainRange;
         ForgeDirection lookSide;
         Vec3 look = aPlayer.getLookVec();
         double absX = Math.abs(look.xCoord);
@@ -208,10 +207,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         aList.add(this.mTooltipChain);
-        aList.add(
-            String.format(
-                this.mTooltipChainAmount,
-                GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256)));
+        aList.add(String.format(this.mTooltipChainAmount, ConfigGeneral.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
             : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
