@@ -312,7 +312,6 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
         this.casingAmount = 0;
         this.casingTier = -3;
         this.energyHatchTier = 0;
-        StructureLibAPI.setDebugEnabled(true);
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
             if (casingTier >= -1) {
