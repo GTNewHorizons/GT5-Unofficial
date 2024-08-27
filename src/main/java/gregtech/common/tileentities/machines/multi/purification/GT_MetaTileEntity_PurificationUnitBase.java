@@ -44,6 +44,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -157,6 +158,17 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     public boolean doRandomMaintenanceDamage() {
         // The individual purification unit structures cannot have maintenance issues, so do nothing.
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        // Do nothing, we don't want to lock hatches to recipe maps since this can cause
+        // them to reject our catalyst fluids
     }
 
     /**

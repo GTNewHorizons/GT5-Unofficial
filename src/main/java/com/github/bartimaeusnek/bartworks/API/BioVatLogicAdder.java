@@ -13,17 +13,12 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
-import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
@@ -207,57 +202,6 @@ public final class BioVatLogicAdder {
         }
     }
 
-    public static class BioVatGlass {
-
-        private static final HashMap<BlockMetaPair, Byte> glasses = new HashMap<>();
-
-        /**
-         * @param sModname        The modid owning the block
-         * @param sUnlocBlockName The name of the block itself
-         * @param meta            The meta of the block
-         * @param tier            the glasses Tier = Voltage tier (MIN 3)
-         * @return if the block was found in the Block registry
-         */
-        public static boolean addCustomGlass(String sModname, String sUnlocBlockName, int meta, int tier) {
-            Block block = findBlock(sModname, sUnlocBlockName);
-            boolean ret = block != null;
-            if (ret) BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
-            else new IllegalArgumentException(
-                "Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!").printStackTrace();
-            block = null;
-            return ret;
-        }
-
-        /**
-         * @param block the block to add
-         * @param meta  the meta of the block (0-15)
-         * @param tier  the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(@Nonnull Block block, @Nonnegative int meta, @Nonnegative int tier) {
-            BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
-        }
-
-        /**
-         * @param block the block to add
-         * @param tier  the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(@Nonnull Block block, @Nonnegative int tier) {
-            BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) 0), (byte) tier);
-        }
-
-        /**
-         * @param blockBytePair the block to add and its meta as a javafx.util Pair
-         * @param tier          the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(@Nonnull BlockMetaPair blockBytePair, @Nonnegative byte tier) {
-            BioVatGlass.glasses.put(blockBytePair, tier);
-        }
-
-        public static HashMap<BlockMetaPair, Byte> getGlassMap() {
-            return BioVatGlass.glasses;
-        }
-    }
-
     public static class MaterialSvPair {
 
         final Materials materials;
@@ -291,35 +235,4 @@ public final class BioVatLogicAdder {
         }
     }
 
-    public static class BlockMetaPair {
-
-        final Block block;
-        final Byte aByte;
-
-        public BlockMetaPair(Block block, Byte aByte) {
-            this.block = block;
-            this.aByte = aByte;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || this.getClass() != o.getClass()) return false;
-            BioVatLogicAdder.BlockMetaPair that = (BioVatLogicAdder.BlockMetaPair) o;
-            return Objects.equals(this.getBlock(), that.getBlock()) && Objects.equals(this.getaByte(), that.getaByte());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.getBlock(), this.getaByte());
-        }
-
-        public Block getBlock() {
-            return this.block;
-        }
-
-        public Byte getaByte() {
-            return this.aByte;
-        }
-    }
 }

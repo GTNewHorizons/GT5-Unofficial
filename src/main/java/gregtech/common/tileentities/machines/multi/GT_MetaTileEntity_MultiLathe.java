@@ -16,8 +16,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,6 +52,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiLathe>
     implements ISurvivalConstructable {
@@ -219,6 +230,7 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
             .addInfo("Gains 2 parallels per voltage tier,")
             .addInfo("and 4 parallels per pipe casing tier (16 for Black Plutonium)")
             .addInfo("Better pipe casings increase speed")
+            .addInfo("Only uses 80% of the recipe's required energy")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
@@ -282,6 +294,39 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
 
     public int getMaxParallelRecipes() {
         return getPipeData().maxParallel + (GT_Utility.getTier(this.getMaxInputVoltage()) * 2);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("itemPipeTier", Math.max(0, pipeTier));
+        tag.setFloat(
+            "speedBonus",
+            Math.max(0, 100 / (1F / (getPipeData().speedBoost + GT_Utility.getTier(this.getMaxInputVoltage()) / 4F))));
+        tag.setFloat("getMaxParallelRecipes", Math.max(0, getMaxParallelRecipes()));
+    }
+
+    private static final DecimalFormat dfNone = new DecimalFormat("#");
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
+                + EnumChatFormatting.WHITE
+                + Math.max(0, tag.getInteger("itemPipeTier")));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+                + EnumChatFormatting.WHITE
+                + dfNone.format(Math.max(0, tag.getFloat("speedBonus")))
+                + "%");
     }
 
     @Override

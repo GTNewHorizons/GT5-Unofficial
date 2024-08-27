@@ -22,17 +22,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_LanguageManager;
 
 public class BW_ItemBlocks extends ItemBlock {
@@ -62,20 +57,12 @@ public class BW_ItemBlocks extends ItemBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        byte tier = BorosilicateGlass.getTier(this.field_150939_a, aStack.getItemDamage());
-        if (tier >= 0) {
-            aList.add(
-                StatCollector.translateToLocal("tooltip.glas.0.name") + " "
-                    + BW_ColorUtil.getColorForTier(tier)
-                    + GT_Values.VN[tier]);
-        }
+
         if (this.field_150939_a instanceof ITileAddsInformation) {
             aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
         }
         aList.add(this.mNoMobsToolTip);
         if (!(this.field_150939_a instanceof ITileEntityProvider)) aList.add(this.mNoTileEntityToolTip);
-
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

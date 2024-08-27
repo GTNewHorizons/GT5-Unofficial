@@ -6,8 +6,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -29,13 +27,11 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     public GT_MetaTileEntity_SemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires semi-fluid Fuel", new ITexture[0]);
-        onConfigLoad();
     }
 
     public GT_MetaTileEntity_SemiFluidGenerator(String aName, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
     }
 
     @Override
@@ -47,13 +43,6 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
     @Override
     public int getCapacity() {
         return 16000;
-    }
-
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-            ConfigCategories.machineconfig,
-            "SemiFluidGenerator.efficiency.tier." + this.mTier,
-            100 - (this.mTier * 5));
     }
 
     @Override

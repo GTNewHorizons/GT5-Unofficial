@@ -1,16 +1,17 @@
 package bloodasp.galacticgreg;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import bloodasp.galacticgreg.api.ModContainer;
 import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.SmallOreBuilder;
 
 public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 
@@ -21,51 +22,43 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
-    private DynamicOreMixWorldConfig _mDynWorldConfig;
+    private Map<String, Boolean> allowedDims;
 
-    public GT_Worldgen_GT_Ore_SmallPieces_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pAmount,
-        Materials pPrimary) {
-        super(pName, GalacticGreg.smallOreWorldgenList, pDefault);
+    public GT_Worldgen_GT_Ore_SmallPieces_Space(SmallOreBuilder ore) {
+        super(ore.smallOreName, GalacticGreg.smallOreWorldgenList, ore.enabledByDefault);
 
-        mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
-        mMaxY = ((short) Math
-            .max(this.mMinY + 1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
-        mAmount = ((short) Math
-            .max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Amount", pAmount)));
-        mMeta = ((short) GregTech_API.sWorldgenFile
-            .get("worldgen." + this.mWorldGenName, "Ore", pPrimary.mMetaItemSubID));
+        mMinY = (short) ore.minY;
+        mMaxY = (short) Math.max(this.mMinY + 1, ore.maxY);
+        mAmount = (short) Math.max(1, ore.amount);
+        mMeta = (short) ore.ore.mMetaItemSubID;
 
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
-        _mDynWorldConfig.InitDynamicConfig();
+        allowedDims = new HashMap<>();
+        for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
+            if (!mc.getEnabled()) continue;
 
-        GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
-    }
+            for (ModDimensionDef mdd : mc.getDimensionList()) {
+                String tDimIdentifier = mdd.getDimIdentifier();
+                if (allowedDims.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
+                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                    tDimIdentifier);
+                else {
+                    boolean tFlag = ore.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
+                    allowedDims.put(tDimIdentifier, tFlag);
+                }
+            }
+        }
 
-    public GT_Worldgen_GT_Ore_SmallPieces_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pAmount,
-        short pPrimary) {
-        super(pName, GalacticGreg.smallOreWorldgenList, pDefault);
-
-        mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
-        mMaxY = ((short) Math
-            .max(this.mMinY + 1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
-        mAmount = ((short) Math
-            .max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Amount", pAmount)));
-        mMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Ore", pPrimary));
-
-        _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
-        _mDynWorldConfig.InitDynamicConfig();
-
-        GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
+        GalacticGreg.Logger.trace("Initialized new OreLayer: %s", ore.smallOreName);
     }
 
     /**
      * Check if *this* orelayer is enabled for pDimensionDef
-     * 
+     *
      * @param pDimensionDef the ChunkProvider in question
      * @return
      */
     public boolean isEnabledForDim(ModDimensionDef pDimensionDef) {
-        return _mDynWorldConfig.isEnabledInDim(pDimensionDef);
+        return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
     }
 
     @Override
@@ -79,7 +72,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
             return false;
         }
 
-        if (!_mDynWorldConfig.isEnabledInDim(tMDD)) {
+        if (!isEnabledForDim(tMDD)) {
             GalacticGreg.Logger
                 .trace("OreGen for %s is disallowed in dimension %s, skipping", mWorldGenName, tMDD.getDimensionName());
             return false;

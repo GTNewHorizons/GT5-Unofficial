@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import codechicken.nei.api.API;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -3960,21 +3959,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.MicroTransmitter_ZPM.get(1L),
             bitsd,
-            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_ZPM, 'B',
-                GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "EnableZPMandUVBatteries", false)
-                    ? ItemList.Energy_Module
-                    : ItemList.ZPM2,
-                'C', ItemList.Emitter_ZPM, 'G', OrePrefixes.circuit.get(Materials.ZPM), 'P',
-                ItemList.Field_Generator_ZPM });
+            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_ZPM, 'B', ItemList.Energy_Module, 'C',
+                ItemList.Emitter_ZPM, 'G', OrePrefixes.circuit.get(Materials.ZPM), 'P', ItemList.Field_Generator_ZPM });
         GT_ModHandler.addCraftingRecipe(
             ItemList.MicroTransmitter_UV.get(1L),
             bitsd,
-            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_UV, 'B',
-                GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "EnableZPMandUVBatteries", false)
-                    ? ItemList.Energy_Module
-                    : ItemList.ZPM3,
-                'C', ItemList.Emitter_UV, 'G', OrePrefixes.circuit.get(Materials.UV), 'P',
-                ItemList.Field_Generator_UV });
+            new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_UV, 'B', ItemList.Energy_Module, 'C',
+                ItemList.Emitter_UV, 'G', OrePrefixes.circuit.get(Materials.UV), 'P', ItemList.Field_Generator_UV });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_Assemblyline.get(1L),

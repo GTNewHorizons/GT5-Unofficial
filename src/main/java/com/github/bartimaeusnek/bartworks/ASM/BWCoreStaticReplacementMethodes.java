@@ -109,5 +109,4 @@ public class BWCoreStaticReplacementMethodes {
         return stack;
     }
 
-    private BWCoreStaticReplacementMethodes() {}
 }

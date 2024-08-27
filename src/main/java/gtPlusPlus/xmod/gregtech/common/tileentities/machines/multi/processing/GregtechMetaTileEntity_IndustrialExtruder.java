@@ -126,12 +126,12 @@ public class GregtechMetaTileEntity_IndustrialExtruder
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+        return TexturesGtBlock.oMCDIndustrialExtruderActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+        return TexturesGtBlock.oMCDIndustrialExtruder;
     }
 
     @Override
