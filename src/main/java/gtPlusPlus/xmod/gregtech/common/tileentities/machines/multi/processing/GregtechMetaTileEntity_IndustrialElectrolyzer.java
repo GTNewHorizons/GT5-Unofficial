@@ -121,12 +121,12 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer extends
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+        return TexturesGtBlock.oMCDIndustrialElectrolyzerActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+        return TexturesGtBlock.oMCDIndustrialElectrolyzer;
     }
 
     @Override

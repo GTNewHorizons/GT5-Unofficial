@@ -186,12 +186,12 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCAIndustrialMolecularTransformerActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCAIndustrialMolecularTransformer;
     }
 
     @Override
