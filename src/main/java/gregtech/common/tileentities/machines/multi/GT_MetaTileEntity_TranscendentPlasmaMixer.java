@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings;
@@ -21,6 +22,7 @@ import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Plas
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -160,7 +164,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     }
 
     int multiplier = 1;
-    long mWirelessEUt = 0;
+    int recipeDuration;
+    BigInteger finalConsumption;
 
     @Override
     public RecipeMap<?> getRecipeMap() {
@@ -190,7 +195,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
-                BigInteger finalConsumption = recipeEU.multiply(BigInteger.valueOf(-calculatedParallels));
+                finalConsumption = recipeEU.multiply(BigInteger.valueOf(-calculatedParallels));
                 // This will void the inputs if wireless energy has dropped
                 // below the required amount between validateRecipe and here.
                 if (!addEUToGlobalEnergyMap(ownerUUID, finalConsumption)) {
@@ -198,6 +203,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                 }
                 // Energy consumed all at once from wireless net.
                 setCalculatedEut(0);
+                recipeDuration = recipe.mDuration;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -215,11 +221,6 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
-    }
-
-    @Override
-    protected long getActualEnergyUsage() {
-        return mWirelessEUt;
     }
 
     private static final int HORIZONTAL_OFFSET = 2;
@@ -355,6 +356,25 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     public void loadNBTData(final NBTTagCompound aNBT) {
         multiplier = aNBT.getInteger("eMultiplier");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return new String[] {
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + toStandardForm(finalConsumption.divide(BigInteger.valueOf(-recipeDuration)))
+                + EnumChatFormatting.RESET
+                + " EU/t" };
     }
 
     @Override
