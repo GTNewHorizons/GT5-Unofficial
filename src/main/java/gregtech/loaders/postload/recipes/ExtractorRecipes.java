@@ -34,6 +34,11 @@ public class ExtractorRecipes implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
 
         addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
+        addExtractionRecipe(getIC2Item("filledTinCan", 1), getIC2Item("tinCan", 1));
+        addExtractionRecipe(new ItemStack(Blocks.clay, 1), new ItemStack(Items.clay_ball, 4));
+        addExtractionRecipe(new ItemStack(Blocks.brick_block, 1), new ItemStack(Items.brick, 4));
+        addExtractionRecipe(new ItemStack(Blocks.nether_brick, 1), new ItemStack(Items.netherbrick, 4));
+        addExtractionRecipe(new ItemStack(Blocks.snow, 1), new ItemStack(Items.snowball, 4));
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_SU_LV_SulfuricAcid.get(1L))
