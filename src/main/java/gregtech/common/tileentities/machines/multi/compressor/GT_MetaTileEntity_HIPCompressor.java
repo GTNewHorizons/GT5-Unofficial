@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
     private final ArrayList<GT_MetaTileEntity_HeatSensor> sensorHatches = new ArrayList<>();
 
     private HeatingCoilLevel heatLevel;
-    private int      coilTier = 0;
+    private int coilTier = 0;
 
     private float heat = 0;
     private boolean cooling = false;

@@ -1632,7 +1632,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
 
-      ItemList.Machine_Multi_IndustrialCompressor.set(
+        ItemList.Machine_Multi_IndustrialCompressor.set(
             new GT_MetaTileEntity_IndustrialCompressor(
                 INDUSTRIAL_COMPRESSOR_CONTROLLER.ID,
                 "multimachine.basiccompressor",

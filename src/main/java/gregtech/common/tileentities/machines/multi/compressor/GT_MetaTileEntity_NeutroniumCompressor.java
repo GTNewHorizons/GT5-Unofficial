@@ -39,7 +39,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.GT_Block_Casings10;
 
 public class GT_MetaTileEntity_NeutroniumCompressor
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NeutroniumCompressor>
@@ -70,14 +70,14 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             'B',
             buildHatchAdder(GT_MetaTileEntity_NeutroniumCompressor.class)
                 .atLeast(InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(6))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_NeutroniumCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings8, 5))))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 10))
-        .addElement('D', ofBlock(GregTech_API.sBlockCasings4, 1))
+                        ofBlock(GregTech_API.sBlockCasings10, 6))))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings10, 8))
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings10, 7))
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
         .build();
 
@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 6)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
                         .extFacing()
@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 6)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
                         .extFacing()
@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 6)) };
         }
         return rTexture;
     }
@@ -149,17 +149,19 @@ public class GT_MetaTileEntity_NeutroniumCompressor
         tt.addMachineType("Neutronium Compressor")
             .addInfo("Controller Block for the Neutronium Compressor")
             .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
+            .addInfo("More advanced singularities will require even stronger compression...")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(11, 11, 11, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addCasingInfoMin("Neutronium Casing", 85, false)
+            .addCasingInfoExactly("Active Neutronium Casing", 1, false)
+            .addCasingInfoExactly("Naquadah Alloy Frame Box", 1, false)
+            .addCasingInfoExactly("Neutronium Stabilizer Casing",1, false)
+            .addInputBus("Any Neutronium Casing", 1)
+            .addOutputBus("Any Neutronium Casing", 1)
+            .addEnergyHatch("Any Neutronium Casing", 1)
+            .addMaintenanceHatch("Any Neutronium Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }

@@ -1422,7 +1422,10 @@ public class Textures {
         BLOCK_QUARK_RELEASE_CHAMBER,
         BLOCK_QUARK_CONTAINMENT_CASING,
         COMPRESSOR_CASING,
-        COMPRESSOR_PIPE_CASING;
+        COMPRESSOR_PIPE_CASING,
+        NEUTRONIUM_CASING,
+        NEUTRONIUM_ACTIVE_CASING,
+        NEUTRONIUM_STABLE_CASING;
 
         /**
          * Icon for Fresh CFoam

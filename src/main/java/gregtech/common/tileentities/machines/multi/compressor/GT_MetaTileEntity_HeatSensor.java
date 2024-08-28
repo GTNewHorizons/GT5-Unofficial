@@ -92,11 +92,6 @@ public class GT_MetaTileEntity_HeatSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { "Reads heat of Hot Isostatic Pressurization Unit.",
             "Right click to open the GUI and change settings." };

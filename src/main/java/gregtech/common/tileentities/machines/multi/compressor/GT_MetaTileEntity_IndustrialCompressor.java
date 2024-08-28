@@ -10,7 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import gregtech.common.blocks.GT_Block_Casings10;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,7 +32,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings8;
 
 public class GT_MetaTileEntity_IndustrialCompressor
