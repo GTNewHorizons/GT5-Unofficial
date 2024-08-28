@@ -16,6 +16,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -40,6 +43,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
+import org.jetbrains.annotations.NotNull;
 
 public class GT_MetaTileEntity_NeutroniumCompressor
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NeutroniumCompressor>
@@ -203,8 +207,17 @@ public class GT_MetaTileEntity_NeutroniumCompressor
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F);
-        // .setMaxParallelSupplier(this::getMaxParallelRecipes);
+
+        return new ProcessingLogic() {
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (recipe.mSpecialValue > 0) {
+                    return CheckRecipeResultRegistry.NO_BLACK_HOLE;
+                }
+                return super.validateRecipe(recipe);
+            }
+        };
     }
 
     public int getMaxParallelRecipes() {
