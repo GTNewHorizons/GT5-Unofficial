@@ -47,14 +47,14 @@ public class BorosilicateGlass {
         return tier > 0 && tier <= Byte.MAX_VALUE;
     }
 
-    private static Block getGlassBlock() {
+    public static Block getGlassBlock() {
         if (block == null) {
             block = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks");
         }
         return block;
     }
 
-    private static Block getGlassBlock2() {
+    public static Block getGlassBlock2() {
         if (block2 == null) {
             block2 = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks2");
         }

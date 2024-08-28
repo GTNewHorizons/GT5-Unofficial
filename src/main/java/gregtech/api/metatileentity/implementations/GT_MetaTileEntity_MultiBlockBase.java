@@ -28,6 +28,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -84,6 +85,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.OutputHatchWrapper;
@@ -344,8 +346,36 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return SingleRecipeCheck.tryLoad(getRecipeMap(), aNBT);
     }
 
+    public boolean saveOtherHatchConfiguration(EntityPlayer player) {
+        return true;
+    }
+
+    public boolean loadOtherHatchConfiguration(EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isServerSide() && GT_Util.saveMultiblockInputConfiguration(this, aPlayer)) {
+            aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.SAVE"));
+            return;
+        }
+        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (GT_Util.hasMultiblockInputConfiguration(aPlayer.getHeldItem())) {
+            if (aBaseMetaTileEntity.isServerSide()) {
+                if (GT_Util.loadMultiblockInputConfiguration(this, aPlayer)) {
+                    aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD"));
+                } else {
+                    aPlayer
+                        .addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL"));
+                }
+            }
+            return true;
+        }
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }

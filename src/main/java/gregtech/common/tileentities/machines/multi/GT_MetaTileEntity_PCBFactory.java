@@ -45,6 +45,7 @@ import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -1031,6 +1032,11 @@ public class GT_MetaTileEntity_PCBFactory extends
         }
 
         return data;
+    }
+
+    @Override
+    public Pos2d getStructureUpdateButtonPos() {
+        return new Pos2d(80, 91);
     }
 
     @Override
