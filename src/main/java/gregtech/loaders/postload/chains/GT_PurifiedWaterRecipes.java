@@ -299,7 +299,8 @@ public class GT_PurifiedWaterRecipes {
             .fluidOutputs(
                 Materials.Grade8PurifiedWater.getFluid(900L),
                 Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
-            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L))
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
+            .outputChances(10000, 100)
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UEV)
@@ -310,10 +311,9 @@ public class GT_PurifiedWaterRecipes {
         // real recipe
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
-            .fluidOutputs(
-                Materials.Grade8PurifiedWater.getFluid(900L),
-                Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
-            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L))
+            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900L))
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
+            .outputChances(10000, 100)
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UEV)
