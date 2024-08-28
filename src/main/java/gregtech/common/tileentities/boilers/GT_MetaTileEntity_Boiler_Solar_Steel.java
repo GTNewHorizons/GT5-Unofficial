@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.boilers;
 
-import static gregtech.api.enums.ConfigCategories.machineconfig;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -9,31 +7,32 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
 
 public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boiler_Solar {
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initBoilerStats();
     }
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        initBoilerStats();
     }
 
     public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        initBoilerStats();
     }
 
-    public GT_MetaTileEntity_Boiler_Solar_Steel(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures, Config aConfig) {
-        super(aName, aTier, aDescription, aTextures, aConfig);
-    }
-
-    @Override
-    protected Config createConfig() {
-        return new Config(machineconfig + ".boiler.solar.steel", 1080000, 120, 360, 75);
+    protected void initBoilerStats() {
+        calcificationTicks = ConfigSteelSolarBoiler.calcificationTicks;
+        cooldownTicks = ConfigSteelSolarBoiler.cooldownTicks;
+        maxOutputPerSecond = ConfigSteelSolarBoiler.maxOutputPerSecond;
+        minOutputPerSecond = ConfigSteelSolarBoiler.minOutputPerSecond;
     }
 
     @Override
@@ -67,11 +66,6 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boiler_Solar_Steel(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mConfig);
+        return new GT_MetaTileEntity_Boiler_Solar_Steel(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 }

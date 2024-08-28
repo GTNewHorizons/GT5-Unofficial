@@ -353,6 +353,9 @@ GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode.1=Normal
 GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
+GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
+GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
+GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
 GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
@@ -607,8 +610,13 @@ GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
 GT5U.multiblock.usage=Probably uses
-GT5U.multiblock.parallelism=Max parallelism
-GT5U.multiblock.curparallelism=Current parallelism
+GT5U.multiblock.parallelism=Max Parallels
+GT5U.multiblock.curparallelism=Current Parallels
+GT5U.multiblock.euModifier=EU Modifier
+GT5U.multiblock.speed=Speed
+GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
+GT5U.multiblock.itemPipeTier=Item Pipe Tier
+GT5U.multiblock.coilLevel=Heating Coil Level
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -1399,6 +1407,7 @@ for.bees.species.fireessence=Fire Essence
 for.bees.species.unknownwater=Unknown Liquid
 for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
+for.bees.species.dragonblood=Dragonblood
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension

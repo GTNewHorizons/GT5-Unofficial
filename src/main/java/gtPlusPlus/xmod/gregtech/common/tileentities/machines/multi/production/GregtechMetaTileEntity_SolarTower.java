@@ -402,12 +402,12 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         if (side == ForgeDirection.DOWN || side == ForgeDirection.UP) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
                 TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Default_Active)
+                    .addIcon(TexturesGtBlock.oMCDSolarTowerActive)
                     .extFacing()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
                 TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Default)
+                    .addIcon(TexturesGtBlock.oMCDSolarTower)
                     .extFacing()
                     .build() };
         }

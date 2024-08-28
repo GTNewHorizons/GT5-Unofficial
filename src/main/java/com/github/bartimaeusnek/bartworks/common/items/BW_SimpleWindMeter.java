@@ -24,7 +24,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -55,7 +54,6 @@ public class BW_SimpleWindMeter extends Item {
                 + (this.getMaxDamage() - this.getDamage(itemStack))
                 + "/"
                 + this.getMaxDamage());
-        list.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

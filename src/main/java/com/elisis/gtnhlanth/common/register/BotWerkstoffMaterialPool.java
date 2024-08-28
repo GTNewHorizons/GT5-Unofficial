@@ -69,16 +69,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             .addCells(),
         29905,
         SET_FINE);
-    public static final Werkstoff OXylene = new Werkstoff(
-        new short[] { 0x88, 0x94, 0xa8 },
-        "O-Xylene",
-        subscriptNumbers("C8H10"),
-        new Werkstoff.Stats().setGas(true),
-        COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        29915,
-        SET_FINE);
     public static final Werkstoff Nitromethane = new Werkstoff(
         new short[] { 0x87, 0x7d, 0x60 },
         "Nitromethane",
