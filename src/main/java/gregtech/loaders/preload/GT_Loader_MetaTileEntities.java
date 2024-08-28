@@ -457,6 +457,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_MV_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
+import static gregtech.api.enums.MetaTileEntityIDs.LASER_ENGRAVER_IV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
@@ -1059,6 +1061,24 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_SOLIDIFIER_CONTROLLER.ID,
                 "multimachine.solidifier",
                 "Fluid Shaper 2024").getStackForm(1));
+
+        ItemList.WormholeGenerator.set(
+            new GT_MetaTileEntity_WormholeGenerator(
+                WORMHOLE_GENERATOR_CONTROLLER.ID,
+                "multimachine.wormhole",
+                "Miniature Wormhole Generator").getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialLaserEngraver.set(
+            new GT_MetaTileEntity_IndustrialLaserEngraver(
+                INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
+                "multimachine.engraver",
+                "Hyper-Intensity Laser Emitter").getStackForm(1));
+
+        ItemList.Machine_Multi_Lathe.set(
+            new GT_MetaTileEntity_MultiLathe(
+                MULTI_LATHE_CONTROLLER.ID,
+                "multimachine.lathe",
+                "Industrial Precision Lathe").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
