@@ -15,7 +15,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -100,13 +99,8 @@ public class GT_PostLoad {
                         .isItemEqual(iridiumOre))
             .findAny()
             .ifPresent(e -> aCompressorRecipeList.remove(e.getKey()));
-        // Add default IC2 recipe to GT
-        GT_ModHandler.addIC2RecipesToGT(aMaceratorRecipeList, RecipeMaps.maceratorRecipes, true, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aCompressorRecipeList, RecipeMaps.compressorRecipes, true, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aExtractorRecipeList, RecipeMaps.extractorRecipes, true, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aOreWashingRecipeList, RecipeMaps.oreWasherRecipes, false, true, true);
-        GT_ModHandler
-            .addIC2RecipesToGT(aThermalCentrifugeRecipeList, RecipeMaps.thermalCentrifugeRecipes, true, true, true);
+        // Remove all IC2
+        GT_ModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_Mod.GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
     }
@@ -415,11 +409,9 @@ public class GT_PostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GT_Mod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Materials> replaceVanillaItemsSet = GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList
-            ? Arrays.stream(Materials.values())
-                .filter(GT_RecipeRegistrator::hasVanillaRecipes)
-                .collect(Collectors.toSet())
-            : new HashSet<>(Arrays.asList(Materials.values()));
+        Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
+            .filter(GT_RecipeRegistrator::hasVanillaRecipes)
+            .collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());

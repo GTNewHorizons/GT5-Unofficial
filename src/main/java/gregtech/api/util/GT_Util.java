@@ -1,16 +1,29 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
+
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.Constants;
 
+import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class GT_Util {
 
@@ -99,7 +112,9 @@ public class GT_Util {
         return null;
     }
 
-    /** Sets the TileEntity at the passed position, with the option of turning adjacent TileEntity updates off. */
+    /**
+     * Sets the TileEntity at the passed position, with the option of turning adjacent TileEntity updates off.
+     */
     public static TileEntity setTileEntity(World world, int x, int y, int z, TileEntity aTileEntity,
         boolean aCauseTileEntityUpdates) {
         if (aCauseTileEntityUpdates) world.setTileEntity(x, y, z, aTileEntity);
@@ -128,7 +143,9 @@ public class GT_Util {
         return getTileEntity(world, coords.posX, coords.posY, coords.posZ, loadUnloadedChunks);
     }
 
-    /** Marks a Chunk dirty so it is saved */
+    /**
+     * Marks a Chunk dirty so it is saved
+     */
     public static boolean markChunkDirty(World world, int x, int z) {
         if (world == null || world.isRemote) return false;
         Chunk aChunk = world.getChunkFromBlockCoords(x, z);
@@ -145,7 +162,9 @@ public class GT_Util {
         return true;
     }
 
-    /** Marks a Chunk dirty so it is saved */
+    /**
+     * Marks a Chunk dirty so it is saved
+     */
     public static boolean markChunkDirty(Object maybeTile) {
         return maybeTile instanceof TileEntity tileEntity
             && markChunkDirty(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.zCoord);
@@ -196,5 +215,133 @@ public class GT_Util {
 
     public static short getA(int aColors) {
         return (short) ((aColors >>> 24) & 255);
+    }
+
+    public static boolean saveMultiblockInputConfiguration(GT_MetaTileEntity_MultiBlockBase controller,
+        EntityPlayer player) {
+        NBTTagCompound newTag = new NBTTagCompound();
+        ItemStack dataOrb = player.getHeldItem();
+        if (GT_Utility.isStackInvalid(dataOrb) || !ItemList.Tool_DataOrb.isStackEqual(dataOrb, false, true)) {
+            return false;
+        }
+        if (!controller.saveOtherHatchConfiguration(player)) {
+            return false;
+        }
+        newTag.setString("type", "MultiblockConfiguration");
+        int count = 0;
+        NBTTagList list = saveConfigurationToDataStick(player, controller.mInputBusses);
+        if (list == null) return false;
+        newTag.setTag("mInputBusses", list);
+        count += list.tagCount();
+        list = saveConfigurationToDataStick(player, controller.mInputHatches);
+        if (list == null) return false;
+        newTag.setTag("mInputHatches", list);
+        count += list.tagCount();
+        list = saveConfigurationToDataStick(player, controller.mOutputBusses);
+        if (list == null) return false;
+        newTag.setTag("mOutputBusses", list);
+        count += list.tagCount();
+        // Output hatch config currently cannot be copied, so we omit this part for now
+        // TODO this doesn't work for now
+        // newTag.setTag("mDualInputHatches", saveToDataStick(player, controller.mDualInputHatches));
+        dataOrb.setTagCompound(newTag);
+        Behaviour_DataOrb.setDataTitle(dataOrb, "Multiblock Hatch Configuration");
+        Behaviour_DataOrb.setDataName(dataOrb, String.format("%s configuration saved", count));
+        return true;
+    }
+
+    public static boolean hasMultiblockInputConfiguration(ItemStack dataOrb) {
+        return !GT_Utility.isStackInvalid(dataOrb) && ItemList.Tool_DataOrb.isStackEqual(dataOrb, false, true)
+            && dataOrb.getTagCompound() != null
+            && "MultiblockConfiguration".equals(
+                dataOrb.getTagCompound()
+                    .getString("type"));
+    }
+
+    public static boolean loadMultiblockInputConfiguration(GT_MetaTileEntity_MultiBlockBase controller,
+        EntityPlayer player) {
+        ItemStack dataOrb = player.getHeldItem();
+        if (!hasMultiblockInputConfiguration(dataOrb)) {
+            return false;
+        }
+        if (!controller.loadOtherHatchConfiguration(player)) {
+            return false;
+        }
+        NBTTagCompound tag = dataOrb.getTagCompound();
+        if (!checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mInputBusses", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mInputBusses)
+            || !checkCanLoadConfigurationFromDataStick(
+                tag.getTagList("mInputHatches", Constants.NBT.TAG_COMPOUND),
+                player,
+                controller.mInputHatches)
+            || !checkCanLoadConfigurationFromDataStick(
+                tag.getTagList("mOutputBusses", Constants.NBT.TAG_COMPOUND),
+                player,
+                controller.mOutputBusses))
+            return false;
+
+        if (!loadConfigurationFromDataStick(
+            tag.getTagList("mInputBusses", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mInputBusses)) return false;
+        if (!loadConfigurationFromDataStick(
+            tag.getTagList("mInputHatches", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mInputHatches)) return false;
+        if (!loadConfigurationFromDataStick(
+            tag.getTagList("mOutputBusses", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mOutputBusses)) return false;
+        return true;
+    }
+
+    private static NBTTagList saveConfigurationToDataStick(EntityPlayer player,
+        List<? extends GT_MetaTileEntity_Hatch> hatches) {
+        NBTTagList list = new NBTTagList();
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) {
+            if (!(tHatch instanceof IDataCopyable copyable)) {
+                list.appendTag(new NBTTagCompound());
+                continue;
+            }
+            NBTTagCompound tag = copyable.getCopiedData(player);
+            if (tag == null) return null;
+            list.appendTag(tag);
+        }
+        return list;
+    }
+
+    private static boolean loadConfigurationFromDataStick(NBTTagList list, EntityPlayer player,
+        List<? extends GT_MetaTileEntity_Hatch> hatches) {
+        if (list == null || list.tagList.isEmpty()) return false;
+        List<? extends GT_MetaTileEntity_Hatch> validMTEs = filterValidMTEs(hatches);
+        int end = Math.min(validMTEs.size(), list.tagCount());
+        for (int i = 0; i < end; i++) {
+            GT_MetaTileEntity_Hatch tHatch = validMTEs.get(i);
+            NBTTagCompound tag = list.getCompoundTagAt(i);
+            if (!(tHatch instanceof IDataCopyable copyable)) {
+                if (tag.hasNoTags()) continue;
+                return false;
+            }
+            if (tag.hasNoTags()) return false;
+            if (!copyable.pasteCopiedData(player, tag)) return false;
+        }
+        return true;
+    }
+
+    private static boolean checkCanLoadConfigurationFromDataStick(NBTTagList list, EntityPlayer player,
+        List<? extends GT_MetaTileEntity_Hatch> hatches) {
+        if (list == null || list.tagList.isEmpty()) return false;
+        List<? extends GT_MetaTileEntity_Hatch> validMTEs = filterValidMTEs(hatches);
+        int end = Math.min(validMTEs.size(), list.tagCount());
+        for (int i = 0; i < end; i++) {
+            GT_MetaTileEntity_Hatch tHatch = validMTEs.get(i);
+            NBTTagCompound tag = list.getCompoundTagAt(i);
+            if (tag.hasNoTags()) continue;
+            if (!(tHatch instanceof IDataCopyable copyable) || !copyable.getCopiedDataIdentifier(player)
+                .equals(tag.getString("type"))) return false;
+        }
+        return true;
     }
 }

@@ -167,7 +167,7 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Like a Tranformer... but for LAZORZ",
+        return new String[] { "Like a transformer... but for LASERS!",
             "Transfer rate: " + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(this.getTotalPower())
                 + EnumChatFormatting.WHITE

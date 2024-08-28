@@ -9,8 +9,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
@@ -25,12 +23,8 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
     private static boolean addedGeneralDesc = false;
 
-    private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(
-        GregTech_API.sMachineFile.mConfig.getStringList(
-            "LargeBoiler.allowedFuels",
-            ConfigCategories.machineconfig.toString(),
-            new String[] { "gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7" },
-            "Allowed fuels for the Large Titanium Boiler and Large Tungstensteel Boiler"));
+    private static final List<String> ALLOWED_SOLID_FUELS = Arrays
+        .asList("gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7");
 
     public LargeBoilerFuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);

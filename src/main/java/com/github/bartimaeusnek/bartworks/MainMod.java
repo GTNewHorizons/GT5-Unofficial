@@ -15,14 +15,11 @@ package com.github.bartimaeusnek.bartworks;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
-import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
-import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,15 +35,15 @@ import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.ArtificialMicaLine;
-import com.github.bartimaeusnek.bartworks.common.loaders.BeforeGTPreload;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
-import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.loaders.LocalisationLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.RadioHatchMaterialLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.RecipeLoader;
+import com.github.bartimaeusnek.bartworks.common.loaders.RegisterGlassTiers;
 import com.github.bartimaeusnek.bartworks.common.loaders.RegisterServerCommands;
 import com.github.bartimaeusnek.bartworks.common.loaders.StaticRecipeChangeLoaders;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
@@ -72,12 +69,12 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Version;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
 
 @Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
     required-after:IC2;\
@@ -107,12 +104,15 @@ public final class MainMod {
     public static BW_Network BW_Network_instance = new BW_Network();
 
     public MainMod() {
-        GregTech_API.sBeforeGTPreload.add(new BeforeGTPreload());
+
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
         MainMod.LOGGER.info("Found GT++, continuing");
+
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BW_ItemBlocks.class, "BW_GlasBlocks2");
 
         if (API_ConfigValues.debugLog) {
             try {
@@ -124,9 +124,7 @@ public final class MainMod {
 
         WerkstoffLoader.setUp();
 
-        if (ConfigHandler.BioLab) {
-            BioCultureLoader.run();
-        }
+        BioCultureLoader.run();
 
         Werkstoff.init();
         GregTech_API.sAfterGTPostload.add(new CircuitPartLoader());
@@ -134,6 +132,7 @@ public final class MainMod {
             GregTech_API.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
 
+        RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -147,9 +146,7 @@ public final class MainMod {
         FMLCommonHandler.instance()
             .bus()
             .register(serverEventHandler);
-        if (ConfigHandler.BioLab) {
-            BioLabLoader.run();
-        }
+        BioLabLoader.run();
 
         WerkstoffLoader.runInit();
 
@@ -162,20 +159,7 @@ public final class MainMod {
         RecipeLoader.run();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
-        if (ConfigHandler.BioLab) {
-            GTNHBlocks.run();
-            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap()
-                .entrySet()) {
-                GT_OreDictUnificator.registerOre(
-                    "blockGlass" + VN[pair.getValue()],
-                    new ItemStack(
-                        pair.getKey()
-                            .getBlock(),
-                        1,
-                        pair.getKey()
-                            .getaByte()));
-            }
-        }
+
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
 
@@ -218,8 +202,6 @@ public final class MainMod {
             if (!disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
 
             if (classicMode) DownTierLoader.run();
-
-            // StaticRecipeChangeLoaders.patchEBFMapForCircuitUnification();
 
             recipesAdded = true;
         }
