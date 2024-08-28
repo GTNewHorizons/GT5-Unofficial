@@ -103,7 +103,8 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
         if (this.fuelstack != null && this.fuel == 0) {
             this.fuel = this.maxfuel = TileEntityFurnace.getItemBurnTime(this.fuelstack);
             --this.fuelstack.stackSize;
-            if (this.fuelstack.stackSize <= 0) this.fuelstack = null;
+            if (this.fuelstack.stackSize <= 0) this.fuelstack = fuelstack.getItem()
+                .getContainerItem(fuelstack);
         }
     }
 

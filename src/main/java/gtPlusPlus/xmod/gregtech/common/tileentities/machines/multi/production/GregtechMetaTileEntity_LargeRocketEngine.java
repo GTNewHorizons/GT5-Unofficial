@@ -189,12 +189,12 @@ public class GregtechMetaTileEntity_LargeRocketEngine
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+        return TexturesGtBlock.oMCALargeRocketEngineActive;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+        return TexturesGtBlock.oMCALargeRocketEngine;
     }
 
     @Override
@@ -320,7 +320,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
 
     /**
      * Consumes Fuel if required. Free Fuel Ticks are handled here.
-     * 
+     *
      * @param aFuel
      * @return
      */

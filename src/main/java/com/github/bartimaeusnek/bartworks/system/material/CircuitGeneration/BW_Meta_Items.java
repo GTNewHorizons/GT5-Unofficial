@@ -34,7 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 
 import cpw.mods.fml.relauncher.Side;
@@ -51,7 +50,6 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -59,23 +57,24 @@ import gregtech.api.util.GT_Utility;
 
 public class BW_Meta_Items {
 
-    public static BW_Meta_Items.BW_GT_MetaGenCircuits getNEWCIRCUITS() {
-        return BW_Meta_Items.NEWCIRCUITS;
+    public static BW_Meta_Items.BW_GT_MetaGenCircuits getCircuitParts() {
+        return BW_Meta_Items.NEW_CIRCUIT_PARTS;
     }
 
-    private static final BW_Meta_Items.BW_GT_MetaGenCircuits NEWCIRCUITS = new BW_Meta_Items.BW_GT_MetaGenCircuits();
+    private static final BW_Meta_Items.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS = new BW_Meta_Items.BW_GT_MetaGenCircuits();
 
     static {
-        BW_Meta_Items.NEWCIRCUITS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
-        BW_Meta_Items.NEWCIRCUITS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
-        BW_Meta_Items.NEWCIRCUITS.addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
-        BW_Meta_Items.NEWCIRCUITS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
+        BW_Meta_Items.NEW_CIRCUIT_PARTS
+            .addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
+        BW_Meta_Items.NEW_CIRCUIT_PARTS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
-            .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2))
+            .itemOutputs(BW_Meta_Items.NEW_CIRCUIT_PARTS.getStack(2))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(formingPressRecipes);
@@ -83,8 +82,8 @@ public class BW_Meta_Items {
         RecipeMaps.autoclaveRecipes.add(
             new GT_Recipe(
                 false,
-                new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(2) },
-                new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(3) },
+                new ItemStack[] { BW_Meta_Items.NEW_CIRCUIT_PARTS.getStack(2) },
+                new ItemStack[] { BW_Meta_Items.NEW_CIRCUIT_PARTS.getStack(3) },
                 null,
                 new int[] { 7500 },
                 new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
@@ -94,102 +93,31 @@ public class BW_Meta_Items {
                 BW_Util.CLEANROOM));
     }
 
-    public void addNewCircuit(int aTier, int aID, String aName) {
-
-        String additionalOreDictData = "";
-        String tooltip = "";
-        String aOreDictPrefix = OrePrefixes.circuit.toString();
-        switch (aTier) {
-            case 0 -> {
-                additionalOreDictData = Materials.ULV.toString();
-                tooltip = Materials.ULV.getToolTip();
-            }
-            case 1 -> {
-                additionalOreDictData = Materials.LV.toString();
-                tooltip = Materials.LV.getToolTip();
-            }
-            case 2 -> {
-                additionalOreDictData = Materials.MV.toString();
-                tooltip = Materials.MV.getToolTip();
-            }
-            case 3 -> {
-                additionalOreDictData = Materials.HV.toString();
-                tooltip = Materials.HV.getToolTip();
-            }
-            case 4 -> {
-                additionalOreDictData = Materials.EV.toString();
-                tooltip = Materials.EV.getToolTip();
-            }
-            case 5 -> {
-                additionalOreDictData = Materials.IV.toString();
-                tooltip = Materials.IV.getToolTip();
-            }
-            case 6 -> {
-                additionalOreDictData = Materials.LuV.toString();
-                tooltip = Materials.LuV.getToolTip();
-            }
-            case 7 -> {
-                additionalOreDictData = Materials.ZPM.toString();
-                tooltip = Materials.ZPM.getToolTip();
-            }
-            case 8 -> {
-                additionalOreDictData = Materials.UV.toString();
-                tooltip = Materials.UV.getToolTip();
-            }
-            case 9 -> {
-                additionalOreDictData = Materials.UHV.toString();
-                tooltip = Materials.UHV.getToolTip();
-            }
-            case 10 -> {
-                additionalOreDictData = Materials.UEV.toString();
-                tooltip = Materials.UEV.getToolTip();
-            }
-        }
-
-        ItemStack tStack = BW_Meta_Items.NEWCIRCUITS.addCircuit(aID, aName, tooltip, aTier);
-
-        GT_OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replace(" ", ""), tStack);
-    }
-
     public static class BW_GT_MetaGenCircuits extends BW_Meta_Items.BW_GT_MetaGen_Item_Hook {
 
         public BW_GT_MetaGenCircuits() {
             super("bwMetaGeneratedItem0");
         }
 
-        public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier) {
-            CircuitImprintLoader.bwCircuitTagMap.put(
-                new CircuitData(
-                    BW_Util.getMachineVoltageFromTier(Math.min(1, tier - 2)),
-                    tier > 2 ? BW_Util.CLEANROOM : 0,
-                    (byte) tier),
-                new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, aID));
-            return this.addItem(aID, aEnglish, aToolTip, SubTag.NO_UNIFICATION);
+        public final ItemStack getStack(int meta) {
+            return getStack(meta, 1);
         }
 
-        public final ItemStack getStack(int... meta_amount) {
-            ItemStack ret = new ItemStack(this);
-            if (meta_amount.length <= 0 || meta_amount.length > 2) return ret;
-            if (meta_amount.length == 1) {
-                ret.setItemDamage(meta_amount[0]);
-                return ret;
-            }
-            ret.setItemDamage(meta_amount[0]);
-            ret.stackSize = meta_amount[1];
-            return ret;
+        public final ItemStack getStack(int meta, int stackSize) {
+            return new ItemStack(this, stackSize, meta);
         }
 
-        public final ItemStack getStackWithNBT(NBTTagCompound tag, int... meta_amount) {
-            ItemStack ret = this.getStack(meta_amount);
-            ret.setTagCompound(tag);
-            return ret;
+        public final ItemStack getStackWithNBT(NBTTagCompound tag, int meta, int stackSize) {
+            ItemStack itemStack = getStack(meta, stackSize);
+            itemStack.setTagCompound(tag);
+            return itemStack;
         }
 
         @Override
         public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
             if (aCreativeTab == this.getCreativeTab())
                 for (NBTTagCompound tag : CircuitImprintLoader.recipeTagMap.keySet()) {
-                    ItemStack stack = new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, 0);
+                    ItemStack stack = new ItemStack(BW_Meta_Items.NEW_CIRCUIT_PARTS, 1, 0);
                     stack.setTagCompound(tag);
                     aList.add(stack);
                 }
@@ -206,8 +134,7 @@ public class BW_Meta_Items {
                         i,
                         0,
                         2,
-                        aIconRegister.registerIcon(
-                            "gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),
+                        aIconRegister.registerIcon("gregtech:" + this.getUnlocalizedName() + "/" + i),
                         this.mIconList);
                 }
             }
@@ -234,22 +161,28 @@ public class BW_Meta_Items {
 
         @Override
         protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-            if (aStack.getItemDamage() == 0) if (aStack.getTagCompound() != null
-                && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
-                aList.add(
-                    "An Imprint for: " + GT_LanguageManager.getTranslation(
-                        GT_LanguageManager.getTranslateableItemStackName(
-                            CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
-            else aList.add("An Imprint for a Circuit");
-            else if (aStack.getItemDamage() == 1) if (aStack.getTagCompound() != null
-                && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
-                aList.add(
-                    "A Sliced " + GT_LanguageManager.getTranslation(
-                        GT_LanguageManager.getTranslateableItemStackName(
-                            CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
-            else aList.add("A Sliced Circuit");
+            if (aStack.getTagCompound() != null) {
+                ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
+                String itemName = tagStack != null
+                    ? GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(tagStack))
+                    : "a circuit";
+
+                if (aStack.getItemDamage() == 0) {
+                    aList.add("An imprint for: " + itemName);
+                } else if (aStack.getItemDamage() == 1) {
+                    aList.add("A sliced " + itemName);
+                }
+            } else {
+                if (aStack.getItemDamage() == 0) {
+                    aList.add("An imprint for a Circuit");
+                } else if (aStack.getItemDamage() == 1) {
+                    aList.add("A sliced Circuit");
+                }
+            }
+
             super.addAdditionalToolTips(aList, aStack, aPlayer);
         }
+
     }
 
     public static class BW_GT_MetaGen_Item_Hook extends GT_MetaBase_Item {
@@ -368,7 +301,6 @@ public class BW_Meta_Items {
         @Override
         protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
             super.addAdditionalToolTips(aList, aStack, aPlayer);
-            aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }
 
         @Override

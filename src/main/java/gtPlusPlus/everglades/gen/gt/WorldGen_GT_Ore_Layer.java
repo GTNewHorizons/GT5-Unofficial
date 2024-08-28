@@ -110,21 +110,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         this.mSecondaryMeta = aSecondary.getOreBlock(1);
         this.mBetweenMeta = aBetween.getOreBlock(1);
         this.mSporadicMeta = aSporadic.getOreBlock(1);
-        this.mRestrictBiome = HANDLER_GT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
-
-        // if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)] == null) throw new
-        // IllegalArgumentException("A Material for the supplied ID " + mPrimaryMeta + " for " + mWorldGenName + " does
-        // not exist");
-        // if (mSecondaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)] == null) throw new
-        // IllegalArgumentException("A Material for the supplied ID " + mSecondaryMeta + " for " + mWorldGenName + "
-        // does not exist");
-        // if (mBetweenMeta != -1 && GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)] == null) throw new
-        // IllegalArgumentException("A Material for the supplied ID " + mBetweenMeta + " for " + mWorldGenName + " does
-        // not exist");
-        // if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)] == null) throw new
-        // IllegalArgumentException("A Material for the supplied ID " + mSporadicMeta + " for " + mWorldGenName + " does
-        // not exist");
+        this.mRestrictBiome = "None";
 
         if (this.mEnabled) {
             sWeight += this.mWeight;

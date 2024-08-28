@@ -31,8 +31,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
@@ -95,10 +93,7 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-            ConfigCategories.machineconfig,
-            "DieselGenerator.efficiency.tier." + this.mTier,
-            (100 - this.mTier * 5));
+        this.mEfficiency = (100 - this.mTier * 5);
     }
 
     @Override

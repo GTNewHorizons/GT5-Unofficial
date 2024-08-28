@@ -7,8 +7,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -30,13 +28,13 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
     public GregtechMetaTileEntityGeothermalGenerator(final int aID, final String aName, final String aNameRegional,
         final int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires Pahoehoe Lava or Normal Lava as Fuel", new ITexture[0]);
-        this.onConfigLoad();
+        this.setEfficiency();
     }
 
     public GregtechMetaTileEntityGeothermalGenerator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.onConfigLoad();
+        this.setEfficiency();
     }
 
     @Override
@@ -61,11 +59,8 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
         return 5000 * this.mTier;
     }
 
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(
-            ConfigCategories.machineconfig,
-            "ThermalGenerator.efficiency.tier." + this.mTier,
-            (100 - (this.mTier * 7)));
+    public void setEfficiency() {
+        this.mEfficiency = (100 - (this.mTier * 7));
     }
 
     @Override

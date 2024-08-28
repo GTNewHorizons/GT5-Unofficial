@@ -36,6 +36,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -47,9 +48,11 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
-public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus implements IRecipeProcessingAwareHatch {
+public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
+    implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;
+    public static final String COPIED_DATA_IDENTIFIER = "linkedinputbus";
     private SharedInventory mRealInventory;
     private final ItemStackHandlerProxy handler = new ItemStackHandlerProxy();
     private String mChannel;
@@ -370,6 +373,59 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
     }
 
     @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        if (getChannel() == null) {
+            return null;
+        }
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setString("channel", getChannel());
+        tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
+        if (isPrivate()) {
+            tag.setLong(
+                "owner1",
+                getBaseMetaTileEntity().getOwnerUuid()
+                    .getMostSignificantBits());
+            tag.setLong(
+                "owner2",
+                getBaseMetaTileEntity().getOwnerUuid()
+                    .getLeastSignificantBits());
+        }
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        // backwards compat
+        if (nbt == null || (!COPIED_DATA_IDENTIFIER.equals(nbt.getString("ggfab.type"))
+            && !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type")))) {
+            return false;
+        }
+        ItemStack circuit = GT_Utility.loadItem(nbt, "circuit");
+        String channel = nbt.getString("channel");
+        if (GT_Utility.isStackInvalid(circuit)) circuit = null;
+        if ("".equals(channel)) {
+            return false;
+        } else if (circuit != null && getConfigurationCircuits().stream()
+            .noneMatch(circuit::isItemEqual)) {
+                return false;
+            }
+        UUID owner = nbt.hasKey("owner1") ? new UUID(nbt.getLong("owner1"), nbt.getLong("owner2")) : null;
+        if (owner != null && !owner.equals(getBaseMetaTileEntity().getOwnerUuid())) {
+            return false;
+        }
+        setPrivate(owner != null);
+        setChannel(channel);
+        setInventorySlotContents(getCircuitSlot(), circuit);
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         if (!(aPlayer instanceof EntityPlayerMP))
@@ -377,7 +433,7 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
         ItemStack stick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        if (!stick.hasTagCompound() || !"linkedinputbus".equals(stick.stackTagCompound.getString("ggfab.type"))) {
+        if (!stick.hasTagCompound() || !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("ggfab.type"))) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
         }
@@ -415,22 +471,8 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));
             return;
         }
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("ggfab.type", "linkedinputbus");
-        tag.setString("channel", getChannel());
-        tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
-        if (isPrivate()) {
-            tag.setLong(
-                "owner1",
-                getBaseMetaTileEntity().getOwnerUuid()
-                    .getMostSignificantBits());
-            tag.setLong(
-                "owner2",
-                getBaseMetaTileEntity().getOwnerUuid()
-                    .getLeastSignificantBits());
-        }
         aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.data_copied", getChannel()));
-        stick.stackTagCompound = tag;
+        stick.stackTagCompound = getCopiedData(aPlayer);
         stick.setStackDisplayName("Linked Input Bus configuration");
         // abuse the title mechanism here. I assure you it will be fine (tm).
         GT_Utility.ItemNBT.setBookTitle(stick, "Channel: " + getChannel());

@@ -20,6 +20,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "MagTech Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Laser Containment Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Quark Exclusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Pressure Containment Casing");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Electric Compressor Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Compression Pipe Casing");
@@ -27,9 +28,9 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
         ItemList.BlockQuarkContainmentCasing.set(new ItemStack(this, 1, 2));
-
+        ItemList.Casing_Autoclave.set(new ItemStack(this, 1, 3));
         ItemList.Compressor_Casing.set(new ItemStack(this, 1, 4));
-        ItemList.Compressor_Pipe_Casing.set(new ItemStack(this, 1, 5));
+        ItemList.Compressor_Pipe_Casing.set(new ItemStack(this, 1, 5));      
     }
 
     @Override
@@ -44,7 +45,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_EMS.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_LASER.getIcon();
             case 2 -> Textures.BlockIcons.BLOCK_QUARK_CONTAINMENT_CASING.getIcon();
-
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_AUTOCLAVE.getIcon();
             case 4 -> Textures.BlockIcons.COMPRESSOR_CASING.getIcon();
             case 5 -> Textures.BlockIcons.COMPRESSOR_PIPE_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
