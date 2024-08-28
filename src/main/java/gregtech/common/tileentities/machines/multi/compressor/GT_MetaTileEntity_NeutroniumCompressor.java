@@ -16,12 +16,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -39,11 +38,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
-import org.jetbrains.annotations.NotNull;
 
 public class GT_MetaTileEntity_NeutroniumCompressor
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NeutroniumCompressor>
@@ -152,6 +153,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Neutronium Compressor")
             .addInfo("Controller Block for the Neutronium Compressor")
+            .addInfo("Has a static 8 parallels")
             .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
             .addInfo("More advanced singularities will require even stronger compression...")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
@@ -209,6 +211,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
     protected ProcessingLogic createProcessingLogic() {
 
         return new ProcessingLogic() {
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
@@ -217,11 +220,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
                 }
                 return super.validateRecipe(recipe);
             }
-        };
-    }
-
-    public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        }.setMaxParallel(8);
     }
 
     @Override

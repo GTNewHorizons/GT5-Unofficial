@@ -26,6 +26,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -45,8 +47,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -67,13 +71,13 @@ public class GT_MetaTileEntity_HIPCompressor extends
             transpose(new String[][]{
                 {"               ","               ","               "," CCCCCC DDDDDD ","               ","               ","               "},
                 {"               ","               ","               "," C    C D    D ","               ","               ","               "},
-                {"               ","      GGG      ","     GGGGG     "," C   GGGGG   D ","     GGGGG     ","      GGG      ","               "},
+                {"               ","      HHH      ","     HHHHH     "," C   HHHHH   D ","     HHHHH     ","      HHH      ","               "},
                 {"      BBB      ","     BBBBB     ","    BBBBBBB    "," C  BBBBBBB  D ","    BBBBBBB    ","     BBBBB     ","      BBB      "},
-                {"      GGG      ","     B   B     ","    BF   FB    "," C  BF   FB  D ","    BF   FB    ","     B   B     ","      GGG      "},
-                {"      GAG      ","     B   B     ","    GF   FG    "," C  GF   FG  D ","    GF   FG    ","     B   B     ","      GAG      "},
-                {"      GAG      ","     B   B     "," E  GF   FG  E ","EEE GF   FG EBE"," E  GF   FG  E ","     B   B     ","      GAG      "},
-                {"      GAG      ","     B   B     "," A  GF   FG  A ","A A GF   FG A A"," A  GF   FG  A ","     B   B     ","      GAG      "},
-                {"      GGG      ","     B   B     "," A  BF   FB  A ","A A BF   FB A A"," A  BF   FB  A ","     B   B     ","      GGG      "},
+                {"      HHH      ","     B   B     ","    BF   FB    "," C  BF   FB  D ","    BF   FB    ","     B   B     ","      HHH      "},
+                {"      HAH      ","     B   B     ","    GF   FG    "," C  GF   FG  D ","    GF   FG    ","     B   B     ","      HAH      "},
+                {"      HAH      ","     B   B     "," E  GF   FG  E ","EEE GF   FG EEE"," E  GF   FG  E ","     B   B     ","      HAH      "},
+                {"      HAH      ","     B   B     "," A  GF   FG  A ","A A GF   FG A A"," A  GF   FG  A ","     B   B     ","      HAH      "},
+                {"      HHH      ","     B   B     "," A  BF   FB  A ","A A BF   FB A A"," A  BF   FB  A ","     B   B     ","      HHH      "},
                 {"      B~B      ","     BBBBB     "," E  BBBBBBB  E ","EEE BBBBBBB EEE"," E  BBBBBBB  E ","     BBBBB     ","      BBB      "}
             }))
             //spotless:on
@@ -103,6 +107,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     onElementPass(
                         GT_MetaTileEntity_HIPCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 5))))
+        .addElement('H', ofBlock(GregTech_API.sBlockCasings10, 5))
         .build();
 
     private final ArrayList<GT_MetaTileEntity_HeatSensor> sensorHatches = new ArrayList<>();
@@ -228,17 +233,48 @@ public class GT_MetaTileEntity_HIPCompressor extends
             .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
             .addInfo("Unit heats by 5% x 0.90 ^ (Coil Tier - 1) every second while running")
             .addInfo("Unit cools by 2% every second while not running")
+            .addInfo(
+                "250% " + EnumChatFormatting.RED
+                    + "faster"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.BLUE
+                    + "slower"
+                    + EnumChatFormatting.GRAY
+                    + " than singleblock machines of the same voltage")
+            .addInfo(
+                "Uses " + EnumChatFormatting.RED
+                    + "75%"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.BLUE
+                    + "110%"
+                    + EnumChatFormatting.GRAY
+                    + " the EU/t normally required")
+            .addInfo(
+                "Gains " + EnumChatFormatting.RED
+                    + "8"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.BLUE
+                    + "0"
+                    + EnumChatFormatting.GRAY
+                    + " parallels per voltage tier")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addCasingInfoMin("Electric Compressor Casing", 95, false)
+            .addCasingInfoMin("Compressor Pipe Casing", 45, false)
+            .addCasingInfoExactly("Coolant Duct", 12, false)
+            .addCasingInfoExactly("Heating Duct", 12, false)
+            .addCasingInfoExactly("EV+ Glass", 22, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 20, false)
+            .addCasingInfoExactly("Coil", 30, true)
+            .addInputBus("Pipe Casings on Side", 2)
+            .addOutputBus("Pipe Casings on Side", 2)
+            .addEnergyHatch("Any Electric Compressor Casing", 1)
+            .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -264,13 +300,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
-        mEnergyHatches.clear();
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0)) return false;
-        if (mCasingAmount < 0) return false;
-
-        // All checks passed!
-        return true;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0) && mCasingAmount >= 95;
     }
 
     @Override
@@ -284,6 +314,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
         aNBT.setFloat("heat", heat);
         aNBT.setBoolean("cooling", cooling);
         aNBT.setInteger("coilTier", coilTier);
+        aNBT.setBoolean("doingHIP", doingHIP);
         super.saveNBTData(aNBT);
     }
 
@@ -292,6 +323,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
         if (aNBT.hasKey("heat")) heat = aNBT.getFloat("heat");
         if (aNBT.hasKey("cooling")) cooling = aNBT.getBoolean("cooling");
         if (aNBT.hasKey("coilTier")) coilTier = aNBT.getInteger("coilTier");
+        if (aNBT.hasKey("doingHIP")) doingHIP = aNBT.getBoolean("doingHIP");
         super.loadNBTData(aNBT);
     }
 
@@ -322,16 +354,35 @@ public class GT_MetaTileEntity_HIPCompressor extends
                 + EnumChatFormatting.RESET);
     }
 
+    private boolean doingHIP = false;
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F);
-        // .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                doingHIP = false;
+                setSpeedBonus(1F / 1.25F);
+                setEuModifier(0.75F);
+
+                if (cooling) {
+                    setSpeedBonus(2.5F);
+                    setEuModifier(1.1F);
+                }
+
+                if (recipe.mSpecialValue > 0) doingHIP = true;
+                return super.validateRecipe(recipe);
+            }
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (cooling) {
+        if (cooling && doingHIP) {
             stopMachine(SimpleShutDownReason.ofCritical("overheated"));
+            doingHIP = false;
         }
         return super.onRunningTick(aStack);
     }
@@ -366,7 +417,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
     }
 
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return cooling ? 0 : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

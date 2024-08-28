@@ -33,7 +33,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.blocks.GT_Block_Casings8;
 
 public class GT_MetaTileEntity_IndustrialCompressor
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor>
@@ -46,25 +45,25 @@ public class GT_MetaTileEntity_IndustrialCompressor
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             transpose(new String[][]{
-                {"       ","  CCC  "," CCCCC "," CCCCC "," CCCCC ","  CCC  ","       "},
+                {"       ","  DDD  "," DDDDD "," DDDDD "," DDDDD ","  DDD  ","       "},
                 {"  BBB  "," BBBBB ","BBBBBBB","BBBBBBB","BBBBBBB"," BBBBB ","  BBB  "},
-                {"  CCC  "," B   B ","B     B","B     B","B     B"," B   B ","  CCC  "},
-                {"  CAC  "," B   B ","C     C","C     C","C     C"," B   B ","  CAC  "},
-                {"  CAC  "," B   B ","C     C","C     C","C     C"," B   B ","  CAC  "},
-                {"  CAC  "," B   B ","C     C","C     C","C     C"," B   B ","  CAC  "},
-                {"  CCC  "," B   B ","B     B","B     B","B     B"," B   B ","  CCC  "},
+                {"  DDD  "," B   B ","B     B","B     B","B     B"," B   B ","  DDD  "},
+                {"  DAD  "," B   B ","C     C","C     C","C     C"," B   B ","  DAD  "},
+                {"  DAD  "," B   B ","C     C","C     C","C     C"," B   B ","  DAD  "},
+                {"  DAD  "," B   B ","C     C","C     C","C     C"," B   B ","  DAD  "},
+                {"  DDD  "," B   B ","B     B","B     B","B     B"," B   B ","  DDD  "},
                 {"  B~B  "," BBBBB ","BBBBBBB","BBBBBBB","BBBBBBB"," BBBBB ","  BBB  "}
             }))
             //spotless:on
         .addElement(
             'C',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class).atLeast(InputBus, OutputBus)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(5))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings8, 5))))
+                        ofBlock(GregTech_API.sBlockCasings10, 5))))
         .addElement(
             'B',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class).atLeast(Maintenance, Energy)
@@ -75,6 +74,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
                         GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 4))))
         .addElement('A', Glasses.chainAllGlasses())
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings10, 5))
         .build();
 
     public GT_MetaTileEntity_IndustrialCompressor(final int aID, final String aName, final String aNameRegional) {
@@ -144,17 +144,20 @@ public class GT_MetaTileEntity_IndustrialCompressor
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Compressor")
             .addInfo("Controller Block for the Large Electric Compressor")
+            .addInfo("100% faster than singleblock machines of the same voltage")
+            .addInfo("Only uses 90% of the EU/t normally required")
+            .addInfo("Gains 2 parallels per voltage tier")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addCasingInfoMin("Electric Compressor Casing", 95, false)
+            .addCasingInfoMin("Compressor Pipe Casing", 45, false)
+            .addCasingInfoExactly("EV+ Glass", 6, false)
+            .addInputBus("Pipe Casings on Side", 2)
+            .addOutputBus("Pipe Casings on Side", 2)
+            .addEnergyHatch("Any Electric Compressor Casing", 1)
+            .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -179,9 +182,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mEnergyHatches.clear();
-
-        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 0);
+        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 0) && mCasingAmount >= 95;
     }
 
     @Override
@@ -192,12 +193,13 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {}.setSpeedBonus(1F / 2F);
-        // .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setEuModifier(0.9F);
     }
 
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (2 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

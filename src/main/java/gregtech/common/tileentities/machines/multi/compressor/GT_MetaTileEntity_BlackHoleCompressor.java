@@ -231,21 +231,29 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Compressor/Advanced Neutronium Compressor")
             .addInfo("Controller Block for the Semi-Stable Black Hole Containment Field")
-            .addInfo("Uses the immense power of the event horizon to compress things")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
+            .addInfo("")
             .addInfo("No longer requires heat management to perform perfect compression")
+            .addInfo("Can create advanced singularities!")
             .addInfo("Insert a Black Hole Activation Catalyst to open a black hole")
             .addInfo("The black hole will begin its life at 100% stability and slowly decay")
-            .addInfo("Running recipes in the machine will slow the decay significantly")
+            .addInfo("Natural decay takes 100 seconds")
+            .addInfo("Running recipes in the machine will slow the decay by 25%")
             .addInfo(
                 "The decay can be " + EnumChatFormatting.BOLD
                     + "halted"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + " by inserting spacetime")
-            .addInfo("Requires increasingly more spacetime to maintain!")
+            .addInfo("Every 30 seconds saved by spacetime insertion will double the cost per second!")
             .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
             .addInfo("Insert a Black Hole Deactivation Catalyst to close the black hole")
-            .addInfo("Recipes which do not require the black hole are sped up dramatically if one is open")
+            .addInfo("Recipes which do not require the black hole will be slowed by 2x if it becomes unstable")
+            .addInfo("400% faster than singleblock machines of the same voltage")
+            .addInfo("Only uses 70% of the EU/t normally required")
+            .addInfo("Gains 8 parallels per voltage tier")
+            .addInfo("Parallels are doubled when stability is BELOW 50%")
+            .addInfo("Parallels are quadrupled when stability is BELOW 20%")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
@@ -396,8 +404,8 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        };
-        // .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setEuModifier(0.7F);
     }
 
     @Override
@@ -433,7 +441,12 @@ public class GT_MetaTileEntity_BlackHoleCompressor
     }
 
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        int parallels = (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        if (blackHoleStability < 60) {
+            parallels *= 2;
+            if (blackHoleStability < 20) parallels *= 2;
+        }
+        return parallels;
     }
 
     private static final int MACHINEMODE_COMPRESSOR = 0;
