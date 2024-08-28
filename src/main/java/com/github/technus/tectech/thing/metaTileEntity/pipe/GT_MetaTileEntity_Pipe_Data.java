@@ -123,9 +123,6 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
-        }
         onPostTick(aBaseMetaTileEntity, 31);
     }
 
