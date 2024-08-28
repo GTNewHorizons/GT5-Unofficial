@@ -1,7 +1,6 @@
 package gregtech.loaders.preload;
 
 import static gregtech.api.enums.MetaTileEntityIDs.*;
-import static gregtech.api.enums.MetaTileEntityIDs.LASER_ENGRAVER_IV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -145,6 +144,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pi
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Crystalizer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
@@ -743,6 +743,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_LATHE_CONTROLLER.ID,
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
+
+        ItemList.Machine_Large_Crystalizer.set(
+            new GT_MetaTileEntity_Crystalizer(LARGE_CRYSTALIZER.ID, "multimachine.crystalizer", "Large Crystalizer")
+                .getStackForm(1));
 
         ItemList.Machine_Multi_Autoclave.set(
             new GT_MetaTileEntity_MultiAutoclave(
