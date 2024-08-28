@@ -74,7 +74,7 @@ import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeMapUtil;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
-import gregtech.nei.formatter.BlackHoleSpecialValueFormatter;
+import gregtech.nei.formatter.CompressorSpecialValueFormatter;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -128,6 +128,7 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_COMPRESSOR_STEAM
                 : null)
         .progressBarSteam(GT_UITextures.PROGRESSBAR_COMPRESS_STEAM)
+        .neiSpecialInfoFormatter(CompressorSpecialValueFormatter.INSTANCE)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
         .build();
@@ -140,7 +141,7 @@ public final class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_COMPRESS)
         .neiHandlerInfo(builder -> builder.setDisplayStack(getModItem(Avaritia.ID, "Singularity", 1L, 0)))
         .disableOptimize()
-        .neiSpecialInfoFormatter(BlackHoleSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(CompressorSpecialValueFormatter.INSTANCE)
         .build();
     public static final RecipeMap<RecipeMapBackend> extractorRecipes = RecipeMapBuilder.of("gt.recipe.extractor")
         .maxIO(1, 1, 0, 0)

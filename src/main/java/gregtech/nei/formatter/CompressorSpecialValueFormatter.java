@@ -10,21 +10,21 @@ import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlackHoleSpecialValueFormatter implements INEISpecialInfoFormatter {
+public class CompressorSpecialValueFormatter implements INEISpecialInfoFormatter {
 
-    public static final BlackHoleSpecialValueFormatter INSTANCE = new BlackHoleSpecialValueFormatter();
+    public static final CompressorSpecialValueFormatter INSTANCE = new CompressorSpecialValueFormatter();
 
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
-        int blackholeTier = recipeInfo.recipe.mSpecialValue;
+        int compressionTier = recipeInfo.recipe.mSpecialValue;
         String text;
 
-        switch (blackholeTier) {
+        switch (compressionTier) {
             case 1 -> text = "Requires Stabilized Black Hole";
+            case 2 -> text = "Requires HIP Compression";
             default -> text = "";
         }
 
         return Collections.singletonList(text);
-        // StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(), ));
     }
 }

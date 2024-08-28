@@ -18,11 +18,13 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,6 +41,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -55,6 +58,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -160,6 +164,30 @@ public class GT_MetaTileEntity_BlackHoleCompressor
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_COMPRESSING);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SINGULARITY);
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.BLACKHOLE.mode." + machineMode);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
@@ -221,8 +249,9 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
+            .addCasingInfoMin("Extreme Density Space-Bending Casing", 85, false)
+            .addCasingInfoExactly("Background Radiation Absorbent Casing", 1000, false)
+            .addCasingInfoExactly("Hawking Radiation Realignment Focus", 32, false)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addInputHatch("Any Solid Steel Casing", 1)
@@ -259,6 +288,24 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         if (mCasingAmount < 0) return false;
 
         return true;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        aNBT.setInteger("catalyzingCostModifier", catalyzingCostModifier);
+        aNBT.setInteger("catalyzingCounter", catalyzingCounter);
+        aNBT.setBoolean("blackholeOn", blackholeOn);
+        aNBT.setFloat("blackholeStability", blackHoleStability);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (aNBT.hasKey("catalyzingCounter")) catalyzingCostModifier = aNBT.getInteger("catalyzingCounter");
+        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
+        if (aNBT.hasKey("blackholeOn")) blackholeOn = aNBT.getBoolean("blackholeOn");
+        if (aNBT.hasKey("blackholeStability")) blackHoleStability = aNBT.getFloat("blackholeStability");
     }
 
     @Override
@@ -319,17 +366,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                         }
                     }
                 }
-
-                Stream<GT_Recipe> compressorRecipes = RecipeMaps.compressorRecipes.findRecipeQuery()
-                    .items(inputItems)
-                    .cachedRecipe(lastRecipe)
-                    .findAll();
-                Stream<GT_Recipe> neutroniumRecipes = RecipeMaps.neutroniumCompressorRecipes.findRecipeQuery()
-                    .items(inputItems)
-                    .cachedRecipe(lastRecipe)
-                    .findAll();
-                compressorRecipes = Stream.concat(compressorRecipes, neutroniumRecipes);
-                return compressorRecipes;
+                return super.findRecipeMatches(map);
             }
 
             @NotNull
@@ -399,9 +436,13 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
+    private static final int MACHINEMODE_COMPRESSOR = 0;
+    private static final int MACHINEMODE_BLACKHOLE = 1;
+
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.neutroniumCompressorRecipes;
+        return (machineMode == MACHINEMODE_COMPRESSOR) ? RecipeMaps.compressorRecipes
+            : RecipeMaps.neutroniumCompressorRecipes;
     }
 
     @Nonnull
