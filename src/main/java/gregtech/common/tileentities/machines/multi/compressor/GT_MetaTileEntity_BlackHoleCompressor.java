@@ -45,7 +45,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -54,7 +53,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -105,28 +104,28 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                 {"                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","              CC   CC              ","              CC   CC              ","              CC   CC              ","             CCC   CCC             ","            CCC     CCC            ","         CCCCC       CCCCC         ","         CCCC         CCCC         ","                                   ","                                   ","                                   ","         CCCC         CCCC         ","         CCCCC       CCCCC         ","            CCC     CCC            ","             CCC   CCC             ","              CC   CC              ","              CC   CC              ","              CC   CC              ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   ","                                   "}
             }))
             //spotless:on
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', ofBlock(GregTech_API.sBlockGlass1, 4))
         .addElement(
             'B',
             buildHatchAdder(GT_MetaTileEntity_BlackHoleCompressor.class).atLeast(Maintenance, Energy)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(12))
                 .dot(2)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_BlackHoleCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings8, 5))))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 10))
+                        ofBlock(GregTech_API.sBlockCasings10, 12))))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings10, 11))
         .addElement('D', ofFrame(Materials.NaquadahAlloy))
         .addElement(
             'E',
             buildHatchAdder(GT_MetaTileEntity_BlackHoleCompressor.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(11))
                 .dot(2)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_BlackHoleCompressor::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings8, 10))))
+                        ofBlock(GregTech_API.sBlockCasings10, 11))))
 
         .build();
 
@@ -168,7 +167,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 11)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
                         .extFacing()
@@ -181,7 +180,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 11)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
                         .extFacing()
@@ -194,7 +193,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 11)) };
         }
         return rTexture;
     }
@@ -236,13 +235,13 @@ public class GT_MetaTileEntity_BlackHoleCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 17, 27, 11);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 17, 27, 10);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 17, 27, 11, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 17, 27, 10, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -256,7 +255,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 11)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
         if (mCasingAmount < 0) return false;
 
         return true;

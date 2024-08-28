@@ -1488,6 +1488,9 @@ public enum ItemList implements IItemContainer {
     Neutronium_Casing,
     Neutronium_Active_Casing,
     Neutronium_Stable_Casing,
+    Background_Radiation_Casing,
+    Extreme_Density_Casing,
+    Hawking_Glass,
     Black_Hole_Opener,
     Black_Hole_Closer,
 

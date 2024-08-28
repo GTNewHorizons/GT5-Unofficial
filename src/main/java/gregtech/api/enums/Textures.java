@@ -1425,7 +1425,10 @@ public class Textures {
         COMPRESSOR_PIPE_CASING,
         NEUTRONIUM_CASING,
         NEUTRONIUM_ACTIVE_CASING,
-        NEUTRONIUM_STABLE_CASING;
+        NEUTRONIUM_STABLE_CASING,
+        EXTREME_DENSITY_CASING,
+        RADIATION_ABSORBENT_CASING,
+        HAWKING_GLASS;
 
         /**
          * Icon for Fresh CFoam

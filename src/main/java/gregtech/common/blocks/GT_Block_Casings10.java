@@ -28,6 +28,10 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Neutronium Stabilization Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Coolant Duct");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Heating Duct");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".11.name", "Extreme Density Space-Bending Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".12.name", "Background Radiation Absorbent Casing");
 
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
@@ -40,6 +44,8 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         ItemList.Neutronium_Stable_Casing.set(new ItemStack(this, 1, 8));
         ItemList.Coolant_Duct_Casing.set(new ItemStack(this, 1, 9));
         ItemList.Heating_Duct_Casing.set(new ItemStack(this, 1, 10));
+        ItemList.Extreme_Density_Casing.set(new ItemStack(this, 1, 11));
+        ItemList.Background_Radiation_Casing.set(new ItemStack(this, 1, 12));
     }
 
     @Override
@@ -62,6 +68,8 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
             case 8 -> Textures.BlockIcons.NEUTRONIUM_STABLE_CASING.getIcon();
             case 9 -> Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getIcon();
+            case 11 -> Textures.BlockIcons.EXTREME_DENSITY_CASING.getIcon();
+            case 12 -> Textures.BlockIcons.RADIATION_ABSORBENT_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
