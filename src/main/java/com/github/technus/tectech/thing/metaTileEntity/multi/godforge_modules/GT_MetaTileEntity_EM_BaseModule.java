@@ -302,7 +302,8 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
-            .widget(createVoltageButton(builder));
+            .widget(createVoltageButton(builder))
+            .widget(createStructureUpdateButton(builder));
     }
 
     protected Widget createVoltageButton(IWidgetBuilder<?> builder) {
@@ -327,7 +328,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
             })
             .addTooltip(translateToLocal("fog.button.voltageconfig.tooltip.01"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 129)
+            .setPos(174, 112)
             .setSize(16, 16)
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> isVoltageConfigUnlocked, val -> isVoltageConfigUnlocked = val),
