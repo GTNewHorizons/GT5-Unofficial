@@ -1,6 +1,7 @@
 package goodgenerator.crossmod.thaumcraft;
 
 import static gregtech.api.enums.Mods.Automagy;
+import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.enums.Mods.ThaumicEnergistics;
@@ -307,7 +308,7 @@ public class Research {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Unstable, 1),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Void, 1),
                         GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1), Ic2Items.industrialTnt,
-                        new ItemStack(ItemRegistry.DESTRUCTOPACK) },
+                        GT_ModHandler.getModItem(ExtraUtilities.ID, "trashcan", 1, 0) },
                     ItemRefer.Essentia_Upgrade_Unstable.get(1),
                     6,
                     Arrays.asList(

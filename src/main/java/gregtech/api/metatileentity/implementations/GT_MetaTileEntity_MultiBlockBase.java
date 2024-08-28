@@ -29,6 +29,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -59,8 +60,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -87,6 +86,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.OutputHatchWrapper;
@@ -95,6 +95,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
+import gregtech.common.config.machinestats.ConfigMachines;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -170,12 +171,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
         this.processingLogic = null;
-        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
-        this.damageFactorLow = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
-        this.damageFactorHigh = (float) GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
+        this.damageFactorLow = ConfigMachines.damageFactorLow;
+        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
         this.mNEI = "";
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
@@ -183,12 +181,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public GT_MetaTileEntity_MultiBlockBase(String aName) {
         super(aName, 2);
         this.processingLogic = createProcessingLogic();
-        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
-        this.damageFactorLow = GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
-        this.damageFactorHigh = (float) GregTech_API.sMachineFile
-            .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
+        this.damageFactorLow = ConfigMachines.damageFactorLow;
+        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
 
@@ -371,8 +366,36 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return SingleRecipeCheck.tryLoad(getRecipeMap(), aNBT);
     }
 
+    public boolean saveOtherHatchConfiguration(EntityPlayer player) {
+        return true;
+    }
+
+    public boolean loadOtherHatchConfiguration(EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isServerSide() && GT_Util.saveMultiblockInputConfiguration(this, aPlayer)) {
+            aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.SAVE"));
+            return;
+        }
+        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (GT_Util.hasMultiblockInputConfiguration(aPlayer.getHeldItem())) {
+            if (aBaseMetaTileEntity.isServerSide()) {
+                if (GT_Util.loadMultiblockInputConfiguration(this, aPlayer)) {
+                    aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD"));
+                } else {
+                    aPlayer
+                        .addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL"));
+                }
+            }
+            return true;
+        }
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }

@@ -40,8 +40,6 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -66,6 +64,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Client;
+import gregtech.common.config.other.ConfigGeneral;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_Drain;
 import gregtech.common.covers.GT_Cover_FluidRegulator;
@@ -512,7 +511,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
                 boolean wasActionPerformed = false;
 
-                int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeWrenchingChainRange", 64);
+                int limit = ConfigGeneral.pipeWrenchingChainRange;
                 for (int connected = 0; connected < limit; connected++) {
 
                     TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);

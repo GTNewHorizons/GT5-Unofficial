@@ -103,20 +103,6 @@ public class CraftingRecipes implements Runnable {
                 new ItemStack(ItemRegistry.BW_BLOCKS[1]), 'F', ItemList.Field_Generator_HV.get(1L) });
 
         GT_ModHandler.addCraftingRecipe(
-            new ItemStack(ItemRegistry.DESTRUCTOPACK),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "CPC", "PLP", "CPC", 'C', "circuitAdvanced", 'P',
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L), 'L',
-                new ItemStack(Items.lava_bucket) });
-
-        GT_ModHandler.addCraftingRecipe(
-            new ItemStack(ItemRegistry.DESTRUCTOPACK),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "CPC", "PLP", "CPC", 'C', "circuitAdvanced", 'P',
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 1L), 'L',
-                new ItemStack(Items.lava_bucket) });
-
-        GT_ModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_MV),
             RecipeLoader.BITSD,
             new Object[] { "DS ", "DP ", "DCB", 'D', GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
