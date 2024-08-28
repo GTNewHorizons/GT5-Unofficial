@@ -67,6 +67,5 @@ public class Crafting implements Runnable {
         final Object[] lcIV_recipe = { "SLS", "LOL", "SLS", 'S', OrePrefixes.screw.get(Materials.Lapis), 'L',
             OrePrefixes.plate.get(Materials.Lapis), 'O', ItemList.Energy_LapotronicOrb.get(1L) };
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
-
     }
 }

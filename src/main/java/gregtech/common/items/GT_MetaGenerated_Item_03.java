@@ -158,9 +158,11 @@ import static gregtech.common.items.ID_MetaItem_03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.ID_MetaItem_03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.ID_MetaItem_03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.ID_MetaItem_03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.ID_MetaItem_03.CrudeLapotronCrystal;
 import static gregtech.common.items.ID_MetaItem_03.EV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.GalliumArsenideCrystal;
 import static gregtech.common.items.ID_MetaItem_03.GalliumArsenideCrystalSmallPart;
+import static gregtech.common.items.ID_MetaItem_03.GoodLapotronCrystal;
 import static gregtech.common.items.ID_MetaItem_03.HV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.IV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_AUTOMATION;
@@ -197,6 +199,7 @@ import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_UNLI
 import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.ID_MetaItem_03.KevlarFiber;
 import static gregtech.common.items.ID_MetaItem_03.LV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.LapotronShard;
 import static gregtech.common.items.ID_MetaItem_03.LuV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.MV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.NandChip;
@@ -204,6 +207,7 @@ import static gregtech.common.items.ID_MetaItem_03.NuclearStar;
 import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
+import static gregtech.common.items.ID_MetaItem_03.PerfectLapotronCrystal;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Catalyst_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Charm;
@@ -213,6 +217,7 @@ import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
+import static gregtech.common.items.ID_MetaItem_03.StableLapotronCrystal;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
 import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
 import static gregtech.common.items.ID_MetaItem_03.Tube_Wires;
@@ -249,6 +254,8 @@ import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Tu
 import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Wire;
 import static gregtech.common.items.ID_MetaItem_03.WovenKevlar;
 import static gregtech.common.items.ID_MetaItem_03.ZPM_Coil;
+
+import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -1326,6 +1333,19 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.PerfectLapotronCrystal
+            .set(addItem(PerfectLapotronCrystal.ID, EnumChatFormatting.BLUE + "Perfect Lapotron Crystal", ""));
+        ItemList.GoodLapotronCrystal
+            .set(addItem(GoodLapotronCrystal.ID, EnumChatFormatting.RED + "Good Lapotron Crystal", ""));
+        ItemList.StableLapotronCrystal
+            .set(addItem(StableLapotronCrystal.ID, EnumChatFormatting.YELLOW + "Stable Lapotron Crystal", ""));
+        ItemList.CrudeLapotronCrystal
+            .set(addItem(CrudeLapotronCrystal.ID, EnumChatFormatting.WHITE + "Crude Lapotron Crystal", ""));
+        ItemList.LapotronShard.set(addItem(LapotronShard.ID, EnumChatFormatting.WHITE + "Lapotron Shard", ""));
+
+        ItemList.PerfectRuby
+            .set(addItem(ID_MetaItem_03.PerfectRuby.ID, EnumChatFormatting.RED + "Perfect Ruby Crystal", ""));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();

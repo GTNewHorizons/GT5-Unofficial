@@ -100,6 +100,14 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+
+    PerfectLapotronCrystal,
+    GoodLapotronCrystal,
+    StableLapotronCrystal,
+    CrudeLapotronCrystal,
+    LapotronShard,
+
+    PerfectRuby,
     Shape_Empty,
 
     Shape_Mold_Bottle,
@@ -831,7 +839,18 @@ public enum ItemList implements IItemContainer {
     Casing_Gearbox_TungstenSteel,
     Casing_Processor,
     Casing_DataDrive,
+
+    Casing_ContainmentFieldHV,
+    Casing_ContainmentFieldEV,
+
+    Casing_ContainmentFieldIV,
+
     Casing_ContainmentField,
+
+    Casing_ContainmentFieldZPM,
+
+    Casing_ContainmentFieldUV,
+
     Casing_Assembler,
     Casing_Pump,
     Casing_Motor,
@@ -1431,6 +1450,8 @@ public enum ItemList implements IItemContainer {
     Machine_HV_Autoclave,
     Machine_EV_Autoclave,
     Machine_IV_Autoclave,
+
+    Machine_Large_Crystalizer,
 
     Machine_LV_Mixer,
     Machine_MV_Mixer,
