@@ -2,9 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -257,36 +255,33 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
         if (aAllDrops.isEmpty()) return;
 
         Logger.INFO("Handling " + aAllDrops.size() + " Harvests");
-        for (int i = SLOT_OUTPUT_START; i < this.getSizeInventory() && !aAllDrops.isEmpty(); i++) {
-            ItemStack invStack = mInventory[i];
-            if (invStack == null || GT_Utility.isStackInvalid(invStack) || invStack.stackSize == 0) {
-                Iterator<Entry<ItemStack, Integer>> iter = aAllDrops.entrySet()
-                    .iterator();
-                if (!iter.hasNext()) return;
-                Entry<ItemStack, Integer> e = iter.next();
-                int toAdd = e.getValue();
-                int toAddThisSlot = Math.min(
-                    toAdd,
-                    e.getKey()
-                        .getMaxStackSize());
-                getBaseMetaTileEntity().setInventorySlotContents(i, GT_Utility.copyAmount(toAddThisSlot, e.getKey()));
-                toAdd -= toAddThisSlot;
-                if (toAdd <= toAddThisSlot) {
-                    iter.remove();
-                } else {
-                    e.setValue(toAdd);
-                }
-            } else {
-                Integer toAddMaybeNull = aAllDrops.get(invStack);
-                if (toAddMaybeNull != null) {
-                    int toAdd = toAddMaybeNull;
+
+        for (var dropEntry : aAllDrops.entrySet()) {
+            ItemStack dropItem = dropEntry.getKey();
+            int dropAmount = dropEntry.getValue();
+
+            // how this can happen, idk
+            if (dropItem == null) continue;
+
+            for (int i = SLOT_OUTPUT_START; i < this.getSizeInventory() && dropAmount > 0; i++) {
+                ItemStack invStack = mInventory[i];
+
+                // If the slot is empty, create a new stack for the drop item, else check if it is the same as the drop
+                // and merge if possible
+                if (invStack == null || GT_Utility.isStackInvalid(invStack) || invStack.stackSize == 0) {
+                    int stackSize = Math.min(dropAmount, dropItem.getMaxStackSize());
+                    getBaseMetaTileEntity().setInventorySlotContents(i, GT_Utility.copyAmount(stackSize, dropItem));
+                    dropAmount -= stackSize;
+                } else if (GT_Utility.areStacksEqual(invStack, dropItem)) {
                     int space = Math.min(invStack.getMaxStackSize(), getInventoryStackLimit()) - invStack.stackSize;
-                    if (toAdd <= space) {
-                        getBaseMetaTileEntity().addStackToSlot(i, invStack, toAdd);
-                        aAllDrops.remove(invStack);
+                    if (dropAmount <= space) {
+                        // if the drop amount fits
+                        getBaseMetaTileEntity().addStackToSlot(i, invStack, dropAmount);
+                        dropAmount = 0;
                     } else {
+                        // fill the slot
                         getBaseMetaTileEntity().addStackToSlot(i, invStack, space);
-                        aAllDrops.put(invStack, toAdd - space);
+                        dropAmount -= space;
                     }
                 }
             }
