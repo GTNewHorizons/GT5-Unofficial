@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.common.blocks.GT_Block_Casings10;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -86,7 +87,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
             'B',
             buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class)
                 .atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(4))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
@@ -101,7 +102,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
         .addElement(
             'G',
             buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class).atLeast(InputBus, OutputBus)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(5))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
@@ -420,7 +421,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
     }
 
     public int getMaxParallelRecipes() {
-        return cooling ? 0 : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return cooling ? 1 : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
