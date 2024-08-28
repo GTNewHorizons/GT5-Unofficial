@@ -15,6 +15,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.superscriptNumbers;
+import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.OrePrefixes.block;
@@ -69,6 +70,7 @@ import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.values;
 import static gregtech.api.enums.OrePrefixes.wireFine;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -79,6 +81,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import codechicken.nei.api.API;
+import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -1875,15 +1879,22 @@ public class WerkstoffLoader {
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
-            if (Forestry.isModLoaded()) WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
+            if (Forestry.isModLoaded()) {
+                BW_MetaGenerated_Items capsuleClass = new BW_MetaGenerated_Items(capsule);
+                API.hideItem(new ItemStack(capsuleClass, 1, WILDCARD));
+                WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
+            }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
             WerkstoffLoader.items.put(cellPlasma, new BW_MetaGenerated_Items(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
             WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BW_MetaGenerated_Items(OrePrefixes.cellMolten));
-            if (Forestry.isModLoaded()) WerkstoffLoader.items
-                .put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
+            if (Forestry.isModLoaded()) {
+                BW_MetaGenerated_Items capsuleMoltenClass = new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten);
+                API.hideItem(new ItemStack(capsuleMoltenClass, 1, WILDCARD));
+                WerkstoffLoader.items.put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
+            }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
             WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
