@@ -29,26 +29,26 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioOutput;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioOutput;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
-public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsToBioPipe {
+public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsToBioPipe {
 
-    public GT_MetaTileEntity_Hatch_BioOutput networkOutput;
+    public Hatch_BioOutput networkOutput;
 
     private static Textures.BlockIcons.CustomIcon pipeTexture;
 
-    public GT_MetaPipeEntity_BioPipe(int aID, String aName, String aNameRegional) {
+    public MetaPipeEntity_BioPipe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public GT_MetaPipeEntity_BioPipe(String aName) {
+    public MetaPipeEntity_BioPipe(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaPipeEntity_BioPipe(mName);
+        return new MetaPipeEntity_BioPipe(mName);
     }
 
     @Override
@@ -181,8 +181,8 @@ public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnec
 
     // Pipes recursively call this function on other pipes, returning a connections hashset.
     @Override
-    public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        HashSet<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(Hatch_BioOutput output,
+                                                    HashSet<IConnectsToBioPipe> connections) {
         networkOutput = output;
         connections.add(this);
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -211,7 +211,7 @@ public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnec
         if (GT_Mod.gregtechproxy.gt6Pipe) {
             final int mode = GT_MetaGenerated_Tool.getToolMode(aTool);
             IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
-            GT_MetaPipeEntity_BioPipe currentPipe = (GT_MetaPipeEntity_BioPipe) currentPipeBase.getMetaTileEntity();
+            MetaPipeEntity_BioPipe currentPipe = (MetaPipeEntity_BioPipe) currentPipeBase.getMetaTileEntity();
             final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
 
             if (mode == ToolModes.REGULAR.get()) {
@@ -233,9 +233,9 @@ public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnec
                         return wasActionPerformed;
                     }
 
-                    GT_MetaPipeEntity_BioPipe nextPipe = nextPipeBase
-                        .getMetaTileEntity() instanceof GT_MetaPipeEntity_BioPipe
-                            ? (GT_MetaPipeEntity_BioPipe) nextPipeBase.getMetaTileEntity()
+                    MetaPipeEntity_BioPipe nextPipe = nextPipeBase
+                        .getMetaTileEntity() instanceof MetaPipeEntity_BioPipe
+                            ? (MetaPipeEntity_BioPipe) nextPipeBase.getMetaTileEntity()
                             : null;
 
                     // if next tile entity is not a pipe

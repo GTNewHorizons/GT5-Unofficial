@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.artificialorganisms.hatches;
 
 import java.util.HashSet;
 
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MetaPipeEntity_BioPipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -11,19 +12,18 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.ArtificialOrganism;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.GT_MetaPipeEntity_BioPipe;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
-public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
+public class Hatch_BioOutput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
 
     public HashSet<IConnectsToBioPipe> pipenetwork;
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
-    public GT_MetaTileEntity_Hatch_BioOutput(int aID, String aName, String aNameRegional, int aTier) {
+    public Hatch_BioOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Distributes Artificial Organisms");
     }
 
-    public GT_MetaTileEntity_Hatch_BioOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public Hatch_BioOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch i
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_BioOutput(mName, mTier, mDescriptionArray, mTextures);
+        return new Hatch_BioOutput(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -56,17 +56,17 @@ public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch i
     private void rescan() {
         if (pipenetwork != null) {
             for (IConnectsToBioPipe node : pipenetwork) {
-                if (node instanceof GT_MetaPipeEntity_BioPipe) ((GT_MetaPipeEntity_BioPipe) node).networkOutput = null;
-                if (node instanceof GT_MetaTileEntity_Hatch_BioInput)
-                    ((GT_MetaTileEntity_Hatch_BioInput) node).networkOutput = null;
+                if (node instanceof MetaPipeEntity_BioPipe) ((MetaPipeEntity_BioPipe) node).networkOutput = null;
+                if (node instanceof Hatch_BioInput)
+                    ((Hatch_BioInput) node).networkOutput = null;
             }
         }
         pipenetwork = getConnected(this, new HashSet<>());
     }
 
     @Override
-    public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        HashSet<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(Hatch_BioOutput output,
+                                                    HashSet<IConnectsToBioPipe> connections) {
         connections.add(this);
         IGregTechTileEntity baseTE = getBaseMetaTileEntity();
         TileEntity next = baseTE.getTileEntityAtSide(baseTE.getFrontFacing());

@@ -12,15 +12,15 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
-public class GT_MetaTileEntity_Hatch_BioInput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
+public class Hatch_BioInput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
 
-    GT_MetaTileEntity_Hatch_BioOutput networkOutput;
+    Hatch_BioOutput networkOutput;
 
-    public GT_MetaTileEntity_Hatch_BioInput(int aID, String aName, String aNameRegional, int aTier) {
+    public Hatch_BioInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Accepts Artificial Organisms");
     }
 
-    public GT_MetaTileEntity_Hatch_BioInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public Hatch_BioInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_Hatch_BioInput extends GT_MetaTileEntity_Hatch im
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_BioInput(mName, mTier, mDescriptionArray, mTextures);
+        return new Hatch_BioInput(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class GT_MetaTileEntity_Hatch_BioInput extends GT_MetaTileEntity_Hatch im
     }
 
     @Override
-    public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        HashSet<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(Hatch_BioOutput output,
+                                                    HashSet<IConnectsToBioPipe> connections) {
         HashSet<IConnectsToBioPipe> c = new HashSet<>();
         c.add(this);
         networkOutput = output;
