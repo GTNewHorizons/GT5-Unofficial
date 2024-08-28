@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioOutput;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioOutput;
 
 public interface IConnectsToBioPipe {
 
@@ -15,8 +15,8 @@ public interface IConnectsToBioPipe {
      * Connections is used to determine which pipes in a network have already been visited.
      * Returns a HashSet containing connected input hatches.
      */
-    HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        HashSet<IConnectsToBioPipe> connections);
+    HashSet<IConnectsToBioPipe> getConnected(Hatch_BioOutput output,
+                                             HashSet<IConnectsToBioPipe> connections);
 
     boolean isComponentsInputFacing(ForgeDirection side);
 }

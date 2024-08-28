@@ -18,9 +18,9 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Recipe;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioInput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,43 +45,42 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class GT_MetaTileEntity_AOAssembler extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_AOAssembler> implements ISurvivalConstructable {
+public class AOAssembler extends
+    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<AOAssembler> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_AOAssembler> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_AOAssembler>builder()
+    private static final IStructureDefinition<AOAssembler> STRUCTURE_DEFINITION = StructureDefinition
+        .<AOAssembler>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][] { { "BBB", "AAA", "B~B" }, { "BBB", "A A", "BBB" }, { "BBB", "AAA", "BBB" } })
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(GT_MetaTileEntity_AOAssembler.class).adder(GT_MetaTileEntity_AOAssembler::addBioHatch)
-                    .hatchClass(GT_MetaTileEntity_Hatch_BioInput.class)
+                buildHatchAdder(AOAssembler.class).adder(AOAssembler::addBioHatch)
+                    .hatchClass(Hatch_BioInput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
                     .buildAndChain(
                         onElementPass(
-                            GT_MetaTileEntity_AOAssembler::onCasingAdded,
+                            AOAssembler::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings2, 0))),
-                buildHatchAdder(GT_MetaTileEntity_AOAssembler.class)
+                buildHatchAdder(AOAssembler.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                     .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
                         onElementPass(
-                            GT_MetaTileEntity_AOAssembler::onCasingAdded,
+                            AOAssembler::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
-    GT_MetaTileEntity_Hatch_BioInput bioHatch;
+    Hatch_BioInput bioHatch;
 
     private int AOsInUse = 0;
 
@@ -90,16 +89,16 @@ public class GT_MetaTileEntity_AOAssembler extends
         return super.onRunningTick(aStack);
     }
 
-    public GT_MetaTileEntity_AOAssembler(final int aID, final String aName, final String aNameRegional) {
+    public AOAssembler(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_AOAssembler(String aName) {
+    public AOAssembler(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_AOAssembler> getStructureDefinition() {
+    public IStructureDefinition<AOAssembler> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -110,7 +109,7 @@ public class GT_MetaTileEntity_AOAssembler extends
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_AOAssembler(this.mName);
+        return new AOAssembler(this.mName);
     }
 
     @Override
@@ -283,10 +282,10 @@ public class GT_MetaTileEntity_AOAssembler extends
     private boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_BioInput) {
-                ((GT_MetaTileEntity_Hatch_BioInput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            if (aMetaTileEntity instanceof Hatch_BioInput) {
+                ((Hatch_BioInput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 if (bioHatch == null) {
-                    bioHatch = (GT_MetaTileEntity_Hatch_BioInput) aMetaTileEntity;
+                    bioHatch = (Hatch_BioInput) aMetaTileEntity;
                     return true;
                 }
             }

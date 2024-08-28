@@ -1641,20 +1641,20 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Industrial Precision Lathe").getStackForm(1));
 
         ItemList.Machine_Multi_EvolutionChamber.set(
-            new GT_MetaTileEntity_EvolutionChamber(
+            new EvolutionChamber(
                 EVOLUTION_CHAMBER.ID,
                 "multimachine.evolutionchamber",
                 "Hyperaccelerated Macroevolution Chamber").getStackForm(1));
         ItemList.Bio_Pipe
-            .set(new GT_MetaPipeEntity_BioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
+            .set(new MetaPipeEntity_BioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
         ItemList.Bio_Hatch_Input.set(
-            new GT_MetaTileEntity_Hatch_BioInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "Bio Hatch (Input)", 8)
+            new Hatch_BioInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "Bio Hatch (Input)", 8)
                 .getStackForm(1));
         ItemList.Bio_Hatch_Output.set(
-            new GT_MetaTileEntity_Hatch_BioOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "Bio Hatch (Output)", 8)
+            new Hatch_BioOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "Bio Hatch (Output)", 8)
                 .getStackForm(1));
         ItemList.Machine_Multi_AOAssembler.set(
-            new GT_MetaTileEntity_AOAssembler(AO_ASSEMBLER.ID, "multimachine.aoassembler", "AO Assembling Unit")
+            new AOAssembler(AO_ASSEMBLER.ID, "multimachine.aoassembler", "AO Assembling Unit")
                 .getStackForm(1));
     }
 

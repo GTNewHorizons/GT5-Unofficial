@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioOutput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,56 +40,55 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioOutput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class GT_MetaTileEntity_EvolutionChamber
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_EvolutionChamber>
+public class EvolutionChamber
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<EvolutionChamber>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_EvolutionChamber> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_EvolutionChamber>builder()
+    private static final IStructureDefinition<EvolutionChamber> STRUCTURE_DEFINITION = StructureDefinition
+        .<EvolutionChamber>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][] { { "BBB", "AAA", "B~B" }, { "BBB", "A A", "BBB" }, { "BBB", "AAA", "BBB" } })
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(GT_MetaTileEntity_EvolutionChamber.class)
-                    .adder(GT_MetaTileEntity_EvolutionChamber::addBioHatch)
-                    .hatchClass(GT_MetaTileEntity_Hatch_BioOutput.class)
+                buildHatchAdder(EvolutionChamber.class)
+                    .adder(EvolutionChamber::addBioHatch)
+                    .hatchClass(Hatch_BioOutput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
                     .buildAndChain(
                         onElementPass(
-                            GT_MetaTileEntity_EvolutionChamber::onCasingAdded,
+                            EvolutionChamber::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings2, 0))),
-                buildHatchAdder(GT_MetaTileEntity_EvolutionChamber.class)
+                buildHatchAdder(EvolutionChamber.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                     .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
                         onElementPass(
-                            GT_MetaTileEntity_EvolutionChamber::onCasingAdded,
+                            EvolutionChamber::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
-    GT_MetaTileEntity_Hatch_BioOutput bioHatch;
+    Hatch_BioOutput bioHatch;
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
-    public GT_MetaTileEntity_EvolutionChamber(final int aID, final String aName, final String aNameRegional) {
+    public EvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_EvolutionChamber(String aName) {
+    public EvolutionChamber(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_EvolutionChamber> getStructureDefinition() {
+    public IStructureDefinition<EvolutionChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_EvolutionChamber
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EvolutionChamber(this.mName);
+        return new EvolutionChamber(this.mName);
     }
 
     @Override
@@ -229,10 +229,10 @@ public class GT_MetaTileEntity_EvolutionChamber
     private boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_BioOutput) {
-                ((GT_MetaTileEntity_Hatch_BioOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            if (aMetaTileEntity instanceof Hatch_BioOutput) {
+                ((Hatch_BioOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 if (bioHatch == null) {
-                    bioHatch = (GT_MetaTileEntity_Hatch_BioOutput) aMetaTileEntity;
+                    bioHatch = (Hatch_BioOutput) aMetaTileEntity;
                     return true;
                 }
             }
