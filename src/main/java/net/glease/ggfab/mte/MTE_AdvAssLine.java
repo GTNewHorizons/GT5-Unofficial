@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 import net.glease.ggfab.ConfigurationHandler;
@@ -45,9 +44,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -265,44 +262,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (build >= 0) return build;
         }
         return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        super.initDefaultModes(aNBT);
-        // blockrenderer6343 seems to place the block in a weird way, let's catch that
-        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isServerSide()) {
-            UUID ownerUuid = getBaseMetaTileEntity().getOwnerUuid();
-            if (ownerUuid == null) return;
-            float factor = ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor();
-            MinecraftServer server = MinecraftServer.getServer();
-            // more blockrenderer6343 weirdness
-            if (server == null) return;
-            @SuppressWarnings("unchecked")
-            List<EntityPlayerMP> l = server.getConfigurationManager().playerEntityList;
-            for (EntityPlayerMP p : l) {
-                if (p.getUniqueID()
-                    .equals(ownerUuid)) {
-                    for (int i = 0; i < 9; i++) {
-                        // switch is stupid, but I have no better idea
-                        Object[] args;
-                        switch (i) {
-                            case 7:
-                                args = new Object[] { factor };
-                                break;
-                            case 8:
-                                args = new Object[] { (int) (factor * 100) + 400,
-                                    (int) ((4 + factor) * (4 + factor + factor) * 100), 4 + factor,
-                                    4 + factor + factor };
-                                break;
-                            default:
-                                args = new Object[0];
-                        }
-                        p.addChatMessage(new ChatComponentTranslation("ggfab.info.advassline." + i, args));
-                    }
-                }
-            }
-        }
     }
 
     @Override
