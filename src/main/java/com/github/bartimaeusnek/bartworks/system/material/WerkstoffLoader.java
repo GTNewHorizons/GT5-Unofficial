@@ -15,7 +15,6 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.superscriptNumbers;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.OrePrefixes.block;
@@ -81,8 +80,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import codechicken.nei.api.API;
-import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -127,6 +124,7 @@ import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.cls.CLSCompat;
 import com.google.common.collect.HashBiMap;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
@@ -1893,7 +1891,8 @@ public class WerkstoffLoader {
             if (Forestry.isModLoaded()) {
                 BW_MetaGenerated_Items capsuleMoltenClass = new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten);
                 API.hideItem(new ItemStack(capsuleMoltenClass, 1, WILDCARD));
-                WerkstoffLoader.items.put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
+                WerkstoffLoader.items
+                    .put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
             }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
