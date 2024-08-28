@@ -20,6 +20,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend.inputItems;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
@@ -30,18 +31,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.google.common.collect.ImmutableList;
@@ -51,6 +52,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -68,11 +71,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings10;
@@ -106,6 +114,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
             new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.Space, 2, 5000),
             new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+
     private static class CoolingFluid {
 
         public Materials material;
@@ -442,6 +451,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         }
         return true;
     }
+
     public CoolingFluid findCoolingFluid() {
         // Loop over all hatches and find the first match with a valid fluid
         for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
@@ -453,13 +463,27 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         return null;
     }
 
+    int moldParallel = 0;
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(CoolingFluid.speedMultiplier / 2F)
+        return new ProcessingLogic() {
+
+            @Override
+            @NotNull
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+
+                ItemStack aMold = recipe.getRepresentativeInput(0);
+                    for (ItemStack aItem : inputItems) {
+                        if (aItem != null && aItem.isItemEqual(aMold)) {
+                            moldParallel += aItem.stackSize;
+                        }
+                    }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+        }.setSpeedBonus(1F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
-
-    private int moldParallel = 0;
 
     public int getMaxParallelRecipes() {
         return (moldParallel * (mWidth + 4) * 2);
