@@ -88,8 +88,8 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     onElementPass(
                         GT_MetaTileEntity_HIPCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 4))))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 12))
-        .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 15))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings10, 9))
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings10, 10))
         .addElement('E', ofBlock(GregTech_API.sBlockCasings4, 1))
         .addElement(
             'F',
