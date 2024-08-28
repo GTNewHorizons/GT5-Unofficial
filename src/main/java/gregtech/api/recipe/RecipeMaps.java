@@ -1186,7 +1186,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationParticleExtractionRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantquarkextractor")
-        .maxIO(2, 1, 1, 2)
+        .maxIO(2, 2, 1, 2)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW)
         .frontend(PurificationUnitParticleExtractorFrontend::new)
