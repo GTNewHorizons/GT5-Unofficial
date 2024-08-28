@@ -173,28 +173,35 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         .addShape(
             MS_LEFT_MID,
             (transpose(
-                new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", "D ", "  ", "AA" },
-                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", "F ", "  ", "CC" },
-                    { "BB", "BB", "BB", "BB", "BB" } })))
+                new String[][] { {"  ", "BB", "BB", "BB", },
+                                 {"  ", "AA", "D ", "  ", },
+                                 {"  ", "AA", "  ", "  ", },
+                                 {"  ", "CC", "FC", "  ", },
+                                 {"  ", "BB", "BB", "BB", } })))
         .addShape(
             MS_RIGHT_MID,
             (transpose(
-                new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", " D", "  ", "AA" },
-                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", " F", "  ", "CC" },
-                    { "BB", "BB", "BB", "BB", "BB" } })))
+                new String[][] { {"  ", "BB", "BB", "BB" },
+                                 {"  ", "AA", " D", "AA" },
+                                 {"  ", "AA", "  ", "AA" },
+                                 {"  ", "CC", "CF", "CC" },
+                                 {"  ", "BB", "BB", "BB" } })))
         .addShape(
             MS_END,
             (transpose(
-                new String[][] { { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" },
-                    { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" } })))
+                new String[][] { { "B", "B", "B", "B", "B" },
+                                 { "B", "B", "B", "B", "B" },
+                                 { "B", "B", "B", "B", "B" },
+                                 { "B", "B", "B", "B", "B" },
+                                 { "B", "B", "B", "B", "B" } })))
         .addShape(
             STRUCTURE_PIECE_MAIN,
             (transpose(
-                new String[][] { { "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" },
-                    { "AAAAAAA", "       ", "D D D D", "       ", "AAAAAAA" },
-                    { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
-                    { "CCCBCCC", "       ", "F F F F", "       ", "CCCECCC" },
-                    { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
+                new String[][] { { "       ", "BBBBBBB", "BBBBBBB", "BBBBBBB", "       " },
+                                 { "BBBBBBB", "       ", "D D D D", "       ", "AAAAAAA" },
+                                 { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
+                                 { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
+                                 { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
@@ -324,14 +331,9 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fluid solidifier")
             .addInfo("Controller Block for the Fluid Shaper 2024")
-            .addInfo("Can get speed bonus from coolants")
-            .addInfo("Water: +20%")
-            .addInfo("IC2 Coolant: +50%")
-            .addInfo("Cryotheum: +100%")
-            .addInfo("Super Coolant: +200%")
             .addInfo("Gains 2x mold parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
-            .addInfo(AuthorOmdaCZ + "with help of" + AuthorCloud + "&" + authorBaps)
+            .addInfo(AuthorOmdaCZ + "with help of" + EnumChatFormatting.AQUA + "GDCloud" + "&" + authorBaps)
             .addSeparator()
             .beginVariableStructureBlock(9, 65, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
