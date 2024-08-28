@@ -157,7 +157,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             .addCasingInfoMin("Neutronium Casing", 85, false)
             .addCasingInfoExactly("Active Neutronium Casing", 1, false)
             .addCasingInfoExactly("Naquadah Alloy Frame Box", 1, false)
-            .addCasingInfoExactly("Neutronium Stabilizer Casing",1, false)
+            .addCasingInfoExactly("Neutronium Stabilizer Casing", 1, false)
             .addInputBus("Any Neutronium Casing", 1)
             .addOutputBus("Any Neutronium Casing", 1)
             .addEnergyHatch("Any Neutronium Casing", 1)
