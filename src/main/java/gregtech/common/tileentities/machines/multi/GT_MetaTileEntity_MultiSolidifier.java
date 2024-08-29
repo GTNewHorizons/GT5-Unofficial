@@ -34,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -66,6 +67,7 @@ import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -73,8 +75,11 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings10;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -580,9 +585,89 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         return true;
     }
 
+    @NotNull
     @Override
-    public boolean supportsInputSeparation() {
-        return false;
+    protected CheckRecipeResult doCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        // Copied all of this from LPF. Surely it works fine
+        // check crafting input hatches first
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                    IDualInputInventory slot = it.next();
+                    processingLogic.setInputItems(slot.getItemInputs());
+                    processingLogic.setInputFluids(slot.getFluidInputs());
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
+                }
+            }
+        }
+
+        // Logic for GT_MetaTileEntity_Hatch_Solidifier
+        for (GT_MetaTileEntity_Hatch_Input solidifierHatch : mInputHatches) {
+            if (solidifierHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
+                ItemStack mold = ((GT_MetaTileEntity_Hatch_Solidifier) solidifierHatch).getMold();
+                FluidStack fluid = solidifierHatch.getFluid();
+
+                if (mold != null && fluid != null) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    inputItems.add(mold);
+                    inputItems.add(GT_Utility.getIntegratedCircuit(22));
+
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    processingLogic.setInputFluids(fluid);
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
+                }
+            }
+        }
+        processingLogic.clear();
+        processingLogic.setInputFluids(getStoredFluids());
+        // Default logic
+        for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+            if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                continue;
+            }
+            List<ItemStack> inputItems = new ArrayList<>();
+            for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack stored = bus.getStackInSlot(i);
+                if (stored != null) {
+                    inputItems.add(stored);
+                }
+            }
+            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                inputItems.add(getControllerSlot());
+            }
+            processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) {
+                return foundResult;
+            }
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                // Recipe failed in interesting way, so remember that and continue searching
+                result = foundResult;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
     }
 
     @Override
