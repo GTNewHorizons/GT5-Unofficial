@@ -123,9 +123,6 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (getBaseMetaTileEntity().isClientSide()) {
-            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
-        }
         onPostTick(aBaseMetaTileEntity, 31);
     }
 

@@ -1,17 +1,17 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_Vacuum_Furnace;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_ZPM;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Vacuum_Furnace;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_ZPM;
 
 import net.minecraft.item.ItemStack;
 

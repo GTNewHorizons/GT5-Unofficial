@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+@Deprecated
 public enum ConfigCategories {
 
     news,

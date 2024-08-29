@@ -36,14 +36,14 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.3.4:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.6.26-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.6.30-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.0:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.4.8:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.1.2-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.1.3-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.1:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-436-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.26-gtnh:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-442-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.33-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.9:dev")
 
@@ -72,14 +72,14 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
 
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.2.1-GTNH:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.6-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.8-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.15.2-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.2.1:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.49:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.52:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.11.5-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.12-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
@@ -92,7 +92,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
 
-    compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:SC2:2.2.0:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.12:dev'){transitive=false}
@@ -101,9 +101,6 @@ dependencies {
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
-
-    // for GT NEI Ore Plugin
-    compileOnly('com.opencsv:opencsv:4.0')
 
     // For testing iApiary
     //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.7:dev")
@@ -118,7 +115,7 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-launcher')
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.2:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.3:dev")
 
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.4.1:dev')

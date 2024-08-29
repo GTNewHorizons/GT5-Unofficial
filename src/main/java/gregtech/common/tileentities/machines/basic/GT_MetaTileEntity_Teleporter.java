@@ -50,7 +50,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -61,8 +60,8 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.config.machinestats.ConfigTeleporter;
 
 public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     implements IAddGregtechLogo, IAddUIWidgets {
@@ -246,12 +245,10 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {
-        sInterDimensionalTeleportAllowed = aConfig
-            .get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
-        sPassiveEnergyDrain = aConfig
-            .get(ConfigCategories.machineconfig, "Teleporter.PassiveDrain", sPassiveEnergyDrain);
-        sPowerMultiplyer = aConfig.get(ConfigCategories.machineconfig, "Teleporter.PowerMultipler", sPowerMultiplyer);
+    public void onConfigLoad() {
+        sInterDimensionalTeleportAllowed = ConfigTeleporter.interDimensionalTPAllowed;
+        sPassiveEnergyDrain = ConfigTeleporter.passiveEnergyDrain;
+        sPowerMultiplyer = ConfigTeleporter.powerMultiplier;
         sFPowerMultiplyer = sPowerMultiplyer / 100.0;
     }
 

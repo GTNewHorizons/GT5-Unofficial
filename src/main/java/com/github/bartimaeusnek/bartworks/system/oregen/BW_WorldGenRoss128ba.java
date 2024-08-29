@@ -32,21 +32,17 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Tiberium;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.VanadioOxyDravit;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Wittichenit;
-import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
 import static gregtech.api.enums.Materials.Amethyst;
 import static gregtech.api.enums.Materials.Barite;
 import static gregtech.api.enums.Materials.Galena;
-import static gregtech.api.enums.Materials.Helium_3;
 import static gregtech.api.enums.Materials.NaquadahEnriched;
 import static gregtech.api.enums.Materials.Olivine;
-import static gregtech.api.enums.Materials.SaltWater;
 import static gregtech.api.enums.Materials.Scheelite;
 import static gregtech.api.enums.Materials.Sphalerite;
 import static gregtech.api.enums.Materials.Tetrahedrite;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 
@@ -176,41 +172,6 @@ public class BW_WorldGenRoss128ba extends BW_OreLayer {
             Sphalerite,
             Fluorspar,
             Barite);
-    }
-
-    public static void init_undergroundFluids() {
-        String ross128b = StatCollector.translateToLocal("moon.Ross128ba");
-        uo_dimensionList.SetConfigValues(
-            ross128b,
-            ross128b,
-            SaltWater.getFluid(1)
-                .getFluid()
-                .getName(),
-            SaltWater.getFluid(1)
-                .getFluid()
-                .getName(),
-            0,
-            1250,
-            40,
-            5);
-        uo_dimensionList.SetConfigValues(
-            ross128b,
-            ross128b,
-            Helium_3.getGas(1)
-                .getFluid()
-                .getName(),
-            Helium_3.getGas(1)
-                .getFluid()
-                .getName(),
-            0,
-            1250,
-            60,
-            5);
-    }
-
-    @Override
-    public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
-        return aDimensionType == ConfigHandler.ross128BAID;
     }
 
     @Override

@@ -1,22 +1,28 @@
 package pers.gwyog.gtneioreplugin;
 
-import java.io.File;
-
-import net.minecraftforge.common.config.Configuration;
-
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-
+@com.gtnewhorizon.gtnhlib.config.Config(
+    modid = GTNEIOrePlugin.MODID,
+    category = "general",
+    filename = GTNEIOrePlugin.MODID)
 public class Config {
 
-    public final Configuration tConfig;
+    @com.gtnewhorizon.gtnhlib.config.Config.Comment("if true, generate both csv files.")
+    @com.gtnewhorizon.gtnhlib.config.Config.DefaultBoolean(false)
+    @com.gtnewhorizon.gtnhlib.config.Config.RequiresMcRestart
+    public static boolean printCsv;
 
-    public Config(FMLPreInitializationEvent preinit, String cfgname) {
-        File tFile = new File(preinit.getModConfigurationDirectory(), cfgname);
-        tConfig = new Configuration(tFile);
-        tConfig.load();
-    }
+    @com.gtnewhorizon.gtnhlib.config.Config.Comment("the name of the file you want for the ore sheet, it'll appear at the root of your instance.")
+    @com.gtnewhorizon.gtnhlib.config.Config.DefaultString("GTNH-Oresheet.csv")
+    @com.gtnewhorizon.gtnhlib.config.Config.RequiresMcRestart
+    public static String CSVName;
 
-    public void save() {
-        if (tConfig.hasChanged()) tConfig.save();
-    }
+    @com.gtnewhorizon.gtnhlib.config.Config.Comment("the name of the file you want for the small ore sheet, it'll appear at the root of your instance.")
+    @com.gtnewhorizon.gtnhlib.config.Config.DefaultString("GTNH-Small-Ores-Sheet.csv")
+    @com.gtnewhorizon.gtnhlib.config.Config.RequiresMcRestart
+    public static String CSVnameSmall;
+
+    @com.gtnewhorizon.gtnhlib.config.Config.Comment("Maximum number of lines the dimension names tooltip can have before it wraps around.")
+    @com.gtnewhorizon.gtnhlib.config.Config.DefaultInt(11)
+    @com.gtnewhorizon.gtnhlib.config.Config.RequiresMcRestart
+    public static int maxTooltipLines;
 }

@@ -206,70 +206,38 @@ public class EyeOfHarmonyRecipe {
     }
 
     private ItemStack getStoneDustType(String key) {
-
-        switch (key) {
-            case "Ne":
-                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
-            case "ED":
-            case "VA":
-            case "EA":
-                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
-            case "Mo":
-                return getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1);
-            case "De":
-                return getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1);
-            case "Ma":
-                return getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1);
-            case "Ph":
-                return getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1);
-            case "As":
-            case "KB":
-                return getModItem(NewHorizonsCoreMod.ID, "item.AsteroidsStoneDust", 1);
-            case "Ca":
-                return getModItem(NewHorizonsCoreMod.ID, "item.CallistoStoneDust", 1);
-            case "Ce":
-                return getModItem(NewHorizonsCoreMod.ID, "item.CeresStoneDust", 1);
-            case "Eu":
-                return getModItem(NewHorizonsCoreMod.ID, "item.EuropaStoneDust", 1);
-            case "Ga":
-                return getModItem(NewHorizonsCoreMod.ID, "item.GanymedeStoneDust", 1);
-            case "Io":
-                return getModItem(NewHorizonsCoreMod.ID, "item.IoStoneDust", 1);
-            case "Me":
-                return getModItem(NewHorizonsCoreMod.ID, "item.MercuryStoneDust", 1);
-            case "Ve":
-                return getModItem(NewHorizonsCoreMod.ID, "item.VenusStoneDust", 1);
-            case "En":
-                return getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1);
-            case "Mi":
-                return getModItem(NewHorizonsCoreMod.ID, "item.MirandaStoneDust", 1);
-            case "Ob":
-                return getModItem(NewHorizonsCoreMod.ID, "item.OberonStoneDust", 1);
-            case "Ti":
-                return getModItem(NewHorizonsCoreMod.ID, "item.TitanStoneDust", 1);
-            case "Pr":
-                return getModItem(NewHorizonsCoreMod.ID, "item.ProteusStoneDust", 1);
-            case "Tr":
-                return getModItem(NewHorizonsCoreMod.ID, "item.TritonStoneDust", 1);
-            case "Ha":
-                return getModItem(NewHorizonsCoreMod.ID, "item.HaumeaStoneDust", 1);
-            case "MM":
-                return getModItem(NewHorizonsCoreMod.ID, "item.MakeMakeStoneDust", 1);
-            case "Pl":
-                return getModItem(NewHorizonsCoreMod.ID, "item.PlutoStoneDust", 1);
-            case "BE":
-                return getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1);
-            case "BF":
-                return getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1);
-            case "CB":
-                return getModItem(NewHorizonsCoreMod.ID, "item.CentauriAStoneDust", 1);
-            case "TE":
-                return getModItem(NewHorizonsCoreMod.ID, "item.TCetiEStoneDust", 1);
-            case "VB":
-                return getModItem(NewHorizonsCoreMod.ID, "item.VegaBStoneDust", 1);
-            default:
-                return GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
-        }
+        ItemStack placeholder = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
+        return switch (key) {
+            case "Ne" -> GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
+            case "ED", "VA", "EA" -> GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
+            case "Mo" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
+            case "De" -> getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1, placeholder);
+            case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1, placeholder);
+            case "Ph" -> getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, placeholder);
+            case "As", "KB" -> getModItem(NewHorizonsCoreMod.ID, "item.AsteroidsStoneDust", 1, placeholder);
+            case "Ca" -> getModItem(NewHorizonsCoreMod.ID, "item.CallistoStoneDust", 1, placeholder);
+            case "Ce" -> getModItem(NewHorizonsCoreMod.ID, "item.CeresStoneDust", 1, placeholder);
+            case "Eu" -> getModItem(NewHorizonsCoreMod.ID, "item.EuropaStoneDust", 1, placeholder);
+            case "Ga" -> getModItem(NewHorizonsCoreMod.ID, "item.GanymedeStoneDust", 1, placeholder);
+            case "Io" -> getModItem(NewHorizonsCoreMod.ID, "item.IoStoneDust", 1, placeholder);
+            case "Me" -> getModItem(NewHorizonsCoreMod.ID, "item.MercuryStoneDust", 1, placeholder);
+            case "Ve" -> getModItem(NewHorizonsCoreMod.ID, "item.VenusStoneDust", 1, placeholder);
+            case "En" -> getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1, placeholder);
+            case "Mi" -> getModItem(NewHorizonsCoreMod.ID, "item.MirandaStoneDust", 1, placeholder);
+            case "Ob" -> getModItem(NewHorizonsCoreMod.ID, "item.OberonStoneDust", 1, placeholder);
+            case "Ti" -> getModItem(NewHorizonsCoreMod.ID, "item.TitanStoneDust", 1, placeholder);
+            case "Pr" -> getModItem(NewHorizonsCoreMod.ID, "item.ProteusStoneDust", 1, placeholder);
+            case "Tr" -> getModItem(NewHorizonsCoreMod.ID, "item.TritonStoneDust", 1, placeholder);
+            case "Ha" -> getModItem(NewHorizonsCoreMod.ID, "item.HaumeaStoneDust", 1, placeholder);
+            case "MM" -> getModItem(NewHorizonsCoreMod.ID, "item.MakeMakeStoneDust", 1, placeholder);
+            case "Pl" -> getModItem(NewHorizonsCoreMod.ID, "item.PlutoStoneDust", 1, placeholder);
+            case "BE" -> getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1, placeholder);
+            case "BF" -> getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1, placeholder);
+            case "CB" -> getModItem(NewHorizonsCoreMod.ID, "item.CentauriAStoneDust", 1, placeholder);
+            case "TE" -> getModItem(NewHorizonsCoreMod.ID, "item.TCetiEStoneDust", 1, placeholder);
+            case "VB" -> getModItem(NewHorizonsCoreMod.ID, "item.VegaBStoneDust", 1, placeholder);
+            default -> placeholder;
+        };
     }
 
     public EyeOfHarmonyRecipe(final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
