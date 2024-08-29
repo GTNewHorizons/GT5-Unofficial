@@ -54,11 +54,11 @@ dependencies {
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
 
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.8.5:dev')
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.15.0:dev')
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.7.14-GTNH:dev')
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.3.3:dev')
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.7.1:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.9.7:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.8.2-GTNH:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.4.1:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.8.17:dev')
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
 
