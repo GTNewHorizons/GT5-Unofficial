@@ -223,10 +223,10 @@ public class SpaceMiningRecipes {
         addRecipesToDrones(
                 null,
                 null,
-                new int[] { 1500, 1500, 1500, 1500, 750, 750, 1000, 500, 500, 400, 100 },
+                new int[] { 1500, 1500, 1500, 1500, 750, 750, 750, 1000, 500, 500, 400, 100 },
                 new Materials[] { Materials.Ruby, Materials.Emerald, Materials.Sapphire, Materials.GreenSapphire,
-                        Materials.Diamond, Materials.Opal, Materials.Topaz, Materials.BlueTopaz, Materials.Bauxite,
-                        Materials.Vinteum, Materials.NetherStar },
+                        Materials.Diamond, Materials.Opal, Materials.Amethyst, Materials.Topaz, Materials.BlueTopaz,
+                        Materials.Bauxite, Materials.Vinteum, Materials.NetherStar },
                 OrePrefixes.oreEndstone,
                 30,
                 160,
