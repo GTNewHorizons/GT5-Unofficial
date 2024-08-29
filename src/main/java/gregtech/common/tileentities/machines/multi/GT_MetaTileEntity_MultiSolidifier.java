@@ -11,7 +11,6 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_Values.AuthorCloud;
 import static gregtech.api.enums.GT_Values.AuthorOmdaCZ;
 import static gregtech.api.enums.GT_Values.authorBaps;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
@@ -20,7 +19,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
-import static gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend.inputItems;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
@@ -29,9 +27,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -39,7 +34,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -52,8 +46,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -71,15 +63,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
@@ -107,36 +96,6 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     private static final int SOLIDIFIER_CASING_INDEX = ((GT_Block_Casings10) GregTech_API.sBlockCasings10)
         .getTextureIndex(3);
     private static final int DTPF_CASING_INDEX = ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(12);
-
-    private GT_MetaTileEntity_MultiSolidifier.CoolingFluid currentCoolingFluid = null;
-    private static final ArrayList<GT_MetaTileEntity_MultiSolidifier.CoolingFluid> COOLING_FLUIDS = new ArrayList<>(
-        Arrays.asList(
-            new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
-            new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.Space, 2, 5000),
-            new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
-
-    private static class CoolingFluid {
-
-        public Materials material;
-        public static int speedMultiplier;
-        // Consumption per second of runtime
-        public long amount;
-
-        public CoolingFluid(Materials material, int speedMultiplier, long amount) {
-            this.material = material;
-            this.speedMultiplier = speedMultiplier;
-            this.amount = amount;
-        }
-
-        public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
-            // FUCK THIS FUCK THIS FUCK THIS
-            if (stack == null) {
-                return material.getMolten(amount);
-            }
-            return stack;
-        }
-    }
 
     private final Map<Integer, Pair<Block, Integer>> tieredFluidSolidifierCasings = new HashMap<>() {
 
@@ -173,39 +132,29 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         .addShape(
             MS_LEFT_MID,
             (transpose(
-                new String[][] { {"  ", "BB", "BB", "BB", },
-                                 {"  ", "AA", "D ", "  ", },
-                                 {"  ", "AA", "  ", "  ", },
-                                 {"  ", "CC", "FC", "  ", },
-                                 {"  ", "BB", "BB", "BB", } })))
+                new String[][] { { "  ", "BB", "BB", "BB", }, { "  ", "AA", "D ", "  ", }, { "  ", "AA", "  ", "  ", },
+                    { "  ", "CC", "FC", "  ", }, { "  ", "BB", "BB", "BB", } })))
         .addShape(
             MS_RIGHT_MID,
             (transpose(
-                new String[][] { {"  ", "BB", "BB", "BB" },
-                                 {"  ", "AA", " D", "AA" },
-                                 {"  ", "AA", "  ", "AA" },
-                                 {"  ", "CC", "CF", "CC" },
-                                 {"  ", "BB", "BB", "BB" } })))
+                new String[][] { { "  ", "BB", "BB", "BB" }, { "  ", "AA", " D", "AA" }, { "  ", "AA", "  ", "AA" },
+                    { "  ", "CC", "CF", "CC" }, { "  ", "BB", "BB", "BB" } })))
         .addShape(
             MS_END,
             (transpose(
-                new String[][] { { "B", "B", "B", "B", "B" },
-                                 { "B", "B", "B", "B", "B" },
-                                 { "B", "B", "B", "B", "B" },
-                                 { "B", "B", "B", "B", "B" },
-                                 { "B", "B", "B", "B", "B" } })))
+                new String[][] { { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" },
+                    { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" } })))
         .addShape(
             STRUCTURE_PIECE_MAIN,
             (transpose(
                 new String[][] { { "       ", "BBBBBBB", "BBBBBBB", "BBBBBBB", "       " },
-                                 { "BBBBBBB", "       ", "D D D D", "       ", "AAAAAAA" },
-                                 { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
-                                 { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
-                                 { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
+                    { "BBBBBBB", "       ", "D D D D", "       ", "AAAAAAA" },
+                    { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
+                    { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
+                    { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
-
             GT_HatchElementBuilder.<GT_MetaTileEntity_MultiSolidifier>builder()
                 .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch)
                 .adder(GT_MetaTileEntity_MultiSolidifier::addToSolidifierList)
@@ -226,9 +175,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                                 GT_MetaTileEntity_MultiSolidifier::setCasingTier,
                                 GT_MetaTileEntity_MultiSolidifier::getCasingTier)))))
         .addElement(
-            'C', /*
-                  * ofBlock(GregTech_API.sBlockCasings10
-                  */
+            'C',
             onElementPass(
                 x -> x.pipeCasingAmount++,
                 ofBlocksTiered(
@@ -242,17 +189,6 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                     GT_MetaTileEntity_MultiSolidifier::getPipeCasingTier)))
         .addElement(
             'F',
-            /*
-             * ofBlocksTiered(
-             * (block, meta) -> block == ModBlocks.blockCustomPipeGearCasings ? meta : null,
-             * ImmutableList.of(
-             * Pair.of(ModBlocks.blockCustomPipeGearCasings, 8),
-             * Pair.of(ModBlocks.blockCustomPipeGearCasings, 13),
-             * Pair.of(ModBlocks.blockCustomPipeGearCasings, 15)),
-             * -1,
-             * (t, meta) -> t.pipeMeta = meta,
-             * t -> t.pipeMeta))
-             */
             TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
                 ? ofChain(ofBlock(Block.getBlockFromName("TConstruct:SearedBlock"), 0))
                 : ofChain(ofBlock(Blocks.cauldron, 0)))
@@ -329,9 +265,11 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fluid solidifier")
+        tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper 2024")
-            .addInfo("Gains 2x mold parallels per width expansion")
+            .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
+            .addInfo("Has 8 parallels by default")
+            .addInfo("Gains an additional 8 parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
             .addInfo(AuthorOmdaCZ + "with help of" + EnumChatFormatting.AQUA + "GDCloud" + "&" + authorBaps)
             .addSeparator()
@@ -454,41 +392,33 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         return true;
     }
 
-    public CoolingFluid findCoolingFluid() {
-        // Loop over all hatches and find the first match with a valid fluid
-        for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
-            Optional<CoolingFluid> fluid = COOLING_FLUIDS.stream()
-                .filter(candidate -> drain(hatch, candidate.getStack(), false))
-                .findFirst();
-            if (fluid.isPresent()) return fluid.get();
-        }
-        return null;
-    }
-
-    int moldParallel = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            @Override
             @NotNull
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-
-                ItemStack aMold = recipe.getRepresentativeInput(0);
-                    for (ItemStack aItem : inputItems) {
-                        if (aItem != null && aItem.isItemEqual(aMold)) {
-                            moldParallel += aItem.stackSize;
-                        }
-                    }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                setSpeedBonus(speedup);
+                return super.validateRecipe(recipe);
             }
-        }.setSpeedBonus(1F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
+
+    private float speedup = 1;
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aTick % 20 == 0) {
+            if (this.maxProgresstime() != 0) {
+                speedup += 0.2F;
+            } else speedup = 1;
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     public int getMaxParallelRecipes() {
-        return (moldParallel * (mWidth + 4) * 2);
+        return 8 + (mWidth * 8);
     }
 
     private void setCasingTier(int tier) {
@@ -616,11 +546,6 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     @Override
     public int getRecipeCatalystPriority() {
         return -10;
-    }
-
-    @Override
-    public boolean supportsMachineModeSwitch() {
-        return false;
     }
 
     @Override
