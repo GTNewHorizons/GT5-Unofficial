@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.TreeFarmer_Structural;
+import static gregtech.api.enums.MetaTileEntityIDs.TreeFarmer_Structural;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
