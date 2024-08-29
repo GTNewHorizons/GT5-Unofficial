@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_IV;
@@ -11,6 +9,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.List;
 
