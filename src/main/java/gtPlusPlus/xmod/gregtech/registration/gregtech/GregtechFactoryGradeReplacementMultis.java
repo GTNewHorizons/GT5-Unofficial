@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.FusionComputer_UV2;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.FusionComputer_UV3;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Cryogenic_Freezer;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Machine_Adv_BlastFurnace;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Machine_Adv_DistillationTower;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Machine_Adv_ImplosionCompressor;
+import static gregtech.api.enums.MetaTileEntityIDs.FusionComputer_UV2;
+import static gregtech.api.enums.MetaTileEntityIDs.FusionComputer_UV3;
+import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Cryogenic_Freezer;
+import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_BlastFurnace;
+import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_DistillationTower;
+import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_ImplosionCompressor;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

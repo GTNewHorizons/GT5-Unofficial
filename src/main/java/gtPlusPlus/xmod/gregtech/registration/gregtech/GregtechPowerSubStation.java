@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Battery_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Battery_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Battery_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Battery_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.PowerSubStation;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Battery_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Battery_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.PowerSubStation;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;

@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.AlgaeFarm_Controller;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Bus_Catalysts;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ChemicalPlant_Controller;
+import static gregtech.api.enums.MetaTileEntityIDs.AlgaeFarm_Controller;
+import static gregtech.api.enums.MetaTileEntityIDs.Bus_Catalysts;
+import static gregtech.api.enums.MetaTileEntityIDs.ChemicalPlant_Controller;
 
 import gregtech.api.GregTech_API;
 import gtPlusPlus.api.objects.Logger;

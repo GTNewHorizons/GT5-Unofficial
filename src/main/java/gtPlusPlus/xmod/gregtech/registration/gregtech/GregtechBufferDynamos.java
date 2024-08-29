@@ -1,16 +1,16 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_ZPM;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_MAX;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_ULV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Buffer_Dynamo_ZPM;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
