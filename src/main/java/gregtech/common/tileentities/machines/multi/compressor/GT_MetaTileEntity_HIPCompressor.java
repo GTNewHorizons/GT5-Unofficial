@@ -265,7 +265,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     + " the EU/t normally required")
             .addInfo(
                 "Gains " + EnumChatFormatting.RED
-                    + "8"
+                    + "4"
                     + EnumChatFormatting.GRAY
                     + "/"
                     + EnumChatFormatting.BLUE
@@ -430,7 +430,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
     public int getMaxParallelRecipes() {
         return cooling ? GT_Utility.getTier(this.getMaxInputVoltage())
-            : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+            : (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
