@@ -69,6 +69,7 @@ import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.values;
 import static gregtech.api.enums.OrePrefixes.wireFine;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -123,6 +124,7 @@ import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.cls.CLSCompat;
 import com.google.common.collect.HashBiMap;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
@@ -1875,15 +1877,22 @@ public class WerkstoffLoader {
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
-            if (Forestry.isModLoaded()) WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
+            if (Forestry.isModLoaded()) {
+                BW_MetaGenerated_Items capsuleClass = new BW_MetaGenerated_Items(capsule);
+                API.hideItem(new ItemStack(capsuleClass, 1, WILDCARD));
+                WerkstoffLoader.items.put(capsule, capsuleClass);
+            }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
             WerkstoffLoader.items.put(cellPlasma, new BW_MetaGenerated_Items(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
             WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BW_MetaGenerated_Items(OrePrefixes.cellMolten));
-            if (Forestry.isModLoaded()) WerkstoffLoader.items
-                .put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
+            if (Forestry.isModLoaded()) {
+                BW_MetaGenerated_Items capsuleMoltenClass = new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten);
+                API.hideItem(new ItemStack(capsuleMoltenClass, 1, WILDCARD));
+                WerkstoffLoader.items.put(OrePrefixes.capsuleMolten, capsuleMoltenClass);
+            }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
             WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
