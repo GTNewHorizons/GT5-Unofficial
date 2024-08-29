@@ -52,11 +52,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -184,7 +184,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.BLACKHOLE.mode." + machineMode);
+        return StatCollector.translateToLocal("GT5U.COMPRESSION_TIER.mode." + machineMode);
     }
 
     @Override
@@ -275,7 +275,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                     + "doubled"
                     + EnumChatFormatting.GRAY
                     + " if it becomes unstable")
-            .addInfo("400% faster than singleblock machines of the same voltage")
+            .addInfo("400% faster than singleblock machines of the same voltage when black hole is open")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
             .addInfo(
@@ -425,10 +425,10 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                 // If recipe needs a black hole and one is not open, just wait
                 // If the recipe doesn't require black hole, incur a 0.5x speed penalty
                 // If recipe doesn't require black hole but one is open, give 5x speed bonus
-                if (recipe.mSpecialValue > 0) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 1) > 0) {
                     if (!blackholeOn) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 } else {
-                    if (blackHoleStability <= 0) setSpeedBonus(2F);
+                    if (blackHoleStability <= 0) setSpeedBonus(5F);
                     else if (blackholeOn) setSpeedBonus(0.2F);
                 }
                 return super.validateRecipe(recipe);
@@ -437,7 +437,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
                 // If recipe needs a black hole and one is active but unstable, continuously void items
-                if (blackHoleStability <= 0 && recipe.mSpecialValue > 0) {
+                if (blackHoleStability <= 0 && recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 1) > 0) {
                     return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;

@@ -144,10 +144,10 @@ public class GT_RecipeConstants {
         .create(Integer.class, "qft_focus_tier");
 
     /**
-     * Tier of black hole required for compression
+     * Tier of advanced compression (HIP/black hole)
      */
-    public static final RecipeMetadataKey<Integer> BLACKHOLE = SimpleRecipeMetadataKey
-        .create(Integer.class, "blackhole");
+    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "compression");
 
     /**
      * Dissolution Tank Ratio.
@@ -683,7 +683,7 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(BLACKHOLE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COMPRESSION_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);

@@ -47,6 +47,7 @@ import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -384,7 +385,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     setEuModifier(1.1F);
                 }
 
-                if (recipe.mSpecialValue > 0) doingHIP = true;
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 1) > 0) doingHIP = true;
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
