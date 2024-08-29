@@ -1880,7 +1880,7 @@ public class WerkstoffLoader {
             if (Forestry.isModLoaded()) {
                 BW_MetaGenerated_Items capsuleClass = new BW_MetaGenerated_Items(capsule);
                 API.hideItem(new ItemStack(capsuleClass, 1, WILDCARD));
-                WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
+                WerkstoffLoader.items.put(capsule, capsuleClass);
             }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
@@ -1891,8 +1891,7 @@ public class WerkstoffLoader {
             if (Forestry.isModLoaded()) {
                 BW_MetaGenerated_Items capsuleMoltenClass = new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten);
                 API.hideItem(new ItemStack(capsuleMoltenClass, 1, WILDCARD));
-                WerkstoffLoader.items
-                    .put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
+                WerkstoffLoader.items.put(OrePrefixes.capsuleMolten, capsuleMoltenClass);
             }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
