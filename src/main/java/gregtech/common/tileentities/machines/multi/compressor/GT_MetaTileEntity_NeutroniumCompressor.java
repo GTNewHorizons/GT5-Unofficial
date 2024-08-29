@@ -160,10 +160,11 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             .addSeparator()
             .beginStructureBlock(11, 11, 11, true)
             .addController("Front Center")
-            .addCasingInfoMin("Neutronium Casing", 85, false)
-            .addCasingInfoExactly("Active Neutronium Casing", 1, false)
-            .addCasingInfoExactly("Naquadah Alloy Frame Box", 1, false)
-            .addCasingInfoExactly("Neutronium Stabilizer Casing", 1, false)
+            .addCasingInfoMin("Neutronium Casing", 220, false)
+            .addCasingInfoExactly("Active Neutronium Casing", 63, false)
+            .addCasingInfoExactly("Any Glass", 25, false)
+            .addCasingInfoExactly("Naquadah Alloy Frame Box", 108, false)
+            .addCasingInfoExactly("Neutronium Stabilization Casing", 67, false)
             .addInputBus("Any Neutronium Casing", 1)
             .addOutputBus("Any Neutronium Casing", 1)
             .addEnergyHatch("Any Neutronium Casing", 1)
@@ -192,13 +193,8 @@ public class GT_MetaTileEntity_NeutroniumCompressor
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) return false;
-        if (mCasingAmount < 0) return false;
-
-        // All checks passed!
-        return true;
+        return (checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) && mCasingAmount >= 220;
     }
 
     @Override

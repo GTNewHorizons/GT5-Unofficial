@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.common.blocks.GT_Block_Casings10;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,8 +54,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.blocks.GT_Block_Casings2;
-import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.GT_Block_Casings10;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -234,8 +232,16 @@ public class GT_MetaTileEntity_HIPCompressor extends
             .addInfo("Read the current heat using Heat Sensor Hatches")
             .addSeparator()
             .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
-            .addInfo("Unit heats by " + EnumChatFormatting.GREEN + "(5% x 0.90 ^ (Coil Tier - 1))" + EnumChatFormatting.GRAY + " every second while running")
-            .addInfo("Unit cools by " + EnumChatFormatting.GREEN + "2%" + EnumChatFormatting.GRAY + " every second while not running")
+            .addInfo(
+                "Unit heats by " + EnumChatFormatting.GREEN
+                    + "(5% x 0.90 ^ (Coil Tier - 1))"
+                    + EnumChatFormatting.GRAY
+                    + " every second while running")
+            .addInfo(
+                "Unit cools by " + EnumChatFormatting.GREEN
+                    + "2%"
+                    + EnumChatFormatting.GRAY
+                    + " every second while not running")
             .addSeparator()
             .addInfo(
                 "250% " + EnumChatFormatting.RED

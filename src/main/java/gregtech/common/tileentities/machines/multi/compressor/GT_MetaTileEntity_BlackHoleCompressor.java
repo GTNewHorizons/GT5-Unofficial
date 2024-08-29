@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.shutdown.SimpleShutDownReason;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -57,6 +56,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -123,10 +123,9 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         .addElement('D', ofFrame(Materials.NaquadahAlloy))
         .addElement(
             'E',
-            buildHatchAdder(GT_MetaTileEntity_BlackHoleCompressor.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch)
+            buildHatchAdder(GT_MetaTileEntity_BlackHoleCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(11))
-                .dot(2)
+                .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_BlackHoleCompressor::onCasingAdded,
@@ -236,8 +235,16 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             .addInfo("No longer requires heat management to perform perfect compression")
             .addInfo("Can create advanced singularities!")
             .addSeparator()
-            .addInfo("Insert a " + EnumChatFormatting.WHITE + "Black Hole Activation Catalyst" + EnumChatFormatting.GRAY + " to open a black hole")
-            .addInfo("The black hole will begin its life at " + EnumChatFormatting.RED + "100%" + EnumChatFormatting.GRAY + " stability and slowly decay")
+            .addInfo(
+                "Insert a " + EnumChatFormatting.WHITE
+                    + "Black Hole Activation Catalyst"
+                    + EnumChatFormatting.GRAY
+                    + " to open a black hole")
+            .addInfo(
+                "The black hole will begin its life at " + EnumChatFormatting.RED
+                    + "100%"
+                    + EnumChatFormatting.GRAY
+                    + " stability and slowly decay")
             .addSeparator()
             .addInfo("Natural decay takes " + EnumChatFormatting.RED + "100" + EnumChatFormatting.GRAY + " seconds")
             .addInfo("Running recipes in the machine will slow the decay by " + EnumChatFormatting.RED + "25%")
@@ -247,28 +254,56 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + " by inserting spacetime")
-            .addInfo("Every " + EnumChatFormatting.RED + "30" + EnumChatFormatting.GRAY + " seconds saved by spacetime insertion will " + EnumChatFormatting.RED + "double" + EnumChatFormatting.GRAY + " the cost per second!")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "30"
+                    + EnumChatFormatting.GRAY
+                    + " seconds saved by spacetime insertion will "
+                    + EnumChatFormatting.RED
+                    + "double"
+                    + EnumChatFormatting.GRAY
+                    + " the cost per second!")
             .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
-            .addInfo("Insert a " + EnumChatFormatting.WHITE + "Black Hole Deactivation Catalyst" + EnumChatFormatting.GRAY + " to close the black hole")
+            .addInfo(
+                "Insert a " + EnumChatFormatting.WHITE
+                    + "Black Hole Deactivation Catalyst"
+                    + EnumChatFormatting.GRAY
+                    + " to close the black hole")
             .addSeparator()
-            .addInfo("Recipes not utilizing the black hole have their lengths " + EnumChatFormatting.RED + "doubled" + EnumChatFormatting.GRAY + " if it becomes unstable")
+            .addInfo(
+                "Recipes not utilizing the black hole have their lengths " + EnumChatFormatting.RED
+                    + "doubled"
+                    + EnumChatFormatting.GRAY
+                    + " if it becomes unstable")
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
-            .addInfo("Parallels are " + EnumChatFormatting.RED + "doubled" + EnumChatFormatting.GRAY + " when stability is BELOW " + EnumChatFormatting.RED + "50%")
-            .addInfo("Parallels are " + EnumChatFormatting.RED + "quadrupled" + EnumChatFormatting.GRAY + " when stability is BELOW " + EnumChatFormatting.RED + "20%")
+            .addInfo(
+                "Parallels are " + EnumChatFormatting.RED
+                    + "doubled"
+                    + EnumChatFormatting.GRAY
+                    + " when stability is BELOW "
+                    + EnumChatFormatting.RED
+                    + "50%")
+            .addInfo(
+                "Parallels are " + EnumChatFormatting.RED
+                    + "quadrupled"
+                    + EnumChatFormatting.GRAY
+                    + " when stability is BELOW "
+                    + EnumChatFormatting.RED
+                    + "20%")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
-            .addCasingInfoMin("Extreme Density Space-Bending Casing", 85, false)
-            .addCasingInfoExactly("Background Radiation Absorbent Casing", 1000, false)
-            .addCasingInfoExactly("Hawking Radiation Realignment Focus", 32, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addCasingInfoMin("Background Radiation Absorbent Casing", 985, false)
+            .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
+            .addCasingInfoExactly("Hawking Radiation Realignment Focus", 64, false)
+            .addCasingInfoExactly("Naquadah Alloy Frame Box", 144, false)
+            .addInputBus("Behind Laser", 1)
+            .addOutputBus("Behind Laser", 1)
+            .addInputHatch("Behind Laser", 1)
+            .addEnergyHatch("Any Radiation Absorbent Casing", 2)
+            .addMaintenanceHatch("Any Radiation Absorbent Casing", 2)
             .toolTipFinisher("GregTech");
         return tt;
     }
