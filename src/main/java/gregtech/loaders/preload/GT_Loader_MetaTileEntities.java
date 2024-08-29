@@ -191,6 +191,11 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOve
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_BlackHoleCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HIPCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HeatSensor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_IndustrialCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_NeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
@@ -715,7 +720,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER.ID,
                 "multimachine.electromagneticseparator",
                 "Magnetic Flux Exhibitor").getStackForm(1));
-
         ItemList.Machine_Multi_Canner.set(
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
                 .getStackForm(1));
@@ -747,6 +751,27 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Large_Crystalizer.set(
             new GT_MetaTileEntity_Crystalizer(LARGE_CRYSTALIZER.ID, "multimachine.crystalizer", "Large Crystalizer")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialCompressor.set(
+            new GT_MetaTileEntity_IndustrialCompressor(
+                INDUSTRIAL_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.basiccompressor",
+                "Large Electric Compressor").getStackForm(1));
+        ItemList.Machine_Multi_HIPCompressor.set(
+            new GT_MetaTileEntity_HIPCompressor(
+                HIP_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.hipcompressor",
+                "Hot Isostatic Pressurization Unit").getStackForm(1));
+        ItemList.Machine_Multi_NeutroniumCompressor.set(
+            new GT_MetaTileEntity_NeutroniumCompressor(
+                NEUTRONIUM_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.neutroniumcompressor",
+                "Neutronium Compressor").getStackForm(1));
+        ItemList.Machine_Multi_BlackHoleCompressor.set(
+            new GT_MetaTileEntity_BlackHoleCompressor(
+                BLACKHOLE_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.blackholecompressor",
+                "Semi-Stable Black Hole Containment Field").getStackForm(1));
 
         ItemList.Machine_Multi_Autoclave.set(
             new GT_MetaTileEntity_MultiAutoclave(
@@ -12593,6 +12618,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
+        ItemList.Hatch_HeatSensor.set(
+            new GT_MetaTileEntity_HeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7)
+                .getStackForm(1));
         ItemList.Hatch_pHSensor.set(
             new GT_MetaTileEntity_pHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
         ItemList.Hatch_LensHousing.set(
