@@ -305,7 +305,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
     private int mCasingAmount;
 
-    void onCasingAdded() {
+    private void onCasingAdded() {
         mCasingAmount++;
     }
 

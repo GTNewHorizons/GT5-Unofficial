@@ -186,7 +186,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
 
     private int mCasingAmount;
 
-    void onCasingAdded() {
+    private void onCasingAdded() {
         mCasingAmount++;
     }
 
