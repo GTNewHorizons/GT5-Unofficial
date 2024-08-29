@@ -135,7 +135,7 @@ public class RecipeLoader {
 
     public static void addRecipes() {
 
-        if (EnderIO.isModLoaded()) {
+        if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
