@@ -1,21 +1,21 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Air_Intake;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Cryotheum;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Naquadah;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Steam;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_MAX;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Reservoir;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Naquadah;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Steam;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Reservoir;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;

@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_MAX;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_ULV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Energy_Buffer_1by1_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_ZPM;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
