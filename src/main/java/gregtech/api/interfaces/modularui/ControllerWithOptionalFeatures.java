@@ -368,7 +368,8 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     void setStructureUpdateTime(int time);
 
     default ButtonWidget createStructureUpdateButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> { setStructureUpdateTime(1); })
+        Widget button = new ButtonWidget()
+            .setOnClick((clickData, widget) -> { if (getStructureUpdateTime() <= -20) setStructureUpdateTime(1); })
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
