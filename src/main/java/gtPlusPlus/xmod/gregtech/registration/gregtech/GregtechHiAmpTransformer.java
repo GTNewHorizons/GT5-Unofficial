@@ -1,14 +1,14 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_EV_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_HV_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_IV_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_LV_ULV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_LuV_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_MAX_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_MV_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_UV_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Transformer_HA_ZPM_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_EV_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_HV_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_IV_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_LV_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_LuV_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_MAX_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_MV_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_UV_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_ZPM_LuV;
 
 import net.minecraft.item.ItemStack;
 

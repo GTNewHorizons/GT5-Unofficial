@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.COMET_Cyclotron;
+import static gregtech.api.enums.MetaTileEntityIDs.COMET_Cyclotron;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

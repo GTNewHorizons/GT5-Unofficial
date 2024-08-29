@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_LargeSemifluidGenerator;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Generator_SemiFluid_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Generator_SemiFluid_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Generator_SemiFluid_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Generator_SemiFluid_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Generator_SemiFluid_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_LargeSemifluidGenerator;
+import static gregtech.api.enums.MetaTileEntityIDs.Generator_SemiFluid_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Generator_SemiFluid_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Generator_SemiFluid_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Generator_SemiFluid_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Generator_SemiFluid_MV;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_SemiFluidGenerator;

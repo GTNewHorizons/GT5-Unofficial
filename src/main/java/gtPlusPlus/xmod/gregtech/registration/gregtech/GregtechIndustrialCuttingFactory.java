@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_CuttingFactoryController;
+import static gregtech.api.enums.MetaTileEntityIDs.Industrial_CuttingFactoryController;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;

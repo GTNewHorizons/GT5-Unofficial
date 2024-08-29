@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_AlloyBlastSmelter;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Mega_AlloyBlastSmelter;
+import static gregtech.api.enums.MetaTileEntityIDs.Industrial_AlloyBlastSmelter;
+import static gregtech.api.enums.MetaTileEntityIDs.Mega_AlloyBlastSmelter;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
