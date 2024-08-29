@@ -399,7 +399,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
-                setSpeedBonus(speedup);
+                setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
