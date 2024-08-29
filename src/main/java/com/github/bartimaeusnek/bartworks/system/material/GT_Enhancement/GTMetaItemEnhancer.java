@@ -16,6 +16,7 @@ package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import codechicken.nei.api.API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -92,6 +94,9 @@ public class GTMetaItemEnhancer {
             addFluidData(m, GT_ModHandler.getModItem(Forestry.ID, "waxCapsule", 1), capsuls, 1000, i + 1001, true);
             // addFluidData(m, new ItemStack(Items.glass_bottle), bottles, 250, i + 1001, false);
         }
+
+        API.hideItem(new ItemStack(capsuls, 1, WILDCARD));
+        API.hideItem(new ItemStack(moltenCapsuls, 1, WILDCARD));
     }
 
     private static void addFluidData(Materials m, ItemStack container, Item filled, int amount, int it, boolean empty) {
