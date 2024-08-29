@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_IV;
@@ -11,6 +10,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Buffer_Dynamo_ZPM;
+import static gtPlusPlus.core.recipe.common.CI.bitsd;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
