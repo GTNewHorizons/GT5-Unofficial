@@ -210,17 +210,16 @@ public class GT_MetaTileEntity_HIPCompressor extends
         tt.addMachineType("Compressor")
             .addInfo("Controller Block for the Hot Isostatic Pressurization Unit")
             .addInfo("HIP Unit heats up while running")
-            .addInfo("When it reaches maximum heat, it will need to cool down")
             .addInfo(
-                "During the " + EnumChatFormatting.RED
-                    + "heating"
-                    + EnumChatFormatting.GRAY
-                    + " phase, recipes are sped up")
+                "When it reaches maximum heat, it becomes " + EnumChatFormatting.DARK_RED
+                    + EnumChatFormatting.BOLD
+                    + "overheated!")
+            .addInfo("This is only resolved by letting the machine fully cool down")
             .addInfo(
-                "During the " + EnumChatFormatting.BLUE
-                    + "cooling"
+                "When " + EnumChatFormatting.DARK_RED
+                    + "overheated"
                     + EnumChatFormatting.GRAY
-                    + " phase, recipes are slowed down")
+                    + ", recipes are slowed down drastically")
             .addSeparator()
             .addInfo(
                 "Some recipes " + EnumChatFormatting.BOLD
@@ -228,7 +227,11 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + " HIP")
-            .addInfo("If the machine reaches maximum heat during these recipes, recipe will be voided!")
+            .addInfo(
+                "If the machine " + EnumChatFormatting.DARK_RED
+                    + "overheats"
+                    + EnumChatFormatting.GRAY
+                    + " during these recipes, recipe will be voided!")
             .addInfo("Read the current heat using Heat Sensor Hatches")
             .addSeparator()
             .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
