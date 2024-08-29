@@ -343,7 +343,6 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         aNBT.setInteger("catalyzingCounter", catalyzingCounter);
         aNBT.setBoolean("blackholeOn", blackholeOn);
         aNBT.setFloat("blackholeStability", blackHoleStability);
-        aNBT.setBoolean("doingBlackHole", doingBlackHole);
     }
 
     @Override
@@ -353,7 +352,6 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
         if (aNBT.hasKey("blackholeOn")) blackholeOn = aNBT.getBoolean("blackholeOn");
         if (aNBT.hasKey("blackholeStability")) blackHoleStability = aNBT.getFloat("blackholeStability");
-        if (aNBT.hasKey("doingBlackHole")) doingBlackHole = aNBT.getBoolean("doingBlackHole");
     }
 
     @Override
@@ -389,8 +387,6 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
 
-    private boolean doingBlackHole;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -425,13 +421,11 @@ public class GT_MetaTileEntity_BlackHoleCompressor
 
                 // Default speed bonus
                 setSpeedBonus(1F);
-                doingBlackHole = false;
 
                 // If recipe needs a black hole and one is not open, just wait
                 // If the recipe doesn't require black hole, incur a 0.5x speed penalty
                 // If recipe doesn't require black hole but one is open, give 5x speed bonus
                 if (recipe.mSpecialValue > 0) {
-                    doingBlackHole = true;
                     if (!blackholeOn) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 } else {
                     if (blackHoleStability <= 0) setSpeedBonus(2F);
@@ -450,12 +444,6 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)
             .setEuModifier(0.7F);
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (doingBlackHole && !blackholeOn) stopMachine(SimpleShutDownReason.ofCritical("no_black_hole"));
-        return super.onRunningTick(aStack);
     }
 
     @Override
