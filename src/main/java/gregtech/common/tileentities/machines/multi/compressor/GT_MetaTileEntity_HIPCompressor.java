@@ -43,7 +43,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -430,7 +429,8 @@ public class GT_MetaTileEntity_HIPCompressor extends
     }
 
     public int getMaxParallelRecipes() {
-        return cooling ? GT_Utility.getTier(this.getMaxInputVoltage()) : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return cooling ? GT_Utility.getTier(this.getMaxInputVoltage())
+            : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -485,9 +485,9 @@ public class GT_MetaTileEntity_HIPCompressor extends
     public boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_HeatSensor) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return this.sensorHatches.add((GT_MetaTileEntity_HeatSensor) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_HeatSensor sensor) {
+            sensor.updateTexture(aBaseCasingIndex);
+            return this.sensorHatches.add(sensor);
         }
         return false;
     }
