@@ -47,6 +47,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
 import gregtech.common.blocks.GT_Block_FrameBox;
+import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_Item_Machines;
 
 public class GT_StructureUtility {
@@ -478,6 +479,112 @@ public class GT_StructureUtility {
                 if (isCoil) return SKIP;
                 return StructureUtility.survivalPlaceBlock(
                     GregTech_API.sBlockCasings5,
+                    getMetaFromHint(trigger),
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
+            }
+        };
+    }
+
+    /**
+     * Assumes all solenoids are accepted.
+     *
+     * @see #ofSolenoidCoil(BiPredicate, Function)
+     */
+    public static <T> IStructureElement<T> ofSolenoidCoil(BiConsumer<T, Byte> aSolenoidTierSetter,
+        Function<T, Byte> aSolenoidTierGetter) {
+        return ofSolenoidCoil((t, l) -> {
+            aSolenoidTierSetter.accept(t, l);
+            return true;
+        }, aSolenoidTierGetter);
+    }
+
+    /**
+     * Solenoid coil structure element.
+     *
+     * @param aSolenoidTierSetter Notify the controller of this new solenoid. Got called exactly once per solenoid.
+     *                            Might be
+     *                            called less times if structure test fails. If the setter returns false then it assumes
+     *                            the solenoid is rejected.
+     * @param aSolenoidTierGetter Get the solenoid voltage tier. Null means no tier recorded yet.
+     */
+    public static <T> IStructureElement<T> ofSolenoidCoil(BiPredicate<T, Byte> aSolenoidTierSetter,
+        Function<T, Byte> aSolenoidTierGetter) {
+        if (aSolenoidTierSetter == null || aSolenoidTierGetter == null) {
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<>() {
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+
+                if (block != GregTech_API.sSolenoidCoilCasings) return false;
+
+                var coils = ((GT_Cyclotron_Coils) GregTech_API.sSolenoidCoilCasings);
+
+                Byte existingLevel = aSolenoidTierGetter.apply(t);
+                byte newLevel = (byte) (coils.getVoltageTier(world.getBlockMetadata(x, y, z)));
+
+                if (existingLevel == null) {
+                    return aSolenoidTierSetter.test(t, newLevel);
+                } else {
+                    return newLevel == existingLevel;
+                }
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI
+                    .hintParticle(world, x, y, z, GregTech_API.sSolenoidCoilCasings, getMetaFromHint(trigger));
+                return true;
+            }
+
+            private int getMetaFromHint(ItemStack trigger) {
+                return Math.min(Math.max(trigger.stackSize - 1, 0), 10);
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return world.setBlock(x, y, z, GregTech_API.sSolenoidCoilCasings, getMetaFromHint(trigger), 3);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(GregTech_API.sSolenoidCoilCasings, getMetaFromHint(trigger));
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return survivalPlaceBlock(
+                    t,
+                    world,
+                    x,
+                    y,
+                    z,
+                    trigger,
+                    AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                Block block = world.getBlock(x, y, z);
+
+                boolean isCoil = block == GregTech_API.sSolenoidCoilCasings
+                    && world.getBlockMetadata(x, y, z) == getMetaFromHint(trigger);
+
+                if (isCoil) return SKIP;
+
+                return StructureUtility.survivalPlaceBlock(
+                    GregTech_API.sSolenoidCoilCasings,
                     getMetaFromHint(trigger),
                     world,
                     x,

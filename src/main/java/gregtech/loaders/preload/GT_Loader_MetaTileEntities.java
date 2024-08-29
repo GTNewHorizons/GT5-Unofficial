@@ -1048,6 +1048,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Titanium;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_TungstenSteel;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Gas;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_GasAdvanced;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
@@ -1658,6 +1659,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_AUTOCLAVE_CONTROLLER.ID,
                 "multimachine.autoclave",
                 "Industrial Autoclave").getStackForm(1));
+
+        ItemList.LargeFluidExtractor.set(
+            new GT_MetaTileEntity_LargeFluidExtractor(
+                LARGE_FLUID_EXTRACTOR.ID,
+                "multimachine.fluidextractor",
+                "Large Fluid Extractor").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
