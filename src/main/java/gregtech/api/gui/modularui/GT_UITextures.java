@@ -441,6 +441,10 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_slicing");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_cutting");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
 
     /**
      * Can adjust size as needed.
