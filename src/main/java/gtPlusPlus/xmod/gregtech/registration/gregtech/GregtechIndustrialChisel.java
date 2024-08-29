@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_IndustrialAutoChisel;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Chisel_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Chisel_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Chisel_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_IndustrialAutoChisel;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Chisel_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Chisel_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_Chisel_MV;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntity_AutoChisel;

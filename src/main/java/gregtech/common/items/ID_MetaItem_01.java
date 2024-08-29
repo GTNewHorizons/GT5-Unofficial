@@ -152,6 +152,8 @@ public enum ID_MetaItem_01 {
     Tesseract(415),
     GigaChad(416),
     EnergisedTesseract(417),
+    Black_Hole_Opener(418),
+    Black_Hole_Closer(419),
     StableAdhesive(427),
     SuperconductorComposite(428),
     NaquadriaSupersolid(429),

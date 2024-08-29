@@ -1,16 +1,16 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_MAX;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Creator;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Detector;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Creator;
+import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Detector;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;

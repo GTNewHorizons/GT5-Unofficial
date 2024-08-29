@@ -26,20 +26,20 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
         this.opaque = false;
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemical Grade Glass");
-        GT_LanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".0.tooltip",
-            "Able to resist the most extreme chemical conditions.");
-
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".1.name", "Electron-Permeable Neutronium Coated Glass");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Omni-Purpose Infinity Fused Glass");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".3.name", "Non-Photonic Matter Exclusion Glass");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".4.name", "Hawking Radiation Realignment Focus");
 
         ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
         ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));
         ItemList.GlassOmniPurposeInfinityFused.set(new ItemStack(this, 1, 2));
         ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
+        ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
+        ItemList.Hawking_Glass.set(new ItemStack(this, 1, 4));
     }
 
     @Override
@@ -77,6 +77,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
             case 1 -> Textures.BlockIcons.NEUTRONIUM_COATED_UV_RESISTANT_GLASS.getIcon();
             case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
+            case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

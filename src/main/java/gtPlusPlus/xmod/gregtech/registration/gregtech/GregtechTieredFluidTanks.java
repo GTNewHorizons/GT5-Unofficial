@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_FluidTank_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_FluidTank_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_FluidTank_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_FluidTank_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_FluidTank_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_FluidTank_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_FluidTank_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.GT_FluidTank_ULV;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
