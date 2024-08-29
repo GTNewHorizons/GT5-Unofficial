@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Boiler_Advanced_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Boiler_Advanced_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Boiler_Advanced_MV;
 
 import net.minecraft.item.ItemStack;
 

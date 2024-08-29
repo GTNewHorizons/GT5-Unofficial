@@ -1,12 +1,12 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Turbine_Rotor;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Large_Gas_Turbine;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Large_HPSteam_Turbine;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Large_Plasma_Turbine;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Large_SCSteam_Turbine;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Large_Steam_Turbine;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.XL_HeatExchanger;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Turbine_Rotor;
+import static gregtech.api.enums.MetaTileEntityIDs.Large_Gas_Turbine;
+import static gregtech.api.enums.MetaTileEntityIDs.Large_HPSteam_Turbine;
+import static gregtech.api.enums.MetaTileEntityIDs.Large_Plasma_Turbine;
+import static gregtech.api.enums.MetaTileEntityIDs.Large_SCSteam_Turbine;
+import static gregtech.api.enums.MetaTileEntityIDs.Large_Steam_Turbine;
+import static gregtech.api.enums.MetaTileEntityIDs.XL_HeatExchanger;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

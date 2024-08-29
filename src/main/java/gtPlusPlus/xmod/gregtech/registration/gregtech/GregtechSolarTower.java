@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Solar_Tower;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Solar_Tower_Reflector;
+import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Solar_Tower;
+import static gregtech.api.enums.MetaTileEntityIDs.Solar_Tower_Reflector;
 
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;

@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Bus_Milling_Balls;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Flotation_Cell;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_IsaMill;
+import static gregtech.api.enums.MetaTileEntityIDs.Bus_Milling_Balls;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_Flotation_Cell;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_IsaMill;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
