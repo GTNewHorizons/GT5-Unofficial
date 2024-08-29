@@ -270,7 +270,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     + EnumChatFormatting.GRAY
                     + "/"
                     + EnumChatFormatting.BLUE
-                    + "0"
+                    + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
@@ -430,7 +430,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
     }
 
     public int getMaxParallelRecipes() {
-        return cooling ? 1 : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return cooling ? GT_Utility.getTier(this.getMaxInputVoltage()) : (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
