@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -20,6 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -410,6 +412,40 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(8)
+            .addTo(chemicalBathRecipes);
+
+        this.protoHalkoniteRecipes();
+    }
+
+    private void protoHalkoniteRecipes() {
+        this.addProtoHalkonitePartRecipe(OrePrefixes.frameGt, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.ingot, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.plate, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.plateDense, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.stick, 2);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.round, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.bolt, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.screw, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.ring, 4);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.foil, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.gearGtSmall, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.rotor, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.stickLong, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.gearGt, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
+    }
+
+    private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
+
+        final int partFraction = (int) (144 * prefix.mMaterialAmount / M);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(prefix, Materials.Infinity, multiplier))
+            .itemOutputs(GT_OreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (20 * partFraction / 144.0)))
+            .eut(TierEU.RECIPE_UEV)
+            .noOptimize()
             .addTo(chemicalBathRecipes);
     }
 }
