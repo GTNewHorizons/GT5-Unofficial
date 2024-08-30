@@ -5,6 +5,7 @@ import static util.Util.toStandardForm;
 import java.math.BigInteger;
 import java.util.Objects;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -34,6 +35,17 @@ public class ResultInsufficientStartupPowerBigInt implements CheckRecipeResult {
     public String getDisplayString() {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted("GT5U.gui.text.insufficient_startup_power", required));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setString("required", required);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        required = tag.getString("required");
     }
 
     @NotNull

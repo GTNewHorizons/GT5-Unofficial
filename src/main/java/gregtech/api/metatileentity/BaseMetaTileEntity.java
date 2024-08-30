@@ -139,6 +139,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
         try {
+            nbt.setBoolean("mWasShutdown", mWasShutdown);
             nbt.setInteger("mID", mID);
             nbt.setLong("mStoredSteam", mStoredSteam);
             nbt.setLong("mStoredEnergy", mStoredEnergy);
@@ -158,6 +159,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             nbt.setBoolean("mInputDisabled", mInputDisabled);
             nbt.setBoolean("mOutputDisabled", mOutputDisabled);
             nbt.setTag("GT.CraftingComponents", mRecipeStuff);
+            nbt.setString("shutDownReasonID", getLastShutDownReason().getID());
+            nbt.setTag("shutDownReason", getLastShutDownReason().writeToNBT(new NBTTagCompound()));
         } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
@@ -189,6 +192,14 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             mWorkData = aNBT.getByte("mWorkData");
             mFacing = oFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
             mOwnerName = aNBT.getString("mOwnerName");
+            setShutdownStatus(aNBT.getBoolean("mWasShutdown"));
+            String shutDownReasonID = aNBT.getString("shutDownReasonID");
+            if (ShutDownReasonRegistry.isRegistered(shutDownReasonID)) {
+                ShutDownReason reason = ShutDownReasonRegistry.getSampleFromRegistry(shutDownReasonID)
+                    .newInstance();
+                reason.readFromNBT(aNBT.getCompoundTag("shutDownReason"));
+                setShutDownReason(reason);
+            }
             try {
                 mOwnerUuid = UUID.fromString(aNBT.getString("mOwnerUuid"));
             } catch (IllegalArgumentException e) {
@@ -1040,7 +1051,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
-        mWasShutdown = false;
+        setShutdownStatus(false);
     }
 
     @Override
