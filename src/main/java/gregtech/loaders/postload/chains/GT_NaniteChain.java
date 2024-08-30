@@ -167,16 +167,16 @@ public class GT_NaniteChain {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 aUIVTierLens,
-                MaterialsUEVplus.SixPhasedCopper.getBlocks(8),
+                MaterialsUEVplus.SixPhasedCopper.getBlocks(16),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64))
-            .itemOutputs(MaterialsUEVplus.SixPhasedCopper.getNanite(4))
+            .itemOutputs(MaterialsUEVplus.SixPhasedCopper.getNanite(8))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
                 MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000))
             .metadata(NANO_FORGE_TIER, 3)
-            .duration(150 * SECONDS)
+            .duration(100 * SECONDS)
             .eut(2_000_000_000)
             .addTo(nanoForgeRecipes);
 
