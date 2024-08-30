@@ -32,6 +32,9 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
 
     public CircuitComponentPacket contents;
 
+    // Identifier used to identify this hatch uniquely inside a multiblock.
+    public String identifier = null;
+
     protected GT_MetaTileEntity_Hatch_VacuumConveyor(int aID, String aName, String aNameRegional, int aTier,
         String[] descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
@@ -148,6 +151,9 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Contents: ");
+        if (identifier != null) {
+            info.add("Hatch ID: " + identifier);
+        }
         if (contents != null) {
             // TODO: Would be neat to get a gui that displays these in item form I suppose (using some fake items or
             // something)
