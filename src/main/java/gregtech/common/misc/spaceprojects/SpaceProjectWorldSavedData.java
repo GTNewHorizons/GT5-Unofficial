@@ -76,6 +76,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         .registerTypeHierarchyAdapter(ISP_Upgrade.class, new SP_UpgradeAdapter())
         .create();
     private static final Gson GSON_TEAMS = new GsonBuilder().serializeNulls()
+        .registerTypeAdapter(spaceTeams.getClass(), new SpaceTeamAdapter())
         .create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
@@ -83,6 +84,10 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     private static final String SPACE_TEAM_PROJECTS_JSON = "spaceTeamProject.json";
 
     private static final String SPACE_TEAMS_JSON = "spaceTeams.json";
+
+    private static final String SPACE_TEAM_PROJECTS_NAME = "spaceTeamProjects";
+
+    private static final String SPACE_TEAMS_NAME = "spaceTeams";
 
     private static File spaceTeamsFile;
     private static File teamProjectsFile;
@@ -97,7 +102,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
-        if (!aNBT.hasKey("spaceTeamProjects")) {
+        if (!aNBT.hasKey(SPACE_TEAM_PROJECTS_NAME)) {
             // We don't have a key? Try to read from file
             try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
                 spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(reader, spaceTeamProjects.getClass());
@@ -105,15 +110,17 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
                 spaceTeamProjects = null;
             }
         }
+
         if (spaceTeamProjects == null) {
             spaceTeamProjects = new HashMap<>();
         }
-        if (aNBT.hasKey("spaceTeamProjects")) {
+
+        if (aNBT.hasKey(SPACE_TEAM_PROJECTS_NAME)) {
             spaceTeamProjects = GSON_SPACE_PROJECT
-                .fromJson(aNBT.getString("spaceTeamProjects"), spaceTeamProjects.getClass());
+                .fromJson(aNBT.getString(SPACE_TEAM_PROJECTS_NAME), spaceTeamProjects.getClass());
         }
 
-        if (!aNBT.hasKey("spaceTeams")) {
+        if (!aNBT.hasKey(SPACE_TEAMS_NAME)) {
             // We don't have a key? Try to read from file
             try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
                 HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
@@ -124,11 +131,13 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
                 spaceTeams = null;
             }
         }
+
         if (spaceTeams == null) {
             spaceTeams = new HashMap<>();
         }
-        if (aNBT.hasKey("spaceTeams")) {
-            spaceTeams = GSON_TEAMS.fromJson(aNBT.getString("spaceTeam"), spaceTeams.getClass());
+
+        if (aNBT.hasKey(SPACE_TEAMS_NAME)) {
+            spaceTeams = GSON_TEAMS.fromJson(aNBT.getString(SPACE_TEAMS_NAME), spaceTeams.getClass());
         }
 
         if (spaceTeamProjects == null) {
@@ -143,11 +152,11 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         if (spaceTeamProjects != null) {
-            aNBT.setString("spaceTeamProjects", GSON_SPACE_PROJECT.toJson(spaceTeamProjects));
+            aNBT.setString(SPACE_TEAM_PROJECTS_NAME, GSON_SPACE_PROJECT.toJson(spaceTeamProjects));
         }
 
         if (spaceTeams != null) {
-            aNBT.setString("spaceTeams", GSON_TEAMS.toJson(spaceTeams));
+            aNBT.setString(SPACE_TEAMS_NAME, GSON_TEAMS.toJson(spaceTeams));
         }
     }
 
@@ -183,6 +192,37 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     public void onWorldLoad(WorldEvent.Load aEvent) {
         if (!aEvent.world.isRemote && aEvent.world.provider.dimensionId == 0) {
             loadInstance(aEvent.world);
+        }
+    }
+
+    /**
+     * gson doesn't want to cast Strings to UUIDs by default, thus we need a deserializer.
+     *
+     * @author Tctcl
+     */
+    private static class SpaceTeamAdapter
+        implements JsonSerializer<HashMap<UUID, UUID>>, JsonDeserializer<HashMap<UUID, UUID>> {
+
+        @Override
+        public JsonElement serialize(HashMap<UUID, UUID> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonObject = new JsonObject();
+            for (Map.Entry<UUID, UUID> entry : src.entrySet()) {
+                jsonObject.addProperty(entry.getKey().toString(), entry.getValue().toString());
+            }
+            return jsonObject;
+        }
+
+        @Override
+        public HashMap<UUID, UUID> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+            HashMap<UUID, UUID> map = new HashMap<>();
+            JsonObject jsonObject = json.getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                UUID key = UUID.fromString(entry.getKey());
+                UUID value = UUID.fromString(entry.getValue().getAsString());
+                map.put(key, value);
+            }
+            return map;
         }
     }
 
