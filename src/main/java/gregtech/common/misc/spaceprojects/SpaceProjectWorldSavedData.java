@@ -85,9 +85,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     private static final String SPACE_TEAMS_JSON = "spaceTeams.json";
 
-    private static final String SPACE_TEAM_PROJECTS_NAME = "spaceTeamProjects";
+    private static final String SPACE_TEAM_PROJECTS_NBT = "spaceTeamProjects";
 
-    private static final String SPACE_TEAMS_NAME = "spaceTeams";
+    private static final String SPACE_TEAMS_NBT = "spaceTeams";
 
     private static File spaceTeamsFile;
     private static File teamProjectsFile;
@@ -102,7 +102,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
-        if (!aNBT.hasKey(SPACE_TEAM_PROJECTS_NAME)) {
+        if (!aNBT.hasKey(SPACE_TEAM_PROJECTS_NBT)) {
             // We don't have a key? Try to read from file
             try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
                 spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(reader, spaceTeamProjects.getClass());
@@ -115,12 +115,12 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             spaceTeamProjects = new HashMap<>();
         }
 
-        if (aNBT.hasKey(SPACE_TEAM_PROJECTS_NAME)) {
+        if (aNBT.hasKey(SPACE_TEAM_PROJECTS_NBT)) {
             spaceTeamProjects = GSON_SPACE_PROJECT
-                .fromJson(aNBT.getString(SPACE_TEAM_PROJECTS_NAME), spaceTeamProjects.getClass());
+                .fromJson(aNBT.getString(SPACE_TEAM_PROJECTS_NBT), spaceTeamProjects.getClass());
         }
 
-        if (!aNBT.hasKey(SPACE_TEAMS_NAME)) {
+        if (!aNBT.hasKey(SPACE_TEAMS_NBT)) {
             // We don't have a key? Try to read from file
             try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
                 HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
@@ -136,8 +136,8 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             spaceTeams = new HashMap<>();
         }
 
-        if (aNBT.hasKey(SPACE_TEAMS_NAME)) {
-            spaceTeams = GSON_TEAMS.fromJson(aNBT.getString(SPACE_TEAMS_NAME), spaceTeams.getClass());
+        if (aNBT.hasKey(SPACE_TEAMS_NBT)) {
+            spaceTeams = GSON_TEAMS.fromJson(aNBT.getString(SPACE_TEAMS_NBT), spaceTeams.getClass());
         }
 
         if (spaceTeamProjects == null) {
@@ -152,11 +152,11 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         if (spaceTeamProjects != null) {
-            aNBT.setString(SPACE_TEAM_PROJECTS_NAME, GSON_SPACE_PROJECT.toJson(spaceTeamProjects));
+            aNBT.setString(SPACE_TEAM_PROJECTS_NBT, GSON_SPACE_PROJECT.toJson(spaceTeamProjects));
         }
 
         if (spaceTeams != null) {
-            aNBT.setString(SPACE_TEAMS_NAME, GSON_TEAMS.toJson(spaceTeams));
+            aNBT.setString(SPACE_TEAMS_NBT, GSON_TEAMS.toJson(spaceTeams));
         }
     }
 
