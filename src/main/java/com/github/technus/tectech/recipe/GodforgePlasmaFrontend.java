@@ -64,7 +64,10 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
 
         recipeInfo.drawText(trans("152", "Total: ") + GT_Utility.formatNumbers(eut * duration) + " EU");
         recipeInfo.drawText(trans("153", "Usage: ") + GT_Utility.formatNumbers(eut) + " EU/t");
-        recipeInfo.drawText(trans("158", "Time: ") + GT_Utility.formatNumbers(duration / 20) + " secs");
+        recipeInfo.drawText(
+            trans("158", "Time: ") + GT_Utility.formatNumbers(duration / 20d)
+                + " secs"
+                + (duration < 20 ? " (" + duration + " ticks)" : ""));
         recipeInfo.drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmamultistep") + ": " + multistep);
         recipeInfo
             .drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmarecipetier") + ": " + requiredUpgrade);
