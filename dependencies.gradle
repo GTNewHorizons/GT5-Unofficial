@@ -70,6 +70,7 @@ dependencies {
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.26:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.7.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.2.11:dev') { transitive = false }
 
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.2.1-GTNH:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.8-GTNH:dev")
