@@ -1,0 +1,16 @@
+[
+{
+  "modid": "${modId}",
+  "name": "${modName}",
+  "description": "To locate ores deep underground.",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
+  "url": "https://github.com/GTNewHorizons/GTScannerMod",
+  "updateUrl": "",
+  "authorList": ["Ethryan, GTNewHorizons Team, bartimaeusnek, richardhendricks, mitchej123"],
+  "credits": "Detrav",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
