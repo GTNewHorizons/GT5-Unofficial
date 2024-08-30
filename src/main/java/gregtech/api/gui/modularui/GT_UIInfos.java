@@ -7,6 +7,7 @@ import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.UIInfos;
@@ -98,7 +99,7 @@ public class GT_UIInfos {
      * Opens TileEntity UI, created by {@link ITileWithModularUI#createWindow}.
      */
     public static void openGTTileEntityUI(IHasWorldObjectAndCoords aTileEntity, EntityPlayer aPlayer) {
-        if (aTileEntity.isClientSide()) return;
+        if (aTileEntity.isClientSide() || aPlayer instanceof FakePlayer) return;
         GTTileEntityDefaultUI.open(
             aPlayer,
             aTileEntity.getWorld(),

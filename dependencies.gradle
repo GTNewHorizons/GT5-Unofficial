@@ -36,15 +36,16 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.3.4:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.6.26-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.6.30-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.0:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.4.3:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.4.8:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.1.2-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.1.3-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.1:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-433-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.24-gtnh:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-442-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.33-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
+    api("com.github.GTNewHorizons:Postea:1.0.9:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.10.1:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.4.2-GTNH:dev")
@@ -55,7 +56,6 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
 
-    implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.3.3:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.51:dev")
     // this is required because forestry is an hidden hard dep, revert this if you fixed the hidden hard dep
     implementation("com.github.GTNewHorizons:ForestryMC:4.9.7:dev") { transitive = false }
@@ -70,29 +70,30 @@ dependencies {
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.26:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.7.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.2.11:dev') { transitive = false }
 
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.2.1-GTNH:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.6-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.8-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.15.2-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.2.1:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.48:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.52:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.11.5-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.12-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.20-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.21-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.6.22-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.6.2:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.1:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
 
-    compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:SC2:2.2.0:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.12:dev'){transitive=false}
@@ -115,10 +116,10 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-launcher')
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.2:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.3:dev")
 
     // For testing
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.4.0:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.4.1:dev')
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))

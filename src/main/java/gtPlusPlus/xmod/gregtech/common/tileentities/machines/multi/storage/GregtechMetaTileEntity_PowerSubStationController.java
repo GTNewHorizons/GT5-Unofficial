@@ -517,7 +517,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         aNBT.setLong("mTotalEnergyAdded", this.mTotalEnergyAdded);
         aNBT.setLong("mTotalEnergyLost", this.mTotalEnergyLost);
         aNBT.setLong("mTotalEnergyConsumed", this.mTotalEnergyConsumed);
-        aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
         aNBT.setBoolean("mIsOutputtingPower", this.mIsOutputtingPower);
         aNBT.setLong("mBatteryCapacity", this.mBatteryCapacity);
         super.saveNBTData(aNBT);
@@ -543,7 +542,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         this.mTotalEnergyAdded = aNBT.getLong("mTotalEnergyAdded");
         this.mTotalEnergyLost = aNBT.getLong("mTotalEnergyLost");
         this.mTotalEnergyConsumed = aNBT.getLong("mTotalEnergyConsumed");
-        this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
 
         this.mIsOutputtingPower = aNBT.getBoolean("mIsOutputtingPower");
 

@@ -78,7 +78,6 @@ import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeCategory;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
@@ -90,6 +89,7 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.SeekingOggCodec;
+import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
@@ -618,7 +618,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         mPollutionRenderer.preLoad();
 
-        mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+        mPreference = new GT_ClientPreference();
 
         Materials.initClient();
     }
@@ -648,24 +648,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @Override
     public void onPostLoad() {
         super.onPostLoad();
-
-        if (GregTech_API.sClientDataFile.get("debug", "PrintMetaIDs", false)) {
-            try {
-                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    try {
-                        if (GregTech_API.METATILEENTITIES[i] != null) {
-                            GregTech_API.METATILEENTITIES[i].getStackForm(1L)
-                                .getTooltip(null, true);
-                            GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
-                    }
-                }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
-        }
 
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
@@ -771,37 +753,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
                 if (!Minecraft.getMinecraft()
                     .isSingleplayer()) {
-                    // Check for more IC2 recipes to also catch MineTweaker additions
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getMaceratorRecipeList(),
-                        RecipeMaps.maceratorRecipes,
-                        true,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getCompressorRecipeList(),
-                        RecipeMaps.compressorRecipes,
-                        true,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getExtractorRecipeList(),
-                        RecipeMaps.extractorRecipes,
-                        true,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getOreWashingRecipeList(),
-                        RecipeMaps.oreWasherRecipes,
-                        false,
-                        true,
-                        true);
-                    GT_ModHandler.addIC2RecipesToGT(
-                        GT_ModHandler.getThermalCentrifugeRecipeList(),
-                        RecipeMaps.thermalCentrifugeRecipes,
-                        true,
-                        true,
-                        true);
+                    GT_ModHandler.removeAllIC2Recipes();
                 }
             }
             afterSomeTime++;
@@ -824,9 +776,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
         if (GregTech.ID.equals(e.modID) && "client".equals(e.configID)) {
-            GregTech_API.sClientDataFile.mConfig.save();
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
-            mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+            mPreference = new GT_ClientPreference();
             GT_PreLoad.loadClientConfig();
             if (e.isWorldRunning) GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
         }
@@ -842,8 +793,16 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
                 || aTileEntity instanceof IWrenchable
-                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated()))
-                drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
+                || (aBlock instanceof GT_Block_FrameBox)) drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+            return;
+        }
+
+        // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
+        if (aTileEntity == null && aBlock instanceof GT_Block_FrameBox) {
+            if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
+                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
+            }
             return;
         }
 
