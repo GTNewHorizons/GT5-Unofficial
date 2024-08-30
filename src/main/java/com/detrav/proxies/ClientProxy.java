@@ -29,12 +29,12 @@ public class ClientProxy extends CommonProxy {
     public void openProspectorGUI() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         player.openGui(
-                DetravScannerMod.instance,
-                DetravScannerGUI.GUI_ID,
-                player.worldObj,
-                (int) player.posX,
-                (int) player.posY,
-                (int) player.posZ);
+            DetravScannerMod.instance,
+            DetravScannerGUI.GUI_ID,
+            player.worldObj,
+            (int) player.posX,
+            (int) player.posY,
+            (int) player.posZ);
     }
 
     @Override

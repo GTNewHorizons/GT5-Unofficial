@@ -21,9 +21,9 @@ import gregtech.GT_Version;
 import gregtech.api.GregTech_API;
 
 @Mod(
-        modid = DetravScannerMod.MODID,
-        version = GT_Version.VERSION,
-        dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
+    modid = DetravScannerMod.MODID,
+    version = GT_Version.VERSION,
+    dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
 public class DetravScannerMod {
 
     public static final String MODID = "detravscannermod";

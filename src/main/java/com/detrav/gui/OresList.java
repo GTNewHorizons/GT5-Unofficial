@@ -22,7 +22,7 @@ class OresList extends GuiScrollingList {
     private int selected = -1;
 
     public OresList(GuiScreen parent, int width, int height, int top, int bottom, int left, int entryHeight,
-            HashMap<String, Integer> aOres, BiConsumer<String, Boolean> onSelected) {
+        HashMap<String, Integer> aOres, BiConsumer<String, Boolean> onSelected) {
         super(parent.mc, width, height, top, bottom, left, entryHeight);
         this.parent = parent;
         this.onSelected = onSelected;
@@ -57,10 +57,10 @@ class OresList extends GuiScrollingList {
     @Override
     protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
         parent.drawString(
-                parent.mc.fontRenderer,
-                parent.mc.fontRenderer.trimStringToWidth(keys.get(slotIdx), listWidth - 10),
-                this.left + 3,
-                slotTop - 1,
-                ores.getOrDefault(keys.get(slotIdx), 0x7d7b76));
+            parent.mc.fontRenderer,
+            parent.mc.fontRenderer.trimStringToWidth(keys.get(slotIdx), listWidth - 10),
+            this.left + 3,
+            slotTop - 1,
+            ores.getOrDefault(keys.get(slotIdx), 0x7d7b76));
     }
 }

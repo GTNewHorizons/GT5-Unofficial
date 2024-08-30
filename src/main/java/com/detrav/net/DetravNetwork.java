@@ -38,7 +38,12 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
         ByteBuf buf = Unpooled.buffer();
         buf.writeByte(msg.getPacketID());
         msg.encode(new ByteBufOutputStream(buf));
-        out.add(new FMLProxyPacket(buf, ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
+        out.add(
+            new FMLProxyPacket(
+                buf,
+                ctx.channel()
+                    .attr(NetworkRegistry.FML_CHANNEL)
+                    .get()));
     }
 
     @Override
@@ -49,16 +54,22 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     }
 
     public void sendToPlayer(DetravPacket aPacket, EntityPlayerMP aPlayer) {
-        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                .set(FMLOutboundHandler.OutboundTarget.PLAYER);
-        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);
-        this.mChannel.get(Side.SERVER).writeAndFlush(aPacket);
+        this.mChannel.get(Side.SERVER)
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.PLAYER);
+        this.mChannel.get(Side.SERVER)
+            .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
+            .set(aPlayer);
+        this.mChannel.get(Side.SERVER)
+            .writeAndFlush(aPacket);
     }
 
     public void sendToServer(DetravPacket aPacket) {
-        this.mChannel.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-        this.mChannel.get(Side.CLIENT).writeAndFlush(aPacket);
+        this.mChannel.get(Side.CLIENT)
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+        this.mChannel.get(Side.CLIENT)
+            .writeAndFlush(aPacket);
     }
 
     @ChannelHandler.Sharable
