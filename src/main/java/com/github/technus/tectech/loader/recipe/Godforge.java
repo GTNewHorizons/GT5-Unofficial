@@ -598,7 +598,7 @@ public class Godforge implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                     ItemList.SuperconductorComposite.get(32),
                     MyMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L), ItemList.Robot_Arm_UIV.get(64L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 8L), ItemList.Robot_Arm_UIV.get(64L),
                     ItemList.Field_Generator_UEV.get(64L) });
 
             godforgeUpgradeMats.put(
@@ -606,7 +606,7 @@ public class Godforge implements Runnable {
                 new ItemStack[] { GregtechItemList.Mega_AlloyBlastSmelter.get(16L),
                     ItemList.Casing_Coil_Hypogen.get(64L),
                     CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32L),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
                     ItemRefer.Field_Restriction_Coil_T3.get(48), ItemList.Robot_Arm_UIV.get(64L),
                     ItemList.Field_Generator_UEV.get(64L) });
 
@@ -616,7 +616,7 @@ public class Godforge implements Runnable {
                     GregtechItemList.FusionComputer_UV3.get(8), GregtechItemList.Casing_Fusion_Internal2.get(64),
                     getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3), ALLOY.QUANTUM.getPlateDense(48),
                     ELEMENT.STANDALONE.RHUGNOR.getGear(32),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 64L), ItemList.Robot_Arm_UIV.get(64L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
                     ItemList.Field_Generator_UEV.get(64L) });
 
             godforgeUpgradeMats.put(
@@ -626,7 +626,7 @@ public class Godforge implements Runnable {
                     CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
                     ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4), ELEMENT.STANDALONE.RHUGNOR.getGear(64),
                     GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 64L), ItemList.Robot_Arm_UIV.get(64L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L), ItemList.Robot_Arm_UIV.get(64L),
                     ItemList.Field_Generator_UEV.get(64L) });
 
             godforgeUpgradeMats.put(

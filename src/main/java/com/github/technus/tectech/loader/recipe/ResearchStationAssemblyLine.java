@@ -2991,7 +2991,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UMV,
                 64,
                 new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(4), ItemList.ZPM4.get(2),
-                    ItemList.Casing_Dim_Bridge.get(64), getModItem(EternalSingularity.ID, "eternal_singularity", 64L),
+                    ItemList.Casing_Dim_Bridge.get(64), getModItem(EternalSingularity.ID, "eternal_singularity", 32L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 16),
