@@ -9,6 +9,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -69,5 +72,50 @@ public class PlasmaForgeRecipes implements Runnable {
                 .metadata(COIL_HEAT, 12600)
                 .addTo(plasmaForgeRecipes);
         }
+
+        Fluid celestialTungsten = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma();
+        Fluid superHeavyRadox = FluidRegistry.getFluid("superheavyradox");
+        Fluid heavyRadox = FluidRegistry.getFluid("heavyradox");
+
+        // Dimensionally shifted superfluid
+
+        // First recipe using AwDr coil and super heavy radox
+        GT_Values.RA.stdBuilder()
+            .itemInputs()
+            .fluidInputs(
+                Materials.StableBaryonicMatter.getFluid(50),
+                MyMaterial.metastableOganesson.getMolten(144),
+                Materials.Grade8PurifiedWater.getFluid(200),
+                new FluidStack(celestialTungsten, 16 * 144),
+                new FluidStack(superHeavyRadox, 2000),
+                MaterialsUEVplus.ExcitedDTCC.getFluid(1000))
+            .fluidOutputs(
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(12000),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(500))
+            .duration(60 * SECONDS)
+            .eut((int) TierEU.RECIPE_UIV)
+            .metadata(COIL_HEAT, 10800)
+            .addTo(plasmaForgeRecipes);
+
+        // Better recipe, unlocks with AwDr coil and uses heavy radox, which can be produced in the QFT.
+        // This recipe takes UMV power but processes 4x input and output as the original recipe, making it a free POC
+        // over
+        // the original recipe
+        GT_Values.RA.stdBuilder()
+            .itemInputs()
+            .fluidInputs(
+                Materials.StableBaryonicMatter.getFluid(200),
+                MyMaterial.metastableOganesson.getMolten(144 * 4),
+                Materials.Grade8PurifiedWater.getFluid(800),
+                new FluidStack(celestialTungsten, 64 * 144),
+                new FluidStack(heavyRadox, 8000),
+                MaterialsUEVplus.ExcitedDTRC.getFluid(4000))
+            .fluidOutputs(
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(48000),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2000))
+            .duration(60 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
+            .metadata(COIL_HEAT, 12600)
+            .addTo(plasmaForgeRecipes);
     }
 }
