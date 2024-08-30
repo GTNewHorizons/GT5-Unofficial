@@ -1546,6 +1546,7 @@ public enum ItemList implements IItemContainer {
     NanoChipModule_EtchingArray,
     NanoChipModule_CuttingChamber,
     NanoChipModule_WireTracer,
+    NanoChipModule_Splitter,
     Machine_Multi_Autoclave,
     Casing_Autoclave,
     NanoChipModule_AssemblyMatrix,
