@@ -205,22 +205,39 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
         @Override
         public JsonElement serialize(HashMap<UUID, UUID> src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject jsonObject = new JsonObject();
-            for (Map.Entry<UUID, UUID> entry : src.entrySet()) {
-                jsonObject.addProperty(entry.getKey().toString(), entry.getValue().toString());
+            JsonArray map = new JsonArray();
+            for (Entry<UUID, UUID> entry : src.entrySet()) {
+                JsonObject teamMap = new JsonObject();
+
+                teamMap.addProperty(
+                    "MEMBER_UUID",
+                    entry.getKey()
+                        .toString());
+                teamMap.addProperty(
+                    "LEADER_UUID",
+                    entry.getValue()
+                        .toString());
+
+                map.add(teamMap);
             }
-            return jsonObject;
+
+            return map;
         }
 
         @Override
         public HashMap<UUID, UUID> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
             HashMap<UUID, UUID> map = new HashMap<>();
-            JsonObject jsonObject = json.getAsJsonObject();
-            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                UUID key = UUID.fromString(entry.getKey());
-                UUID value = UUID.fromString(entry.getValue().getAsString());
-                map.put(key, value);
+            JsonArray jsonArray = json.getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                JsonObject jsonObject = element.getAsJsonObject();
+                UUID memberUuid = UUID.fromString(
+                    jsonObject.get("MEMBER_UUID")
+                        .getAsString());
+                UUID leaderUuid = UUID.fromString(
+                    jsonObject.get("LEADER_UUID")
+                        .getAsString());
+                map.put(memberUuid, leaderUuid);
             }
             return map;
         }
