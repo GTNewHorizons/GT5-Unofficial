@@ -87,6 +87,10 @@ public class VacuumConveyorHatchMap<T extends GT_MetaTileEntity_Hatch_VacuumConv
         return conveyorsByColor.values();
     }
 
+    public Map<Byte, ArrayList<T>> hatchMap() {
+        return this.conveyorsByColor;
+    }
+
     // Count all hatches in the map
     public int size() {
         return totalNumHatches;
