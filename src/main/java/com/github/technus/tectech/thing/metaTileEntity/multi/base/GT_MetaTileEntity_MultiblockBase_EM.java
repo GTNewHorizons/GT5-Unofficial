@@ -1073,6 +1073,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            mTotalRunTime++;
             explodedThisTick = false;
             if (mEfficiency < 0) {
                 mEfficiency = 0;
