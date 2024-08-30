@@ -633,6 +633,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcess
 import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
@@ -1212,6 +1213,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
                 "multimachine.nanochipmodule.wiretracer",
                 "Nanoprecision Wire Tracer").getStackForm(1));
+        ItemList.NanoChipModule_Splitter.set(
+            new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
+                .getStackForm(1));
         ItemList.Machine_Multi_Autoclave.set(
             new GT_MetaTileEntity_MultiAutoclave(
                 MULTI_AUTOCLAVE_CONTROLLER.ID,
