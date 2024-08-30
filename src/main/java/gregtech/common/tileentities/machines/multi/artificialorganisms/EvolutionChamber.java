@@ -16,7 +16,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
+import com.gtnewhorizons.modularui.common.builder.UIInfo;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioOutput;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -245,5 +255,17 @@ public class EvolutionChamber
         if (bioHatch != null) {
             if (bioHatch.pipenetwork != null) PlayerUtils.messagePlayer(aPlayer, bioHatch.pipenetwork.toString());
         }
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(4, 4)
+                .setSize(190, 85));
+
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTexts(screenElements, null);
+        builder.widget(screenElements);
     }
 }
