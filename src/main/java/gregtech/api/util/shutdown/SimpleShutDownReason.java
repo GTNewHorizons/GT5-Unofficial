@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -34,6 +35,19 @@ public class SimpleShutDownReason implements ShutDownReason {
     @Override
     public String getDisplayString() {
         return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text." + key));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setString("key", key);
+        tag.setBoolean("wasCritical", wasCritical);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        key = tag.getString("key");
+        wasCritical = tag.getBoolean("wasCritical");
     }
 
     @NotNull
