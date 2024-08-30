@@ -701,6 +701,20 @@ public enum OrePrefixes {
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
+        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+
         cell.disableComponent(MaterialsUEVplus.GravitonShard);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
@@ -790,6 +804,12 @@ public enum OrePrefixes {
         toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+
+        gear.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        frame.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkoniteBase);
 
         gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
 
