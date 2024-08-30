@@ -16,7 +16,9 @@ public class DetravLoginEventHandler {
             inited = true;
             DetravLoginEventHandler handler = new DetravLoginEventHandler();
             MinecraftForge.EVENT_BUS.register(handler);
-            FMLCommonHandler.instance().bus().register(handler);
+            FMLCommonHandler.instance()
+                .bus()
+                .register(handler);
         }
     }
 }

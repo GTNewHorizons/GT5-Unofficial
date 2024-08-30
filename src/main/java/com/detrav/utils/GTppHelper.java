@@ -25,7 +25,7 @@ public class GTppHelper {
             try {
                 Short i = (short) (n + 1);
                 Material m = ((Material) gtPlusPlus.core.material.ORES.class.getFields()[n]
-                        .get(gtPlusPlus.core.material.ORES.class.getFields()[n]));
+                    .get(gtPlusPlus.core.material.ORES.class.getFields()[n]));
                 decodeoresGTpp.put(i, m);
                 encodeoresGTpp.put(m, i);
             } catch (Exception ignored) {}

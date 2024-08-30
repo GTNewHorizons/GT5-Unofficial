@@ -88,7 +88,8 @@ public class DetravScannerCommand implements ICommand {
     }
 
     private void process(ICommandSender sender, int aX, int aZ, String fName) {
-        Chunk c = sender.getEntityWorld().getChunkFromChunkCoords(aX, aZ);
+        Chunk c = sender.getEntityWorld()
+            .getChunkFromChunkCoords(aX, aZ);
         if (c == null) sender.addChatMessage(new ChatComponentText("ERROR"));
         HashMap<String, Integer> ores = new HashMap<>();
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
@@ -101,10 +102,11 @@ public class DetravScannerCommand implements ICommand {
                         GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
                         short meta = gt_entity.getMetaData();
                         String name = Materials.getLocalizedNameForItem(
-                                GT_LanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
-                                meta % 1000);
+                            GT_LanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
+                            meta % 1000);
                         if (name.startsWith("Small")) continue;
-                        if (fName == null || name.toLowerCase().contains(fName)) {
+                        if (fName == null || name.toLowerCase()
+                            .contains(fName)) {
                             if (!ores.containsKey(name)) ores.put(name, 1);
                             else {
                                 int val = ores.get(name);

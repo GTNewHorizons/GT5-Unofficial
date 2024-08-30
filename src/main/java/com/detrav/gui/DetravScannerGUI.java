@@ -54,15 +54,15 @@ public class DetravScannerGUI extends GuiScreen {
 
         if (oresList == null || (prevW != width || prevH != height)) {
             oresList = new OresList(
-                    this,
-                    100,
-                    currentHeight,
-                    aY,
-                    aY + currentHeight,
-                    aX + currentWidth,
-                    10,
-                    map.packet.ores,
-                    ((name, invert) -> { if (map != null) map.loadTexture(null, name, invert); }));
+                this,
+                100,
+                currentHeight,
+                aY,
+                aY + currentHeight,
+                aX + currentWidth,
+                10,
+                map.packet.ores,
+                ((name, invert) -> { if (map != null) map.loadTexture(null, name, invert); }));
             prevW = width;
             prevH = height;
         }
@@ -72,7 +72,8 @@ public class DetravScannerGUI extends GuiScreen {
         map.glBindTexture();
         map.draw(aX, aY);
         oresList.drawScreen(x, y, f);
-        mc.getTextureManager().bindTexture(back);
+        mc.getTextureManager()
+            .bindTexture(back);
         GL11.glColor4f(0xFF, 0xFF, 0xFF, 0xFF);
 
         // draw corners
@@ -102,12 +103,12 @@ public class DetravScannerGUI extends GuiScreen {
                     short fluidAmount = fluidInfo[tX][tY].get((byte) 2);
                     if (fluidId != 0 && fluidAmount > 0) {
                         info.add(
-                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name")
-                                        + map.packet.metaMap.get(fluidId));
+                            StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name")
+                                + map.packet.metaMap.get(fluidId));
                         info.add(
-                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
-                                        + GT_Utility.formatNumbers(fluidAmount)
-                                        + " L");
+                            StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
+                                + GT_Utility.formatNumbers(fluidAmount)
+                                + " L");
                     } else info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 } else {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));

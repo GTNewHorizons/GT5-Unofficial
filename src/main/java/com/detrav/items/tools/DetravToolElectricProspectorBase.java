@@ -70,9 +70,9 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     @Override
     public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
         return GT_DamageSources.getCombatDamage(
-                (aPlayer instanceof EntityPlayer) ? "player" : "mob",
-                aPlayer,
-                (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
+            (aPlayer instanceof EntityPlayer) ? "player" : "mob",
+            aPlayer,
+            (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
     }
 
     public String getCraftingSound() {
@@ -146,7 +146,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public int convertBlockDrops(List<ItemStack> list, ItemStack itemStack, EntityPlayer entityPlayer, Block block,
-            int i, int i1, int i2, byte b, int i3, boolean b1, BlockEvent.HarvestDropsEvent harvestDropsEvent) {
+        int i, int i1, int i2, byte b, int i3, boolean b1, BlockEvent.HarvestDropsEvent harvestDropsEvent) {
         return 0;
     }
 
@@ -170,7 +170,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
@@ -186,16 +186,16 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " got Pick Up'ed by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " got Pick Up'ed by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 
     public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
-            int aX, int aY, int aZ) {
+        int aX, int aY, int aZ) {
         return aDefault;
     }
 }
