@@ -1352,7 +1352,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     true,
                     new int[] { 11 },
                     false,
-                    true,
+                    false,
                     2,
                     new Pos2d(196, 356),
                     scrollable))
