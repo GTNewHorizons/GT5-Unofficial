@@ -1,8 +1,7 @@
 [
 {
-  "modid": "${modId}",
-  "name": "${modName}",
-  "description": "To locate ores deep underground.",
+  "modid": "detravscannermod",
+  "name": "GT Scanner Mod", "description": "To locate ores deep underground.",
   "version": "${modVersion}",
   "mcversion": "${minecraftVersion}",
   "url": "https://github.com/GTNewHorizons/GTScannerMod",

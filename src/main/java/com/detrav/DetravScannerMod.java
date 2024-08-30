@@ -1,7 +1,5 @@
 package com.detrav;
 
-import static com.detrav.Tags.VERSION;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 
@@ -19,11 +17,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.GT_Version;
 import gregtech.api.GregTech_API;
 
 @Mod(
         modid = DetravScannerMod.MODID,
-        version = VERSION,
+        version = GT_Version.VERSION,
         dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
 public class DetravScannerMod {
 
