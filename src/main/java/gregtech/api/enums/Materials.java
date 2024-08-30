@@ -1999,7 +1999,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+        MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
@@ -2254,7 +2256,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             TengamAttuned,
             MaterialsUEVplus.Eternity,
             MaterialsUEVplus.MagMatter,
-            MaterialsUEVplus.HotProtoHalkonite);
+            MaterialsUEVplus.HotProtoHalkonite,
+            MaterialsUEVplus.ProtoHalkonite);
 
         SubTag.FOOD.addTo(
             MeatRaw,

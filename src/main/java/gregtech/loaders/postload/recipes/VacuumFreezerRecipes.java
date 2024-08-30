@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -410,6 +411,23 @@ public class VacuumFreezerRecipes implements Runnable {
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
 
+        // Proto-Halkonite
+        this.addProtoHalkonitePartRecipe(OrePrefixes.frameGt, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.ingot, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.plate, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.plateDense, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.stick, 2);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.round, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.bolt, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.screw, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.ring, 4);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.foil, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.gearGtSmall, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.rotor, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.stickLong, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.gearGt, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 9L))
             .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1296L))
@@ -418,5 +436,19 @@ public class VacuumFreezerRecipes implements Runnable {
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(vacuumFreezerRecipes);
+    }
+
+    private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
+        final int partFraction = (int) (144 * prefix.mMaterialAmount / M);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.ProtoHalkonite, multiplier))
+            .fluidInputs(MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (20 * partFraction / 144.0)))
+            .eut(TierEU.RECIPE_UEV)
+            .noOptimize()
+            .addTo(vacuumFreezerRecipes);
+
     }
 }

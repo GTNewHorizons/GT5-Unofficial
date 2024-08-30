@@ -719,6 +719,24 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
 
+        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        spring.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        nugget.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+
         cell.disableComponent(MaterialsUEVplus.GravitonShard);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
@@ -814,6 +832,12 @@ public enum OrePrefixes {
         toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         frame.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         frameGt.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+
+        gear.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        frame.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
 
         gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
 
