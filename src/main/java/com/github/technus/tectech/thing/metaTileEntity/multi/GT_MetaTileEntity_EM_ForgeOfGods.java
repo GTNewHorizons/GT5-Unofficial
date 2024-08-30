@@ -73,7 +73,6 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -139,6 +138,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private boolean batteryCharging = false;
     private boolean inversion = false;
     private boolean gravitonShardEjection = false;
+    private boolean noFormatting = false;
     public ArrayList<GT_MetaTileEntity_EM_BaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -1168,7 +1168,21 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .setScale(0.7f)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setSize(140, 30)
-                    .setPos(5, 90));
+                    .setPos(5, 90))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                if (clickData.mouseButton == 0) {
+                    noFormatting = !noFormatting;
+                }
+            })
+                .setSize(10, 10)
+                .addTooltip(translateToLocal("fog.button.formatting.tooltip"))
+                .setBackground(TecTechUITextures.OVERLAY_CYCLIC_BLUE)
+                .setPos(5, 135)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .attachSyncer(
+                    new FakeSyncWidget.BooleanSyncer(() -> noFormatting, val -> noFormatting = val),
+                    builder));
 
         return builder.build();
     }
@@ -2641,7 +2655,6 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         long progress;
         BigInteger bigProgress;
         String suffix;
-        boolean shift = Interactable.hasShiftDown();
         switch (milestoneID) {
             case 1 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.recipes");
@@ -2658,7 +2671,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             default -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.power");
                 bigProgress = totalPowerConsumed;
-                if (!shift && (totalPowerConsumed.compareTo(BigInteger.valueOf(1_000L)) > 0)) {
+                if (!noFormatting && (totalPowerConsumed.compareTo(BigInteger.valueOf(1_000L)) > 0)) {
                     return new Text(
                         translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
                             + EnumChatFormatting.GRAY
@@ -2675,7 +2688,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 }
             }
         }
-        if (!shift) {
+        if (!noFormatting) {
             return new Text(
                 translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
                     + EnumChatFormatting.GRAY
@@ -2706,7 +2719,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         String suffix;
         String progressText = translateToLocal("gt.blockmachines.multimachine.FOG.progress");
         Text done = new Text(translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete"));
-        if (Interactable.hasShiftDown()) {
+        if (noFormatting) {
             formatting = false;
             done = new Text(
                 translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete") + EnumChatFormatting.DARK_RED
