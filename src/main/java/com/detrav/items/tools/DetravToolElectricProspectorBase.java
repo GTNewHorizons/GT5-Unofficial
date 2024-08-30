@@ -19,7 +19,6 @@ import net.minecraftforge.event.world.BlockEvent;
 import com.detrav.enums.Textures01;
 import com.detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.interfaces.IIconContainer;
@@ -32,7 +31,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 public class DetravToolElectricProspectorBase implements IToolStats {
 
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 50 : 100;
+        return 100;
     }
 
     public int getToolDamagePerDropConversion() {
