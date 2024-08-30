@@ -9,6 +9,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
 @SuppressWarnings({ "unchecked" })
@@ -682,6 +683,19 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 8,
         TextureSet.SET_DULL);
 
+    public static final Werkstoff Gangue = new Werkstoff(
+        new short[] { 0, 0, 0 },
+        "Gangue",
+        subscriptNumbers("Useless..."),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addPrefix(OrePrefixes.block)
+            .removePrefix(OrePrefixes.ingot)
+            .removePrefix(OrePrefixes.gem),
+        offsetID2 + 9,
+        TextureSet.SET_DULL);
     // TODO: Deal with colouring
     public static final Werkstoff RoastedRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 45 },
