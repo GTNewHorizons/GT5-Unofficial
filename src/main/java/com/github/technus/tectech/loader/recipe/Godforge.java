@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FOG_EXOTIC_TIER;
 import static gregtech.api.util.GT_RecipeConstants.FOG_PLASMA_TIER;
 
@@ -125,7 +126,7 @@ public class Godforge implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(solids_t0_1step[i])
                         .fluidOutputs(solid_plasmas_t0_1step[i])
-                        .duration(1 * SECONDS)
+                        .duration(10 * TICKS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -158,7 +159,7 @@ public class Godforge implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(solids_t0_xstep[i])
                         .fluidOutputs(solid_plasmas_t0_xstep[i])
-                        .duration(3 * SECONDS)
+                        .duration(2 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -262,16 +263,16 @@ public class Godforge implements Runnable {
             // Fusion tier 1-3
             {
                 // Single step
-                FluidStack[] fluids_t0_1step = { Materials.Helium.getGas(1000), Materials.Nitrogen.getGas(1000),
-                    Materials.Argon.getGas(1000), Materials.Chlorine.getGas(1000), Materials.Deuterium.getGas(1000),
-                    Materials.Fluorine.getGas(1000), Materials.Hydrogen.getGas(1000), Materials.Radon.getGas(1000),
-                    Materials.Tritium.getGas(1000), Materials.Mercury.getFluid(1000) };
-                FluidStack[] fluid_plasmas_t0_1step = { Materials.Helium.getPlasma(1000),
-                    Materials.Nitrogen.getPlasma(1000), Materials.Argon.getPlasma(1000),
-                    Materials.Chlorine.getPlasma(1000), Materials.Deuterium.getPlasma(1000),
-                    Materials.Fluorine.getPlasma(1000), Materials.Hydrogen.getPlasma(1000),
-                    Materials.Radon.getPlasma(1000), Materials.Tritium.getPlasma(1000),
-                    Materials.Mercury.getPlasma(1000) };
+                FluidStack[] fluids_t0_1step = { Materials.Helium.getGas(500), Materials.Nitrogen.getGas(500),
+                    Materials.Argon.getGas(500), Materials.Chlorine.getGas(500), Materials.Deuterium.getGas(500),
+                    Materials.Fluorine.getGas(500), Materials.Hydrogen.getGas(500), Materials.Radon.getGas(500),
+                    Materials.Tritium.getGas(500), Materials.Mercury.getFluid(500) };
+                FluidStack[] fluid_plasmas_t0_1step = { Materials.Helium.getPlasma(500),
+                    Materials.Nitrogen.getPlasma(500), Materials.Argon.getPlasma(500),
+                    Materials.Chlorine.getPlasma(500), Materials.Deuterium.getPlasma(500),
+                    Materials.Fluorine.getPlasma(500), Materials.Hydrogen.getPlasma(500),
+                    Materials.Radon.getPlasma(500), Materials.Tritium.getPlasma(500),
+                    Materials.Mercury.getPlasma(500) };
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
                     boolean multistep = false;
@@ -287,12 +288,12 @@ public class Godforge implements Runnable {
                 }
 
                 // Multi-step
-                FluidStack[] fluids_t0_xstep = { ELEMENT.getInstance().NEON.getFluidStack(1000),
-                    Materials.Oxygen.getGas(1000), ELEMENT.getInstance().KRYPTON.getFluidStack(1000),
-                    ELEMENT.getInstance().XENON.getFluidStack(1000) };
-                FluidStack[] fluid_plasmas_t0_xstep = { new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 1000),
-                    Materials.Oxygen.getPlasma(1000), new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 1000),
-                    new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 1000) };
+                FluidStack[] fluids_t0_xstep = { ELEMENT.getInstance().NEON.getFluidStack(500),
+                    Materials.Oxygen.getGas(500), ELEMENT.getInstance().KRYPTON.getFluidStack(500),
+                    ELEMENT.getInstance().XENON.getFluidStack(500) };
+                FluidStack[] fluid_plasmas_t0_xstep = { new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 500),
+                    Materials.Oxygen.getPlasma(500), new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 500),
+                    new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 500) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
                     boolean multistep = true;
