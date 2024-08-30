@@ -11,6 +11,7 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
 import static gregtech.api.enums.GT_Values.AuthorOmdaCZ;
 import static gregtech.api.enums.GT_Values.authorBaps;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
@@ -19,7 +20,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
@@ -137,8 +137,8 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         .addShape(
             MS_LEFT_MID,
             (transpose(
-                new String[][] { { "  ", "BB", "BB", "BB", }, { "  ", "AA", "D ", "  ", }, { "  ", "AA", "  ", "  ", },
-                    { "  ", "CC", "FC", "  ", }, { "  ", "BB", "BB", "BB", } })))
+                new String[][] { { "  ", "BB", "BB", "BB", }, { "  ", "AA", "D ", "AA", }, { "  ", "AA", "  ", "AA", },
+                    { "  ", "CC", "FC", "CC", }, { "  ", "BB", "BB", "BB", } })))
         .addShape(
             MS_RIGHT_MID,
             (transpose(
@@ -197,15 +197,6 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
                 ? ofChain(ofBlock(Block.getBlockFromName("TConstruct:SearedBlock"), 0))
                 : ofChain(ofBlock(Blocks.cauldron, 0)))
-        .addElement(
-            'E',
-            buildHatchAdder(GT_MetaTileEntity_MultiSolidifier.class).atLeast(InputHatch)
-                .casingIndex(SOLIDIFIER_CASING_INDEX)
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(
-                        GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings10, 3))))
         .addElement(
             'D',
             BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
@@ -273,19 +264,24 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper 2024")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
-            .addInfo("Has 8 parallels by default")
-            .addInfo("Gains an additional 8 parallels per width expansion")
+            .addInfo("Has 10 parallels by default")
+            .addInfo("Gains an additional 2 parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
-            .addInfo(AuthorOmdaCZ + "with help of" + EnumChatFormatting.AQUA + "GDCloud" + "&" + authorBaps)
+            .addInfo(
+                AuthorOmdaCZ + "with help of"
+                    + AuthorFourIsTheNumber
+                    + EnumChatFormatting.AQUA
+                    + "GDCloud"
+                    + "&"
+                    + authorBaps)
             .addSeparator()
-            .beginVariableStructureBlock(9, 65, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(19, 65, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Solidifier/Laurenium/DTPF Casing", 69, false)
-            .addCasingInfoMin("Steel Pipe Casing", 18, false)
+            .addCasingInfoMin("Solidifier/Laurenium/DTPF Casing", 146, true)
+            .addCasingInfoMin("Radiator casing/", 18, false)
             .addInputBus("Any Tiered Casing", 1)
             .addOutputBus("Any Tiered Casing", 1)
             .addInputHatch("Any Tiered Casing", 1)
-            .addInputHatch("Solidifier Casing second layer in the back centre", 1)
             .addEnergyHatch("Any Tiered Casing", 1)
             .addMaintenanceHatch("Any Tiered Casing", 1)
             .toolTipFinisher("GregTech");
@@ -389,12 +385,17 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         if (!checkPiece(MS_END, (-2 * mWidth) - 4, 4, 0) || !checkPiece(MS_END, (mWidth * 2) + 4, 4, 0)) {
             return false;
         }
+        if (casingAmount < (100 + mWidth * 23)) {
+            casingAmount = 0;
+            return false;
+        } else casingAmount = 0;
         machineTier = Math.min(pipeCasingTier, casingTier);
         if (casingTier > -1) {
             updateHatchTextures(casingIndices.get(casingTier));
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
         return true;
+
     }
 
     @Override
@@ -423,7 +424,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     }
 
     public int getMaxParallelRecipes() {
-        return 8 + (mWidth * 8);
+        return 4 + (mWidth * 2);
     }
 
     private void setCasingTier(int tier) {
