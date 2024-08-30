@@ -26,7 +26,7 @@ public enum CustomCombs {
     FLUORINE("fluorine", true, Materials.Fluorine, 25),
     COKE("coke", true, Materials._NULL, 50),
     FORCE("force", true, Materials.Force, 50),
-    NIKOLITE("nikolite", true, Materials.Nikolite, 75),
+    NIKOLITE("nikolite", true, Materials.Electrotine, 75), // nikolite is deprecated as a material, swap to electrotine
     MITHRIL("mithril", true, Materials.Mithril, 10),
     ADAMANTIUM("adamantium", true, Materials.Adamantium, 5),
 
