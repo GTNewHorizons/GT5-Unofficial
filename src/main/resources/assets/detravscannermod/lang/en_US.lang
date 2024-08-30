@@ -1,0 +1,45 @@
+detrav.scanner.mode.0=Set Mode: Ores
+detrav.scanner.mode.1=Set Mode: Ores and Small Ores
+detrav.scanner.mode.2=Set Mode: Underground Fluids
+detrav.scanner.mode.3=Set Mode: Pollution
+detrav.scanner.mode.error=Set Mode: ERROR
+
+detrav.scanner.distance.texts.0= §nnext to you,§r
+detrav.scanner.distance.texts.1= §nclose to you,§r
+detrav.scanner.distance.texts.2= §nat medium range,§r
+detrav.scanner.distance.texts.3= §nat long range,§r
+detrav.scanner.distance.texts.4= §nfar away,§r
+
+detrav.scanner.small_ore.keyword=Small
+
+detrav.scanner.found.texts.0=Found nothing of interest
+detrav.scanner.found.texts.1= §8traces§r.
+detrav.scanner.found.texts.2= §7small sample§r.
+detrav.scanner.found.texts.3= §2medium sample§r.
+detrav.scanner.found.texts.4= §elarge sample§r.
+detrav.scanner.found.texts.5= §dvery large sample§r.
+detrav.scanner.found.texts.6=Found 
+
+# Don't translate "%badluck"
+detrav.scanner.success=All chunks scanned successfully!
+detrav.scanner.fail=Failed on %badluck chunks. Better luck next time!
+
+detrav.scanner.prospecting=Prospecting at
+
+tooltip.detrav.scanner.durability=Durability:
+tooltip.detrav.scanner.range=Chunks:
+tooltip.detrav.scanner.usage.0=Right click on rock for prospecting current chunk!
+tooltip.detrav.scanner.usage.1=Right click on bedrock for prospecting fluids!
+tooltip.detrav.scanner.usage.2=Right click on air for scanning!
+tooltip.detrav.scanner.usage.3=Shift + Right click on air to switch modes!
+tooltip.detrav.scanner.usage.4=Double click any entry to invert the background color!
+tooltip.detrav.scanner.success.chance=Chance of a successful scan:
+tooltip.detrav.scanner.distance.0=next to you (0 chunks away), close to you (1-2)
+tooltip.detrav.scanner.distance.1=at medium range (3-5), at long range (6-8), far away (9+)
+
+gui.detrav.scanner.pollution=Pollution
+gui.detrav.scanner.unknown_fluid=Unknown Fluid name!
+
+gui.detrav.scanner.tooltip.fluid_name=Fluid Name: 
+gui.detrav.scanner.tooltip.fluid_amount=Fluid Amount: 
+gui.detrav.scanner.tooltip.no_fluid=Empty
