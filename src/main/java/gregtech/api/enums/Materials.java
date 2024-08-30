@@ -953,6 +953,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PolyAluminiumChloride;
     public static Materials Ozone;
     public static Materials StableBaryonicMatter;
+
+    public static Materials RawRadox;
+    public static Materials RadoxSuperLight;
+    public static Materials RadoxLight;
+    public static Materials RadoxHeavy;
+    public static Materials RadoxSuperHeavy;
+    public static Materials Xenoxene;
+    public static Materials DilutedXenoxene;
+    public static Materials RadoxCracked;
+    public static Materials RadoxGas;
+    public static Materials RadoxPolymer;
+
+
     // spotless:on
 
     static {
