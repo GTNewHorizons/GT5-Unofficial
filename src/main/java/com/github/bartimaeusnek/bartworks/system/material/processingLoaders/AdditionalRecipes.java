@@ -444,7 +444,7 @@ public class AdditionalRecipes {
                 Materials.Magnesium.getDustTiny(1),
                 Materials.Potassium.getDustTiny(1),
                 Materials.Sodium.getDustTiny(4),
-                Materials.Phosphor.getDustTiny(1))
+                Materials.Phosphorus.getDustTiny(1))
             .outputChances(100_00, 100_00, 10_00, 100_00, 10_00, 10_00)
             .fluidInputs(Materials.Milk.getFluid(10000))
             .fluidOutputs(Materials.Water.getFluid(8832))
