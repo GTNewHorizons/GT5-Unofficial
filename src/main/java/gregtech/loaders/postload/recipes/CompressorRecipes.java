@@ -255,6 +255,19 @@ public class CompressorRecipes implements Runnable {
             .eut(4)
             .addTo(compressorRecipes);
 
+        // TODO: Uncomment when superdense infinity plates are added
+        /*
+         * GTValues.RA.stdBuilder()
+         * .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
+         * .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(64 * 144))
+         * .itemOutputs(ItemList.Superdense_ProtoHalkonite_Plate.get(1))
+         * // Require stabilized black hole
+         * .metadata(CompressionTierKey.INSTANCE, 2)
+         * .duration(45 * SECONDS)
+         * .eut(TierEU.RECIPE_UIV)
+         * .addTo(compressorRecipes);
+         */
+
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.gem, 9))
             .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 1))
