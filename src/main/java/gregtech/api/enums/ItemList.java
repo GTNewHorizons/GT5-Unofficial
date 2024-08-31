@@ -2553,6 +2553,7 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_EV,
     BetterJukebox_IV,
     WirelessHeadphones,
+    ResearchCompleter, // Populated in EMT
     // semicolon after the comment to reduce merge conflicts
     ;
 
