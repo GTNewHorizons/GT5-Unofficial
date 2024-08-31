@@ -18,10 +18,12 @@ public class GT_Log {
     public static PrintStream ore = new LogBuffer();
     public static PrintStream pal = null;
     public static PrintStream exp = new LogBuffer();
+    public static PrintStream recipe = null;
     public static File mLogFile;
     public static File mOreDictLogFile;
     public static File mPlayerActivityLogFile;
     public static File mExplosionLog;
+    public static File mRecipeLog;
 
     public static class LogBuffer extends PrintStream {
 

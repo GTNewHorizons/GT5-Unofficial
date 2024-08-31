@@ -18,8 +18,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,21 +25,19 @@ import gregtech.api.recipe.store.ingredient.AbstractMapIngredient;
 import gregtech.api.recipe.store.ingredient.MapFluidStackIngredient;
 import gregtech.api.recipe.store.ingredient.MapIngredientComparator;
 import gregtech.api.recipe.store.ingredient.MapItemStackIngredient;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.function.Either;
 import gregtech.api.util.item.ItemHolder;
+import gregtech.common.config.gregtech.ConfigGeneral;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArrays;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 public final class RecipeTrie {
 
-    private static final Logger LOGGER = LogManager.getLogger("GregTech Recipes");
-
     // debug
     private static final boolean CRASH_ON_EMPTY = false;
-    private static final boolean LOG_STACKTRACES = false;
-    private static final boolean LOGGING = false;
 
     private static final Map<AbstractMapIngredient, WeakReference<AbstractMapIngredient>> itemIngredientRoot = new WeakHashMap<>();
     private static final Map<AbstractMapIngredient, WeakReference<AbstractMapIngredient>> fluidIngredientRoot = new WeakHashMap<>();
@@ -55,11 +51,10 @@ public final class RecipeTrie {
     public boolean add(@NotNull GT_Recipe recipe) {
         var ingredients = createIngredients(recipe);
         if (ingredients == null) {
-            if (LOGGING) {
-                if (LOG_STACKTRACES) {
-                    LOGGER.error("Recipe has no inputs: {}", recipe, new Throwable());
-                } else {
-                    LOGGER.error("Recipe has no inputs: {}", recipe);
+            if (ConfigGeneral.loggingRecipes) {
+                GT_Log.recipe.printf("Recipe has no inputs: %s", recipe);
+                if (ConfigGeneral.loggingRecipesStackTrace) {
+                    new Throwable().printStackTrace(GT_Log.recipe);
                 }
             }
             if (CRASH_ON_EMPTY) {
@@ -133,18 +128,16 @@ public final class RecipeTrie {
 
             var existing = value.left();
             if (existing != null) {
-                if (LOGGING) {
+                if (ConfigGeneral.loggingRecipes) {
                     if (existing.equals(recipe)) {
-                        if (LOG_STACKTRACES) {
-                            LOGGER.error("Duplicate recipe: {}", recipe, new Throwable());
-                        } else {
-                            LOGGER.error("Duplicate recipe: {}", recipe);
+                        GT_Log.recipe.printf("Duplicate recipe: %s%n", recipe);
+                        if (ConfigGeneral.loggingRecipesStackTrace) {
+                            new Throwable().printStackTrace(GT_Log.recipe);
                         }
                     } else {
-                        if (LOG_STACKTRACES) {
-                            LOGGER.error("Conflicting recipes:\nA: {}\nB: {}", existing, recipe, new Throwable());
-                        } else {
-                            LOGGER.error("Conflicting recipes:\nA: {}\nB: {}", existing, recipe);
+                        GT_Log.recipe.printf("Conflicting recipes:%nA: %s%nB: %s", existing, recipe);;
+                        if (ConfigGeneral.loggingRecipesStackTrace) {
+                            new Throwable().printStackTrace(GT_Log.recipe);
                         }
                     }
                 }
@@ -341,10 +334,11 @@ public final class RecipeTrie {
             }
 
             if (found == recipe) {
-                if (LOG_STACKTRACES) {
-                    LOGGER.error("Failed to remove recipe {}", recipe, new Throwable());
-                } else {
-                    LOGGER.error("Failed to remove recipe {}", recipe);
+                if (ConfigGeneral.loggingRecipes) {
+                    GT_Log.recipe.printf("Failed to remove recipe %s%n", recipe);
+                    if (ConfigGeneral.loggingRecipesStackTrace) {
+                        new Throwable().printStackTrace(GT_Log.err);
+                    }
                 }
                 return null;
             } else if (found != null) {
