@@ -333,8 +333,8 @@ public class ComponentAssemblyLineRecipeLoader {
 
     /**
      * Transforms each {@code ItemStack}, if possible, into a more compact form. For example, a stack of 16 1x cables,
-     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar and
-     * neutronium nanite conversion.
+     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar,
+     * proto-halkonite fine wire and neutronium nanite conversion.
      */
     private static ArrayList<ItemStack> compactItems(List<ItemStack> items, int tier) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
@@ -376,6 +376,19 @@ public class ComponentAssemblyLineRecipeLoader {
                     multiplyAndSplitIntoStacks(
                         GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
                         totalItems / 16));
+                isCompacted = true;
+            }
+            // Proto-Halkonite cannot be molten into a fluid, so instead replace it with an equivalent amount of dense
+            // plates
+            if (GT_Utility.areStacksEqual(
+                itemstack,
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.ProtoHalkonite, 1))) {
+                int plateAmount = (int) ((totalItems * OrePrefixes.wireFine.mMaterialAmount)
+                    / OrePrefixes.plateDense.mMaterialAmount);
+                stacks.addAll(
+                    multiplyAndSplitIntoStacks(
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.ProtoHalkonite, 1),
+                        plateAmount));
                 isCompacted = true;
             }
             if (!isCompacted) stacks.addAll(multiplyAndSplitIntoStacks(itemstack, totalItems));
