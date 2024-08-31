@@ -4,6 +4,7 @@ import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
+import static gregtech.api.enums.GTValues.M;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -300,6 +301,8 @@ public class ComponentAssemblyLineRecipeLoader {
             if (strippedOreDict.contains("PTMEG")) return FluidRegistry.getFluidStack(
                 "molten.silicone",
                 (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
+            if (strippedOreDict.contains("PTMEG")) return FluidRegistry
+                .getFluidStack("molten.silicone", (int) (orePrefix.mMaterialAmount / (M / 144)) * input.stackSize);
             return FluidRegistry.getFluidStack(
                 "molten." + strippedOreDict.toLowerCase(),
                 (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
@@ -383,12 +386,10 @@ public class ComponentAssemblyLineRecipeLoader {
             if (GT_Utility.areStacksEqual(
                 itemstack,
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.ProtoHalkonite, 1))) {
-                int plateAmount = (int) ((totalItems * OrePrefixes.wireFine.mMaterialAmount)
-                    / OrePrefixes.plateDense.mMaterialAmount);
+                // Superdense plate is 64 plates
+                int superDensePlateAmount = (int) (((totalItems * OrePrefixes.wireFine.mMaterialAmount) / M) / 64);
                 stacks.addAll(
-                    multiplyAndSplitIntoStacks(
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.ProtoHalkonite, 1),
-                        plateAmount));
+                    multiplyAndSplitIntoStacks(ItemList.Superdense_ProtoHalkonite_Plate.get(1), superDensePlateAmount));
                 isCompacted = true;
             }
             if (!isCompacted) stacks.addAll(multiplyAndSplitIntoStacks(itemstack, totalItems));
