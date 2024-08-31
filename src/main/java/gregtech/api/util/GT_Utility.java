@@ -168,6 +168,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.item.ItemHolder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import ic2.api.recipe.IRecipeInput;
@@ -4624,6 +4625,12 @@ public class GT_Utility {
         if (itemStack == null) return false;
         return itemStack.getItem() == ItemList.Circuit_Integrated.getItem() && 0 <= itemStack.getItemDamage()
             && itemStack.getItemDamage() < 25;
+    }
+
+    public static boolean isAnyIntegratedCircuit(ItemHolder itemStack) {
+        if (itemStack == null) return false;
+        return itemStack.getItem() == ItemList.Circuit_Integrated.getItem() && 0 <= itemStack.getMeta()
+            && itemStack.getMeta() < 25;
     }
 
     public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
