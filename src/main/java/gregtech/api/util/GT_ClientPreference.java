@@ -1,5 +1,8 @@
 package gregtech.api.util;
 
+import gregtech.common.config.client.ConfigPreference;
+import gregtech.common.config.client.ConfigWaila;
+
 public class GT_ClientPreference {
 
     private final boolean mSingleBlockInitialFilter;
@@ -15,12 +18,11 @@ public class GT_ClientPreference {
         this.wailaAverageNS = wailaAverageNS;
     }
 
-    public GT_ClientPreference(GT_Config aClientDataFile) {
-        this.mSingleBlockInitialFilter = aClientDataFile.get("preference", "mSingleBlockInitialFilter", false);
-        this.mSingleBlockInitialMultiStack = aClientDataFile
-            .get("preference", "mSingleBlockInitialAllowMultiStack", false);
-        this.mInputBusInitialFilter = aClientDataFile.get("preference", "mInputBusInitialFilter", true);
-        this.wailaAverageNS = aClientDataFile.get("waila", "WailaAverageNS", false);
+    public GT_ClientPreference() {
+        this.mSingleBlockInitialFilter = ConfigPreference.singleBlockInitialFilter;
+        this.mSingleBlockInitialMultiStack = ConfigPreference.singleBlockInitialAllowMultiStack;
+        this.mInputBusInitialFilter = ConfigPreference.inputBusInitialFilter;
+        this.wailaAverageNS = ConfigWaila.wailaAverageNS;
     }
 
     public boolean isSingleBlockInitialFilterEnabled() {

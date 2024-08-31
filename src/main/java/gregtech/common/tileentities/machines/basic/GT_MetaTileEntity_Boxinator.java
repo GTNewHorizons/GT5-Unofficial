@@ -1,27 +1,11 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_GLOW;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -49,51 +33,65 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
             2,
             1,
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_BOXINATOR_ACTIVE),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_BOXINATOR),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_BOXINATOR_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_BOXINATOR_ACTIVE),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_BOXINATOR),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOXINATOR_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_BOXINATOR_ACTIVE),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_BOXINATOR),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_BOXINATOR_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_BOXINATOR_ACTIVE),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_BOXINATOR),
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_BOXINATOR_GLOW)
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_GLOW"))
                     .glow()
                     .build()));
     }

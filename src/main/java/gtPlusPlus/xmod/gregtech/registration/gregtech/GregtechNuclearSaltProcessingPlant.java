@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Nuclear_Salt_Processing_Plant;
+import static gregtech.api.enums.MetaTileEntityIDs.Nuclear_Salt_Processing_Plant;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;

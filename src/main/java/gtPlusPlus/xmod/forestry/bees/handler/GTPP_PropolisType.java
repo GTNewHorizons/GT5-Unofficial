@@ -9,7 +9,7 @@ import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPP_PropolisType {
 
-    DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20)),
+    DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20)),
     FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20));
 
     public boolean mShowInList;

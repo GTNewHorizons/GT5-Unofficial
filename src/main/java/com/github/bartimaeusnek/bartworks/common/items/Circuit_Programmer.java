@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
@@ -80,7 +79,6 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
                 + (aStack.getTagCompound()
                     .getBoolean("HasChip") ? StatCollector.translateToLocal("tooltip.bw.yes.name")
                         : StatCollector.translateToLocal("tooltip.bw.no.name")));
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

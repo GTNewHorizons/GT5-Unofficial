@@ -183,6 +183,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
@@ -194,7 +195,6 @@ import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
 import com.github.bartimaeusnek.bartworks.common.items.BW_SimpleWindMeter;
 import com.github.bartimaeusnek.bartworks.common.items.BW_Stonage_Rotors;
 import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
-import com.github.bartimaeusnek.bartworks.common.items.GT_Destructopack_Item;
 import com.github.bartimaeusnek.bartworks.common.items.GT_Rockcutter_Item;
 import com.github.bartimaeusnek.bartworks.common.items.GT_Teslastaff_Item;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleIconItem;
@@ -238,7 +238,6 @@ import ic2.api.item.IKineticRotor;
 
 public class ItemRegistry {
 
-    public static final Item DESTRUCTOPACK = new GT_Destructopack_Item();
     public static final Item TESLASTAFF = new GT_Teslastaff_Item();
     public static final Item ROCKCUTTER_LV = new GT_Rockcutter_Item(1);
     public static final Item ROCKCUTTER_MV = new GT_Rockcutter_Item(2);
@@ -397,6 +396,8 @@ public class ItemRegistry {
     public static void run() {
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
+        BorosilicateGlass.registerBorosilicateGlass();
+
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
@@ -611,7 +612,7 @@ public class ItemRegistry {
                 TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(
                     LowPowerLaserConverter[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Converter",
+                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Converter",
                     tier,
                     amps).getStackForm(1L);
             }
@@ -633,7 +634,7 @@ public class ItemRegistry {
                 TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
                     LowPowerLaserTargetHatch[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Target Hatch",
+                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Target Hatch",
                     tier,
                     amps).getStackForm(1L);
             }
@@ -655,7 +656,7 @@ public class ItemRegistry {
                 TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(
                     LowPowerLaserSourceHatch[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Source Hatch",
+                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Source Hatch",
                     tier,
                     amps).getStackForm(1L);
             }

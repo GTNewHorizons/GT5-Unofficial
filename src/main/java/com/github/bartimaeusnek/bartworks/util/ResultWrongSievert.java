@@ -1,7 +1,10 @@
 package com.github.bartimaeusnek.bartworks.util;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GT_Utility;
@@ -21,7 +24,7 @@ public class ResultWrongSievert implements CheckRecipeResult {
         this.type = type;
     }
 
-    public String getID() {
+    public @NotNull String getID() {
         return "wrong_sievert";
     }
 
@@ -31,7 +34,7 @@ public class ResultWrongSievert implements CheckRecipeResult {
     }
 
     @Override
-    public String getDisplayString() {
+    public @NotNull String getDisplayString() {
         return switch (this.type) {
             case EXACTLY -> StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.wrong_sievert_exactly",
@@ -42,12 +45,24 @@ public class ResultWrongSievert implements CheckRecipeResult {
     }
 
     @Override
-    public CheckRecipeResult newInstance() {
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setInteger("required", required);
+        tag.setInteger("type", type.ordinal());
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        required = tag.getInteger("required");
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult newInstance() {
         return new ResultWrongSievert(0, NeededSievertType.EXACTLY);
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(@NotNull PacketBuffer buffer) {
         buffer.writeVarIntToBuffer(this.required);
         buffer.writeVarIntToBuffer(this.type.ordinal());
     }

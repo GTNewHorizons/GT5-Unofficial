@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -9,11 +8,15 @@ import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
+import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -36,8 +39,10 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -108,6 +113,10 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
 
     private int tierMachine = 1;
 
+    private int tierSimpleBlock = 0;
+
+    Map<Block, Integer> simpleBlockTiers = new HashMap<>();
+
     public int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
@@ -132,6 +141,25 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
         return 0;
     }
 
+    private static List<Pair<Block, Integer>> getAllSimpleBlockTiers(Map<Block, Integer> simpleBlockTiers) {
+        return simpleBlockTiers.entrySet()
+            .stream()
+            .map(e -> Pair.of(e.getKey(), e.getValue()))
+            .collect(Collectors.toList());
+    }
+
+    private static ITierConverter<Integer> simpleBlockTierConverter(Map<Block, Integer> simpleBlockTiers) {
+        return (block, meta) -> block == null ? 0 : simpleBlockTiers.getOrDefault(block, 1);
+    }
+
+    private void setSimpleBlockTier(int tier) {
+        tierSimpleBlock = tier;
+    }
+
+    private int getSimpleBlockTier() {
+        return tierSimpleBlock;
+    }
+
     protected void updateHatchTexture() {
         for (GT_MetaTileEntity_Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
@@ -141,7 +169,7 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
     }
 
     private int getCasingTextureID() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
+        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2 || tierSimpleBlock == 2)
             return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
         return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
@@ -179,6 +207,11 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_SteamMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
+            simpleBlockTiers.put(Blocks.iron_block, 1);
+
+            if (EnderIO.isModLoaded()) {
+                simpleBlockTiers.put(GameRegistry.findBlock(EnderIO.ID, "blockIngotStorage"), 6);
+            } else simpleBlockTiers.put(Blocks.iron_block, 2);
 
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamMixer>builder()
 
@@ -199,7 +232,14 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement('D', ofBlock(Blocks.iron_block, 0))
+                .addElement(
+                    'D',
+                    ofBlocksTiered(
+                        simpleBlockTierConverter(simpleBlockTiers),
+                        getAllSimpleBlockTiers(simpleBlockTiers),
+                        -1,
+                        GregtechMetaTileEntity_SteamMixer::setSimpleBlockTier,
+                        GregtechMetaTileEntity_SteamMixer::getSimpleBlockTier))
                 .addElement(
                     'A',
                     ofChain(
@@ -253,11 +293,13 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;
+        tierSimpleBlock = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
+            && tierSimpleBlock == 1
             && tierMachineCasing == 1
             && tCountCasing > 90
             && !mSteamInputFluids.isEmpty()
@@ -270,6 +312,7 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
             return true;
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
+            && tierSimpleBlock == 2
             && tierMachineCasing == 2
             && tCountCasing > 90
             && !mSteamInputFluids.isEmpty()
