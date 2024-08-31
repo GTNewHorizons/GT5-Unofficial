@@ -1,7 +1,13 @@
 package gregtech.api.recipe.store;
 
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -24,7 +30,9 @@ import gregtech.api.recipe.store.ingredient.MapItemStackIngredient;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.function.Either;
 import gregtech.api.util.item.ItemHolder;
-import it.unimi.dsi.fastutil.objects.*;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectArrays;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 public final class RecipeTrie {
 
