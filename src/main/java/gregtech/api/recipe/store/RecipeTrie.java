@@ -44,6 +44,8 @@ public final class RecipeTrie {
 
     private final TrieBranch rootBranch = new TrieBranch();
 
+    private int size;
+
     /**
      * @param recipe the recipe to add
      * @return if addition was successful
@@ -63,47 +65,44 @@ public final class RecipeTrie {
             return false;
         }
 
-        return add(recipe, ingredients, rootBranch, 0);
+        if (add(recipe, ingredients)) {
+            this.size++;
+            return true;
+        }
+        return false;
     }
 
     /**
      * @param recipe      the recipe to add
      * @param ingredients the ingredients the recipe contains
-     * @param branch      the branch to insert into
-     * @param index       the ingredient index
      * @return if addition was successful
      */
-    private static boolean add(@NotNull GT_Recipe recipe, @NotNull AbstractMapIngredient @NotNull [] ingredients,
-        @NotNull TrieBranch branch, int index) {
-        if (index == ingredients.length) {
-            return true;
+    private boolean add(@NotNull GT_Recipe recipe, @NotNull AbstractMapIngredient @NotNull [] ingredients) {
+        TrieBranch branch = rootBranch;
+        for (int i = 0; i < ingredients.length; i++) {
+            final boolean isLast = i == ingredients.length - 1;
+
+            final AbstractMapIngredient ingredient = ingredients[i];
+            var inserted = insertIntoBranch(recipe, branch, ingredient, isLast);
+
+            if (inserted == null) {
+                // some kind of conflict
+                return false;
+            }
+
+            var addedRecipe = inserted.left();
+            if (addedRecipe != null) {
+                // successful if the added recipe was the one that is attempting to be added
+                return addedRecipe == recipe;
+            }
+
+            var nextBranch = inserted.right();
+            assert nextBranch != null;
+
+            // tail recursion: add each ingredient on the right branch path, and insert the recipe on the left at the end
+            branch = nextBranch;
         }
 
-        assert index < ingredients.length;
-        boolean isLast = index == ingredients.length - 1;
-
-        final AbstractMapIngredient ingredient = ingredients[index];
-        var inserted = insertIntoBranch(recipe, branch, ingredient, isLast);
-
-        var addedRecipe = inserted.left();
-        if (addedRecipe != null) {
-            // successful if the added recipe was the one that is attempting to be added
-            return addedRecipe == recipe;
-        }
-
-        // recursion: add each ingredient on the right branch path, and insert the recipe on the left at the end
-        var nextBranch = inserted.right();
-        if (nextBranch == null) {
-            // there was no next branch inserted, undo what we did
-            undoInsert(branch.getNodes(), ingredient, isLast);
-            return false;
-        }
-
-        if (add(recipe, ingredients, nextBranch, index + 1)) {
-            return true;
-        }
-
-        undoInsert(branch.getNodes(), ingredient, isLast);
         return false;
     }
 
@@ -112,9 +111,9 @@ public final class RecipeTrie {
      * @param branch     the current branch to insert into
      * @param ingredient the ingredient to associate with the branch
      * @param isLast     if this is the final branch in the route
-     * @return the inserted element, or an existing one
+     * @return the inserted element, or an existing one, or null if there is a conflict with many recipes
      */
-    private static @NotNull Either<GT_Recipe, TrieBranch> insertIntoBranch(@NotNull GT_Recipe recipe,
+    private static @Nullable Either<GT_Recipe, TrieBranch> insertIntoBranch(@NotNull GT_Recipe recipe,
         @NotNull TrieBranch branch, @NotNull AbstractMapIngredient ingredient, boolean isLast) {
         var nodes = branch.getNodes();
         var value = nodes.get(ingredient);
@@ -126,24 +125,43 @@ public final class RecipeTrie {
                 return value;
             }
 
-            var existing = value.left();
+            GT_Recipe existing = value.left();
             if (existing != null) {
                 if (ConfigGeneral.loggingRecipes) {
                     if (existing.equals(recipe)) {
                         GT_Log.recipe.printf("Duplicate recipe: %s%n", recipe);
-                        if (ConfigGeneral.loggingRecipesStackTrace) {
-                            new Throwable().printStackTrace(GT_Log.recipe);
-                        }
                     } else {
-                        GT_Log.recipe.printf("Conflicting recipes:%nA: %s%nB: %s", existing, recipe);;
-                        if (ConfigGeneral.loggingRecipesStackTrace) {
-                            new Throwable().printStackTrace(GT_Log.recipe);
-                        }
+                        GT_Log.recipe.printf("Conflicting recipes:%n1: %s%n2: %s", existing, recipe);
+                    }
+
+                    if (ConfigGeneral.loggingRecipesStackTrace) {
+                        new Throwable().printStackTrace(GT_Log.recipe);
                     }
                 }
                 // return the existing recipes on conflicts so earlier recurses can use it
                 return value;
             }
+
+            // this recipe is a subset of one or more recipes, which is a conflict
+            var existingEdge = value.right();
+            assert existingEdge != null;
+            if (ConfigGeneral.loggingRecipes) {
+                StringBuilder builder = new StringBuilder("Conflicting recipes:%n1: ")
+                    .append(recipe);
+                int i = 2;
+                for (GT_Recipe r : existingEdge.getAll().toArray(GT_Recipe[]::new)) {
+                    builder.append("%n")
+                        .append(i++)
+                        .append(": ")
+                        .append(r);
+                }
+                GT_Log.recipe.printf(builder.toString());
+            }
+            if (ConfigGeneral.loggingRecipesStackTrace) {
+                new Throwable().printStackTrace(GT_Log.recipe);
+            }
+
+            return null;
         } else if (value == null) {
             // no existing ingredient is present, so use a new one
             value = Either.right(new TrieBranch());
@@ -153,29 +171,6 @@ public final class RecipeTrie {
 
         // an existing ingredient is present, so use it
         return value;
-    }
-
-    /**
-     * Reverts an insertion operation into a branch
-     *
-     * @param nodes      the nodes to remove from
-     * @param ingredient the added ingredient to undo
-     * @param isLast     if the ingredient was the final ingredient in the route
-     */
-    private static void undoInsert(@NotNull Map<AbstractMapIngredient, Either<GT_Recipe, TrieBranch>> nodes,
-        @NotNull AbstractMapIngredient ingredient, boolean isLast) {
-        // undo the changes made
-        if (isLast) {
-            // last ingredient needs ingredient->recipe mapping removed
-            nodes.remove(ingredient);
-        } else {
-            TrieBranch branch = nodes.get(ingredient)
-                .right();
-            if (branch != null && branch.isEmpty()) {
-                // remove added empty branches
-                nodes.remove(ingredient);
-            }
-        }
     }
 
     /**
@@ -303,7 +298,11 @@ public final class RecipeTrie {
             throw new IllegalArgumentException("Cannot remove recipe with no inputs");
         }
 
-        return remove(recipe, ingredients, rootBranch, 0) != null;
+        if (remove(recipe, ingredients, rootBranch, 0) != null) {
+            size--;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -319,36 +318,61 @@ public final class RecipeTrie {
         var nodes = branch.getNodes();
 
         var node = nodes.get(ingredient);
-        if (node != null) {
-            GT_Recipe found;
-            var left = node.left();
-            if (left != null) {
-                // if a recipe is in this node, end immediately with it as found
-                found = left;
-            } else {
-                var right = node.right();
-                assert right != null;
+        if (node == null) {
+            return null;
+        }
 
-                // recursion: remove the next ingredient up the trie
-                found = remove(recipe, ingredients, right, index + 1);
-            }
+        GT_Recipe found;
+        var left = node.left();
+        if (left != null) {
+            // if a recipe is in this node, end immediately with it as found
+            found = left;
+        } else {
+            var right = node.right();
+            assert right != null;
 
-            if (found == recipe) {
-                if (ConfigGeneral.loggingRecipes) {
-                    GT_Log.recipe.printf("Failed to remove recipe %s%n", recipe);
-                    if (ConfigGeneral.loggingRecipesStackTrace) {
-                        new Throwable().printStackTrace(GT_Log.err);
-                    }
+            // recursion: remove the next ingredient up the trie
+            found = remove(recipe, ingredients, right, index + 1);
+        }
+
+        if (found == recipe) {
+            // disassociate this step in the route
+            undoInsert(nodes, ingredient, index == ingredients.length - 1);
+            return found;
+        } else if (found != null) {
+            if (ConfigGeneral.loggingRecipes) {
+                GT_Log.recipe.printf("Failed to remove recipe %s%n, found: %s%n", recipe, found);
+                if (ConfigGeneral.loggingRecipesStackTrace) {
+                    new Throwable().printStackTrace(GT_Log.err);
                 }
-                return null;
-            } else if (found != null) {
-                // disassociate this step in the route
-                undoInsert(nodes, ingredient, index == ingredients.length - 1);
-                return found;
             }
+            return null;
         }
 
         return null;
+    }
+
+    /**
+     * Reverts an insertion operation into a branch
+     *
+     * @param nodes      the nodes to remove from
+     * @param ingredient the added ingredient to undo
+     * @param isLast     if the ingredient was the final ingredient in the route
+     */
+    private static void undoInsert(@NotNull Map<AbstractMapIngredient, Either<GT_Recipe, TrieBranch>> nodes,
+                                   @NotNull AbstractMapIngredient ingredient, boolean isLast) {
+        // undo the changes made
+        if (isLast) {
+            // last ingredient needs ingredient->recipe mapping removed
+            nodes.remove(ingredient);
+        } else {
+            TrieBranch branch = nodes.get(ingredient)
+                .right();
+            if (branch != null && branch.isEmpty()) {
+                // remove added empty branches
+                nodes.remove(ingredient);
+            }
+        }
     }
 
     /**
@@ -357,6 +381,13 @@ public final class RecipeTrie {
     public void clear() {
         this.rootBranch.getNodes()
             .clear();
+    }
+
+    /**
+     * @return the amount of values in the trie
+     */
+    public int size() {
+        return this.size;
     }
 
     public @NotNull Stream<GT_Recipe> findStream(@NotNull ItemStack @NotNull [] items,
