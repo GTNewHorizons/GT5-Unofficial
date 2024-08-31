@@ -2675,16 +2675,20 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         String species = WordUtils.capitalize(lowercaseName);
 
         String uid = "gregtech.bee.species" + species;
-        String description = "for.description." + species;
+        String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
         GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
 
+        String authority = GT_LanguageManager.getTranslation("for.bees.authority." + lowercaseName);
+        if (authority.equals("for.bees.authority." + lowercaseName)) {
+            authority = "GTNH";
+        }
         this.branch = branch;
         this.species = new GT_AlleleBeeSpecies(
             uid,
             dominant,
             name,
-            "GTNH",
+            authority,
             description,
             branch.getBranch(),
             binomial,
