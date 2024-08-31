@@ -804,5 +804,7 @@ public class MaterialsUEVplus {
      */
     public static void init() {
         // no-op. all work is done by <clinit>
+        HotProtoHalkonite.mChemicalFormula = "Hk\uD83D\uDF39";
+        ProtoHalkonite.mChemicalFormula = "Hk\uD83D\uDF39";
     }
 }
