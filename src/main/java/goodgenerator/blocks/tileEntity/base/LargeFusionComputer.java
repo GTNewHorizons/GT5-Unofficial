@@ -274,6 +274,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         }
 
         if (aBaseMetaTileEntity.isServerSide()) {
+            mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
                 checkRecipe();

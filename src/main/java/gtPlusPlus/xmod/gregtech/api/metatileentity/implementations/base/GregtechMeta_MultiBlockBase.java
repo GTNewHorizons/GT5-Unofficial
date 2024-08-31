@@ -102,7 +102,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
     public GT_Recipe mLastRecipe;
-    protected long mTotalRunTime = 0;
 
     /**
      * Don't use this for recipe input check, otherwise you'll get duplicated fluids
@@ -127,10 +126,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             .getMaxStackSize();
         int tStackSize = e.getValue();
         return (tStackSize + tMaxStackSize - 1) / tMaxStackSize;
-    }
-
-    public long getTotalRuntimeInTicks() {
-        return this.mTotalRunTime;
     }
 
     public abstract String getMachineType();
@@ -422,29 +417,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             .isActive();
         // log("Queried Multiblock is currently running: "+aRunning);
         return aRunning;
-    }
-
-    @Override
-    public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-
-        // Time Counter
-        if (aBaseMetaTileEntity.isServerSide()) {
-            this.mTotalRunTime++;
-        }
-
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
-                this.mChargeHatches.clear();
-                this.mDischargeHatches.clear();
-                this.mAirIntakes.clear();
-                this.mTecTechEnergyHatches.clear();
-                this.mTecTechDynamoHatches.clear();
-                this.mAllEnergyHatches.clear();
-                this.mAllDynamoHatches.clear();
-            }
-        }
-
-        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -1042,15 +1014,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
         if (aNBT.hasKey("mVoidExcess")) {
             // backward compatibility
             voidingMode = aNBT.getBoolean("mVoidExcess") ? VoidingMode.VOID_ALL : VoidingMode.VOID_NONE;
