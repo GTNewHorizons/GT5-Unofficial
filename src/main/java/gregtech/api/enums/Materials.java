@@ -2001,6 +2001,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+        MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
