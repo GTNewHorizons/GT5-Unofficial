@@ -82,7 +82,7 @@ public class PlasmaForgeRecipes implements Runnable {
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(250),
                 GGMaterial.metastableOganesson.getMolten(144),
-                Materials.Grade8PurifiedWater.getFluid(500),
+                Materials.Grade8PurifiedWater.getFluid(400),
                 new FluidStack(celestialTungstenPlasma, 16 * 144),
                 Materials.RadoxSuperHeavy.getFluid(2000),
                 MaterialsUEVplus.ExcitedDTCC.getFluid(1000))
@@ -104,7 +104,7 @@ public class PlasmaForgeRecipes implements Runnable {
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(1000),
                 MyMaterial.metastableOganesson.getMolten(144 * 4),
-                Materials.Grade8PurifiedWater.getFluid(2000),
+                Materials.Grade8PurifiedWater.getFluid(1600),
                 new FluidStack(celestialTungstenPlasma, 64 * 144),
                 Materials.RadoxHeavy.getFluid(8000),
                 MaterialsUEVplus.ExcitedDTRC.getFluid(4000))

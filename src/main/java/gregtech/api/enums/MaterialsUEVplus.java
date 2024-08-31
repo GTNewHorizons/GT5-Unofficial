@@ -765,7 +765,7 @@ public class MaterialsUEVplus {
     public static Materials MoltenProtoHalkoniteBase = new MaterialBuilder(
         152,
         TextureSet.SET_FLUID,
-        "Molten Proto-Halkonite Base").setName("moltenprotohalkonitebase")
+        "Molten Proto-Halkonite Steel Base").setName("moltenprotohalkonitebase")
             .addFluid()
             .addCell()
             .setLiquidTemperature(10000)
