@@ -445,7 +445,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.ProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier))
-            .duration((int) (multiplier * (20 * partFraction / 144.0)))
+            .duration((int) (multiplier * (25 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(vacuumFreezerRecipes);
