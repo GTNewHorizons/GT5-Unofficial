@@ -7,7 +7,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+
+import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 
@@ -26,7 +29,7 @@ public class ResultMissingItem implements CheckRecipeResult {
 
     @Override
     @Nonnull
-    public String getID() {
+    public @NotNull String getID() {
         return "missing_item";
     }
 
@@ -37,14 +40,25 @@ public class ResultMissingItem implements CheckRecipeResult {
 
     @Override
     @Nonnull
-    public String getDisplayString() {
+    public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
             I18n.format("GT5U.gui.text.missing_item", itemStack != null ? itemStack.getDisplayName() : "null"));
     }
 
     @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        if (itemStack != null) return itemStack.writeToNBT(tag);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        itemStack = ItemStack.loadItemStackFromNBT(tag);
+    }
+
+    @Override
     @Nonnull
-    public CheckRecipeResult newInstance() {
+    public @NotNull CheckRecipeResult newInstance() {
         return new ResultMissingItem(itemStack != null ? itemStack.copy() : null);
     }
 

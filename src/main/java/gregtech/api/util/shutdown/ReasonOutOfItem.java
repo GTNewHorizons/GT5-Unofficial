@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -33,6 +34,16 @@ public class ReasonOutOfItem implements ShutDownReason {
                 "GT5U.gui.text.out_of_item",
                 requiredItem.getDisplayName(),
                 formatNumbers(requiredItem.stackSize)));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        return requiredItem.writeToNBT(tag);
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        requiredItem.readFromNBT(tag);
     }
 
     @NotNull
