@@ -752,7 +752,7 @@ public class MaterialsUEVplus {
 
     public static Materials DimensionallyShiftedSuperfluid = new MaterialBuilder(
         151,
-        new TextureSet("dimensionallyshiftedsuperfluid"),
+        new TextureSet("dimensionallyshiftedsuperfluid", true),
         "Dimensionally Shifted Superfluid").addCell()
             .addFluid()
             .setRGBA(255, 255, 255, 0)
