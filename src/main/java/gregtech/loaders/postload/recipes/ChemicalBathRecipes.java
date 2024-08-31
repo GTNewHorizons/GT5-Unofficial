@@ -443,7 +443,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GT_OreDictUnificator.get(prefix, Materials.Infinity, multiplier))
             .itemOutputs(GT_OreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
-            .duration((int) (multiplier * (20 * partFraction / 144.0)))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(chemicalBathRecipes);
