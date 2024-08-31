@@ -990,6 +990,57 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
+        Materials.RawRadox = new MaterialBuilder(-1, TextureSet.SET_DULL, "Raw Radox").setRGB(80, 30, 80)
+            .addFluid().constructMaterial();
+        Materials.RadoxSuperLight = new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Light Radox")
+            .setRGB(155, 0, 155).addGas().constructMaterial();
+        Materials.RadoxLight = new MaterialBuilder(-1, TextureSet.SET_DULL, "Light Radox").setRGB(140, 0, 140)
+            .addGas().constructMaterial();
+        Materials.RadoxHeavy = new MaterialBuilder(-1, TextureSet.SET_DULL, "Heavy Radox").setRGB(115, 0, 115)
+            .addFluid().constructMaterial();
+        Materials.RadoxSuperHeavy = new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Heavy Radox")
+            .setRGB(100, 0, 100).addFluid().constructMaterial();
+        Materials.Xenoxene = new MaterialBuilder(-1, TextureSet.SET_DULL, "Xenoxene").setRGB(133, 130, 128)
+            .addFluid().constructMaterial();
+        Materials.DilutedXenoxene = new MaterialBuilder(-1, TextureSet.SET_DULL, "Diluted Xenoxene")
+            .setRGB(206, 200, 196).addFluid().constructMaterial();
+        Materials.RadoxCracked = new MaterialBuilder(-1, TextureSet.SET_DULL, "Cracked Radox")
+            .setRGB(180, 130, 180).addGas().constructMaterial();
+        Materials.RadoxGas = new MaterialBuilder(-1, TextureSet.SET_DULL, "Radox Gas").setRGB(255, 130, 255)
+            .addGas().constructMaterial();
+
+        Materials.RadoxPolymer = new Materials(
+            979, // Material ID was choosen randomly
+            TextureSet.SET_DULL,
+            8.0F,
+            346,
+            3,
+            1 | 2 | 16,
+            133,
+            0,
+            128,
+            0,
+            "RadoxPoly",
+            "Radox Polymer",
+            0,
+            0,
+            6203,
+            0,
+            true,
+            false,
+            1,
+            1,
+            1,
+            Dyes.dyePurple,
+            0,
+            Arrays.asList(
+                new MaterialStack(Materials.Carbon, 14),
+                new MaterialStack(Materials.Osmium, 11),
+                new MaterialStack(Materials.Oxygen, 7),
+                new MaterialStack(Materials.Silver, 3),
+                new MaterialStack(Materials.CallistoIce, 1)),
+            Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.HUMANUS, 2))).setHasCorrespondingGas(true)
+            .setGasTemperature(12406);
 
         // spotless:on
     }
