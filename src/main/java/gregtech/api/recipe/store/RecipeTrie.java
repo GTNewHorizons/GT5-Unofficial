@@ -210,7 +210,7 @@ public final class RecipeTrie {
 
     /**
      * Deduplicates all item ingredients
-     * 
+     *
      * @param stacks the stacks to deduplicate
      * @return the deduplicated list of stacks
      */
@@ -241,7 +241,7 @@ public final class RecipeTrie {
 
     /**
      * Deduplicates all fluid ingredients
-     * 
+     *
      * @param stacks the stacks to deduplicate
      * @return the deduplicated list of fluids
      */

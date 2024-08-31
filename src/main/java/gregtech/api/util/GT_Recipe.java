@@ -919,9 +919,21 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             + ", outputs="
             + Arrays.toString(mOutputs)
             + ", fluidInputs="
-            + Arrays.toString(mFluidInputs)
+            + Arrays.toString(
+                Arrays.stream(mFluidInputs)
+                    .map(
+                        fluidStack -> fluidStack.amount + "x"
+                            + fluidStack.getUnlocalizedName()
+                            + (fluidStack.tag != null ? "{" + fluidStack.tag + "}" : ""))
+                    .toArray())
             + ", fluidOutputs="
-            + Arrays.toString(mFluidOutputs)
+            + Arrays.toString(
+                Arrays.stream(mFluidOutputs)
+                    .map(
+                        fluidStack -> fluidStack.amount + "x"
+                            + fluidStack.getUnlocalizedName()
+                            + (fluidStack.tag != null ? "{" + fluidStack.tag + "}" : ""))
+                    .toArray())
             + ", chances="
             + Arrays.toString(mChances)
             + ", specialItems="
