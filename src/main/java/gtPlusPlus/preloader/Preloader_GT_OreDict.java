@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class Preloader_GT_OreDict {
 
@@ -32,28 +32,22 @@ public class Preloader_GT_OreDict {
                         if ((damageValue >= 700) && (damageValue <= 720)) {
                             return true;
                         }
-                    } else {
-                        if (ReflectionUtils.doesClassExist("gregtech.common.items.GT_MetaGenerated_Item_03")) { // 6/11/12/14/16/20/30-57/69-73/79-96
-                            final Class<?> MetaItem03 = ReflectionUtils
-                                .getClass("gregtech.common.items.GT_MetaGenerated_Item_03");
-                            if (isInstanceOf(MetaItem03, bannedItem.getItem())) {
-                                if ((damageValue == 6) || (damageValue == 7)
-                                    || (damageValue == 11)
-                                    || (damageValue == 12)
-                                    || (damageValue == 14)
-                                    || (damageValue == 16)
-                                    || (damageValue == 20)
-                                    || (damageValue == 21)
-                                    || (damageValue == 22)) {
-                                    return true;
-                                } else if ((damageValue >= 30) && (damageValue <= 57)) {
-                                    return true;
-                                } else if ((damageValue >= 69) && (damageValue <= 73)) {
-                                    return true;
-                                } else if ((damageValue >= 78) && (damageValue <= 96)) {
-                                    return true;
-                                }
-                            }
+                    } else if (bannedItem.getItem() instanceof GT_MetaGenerated_Item_03) {
+                        if ((damageValue == 6) || (damageValue == 7)
+                            || (damageValue == 11)
+                            || (damageValue == 12)
+                            || (damageValue == 14)
+                            || (damageValue == 16)
+                            || (damageValue == 20)
+                            || (damageValue == 21)
+                            || (damageValue == 22)) {
+                            return true;
+                        } else if ((damageValue >= 30) && (damageValue <= 57)) {
+                            return true;
+                        } else if ((damageValue >= 69) && (damageValue <= 73)) {
+                            return true;
+                        } else if ((damageValue >= 78) && (damageValue <= 96)) {
+                            return true;
                         }
                     }
                 }
