@@ -132,7 +132,7 @@ public final class RecipeTrie {
                     if (existing.equals(recipe)) {
                         GT_Log.recipe.printf("Duplicate recipe: %s%n", recipe);
                     } else {
-                        GT_Log.recipe.printf("Conflicting recipes:%n1: %s%n2: %s", existing, recipe);
+                        GT_Log.recipe.printf("Conflicting recipes:%nExisting: %s%nConflict: %s%n", existing, recipe);
                     }
 
                     if (ConfigGeneral.loggingRecipesStackTrace) {
