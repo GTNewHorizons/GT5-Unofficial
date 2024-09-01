@@ -11,6 +11,8 @@ import java.util.concurrent.Future;
 import org.spongepowered.include.com.google.common.base.Objects;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
 import net.minecraft.block.Block;
@@ -18,6 +20,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -27,6 +30,8 @@ public class PendingBuild {
     public EntityPlayer placingPlayer;
     public NBTState manipulator;
     public Future<LinkedList<PendingBlock>> assembleTask;
+
+    private boolean printedProtectedBlockWarning = false;
 
     private static final int BLOCKS_PER_PLACE = 256;
     private static final int MAX_PLACE_DISTANCE = 512 * 512;
@@ -85,6 +90,16 @@ public class PendingBuild {
                     lastChunkX = chunkX;
                     lastChunkZ = chunkZ;
                 }
+            }
+
+            if (!world.canMineBlock(player, x, y, z) || MinecraftServer.getServer().isBlockProtected(world, x, y, z, player)) {
+                if (!printedProtectedBlockWarning) {
+                    player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!"));
+                    printedProtectedBlockWarning = true;
+                }
+
+                pendingBlocks.removeFirst();
+                continue;
             }
 
             if (!list.isEmpty() && !areBlocksBasicallyEqual(next, list.get(0))) {
@@ -148,25 +163,23 @@ public class PendingBuild {
             list.add(pendingBlocks.removeFirst());
         }
 
-        if (placingPlayer.capabilities.isCreativeMode) {
-            drops.clear();
-        }
-
-        ArrayList<ItemStack> splitDrops = new ArrayList<>();
-
-        for(var drop : drops) {
-            while(drop.stackSize > 64) {
-                splitDrops.add(drop.splitStack(64));
+        if (!placingPlayer.capabilities.isCreativeMode) {
+            ArrayList<ItemStack> splitDrops = new ArrayList<>();
+    
+            for(var drop : drops) {
+                while(drop.stackSize > 64) {
+                    splitDrops.add(drop.splitStack(64));
+                }
+    
+                if(drop.stackSize > 0) {
+                    splitDrops.add(drop);
+                }
             }
-
-            if(drop.stackSize > 0) {
-                splitDrops.add(drop);
-            }
-        }
-
-        for(var drop : splitDrops) {
-            if (!placingPlayer.inventory.addItemStackToInventory(drop)) {
-                world.spawnEntityInWorld(new EntityItem(world, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, drop));
+    
+            for(var drop : splitDrops) {
+                if (!placingPlayer.inventory.addItemStackToInventory(drop)) {
+                    world.spawnEntityInWorld(new EntityItem(world, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, drop));
+                }
             }
         }
 
@@ -181,18 +194,29 @@ public class PendingBuild {
             return;
         }
 
-        ItemStack item = new ItemStack(list.get(0).block, list.size());
-        item.setTagCompound(list.get(0).nbt);
-
-        if(!tryConsumeItems(item)) {
-            player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not find item: " + item.getDisplayName()));
-            player.setItemInUse(null, 0);
-            return;
+        if (list.get(0).block != null) {
+            ItemStack item = new ItemStack(list.get(0).block, list.size());
+            item.setTagCompound(list.get(0).nbt);
+    
+            if(!tryConsumeItems(item)) {
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not find item: " + item.getDisplayName()));
+                player.setItemInUse(null, 0);
+                return;
+            }
         }
 
         for(var pending : list) {
             world.setBlock(pending.x, pending.y, pending.z, pending.block, pending.metadata, 3);
         }
+
+        GT_Utility.sendSoundToPlayers(
+            world,
+            SoundResource.MOB_ENDERMEN_PORTAL,
+            1.0F,
+            -1,
+            (int) (player.posX + 0.5),
+            (int) (player.posY + 0.5),
+            (int) (player.posZ + 0.5));
     }
 
     private boolean tryConsumeItems(ItemStack... items) {
@@ -212,21 +236,27 @@ public class PendingBuild {
             items[i] = items[i].copy();
         }
 
-        var inv = placingPlayer.inventory.mainInventory;
+        ItemStack[] inv = placingPlayer.inventory.mainInventory;
 
-        if(!simulate) {
-            var temp = new ItemStack[inv.length];
+        if(simulate) {
+            ItemStack[] temp = new ItemStack[inv.length];
 
             for(int i = 0; i < temp.length; i++) {
-                temp[i] = inv[i].copy();
+                temp[i] = ItemStack.copyItemStack(inv[i]);
             }
+
+            inv = temp;
         }
 
-        for(var item : items) {
+        for(ItemStack item : items) {
             for(int i = 0; i < inv.length; i++) {
-                var slot = inv[i];
+                ItemStack slot = inv[i];
 
-                if(areStacksBasicallyEqual(item, slot)) {
+                if (slot == null) {
+                    int toRemove = Math.min(item.getMaxStackSize(), item.stackSize);
+
+                    inv[i] = item.splitStack(toRemove);
+                } else if(areStacksBasicallyEqual(item, slot)) {
                     int toRemove = Math.min(slot.stackSize, item.stackSize);
 
                     slot.stackSize -= toRemove;
@@ -235,10 +265,10 @@ public class PendingBuild {
                     if(slot.stackSize == 0) {
                         inv[i] = null;
                     }
+                }
 
-                    if(item.stackSize == 0) {
-                        break;
-                    }
+                if(item.stackSize == 0) {
+                    break;
                 }
             }
 
