@@ -2555,7 +2555,7 @@ public enum ItemList implements IItemContainer {
     WirelessHeadphones,
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
-    Phononic_Seed_Crystal;
+    Phononic_Seed_Crystal,
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     // semicolon after the comment to reduce merge conflicts
