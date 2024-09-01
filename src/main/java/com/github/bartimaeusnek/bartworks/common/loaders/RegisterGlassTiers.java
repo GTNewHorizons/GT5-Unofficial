@@ -28,7 +28,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.GlassTier;
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+
+import tectech.thing.block.QuantumGlassBlock;
 
 // Register all your glasses here.
 public class RegisterGlassTiers {

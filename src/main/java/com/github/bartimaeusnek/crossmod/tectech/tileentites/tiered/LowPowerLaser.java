@@ -15,11 +15,10 @@ package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
-
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
+import tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
 
 public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel {
 

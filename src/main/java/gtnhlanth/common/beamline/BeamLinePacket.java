@@ -2,7 +2,7 @@ package gtnhlanth.common.beamline;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
+import tectech.mechanics.dataTransport.DataPacket;
 
 public class BeamLinePacket extends DataPacket<BeamInformation> {
 

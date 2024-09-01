@@ -41,6 +41,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GT_BeeDefinition;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.core.material.ELEMENT.STANDALONE;
 import gtPlusPlus.core.material.Material;
@@ -285,14 +286,12 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         return new BeeVariation.RainResist(this);
     }
 
-    private static final Class sGtBees = ReflectionUtils.getClass("gregtech.loaders.misc.GT_BeeDefinition");
-
     public static IAlleleBeeSpecies getGregtechBeeType(String name) {
         try {
-            Enum aBeeObject = ReflectionUtils.getEnum(sGtBees, name);
-            Field gtBeesField = ReflectionUtils.getField(sGtBees, "species");
-            IAlleleBeeSpecies beeType = ReflectionUtils.getFieldValue(gtBeesField, aBeeObject);
-            return beeType != null ? beeType : null;
+            // This is still cursed, but the species field is private and I don't want to go modify that right now
+            GT_BeeDefinition aBeeObject = GT_BeeDefinition.valueOf(name);
+            Field gtBeesField = ReflectionUtils.getField(GT_BeeDefinition.class, "species");
+            return ReflectionUtils.getFieldValue(gtBeesField, aBeeObject);
         } catch (Throwable t) {
             t.printStackTrace();
             return null;

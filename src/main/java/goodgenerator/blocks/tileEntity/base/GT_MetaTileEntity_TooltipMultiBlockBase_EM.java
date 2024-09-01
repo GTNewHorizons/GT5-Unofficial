@@ -7,10 +7,9 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 
 public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
     implements ISecondaryDescribable {

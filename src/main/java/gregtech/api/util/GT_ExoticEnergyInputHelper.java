@@ -9,6 +9,8 @@ import java.util.List;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 
 public class GT_ExoticEnergyInputHelper {
 
@@ -18,27 +20,14 @@ public class GT_ExoticEnergyInputHelper {
     private static final List<Class<? extends GT_MetaTileEntity_Hatch>> sExoticEnergyHatchType = new ArrayList<>();
 
     static {
-        tryRegister("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti");
-        tryRegister("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel");
+        register(GT_MetaTileEntity_Hatch_EnergyMulti.class);
+        register(GT_MetaTileEntity_Hatch_EnergyTunnel.class);
     }
 
     public static void register(Class<? extends GT_MetaTileEntity_Hatch> clazz) {
         if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz)) throw new IllegalArgumentException(
             clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
         sExoticEnergyHatchType.add(clazz);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static void tryRegister(String className) {
-        Class<?> clazz;
-        try {
-            clazz = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            return;
-        }
-        if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz)) throw new IllegalArgumentException(
-            clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
-        sExoticEnergyHatchType.add((Class<? extends GT_MetaTileEntity_Hatch>) clazz);
     }
 
     public static boolean drainEnergy(long aEU, Collection<? extends GT_MetaTileEntity_Hatch> hatches) {

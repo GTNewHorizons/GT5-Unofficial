@@ -89,6 +89,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 
 // Glee8e - 11/12/21 - 2:15pm
 // Yeah, now I see what's wrong. Someone inherited from GregtechMeta_MultiBlockBase instead of
@@ -923,15 +925,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     public boolean isThisHatchMultiDynamo(IMetaTileEntity aMetaTileEntity) {
-        Class<?> mDynamoClass;
-        mDynamoClass = ReflectionUtils
-            .getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
-        if (mDynamoClass != null) {
-            if (mDynamoClass.isInstance(aMetaTileEntity)) {
-                return true;
-            }
-        }
-        return false;
+        return aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti;
     }
 
     @Override
@@ -976,15 +970,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     public boolean isThisHatchMultiEnergy(IMetaTileEntity aMetaTileEntity) {
-        Class<?> mDynamoClass;
-        mDynamoClass = ReflectionUtils
-            .getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti");
-        if (mDynamoClass != null) {
-            if (mDynamoClass.isInstance(aMetaTileEntity)) {
-                return true;
-            }
-        }
-        return false;
+        return aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti;
     }
 
     @Override
@@ -1636,7 +1622,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             }
         },
         TTDynamo(GregtechMeta_MultiBlockBase::addMultiAmpDynamoToMachineList,
-            "com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti") {
+            GT_MetaTileEntity_Hatch_DynamoMulti.class) {
 
             @Override
             public long count(GregtechMeta_MultiBlockBase<?> t) {
@@ -1644,7 +1630,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             }
         },
         TTEnergy(GregtechMeta_MultiBlockBase::addMultiAmpEnergyToMachineList,
-            "com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti") {
+            GT_MetaTileEntity_Hatch_EnergyMulti.class) {
 
             @Override
             public long count(GregtechMeta_MultiBlockBase<?> t) {

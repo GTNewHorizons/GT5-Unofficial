@@ -27,8 +27,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.technus.tectech.recipe.TT_recipeAdder;
-import com.github.technus.tectech.thing.CustomItemList;
 import com.google.common.collect.ImmutableList;
 
 import goodgenerator.loader.Loaders;
@@ -59,6 +57,8 @@ import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
+import tectech.recipe.TT_recipeAdder;
+import tectech.thing.CustomItemList;
 
 public class RECIPES_Machines {
 

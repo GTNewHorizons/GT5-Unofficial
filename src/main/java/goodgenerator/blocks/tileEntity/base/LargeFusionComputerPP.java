@@ -2,13 +2,12 @@ package goodgenerator.blocks.tileEntity.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public abstract class LargeFusionComputerPP extends LargeFusionComputer {
 

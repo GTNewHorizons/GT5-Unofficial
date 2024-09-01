@@ -9,7 +9,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 
 import goodgenerator.blocks.tileEntity.base.LargeFusionComputerPP;
 import goodgenerator.loader.Loaders;
@@ -29,6 +28,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 
 public class LargeFusionComputer4 extends LargeFusionComputerPP {
 

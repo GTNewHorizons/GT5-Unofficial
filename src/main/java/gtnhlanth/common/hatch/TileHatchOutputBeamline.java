@@ -5,8 +5,6 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.util.TT_Utility;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -16,6 +14,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.TileBeamline;
+import tectech.util.TT_Utility;
 
 public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
 

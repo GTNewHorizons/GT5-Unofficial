@@ -1,6 +1,5 @@
 package goodgenerator.loader;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
@@ -36,6 +35,7 @@ import static gregtech.api.util.GT_RecipeConstants.PRECISE_ASSEMBLER_CASING_TIER
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -43,7 +43,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.technus.tectech.recipe.TT_recipeAdder;
 
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
@@ -66,6 +65,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
+import tectech.recipe.TT_recipeAdder;
 
 public class RecipeLoader_02 {
 

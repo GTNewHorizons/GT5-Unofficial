@@ -1,7 +1,7 @@
 package gtnhlanth.common.hatch;
 
-import static com.github.technus.tectech.util.CommonValues.MOVE_AT;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static tectech.util.CommonValues.MOVE_AT;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,13 +11,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
-import com.github.technus.tectech.util.TT_Utility;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
+import tectech.mechanics.dataTransport.DataPacket;
+import tectech.util.TT_Utility;
 
 public abstract class TileHatchBeamlineConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
     implements IConnectsToBeamline {

@@ -13,11 +13,10 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 
 public class TT_MetaTileEntity_LowPowerLaserHatch extends GT_MetaTileEntity_Hatch_EnergyTunnel
     implements LowPowerLaser {

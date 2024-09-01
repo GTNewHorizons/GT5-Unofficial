@@ -32,7 +32,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.technus.tectech.recipe.TT_recipeAdder;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
@@ -46,6 +45,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.recipe.common.CI;
+import tectech.recipe.TT_recipeAdder;
 
 public class ComponentAssemblyLineMiscRecipes {
 
