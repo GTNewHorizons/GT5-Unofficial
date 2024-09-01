@@ -495,12 +495,31 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Exotic Matter Producer")
-            .addInfo("Controller block of the Quark Gluon Plasma Module")
-            .addInfo("Uses a Star to to turn Items into Quark Gluon Plasma")
-            .addSeparator()
-            .beginStructureBlock(1, 4, 2, false)
-            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .addInfo("Controller block for the Heliofusion Exoticizer, a module of the Godforge.")
+            .addInfo("Must be part of a Godforge to function.")
+            .addInfo("Used for ultra high temperature matter degeneration.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
+            .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
+            .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
+            .addInfo("requires a fully upgraded Godforge.")
+            .addInfo("This module is specialized towards acquisition of unique materials.")
+            .addInfo(TOOLTIP_BAR)
+            .beginStructureBlock(7, 7, 13, false)
+            .addStructureInfo("The structure is too complex! See schematic for details.")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }

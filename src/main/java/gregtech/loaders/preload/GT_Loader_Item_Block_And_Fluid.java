@@ -666,7 +666,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
                 MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
-                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter },
+                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1274,6 +1274,24 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .configureMaterials(MaterialsUEVplus.QuarkGluonPlasma)
             .registerBContainers(
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GT_FluidFactory.builder("PhononMedium")
+            .withLocalizedName(MaterialsUEVplus.PhononMedium.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 500)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PhononMedium)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononMedium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GT_FluidFactory.builder("PhononCrystalSolution")
+            .withLocalizedName(MaterialsUEVplus.PhononCrystalSolution.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 500)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PhononCrystalSolution)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("fieryblood")

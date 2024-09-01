@@ -29,7 +29,12 @@ public class TecTechUITextures {
     public static final UITexture BUTTON_STANDARD_LIGHT_16x16 = UITexture
         .fullImage(MODID, "gui/button/standard_light_16x16");
     public static final UITexture BUTTON_CELESTIAL_32x32 = UITexture.fullImage(MODID, "gui/button/celestial");
-
+    public static final UITexture BUTTON_SPACE_32x16 = UITexture.fullImage(MODID, "gui/button/purple");
+    public static final UITexture BUTTON_SPACE_PRESSED_32x16 = UITexture.fullImage(MODID, "gui/button/purple_pressed");
+    public static final UITexture BUTTON_BOXED_CHECKMARK_18x18 = UITexture
+        .fullImage(MODID, "gui/button/boxed_checkmark");
+    public static final UITexture BUTTON_BOXED_EXCLAMATION_POINT_18x18 = UITexture
+        .fullImage(MODID, "gui/button/boxed_exclamation_point");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
         .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
@@ -78,6 +83,9 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/overlay_button/battery_off");
     public static final UITexture OVERLAY_BUTTON_FLAG = UITexture.fullImage(MODID, "gui/overlay_button/flag");
     public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
+    public static final UITexture OVERLAY_EJECTION_LOCKED = UITexture
+        .fullImage(MODID, "gui/overlay_button/eject_disabled");
+    public static final UITexture OVERLAY_EJECTION_ON = UITexture.fullImage(MODID, "gui/overlay_button/eject");
 
     public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
     public static final UITexture OVERLAY_SLOT_MESH = UITexture.fullImage(MODID, "gui/overlay_slot/mesh");

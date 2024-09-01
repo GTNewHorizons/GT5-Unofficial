@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1717,6 +1718,21 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.WeedEX9000.getFluid(750))
             .duration(5 * SECONDS)
             .eut(100)
+            .addTo(mixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Tritanium.getDust(11),
+                MyMaterial.orundum.get(OrePrefixes.dust, 8),
+                Materials.Rubidium.getDust(11),
+                Materials.FierySteel.getDust(7),
+                Materials.Firestone.getDust(13),
+                MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 13),
+                GT_Utility.getIntegratedCircuit(6))
+            .itemOutputs(MaterialsUEVplus.Mellion.getDust(63))
+            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5000))
+            .duration(15 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
             .addTo(mixerRecipes);
     }
 }

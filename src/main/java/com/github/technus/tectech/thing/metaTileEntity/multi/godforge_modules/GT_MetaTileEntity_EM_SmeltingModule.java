@@ -19,6 +19,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -215,12 +216,29 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("Controller block of the Smelting Module")
-            .addInfo("Uses a Star to Smelt Metals")
-            .addSeparator()
-            .beginStructureBlock(1, 4, 2, false)
-            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .addInfo("Controller block for the Helioflare Power Forge, a module of the Godforge.")
+            .addInfo("Must be part of a Godforge to function.")
+            .addInfo("Used for basic smelting operations at various temperatures.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("As the first of the Godforge modules, this module performs the most basic")
+            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
+            .addInfo("The desired method of processing can be selected in the gui.")
+            .addInfo("This module is specialized towards speed and high heat levels.")
+            .addInfo(TOOLTIP_BAR)
+            .beginStructureBlock(7, 7, 13, false)
+            .addStructureInfo("The structure is too complex! See schematic for details.")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
