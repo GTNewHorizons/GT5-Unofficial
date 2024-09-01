@@ -139,7 +139,7 @@ public class GodforgeMath {
             baseParallel = 512;
         }
         if (module instanceof GT_MetaTileEntity_EM_PlasmaModule) {
-            baseParallel = 256;
+            baseParallel = 384;
         }
         if (module instanceof GT_MetaTileEntity_EM_ExoticModule) {
             baseParallel = 36;
