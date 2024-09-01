@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,7 +21,6 @@ import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.io.FileUtils;
@@ -628,7 +628,8 @@ public final class GT_MusicSystem {
                 final ArrayList<URL> candidates = Collections.list(
                     GT_MusicSystem.class.getClassLoader()
                         .getResources("soundmeta/durations.json"));
-                final Path configPath = Launch.minecraftHome.toPath()
+                final Path configPath = Paths.get("")
+                    .toAbsolutePath()
                     .resolve("config")
                     .resolve("soundmeta")
                     .resolve("durations.json");
