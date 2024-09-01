@@ -99,7 +99,8 @@ public final class RecipeTrie {
             var nextBranch = inserted.right();
             assert nextBranch != null;
 
-            // tail recursion: add each ingredient on the right branch path, and insert the recipe on the left at the end
+            // tail recursion: add each ingredient on the right branch path, and insert the recipe on the left at the
+            // end
             branch = nextBranch;
         }
 
@@ -146,10 +147,10 @@ public final class RecipeTrie {
             var existingEdge = value.right();
             assert existingEdge != null;
             if (ConfigGeneral.loggingRecipes) {
-                StringBuilder builder = new StringBuilder("Conflicting recipes:%n1: ")
-                    .append(recipe);
+                StringBuilder builder = new StringBuilder("Conflicting recipes:%n1: ").append(recipe);
                 int i = 2;
-                for (GT_Recipe r : existingEdge.getAll().toArray(GT_Recipe[]::new)) {
+                for (GT_Recipe r : existingEdge.getAll()
+                    .toArray(GT_Recipe[]::new)) {
                     builder.append("%n")
                         .append(i++)
                         .append(": ")
@@ -360,7 +361,7 @@ public final class RecipeTrie {
      * @param isLast     if the ingredient was the final ingredient in the route
      */
     private static void undoInsert(@NotNull Map<AbstractMapIngredient, Either<GT_Recipe, TrieBranch>> nodes,
-                                   @NotNull AbstractMapIngredient ingredient, boolean isLast) {
+        @NotNull AbstractMapIngredient ingredient, boolean isLast) {
         // undo the changes made
         if (isLast) {
             // last ingredient needs ingredient->recipe mapping removed
