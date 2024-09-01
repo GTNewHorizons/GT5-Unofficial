@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtnhlanth.Tags;
 import gtnhlanth.common.beamline.Particle;
 
-public class ParticleItem extends Item {
+public class ItemParticle extends Item {
 
     public static final int NUMBER_OF_SUBTYPES = Particle.values().length;
 
@@ -28,7 +28,7 @@ public class ParticleItem extends Item {
     @SideOnly(Side.CLIENT)
     private IIcon[] iconArray;
 
-    public ParticleItem() {
+    public ItemParticle() {
 
         this.setHasSubtypes(true);
         this.setMaxDamage(0);

@@ -12,11 +12,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gtnhlanth.Tags;
 
-public class ShieldedAccGlass extends Block {
+public class BlockShieldedAccGlass extends Block {
 
     private static final String name = "shielded_accelerator_glass";
 
-    public ShieldedAccGlass() {
+    public BlockShieldedAccGlass() {
         super(Material.glass);
         this.setBlockName("casing." + name);
         this.setBlockTextureName(Tags.MODID + ":casing." + name);
@@ -61,7 +61,7 @@ public class ShieldedAccGlass extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldClient, int xCoord, int yCoord, int zCoord, int aSide) {
-        if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof ShieldedAccGlass) return false;
+        if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof BlockShieldedAccGlass) return false;
         return super.shouldSideBeRendered(worldClient, xCoord, yCoord, zCoord, aSide);
     }
 

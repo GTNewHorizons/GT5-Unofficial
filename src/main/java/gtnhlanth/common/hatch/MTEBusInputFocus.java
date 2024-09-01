@@ -13,15 +13,15 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtnhlanth.common.item.ICanFocus;
 import gtnhlanth.util.Util;
 
-public class TileBusInputFocus extends GT_MetaTileEntity_Hatch_NbtConsumable {
+public class MTEBusInputFocus extends GT_MetaTileEntity_Hatch_NbtConsumable {
 
     private static final int INPUT_SLOTS = 4;
 
-    public TileBusInputFocus(int id, String name, String nameRegional) {
+    public MTEBusInputFocus(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", false);
     }
 
-    public TileBusInputFocus(String name, String[] descriptionArray, ITexture[][][] textures) {
+    public MTEBusInputFocus(String name, String[] descriptionArray, ITexture[][][] textures) {
         super(name, 0, INPUT_SLOTS, descriptionArray, false, textures);
     }
 
@@ -78,7 +78,7 @@ public class TileBusInputFocus extends GT_MetaTileEntity_Hatch_NbtConsumable {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new TileBusInputFocus(mName, mDescriptionArray, mTextures);
+        return new MTEBusInputFocus(mName, mDescriptionArray, mTextures);
     }
 
 }

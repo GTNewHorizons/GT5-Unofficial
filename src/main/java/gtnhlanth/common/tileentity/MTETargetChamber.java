@@ -45,21 +45,21 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.TileBusInputFocus;
-import gtnhlanth.common.hatch.TileHatchInputBeamline;
+import gtnhlanth.common.hatch.MTEBusInputFocus;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
 import gtnhlanth.common.tileentity.recipe.beamline.RecipeTC;
 import gtnhlanth.util.DescTextLocalization;
 
-public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<TargetChamber>
+public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETargetChamber>
     implements ISurvivalConstructable {
 
-    private static final IStructureDefinition<TargetChamber> STRUCTURE_DEFINITION;
+    private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-    private ArrayList<TileBusInputFocus> mInputFocus = new ArrayList<>();
+    private ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
     private static final int CASING_INDEX_FRONT = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings3, 10); // Grate
     private static final int CASING_INDEX_CENTRE = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14); // Shielded
@@ -72,7 +72,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
     // spotless:off
     static {
-    	STRUCTURE_DEFINITION = StructureDefinition.<TargetChamber>builder()
+    	STRUCTURE_DEFINITION = StructureDefinition.<MTETargetChamber>builder()
     			.addShape(
     					"base",
     					new String[][] {
@@ -86,22 +86,22 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     			.addElement('g', ofBlock(GregTech_API.sBlockCasings3, 10)) //Grate casing
     			.addElement(
     					'f',
-    					buildHatchAdder(TargetChamber.class).atLeast(Maintenance, Energy)
+    					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
     					.casingIndex(CASING_INDEX_FRONT).dot(2).buildAndChain(ofBlock(GregTech_API.sBlockCasings3, 10)))
 
-    			.addElement('j', ofBlockAdder(TargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(TargetChamber.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(TargetChamber::addBeamLineInputHatch).build())
+    			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
     			.addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
 
-    			.addElement('l', buildHatchAdder(TargetChamber.class).hatchClass(TileBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(TargetChamber::addFocusInputHatch).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(MTETargetChamber::addFocusInputHatch).build())
 
-    			.addElement('t', buildHatchAdder(TargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).dot(3).build())
+    			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).dot(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
     			.addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
     			.addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
-    			.addElement('o', buildHatchAdder(TargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
+    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
 
     			.build();
     }
@@ -119,8 +119,8 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
         if (mte == null) return false;
 
-        if (mte instanceof TileHatchInputBeamline) {
-            return this.mInputBeamline.add((TileHatchInputBeamline) mte);
+        if (mte instanceof MTEHatchInputBeamline) {
+            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
         }
 
         return false;
@@ -134,24 +134,24 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
         if (mte == null) return false;
 
-        if (mte instanceof TileBusInputFocus) {
-            return this.mInputFocus.add((TileBusInputFocus) mte);
+        if (mte instanceof MTEBusInputFocus) {
+            return this.mInputFocus.add((MTEBusInputFocus) mte);
         }
 
         return false;
     }
 
-    public TargetChamber(int id, String name, String nameRegional) {
+    public MTETargetChamber(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
-    public TargetChamber(String name) {
+    public MTETargetChamber(String name) {
         super(name);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity te) {
-        return new TargetChamber(this.mName);
+        return new MTETargetChamber(this.mName);
     }
 
     @Override
@@ -224,7 +224,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     }
 
     @Override
-    public IStructureDefinition<TargetChamber> getStructureDefinition() {
+    public IStructureDefinition<MTETargetChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -329,7 +329,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
     private BeamInformation getInputInformation() {
 
-        for (TileHatchInputBeamline in : this.mInputBeamline) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
             // if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // temporary
@@ -343,7 +343,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
     private ItemStack getFocusItemStack() {
 
-        for (TileBusInputFocus hatch : this.mInputFocus) {
+        for (MTEBusInputFocus hatch : this.mInputFocus) {
             return hatch.getContentUsageSlots()
                 .get(0);
         }

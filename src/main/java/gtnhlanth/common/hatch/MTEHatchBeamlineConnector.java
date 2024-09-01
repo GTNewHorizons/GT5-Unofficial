@@ -18,7 +18,7 @@ import gtnhlanth.common.beamline.IConnectsToBeamline;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.util.TT_Utility;
 
-public abstract class TileHatchBeamlineConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
+public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
     implements IConnectsToBeamline {
 
     private String clientLocale = "en_US";
@@ -27,12 +27,12 @@ public abstract class TileHatchBeamlineConnector<T extends DataPacket> extends G
 
     public short id = -1;
 
-    protected TileHatchBeamlineConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
+    protected MTEHatchBeamlineConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
         TT_Utility.setTier(aTier, this);
     }
 
-    protected TileHatchBeamlineConnector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    protected MTEHatchBeamlineConnector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 

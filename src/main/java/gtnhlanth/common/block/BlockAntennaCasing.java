@@ -1,10 +1,10 @@
 package gtnhlanth.common.block;
 
-public class AntennaCasing extends Casing {
+public class BlockAntennaCasing extends BlockCasing {
 
     private int antennaTier;
 
-    public AntennaCasing(int tier) {
+    public BlockAntennaCasing(int tier) {
         super("antenna_t" + tier);
         this.antennaTier = tier;
     }

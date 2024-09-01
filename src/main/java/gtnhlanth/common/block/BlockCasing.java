@@ -13,21 +13,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gtnhlanth.Tags;
 
-public class Casing extends Block {
+public class BlockCasing extends Block {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
 
     private String name;
 
-    public Casing(String name) {
+    public BlockCasing(String name) {
         super(Material.iron);
         this.name = name;
         this.setBlockTextureName(Tags.MODID + ":casing." + name);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
-    public Casing(String name, Material material) {
+    public BlockCasing(String name, Material material) {
         super(material);
         this.name = name;
         this.setBlockTextureName(Tags.MODID + ":casing." + name);

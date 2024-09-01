@@ -15,7 +15,7 @@ import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import tectech.util.TT_Utility;
 
-public class TileHatchInputBeamline extends TileHatchBeamlineConnector<BeamLinePacket> {
+public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> {
 
     private boolean delay = true;
 
@@ -27,13 +27,13 @@ public class TileHatchInputBeamline extends TileHatchBeamlineConnector<BeamLineP
     private static final Textures.BlockIcons.CustomIcon sideIcon = new Textures.BlockIcons.CustomIcon(sideIconPath);
     private static final Textures.BlockIcons.CustomIcon connIcon = new Textures.BlockIcons.CustomIcon(connIconPath);
 
-    public TileHatchInputBeamline(int id, String name, String nameRegional, int tier) {
+    public MTEHatchInputBeamline(int id, String name, String nameRegional, int tier) {
 
         super(id, name, nameRegional, tier, "");
         TT_Utility.setTier(tier, this);
     }
 
-    public TileHatchInputBeamline(String name, int tier, String[] desc, ITexture[][][] textures) {
+    public MTEHatchInputBeamline(String name, int tier, String[] desc, ITexture[][][] textures) {
         super(name, tier, desc, textures);
     }
 
@@ -57,7 +57,7 @@ public class TileHatchInputBeamline extends TileHatchBeamlineConnector<BeamLineP
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity tile) {
-        return new TileHatchInputBeamline(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchInputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

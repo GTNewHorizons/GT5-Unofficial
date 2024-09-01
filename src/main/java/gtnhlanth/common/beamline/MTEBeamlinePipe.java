@@ -25,7 +25,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.common.GT_Client;
 import gregtech.common.render.GT_TextureBuilder;
 
-public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline {
+public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
 
     private static Textures.BlockIcons.CustomIcon pipe;
 
@@ -33,11 +33,11 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
 
     private boolean active;
 
-    public TileBeamline(int id, String name, String nameRegional) {
+    public MTEBeamlinePipe(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0);
     }
 
-    public TileBeamline(String name) {
+    public MTEBeamlinePipe(String name) {
         super(name, 0);
     }
 
@@ -82,7 +82,7 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new TileBeamline(mName);
+        return new MTEBeamlinePipe(mName);
     }
 
     @Override
@@ -130,9 +130,9 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
                 IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
                 if (meta instanceof IConnectsToBeamline && meta != source) {
 
-                    if (meta instanceof TileBeamline && (((TileBeamline) meta).connectionCount == 2)) {
+                    if (meta instanceof MTEBeamlinePipe && (((MTEBeamlinePipe) meta).connectionCount == 2)) {
 
-                        ((TileBeamline) meta).markUsed();
+                        ((MTEBeamlinePipe) meta).markUsed();
                         return (IConnectsToBeamline) meta;
                     }
 

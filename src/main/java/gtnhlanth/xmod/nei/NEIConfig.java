@@ -3,7 +3,7 @@ package gtnhlanth.xmod.nei;
 import codechicken.nei.api.IConfigureNEI;
 import gtnhlanth.Tags;
 
-public class NEI_Config implements IConfigureNEI {
+public class NEIConfig implements IConfigureNEI {
 
     public static boolean isAdded = true;
 

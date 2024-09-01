@@ -28,8 +28,8 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.common.items.ID_MetaItem_03;
+import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
-import gtnhlanth.common.item.PhotolithographicMask;
 import gtnhlanth.common.register.LanthItemList;
 
 // this class is intended to be import-static-ed on every recipe script
@@ -287,9 +287,9 @@ public class GT_RecipeConstants {
         // spotless:on
         // Find the wafer used
         Wafer wafer = null;
-        PhotolithographicMask t1Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK1);
-        PhotolithographicMask t2Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK2);
-        PhotolithographicMask t3Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK3);
+        ItemPhotolithographicMask t1Item = (ItemPhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK1);
+        ItemPhotolithographicMask t2Item = (ItemPhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK2);
+        ItemPhotolithographicMask t3Item = (ItemPhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK3);
         for (ItemStack input : builder.getItemInputsBasic()) {
             if (input.getItem() instanceof GT_MetaGenerated_Item_03) {
                 int meta = input.getItemDamage() - 32000;
@@ -300,7 +300,7 @@ public class GT_RecipeConstants {
             }
 
             // Now look for beamline masks
-            if (input.getItem() instanceof PhotolithographicMask mask) {
+            if (input.getItem() instanceof ItemPhotolithographicMask mask) {
                 String spectrum = mask.getDescSpectrum();
                 if (spectrum.equals(t1Item.getDescSpectrum())) wafer = Wafer.MaskT1;
                 else if (spectrum.equals(t2Item.getDescSpectrum())) wafer = Wafer.MaskT2;

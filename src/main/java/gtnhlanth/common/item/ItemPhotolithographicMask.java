@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 
 import gtnhlanth.Tags;
 
-public class PhotolithographicMask extends Item implements ICanFocus {
+public class ItemPhotolithographicMask extends Item implements ICanFocus {
 
     private String name;
     private String descSpectrum;
 
-    public PhotolithographicMask(String name, int maxDamage, String descSpectrum) {
+    public ItemPhotolithographicMask(String name, int maxDamage, String descSpectrum) {
         super();
         this.name = name;
         this.descSpectrum = descSpectrum;

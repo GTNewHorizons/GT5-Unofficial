@@ -44,14 +44,15 @@ import gregtech.api.util.GT_Recipe;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
-public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester> implements ISurvivalConstructable {
+public class MTEDigester extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEDigester>
+    implements ISurvivalConstructable {
 
     protected int casingAmount = 0;
     protected int height = 0;
 
     private HeatingCoilLevel heatLevel;
 
-    private final IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder()
+    private final IStructureDefinition<MTEDigester> multiDefinition = StructureDefinition.<MTEDigester>builder()
         .addShape(
             mName,
             transpose(
@@ -62,21 +63,21 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
         .addElement(
             't',
-            buildHatchAdder(Digester.class)
+            buildHatchAdder(MTEDigester.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(47)
                 .dot(1)
                 .buildAndChain(GregTech_API.sBlockCasings4, 0))
         .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
         .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-        .addElement('c', ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))
+        .addElement('c', ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel))
         .build();
 
-    public Digester(String name) {
+    public MTEDigester(String name) {
         super(name);
     }
 
-    public Digester(int id, String name, String nameRegional) {
+    public MTEDigester(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
@@ -115,7 +116,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                return recipe.mSpecialValue <= Digester.this.getCoilLevel()
+                return recipe.mSpecialValue <= MTEDigester.this.getCoilLevel()
                     .getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
                         : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
@@ -155,7 +156,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new Digester(this.mName);
+        return new MTEDigester(this.mName);
     }
 
     @Override
@@ -222,7 +223,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     }
 
     @Override
-    public IStructureDefinition<Digester> getStructureDefinition() {
+    public IStructureDefinition<MTEDigester> getStructureDefinition() {
         return multiDefinition;
     }
 

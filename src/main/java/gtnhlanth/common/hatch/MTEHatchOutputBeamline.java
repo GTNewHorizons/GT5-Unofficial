@@ -13,10 +13,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
-import gtnhlanth.common.beamline.TileBeamline;
+import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import tectech.util.TT_Utility;
 
-public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
+public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
 
     private static final String activeIconPath = "iconsets/OVERLAY_BO_ACTIVE";
     private static final String sideIconPath = "iconsets/OVERLAY_BO_SIDES";
@@ -26,12 +26,12 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
     private static final Textures.BlockIcons.CustomIcon sideIcon = new Textures.BlockIcons.CustomIcon(sideIconPath);
     private static final Textures.BlockIcons.CustomIcon connIcon = new Textures.BlockIcons.CustomIcon(connIconPath);
 
-    public TileHatchOutputBeamline(int id, String name, String nameRegional, int tier) {
+    public MTEHatchOutputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");
         TT_Utility.setTier(tier, this);
     }
 
-    public TileHatchOutputBeamline(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchOutputBeamline(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -64,12 +64,12 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
         }
 
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof TileBeamline) {
+        if (meta instanceof MTEBeamlinePipe) {
 
-            ((TileBeamline) meta).markUsed();
+            ((MTEBeamlinePipe) meta).markUsed();
             return (IConnectsToBeamline) meta;
 
-        } else if (meta instanceof TileHatchInputBeamline && ((TileHatchInputBeamline) meta).canConnect(
+        } else if (meta instanceof MTEHatchInputBeamline && ((MTEHatchInputBeamline) meta).canConnect(
             base.getFrontFacing()
                 .getOpposite())) {
 
@@ -84,8 +84,8 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
         IConnectsToBeamline current = this, source = this, next;
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 100) {
-            if (next instanceof TileHatchInputBeamline) {
-                ((TileHatchInputBeamline) next).setContents(q);
+            if (next instanceof MTEHatchInputBeamline) {
+                ((MTEHatchInputBeamline) next).setContents(q);
                 break;
             }
             source = current;
@@ -132,6 +132,6 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new TileHatchOutputBeamline(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchOutputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
 }

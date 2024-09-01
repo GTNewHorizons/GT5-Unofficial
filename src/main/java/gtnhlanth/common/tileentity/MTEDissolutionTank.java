@@ -51,10 +51,11 @@ import gregtech.api.util.GT_Recipe;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
-public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank>
+public class MTEDissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEDissolutionTank>
     implements ISurvivalConstructable, ISecondaryDescribable {
 
-    private final IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
+    private final IStructureDefinition<MTEDissolutionTank> multiDefinition = StructureDefinition
+        .<MTEDissolutionTank>builder()
         .addShape(
             mName,
             transpose(
@@ -63,25 +64,25 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
                     { "ss~ss", "shhhs", "shhhs", "shhhs", "sssss" }, { "s   s", "     ", "     ", "     ", "s   s" } }))
         .addElement(
             's',
-            buildHatchAdder(DissolutionTank.class)
+            buildHatchAdder(MTEDissolutionTank.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(49)
                 .dot(1)
                 .buildAndChain(GregTech_API.sBlockCasings4, 1))
         .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
-        .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
+        .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
         .build();
 
-    public DissolutionTank(String name) {
+    public MTEDissolutionTank(String name) {
         super(name);
     }
 
-    public DissolutionTank(int id, String name, String nameRegional) {
+    public MTEDissolutionTank(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
     @Override
-    public IStructureDefinition<DissolutionTank> getStructureDefinition() {
+    public IStructureDefinition<MTEDissolutionTank> getStructureDefinition() {
         return multiDefinition;
     }
 
@@ -185,7 +186,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new DissolutionTank(this.mName);
+        return new MTEDissolutionTank(this.mName);
     }
 
     @Override
