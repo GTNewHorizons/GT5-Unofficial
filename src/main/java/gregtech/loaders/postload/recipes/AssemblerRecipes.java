@@ -48,6 +48,7 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.material.ALLOY;
 
 public class AssemblerRecipes implements Runnable {
 
@@ -3532,6 +3533,31 @@ public class AssemblerRecipes implements Runnable {
             }
 
         }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeHuge, MaterialsUEVplus.TranscendentMetal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.SuperconductorUIVBase, 64),
+                ALLOY.QUANTUM.getPlate(8),
+                ItemList.Electric_Pump_UIV.get(1))
+            .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(100))
+            .itemOutputs(ItemList.Thermal_Superconductor.get(1))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Thermal_Superconductor.get(2),
+                ALLOY.QUANTUM.getPlate(12),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SuperconductorUIVBase, 8),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SixPhasedCopper, 3),
+                ItemList.Field_Generator_UEV.get(1))
+            .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(500))
+            .itemOutputs(ItemList.Relativistic_Heat_Capacitor.get(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
     }
 
     /**

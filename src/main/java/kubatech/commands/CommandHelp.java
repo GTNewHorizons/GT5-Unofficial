@@ -28,13 +28,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
-@CommandHandler.ChildCommand
 public class CommandHelp extends CommandBase {
 
     enum Translations {
 
         POSSIBLE_COMMANDS,
-        USAGE,;
+        USAGE;
 
         final String key;
 
@@ -67,20 +66,19 @@ public class CommandHelp extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "help " + USAGE.get();
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
     }
 
     @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        p_71515_1_.addChatMessage(new ChatComponentText(POSSIBLE_COMMANDS.get()));
-        CommandHandler.commands.values()
-            .forEach(
-                c -> p_71515_1_.addChatMessage(new ChatComponentText("/kubatech " + c.getCommandUsage(p_71515_1_))));
+    public void processCommand(ICommandSender sender, String[] args) {
+        sender.addChatMessage(new ChatComponentText(POSSIBLE_COMMANDS.get()));
+        CommandHandler.childCommands.values()
+            .forEach(c -> sender.addChatMessage(new ChatComponentText("/kubatech " + c.getCommandUsage(sender))));
     }
 }

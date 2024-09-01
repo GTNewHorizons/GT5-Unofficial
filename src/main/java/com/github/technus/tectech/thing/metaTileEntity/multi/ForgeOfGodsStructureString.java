@@ -1,8 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import static com.github.technus.tectech.util.TT_Utility.appendStringArrays;
+import static com.github.technus.tectech.util.TT_Utility.replaceLetters;
+
 public abstract class ForgeOfGodsStructureString {
 
-    public static final String[][] MAIN_STRUCTURE = { {
+    public static final String[][] BEAM_SHAFT = { {
         "                                                                                                                               ",
         "                                                                                                                               ",
         "                                                                                                                               ",
@@ -1107,7 +1110,7 @@ public abstract class ForgeOfGodsStructureString {
             "                                                                                                                               " },
         { "                                                               J                                                               ",
             "                                                            BEEEEEB                                                            ",
-            "                                                         EEEE      EEE                                                         ",
+            "                                                         EEE       EEE                                                         ",
             "                                                        E             E                                                        ",
             "                                                      EE               EE                                                      ",
             "                                                     E                   E                                                     ",
@@ -1742,36 +1745,37 @@ public abstract class ForgeOfGodsStructureString {
             "                                                                                                                               ",
             "                                                                                                                               ",
             "                                                                                                                               ",
-            "                                                                                                                               " },
-        { "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                             BBBBB                                                             ",
-            "                                                           BBCCCCCBB                                                           ",
-            "                                                         BBCC     CCBB                                                         ",
-            "                                                       BBCC         CCBB                                                       ",
-            "                                                       EEC           CEE                                                       ",
-            "                                                       EC             CE                                                       ",
-            "                                                       EC             CE                                                       ",
-            "                                                       C      CCC      C                                                       ",
-            "                                                       C     C   C     C                                                       ",
-            "                                                       C     C   C     C                                                       ",
-            "                                                       C     C   C     C                                                       ",
-            "                                                       C      CCC      C                                                       ",
-            "                                                       EC             CE                                                       ",
-            "                                                       EC             CE                                                       ",
-            "                                                       EEC           CEE                                                       ",
-            "                                                       BBCC         CCBB                                                       ",
-            "                                                         BBCC     CCBB                                                         ",
-            "                                                           BBCCCCCBB                                                           ",
-            "                                                             BBBBB                                                             ",
-            "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                                                                                               ",
-            "                                                                                                                               " },
+            "                                                                                                                               " } };
+    public static final String[][] FIRST_RING = { {
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                             BBBBB                                                             ",
+        "                                                           BBCCCCCBB                                                           ",
+        "                                                         BBCC     CCBB                                                         ",
+        "                                                       BBCC         CCBB                                                       ",
+        "                                                       EEC           CEE                                                       ",
+        "                                                       EC             CE                                                       ",
+        "                                                       EC             CE                                                       ",
+        "                                                       C      CCC      C                                                       ",
+        "                                                       C     C   C     C                                                       ",
+        "                                                       C     C   C     C                                                       ",
+        "                                                       C     C   C     C                                                       ",
+        "                                                       C      CCC      C                                                       ",
+        "                                                       EC             CE                                                       ",
+        "                                                       EC             CE                                                       ",
+        "                                                       EEC           CEE                                                       ",
+        "                                                       BBCC         CCBB                                                       ",
+        "                                                         BBCC     CCBB                                                         ",
+        "                                                           BBCCCCCBB                                                           ",
+        "                                                             BBBBB                                                             ",
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                                                                                               ",
+        "                                                                                                                               " },
         { "                                                                                                                               ",
             "                                                                                                                               ",
             "                                                                                                                               ",
@@ -5426,4 +5430,6 @@ public abstract class ForgeOfGodsStructureString {
             "                                                                                                                               ",
             "                                                                                                                               ",
             "                                                                                                                               " } };
+    public static final String[][] MAIN_STRUCTURE = appendStringArrays(BEAM_SHAFT, FIRST_RING);
+    public static final String[][] FIRST_RING_AIR = replaceLetters(FIRST_RING, "L");
 }

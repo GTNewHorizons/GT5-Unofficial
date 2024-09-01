@@ -1676,6 +1676,58 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
 
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Electric_Motor_LV.get(1L),
+            GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.IronMagnetic), 'R',
+                OrePrefixes.stick.get(Materials.AnyIron), 'W', OrePrefixes.wireGt01.get(Materials.AnyCopper), 'C',
+                OrePrefixes.cableGt01.get(Materials.Tin) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Electric_Motor_LV.get(1L),
+            GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R',
+                OrePrefixes.stick.get(Materials.Steel), 'W', OrePrefixes.wireGt01.get(Materials.AnyCopper), 'C',
+                OrePrefixes.cableGt01.get(Materials.Tin) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Electric_Motor_MV.get(1L),
+            GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R',
+                OrePrefixes.stick.get(Materials.Aluminium), 'W', OrePrefixes.wireGt02.get(Materials.Cupronickel), 'C',
+                OrePrefixes.cableGt01.get(Materials.AnyCopper) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Electric_Motor_HV.get(1L),
+            GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R',
+                OrePrefixes.stick.get(Materials.StainlessSteel), 'W', OrePrefixes.wireGt04.get(Materials.Electrum), 'C',
+                OrePrefixes.cableGt02.get(Materials.Silver) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Electric_Motor_EV.get(1L),
+            GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.NeodymiumMagnetic), 'R',
+                OrePrefixes.stick.get(Materials.Titanium), 'W', OrePrefixes.wireGt04.get(Materials.BlackSteel), 'C',
+                OrePrefixes.cableGt02.get(Materials.Aluminium) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Electric_Motor_IV.get(1L),
+            GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+                | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.NeodymiumMagnetic), 'R',
+                OrePrefixes.stick.get(Materials.TungstenSteel), 'W', OrePrefixes.wireGt04.get(Materials.Graphene), 'C',
+                OrePrefixes.cableGt02.get(Materials.Tungsten) });
+
+        ItemList.ElectronicsLump.set(
+            addItem(
+                414,
+                "Lump of Electronics",
+                "How did they even produce this?",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
+
         ItemList.Tesseract.set(
             addItem(
                 Tesseract.ID,

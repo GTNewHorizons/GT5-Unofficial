@@ -16,6 +16,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.util.CommonValues;
@@ -213,12 +215,30 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Plasma Fabricator")
-            .addInfo("Controller block of the Plasma Module")
-            .addInfo("Uses a Star to to turn Metals into Plasma")
-            .addSeparator()
-            .beginStructureBlock(1, 4, 2, false)
-            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .addInfo("Controller block for the Heliothermal Plasma Fabricator, a module of the Godforge.")
+            .addInfo("Must be part of a Godforge to function.")
+            .addInfo("Used for extreme temperature matter ionization.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
+            .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
+            .addInfo("right away, some of them require certain upgrades to be unlocked.")
+            .addInfo("This module is specialized towards energy and overclock efficiency.")
+            .addInfo(TOOLTIP_BAR)
+            .beginStructureBlock(7, 7, 13, false)
+            .addStructureInfo("The structure is too complex! See schematic for details.")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }

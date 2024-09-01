@@ -49,7 +49,7 @@ public class EOH_TESR extends TileEntitySpecialRenderer {
         renderOrbitObjects(EOHRenderTile);
 
         // Render the star itself.
-        renderStar(IItemRenderer.ItemRenderType.INVENTORY);
+        renderStar(IItemRenderer.ItemRenderType.INVENTORY, 1);
         GL11.glPopAttrib();
 
         GL11.glPopMatrix();
