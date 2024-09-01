@@ -12,9 +12,9 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.common.blocks.GT_Item_Casings_Abstract;
 
-public class DEFCCasingItemBlock extends GT_Item_Casings_Abstract {
+public class ItemBlockDEFCCasing extends GT_Item_Casings_Abstract {
 
-    public DEFCCasingItemBlock(Block block) {
+    public ItemBlockDEFCCasing(Block block) {
         super(block);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);

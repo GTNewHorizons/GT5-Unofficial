@@ -43,14 +43,14 @@ import kubatech.api.utils.ModUtils;
 import kubatech.loaders.ItemLoader;
 import kubatech.loaders.item.ItemProxy;
 
-public class TeaCollection extends ItemProxy {
+public class ItemTeaCollection extends ItemProxy {
 
     protected static TeaPage teapage;
     protected static LinkedList<Achievement> achievements;
     protected Achievement achievement;
     private final String achievementname;
 
-    public TeaCollection(String unlocalizedName) {
+    public ItemTeaCollection(String unlocalizedName) {
         super("teacollection." + unlocalizedName, "tea/" + unlocalizedName);
         achievementname = "teacollection." + unlocalizedName;
     }

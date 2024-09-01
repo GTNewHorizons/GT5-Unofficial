@@ -36,7 +36,7 @@ import com.kuba6000.mobsinfo.api.utils.ItemID;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.api.enums.ItemList;
-import kubatech.loaders.item.items.TeaUltimate;
+import kubatech.loaders.item.items.ItemTeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -135,14 +135,14 @@ public class TCLoader {
 
                 @Override
                 public String getName() {
-                    return TeaUltimate.getUltimateTeaDisplayName(super.getName());
+                    return ItemTeaUltimate.getUltimateTeaDisplayName(super.getName());
                 }
             };
             ultimateTeaResearch.setPages(new ResearchPage("KT.research.ultimatetea") {
 
                 @Override
                 public String getTranslatedText() {
-                    return TeaUltimate.getUltimateTeaDisplayName(super.getTranslatedText());
+                    return ItemTeaUltimate.getUltimateTeaDisplayName(super.getTranslatedText());
                 }
             }, new ResearchPage(ultimateTeaRecipe));
             ultimateTeaResearch.setParents("INFUSION", "DEZILSMARSHMALLOW");

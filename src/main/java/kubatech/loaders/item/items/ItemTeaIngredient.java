@@ -28,9 +28,9 @@ import net.minecraft.util.EnumChatFormatting;
 
 import kubatech.loaders.item.ItemProxy;
 
-public class TeaIngredient extends ItemProxy {
+public class ItemTeaIngredient extends ItemProxy {
 
-    public TeaIngredient(String unlocalizedName) {
+    public ItemTeaIngredient(String unlocalizedName) {
         super("teaingredient." + unlocalizedName, "teaingredient/" + unlocalizedName);
     }
 

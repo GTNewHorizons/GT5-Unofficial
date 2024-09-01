@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public abstract class EIGMode {
 
@@ -98,15 +98,15 @@ public abstract class EIGMode {
     /**
      * Attempts to create a new bucket from a given item. Returns if the item cannot be inserted into the EIG.
      *
-     * @see IEIGBucketFactory#tryCreateBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse, ItemStack)
-     * @param greenhouse The {@link GT_MetaTileEntity_ExtremeIndustrialGreenhouse} that will contain the seed.
+     * @see IEIGBucketFactory#tryCreateBucket(MTEExtremeIndustrialGreenhouse, ItemStack)
+     * @param greenhouse The {@link MTEExtremeIndustrialGreenhouse} that will contain the seed.
      * @param input      The {@link ItemStack} for the input item.
      * @param maxConsume The maximum amount of items to consume.
      * @param simulate   Whether to actually consume the seed.
      * @return Null if no bucket could be created from the item.
      */
-    public EIGBucket tryCreateNewBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack input,
-        int maxConsume, boolean simulate) {
+    public EIGBucket tryCreateNewBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input, int maxConsume,
+        boolean simulate) {
         // Validate inputs
         if (input == null) return null;
         maxConsume = Math.min(input.stackSize, maxConsume);

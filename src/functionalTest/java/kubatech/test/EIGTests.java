@@ -57,7 +57,7 @@ import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 import ic2.core.item.ItemCropSeed;
 import kubatech.api.eig.EIGDropTable;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 public class EIGTests {
@@ -190,7 +190,7 @@ public class EIGTests {
         return expected;
     }
 
-    EIGDropTable getEIGDrops(GT_MetaTileEntity_ExtremeIndustrialGreenhouse EIG, ItemStack stack) {
+    EIGDropTable getEIGDrops(MTEExtremeIndustrialGreenhouse EIG, ItemStack stack) {
         EIGDropTable generated = new EIGDropTable();
         EIGIC2Bucket bucket = new EIGIC2Bucket(stack, stack.stackSize, null, false);
         bucket.revalidate(EIG);
@@ -222,8 +222,7 @@ public class EIGTests {
             0,
             EIG_CONTROLLER_METADATA);
         IGregTechTileEntity te = (IGregTechTileEntity) myWorld.getTileEntity(0, 81, 0);
-        GT_MetaTileEntity_ExtremeIndustrialGreenhouse EIG = (GT_MetaTileEntity_ExtremeIndustrialGreenhouse) te
-            .getMetaTileEntity();
+        MTEExtremeIndustrialGreenhouse EIG = (MTEExtremeIndustrialGreenhouse) te.getMetaTileEntity();
 
         // update stats of crop TE to those provided by the EIG
         cropTile.humidity = EIGIC2Bucket.getHumidity(EIG, false);

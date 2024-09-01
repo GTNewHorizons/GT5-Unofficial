@@ -36,9 +36,9 @@ import kubatech.loaders.block.kubablock.BlockProxy;
 import kubatech.loaders.block.kubablock.IProxyTileEntityProvider;
 import kubatech.tileentity.TeaStorageTile;
 
-public class TeaStorage extends BlockProxy implements IProxyTileEntityProvider {
+public class BlockTeaStorage extends BlockProxy implements IProxyTileEntityProvider {
 
-    public TeaStorage() {
+    public BlockTeaStorage() {
         super("tea_storage", "tea_storage");
     }
 

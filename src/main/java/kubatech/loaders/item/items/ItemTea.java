@@ -29,12 +29,12 @@ import net.minecraft.world.World;
 
 import kubatech.loaders.item.ItemProxy;
 
-public class Tea extends ItemProxy {
+public class ItemTea extends ItemProxy {
 
     private final int heal;
     private final float saturation;
 
-    public Tea(String unlocalizedName, int heal, float saturation) {
+    public ItemTea(String unlocalizedName, int heal, float saturation) {
         super("tea." + unlocalizedName, "tea/" + unlocalizedName);
         this.heal = heal;
         this.saturation = saturation;

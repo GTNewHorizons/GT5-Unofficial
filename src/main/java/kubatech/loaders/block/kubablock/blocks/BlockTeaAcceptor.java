@@ -33,9 +33,9 @@ import kubatech.loaders.block.kubablock.BlockProxy;
 import kubatech.loaders.block.kubablock.IProxyTileEntityProvider;
 import kubatech.tileentity.TeaAcceptorTile;
 
-public class TeaAcceptor extends BlockProxy implements IProxyTileEntityProvider {
+public class BlockTeaAcceptor extends BlockProxy implements IProxyTileEntityProvider {
 
-    public TeaAcceptor() {
+    public BlockTeaAcceptor() {
         super("tea_acceptor", "tea_acceptor", "blank");
     }
 

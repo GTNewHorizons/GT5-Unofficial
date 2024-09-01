@@ -54,8 +54,7 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
 
-public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_DEFusionCrafter>
-    implements ISurvivalConstructable {
+public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCrafter> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = (1 << 7) + (15 + 48);
     private int mTierCasing = 0;
@@ -63,17 +62,17 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
     private int mCasing = 0;
 
     @SuppressWarnings("unused")
-    public GT_MetaTileEntity_DEFusionCrafter(int aID, String aName, String aNameRegional) {
+    public MTEDEFusionCrafter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_DEFusionCrafter(String aName) {
+    public MTEDEFusionCrafter(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DEFusionCrafter(mName);
+        return new MTEDEFusionCrafter(mName);
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -85,8 +84,8 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
         Pair.of(BlockLoader.defcCasingBlock, 10),
         Pair.of(BlockLoader.defcCasingBlock, 11),
         Pair.of(BlockLoader.defcCasingBlock, 12));
-    private static final IStructureDefinition<GT_MetaTileEntity_DEFusionCrafter> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_DEFusionCrafter>builder()
+    private static final IStructureDefinition<MTEDEFusionCrafter> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEDEFusionCrafter>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
@@ -104,7 +103,7 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
                 })) // spotless:on
         .addElement(
             'N',
-            buildHatchAdder(GT_MetaTileEntity_DEFusionCrafter.class)
+            buildHatchAdder(MTEDEFusionCrafter.class)
                 .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
@@ -122,7 +121,7 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
         .build();
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_DEFusionCrafter> getStructureDefinition() {
+    public IStructureDefinition<MTEDEFusionCrafter> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 

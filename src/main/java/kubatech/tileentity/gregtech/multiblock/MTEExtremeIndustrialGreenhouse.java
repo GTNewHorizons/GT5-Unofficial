@@ -125,8 +125,7 @@ import kubatech.client.effect.CropRenderer;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
-public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
-    extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeIndustrialGreenhouse> {
+public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse> {
 
     /***
      * BALANCE OF THE IC2 MODE:
@@ -209,8 +208,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     private int mCasing = 0;
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_ExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_ExtremeIndustrialGreenhouse>builder()
+    private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEExtremeIndustrialGreenhouse>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
@@ -226,16 +225,10 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             'c',
             ofChain(
                 onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)),
-                ofHatchAdder(
-                    GT_MetaTileEntity_ExtremeIndustrialGreenhouse::addEnergyInputToMachineList,
-                    CASING_INDEX,
-                    1),
-                ofHatchAdder(
-                    GT_MetaTileEntity_ExtremeIndustrialGreenhouse::addMaintenanceToMachineList,
-                    CASING_INDEX,
-                    1),
-                ofHatchAdder(GT_MetaTileEntity_ExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(GT_MetaTileEntity_ExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX, 1)))
+                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addEnergyInputToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addMaintenanceToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX, 1)))
         .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)))
         .addElement(
             'l',
@@ -260,7 +253,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         .build();
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_ExtremeIndustrialGreenhouse> getStructureDefinition() {
+    public IStructureDefinition<MTEExtremeIndustrialGreenhouse> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -354,17 +347,17 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
     // region (de)constructor
 
-    public GT_MetaTileEntity_ExtremeIndustrialGreenhouse(int aID, String aName, String aNameRegional) {
+    public MTEExtremeIndustrialGreenhouse(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_ExtremeIndustrialGreenhouse(String aName) {
+    public MTEExtremeIndustrialGreenhouse(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_ExtremeIndustrialGreenhouse(this.mName);
+        return new MTEExtremeIndustrialGreenhouse(this.mName);
     }
 
     @Override
@@ -926,10 +919,10 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
     private static class KT_ModulaUIContainer_ExtremeIndustrialGreenhouse extends ModularUIContainer {
 
-        final WeakReference<GT_MetaTileEntity_ExtremeIndustrialGreenhouse> parent;
+        final WeakReference<MTEExtremeIndustrialGreenhouse> parent;
 
         public KT_ModulaUIContainer_ExtremeIndustrialGreenhouse(ModularUIContext context, ModularWindow mainWindow,
-            GT_MetaTileEntity_ExtremeIndustrialGreenhouse mte) {
+            MTEExtremeIndustrialGreenhouse mte) {
             super(context, mainWindow);
             parent = new WeakReference<>(mte);
         }
@@ -942,7 +935,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             if (aSlotIndex >= 36) return super.transferStackInSlot(aPlayer, aSlotIndex);
             final ItemStack aStack = s.getStack();
             if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            GT_MetaTileEntity_ExtremeIndustrialGreenhouse mte = parent.get();
+            MTEExtremeIndustrialGreenhouse mte = parent.get();
             if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             // if (mte.buckets.size() >= mte.maxSeedTypes) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (mte.mMaxProgresstime > 0) {

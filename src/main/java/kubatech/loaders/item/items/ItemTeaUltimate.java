@@ -59,9 +59,9 @@ import kubatech.api.utils.ModUtils;
 import kubatech.api.utils.StringUtils;
 import kubatech.loaders.item.IItemProxyGUI;
 
-public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
+public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI {
 
-    public TeaUltimate() {
+    public ItemTeaUltimate() {
         super("ultimate_tea");
     }
 

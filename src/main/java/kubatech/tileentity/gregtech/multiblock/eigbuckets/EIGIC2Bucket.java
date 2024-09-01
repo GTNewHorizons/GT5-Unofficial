@@ -31,7 +31,7 @@ import ic2.core.crop.TileEntityCrop;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public class EIGIC2Bucket extends EIGBucket {
 
@@ -85,7 +85,7 @@ public class EIGIC2Bucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
+        public EIGBucket tryCreateBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
             // Check if input is a seed.
             if (!ItemList.IC2_Crop_Seeds.isStackEqual(input, true, true)) return null;
             if (!input.hasTagCompound()) return null;
@@ -130,7 +130,7 @@ public class EIGIC2Bucket extends EIGBucket {
         this.isValid = false;
     }
 
-    private EIGIC2Bucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack seed) {
+    private EIGIC2Bucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack seed) {
         super(seed, 1, null);
         this.useNoHumidity = greenhouse.isInNoHumidityMode();
         this.recalculateDrops(greenhouse);
@@ -184,7 +184,7 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public boolean revalidate(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.recalculateDrops(greenhouse);
         return this.isValid();
     }
@@ -197,9 +197,9 @@ public class EIGIC2Bucket extends EIGBucket {
     /**
      * (Re-)calculates the pre-generated drop table for this bucket.
      *
-     * @param greenhouse The {@link GT_MetaTileEntity_ExtremeIndustrialGreenhouse} that contains this bucket.
+     * @param greenhouse The {@link MTEExtremeIndustrialGreenhouse} that contains this bucket.
      */
-    public void recalculateDrops(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public void recalculateDrops(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.isValid = false;
         World world = greenhouse.getBaseMetaTileEntity()
             .getWorld();
@@ -716,10 +716,10 @@ public class EIGIC2Bucket extends EIGBucket {
      * @see EIGIC2Bucket#IS_ON_WET_FARMLAND
      * @see EIGIC2Bucket#WATER_STORAGE_VALUE
      * @see TileEntityCrop#updateHumidity()
-     * @param greenhouse The {@link GT_MetaTileEntity_ExtremeIndustrialGreenhouse} that holds the seed.
+     * @param greenhouse The {@link MTEExtremeIndustrialGreenhouse} that holds the seed.
      * @return The humidity environmental value at the controller's location.
      */
-    public static byte getHumidity(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, boolean useNoHumidity) {
+    public static byte getHumidity(MTEExtremeIndustrialGreenhouse greenhouse, boolean useNoHumidity) {
         if (useNoHumidity) return 0;
         int value = Crops.instance.getHumidityBiomeBonus(
             greenhouse.getBaseMetaTileEntity()
@@ -738,10 +738,10 @@ public class EIGIC2Bucket extends EIGBucket {
      * @see EIGIC2Bucket#NUMBER_OF_DIRT_BLOCKS_UNDER
      * @see EIGIC2Bucket#FERTILIZER_STORAGE_VALUE
      * @see TileEntityCrop#updateNutrients()
-     * @param greenhouse The {@link GT_MetaTileEntity_ExtremeIndustrialGreenhouse} that holds the seed.
+     * @param greenhouse The {@link MTEExtremeIndustrialGreenhouse} that holds the seed.
      * @return The nutrient environmental value at the controller's location.
      */
-    public static byte getNutrients(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public static byte getNutrients(MTEExtremeIndustrialGreenhouse greenhouse) {
         int value = Crops.instance.getNutrientBiomeBonus(
             greenhouse.getBaseMetaTileEntity()
                 .getBiome());
@@ -756,10 +756,10 @@ public class EIGIC2Bucket extends EIGBucket {
      * @see EIGIC2Bucket#CROP_OBSTRUCTION_VALUE
      * @see EIGIC2Bucket#CROP_CAN_SEE_SKY
      * @see TileEntityCrop#updateAirQuality()
-     * @param greenhouse The {@link GT_MetaTileEntity_ExtremeIndustrialGreenhouse} that holds the seed.
+     * @param greenhouse The {@link MTEExtremeIndustrialGreenhouse} that holds the seed.
      * @return The air quality environmental value at the controller's location.
      */
-    public static byte getAirQuality(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public static byte getAirQuality(MTEExtremeIndustrialGreenhouse greenhouse) {
         // clamp height bonus to 0-4, use the height of the crop itself
         // TODO: check if we want to add the extra +2 for the actual height of the crop stick in the EIG.
         int value = Math.max(
@@ -784,8 +784,7 @@ public class EIGIC2Bucket extends EIGBucket {
         public Set<String> reqBlockOreDict = new HashSet<>();
         private int lightLevel = 15;
 
-        public FakeTileEntityCrop(EIGIC2Bucket bucket, GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse,
-            int[] xyz) {
+        public FakeTileEntityCrop(EIGIC2Bucket bucket, MTEExtremeIndustrialGreenhouse greenhouse, int[] xyz) {
             super();
             this.isValid = false;
             this.ticker = 1;

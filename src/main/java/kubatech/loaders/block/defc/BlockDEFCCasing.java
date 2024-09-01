@@ -16,13 +16,13 @@ import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import kubatech.Tags;
 import kubatech.api.enums.ItemList;
 
-public class DEFCCasingBlock extends GT_Block_Casings_Abstract {
+public class BlockDEFCCasing extends GT_Block_Casings_Abstract {
 
     @SideOnly(Side.CLIENT)
     private IIcon[] texture;
 
-    public DEFCCasingBlock() {
-        super(DEFCCasingItemBlock.class, "defc.casing", Material.anvil);
+    public BlockDEFCCasing() {
+        super(ItemBlockDEFCCasing.class, "defc.casing", Material.anvil);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
         this.setCreativeTab(KT);

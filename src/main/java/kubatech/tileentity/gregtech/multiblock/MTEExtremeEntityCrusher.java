@@ -130,8 +130,7 @@ import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
 
-public class GT_MetaTileEntity_ExtremeEntityCrusher
-    extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeEntityCrusher>
+public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
@@ -141,12 +140,12 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     private final WeaponCache weaponCache;
 
     @SuppressWarnings("unused")
-    public GT_MetaTileEntity_ExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
+    public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         weaponCache = new WeaponCache(mInventory);
     }
 
-    public GT_MetaTileEntity_ExtremeEntityCrusher(String aName) {
+    public MTEExtremeEntityCrusher(String aName) {
         super(aName);
         weaponCache = new WeaponCache(mInventory);
         if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.register(this);
@@ -170,8 +169,8 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     private static final Item poweredSpawnerItem = Item.getItemFromBlock(EnderIO.blockPoweredSpawner);
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_ExtremeEntityCrusher> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_ExtremeEntityCrusher>builder()
+    private static final IStructureDefinition<MTEExtremeEntityCrusher> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEExtremeEntityCrusher>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
@@ -187,7 +186,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
         .addElement(
             'C',
-            buildHatchAdder(GT_MetaTileEntity_ExtremeEntityCrusher.class)
+            buildHatchAdder(MTEExtremeEntityCrusher.class)
                 .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
@@ -251,7 +250,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_ExtremeEntityCrusher> getStructureDefinition() {
+    public IStructureDefinition<MTEExtremeEntityCrusher> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -311,7 +310,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ExtremeEntityCrusher(this.mName);
+        return new MTEExtremeEntityCrusher(this.mName);
     }
 
     @Override
@@ -783,10 +782,10 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
 
     private static class EECFakePlayer extends FakePlayer {
 
-        GT_MetaTileEntity_ExtremeEntityCrusher mte;
+        MTEExtremeEntityCrusher mte;
         ItemStack currentWeapon;
 
-        public EECFakePlayer(GT_MetaTileEntity_ExtremeEntityCrusher mte) {
+        public EECFakePlayer(MTEExtremeEntityCrusher mte) {
             super(
                 (WorldServer) mte.getBaseMetaTileEntity()
                     .getWorld(),

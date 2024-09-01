@@ -38,7 +38,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import kubatech.Tags;
 
-public class NEI_Config implements IConfigureNEI {
+public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {

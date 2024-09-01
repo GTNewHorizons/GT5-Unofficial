@@ -90,10 +90,10 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
+import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary;
 
 public class RecipeLoader {
 
@@ -104,7 +104,7 @@ public class RecipeLoader {
     public static void registerMTEs() {
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             ExtremeEntityCrusher.set(
-                new GT_MetaTileEntity_ExtremeEntityCrusher(
+                new MTEExtremeEntityCrusher(
                     ExtremeEntityCrusherController.ID,
                     "multimachine.entitycrusher",
                     "Extreme Entity Crusher").getStackForm(1));
@@ -112,21 +112,21 @@ public class RecipeLoader {
 
         if (Forestry.isModLoaded()) {
             ExtremeIndustrialApiary.set(
-                new GT_MetaTileEntity_MegaIndustrialApiary(
+                new MTEMegaIndustrialApiary(
                     ExtremeIndustrialApiaryController.ID,
                     "multimachine.extremeapiary",
                     "Industrial Apicultural Acclimatiser and Drone Domestication Station").getStackForm(1));
         }
 
         ExtremeIndustrialGreenhouse.set(
-            new GT_MetaTileEntity_ExtremeIndustrialGreenhouse(
+            new MTEExtremeIndustrialGreenhouse(
                 ExtremeIndustrialGreenhouseController.ID,
                 "multimachine.extremegreenhouse",
                 "Extreme Industrial Greenhouse").getStackForm(1));
 
         if (DraconicEvolution.isModLoaded()) {
             DraconicEvolutionFusionCrafter.set(
-                new GT_MetaTileEntity_DEFusionCrafter(
+                new MTEDEFusionCrafter(
                     DraconicEvolutionFusionCrafterController.ID,
                     "multimachine.defusioncrafter",
                     "Draconic Evolution Fusion Crafter").getStackForm(1));
@@ -165,8 +165,7 @@ public class RecipeLoader {
                 .duration(5 * MINUTES)
                 .addTo(AssemblyLine);
 
-            GT_MetaTileEntity_ExtremeIndustrialGreenhouse
-                .addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            MTEExtremeIndustrialGreenhouse.addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
         }
 
         GT_ModHandler.addCraftingRecipe(
@@ -177,9 +176,9 @@ public class RecipeLoader {
                 gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', OrePrefixes.circuit.get(Materials.ZPM) });
 
         // Vanilla should always be loaded
-        GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
+        MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
         // IC2 should always be loaded
-        GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
+        MTEExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
 
         if (DraconicEvolution.isModLoaded()) {
             // Controller recipe added in TecTech

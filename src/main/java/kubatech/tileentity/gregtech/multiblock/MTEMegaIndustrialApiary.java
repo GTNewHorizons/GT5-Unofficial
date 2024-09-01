@@ -129,8 +129,8 @@ import kubatech.api.DynamicInventory;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 
-public class GT_MetaTileEntity_MegaIndustrialApiary
-    extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary> implements ISurvivalConstructable {
+public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
+    implements ISurvivalConstructable {
 
     private byte mGlassTier = 0;
     private int mCasing = 0;
@@ -167,8 +167,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         {"               ","               ","               ","               ","               ","               ","      GGG      ","      GHG      ","      GGG      ","               ","               ","               ","               ","               ","               "}
     }); // spotless:on
 
-    private static final IStructureDefinition<GT_MetaTileEntity_MegaIndustrialApiary> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_MegaIndustrialApiary>builder()
+    private static final IStructureDefinition<MTEMegaIndustrialApiary> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMegaIndustrialApiary>builder()
         .addShape(STRUCTURE_PIECE_MAIN, struct)
         .addShape(
             STRUCTURE_PIECE_MAIN_SURVIVAL,
@@ -184,8 +184,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',
-            buildHatchAdder(GT_MetaTileEntity_MegaIndustrialApiary.class)
-                .atLeast(InputBus, OutputBus, Energy, Maintenance)
+            buildHatchAdder(MTEMegaIndustrialApiary.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings1, 10))))
@@ -218,17 +217,16 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         .addElement(
             'W',
             ofChain(ofBlock(Blocks.water, 0), ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
-        .addElement('F', new IStructureElementNoPlacement<GT_MetaTileEntity_MegaIndustrialApiary>() {
+        .addElement('F', new IStructureElementNoPlacement<MTEMegaIndustrialApiary>() {
 
             @Override
-            public boolean check(GT_MetaTileEntity_MegaIndustrialApiary mte, World world, int x, int y, int z) {
+            public boolean check(MTEMegaIndustrialApiary mte, World world, int x, int y, int z) {
                 mte.flowerCheck(world, x, y, z);
                 return true;
             }
 
             @Override
-            public boolean spawnHint(GT_MetaTileEntity_MegaIndustrialApiary mte, World world, int x, int y, int z,
-                ItemStack trigger) {
+            public boolean spawnHint(MTEMegaIndustrialApiary mte, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 - 1);
                 return true;
             }
@@ -236,11 +234,11 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         .build();
 
     @SuppressWarnings("unused")
-    public GT_MetaTileEntity_MegaIndustrialApiary(int aID, String aName, String aNameRegional) {
+    public MTEMegaIndustrialApiary(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_MegaIndustrialApiary(String aName) {
+    public MTEMegaIndustrialApiary(String aName) {
         super(aName);
     }
 
@@ -281,7 +279,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_MegaIndustrialApiary> getStructureDefinition() {
+    public IStructureDefinition<MTEMegaIndustrialApiary> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -602,7 +600,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_MegaIndustrialApiary(this.mName);
+        return new MTEMegaIndustrialApiary(this.mName);
     }
 
     @Override
@@ -649,10 +647,10 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
     private static class KT_ModulaUIContainer_MegaIndustrialApiary extends ModularUIContainer {
 
-        final WeakReference<GT_MetaTileEntity_MegaIndustrialApiary> parent;
+        final WeakReference<MTEMegaIndustrialApiary> parent;
 
         public KT_ModulaUIContainer_MegaIndustrialApiary(ModularUIContext context, ModularWindow mainWindow,
-            GT_MetaTileEntity_MegaIndustrialApiary mte) {
+            MTEMegaIndustrialApiary mte) {
             super(context, mainWindow);
             parent = new WeakReference<>(mte);
         }
@@ -665,7 +663,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             if (aSlotIndex >= 36) return super.transferStackInSlot(aPlayer, aSlotIndex);
             final ItemStack aStack = s.getStack();
             if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            GT_MetaTileEntity_MegaIndustrialApiary mte = parent.get();
+            MTEMegaIndustrialApiary mte = parent.get();
             if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (mte.mStorage.size() >= mte.mMaxSlots) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (beeRoot.getType(aStack) == EnumBeeType.QUEEN) {
@@ -1062,7 +1060,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
         static final Map<ItemID, ItemStack> dropstacks = new HashMap<>();
 
-        public List<ItemStack> getDrops(final GT_MetaTileEntity_MegaIndustrialApiary MTE, final double timePassed) {
+        public List<ItemStack> getDrops(final MTEMegaIndustrialApiary MTE, final double timePassed) {
             drops.forEach(d -> {
                 MTE.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
                 if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
