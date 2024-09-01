@@ -20,7 +20,7 @@ import kekztech.Items;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
 import kekztech.common.items.ErrorItem;
-import kekztech.common.items.MetaItem_CraftingComponent;
+import kekztech.common.items.MetaItemCraftingComponent;
 
 public class Assembler implements Runnable {
 
@@ -244,7 +244,7 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_UIV)
             .addTo(assemblerRecipes);
 
-        final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
+        final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // YSZ Unit
 

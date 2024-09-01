@@ -31,7 +31,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
-public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonitor<IAEFluidStack> {
+public class MTEHatchTFFT extends GT_MetaTileEntity_Hatch implements IMEMonitor<IAEFluidStack> {
 
     @Optional.Interface(
         iface = "appeng.api.storage.IExternalStorageHandler",
@@ -43,7 +43,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
         @Optional.Method(modid = "appliedenergistics2")
         public boolean canHandle(TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource mySrc) {
             return channel == StorageChannel.FLUIDS && te instanceof BaseMetaTileEntity
-                && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof GTMTE_TFFTHatch;
+                && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof MTEHatchTFFT;
         }
 
         @Override
@@ -51,7 +51,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
         public IMEInventory getInventory(TileEntity te, ForgeDirection d, StorageChannel channel,
             BaseActionSource src) {
             if (channel == StorageChannel.FLUIDS) {
-                return ((GTMTE_TFFTHatch) (((BaseMetaTileEntity) te).getMetaTileEntity()));
+                return ((MTEHatchTFFT) (((BaseMetaTileEntity) te).getMetaTileEntity()));
             }
             return null;
         }
@@ -61,13 +61,13 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
         "iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
-    private GTMTE_TFFT controller;
+    private MTETankTFFT controller;
 
-    public GTMTE_TFFTHatch(int aID, String aName, String aNameRegional) {
+    public MTEHatchTFFT(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 3, 0, "All-in-one access for the T.F.F.T");
     }
 
-    public GTMTE_TFFTHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchTFFT(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -102,7 +102,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GTMTE_TFFTHatch(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchTFFT(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
         return (controller != null) ? controller.getTankInfo() : null;
     }
 
-    public void bind(GTMTE_TFFT controller) {
+    public void bind(MTETankTFFT controller) {
         this.controller = controller;
     }
 
@@ -156,7 +156,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
     @Optional.Method(modid = "appliedenergistics2")
     public IItemList<IAEFluidStack> getAvailableItems(IItemList out, int iteration) {
         if (controller != null) {
-            for (int i = 0; i < GTMTE_TFFT.MAX_DISTINCT_FLUIDS; i++) {
+            for (int i = 0; i < MTETankTFFT.MAX_DISTINCT_FLUIDS; i++) {
                 if (!controller.STORE[i].isEmpty()) {
                     IAEFluidStack s = AEFluidStack.create(controller.STORE[i].get());
                     s.setStackSize(controller.STORE[i].amount());
@@ -172,7 +172,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
     public IItemList<IAEFluidStack> getStorageList() {
         IItemList<IAEFluidStack> fluidList = new FluidList();
         if (controller != null) {
-            for (int i = 0; i < GTMTE_TFFT.MAX_DISTINCT_FLUIDS; i++) {
+            for (int i = 0; i < MTETankTFFT.MAX_DISTINCT_FLUIDS; i++) {
                 if (!controller.STORE[i].isEmpty()) {
                     IAEFluidStack s = AEFluidStack.create(controller.STORE[i].get());
                     s.setStackSize(controller.STORE[i].amount());
@@ -207,14 +207,14 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
     @Optional.Method(modid = "appliedenergistics2")
     public boolean isPrioritized(IAEFluidStack input) {
         if (controller == null || input == null) return false;
-        return controller.contains(input.getFluidStack()) || controller.fluidCount() < GTMTE_TFFT.MAX_DISTINCT_FLUIDS;
+        return controller.contains(input.getFluidStack()) || controller.fluidCount() < MTETankTFFT.MAX_DISTINCT_FLUIDS;
     }
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public boolean canAccept(IAEFluidStack input) {
         if (controller == null || input == null) return false;
-        return controller.contains(input.getFluidStack()) || controller.fluidCount() < GTMTE_TFFT.MAX_DISTINCT_FLUIDS;
+        return controller.contains(input.getFluidStack()) || controller.fluidCount() < MTETankTFFT.MAX_DISTINCT_FLUIDS;
     }
 
     @Override

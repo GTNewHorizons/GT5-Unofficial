@@ -4,7 +4,7 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import kekztech.KekzCore;
 
-public class KT_UITextures {
+public class KTUITextures {
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = UITexture
         .fullImage(KekzCore.MODID, "gui/overlay_button/wireless_on");

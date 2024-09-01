@@ -8,13 +8,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Utility;
 import kekztech.Items;
-import kekztech.common.items.MetaItem_CraftingComponent;
+import kekztech.common.items.MetaItemCraftingComponent;
 
 public class ChemicalReactor implements Runnable {
 
     @Override
     public void run() {
-        final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
+        final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // Ceria Dust
         GT_Values.RA.stdBuilder()

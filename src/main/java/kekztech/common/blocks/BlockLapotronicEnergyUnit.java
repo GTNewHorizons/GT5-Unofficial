@@ -17,11 +17,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import kekztech.common.itemBlocks.IB_LapotronicEnergyUnit;
+import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
 
-public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
+public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
-    private static final Block_LapotronicEnergyUnit INSTANCE = new Block_LapotronicEnergyUnit();
+    private static final BlockLapotronicEnergyUnit INSTANCE = new BlockLapotronicEnergyUnit();
 
     public enum IconBaseSide implements IIconContainer {
 
@@ -29,7 +29,7 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
         @Override
         public IIcon getIcon() {
-            return Block_LapotronicEnergyUnit.INSTANCE.iconBaseSide;
+            return BlockLapotronicEnergyUnit.INSTANCE.iconBaseSide;
         }
 
         @Override
@@ -74,7 +74,7 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
     private IIcon iconUltimateMegaSide;
     private IIcon iconUltimateMegaTop;
 
-    private Block_LapotronicEnergyUnit() {
+    private BlockLapotronicEnergyUnit() {
         super(Material.iron);
     }
 
@@ -84,7 +84,7 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
         INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
         INSTANCE.setHardness(5.0f);
         INSTANCE.setResistance(6.0f);
-        GameRegistry.registerBlock(INSTANCE, IB_LapotronicEnergyUnit.class, blockName);
+        GameRegistry.registerBlock(INSTANCE, ItemBlockLapotronicEnergyUnit.class, blockName);
 
         return INSTANCE;
     }

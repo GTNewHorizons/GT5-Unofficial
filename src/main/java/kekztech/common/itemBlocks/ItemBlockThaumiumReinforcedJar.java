@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class IB_IchorJar extends ItemBlock {
+public class ItemBlockThaumiumReinforcedJar extends ItemBlock {
 
-    public IB_IchorJar(Block block) {
+    public ItemBlockThaumiumReinforcedJar(Block block) {
         super(block);
     }
 

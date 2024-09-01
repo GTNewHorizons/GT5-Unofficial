@@ -4,13 +4,13 @@ import net.minecraft.block.Block;
 
 import gregtech.api.enums.Mods;
 import kekztech.KekzCore;
-import kekztech.common.blocks.Block_GDCUnit;
-import kekztech.common.blocks.Block_IchorJar;
-import kekztech.common.blocks.Block_LapotronicEnergyUnit;
-import kekztech.common.blocks.Block_LargeHexPlate;
-import kekztech.common.blocks.Block_TFFTStorageField;
-import kekztech.common.blocks.Block_ThaumiumReinforcedJar;
-import kekztech.common.blocks.Block_YSZUnit;
+import kekztech.common.blocks.BlockGDCUnit;
+import kekztech.common.blocks.BlockIchorJar;
+import kekztech.common.blocks.BlockLapotronicEnergyUnit;
+import kekztech.common.blocks.BlockLargeHexPlate;
+import kekztech.common.blocks.BlockTFFTStorageField;
+import kekztech.common.blocks.BlockThaumiumReinforcedJar;
+import kekztech.common.blocks.BlockYSZUnit;
 
 public class Blocks {
 
@@ -38,24 +38,24 @@ public class Blocks {
     }
 
     private static void registerBlocks_SOFC() {
-        yszUnit = Block_YSZUnit.registerBlock();
-        gdcUnit = Block_GDCUnit.registerBlock();
+        yszUnit = BlockYSZUnit.registerBlock();
+        gdcUnit = BlockGDCUnit.registerBlock();
     }
 
     private static void registerBlocks_TFFT() {
-        tfftStorageField = Block_TFFTStorageField.registerBlock();
+        tfftStorageField = BlockTFFTStorageField.registerBlock();
     }
 
     private static void registerBlocks_Jars() {
-        jarThaumiumReinforced = Block_ThaumiumReinforcedJar.registerBlock();
-        jarIchor = Block_IchorJar.registerBlock();
+        jarThaumiumReinforced = BlockThaumiumReinforcedJar.registerBlock();
+        jarIchor = BlockIchorJar.registerBlock();
     }
 
     private static void registerBlocks_LSC() {
-        lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
+        lscLapotronicEnergyUnit = BlockLapotronicEnergyUnit.registerBlock();
     }
 
     private static void registerBlocks_Cosmetics() {
-        largeHexPlate = Block_LargeHexPlate.registerBlock();
+        largeHexPlate = BlockLargeHexPlate.registerBlock();
     }
 }

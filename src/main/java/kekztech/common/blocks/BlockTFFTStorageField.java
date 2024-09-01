@@ -18,13 +18,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import kekztech.KekzCore;
-import kekztech.common.itemBlocks.IB_TFFTStorageField;
-import kekztech.common.tileentities.GTMTE_TFFT;
+import kekztech.common.itemBlocks.ItemBlockTFFTStorageField;
+import kekztech.common.tileentities.MTETankTFFT;
 
-public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
+public class BlockTFFTStorageField extends BaseGTUpdateableBlock {
 
-    private static final Block_TFFTStorageField INSTANCE = new Block_TFFTStorageField();
-    private static final int SUB_BLOCK_COUNT = GTMTE_TFFT.Field.VALUES.length + 1;
+    private static final BlockTFFTStorageField INSTANCE = new BlockTFFTStorageField();
+    private static final int SUB_BLOCK_COUNT = MTETankTFFT.Field.VALUES.length + 1;
     private static final IIcon[] textures = new IIcon[SUB_BLOCK_COUNT];
 
     public enum TFFTCasingIcon implements IIconContainer {
@@ -51,10 +51,10 @@ public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
     static {
         GT_Utility.addTexturePage((byte) 12);
         Textures.BlockIcons
-            .setCasingTexture((byte) 12, (byte) 127, TextureFactory.of(Block_TFFTStorageField.TFFTCasingIcon.INSTANCE));
+            .setCasingTexture((byte) 12, (byte) 127, TextureFactory.of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE));
     }
 
-    private Block_TFFTStorageField() {
+    private BlockTFFTStorageField() {
         super(Material.iron);
     }
 
@@ -64,7 +64,7 @@ public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
         INSTANCE.setCreativeTab(CreativeTabs.tabMisc);
         INSTANCE.setHardness(5.0f);
         INSTANCE.setResistance(6.0f);
-        GameRegistry.registerBlock(INSTANCE, IB_TFFTStorageField.class, blockName);
+        GameRegistry.registerBlock(INSTANCE, ItemBlockTFFTStorageField.class, blockName);
 
         return INSTANCE;
     }

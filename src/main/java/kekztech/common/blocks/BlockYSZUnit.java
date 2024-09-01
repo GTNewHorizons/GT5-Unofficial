@@ -7,11 +7,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
 
-public class Block_YSZUnit extends BaseGTUpdateableBlock {
+public class BlockYSZUnit extends BaseGTUpdateableBlock {
 
-    private static final Block_YSZUnit instance = new Block_YSZUnit();
+    private static final BlockYSZUnit instance = new BlockYSZUnit();
 
-    private Block_YSZUnit() {
+    private BlockYSZUnit() {
         super(Material.iron);
     }
 

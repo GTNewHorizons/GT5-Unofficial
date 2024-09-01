@@ -15,9 +15,9 @@ import net.minecraft.util.StatCollector;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
-public class IB_LapotronicEnergyUnit extends ItemBlock {
+public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
 
-    public IB_LapotronicEnergyUnit(Block block) {
+    public ItemBlockLapotronicEnergyUnit(Block block) {
         super(block);
     }
 

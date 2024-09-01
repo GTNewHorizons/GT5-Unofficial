@@ -13,13 +13,13 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import kekztech.Items;
 import kekztech.common.items.ErrorItem;
-import kekztech.common.items.MetaItem_CraftingComponent;
+import kekztech.common.items.MetaItemCraftingComponent;
 
 public class Mixer implements Runnable {
 
     @Override
     public void run() {
-        final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
+        final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // YSZ Ceramic Dust
         GT_Values.RA.stdBuilder()

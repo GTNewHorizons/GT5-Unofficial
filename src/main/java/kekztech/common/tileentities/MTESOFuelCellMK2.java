@@ -40,31 +40,31 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import kekztech.common.Blocks;
 
-public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK2> {
+public class MTESOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTESOFuelCellMK2> {
 
     private final int OXYGEN_PER_SEC = 2000;
     private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
     private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency)
 
-    public GTMTE_SOFuelCellMK2(int aID, String aName, String aNameRegional) {
+    public MTESOFuelCellMK2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GTMTE_SOFuelCellMK2(String aName) {
+    public MTESOFuelCellMK2(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
-        return new GTMTE_SOFuelCellMK2(super.mName);
+        return new MTESOFuelCellMK2(super.mName);
     }
 
     private int mCasing = 0;
 
     private static final int CASING_TEXTURE_ID = 48;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GTMTE_SOFuelCellMK2> STRUCTURE_DEFINITION = IStructureDefinition
-        .<GTMTE_SOFuelCellMK2>builder()
+    private static final IStructureDefinition<MTESOFuelCellMK2> STRUCTURE_DEFINITION = IStructureDefinition
+        .<MTESOFuelCellMK2>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
@@ -74,16 +74,16 @@ public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBas
             'c',
             ofChain(
                 onElementPass(te -> te.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 0)),
-                ofHatchAdder(GTMTE_SOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
-                ofHatchAdder(GTMTE_SOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
-                ofHatchAdder(GTMTE_SOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
-        .addElement('d', ofHatchAdder(GTMTE_SOFuelCellMK2::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
+                ofHatchAdder(MTESOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
+                ofHatchAdder(MTESOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
+                ofHatchAdder(MTESOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
+        .addElement('d', ofHatchAdder(MTESOFuelCellMK2::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
         .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
         .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit))
         .build();
 
     @Override
-    public IStructureDefinition<GTMTE_SOFuelCellMK2> getStructureDefinition() {
+    public IStructureDefinition<MTESOFuelCellMK2> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 

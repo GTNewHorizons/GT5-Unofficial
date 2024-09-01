@@ -6,8 +6,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.Mods;
 import kekztech.Items;
 import kekztech.common.items.ErrorItem;
-import kekztech.common.items.MetaItem_CraftingComponent;
-import kekztech.common.tileentities.GTMTE_TFFTHatch;
+import kekztech.common.items.MetaItemCraftingComponent;
+import kekztech.common.tileentities.MTEHatchTFFT;
 
 public class CommonProxy {
 
@@ -15,7 +15,7 @@ public class CommonProxy {
         // Items
         ErrorItem.getInstance()
             .registerItem();
-        MetaItem_CraftingComponent.getInstance()
+        MetaItemCraftingComponent.getInstance()
             .registerItem();
         Items.registerOreDictNames();
         // Blocks
@@ -41,6 +41,6 @@ public class CommonProxy {
             Researches.postInit();
         }
 
-        GTMTE_TFFTHatch.registerAEIntegration();
+        MTEHatchTFFT.registerAEIntegration();
     }
 }

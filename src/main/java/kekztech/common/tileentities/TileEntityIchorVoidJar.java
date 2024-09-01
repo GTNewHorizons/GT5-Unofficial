@@ -2,9 +2,9 @@ package kekztech.common.tileentities;
 
 import thaumcraft.common.tiles.TileJarFillableVoid;
 
-public class TE_IchorVoidJar extends TileJarFillableVoid {
+public class TileEntityIchorVoidJar extends TileJarFillableVoid {
 
-    public TE_IchorVoidJar() {
+    public TileEntityIchorVoidJar() {
         super.maxAmount = 4096;
     }
 }

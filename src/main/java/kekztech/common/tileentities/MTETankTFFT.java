@@ -59,7 +59,8 @@ import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import kekztech.common.Blocks;
 
-public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_TFFT> implements ISurvivalConstructable {
+public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETankTFFT>
+    implements ISurvivalConstructable {
 
     public enum Field {
 
@@ -76,7 +77,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
         T10(1_099_511_627_776_000_000L, 0); // UXV
 
-        public static final GTMTE_TFFT.Field[] VALUES = values();
+        public static final MTETankTFFT.Field[] VALUES = values();
         private final long capacity;
         private final int cost;
 
@@ -94,7 +95,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         }
     }
 
-    private enum TFFTMultiHatch implements IHatchElement<GTMTE_TFFT> {
+    private enum TFFTMultiHatch implements IHatchElement<MTETankTFFT> {
 
         INSTANCE;
 
@@ -111,22 +112,22 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         }
 
         @Override
-        public IGT_HatchAdder<? super GTMTE_TFFT> adder() {
-            return GTMTE_TFFT::addMultiHatchToMachineList;
+        public IGT_HatchAdder<? super MTETankTFFT> adder() {
+            return MTETankTFFT::addMultiHatchToMachineList;
         }
 
         @Override
-        public long count(GTMTE_TFFT t) {
+        public long count(MTETankTFFT t) {
             return t.tfftHatch == null ? 0 : 1;
         }
     }
 
-    private enum TFFTStorageFieldElement implements IStructureElement<GTMTE_TFFT> {
+    private enum TFFTStorageFieldElement implements IStructureElement<MTETankTFFT> {
 
         INSTANCE;
 
         @Override
-        public boolean check(GTMTE_TFFT t, World world, int x, int y, int z) {
+        public boolean check(MTETankTFFT t, World world, int x, int y, int z) {
             Block worldBlock = world.getBlock(x, y, z);
             int meta = worldBlock.getDamageValue(world, x, y, z);
             if (TFFT_FIELD != worldBlock || meta == 0) return false;
@@ -139,19 +140,19 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         }
 
         @Override
-        public boolean spawnHint(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean spawnHint(MTETankTFFT t, World world, int x, int y, int z, ItemStack trigger) {
             StructureLibAPI.hintParticle(world, x, y, z, TFFT_FIELD, getHint(trigger));
             return true;
         }
 
         @Override
-        public boolean placeBlock(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
+        public boolean placeBlock(MTETankTFFT t, World world, int x, int y, int z, ItemStack trigger) {
             world.setBlock(x, y, z, TFFT_FIELD, getHint(trigger), 3);
             return true;
         }
 
         @Override
-        public PlaceResult survivalPlaceBlock(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger,
+        public PlaceResult survivalPlaceBlock(MTETankTFFT t, World world, int x, int y, int z, ItemStack trigger,
             AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
@@ -218,8 +219,8 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
     // height channel for height
     // field channel for field
-    private static final IStructureDefinition<GTMTE_TFFT> STRUCTURE_DEFINITION = IStructureDefinition
-        .<GTMTE_TFFT>builder()
+    private static final IStructureDefinition<MTETankTFFT> STRUCTURE_DEFINITION = IStructureDefinition
+        .<MTETankTFFT>builder()
         .addShape(
             STRUCTURE_PIECE_TOP,
             transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cC~Cc" }, { "cCCCc" }, { "ccccc" } }))
@@ -231,13 +232,13 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cCCCc" }, { "cCCCc" }, { "ccccc" } }))
         .addElement(
             'c',
-            buildHatchAdder(GTMTE_TFFT.class).atLeast(Energy, Maintenance)
+            buildHatchAdder(MTETankTFFT.class).atLeast(Energy, Maintenance)
                 .casingIndex(CASING_TEXTURE_ID_1)
                 .dot(1)
                 .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
         .addElement(
             'C',
-            buildHatchAdder(GTMTE_TFFT.class).casingIndex(CASING_TEXTURE_ID_1)
+            buildHatchAdder(MTETankTFFT.class).casingIndex(CASING_TEXTURE_ID_1)
                 .atLeast(
                     Energy,
                     Maintenance,
@@ -247,7 +248,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                 .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
         .addElement(
             'G',
-            buildHatchAdder(GTMTE_TFFT.class)
+            buildHatchAdder(MTETankTFFT.class)
                 .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
                 .casingIndex(CASING_TEXTURE_ID_2)
                 .dot(3)
@@ -281,24 +282,24 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     private boolean doVoidExcess = false;
     private byte fluidSelector = -1;
 
-    private GTMTE_TFFTHatch tfftHatch = null;
+    private MTEHatchTFFT tfftHatch = null;
 
-    public GTMTE_TFFT(String aName) {
+    public MTETankTFFT(String aName) {
         super(aName);
     }
 
-    public GTMTE_TFFT(int aID, String aName, String aNameRegional) {
+    public MTETankTFFT(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
-    public IStructureDefinition<GTMTE_TFFT> getStructureDefinition() {
+    public IStructureDefinition<MTETankTFFT> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GTMTE_TFFT(super.mName);
+        return new MTETankTFFT(super.mName);
     }
 
     @Override
@@ -618,9 +619,9 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     private boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GTMTE_TFFTHatch) {
+            if (aMetaTileEntity instanceof MTEHatchTFFT) {
                 if (this.tfftHatch != null) return false;
-                this.tfftHatch = (GTMTE_TFFTHatch) aMetaTileEntity;
+                this.tfftHatch = (MTEHatchTFFT) aMetaTileEntity;
                 this.tfftHatch.updateTexture(aBaseCasingIndex);
                 return true;
             }

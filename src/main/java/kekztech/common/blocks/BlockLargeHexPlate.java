@@ -9,14 +9,14 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class Block_LargeHexPlate extends Block {
+public class BlockLargeHexPlate extends Block {
 
-    private static final Block_LargeHexPlate INSTANCE = new Block_LargeHexPlate();
+    private static final BlockLargeHexPlate INSTANCE = new BlockLargeHexPlate();
     private static final int BATCH_SIZE = 4;
 
     private final IIcon[][] parts = new IIcon[BATCH_SIZE][BATCH_SIZE];
 
-    private Block_LargeHexPlate() {
+    private BlockLargeHexPlate() {
         super(Material.rock);
     }
 

@@ -12,14 +12,14 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
 
-public class MetaItem_CraftingComponent extends Item {
+public class MetaItemCraftingComponent extends Item {
 
-    private static final MetaItem_CraftingComponent INSTANCE = new MetaItem_CraftingComponent();
+    private static final MetaItemCraftingComponent INSTANCE = new MetaItemCraftingComponent();
     private final IIcon[] icons = new IIcon[16];
 
-    private MetaItem_CraftingComponent() {}
+    private MetaItemCraftingComponent() {}
 
-    public static MetaItem_CraftingComponent getInstance() {
+    public static MetaItemCraftingComponent getInstance() {
         return INSTANCE;
     }
 

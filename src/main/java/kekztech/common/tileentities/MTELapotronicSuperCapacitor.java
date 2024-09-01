@@ -74,16 +74,16 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.misc.WirelessNetworkManager;
-import kekztech.client.gui.KT_UITextures;
+import kekztech.client.gui.KTUITextures;
 import kekztech.common.Blocks;
-import kekztech.common.itemBlocks.IB_LapotronicEnergyUnit;
+import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
 import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 
-public class GTMTE_LapotronicSuperCapacitor
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor> implements ISurvivalConstructable {
+public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
+    implements ISurvivalConstructable {
 
     private enum TopState {
         MayBeTop,
@@ -107,16 +107,16 @@ public class GTMTE_LapotronicSuperCapacitor
 
     private enum Capacitor {
 
-        IV(2, BigInteger.valueOf(IB_LapotronicEnergyUnit.IV_cap_storage)),
-        LuV(3, BigInteger.valueOf(IB_LapotronicEnergyUnit.LuV_cap_storage)),
-        ZPM(4, BigInteger.valueOf(IB_LapotronicEnergyUnit.ZPM_cap_storage)),
-        UV(5, BigInteger.valueOf(IB_LapotronicEnergyUnit.UV_cap_storage)),
+        IV(2, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
+        LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
+        ZPM(4, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
+        UV(5, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
         UHV(6, MAX_LONG),
         None(0, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(IB_LapotronicEnergyUnit.EV_cap_storage)),
+        EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
         UEV(7, MAX_LONG),
-        UIV(8, BigInteger.valueOf(IB_LapotronicEnergyUnit.UIV_cap_storage)),
-        UMV(9, IB_LapotronicEnergyUnit.UMV_cap_storage);
+        UIV(8, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
+        UMV(9, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
@@ -164,8 +164,8 @@ public class GTMTE_LapotronicSuperCapacitor
     // height channel for height.
     // glass channel for glass
     // capacitor channel for capacitor, but it really just pick whatever capacitor it can find in survival
-    private static final IStructureDefinition<GTMTE_LapotronicSuperCapacitor> STRUCTURE_DEFINITION = IStructureDefinition
-        .<GTMTE_LapotronicSuperCapacitor>builder()
+    private static final IStructureDefinition<MTELapotronicSuperCapacitor> STRUCTURE_DEFINITION = IStructureDefinition
+        .<MTELapotronicSuperCapacitor>builder()
         .addShape(
             STRUCTURE_PIECE_BASE,
             transpose(
@@ -178,7 +178,7 @@ public class GTMTE_LapotronicSuperCapacitor
         .addShape(STRUCTURE_PIECE_MID, transpose(new String[][] { { "ggggg", "gCCCg", "gCCCg", "gCCCg", "ggggg", }, }))
         .addElement(
             'b',
-            buildHatchAdder(GTMTE_LapotronicSuperCapacitor.class)
+            buildHatchAdder(MTELapotronicSuperCapacitor.class)
                 .atLeast(LSCHatchElement.Energy, LSCHatchElement.Dynamo, Maintenance)
                 .hatchItemFilterAnd(
                     (t, h) -> ChannelDataAccessor.getChannelData(h, "glass") < 6
@@ -213,10 +213,10 @@ public class GTMTE_LapotronicSuperCapacitor
                     te -> te.topState != TopState.Top,
                     onElementPass(
                         te -> te.topState = TopState.NotTop,
-                        new IStructureElement<GTMTE_LapotronicSuperCapacitor>() {
+                        new IStructureElement<MTELapotronicSuperCapacitor>() {
 
                             @Override
-                            public boolean check(GTMTE_LapotronicSuperCapacitor t, World world, int x, int y, int z) {
+                            public boolean check(MTELapotronicSuperCapacitor t, World world, int x, int y, int z) {
                                 Block worldBlock = world.getBlock(x, y, z);
                                 int meta = worldBlock.getDamageValue(world, x, y, z);
                                 if (LSC_PART != worldBlock || meta == 0) return false;
@@ -232,21 +232,21 @@ public class GTMTE_LapotronicSuperCapacitor
                             }
 
                             @Override
-                            public boolean spawnHint(GTMTE_LapotronicSuperCapacitor t, World world, int x, int y, int z,
+                            public boolean spawnHint(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
                                 ItemStack trigger) {
                                 StructureLibAPI.hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
                                 return true;
                             }
 
                             @Override
-                            public boolean placeBlock(GTMTE_LapotronicSuperCapacitor t, World world, int x, int y,
-                                int z, ItemStack trigger) {
+                            public boolean placeBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
+                                ItemStack trigger) {
                                 world.setBlock(x, y, z, LSC_PART, getHint(trigger), 3);
                                 return true;
                             }
 
                             @Override
-                            public PlaceResult survivalPlaceBlock(GTMTE_LapotronicSuperCapacitor t, World world, int x,
+                            public PlaceResult survivalPlaceBlock(MTELapotronicSuperCapacitor t, World world, int x,
                                 int y, int z, ItemStack trigger, IItemSource source, EntityPlayerMP actor,
                                 Consumer<IChatComponent> chatter) {
                                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
@@ -301,21 +301,21 @@ public class GTMTE_LapotronicSuperCapacitor
     private long mMaxEUIn = 0;
     private long mMaxEUOut = 0;
 
-    public GTMTE_LapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
+    public MTELapotronicSuperCapacitor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GTMTE_LapotronicSuperCapacitor(String aName) {
+    public MTELapotronicSuperCapacitor(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
-        return new GTMTE_LapotronicSuperCapacitor(super.mName);
+        return new MTELapotronicSuperCapacitor(super.mName);
     }
 
     @Override
-    public IStructureDefinition<GTMTE_LapotronicSuperCapacitor> getStructureDefinition() {
+    public IStructureDefinition<MTELapotronicSuperCapacitor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -335,7 +335,7 @@ public class GTMTE_LapotronicSuperCapacitor
         if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return GTMTE_LapotronicSuperCapacitor.this.mMaintenanceHatches
+            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches
                 .add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
             // Add GT hatches
@@ -434,13 +434,14 @@ public class GTMTE_LapotronicSuperCapacitor
                     + "+ capacitor in the multiblock.")
             .addInfo(
                 "When enabled every " + EnumChatFormatting.BLUE
-                    + GT_Utility.formatNumbers(IB_LapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
+                    + GT_Utility
+                        .formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
                     + EnumChatFormatting.GRAY
                     + " ticks the LSC will attempt to re-balance against your")
             .addInfo("wireless EU network.")
             .addInfo(
                 "If there is less than " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(IB_LapotronicEnergyUnit.LSC_wireless_eu_cap)
+                    + GT_Utility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
                     + EnumChatFormatting.GRAY
                     + "("
                     + GT_Values.TIER_COLORS[9]
@@ -757,7 +758,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Every LSC_time_between_wireless_rebalance_in_ticks check against wireless network for re-balancing.
         counter++;
-        if (wireless_mode && (counter >= IB_LapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)) {
+        if (wireless_mode && (counter >= ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)) {
 
             // Reset tick counter.
             counter = rebalance();
@@ -802,10 +803,16 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Find difference.
         BigInteger transferred_eu = stored.subtract(
-            (IB_LapotronicEnergyUnit.LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
-                .add(IB_LapotronicEnergyUnit.UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount())))
-                .add(IB_LapotronicEnergyUnit.UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
-                .add(IB_LapotronicEnergyUnit.UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
+            (ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
+                .add(
+                    ItemBlockLapotronicEnergyUnit.UEV_wireless_eu_cap
+                        .multiply(BigInteger.valueOf(getUEVCapacitorCount())))
+                .add(
+                    ItemBlockLapotronicEnergyUnit.UIV_wireless_eu_cap
+                        .multiply(BigInteger.valueOf(getUIVCapacitorCount())))
+                .add(
+                    ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
+                        .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
         if (transferred_eu.signum() == 1) {
             inputLastTick += transferred_eu.longValue();
@@ -816,14 +823,16 @@ public class GTMTE_LapotronicSuperCapacitor
         // If that difference can be added then do so.
         if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
             // If it succeeds there was sufficient energy so set the internal capacity as such.
-            stored = IB_LapotronicEnergyUnit.LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount()))
+            stored = ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap
+                .multiply(BigInteger.valueOf(getUHVCapacitorCount()))
                 .add(
-                    IB_LapotronicEnergyUnit.UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))
+                    ItemBlockLapotronicEnergyUnit.UEV_wireless_eu_cap
+                        .multiply(BigInteger.valueOf(getUEVCapacitorCount()))
                         .add(
-                            IB_LapotronicEnergyUnit.UIV_wireless_eu_cap
+                            ItemBlockLapotronicEnergyUnit.UIV_wireless_eu_cap
                                 .multiply(BigInteger.valueOf(getUIVCapacitorCount())))
                         .add(
-                            IB_LapotronicEnergyUnit.UMV_wireless_eu_cap
+                            ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
                                 .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
         }
 
@@ -1136,12 +1145,12 @@ public class GTMTE_LapotronicSuperCapacitor
                 ret.add(GT_UITextures.BUTTON_STANDARD);
                 if (canUseWireless) {
                     if (wireless_mode) {
-                        ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_ON);
+                        ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_ON);
                     } else {
-                        ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF);
+                        ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_OFF);
                     }
                 } else {
-                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
+                    ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -1160,7 +1169,7 @@ public class GTMTE_LapotronicSuperCapacitor
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
                     ret.add(GT_UITextures.BUTTON_STANDARD);
-                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_REBALANCE);
+                    ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_REBALANCE);
                     return ret.toArray(new IDrawable[0]);
                 })
                 .setPos(98, 91)
@@ -1170,19 +1179,19 @@ public class GTMTE_LapotronicSuperCapacitor
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
-    private enum LSCHatchElement implements IHatchElement<GTMTE_LapotronicSuperCapacitor> {
+    private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
         Energy(GT_MetaTileEntity_Hatch_EnergyMulti.class, GT_MetaTileEntity_Hatch_Energy.class) {
 
             @Override
-            public long count(GTMTE_LapotronicSuperCapacitor t) {
+            public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
         Dynamo(GT_MetaTileEntity_Hatch_DynamoMulti.class, GT_MetaTileEntity_Hatch_Dynamo.class) {
 
             @Override
-            public long count(GTMTE_LapotronicSuperCapacitor t) {
+            public long count(MTELapotronicSuperCapacitor t) {
                 return t.mDynamoHatches.size() + t.mDynamoHatchesTT.size() + t.mDynamoTunnelsTT.size();
             }
         },;
@@ -1200,8 +1209,8 @@ public class GTMTE_LapotronicSuperCapacitor
         }
 
         @Override
-        public IGT_HatchAdder<? super GTMTE_LapotronicSuperCapacitor> adder() {
-            return GTMTE_LapotronicSuperCapacitor::addBottomHatches;
+        public IGT_HatchAdder<? super MTELapotronicSuperCapacitor> adder() {
+            return MTELapotronicSuperCapacitor::addBottomHatches;
         }
     }
 }

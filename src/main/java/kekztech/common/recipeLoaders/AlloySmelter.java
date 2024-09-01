@@ -7,13 +7,13 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import kekztech.Items;
-import kekztech.common.items.MetaItem_CraftingComponent;
+import kekztech.common.items.MetaItemCraftingComponent;
 
 public class AlloySmelter implements Runnable {
 
     @Override
     public void run() {
-        final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
+        final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // YSZ Cermic Plate
         GT_Values.RA.stdBuilder()

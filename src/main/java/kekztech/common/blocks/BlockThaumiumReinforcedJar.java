@@ -1,7 +1,6 @@
 package kekztech.common.blocks;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,6 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -18,9 +18,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import kekztech.common.itemBlocks.IB_IchorJar;
-import kekztech.common.tileentities.TE_IchorJar;
-import kekztech.common.tileentities.TE_IchorVoidJar;
+import kekztech.common.itemBlocks.ItemBlockThaumiumReinforcedJar;
+import kekztech.common.tileentities.TileEntityThaumiumReinforcedJar;
+import kekztech.common.tileentities.TileEntityThaumiumReinforcedVoidJar;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.BlockJar;
@@ -29,22 +29,22 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ItemEssence;
 import thaumcraft.common.tiles.TileJarFillable;
 
-public class Block_IchorJar extends BlockJar {
+public class BlockThaumiumReinforcedJar extends BlockJar {
 
-    private static final Block_IchorJar INSTANCE = new Block_IchorJar();
+    private static final BlockThaumiumReinforcedJar INSTANCE = new BlockThaumiumReinforcedJar();
 
-    private Block_IchorJar() {
+    private BlockThaumiumReinforcedJar() {
         super();
 
-        super.setHardness(12.0F);
-        super.setResistance(3.0f);
+        super.setHardness(6.0F);
+        super.setResistance(6.0F);
     }
 
     public static Block registerBlock() {
-        final String blockName = "kekztech_ichorjar_block";
+        final String blockName = "kekztech_thaumiumreinforcedjar_block";
         INSTANCE.setBlockName(blockName);
-        INSTANCE.setHarvestLevel("pickaxe", 3);
-        GameRegistry.registerBlock(INSTANCE, IB_IchorJar.class, blockName);
+        INSTANCE.setHarvestLevel("pickaxe", 2);
+        GameRegistry.registerBlock(INSTANCE, ItemBlockThaumiumReinforcedJar.class, blockName);
 
         return INSTANCE;
     }
@@ -53,11 +53,11 @@ public class Block_IchorJar extends BlockJar {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister ir) {
         super.iconLiquid = ir.registerIcon("thaumcraft:animatedglow");
-        super.iconJarSide = ir.registerIcon("kekztech:ichor_jar_side");
-        super.iconJarTop = ir.registerIcon("kekztech:ichor_jar_top");
-        super.iconJarTopVoid = ir.registerIcon("kekztech:ichor_jar_top_void");
-        super.iconJarSideVoid = ir.registerIcon("kekztech:ichor_jar_side_void");
-        super.iconJarBottom = ir.registerIcon("kekztech:ichor_jar_bottom");
+        super.iconJarSide = ir.registerIcon("kekztech:thaumreinforced_jar_side");
+        super.iconJarTop = ir.registerIcon("kekztech:thaumreinforced_jar_top");
+        super.iconJarTopVoid = ir.registerIcon("kekztech:thaumreinforced_jar_top_void");
+        super.iconJarSideVoid = ir.registerIcon("kekztech:thaumreinforced_jar_side_void");
+        super.iconJarBottom = ir.registerIcon("kekztech:thaumreinforced_jar_bottom");
     }
 
     @Override
@@ -71,116 +71,21 @@ public class Block_IchorJar extends BlockJar {
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         if (meta == 3) {
-            return new TE_IchorVoidJar();
+            return new TileEntityThaumiumReinforcedVoidJar();
         } else {
-            return new TE_IchorJar();
+            return new TileEntityThaumiumReinforcedJar();
         }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2,
-        float f3) {
-        // Call parent method to handle jar emptying, labels stuff etc
-        super.onBlockActivated(world, x, y, z, player, side, f1, f2, f3);
-        // Interact with Essentia Phials if the player holds one
-        final ItemStack heldItem = player.getHeldItem();
-        if (heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
-            final TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TE_IchorJar) {
-                return dealWithPhial(world, player, x, y, z);
-            } else if (te instanceof TE_IchorVoidJar) {
-                return dealWithPhial(world, player, x, y, z);
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Handle compatibility with Essentia Phials
-     *
-     * @param world  Pass through from onBlockActivated()
-     * @param player Pass through from onBlockActivated()
-     * @param x      Pass through from onBlockActivated()
-     * @param y      Pass through from onBlockActivated()
-     * @param z      Pass through from onBlockActivated()
-     * @return Not sure tbh
-     */
-    private boolean dealWithPhial(World world, EntityPlayer player, int x, int y, int z) {
-        final TileJarFillable jarTE = (TileJarFillable) world.getTileEntity(x, y, z);
-        final ItemStack heldItem = player.getHeldItem();
-        // Check whether to fill or to drain the phial
-        if (heldItem.getItemDamage() == 0) {
-            if (jarTE.amount >= 8) {
-                if (world.isRemote) {
-                    player.swingItem();
-                    return false;
-                }
-
-                final Aspect jarAspect = Aspect.getAspect(jarTE.aspect.getTag());
-                if (jarTE.takeFromContainer(jarAspect, 8)) {
-                    // Take an empty phial from the player's inventory
-                    heldItem.stackSize--;
-                    // Fill a new phial
-                    final ItemStack filledPhial = new ItemStack(ConfigItems.itemEssence, 1, 1);
-                    final AspectList phialContent = new AspectList().add(jarAspect, 8);
-                    ((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
-                    // Drop on ground if there's no inventory space
-                    if (!player.inventory.addItemStackToInventory(filledPhial)) {
-                        world.spawnEntityInWorld(
-                            new EntityItem(world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, filledPhial));
-                    }
-
-                    world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
-                    player.inventoryContainer.detectAndSendChanges();
-                    return true;
-                }
-            }
-        } else {
-            final AspectList phialContent = ((ItemEssence) ConfigItems.itemEssence).getAspects(heldItem);
-            if (phialContent != null && phialContent.size() == 1) {
-                final Aspect phialAspect = phialContent.getAspects()[0];
-                if (jarTE.amount + 8 <= jarTE.maxAmount && jarTE.doesContainerAccept(phialAspect)) {
-                    if (world.isRemote) {
-                        player.swingItem();
-                        return false;
-                    }
-
-                    if (jarTE.addToContainer(phialAspect, 8) == 0) {
-                        world.markBlockForUpdate(x, y, z);
-                        jarTE.markDirty();
-                        heldItem.stackSize--;
-                        // Drop on ground if there's no inventory space
-                        if (!player.inventory.addItemStackToInventory(new ItemStack(ConfigItems.itemEssence, 1, 0))) {
-                            world.spawnEntityInWorld(
-                                new EntityItem(
-                                    world,
-                                    (float) x + 0.5F,
-                                    (float) y + 0.5F,
-                                    (float) z + 0.5F,
-                                    new ItemStack(ConfigItems.itemEssence, 1, 0)));
-                        }
-
-                        world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
-                        player.inventoryContainer.detectAndSendChanges();
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
         final TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TE_IchorJar) {
-            final TE_IchorJar ite = (TE_IchorJar) te;
-            breakBlockWarpy(world, x, y, z, ite.amount, 200, 6.0F);
-        } else if (te instanceof TE_IchorVoidJar) {
-            final TE_IchorVoidJar ite = (TE_IchorVoidJar) te;
-            breakBlockWarpy(world, x, y, z, ite.amount, 200, 6.0F);
+        if (te instanceof TileEntityThaumiumReinforcedJar) {
+            final TileEntityThaumiumReinforcedJar ite = (TileEntityThaumiumReinforcedJar) te;
+            breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
+        } else if (te instanceof TileEntityThaumiumReinforcedVoidJar) {
+            final TileEntityThaumiumReinforcedVoidJar ite = (TileEntityThaumiumReinforcedVoidJar) te;
+            breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
         }
         super.breakBlock(world, x, y, z, par5, par6);
     }
@@ -214,8 +119,125 @@ public class Block_IchorJar extends BlockJar {
     }
 
     @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2,
+        float f3) {
+        // Call parent method to handle jar emptying, labels stuff etc
+        super.onBlockActivated(world, x, y, z, player, side, f1, f2, f3);
+        // Interact with Essentia Phials if the player holds one
+        final ItemStack heldItem = player.getHeldItem();
+        if (heldItem != null && heldItem.getItem() == ConfigItems.itemEssence) {
+            final TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileEntityThaumiumReinforcedJar) {
+                return dealWithPhial(world, player, x, y, z);
+            } else if (te instanceof TileEntityThaumiumReinforcedVoidJar) {
+                return dealWithPhial(world, player, x, y, z);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Handle compatibility with Essentia Phials
+     *
+     * @param world  Pass through from onBlockActivated()
+     * @param player Pass through from onBlockActivated()
+     * @param x      Pass through from onBlockActivated()
+     * @param y      Pass through from onBlockActivated()
+     * @param z      Pass through from onBlockActivated()
+     * @return Not sure tbh
+     */
+    private boolean dealWithPhial(World world, EntityPlayer player, int x, int y, int z) {
+        final TileJarFillable kte = (TileJarFillable) world.getTileEntity(x, y, z);
+        final ItemStack heldItem = player.getHeldItem();
+        // Check whether to fill or to drain the phial
+        if (heldItem.getItemDamage() == 0) {
+            if (kte.amount >= 8) {
+                if (world.isRemote) {
+                    player.swingItem();
+                    return false;
+                }
+
+                final Aspect jarAspect = Aspect.getAspect(kte.aspect.getTag());
+                if (kte.takeFromContainer(jarAspect, 8)) {
+                    // Take an empty phial from the player's inventory
+                    heldItem.stackSize--;
+                    // Fill a new phial
+                    final ItemStack filledPhial = new ItemStack(ConfigItems.itemEssence, 1, 1);
+                    final AspectList phialContent = new AspectList().add(jarAspect, 8);
+                    ((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
+                    // Drop on ground if there's no inventory space
+                    if (!player.inventory.addItemStackToInventory(filledPhial)) {
+                        world.spawnEntityInWorld(
+                            new EntityItem(world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, filledPhial));
+                    }
+
+                    world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
+                    player.inventoryContainer.detectAndSendChanges();
+                    return true;
+                }
+            }
+        } else {
+            final AspectList phialContent = ((ItemEssence) ConfigItems.itemEssence).getAspects(heldItem);
+            if (phialContent != null && phialContent.size() == 1) {
+                final Aspect phialAspect = phialContent.getAspects()[0];
+                if (kte.amount + 8 <= kte.maxAmount && kte.doesContainerAccept(phialAspect)) {
+                    if (world.isRemote) {
+                        player.swingItem();
+                        return false;
+                    }
+
+                    if (kte.addToContainer(phialAspect, 8) == 0) {
+                        world.markBlockForUpdate(x, y, z);
+                        kte.markDirty();
+                        heldItem.stackSize--;
+                        // Drop on ground if there's no inventory space
+                        if (!player.inventory.addItemStackToInventory(new ItemStack(ConfigItems.itemEssence, 1, 0))) {
+                            world.spawnEntityInWorld(
+                                new EntityItem(
+                                    world,
+                                    (float) x + 0.5F,
+                                    (float) y + 0.5F,
+                                    (float) z + 0.5F,
+                                    new ItemStack(ConfigItems.itemEssence, 1, 0)));
+                        }
+
+                        world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
+                        player.inventoryContainer.detectAndSendChanges();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-        return new ArrayList<>(Collections.singleton(new ItemStack(this, 1, (meta == 3) ? 3 : 0)));
+        final ArrayList<ItemStack> drops = new ArrayList<>();
+        drops.add(new ItemStack(this, 1, (meta == 3) ? 3 : 0));
+        final TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileEntityThaumiumReinforcedJar) {
+            final TileEntityThaumiumReinforcedJar ite = (TileEntityThaumiumReinforcedJar) te;
+            if (ite.aspectFilter != null) {
+                final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
+                droppedLabel.setTagCompound(new NBTTagCompound());
+                final AspectList aspect = new AspectList().add(ite.aspectFilter, 0);
+                aspect.writeToNBT(droppedLabel.getTagCompound());
+                drops.add(droppedLabel);
+            }
+        } else if (te instanceof TileEntityThaumiumReinforcedVoidJar) {
+            final TileEntityThaumiumReinforcedVoidJar ite = (TileEntityThaumiumReinforcedVoidJar) te;
+            if (ite.aspectFilter != null) {
+                final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
+                droppedLabel.setTagCompound(new NBTTagCompound());
+                final AspectList aspect = new AspectList().add(ite.aspectFilter, 0);
+                aspect.writeToNBT(droppedLabel.getTagCompound());
+                drops.add(droppedLabel);
+            }
+        }
+        return drops;
     }
 
     @Override

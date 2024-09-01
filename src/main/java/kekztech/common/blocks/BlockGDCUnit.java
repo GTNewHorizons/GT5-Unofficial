@@ -7,11 +7,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
 
-public class Block_GDCUnit extends BaseGTUpdateableBlock {
+public class BlockGDCUnit extends BaseGTUpdateableBlock {
 
-    private static final Block_GDCUnit instance = new Block_GDCUnit();
+    private static final BlockGDCUnit instance = new BlockGDCUnit();
 
-    private Block_GDCUnit() {
+    private BlockGDCUnit() {
         super(Material.iron);
     }
 

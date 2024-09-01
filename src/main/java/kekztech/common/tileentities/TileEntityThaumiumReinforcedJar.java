@@ -2,9 +2,9 @@ package kekztech.common.tileentities;
 
 import thaumcraft.common.tiles.TileJarFillable;
 
-public class TE_ThaumiumReinforcedJar extends TileJarFillable {
+public class TileEntityThaumiumReinforcedJar extends TileJarFillable {
 
-    public TE_ThaumiumReinforcedJar() {
+    public TileEntityThaumiumReinforcedJar() {
         super.maxAmount = 256;
     }
 }
