@@ -11,7 +11,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
-import bartworks.system.material.BW_GT_MaterialReference;
+import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -157,7 +157,7 @@ public class ArtificialMicaLine {
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
             .itemOutputs(Materials.Glass.getDust(1))
-            .fluidInputs(BW_GT_MaterialReference.Magnesia.getMolten(720))
+            .fluidInputs(BWGTMaterialReference.Magnesia.getMolten(720))
             .fluidOutputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(4608))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)

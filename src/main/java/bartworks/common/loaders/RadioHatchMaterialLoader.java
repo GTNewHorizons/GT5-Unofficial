@@ -5,7 +5,7 @@ import static bartworks.util.BWRecipes.calcDecayTicks;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GT_RecipeConstants.DECAY_TICKS;
 
-import bartworks.system.material.BW_NonMeta_MaterialItems;
+import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GT_Values;
@@ -169,7 +169,7 @@ public class RadioHatchMaterialLoader {
             .metadata(DECAY_TICKS, (int) calcDecayTicks((int) Materials.Uranium.getProtons()))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1))
+            .itemInputs(BWNonMetaMaterialItems.TiberiumCell_1.get(1))
             .duration(3)
             .eut(
                 (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
@@ -181,7 +181,7 @@ public class RadioHatchMaterialLoader {
                         .getProtons()))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1))
+            .itemInputs(BWNonMetaMaterialItems.TiberiumCell_2.get(1))
             .duration(6)
             .eut(
                 (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
@@ -193,7 +193,7 @@ public class RadioHatchMaterialLoader {
                         .getProtons()))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1))
+            .itemInputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1))
             .duration(12)
             .eut(
                 (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
@@ -205,7 +205,7 @@ public class RadioHatchMaterialLoader {
                         .getProtons()))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.TheCoreCell.get(1))
+            .itemInputs(BWNonMetaMaterialItems.TheCoreCell.get(1))
             .duration(96)
             .eut(140)
             .metadata(DECAY_TICKS, (int) calcDecayTicks(140))
@@ -283,7 +283,7 @@ public class RadioHatchMaterialLoader {
             .metadata(DECAY_TICKS, (int) calcDecayTicks((int) Materials.Uranium.getProtons() / 10))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_1.get(1))
             .duration(3)
             .eut(
                 (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
@@ -295,7 +295,7 @@ public class RadioHatchMaterialLoader {
                         .getProtons() / 10))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_2.get(1))
             .duration(6)
             .eut(
                 (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
@@ -307,7 +307,7 @@ public class RadioHatchMaterialLoader {
                         .getProtons() / 10))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_4.get(1))
             .duration(12)
             .eut(
                 (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
@@ -319,7 +319,7 @@ public class RadioHatchMaterialLoader {
                         .getProtons() / 10))
             .addTo(radioHatchRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_TheCoreCell.get(1))
             .duration(96)
             .eut(13)
             .metadata(DECAY_TICKS, (int) calcDecayTicks(13))

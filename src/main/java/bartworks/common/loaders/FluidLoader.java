@@ -28,10 +28,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.API.SideReference;
-import bartworks.client.renderer.RendererGlasBlock;
+import bartworks.client.renderer.RendererGlassBlock;
 import bartworks.client.renderer.RendererSwitchingColorFluid;
-import bartworks.common.blocks.BioFluidBlock;
-import bartworks.common.tileentities.classic.BWTileEntityDimIDBridge;
+import bartworks.common.blocks.BlockBioFluid;
+import bartworks.common.tileentities.classic.TileEntityDimIDBridge;
 import bartworks.util.BioCulture;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -112,12 +112,12 @@ public class FluidLoader {
             }
         }
 
-        bioFluidBlock = new BioFluidBlock();
+        bioFluidBlock = new BlockBioFluid();
         GameRegistry.registerBlock(bioFluidBlock, "coloredFluidBlock");
-        GameRegistry.registerTileEntity(BWTileEntityDimIDBridge.class, "bwTEDimIDBridge");
+        GameRegistry.registerTileEntity(TileEntityDimIDBridge.class, "bwTEDimIDBridge");
         if (SideReference.Side.Client) {
             RendererSwitchingColorFluid.register();
-            RendererGlasBlock.register();
+            RendererGlassBlock.register();
         }
     }
 

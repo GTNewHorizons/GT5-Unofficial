@@ -9,8 +9,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
-import bartworks.common.tileentities.multis.GT_TileEntity_THTR;
+import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
+import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -28,21 +28,21 @@ public class Mixer implements Runnable {
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
                 Materials.Uranium235.getDust(1),
                 GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials))
+            .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
 
         int i = 0;
-        for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : GT_TileEntity_HTGR.HTGRMaterials.sHTGR_Fuel) {
+        for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(fuel.mainItem, fuel.secondaryItem, GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i))
+                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(mixerRecipes);
 
-            i += GT_TileEntity_HTGR.HTGRMaterials.MATERIALS_PER_FUEL;
+            i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
         }
 
         if (Gendustry.isModLoaded()) {

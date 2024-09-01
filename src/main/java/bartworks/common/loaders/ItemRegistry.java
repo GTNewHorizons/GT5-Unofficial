@@ -182,39 +182,39 @@ import net.minecraft.util.StatCollector;
 
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
-import bartworks.common.blocks.BW_Blocks;
-import bartworks.common.blocks.BW_GlasBlocks;
-import bartworks.common.blocks.BW_GlasBlocks2;
-import bartworks.common.blocks.BW_TileEntityContainer;
-import bartworks.common.blocks.BW_TileEntityContainer_MachineBlock;
+import bartworks.common.blocks.BWBlocks;
+import bartworks.common.blocks.BWBlocksGlass;
+import bartworks.common.blocks.BWBlocksGlass2;
+import bartworks.common.blocks.BWMachineBlockContainer;
+import bartworks.common.blocks.BWTileEntityContainer;
 import bartworks.common.configs.ConfigHandler;
-import bartworks.common.items.BW_ItemBlocks;
-import bartworks.common.items.BW_SimpleWindMeter;
-import bartworks.common.items.BW_Stonage_Rotors;
-import bartworks.common.items.Circuit_Programmer;
-import bartworks.common.items.GT_Rockcutter_Item;
-import bartworks.common.items.GT_Teslastaff_Item;
+import bartworks.common.items.BWItemBlocks;
+import bartworks.common.items.ItemCircuitProgrammer;
+import bartworks.common.items.ItemRockCutter;
+import bartworks.common.items.ItemSimpleWindMeter;
+import bartworks.common.items.ItemStonageRotors;
+import bartworks.common.items.ItemTeslaStaff;
 import bartworks.common.items.SimpleIconItem;
 import bartworks.common.items.SimpleSubItemClass;
-import bartworks.common.tileentities.classic.BW_RotorBlock;
-import bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
-import bartworks.common.tileentities.debug.CreativeScanner;
-import bartworks.common.tileentities.multis.GT_TileEntity_CircuitAssemblyLine;
-import bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
-import bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
-import bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
-import bartworks.common.tileentities.multis.GT_TileEntity_THTR;
-import bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
-import bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaChemicalReactor;
-import bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaDistillTower;
-import bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaOilCracker;
-import bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_AcidGenerator;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_CompressedFluidHatch;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_Diode;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_EnergyDistributor;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_GiantOutputHatch;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_HumongousInputHatch;
+import bartworks.common.tileentities.classic.TileEntityHeatedWaterPump;
+import bartworks.common.tileentities.classic.TileEntityRotorBlock;
+import bartworks.common.tileentities.debug.MTECreativeScanner;
+import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
+import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
+import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
+import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
+import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
+import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
+import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactor;
+import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
+import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
+import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
+import bartworks.common.tileentities.tiered.MTEAcidGenerator;
+import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
+import bartworks.common.tileentities.tiered.MTEDiode;
+import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
+import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
+import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticgreg.GT_TileEntity_VoidMiners;
 import bwcrossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserBox;
@@ -234,16 +234,16 @@ import ic2.api.item.IKineticRotor;
 
 public class ItemRegistry {
 
-    public static final Item TESLASTAFF = new GT_Teslastaff_Item();
-    public static final Item ROCKCUTTER_LV = new GT_Rockcutter_Item(1);
-    public static final Item ROCKCUTTER_MV = new GT_Rockcutter_Item(2);
-    public static final Item ROCKCUTTER_HV = new GT_Rockcutter_Item(3);
-    public static final Item CIRCUIT_PROGRAMMER = new Circuit_Programmer();
-    public static final Block ROTORBLOCK = new BW_TileEntityContainer_MachineBlock(
+    public static final Item TESLASTAFF = new ItemTeslaStaff();
+    public static final Item ROCKCUTTER_LV = new ItemRockCutter(1);
+    public static final Item ROCKCUTTER_MV = new ItemRockCutter(2);
+    public static final Item ROCKCUTTER_HV = new ItemRockCutter(3);
+    public static final Item CIRCUIT_PROGRAMMER = new ItemCircuitProgrammer();
+    public static final Block ROTORBLOCK = new BWMachineBlockContainer(
         Material.wood,
-        BW_RotorBlock.class,
+        TileEntityRotorBlock.class,
         "BWRotorBlock");
-    public static final Item LEATHER_ROTOR = new BW_Stonage_Rotors(
+    public static final Item LEATHER_ROTOR = new ItemStonageRotors(
         7,
         0.15f,
         5,
@@ -255,7 +255,7 @@ public class ItemRegistry {
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorLeather.png"),
         "BW_LeatherRotor",
         "rotors/itemRotorLeather");
-    public static final Item WOOL_ROTOR = new BW_Stonage_Rotors(
+    public static final Item WOOL_ROTOR = new ItemStonageRotors(
         7,
         0.18f,
         3,
@@ -267,7 +267,7 @@ public class ItemRegistry {
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorWool.png"),
         "BW_WoolRotor",
         "rotors/itemRotorWool");
-    public static final Item PAPER_ROTOR = new BW_Stonage_Rotors(
+    public static final Item PAPER_ROTOR = new ItemStonageRotors(
         7,
         0.2f,
         12,
@@ -279,7 +279,7 @@ public class ItemRegistry {
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorPaper.png"),
         "BW_PaperRotor",
         "rotors/itemRotorPaper");
-    public static final Item COMBINED_ROTOR = new BW_Stonage_Rotors(
+    public static final Item COMBINED_ROTOR = new ItemStonageRotors(
         9,
         0.22f,
         7,
@@ -300,14 +300,14 @@ public class ItemRegistry {
         "rotors/paperParts",
         "rotors/combinedParts");
     public static final Item TAB = new SimpleIconItem("GT2Coin");
-    public static final Item WINDMETER = new BW_SimpleWindMeter();
-    public static final Block PUMPBLOCK = new BW_TileEntityContainer(
+    public static final Item WINDMETER = new ItemSimpleWindMeter();
+    public static final Block PUMPBLOCK = new BWTileEntityContainer(
         Material.anvil,
-        BW_TileEntity_HeatedWaterPump.class,
+        TileEntityHeatedWaterPump.class,
         "BWHeatedWaterPump");
     public static final Item PUMPPARTS = new SimpleSubItemClass("BWrawtube", "BWmotor");
 
-    public static final Block bw_realglas = new BW_GlasBlocks(
+    public static final Block bw_realglas = new BWBlocksGlass(
         "BW_GlasBlocks",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
@@ -330,7 +330,7 @@ public class ItemRegistry {
         MainMod.BIO_TAB,
         true,
         false);
-    public static final Block bw_realglas2 = new BW_GlasBlocks2(
+    public static final Block bw_realglas2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
         new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },
         new short[][] { new short[] { 50, 50, 50 } },
@@ -339,14 +339,14 @@ public class ItemRegistry {
         false);
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
-    public static final Block bw_fake_glasses = new BW_GlasBlocks(
+    public static final Block bw_fake_glasses = new BWBlocksGlass(
         "BW_GlasBlocks",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos" },
         null,
         null,
         true,
         true);
-    public static final Block bw_fake_glasses2 = new BW_GlasBlocks2(
+    public static final Block bw_fake_glasses2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos" },
         null,
@@ -354,12 +354,12 @@ public class ItemRegistry {
         true,
         true);
     public static final Block[] BW_BLOCKS = {
-        new BW_Blocks(
+        new BWBlocks(
             "BW_ItemBlocks",
             new String[] { MainMod.MOD_ID + ":EtchedLapisCell", MainMod.MOD_ID + ":PlatedLapisCell", },
             MainMod.GT2),
-        new BW_Blocks("GT_LESU_CASING", new String[] { MainMod.MOD_ID + ":LESU_CELL", }, MainMod.GT2),
-        new BW_Blocks(
+        new BWBlocks("GT_LESU_CASING", new String[] { MainMod.MOD_ID + ":LESU_CELL", }, MainMod.GT2),
+        new BWBlocks(
             "BW_Machinery_Casings",
             new String[] { MainMod.MOD_ID + ":NickelFerriteBlocks", MainMod.MOD_ID + ":TransformerCoil",
             // MainMod.MOD_ID+":DEHP_Casing",
@@ -394,22 +394,22 @@ public class ItemRegistry {
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
         BorosilicateGlass.registerBorosilicateGlass();
 
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
         GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
         GameRegistry.registerItem(ItemRegistry.COMBINED_ROTOR, "BW_CombinedRotor");
         GameRegistry.registerItem(ItemRegistry.CRAFTING_PARTS, "craftingParts");
-        GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
-        GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BW_ItemBlocks.class, "BWRotorBlock");
-        GameRegistry.registerTileEntity(BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPumpTE");
-        GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
+        GameRegistry.registerTileEntity(TileEntityRotorBlock.class, "BWRotorBlockTE");
+        GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BWItemBlocks.class, "BWRotorBlock");
+        GameRegistry.registerTileEntity(TileEntityHeatedWaterPump.class, "BWHeatedWaterPumpTE");
+        GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BWItemBlocks.class, "BWHeatedWaterPumpBlock");
         GameRegistry.registerItem(ItemRegistry.PUMPPARTS, "BWPumpParts");
         GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
 
         // GT2 stuff
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BW_ItemBlocks.class, "BW_ItemBlocks");
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BW_ItemBlocks.class, "GT_LESU_CASING");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BWItemBlocks.class, "BW_ItemBlocks");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BWItemBlocks.class, "GT_LESU_CASING");
         if (ConfigHandler.teslastaff)
             GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
 
@@ -418,12 +418,12 @@ public class ItemRegistry {
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_HV, ItemRegistry.ROCKCUTTER_HV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.TAB, "tabIconGT2");
 
-        new CreativeScanner(
+        new MTECreativeScanner(
             MetaTileEntityIDs.CreativeScanner.ID,
             "Creative Debug Scanner",
             "Creative Debug Scanner",
             14);
-        ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(
+        ItemRegistry.eic = new MTEElectricImplosionCompressor(
             ElectricImplosionCompressor.ID,
             "ElectricImplosionCompressor",
             "Electric Implosion Compressor").getStackForm(1L);
@@ -442,16 +442,16 @@ public class ItemRegistry {
             GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
         }
 
-        ItemRegistry.THTR = new GT_TileEntity_THTR(
+        ItemRegistry.THTR = new MTEThoriumHighTempReactor(
             ThoriumHighTemperatureReactor.ID,
             "THTR",
             "Thorium High Temperature Reactor").getStackForm(1L);
-        GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
-        ItemRegistry.HTGR = new GT_TileEntity_HTGR(
+        MTEThoriumHighTempReactor.THTRMaterials.registeraTHR_Materials();
+        ItemRegistry.HTGR = new MTEHighTempGasCooledReactor(
             HighTemperatureGasCooledReactor.ID,
             "HTGR",
             "High Temperature Gas-cooled Reactor").getStackForm(1L);
-        GT_TileEntity_HTGR.HTGRMaterials.registeraTHR_Materials();
+        MTEHighTempGasCooledReactor.HTGRMaterials.registeraTHR_Materials();
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
 
@@ -482,98 +482,96 @@ public class ItemRegistry {
             EnergyDistributor_MAX.ID };
 
         for (int i = 0; i < GT_Values.VN.length - 1; i++) {
-            ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(
+            ItemRegistry.diode2A[i] = new MTEDiode(
                 Diode2A[i],
                 "diode" + "2A" + GT_Values.VN[i],
                 StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i],
                 i).getStackForm(1L);
-            ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(
+            ItemRegistry.diode4A[i] = new MTEDiode(
                 Diode4A[i],
                 "diode" + "4A" + GT_Values.VN[i],
                 StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i],
                 i).getStackForm(1L);
-            ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(
+            ItemRegistry.diode8A[i] = new MTEDiode(
                 Diode8A[i],
                 "diode" + "8A" + GT_Values.VN[i],
                 StatCollector.translateToLocal("tile.diode.name") + " 8A " + GT_Values.VN[i],
                 i).getStackForm(1L);
-            ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(
+            ItemRegistry.diode12A[i] = new MTEDiode(
                 Diode12A[i],
                 "diode" + "12A" + GT_Values.VN[i],
                 StatCollector.translateToLocal("tile.diode.name") + " 12A " + GT_Values.VN[i],
                 i).getStackForm(1L);
-            ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(
+            ItemRegistry.diode16A[i] = new MTEDiode(
                 Diode16A[i],
                 "diode" + "16A" + GT_Values.VN[i],
                 StatCollector.translateToLocal("tile.diode.name") + " 16A " + GT_Values.VN[i],
                 i).getStackForm(1L);
-            ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(
+            ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
                 "energydistributor" + GT_Values.VN[i],
                 StatCollector.translateToLocal("tile.energydistributor.name") + " " + GT_Values.VN[i],
                 i).getStackForm(1L);
         }
 
-        ItemRegistry.acidGens[0] = new GT_MetaTileEntity_AcidGenerator(
+        ItemRegistry.acidGens[0] = new MTEAcidGenerator(
             AcidGeneratorMV.ID,
             "acidgenerator" + GT_Values.VN[2],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[2],
             2).getStackForm(1);
-        ItemRegistry.acidGens[1] = new GT_MetaTileEntity_AcidGenerator(
+        ItemRegistry.acidGens[1] = new MTEAcidGenerator(
             AcidGeneratorHV.ID,
             "acidgenerator" + GT_Values.VN[3],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[3],
             3).getStackForm(1);
-        ItemRegistry.acidGens[2] = new GT_MetaTileEntity_AcidGenerator(
+        ItemRegistry.acidGens[2] = new MTEAcidGenerator(
             AcidGeneratorEV.ID,
             "acidgenerator" + GT_Values.VN[4],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[4],
             4).getStackForm(1);
 
-        ItemRegistry.acidGensLV = new GT_MetaTileEntity_AcidGenerator(
+        ItemRegistry.acidGensLV = new MTEAcidGenerator(
             AcidGeneratorLV.ID,
             "acidgenerator" + GT_Values.VN[1],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[1],
             +1).getStackForm(1L);
 
-        ItemRegistry.dehp = new GT_TileEntity_DEHP(DeepEarthHeatingPump.ID, 1, "DEHP", "Deep Earth Heating Pump")
+        ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, 1, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
-        ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(
+        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
             MegaBlastFurnace.ID,
             "MegaBlastFurnace",
             StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(
+        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezer(
             MegaVacuumFreezer.ID,
             "MegaVacuumFreezer",
             StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
-        ItemRegistry.cal = new GT_TileEntity_CircuitAssemblyLine(
+        ItemRegistry.cal = new MTECircuitAssemblyLine(
             CircuitAssemblyLine.ID,
             "CircuitAssemblyLine",
             "Circuit Assembly Line").getStackForm(1L);
-        ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(
+        ItemRegistry.compressedHatch = new MTECompressedFluidHatch(
             CompressedFluidHatch.ID,
             "CompressedFluidHatch",
             "Liquid Air Fluid Hatch").getStackForm(1L);
-        ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(
+        ItemRegistry.giantOutputHatch = new MTEGiantOutputHatch(
             GiantOutputHatch.ID,
             "GiantOutputHatch",
             "Giant Output Hatch").getStackForm(1L);
-        ItemRegistry.humongousInputHatch = new GT_MetaTileEntity_HumongousInputHatch(
+        ItemRegistry.humongousInputHatch = new MTEHumongousInputHatch(
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(
+        ItemRegistry.megaMachines[2] = new MTEMegaDistillTower(
             MegaDistillationTower.ID,
             "MegaDistillationTower",
             "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new GT_TileEntity_MegaChemicalReactor(
+        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactor(
             MegaChemicalReactor.ID,
             "MegaChemicalReactor",
             "Mega Chemical Reactor").getStackForm(1L);
-        ItemRegistry.megaMachines[4] = new GT_TileEntity_MegaOilCracker(
-            MegaOilCracker.ID,
-            "MegaOilCracker",
-            "Mega Oil Cracker").getStackForm(1L);
+        ItemRegistry.megaMachines[4] = new MTEMegaOilCracker(MegaOilCracker.ID, "MegaOilCracker", "Mega Oil Cracker")
+            .getStackForm(1L);
 
         ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
             .getStackForm(1L);

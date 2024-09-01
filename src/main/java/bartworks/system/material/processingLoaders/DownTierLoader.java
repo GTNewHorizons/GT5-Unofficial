@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import bartworks.util.BW_Util;
+import bartworks.util.BWUtil;
 import bartworks.util.StreamUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -37,7 +37,7 @@ public class DownTierLoader {
                     .filter(recipe -> Objects.nonNull(recipe) && recipe.mEUt > 128)
                     .forEach(recipe -> {
                         toRem.add(recipe);
-                        newRecipes.add(BW_Util.copyAndSetTierToNewRecipe(recipe, (byte) 2));
+                        newRecipes.add(BWUtil.copyAndSetTierToNewRecipe(recipe, (byte) 2));
                     });
                 map.getBackend()
                     .removeRecipes(toRem);

@@ -20,7 +20,7 @@ import java.util.Set;
 
 import net.minecraftforge.common.config.Configuration;
 
-import bartworks.API.API_ConfigValues;
+import bartworks.API.APIConfigValues;
 
 public class ConfigHandler {
 
@@ -225,7 +225,7 @@ public class ConfigHandler {
         ConfigHandler.GTppLogDisabler = ConfigHandler.c
             .get("System", "Disable GT++ Logging", false, "Enables or Disables GT++ Logging.")
             .getBoolean(false);
-        API_ConfigValues.debugLog = ConfigHandler.c
+        APIConfigValues.debugLog = ConfigHandler.c
             .get("System", "Enable Debug Log", false, "Enables or Disables the debug log.")
             .getBoolean(false);
 

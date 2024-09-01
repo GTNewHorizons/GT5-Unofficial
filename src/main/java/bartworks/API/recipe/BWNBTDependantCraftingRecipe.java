@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-import bartworks.util.BW_Util;
+import bartworks.util.BWUtil;
 
 public class BWNBTDependantCraftingRecipe implements IRecipe {
 
@@ -53,7 +53,7 @@ public class BWNBTDependantCraftingRecipe implements IRecipe {
             for (int y = 0; y < 3; y++) {
                 ItemStack toCheck = p_77569_1_.getStackInRowAndColumn(y, x);
                 ItemStack ref = this.charToStackMap.get(this.shape[x].toCharArray()[y]);
-                if (!BW_Util.areStacksEqualOrNull(toCheck, ref)) return false;
+                if (!BWUtil.areStacksEqualOrNull(toCheck, ref)) return false;
             }
         }
         return true;

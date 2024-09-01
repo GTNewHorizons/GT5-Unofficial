@@ -97,7 +97,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         ret.setTag("Plasmid", BioData.getNBTTagFromBioData(BioData.convertBioPlasmidToBioData(bioCulture.plasmid)));
         ret.setTag("DNA", BioData.getNBTTagFromBioData(BioData.convertBioDNAToBioData(bioCulture.dDNA)));
         ret.setBoolean("Breedable", bioCulture.bBreedable);
-        ret.setByte("Rarety", BW_Util.getByteFromRarity(bioCulture.rarity));
+        ret.setByte("Rarety", BWUtil.getByteFromRarity(bioCulture.rarity));
         if (bioCulture.bBreedable) ret.setString(
             "Fluid",
             bioCulture.getFluid()
@@ -114,7 +114,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
             tag.getString("Name"),
             BioPlasmid.convertDataToPlasmid(getBioDataFromNBTTag(tag.getCompoundTag("Plasmid"))),
             BioDNA.convertDataToDNA(getBioDataFromNBTTag(tag.getCompoundTag("DNA"))),
-            BW_Util.getRarityFromByte(tag.getByte("Rarety")),
+            BWUtil.getRarityFromByte(tag.getByte("Rarety")),
             tag.getBoolean("Breedable"));
         if (ret.bBreedable) ret.setFluid(FluidRegistry.getFluid(tag.getString("Fluid")));
         if (ret.getFluidNotSet()) // should never happen, but better safe than sorry
@@ -157,7 +157,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public int getColorRGB() {
-        return BW_ColorUtil
+        return BWColorUtil
             .getColorFromRGBArray(new int[] { this.color.getRed(), this.color.getGreen(), this.color.getBlue() });
     }
 

@@ -1,6 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
-import static bartworks.util.BW_Util.ofGlassTieredMixed;
+import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_HatchElement.*;

@@ -21,7 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import bartworks.API.SideReference;
 import bartworks.MainMod;
 import bartworks.common.net.OreDictCachePacket;
-import bartworks.common.net.ServerJoinedPackage;
+import bartworks.common.net.ServerJoinedPacket;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.oredict.OreDictHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -38,7 +38,7 @@ public class ServerEventHandler {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
         MainMod.BW_Network_instance
             .sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
-        MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null), (EntityPlayerMP) event.entity);
+        MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPacket(null), (EntityPlayerMP) event.entity);
     }
 
     // FMLCommonHandler.instance().bus()

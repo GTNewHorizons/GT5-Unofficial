@@ -19,8 +19,8 @@ import java.util.HashSet;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.items.LabModule;
-import bartworks.common.items.LabParts;
+import bartworks.common.items.ItemLabModule;
+import bartworks.common.items.ItemLabParts;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
@@ -31,13 +31,13 @@ public class BioItemList {
 
     private BioItemList() {}
 
-    private static final Item mItemBioLabParts = new LabModule(
+    private static final Item mItemBioLabParts = new ItemLabModule(
         new String[] { "DNAExtractionModule", "PCRThermoclyclingModule", "PlasmidSynthesisModule",
             "TransformationModule", "ClonalCellularSynthesisModule" });
     public static final ItemStack[] mBioLabParts = { new ItemStack(BioItemList.mItemBioLabParts),
         new ItemStack(BioItemList.mItemBioLabParts, 1, 1), new ItemStack(BioItemList.mItemBioLabParts, 1, 2),
         new ItemStack(BioItemList.mItemBioLabParts, 1, 3), new ItemStack(BioItemList.mItemBioLabParts, 1, 4) };
-    private static final Item vanillaBioLabParts = new LabParts(
+    private static final Item vanillaBioLabParts = new ItemLabParts(
         new String[] { "petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose", "IncubationModule",
             "PlasmaMembrane" });
 

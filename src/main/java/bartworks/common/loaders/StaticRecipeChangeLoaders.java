@@ -40,7 +40,7 @@ import bartworks.API.recipe.DynamicGTRecipe;
 import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.util.BW_Util;
+import bartworks.util.BWUtil;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -279,7 +279,7 @@ public class StaticRecipeChangeLoaders {
                         if (mat.contains(tag)) {
                             DebugLog.log(
                                 "Found EBF Recipe to change, Output:"
-                                    + BW_Util.translateGTItemStack(recipe.mOutputs[0]));
+                                    + BWUtil.translateGTItemStack(recipe.mOutputs[0]));
                             toAdd.put(tag, recipe);
                         }
                     }
@@ -306,8 +306,8 @@ public class StaticRecipeChangeLoaders {
                         if ((recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0)
                             && (whitelistForEBFNoGasRecipeDontCheckItemData.stream()
                                 .anyMatch(s -> GT_Utility.areStacksEqual(s, tmpInput))
-                                || BW_Util.checkStackAndPrefix(recipe.mInputs[i])
-                                    && BW_Util.checkStackAndPrefix(baseRe.mInputs[i])
+                                || BWUtil.checkStackAndPrefix(recipe.mInputs[i])
+                                    && BWUtil.checkStackAndPrefix(baseRe.mInputs[i])
                                     && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial
                                         .equals(
                                             GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
@@ -456,7 +456,7 @@ public class StaticRecipeChangeLoaders {
                     if (!GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(11), stack)
                         && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(14), stack)
                         && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(19), stack)) {
-                            if (BW_Util.checkStackAndPrefix(stack)) circuitConfiguration = (byte) (OrePrefixes.dustSmall
+                            if (BWUtil.checkStackAndPrefix(stack)) circuitConfiguration = (byte) (OrePrefixes.dustSmall
                                 .equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
                                     ? 4
                                     : OrePrefixes.dustTiny.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)

@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.oregen.BW_OreLayer;
+import bartworks.system.oregen.BWOreLayer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
 import galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
@@ -206,7 +206,7 @@ public class VoidMinerUtility {
      */
     private static DropMap getDropMapRoss(int aID) {
         DropMap dropMap = new DropMap();
-        for (BW_OreLayer oreLayer : BW_OreLayer.sList) {
+        for (BWOreLayer oreLayer : BWOreLayer.sList) {
             if (oreLayer.mEnabled && oreLayer.isGenerationAllowed("", aID, 0)) {
                 List<ItemStack> data = oreLayer.getStacks();
                 dropMap.addDrop(data.get(0), oreLayer.mWeight);

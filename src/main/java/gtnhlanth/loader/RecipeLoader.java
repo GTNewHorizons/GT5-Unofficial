@@ -132,9 +132,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.system.material.BW_GT_MaterialReference;
-import bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
+import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.Dyes;
@@ -270,7 +270,7 @@ public class RecipeLoader {
         // Accelerator Electrode Casing
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                BW_GT_MaterialReference.Silver.get(blockCasingAdvanced, 1),
+                BWGTMaterialReference.Silver.get(blockCasingAdvanced, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Silver, 12),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Gold, 6),
                 GT_Utility.getIntegratedCircuit(6))

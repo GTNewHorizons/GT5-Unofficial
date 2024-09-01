@@ -24,7 +24,7 @@ import static gregtech.api.enums.OrePrefixes.screw;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import bartworks.system.material.BW_GT_MaterialReference;
+import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GT_Values;
@@ -36,7 +36,7 @@ public class CasingLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        if (werkstoff == BW_GT_MaterialReference.Wood /* || werkstoff == BW_GT_MaterialReference.WoodSealed */) {
+        if (werkstoff == BWGTMaterialReference.Wood /* || werkstoff == BW_GT_MaterialReference.WoodSealed */) {
             addCasingRecipes(werkstoff, plank);
         } else {
             if (!werkstoff.hasGenerationFeature(blockCasing) || !werkstoff.doesOreDictedItemExists(plate)

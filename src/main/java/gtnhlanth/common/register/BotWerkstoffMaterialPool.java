@@ -1,7 +1,7 @@
 package gtnhlanth.common.register;
 
 import static bartworks.system.material.Werkstoff.Types.*;
-import static bartworks.util.BW_Util.subscriptNumbers;
+import static bartworks.util.BWUtil.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.TextureSet.*;
 

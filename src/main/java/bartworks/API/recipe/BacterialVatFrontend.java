@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
 
-import bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
+import bartworks.common.tileentities.multis.MTEBioVat;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -78,7 +78,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
-            int[] tSpecialA = GT_TileEntity_BioVat.specialValueUnpack(recipeInfo.recipe.mSpecialValue);
+            int[] tSpecialA = MTEBioVat.specialValueUnpack(recipeInfo.recipe.mSpecialValue);
             String glassTier = StatCollector.translateToLocalFormatted("nei.biovat.0.name", tSpecialA[0]);
             String sievert;
             if (tSpecialA[2] == 1) {

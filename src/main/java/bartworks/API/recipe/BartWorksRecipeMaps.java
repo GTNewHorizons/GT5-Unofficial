@@ -1,6 +1,6 @@
 package bartworks.API.recipe;
 
-import bartworks.API.modularUI.BW_UITextures;
+import bartworks.API.modularUI.BWUITextures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -16,7 +16,7 @@ public class BartWorksRecipeMaps {
         .useSpecialSlot()
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isSpecial) {
-                return BW_UITextures.OVERLAY_SLOT_MODULE;
+                return BWUITextures.OVERLAY_SLOT_MODULE;
             }
             if (isFluid) {
                 return GT_UITextures.OVERLAY_SLOT_VIAL_2;
@@ -24,9 +24,9 @@ public class BartWorksRecipeMaps {
             if (!isOutput) {
                 switch (index) {
                     case 0:
-                        return BW_UITextures.OVERLAY_SLOT_DISH;
+                        return BWUITextures.OVERLAY_SLOT_DISH;
                     case 1:
-                        return BW_UITextures.OVERLAY_SLOT_DNA_FLASK;
+                        return BWUITextures.OVERLAY_SLOT_DNA_FLASK;
                     case 2:
                         return GT_UITextures.OVERLAY_SLOT_CIRCUIT;
                     case 3:
@@ -40,7 +40,7 @@ public class BartWorksRecipeMaps {
             return null;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .logo(BW_UITextures.PICTURE_BW_LOGO_47X21)
+        .logo(BWUITextures.PICTURE_BW_LOGO_47X21)
         .logoSize(47, 21)
         .logoPos(125, 3)
         .disableRegisterNEI()
@@ -68,12 +68,12 @@ public class BartWorksRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> radioHatchRecipes = RecipeMapBuilder.of("bw.recipe.radhatch")
         .maxIO(1, 0, 0, 0)
         .minInputs(1, 0)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> BW_UITextures.OVERLAY_SLOT_ROD)
-        .logo(BW_UITextures.PICTURE_BW_LOGO_47X21)
+        .slotOverlays((index, isFluid, isOutput, isSpecial) -> BWUITextures.OVERLAY_SLOT_ROD)
+        .logo(BWUITextures.PICTURE_BW_LOGO_47X21)
         .logoSize(47, 21)
         .logoPos(118, 55)
         .dontUseProgressBar()
-        .addSpecialTexture(74, 20, 29, 27, BW_UITextures.PICTURE_RADIATION)
+        .addSpecialTexture(74, 20, 29, 27, BWUITextures.PICTURE_RADIATION)
         .frontend(RadioHatchFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electricImplosionCompressorRecipes = RecipeMapBuilder

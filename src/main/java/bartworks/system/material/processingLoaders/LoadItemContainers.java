@@ -13,20 +13,20 @@
 
 package bartworks.system.material.processingLoaders;
 
-import bartworks.system.material.BW_NonMeta_MaterialItems;
+import bartworks.system.material.BWNonMetaMaterialItems;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.common.items.GT_DepletetCell_Item;
 
 public class LoadItemContainers {
 
     public static void run() {
-        BW_NonMeta_MaterialItems.Depleted_Tiberium_1
+        BWNonMetaMaterialItems.Depleted_Tiberium_1
             .set(new GT_DepletetCell_Item("TiberiumcellDep", "Fuel Rod (Depleted Tiberium)", 1));
-        BW_NonMeta_MaterialItems.Depleted_Tiberium_2
+        BWNonMetaMaterialItems.Depleted_Tiberium_2
             .set(new GT_DepletetCell_Item("Double_TiberiumcellDep", "Dual Fuel Rod (Depleted Tiberium)", 1));
-        BW_NonMeta_MaterialItems.Depleted_Tiberium_4
+        BWNonMetaMaterialItems.Depleted_Tiberium_4
             .set(new GT_DepletetCell_Item("Quad_TiberiumcellDep", "Quad Fuel Rod (Depleted Tiberium)", 1));
-        BW_NonMeta_MaterialItems.TiberiumCell_1.set(
+        BWNonMetaMaterialItems.TiberiumCell_1.set(
             new GT_RadioactiveCellIC_Item(
                 "Tiberiumcell",
                 "Fuel Rod (Tiberium)",
@@ -35,9 +35,9 @@ public class LoadItemContainers {
                 2F,
                 1,
                 0.5F,
-                BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1),
+                BWNonMetaMaterialItems.Depleted_Tiberium_1.get(1),
                 false));
-        BW_NonMeta_MaterialItems.TiberiumCell_2.set(
+        BWNonMetaMaterialItems.TiberiumCell_2.set(
             new GT_RadioactiveCellIC_Item(
                 "Double_Tiberiumcell",
                 "Dual Fuel Rod (Tiberium)",
@@ -46,9 +46,9 @@ public class LoadItemContainers {
                 2F,
                 1,
                 0.5F,
-                BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1),
+                BWNonMetaMaterialItems.Depleted_Tiberium_2.get(1),
                 false));
-        BW_NonMeta_MaterialItems.TiberiumCell_4.set(
+        BWNonMetaMaterialItems.TiberiumCell_4.set(
             new GT_RadioactiveCellIC_Item(
                 "Quad_Tiberiumcell",
                 "Quad Fuel Rod (Tiberium)",
@@ -57,11 +57,11 @@ public class LoadItemContainers {
                 2F,
                 1,
                 0.5F,
-                BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1),
+                BWNonMetaMaterialItems.Depleted_Tiberium_4.get(1),
                 false));
-        BW_NonMeta_MaterialItems.Depleted_TheCoreCell
+        BWNonMetaMaterialItems.Depleted_TheCoreCell
             .set(new GT_DepletetCell_Item("Core_Reactor_CellDep", "Depleted \"The Core\" Cell", 32));
-        BW_NonMeta_MaterialItems.TheCoreCell.set(
+        BWNonMetaMaterialItems.TheCoreCell.set(
             new GT_RadioactiveCellIC_Item(
                 "Core_Reactor_Cell",
                 "\"The Core\" Cell",
@@ -70,7 +70,7 @@ public class LoadItemContainers {
                 8F,
                 32,
                 1F,
-                BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1),
+                BWNonMetaMaterialItems.Depleted_TheCoreCell.get(1),
                 false));
     }
 }

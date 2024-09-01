@@ -116,7 +116,7 @@ public abstract class MapGenRuins extends WorldGenerator {
             x,
             y,
             z,
-            GT_WorldgenUtil.GT_TILES,
+            BWWorldGenUtil.GT_TILES,
             GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
         TileEntity tile = worldObj.getTileEntity(x, y, z);
         ((IGregTechTileEntity) tile).setInitialValuesAsNBT(null, (short) meta);
@@ -229,7 +229,7 @@ public abstract class MapGenRuins extends WorldGenerator {
             boolean useColor = rand.nextBoolean();
             byte set = 0;
             byte toSet = (byte) (rand.nextInt(maxTierRoss - tier) + 1);
-            short cablemeta = GT_WorldgenUtil.getCable(secureRandom, tier);
+            short cablemeta = BWWorldGenUtil.getCable(secureRandom, tier);
             byte treeinaRow = 0;
             boolean lastset = rand.nextBoolean();
             for (int dx = -6; dx <= 6; dx++) {
@@ -316,7 +316,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 }
 
                                 if (dx == 4 && dz == 4) {
-                                    short meta = GT_WorldgenUtil.getGenerator(secureRandom, tier);
+                                    short meta = BWWorldGenUtil.getGenerator(secureRandom, tier);
                                     this.setGTMachine(
                                         worldObj,
                                         x + dx,
@@ -327,7 +327,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         tier > 0 ? ForgeDirection.WEST : ForgeDirection.UP);
                                 } else if (dx == 3 && dz == 4) {
                                     if (tier > 0) {
-                                        short meta = GT_WorldgenUtil.getBuffer(secureRandom, tier);
+                                        short meta = BWWorldGenUtil.getBuffer(secureRandom, tier);
                                         this.setGTMachine(
                                             worldObj,
                                             x + dx,
@@ -343,7 +343,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
                                 } else if (dx < 3 && dx > -5 && dz == 3 && set < toSet) {
                                     if (!lastset || treeinaRow > 2) {
-                                        short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
+                                        short meta = BWWorldGenUtil.getMachine(secureRandom, tier);
                                         this.setGTMachine(
                                             worldObj,
                                             x + dx,
@@ -481,7 +481,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                         break tosetloop;
                     }
                     if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
-                        short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
+                        short meta = BWWorldGenUtil.getMachine(secureRandom, tier);
                         this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, ForgeDirection.UP);
 
                         set++;

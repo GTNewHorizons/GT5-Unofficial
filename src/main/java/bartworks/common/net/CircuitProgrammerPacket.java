@@ -23,7 +23,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import bartworks.common.items.Circuit_Programmer;
+import bartworks.common.items.ItemCircuitProgrammer;
 import gregtech.api.net.GT_Packet_New;
 import io.netty.buffer.ByteBuf;
 
@@ -73,7 +73,7 @@ public class CircuitProgrammerPacket extends GT_Packet_New {
             ItemStack stack = ((EntityPlayer) w.getEntityByID(this.playerID)).getHeldItem();
             if (stack != null && stack.stackSize > 0) {
                 Item item = stack.getItem();
-                if (item instanceof Circuit_Programmer) {
+                if (item instanceof ItemCircuitProgrammer) {
                     NBTTagCompound nbt = stack.getTagCompound();
                     nbt.setBoolean("HasChip", this.hasChip);
                     if (this.hasChip) nbt.setByte("ChipConfig", this.chipCfg);

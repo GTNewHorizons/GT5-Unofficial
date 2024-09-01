@@ -76,7 +76,7 @@ public class BioData {
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
         NBTTagCompound ret = new NBTTagCompound();
-        ret.setByte("Rarity", BW_Util.getByteFromRarity(bioData.rarity));
+        ret.setByte("Rarity", BWUtil.getByteFromRarity(bioData.rarity));
         ret.setString("Name", bioData.name);
         // ret.setInteger("ID", bioData.ID); buggy when load Order changes
         ret.setInteger("Chance", bioData.chance);
@@ -116,7 +116,7 @@ public class BioData {
                         this.getName()
                             .length(),
                         31))
-                .put(BW_Util.getByteFromRarity(this.getRarity()))
+                .put(BWUtil.getByteFromRarity(this.getRarity()))
                 .putInt(this.getChance())
                 .putInt(this.getTier())
                 .array(),

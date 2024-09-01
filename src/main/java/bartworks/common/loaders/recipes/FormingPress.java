@@ -5,8 +5,8 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
-import bartworks.common.tileentities.multis.GT_TileEntity_THTR;
+import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
+import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -16,59 +16,61 @@ public class FormingPress implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials), Materials.Graphite.getDust(64))
-            .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1))
-            .duration(2 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(formingPressRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1),
-                Materials.Silicon.getDust(64))
-            .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2))
-            .duration(2 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(formingPressRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2),
+                new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials),
                 Materials.Graphite.getDust(64))
-            .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3))
+            .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 1))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(formingPressRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 1),
+                Materials.Silicon.getDust(64))
+            .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 2))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(formingPressRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 2),
+                Materials.Graphite.getDust(64))
+            .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 3))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(formingPressRecipes);
 
         int i = 0;
-        for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : GT_TileEntity_HTGR.HTGRMaterials.sHTGR_Fuel) {
+        for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i),
                     Materials.Carbon.getDust(64))
-                .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1))
+                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 1))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 1),
                     Materials.Silicon.getDust(64))
-                .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2))
+                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 2))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 2),
                     Materials.Graphite.getDust(64))
-                .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3))
+                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 3))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(formingPressRecipes);
-            i += GT_TileEntity_HTGR.HTGRMaterials.MATERIALS_PER_FUEL;
+            i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
         }
     }
 }

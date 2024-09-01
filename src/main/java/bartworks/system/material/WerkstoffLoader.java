@@ -13,8 +13,8 @@
 
 package bartworks.system.material;
 
-import static bartworks.util.BW_Util.subscriptNumbers;
-import static bartworks.util.BW_Util.superscriptNumbers;
+import static bartworks.util.BWUtil.subscriptNumbers;
+import static bartworks.util.BWUtil.superscriptNumbers;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.OrePrefixes.block;
@@ -94,10 +94,10 @@ import com.google.common.collect.HashBiMap;
 import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
-import bartworks.client.renderer.BW_Renderer_Block_Ores;
+import bartworks.client.renderer.BWBlockOreRenderer;
 import bartworks.common.configs.ConfigHandler;
-import bartworks.system.material.CircuitGeneration.BW_CircuitsLoader;
-import bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer;
+import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
+import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.system.material.werkstoff_loaders.recipe.AspectLoader;
@@ -119,7 +119,7 @@ import bartworks.system.material.werkstoff_loaders.registration.AssociationLoade
 import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader;
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.BW_ColorUtil;
+import bartworks.util.BWColorUtil;
 import bartworks.util.EnumUtils;
 import bartworks.util.Pair;
 import bartworks.util.log.DebugLog;
@@ -176,7 +176,7 @@ public class WerkstoffLoader {
 
         bottle.mDefaultStackSize = 1;
         Werkstoff.GenerationFeatures.initPrefixLogic();
-        BW_GT_MaterialReference.init();
+        BWGTMaterialReference.init();
     }
 
     // TODO:
@@ -1580,7 +1580,7 @@ public class WerkstoffLoader {
         104,
         TextureSet.SET_SHINY);
 
-    public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
+    public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
     public static Block BWOres;
@@ -1697,7 +1697,7 @@ public class WerkstoffLoader {
                 progressBar.step(werkstoff.getDefaultName());
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
-            BW_CircuitsLoader.initNewCircuits();
+            BWCircuitsLoader.initNewCircuits();
 
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.disableCls();
@@ -1849,82 +1849,82 @@ public class WerkstoffLoader {
         }
         DebugLog.log("GlobalGeneration: " + WerkstoffLoader.toGenerateGlobal);
         if ((WerkstoffLoader.toGenerateGlobal & 0b1) != 0) {
-            WerkstoffLoader.items.put(dust, new BW_MetaGenerated_Items(dust));
-            WerkstoffLoader.items.put(dustTiny, new BW_MetaGenerated_Items(dustTiny));
-            WerkstoffLoader.items.put(dustSmall, new BW_MetaGenerated_Items(dustSmall));
+            WerkstoffLoader.items.put(dust, new BWMetaGeneratedItems(dust));
+            WerkstoffLoader.items.put(dustTiny, new BWMetaGeneratedItems(dustTiny));
+            WerkstoffLoader.items.put(dustSmall, new BWMetaGeneratedItems(dustSmall));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10) != 0) {
-            WerkstoffLoader.items.put(ingot, new BW_MetaGenerated_Items(ingot));
-            WerkstoffLoader.items.put(ingotHot, new BW_MetaGenerated_Items(ingotHot)); // 1750
-            WerkstoffLoader.items.put(nugget, new BW_MetaGenerated_Items(nugget));
+            WerkstoffLoader.items.put(ingot, new BWMetaGeneratedItems(ingot));
+            WerkstoffLoader.items.put(ingotHot, new BWMetaGeneratedItems(ingotHot)); // 1750
+            WerkstoffLoader.items.put(nugget, new BWMetaGeneratedItems(nugget));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100) != 0) {
-            WerkstoffLoader.items.put(gem, new BW_MetaGenerated_Items(gem));
-            WerkstoffLoader.items.put(gemChipped, new BW_MetaGenerated_Items(gemChipped));
-            WerkstoffLoader.items.put(gemExquisite, new BW_MetaGenerated_Items(gemExquisite));
-            WerkstoffLoader.items.put(gemFlawed, new BW_MetaGenerated_Items(gemFlawed));
-            WerkstoffLoader.items.put(gemFlawless, new BW_MetaGenerated_Items(gemFlawless));
-            WerkstoffLoader.items.put(lens, new BW_MetaGenerated_Items(lens));
+            WerkstoffLoader.items.put(gem, new BWMetaGeneratedItems(gem));
+            WerkstoffLoader.items.put(gemChipped, new BWMetaGeneratedItems(gemChipped));
+            WerkstoffLoader.items.put(gemExquisite, new BWMetaGeneratedItems(gemExquisite));
+            WerkstoffLoader.items.put(gemFlawed, new BWMetaGeneratedItems(gemFlawed));
+            WerkstoffLoader.items.put(gemFlawless, new BWMetaGeneratedItems(gemFlawless));
+            WerkstoffLoader.items.put(lens, new BWMetaGeneratedItems(lens));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000) != 0) {
             gameRegistryHandler();
-            WerkstoffLoader.items.put(crushed, new BW_MetaGenerated_Items(crushed));
-            WerkstoffLoader.items.put(crushedPurified, new BW_MetaGenerated_Items(crushedPurified));
-            WerkstoffLoader.items.put(crushedCentrifuged, new BW_MetaGenerated_Items(crushedCentrifuged));
-            WerkstoffLoader.items.put(dustPure, new BW_MetaGenerated_Items(dustPure));
-            WerkstoffLoader.items.put(dustImpure, new BW_MetaGenerated_Items(dustImpure));
-            WerkstoffLoader.items.put(rawOre, new BW_MetaGenerated_Items(rawOre));
+            WerkstoffLoader.items.put(crushed, new BWMetaGeneratedItems(crushed));
+            WerkstoffLoader.items.put(crushedPurified, new BWMetaGeneratedItems(crushedPurified));
+            WerkstoffLoader.items.put(crushedCentrifuged, new BWMetaGeneratedItems(crushedCentrifuged));
+            WerkstoffLoader.items.put(dustPure, new BWMetaGeneratedItems(dustPure));
+            WerkstoffLoader.items.put(dustImpure, new BWMetaGeneratedItems(dustImpure));
+            WerkstoffLoader.items.put(rawOre, new BWMetaGeneratedItems(rawOre));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
-            WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
+            WerkstoffLoader.items.put(cell, new BWMetaGeneratedItems(cell));
             if (Forestry.isModLoaded()) {
-                BW_MetaGenerated_Items capsuleClass = new BW_MetaGenerated_Items(capsule);
+                BWMetaGeneratedItems capsuleClass = new BWMetaGeneratedItems(capsule);
                 API.hideItem(new ItemStack(capsuleClass, 1, WILDCARD));
                 WerkstoffLoader.items.put(capsule, capsuleClass);
             }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
-            WerkstoffLoader.items.put(cellPlasma, new BW_MetaGenerated_Items(cellPlasma));
+            WerkstoffLoader.items.put(cellPlasma, new BWMetaGeneratedItems(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
-            WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BW_MetaGenerated_Items(OrePrefixes.cellMolten));
+            WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BWMetaGeneratedItems(OrePrefixes.cellMolten));
             if (Forestry.isModLoaded()) {
-                BW_MetaGenerated_Items capsuleMoltenClass = new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten);
+                BWMetaGeneratedItems capsuleMoltenClass = new BWMetaGeneratedItems(OrePrefixes.capsuleMolten);
                 API.hideItem(new ItemStack(capsuleMoltenClass, 1, WILDCARD));
                 WerkstoffLoader.items.put(OrePrefixes.capsuleMolten, capsuleMoltenClass);
             }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
-            WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
-            WerkstoffLoader.items.put(foil, new BW_MetaGenerated_Items(foil));
-            WerkstoffLoader.items.put(stick, new BW_MetaGenerated_Items(stick));
-            WerkstoffLoader.items.put(stickLong, new BW_MetaGenerated_Items(stickLong));
-            WerkstoffLoader.items.put(toolHeadWrench, new BW_MetaGenerated_Items(toolHeadWrench));
-            WerkstoffLoader.items.put(toolHeadHammer, new BW_MetaGenerated_Items(toolHeadHammer));
-            WerkstoffLoader.items.put(toolHeadSaw, new BW_MetaGenerated_Items(toolHeadSaw));
-            WerkstoffLoader.items.put(turbineBlade, new BW_MetaGenerated_Items(turbineBlade));
+            WerkstoffLoader.items.put(plate, new BWMetaGeneratedItems(plate));
+            WerkstoffLoader.items.put(foil, new BWMetaGeneratedItems(foil));
+            WerkstoffLoader.items.put(stick, new BWMetaGeneratedItems(stick));
+            WerkstoffLoader.items.put(stickLong, new BWMetaGeneratedItems(stickLong));
+            WerkstoffLoader.items.put(toolHeadWrench, new BWMetaGeneratedItems(toolHeadWrench));
+            WerkstoffLoader.items.put(toolHeadHammer, new BWMetaGeneratedItems(toolHeadHammer));
+            WerkstoffLoader.items.put(toolHeadSaw, new BWMetaGeneratedItems(toolHeadSaw));
+            WerkstoffLoader.items.put(turbineBlade, new BWMetaGeneratedItems(turbineBlade));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000000) != 0) {
-            WerkstoffLoader.items.put(gearGt, new BW_MetaGenerated_Items(gearGt));
-            WerkstoffLoader.items.put(gearGtSmall, new BW_MetaGenerated_Items(gearGtSmall));
-            WerkstoffLoader.items.put(bolt, new BW_MetaGenerated_Items(bolt));
-            WerkstoffLoader.items.put(screw, new BW_MetaGenerated_Items(screw));
-            WerkstoffLoader.items.put(ring, new BW_MetaGenerated_Items(ring));
-            WerkstoffLoader.items.put(spring, new BW_MetaGenerated_Items(spring));
-            WerkstoffLoader.items.put(springSmall, new BW_MetaGenerated_Items(springSmall));
-            WerkstoffLoader.items.put(rotor, new BW_MetaGenerated_Items(rotor));
-            WerkstoffLoader.items.put(wireFine, new BW_MetaGenerated_Items(wireFine));
+            WerkstoffLoader.items.put(gearGt, new BWMetaGeneratedItems(gearGt));
+            WerkstoffLoader.items.put(gearGtSmall, new BWMetaGeneratedItems(gearGtSmall));
+            WerkstoffLoader.items.put(bolt, new BWMetaGeneratedItems(bolt));
+            WerkstoffLoader.items.put(screw, new BWMetaGeneratedItems(screw));
+            WerkstoffLoader.items.put(ring, new BWMetaGeneratedItems(ring));
+            WerkstoffLoader.items.put(spring, new BWMetaGeneratedItems(spring));
+            WerkstoffLoader.items.put(springSmall, new BWMetaGeneratedItems(springSmall));
+            WerkstoffLoader.items.put(rotor, new BWMetaGeneratedItems(rotor));
+            WerkstoffLoader.items.put(wireFine, new BWMetaGeneratedItems(wireFine));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000000) != 0) {
-            WerkstoffLoader.items.put(plateDouble, new BW_MetaGenerated_Items(plateDouble));
-            WerkstoffLoader.items.put(plateTriple, new BW_MetaGenerated_Items(plateTriple));
-            WerkstoffLoader.items.put(plateQuadruple, new BW_MetaGenerated_Items(plateQuadruple));
-            WerkstoffLoader.items.put(plateQuintuple, new BW_MetaGenerated_Items(plateQuintuple));
-            WerkstoffLoader.items.put(plateDense, new BW_MetaGenerated_Items(plateDense));
-            WerkstoffLoader.items.put(ingotDouble, new BW_MetaGenerated_Items(ingotDouble));
-            WerkstoffLoader.items.put(ingotTriple, new BW_MetaGenerated_Items(ingotTriple));
-            WerkstoffLoader.items.put(ingotQuadruple, new BW_MetaGenerated_Items(ingotQuadruple));
-            WerkstoffLoader.items.put(ingotQuintuple, new BW_MetaGenerated_Items(ingotQuintuple));
+            WerkstoffLoader.items.put(plateDouble, new BWMetaGeneratedItems(plateDouble));
+            WerkstoffLoader.items.put(plateTriple, new BWMetaGeneratedItems(plateTriple));
+            WerkstoffLoader.items.put(plateQuadruple, new BWMetaGeneratedItems(plateQuadruple));
+            WerkstoffLoader.items.put(plateQuintuple, new BWMetaGeneratedItems(plateQuintuple));
+            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));
+            WerkstoffLoader.items.put(ingotDouble, new BWMetaGeneratedItems(ingotDouble));
+            WerkstoffLoader.items.put(ingotTriple, new BWMetaGeneratedItems(ingotTriple));
+            WerkstoffLoader.items.put(ingotQuadruple, new BWMetaGeneratedItems(ingotQuadruple));
+            WerkstoffLoader.items.put(ingotQuintuple, new BWMetaGeneratedItems(ingotQuintuple));
         }
         ENABLED_ORE_PREFIXES.addAll(WerkstoffLoader.items.keySet());
         ENABLED_ORE_PREFIXES.add(ore);
@@ -1933,45 +1933,49 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        if (SideReference.Side.Client) BW_Renderer_Block_Ores.register();
+        if (SideReference.Side.Client) BWBlockOreRenderer.register();
 
-        GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
-        GameRegistry.registerTileEntity(BW_MetaGeneratedSmallOreTE.class, "bw.blockoresSmallTE");
-        GameRegistry.registerTileEntity(BW_MetaGenerated_WerkstoffBlock_TE.class, "bw.werkstoffblockTE");
-        GameRegistry.registerTileEntity(BW_MetaGeneratedBlocks_Casing_TE.class, "bw.werkstoffblockcasingTE");
-        GameRegistry
-            .registerTileEntity(BW_MetaGeneratedBlocks_CasingAdvanced_TE.class, "bw.werkstoffblockscasingadvancedTE");
+        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedOre.class, "bw.blockoresTE");
+        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedSmallOre.class, "bw.blockoresSmallTE");
+        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
+        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
+        GameRegistry.registerTileEntity(
+            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
+            "bw.werkstoffblockscasingadvancedTE");
 
-        WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
-        WerkstoffLoader.BWSmallOres = new BW_MetaGenerated_SmallOres(
+        WerkstoffLoader.BWOres = new BWMetaGeneratedOres(
             Material.rock,
-            BW_MetaGeneratedSmallOreTE.class,
+            BWTileEntityMetaGeneratedOre.class,
+            "bw.blockores");
+        WerkstoffLoader.BWSmallOres = new BWMetaGeneratedSmallOres(
+            Material.rock,
+            BWTileEntityMetaGeneratedSmallOre.class,
             "bw.blockoresSmall");
-        WerkstoffLoader.BWBlocks = new BW_MetaGenerated_WerkstoffBlocks(
+        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
             Material.iron,
-            BW_MetaGenerated_WerkstoffBlock_TE.class,
+            BWTileEntityMetaGeneratedWerkstoffBlock.class,
             "bw.werkstoffblocks");
-        WerkstoffLoader.BWBlockCasings = new BW_MetaGeneratedBlocks_Casing(
+        WerkstoffLoader.BWBlockCasings = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BW_MetaGeneratedBlocks_Casing_TE.class,
+            BWTileEntityMetaGeneratedBlocksCasing.class,
             "bw.werkstoffblockscasing",
             OrePrefixes.blockCasing);
-        WerkstoffLoader.BWBlockCasingsAdvanced = new BW_MetaGeneratedBlocks_Casing(
+        WerkstoffLoader.BWBlockCasingsAdvanced = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BW_MetaGeneratedBlocks_CasingAdvanced_TE.class,
+            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
 
-        GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.01");
-        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.02");
-        GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblocks.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
+        GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
         if (!ConfigHandler.disableBoltedBlocksCasing) GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasings,
-            BW_MetaGeneratedBlock_Item.class,
+            BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasing.01");
         if (!ConfigHandler.disableReboltedBlocksCasing) GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasingsAdvanced,
-            BW_MetaGeneratedBlock_Item.class,
+            BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasingadvanced.01");
 
         GTMetaItemEnhancer.addAdditionalOreDictToForestry();
@@ -2056,7 +2060,7 @@ public class WerkstoffLoader {
                         remset.add(curr);
                     }
                     for (ItemStack stack : curr.getValue().items) {
-                        if (stack.getItem() instanceof BW_MetaGenerated_Items) remset.add(curr);
+                        if (stack.getItem() instanceof BWMetaGeneratedItems) remset.add(curr);
                     }
                 }
             }
@@ -2080,7 +2084,7 @@ public class WerkstoffLoader {
             }
 
             if (werkstoff.hasItemType(gem)) OreDictionary.registerOre(
-                "craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""),
+                "craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""),
                 werkstoff.get(lens));
 
             if (werkstoff.hasItemType(gem) || werkstoff.hasItemType(ingot)) {

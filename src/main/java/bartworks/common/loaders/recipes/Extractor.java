@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.common.loaders.BioItemList;
-import bartworks.util.BW_Util;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -24,7 +24,7 @@ public class Extractor implements Runnable {
             for (ItemStack stack : oreCropVine) {
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(BW_Util.setStackSize(stack, 12))
+                    .itemInputs(BWUtil.setStackSize(stack, 12))
                     .itemOutputs(BioItemList.getOther(1))
                     .duration(25 * SECONDS)
                     .eut((int) TierEU.RECIPE_HV)

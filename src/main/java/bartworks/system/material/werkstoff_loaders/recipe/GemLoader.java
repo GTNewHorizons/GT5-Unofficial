@@ -44,7 +44,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.util.BW_ColorUtil;
+import bartworks.util.BWColorUtil;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -247,7 +247,7 @@ public class GemLoader implements IWerkstoffRunnable {
                 werkstoff.get(lens),
                 texture,
                 new gregtech.common.covers.GT_Cover_Lens(
-                    BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex,
+                    BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex,
                     texture));
 
             GT_Values.RA.stdBuilder()
@@ -258,7 +258,7 @@ public class GemLoader implements IWerkstoffRunnable {
                 .addTo(maceratorRecipes);
 
             for (ItemStack is : OreDictionary
-                .getOres("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
+                .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
                 is.stackSize = 0;
 
                 GT_Values.RA.stdBuilder()

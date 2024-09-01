@@ -41,11 +41,11 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar.Direction;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import bartworks.API.modularUI.BW_UITextures;
+import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
-import bartworks.util.BW_ColorUtil;
-import bartworks.util.BW_Tooltip_Reference;
+import bartworks.util.BWColorUtil;
+import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                     + (aTier - 2 >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name")
                         : StatCollector.translateToLocal("tooltip.bw.kg.0.name")),
                 StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
+                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
         this.cap = aTier - 2;
     }
 
@@ -311,7 +311,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
         aNBT.setByte("mMass", this.mass);
         aNBT.setByte("mSv", (byte) (this.sievert - 100));
         aNBT.setByte("mCoverage", this.coverage);
-        aNBT.setInteger("mTextColor", BW_ColorUtil.getColorFromRGBArray(this.getColorForGUI()));
+        aNBT.setInteger("mTextColor", BWColorUtil.getColorFromRGBArray(this.getColorForGUI()));
         if (this.material != null && !this.material.isEmpty()) aNBT.setString("mMaterial", this.material);
         aNBT.setLong("timer", this.timer);
         aNBT.setLong("decay", this.decayTime);
@@ -324,7 +324,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
         this.mass = aNBT.getByte("mMass");
         this.sievert = aNBT.getByte("mSv") + 100;
         this.coverage = aNBT.getByte("mCoverage");
-        this.colorForGUI = BW_ColorUtil.splitColorToRBGArray(aNBT.getInteger("mTextColor"));
+        this.colorForGUI = BWColorUtil.splitColorToRBGArray(aNBT.getInteger("mTextColor"));
         this.material = aNBT.getString("mMaterial");
         this.decayTime = aNBT.getLong("decay");
         super.loadNBTData(aNBT);
@@ -354,17 +354,17 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
         this.getBaseMetaTileEntity()
             .add1by1Slot(builder);
         builder.widget(
-            new DrawableWidget().setBackground(BW_UITextures.PICTURE_SIEVERT_CONTAINER)
+            new DrawableWidget().setBackground(BWUITextures.PICTURE_SIEVERT_CONTAINER)
                 .setPos(61, 9)
                 .setSize(56, 24))
             .widget(
                 new ProgressBar().setProgress(() -> this.getSievert() / 148f)
                     .setDirection(Direction.RIGHT)
-                    .setTexture(BW_UITextures.PROGRESSBAR_SIEVERT, 24)
+                    .setTexture(BWUITextures.PROGRESSBAR_SIEVERT, 24)
                     .setPos(65, 13)
                     .setSize(48, 16))
             .widget(
-                new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_INSIDE)
+                new DrawableWidget().setBackground(BWUITextures.PICTURE_DECAY_TIME_INSIDE)
                     .setPos(124, 18)
                     .setSize(16, 48))
             .widget(new DrawableWidget() {
@@ -406,7 +406,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
             .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[1], val -> this.colorForGUI[1] = val))
             .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[2], val -> this.colorForGUI[2] = val))
             .widget(
-                new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_CONTAINER)
+                new DrawableWidget().setBackground(BWUITextures.PICTURE_DECAY_TIME_CONTAINER)
                     .setPos(120, 14)
                     .setSize(24, 56))
             .widget(
@@ -449,12 +449,12 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
             new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get())
                 .setPos(10, 9))
             .widget(
-                new DrawableWidget().setDrawable(BW_UITextures.PICTURE_RADIATION_SHUTTER_FRAME)
+                new DrawableWidget().setDrawable(BWUITextures.PICTURE_RADIATION_SHUTTER_FRAME)
                     .setPos(14, 27)
                     .setSize(55, 54))
             .widget(
                 new DrawableWidget()
-                    .setDrawable(() -> this.coverage < 100 ? BW_UITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
+                    .setDrawable(() -> this.coverage < 100 ? BWUITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
                     .setPos(16, 29)
                     .setSize(51, 50)
                     .attachSyncer(
@@ -482,7 +482,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(BW_UITextures.PICTURE_BW_LOGO_47X21)
+            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X21)
                 .setSize(47, 21)
                 .setPos(10, 53));
     }

@@ -64,8 +64,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;

@@ -26,9 +26,9 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
-import bartworks.common.blocks.BioFluidBlock;
+import bartworks.common.blocks.BlockBioFluid;
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
+import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.util.Coords;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -94,7 +94,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
     @SideOnly(Side.CLIENT)
     public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
-        if (!(block instanceof BioFluidBlock)) return false;
+        if (!(block instanceof BlockBioFluid)) return false;
         Tessellator tessellator = Tessellator.instance;
         Coords blockat = new Coords(
             x,
@@ -102,7 +102,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
             z,
             iBlockAccess.getTileEntity(x, y, z)
                 .getWorldObj().provider.dimensionId);
-        Integer rgb = GT_TileEntity_BioVat.staticColorMap.get(blockat);
+        Integer rgb = MTEBioVat.staticColorMap.get(blockat);
 
         int r, g, b;
 

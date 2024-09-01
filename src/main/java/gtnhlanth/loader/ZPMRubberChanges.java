@@ -22,7 +22,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 import bartworks.system.material.Werkstoff;
-import bartworks.util.BW_Util;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -350,7 +350,7 @@ public class ZPMRubberChanges implements Runnable {
     private static ItemStack[] replaceArrayWith(ItemStack[] stackArray, Materials source, Werkstoff target) {
         for (int i = 0; i < stackArray.length; i++) {
             ItemStack stack = stackArray[i];
-            if (!BW_Util.checkStackAndPrefix(stack)) continue;
+            if (!BWUtil.checkStackAndPrefix(stack)) continue;
             stackArray[i] = replaceStackWith(stack, source, target);
         }
         return stackArray;
@@ -389,7 +389,7 @@ public class ZPMRubberChanges implements Runnable {
                         else {
                             int amount = ((ItemStack) ((ArrayList) stacks[i]).get(0)).stackSize;
                             stacks[i] = new ArrayList<>();
-                            ((ArrayList) stacks[i]).add(BW_Util.setStackSize(replacement[0], amount));
+                            ((ArrayList) stacks[i]).add(BWUtil.setStackSize(replacement[0], amount));
                             replaced = true;
 
                             GT_Log.out.print("Replaced recipe!: " + stack.getDisplayName() + " ");
@@ -399,7 +399,7 @@ public class ZPMRubberChanges implements Runnable {
             } else if (GT_Utility.areStacksEqual(stack, (ItemStack) stacks[i], true)) if (!replace) return true;
             else {
                 int amount = ((ItemStack) stacks[i]).stackSize;
-                stacks[i] = BW_Util.setStackSize(replacement[0], amount);
+                stacks[i] = BWUtil.setStackSize(replacement[0], amount);
                 replaced = true;
             }
         }

@@ -40,12 +40,12 @@ import bartworks.common.configs.ConfigHandler;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.loaders.RecipeLoader;
-import bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
-import bartworks.common.tileentities.multis.GT_TileEntity_LESU;
-import bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
-import bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_BioLab;
+import bartworks.common.tileentities.multis.MTEBioVat;
+import bartworks.common.tileentities.multis.MTELESU;
+import bartworks.common.tileentities.multis.MTEManualTrafo;
+import bartworks.common.tileentities.multis.MTEWindmill;
 import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
+import bartworks.common.tileentities.tiered.MTEBioLab;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTech_API;
@@ -95,7 +95,7 @@ public class CraftingRecipes implements Runnable {
             ItemList.Machine_EV_ChemicalReactor.get(1L) };
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_LESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
+            new MTELESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "CDC", "SBS", "CFC", 'C', "circuitAdvanced", 'D', ItemList.Cover_Screen.get(1L), 'S',
                 GT_OreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 1L), 'B',
@@ -253,20 +253,16 @@ public class CraftingRecipes implements Runnable {
         }
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_ManualTrafo(
-                ManualTrafo.ID,
-                "bw.manualtrafo",
-                StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
+            new MTEManualTrafo(ManualTrafo.ID, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name"))
+                .getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "SCS", "CHC", "ZCZ", 'S',
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 1L), 'C',
                 new ItemStack(ItemRegistry.BW_BLOCKS[2]), 'H', ItemList.Hull_HV.get(1L), 'Z', "circuitAdvanced" });
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_Windmill(
-                Windmill.ID,
-                "bw.windmill",
-                StatCollector.translateToLocal("tile.bw.windmill.name")).getStackForm(1L),
+            new MTEWindmill(Windmill.ID, "bw.windmill", StatCollector.translateToLocal("tile.bw.windmill.name"))
+                .getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "BHB", "WGW", "BWB", 'B', new ItemStack(Blocks.brick_block), 'W',
                 GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), 'H', new ItemStack(Blocks.hopper),
@@ -412,8 +408,7 @@ public class CraftingRecipes implements Runnable {
                 ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_BioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name"))
-                .getStackForm(1L),
+            new MTEBioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name")).getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "GCG", "KHK", "GCG", 'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 'C',
                 "circuit" + Materials.EV, 'K', GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L),
@@ -440,7 +435,7 @@ public class CraftingRecipes implements Runnable {
             RadioHatch_UMV.ID, RadioHatch_UXV.ID, RadioHatch_MAX.ID };
 
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
-            BioLab2[i - 3] = new GT_MetaTileEntity_BioLab(
+            BioLab2[i - 3] = new MTEBioLab(
                 BioLab[i - 3],
                 "bw.biolab" + GT_Values.VN[i],
                 GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.biolab.name"),

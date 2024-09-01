@@ -1,7 +1,7 @@
 package gtnhlanth.common.register;
 
-import static bartworks.util.BW_Util.subscriptNumbers;
-import static bartworks.util.BW_Util.superscriptNumbers;
+import static bartworks.util.BWUtil.subscriptNumbers;
+import static bartworks.util.BWUtil.superscriptNumbers;
 
 import java.util.Arrays;
 

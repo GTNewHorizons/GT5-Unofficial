@@ -1,6 +1,6 @@
 package goodgenerator.items;
 
-import static bartworks.util.BW_Util.subscriptNumbers;
+import static bartworks.util.BWUtil.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 
 import bartworks.system.material.Werkstoff;

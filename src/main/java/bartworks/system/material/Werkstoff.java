@@ -36,8 +36,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.BW_ColorUtil;
-import bartworks.util.BW_Util;
+import bartworks.util.BWColorUtil;
+import bartworks.util.BWUtil;
 import bartworks.util.MurmurHash3;
 import bartworks.util.NonNullWrappedHashMap;
 import bartworks.util.Pair;
@@ -282,7 +282,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
-        this.setRgb(BW_ColorUtil.correctCorlorArray(rgba));
+        this.setRgb(BWColorUtil.correctCorlorArray(rgba));
         this.CONTENTS.addAll(Arrays.asList(contents));
         this.toolTip = "";
         if (toolTip.isEmpty()) {
@@ -292,23 +292,23 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                         if (((Materials) p.getKey()).mMaterialList.size() > 1 && p.getValue() > 1)
                             this.toolTip += "(" + getFormula((Materials) p.getKey())
                                 + ")"
-                                + BW_Util.subscriptNumber(p.getValue());
+                                + BWUtil.subscriptNumber(p.getValue());
                         else this.toolTip += getFormula((Materials) p.getKey())
-                            + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                            + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
                     }
                     if (p.getKey() instanceof Werkstoff) {
                         if (((Werkstoff) p.getKey()).CONTENTS.size() > 1 && p.getValue() > 1)
                             this.toolTip += "(" + getFormula((Werkstoff) p.getKey())
                                 + ")"
-                                + BW_Util.subscriptNumber(p.getValue());
+                                + BWUtil.subscriptNumber(p.getValue());
                         else this.toolTip += getFormula((Werkstoff) p.getKey())
-                            + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                            + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
                     }
                 } else if (p.getKey() instanceof Materials) {
                     this.toolTip += getFormula((Materials) p.getKey())
-                        + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                        + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
                 } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
-                    + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                    + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
             }
         } else this.toolTip = toolTip;
 

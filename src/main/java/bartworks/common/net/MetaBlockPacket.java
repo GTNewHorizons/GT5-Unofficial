@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.MainMod;
-import bartworks.system.material.BW_MetaGenerated_Block_TE;
+import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import bartworks.util.MurmurHash3;
 import gregtech.api.net.GT_Packet_New;
 import io.netty.buffer.ByteBuf;
@@ -97,8 +97,8 @@ public class MetaBlockPacket extends GT_Packet_New {
     public void process(IBlockAccess iBlockAccess) {
         if (iBlockAccess != null) {
             TileEntity tTileEntity = iBlockAccess.getTileEntity(this.x, this.y, this.z);
-            if (tTileEntity instanceof BW_MetaGenerated_Block_TE) {
-                ((BW_MetaGenerated_Block_TE) tTileEntity).mMetaData = this.meta;
+            if (tTileEntity instanceof TileEntityMetaGeneratedBlock) {
+                ((TileEntityMetaGeneratedBlock) tTileEntity).mMetaData = this.meta;
             }
             if (iBlockAccess instanceof World && ((World) iBlockAccess).isRemote) {
                 ((World) iBlockAccess).markBlockForUpdate(this.x, this.y, this.z);

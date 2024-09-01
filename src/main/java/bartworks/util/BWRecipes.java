@@ -59,7 +59,7 @@ public class BWRecipes {
         }
         int aSievert = 0;
         if (material.getProtons() >= 83 || material.getProtons() == 61 || material.getProtons() == 43)
-            aSievert += BW_Util.calculateSv(material);
+            aSievert += BWUtil.calculateSv(material);
         aSievert = aSievert << 1;
         aSievert = aSievert | (requiresExactSieverts ? 1 : 0);
         aSievert = aSievert << 2;

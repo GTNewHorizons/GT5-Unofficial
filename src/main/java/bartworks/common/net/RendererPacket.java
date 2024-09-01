@@ -19,8 +19,8 @@ import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.API.SideReference;
 import bartworks.MainMod;
-import bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
-import bartworks.util.BW_ColorUtil;
+import bartworks.common.tileentities.multis.MTEBioVat;
+import bartworks.util.BWColorUtil;
 import bartworks.util.Coords;
 import gregtech.api.net.GT_Packet_New;
 import io.netty.buffer.ByteBuf;
@@ -71,7 +71,7 @@ public class RendererPacket extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
-        this.integer = BW_ColorUtil
+        this.integer = BWColorUtil
             .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });
         this.removal = dataInput.readByte();
 
@@ -92,8 +92,8 @@ public class RendererPacket extends GT_Packet_New {
     @Override
     public void process(IBlockAccess iBlockAccess) {
         if (SideReference.Side.Client) {
-            if (this.removal == 0) GT_TileEntity_BioVat.staticColorMap.put(this.coords, this.integer);
-            else GT_TileEntity_BioVat.staticColorMap.remove(this.coords);
+            if (this.removal == 0) MTEBioVat.staticColorMap.put(this.coords, this.integer);
+            else MTEBioVat.staticColorMap.remove(this.coords);
         }
     }
 }

@@ -25,17 +25,17 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import bartworks.API.API_ConfigValues;
+import bartworks.API.APIConfigValues;
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.SideReference;
 import bartworks.client.ClientEventHandler.TooltipEventHandler;
+import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
-import bartworks.client.creativetabs.bartworksTab;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.ConfigHandler;
-import bartworks.common.items.BW_ItemBlocks;
+import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioLabLoader;
@@ -46,13 +46,13 @@ import bartworks.common.loaders.RecipeLoader;
 import bartworks.common.loaders.RegisterGlassTiers;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
-import bartworks.common.net.BW_Network;
+import bartworks.common.net.BWNetwork;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
-import bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import bartworks.system.material.processingLoaders.DownTierLoader;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
@@ -94,13 +94,13 @@ public final class MainMod {
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
-    public static final CreativeTabs BWT = new bartworksTab(BartWorks.ID);
+    public static final CreativeTabs BWT = new BartWorksTab(BartWorks.ID);
     public static final IGuiHandler GH = new GuiHandler();
 
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
 
-    public static BW_Network BW_Network_instance = new BW_Network();
+    public static BWNetwork BW_Network_instance = new BWNetwork();
 
     public MainMod() {
 
@@ -110,10 +110,10 @@ public final class MainMod {
     public void preInit(FMLPreInitializationEvent preinit) {
         MainMod.LOGGER.info("Found GT++, continuing");
 
-        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
-        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BW_ItemBlocks.class, "BW_GlasBlocks2");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
 
-        if (API_ConfigValues.debugLog) {
+        if (APIConfigValues.debugLog) {
             try {
                 DebugLog.initDebugLog(preinit);
             } catch (IOException e) {

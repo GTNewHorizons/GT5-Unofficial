@@ -38,7 +38,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import bartworks.common.configs.ConfigHandler;
-import bartworks.system.oregen.BW_WordGenerator;
+import bartworks.system.oregen.BWWordGenerator;
 import bartworks.system.worldgen.MapGenRuins;
 import bwcrossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.objects.XSTR;
@@ -47,7 +47,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
 
     XSTR rand = new XSTR();
     private BiomeGenBase[] biomesForGeneration;
-    public static final BW_WordGenerator BWOreGen = new BW_WordGenerator();
+    public static final BWWordGenerator BWOreGen = new BWWordGenerator();
     private final World worldObj;
     private final MapGenBase caveGenerator = new MapGenCaves();
     private final MapGenBase ravineGenerator = new MapGenRavine();

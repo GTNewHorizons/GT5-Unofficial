@@ -15,7 +15,7 @@ package bwcrossmod.thaumcraft.util;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.API.API_ConfigValues;
+import bartworks.API.APIConfigValues;
 import bartworks.util.Pair;
 import bartworks.util.log.DebugLog;
 import thaumcraft.api.ThaumcraftApi;
@@ -42,7 +42,7 @@ public class ThaumcraftHandler {
             for (Pair<Object, Integer> a : aspectPair) {
                 Aspect aspect = (Aspect) a.getKey();
                 int amount = a.getValue();
-                if (API_ConfigValues.debugLog) DebugLog.log(
+                if (APIConfigValues.debugLog) DebugLog.log(
                     "Stack:" + stack.getDisplayName()
                         + " Damage:"
                         + stack.getItemDamage()

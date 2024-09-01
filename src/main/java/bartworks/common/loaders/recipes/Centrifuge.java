@@ -12,8 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
-import bartworks.common.tileentities.multis.GT_TileEntity_THTR;
+import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
+import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -40,11 +40,11 @@ public class Centrifuge implements Runnable {
             .addTo(centrifugeRecipes);
 
         ItemStack[] pellets = new ItemStack[6];
-        Arrays.fill(pellets, new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 4));
+        Arrays.fill(pellets, new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 64, 4));
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3),
+                new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 3),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(pellets)
             .duration(40 * MINUTES)
@@ -53,15 +53,15 @@ public class Centrifuge implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 5),
+                new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 5),
                 GT_Utility.getIntegratedCircuit(17))
-            .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 6))
+            .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 64, 6))
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 6))
+            .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 6))
             .itemOutputs(Materials.Lead.getDust(1))
             .outputChances(300)
             .duration(60 * SECONDS)
@@ -69,32 +69,32 @@ public class Centrifuge implements Runnable {
             .addTo(centrifugeRecipes);
 
         int i = 0;
-        for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : GT_TileEntity_HTGR.HTGRMaterials.sHTGR_Fuel) {
+        for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 3),
                     GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4))
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4))
                 .duration(10 * MINUTES)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5),
+                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 5),
                     GT_Utility.getIntegratedCircuit(17))
-                .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 6))
+                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 6))
                 .duration(2 * MINUTES + 30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
 
             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder()
-                .itemInputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6))
+                .itemInputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 6))
                 .itemOutputs(
                     fuel.recycledItems[0],
                     fuel.recycledItems[1],
@@ -109,7 +109,7 @@ public class Centrifuge implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
 
-            i += GT_TileEntity_HTGR.HTGRMaterials.MATERIALS_PER_FUEL;
+            i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
         }
 
         GT_Values.RA.stdBuilder()

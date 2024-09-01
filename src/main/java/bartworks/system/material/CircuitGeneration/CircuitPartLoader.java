@@ -101,7 +101,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.client.renderer.BW_GT_ItemRenderer;
+import bartworks.client.renderer.BWItemRenderer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -117,7 +117,7 @@ public class CircuitPartLoader implements Runnable {
         CircuitPartLoader.makeCircuitParts();
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isClient()) new BW_GT_ItemRenderer();
+            .isClient()) new BWItemRenderer();
     }
 
     public static void makeCircuitParts() {
@@ -167,7 +167,7 @@ public class CircuitPartLoader implements Runnable {
             // tt += "Internal Name = "+single;
             String localised = GT_LanguageManager
                 .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
-            BW_Meta_Items.getCircuitParts()
+            BWMetaItems.getCircuitParts()
                 .addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised + "s", tt);
 
             GT_Values.RA.stdBuilder()
@@ -176,7 +176,7 @@ public class CircuitPartLoader implements Runnable {
                         .copy(),
                     GT_Utility.getIntegratedCircuit(16))
                 .itemOutputs(
-                    BW_Meta_Items.getCircuitParts()
+                    BWMetaItems.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))
                 .fluidInputs(Materials.Plastic.getMolten(72))
                 .duration(30 * SECONDS)

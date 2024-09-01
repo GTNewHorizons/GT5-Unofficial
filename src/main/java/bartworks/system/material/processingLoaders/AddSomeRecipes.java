@@ -20,7 +20,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import bartworks.system.material.BW_NonMeta_MaterialItems;
+import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -33,7 +33,7 @@ public class AddSomeRecipes implements Runnable {
     public void run() {
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_1.get(1))
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(dust),
                 WerkstoffLoader.Zirconium.get(dust),
@@ -48,7 +48,7 @@ public class AddSomeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_2.get(1))
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(dust, 2),
                 WerkstoffLoader.Zirconium.get(dust, 2),
@@ -63,7 +63,7 @@ public class AddSomeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_4.get(1))
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(dust, 4),
                 WerkstoffLoader.Zirconium.get(dust, 4),
@@ -78,7 +78,7 @@ public class AddSomeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1))
+            .itemInputs(BWNonMetaMaterialItems.Depleted_TheCoreCell.get(1))
             .itemOutputs(
                 ItemList.Depleted_Naquadah_4.get(8),
                 WerkstoffLoader.Zirconium.get(dust, 64),

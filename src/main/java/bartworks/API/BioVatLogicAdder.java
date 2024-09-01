@@ -21,9 +21,9 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.material.BW_NonMeta_MaterialItems;
+import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.util.BW_Util;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
@@ -50,19 +50,19 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_4.get(1), Materials.Uranium, 12);
 
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.TiberiumCell_1.get(1),
+                BWNonMetaMaterialItems.TiberiumCell_1.get(1),
                 WerkstoffLoader.Tiberium.getBridgeMaterial(),
                 3);
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.TiberiumCell_2.get(1),
+                BWNonMetaMaterialItems.TiberiumCell_2.get(1),
                 WerkstoffLoader.Tiberium.getBridgeMaterial(),
                 6);
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.TiberiumCell_4.get(1),
+                BWNonMetaMaterialItems.TiberiumCell_4.get(1),
                 WerkstoffLoader.Tiberium.getBridgeMaterial(),
                 12);
 
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TheCoreCell.get(1), Materials.Naquadah, 96);
+            giveItemStackRadioHatchAbilites(BWNonMetaMaterialItems.TheCoreCell.get(1), Materials.Naquadah, 96);
 
             giveItemStackRadioHatchAbilites(ItemList.Depleted_Thorium_1.get(1), Materials.Thorium, 3, 10);
             giveItemStackRadioHatchAbilites(ItemList.Depleted_Thorium_2.get(1), Materials.Thorium, 6, 10);
@@ -105,23 +105,23 @@ public final class BioVatLogicAdder {
                 10);
 
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1),
+                BWNonMetaMaterialItems.Depleted_Tiberium_1.get(1),
                 WerkstoffLoader.Tiberium.getBridgeMaterial(),
                 3,
                 10);
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1),
+                BWNonMetaMaterialItems.Depleted_Tiberium_2.get(1),
                 WerkstoffLoader.Tiberium.getBridgeMaterial(),
                 6,
                 10);
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1),
+                BWNonMetaMaterialItems.Depleted_Tiberium_4.get(1),
                 WerkstoffLoader.Tiberium.getBridgeMaterial(),
                 12,
                 10);
 
             giveItemStackRadioHatchAbilites(
-                BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1),
+                BWNonMetaMaterialItems.Depleted_TheCoreCell.get(1),
                 Materials.Naquadah,
                 96,
                 10);
@@ -164,7 +164,7 @@ public final class BioVatLogicAdder {
         }
 
         public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials) {
-            IsSv.put(stack, BW_Util.calculateSv(materials));
+            IsSv.put(stack, BWUtil.calculateSv(materials));
         }
 
         public static void giveItemStackRadioHatchAbilites(ItemStack stack, int sv, int kg) {
@@ -173,12 +173,12 @@ public final class BioVatLogicAdder {
         }
 
         public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials, int kg) {
-            giveItemStackRadioHatchAbilites(stack, BW_Util.calculateSv(materials), kg);
+            giveItemStackRadioHatchAbilites(stack, BWUtil.calculateSv(materials), kg);
             IsColor.put(stack, materials.getRGBA());
         }
 
         public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials, int kg, int divider) {
-            giveItemStackRadioHatchAbilites(stack, BW_Util.calculateSv(materials) / divider, kg);
+            giveItemStackRadioHatchAbilites(stack, BWUtil.calculateSv(materials) / divider, kg);
             IsColor.put(stack, materials.getRGBA());
         }
 

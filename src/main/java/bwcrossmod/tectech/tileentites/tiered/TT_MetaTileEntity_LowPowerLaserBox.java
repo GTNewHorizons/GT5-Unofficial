@@ -16,7 +16,7 @@ package bwcrossmod.tectech.tileentites.tiered;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import bartworks.util.BW_Tooltip_Reference;
+import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -171,6 +171,6 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
                 + GT_Utility.formatNumbers(this.getTotalPower())
                 + EnumChatFormatting.WHITE
                 + " EU/t",
-            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }
 }
