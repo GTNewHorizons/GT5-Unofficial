@@ -204,6 +204,7 @@ import static gregtech.common.items.ID_MetaItem_03.NuclearStar;
 import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Phononic_Seed_Crystal;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Catalyst_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Charm;
@@ -212,7 +213,9 @@ import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Stran
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Up;
+import static gregtech.common.items.ID_MetaItem_03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
+import static gregtech.common.items.ID_MetaItem_03.Thermal_Superconductor;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
 import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
 import static gregtech.common.items.ID_MetaItem_03.Tube_Wires;
@@ -1185,6 +1188,13 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Device supporting the alignment of transdimensional spaces.",
                     "Enables Dimensional Convergence on the DTPF."),
                 o));
+
+        ItemList.Thermal_Superconductor
+            .set(addItem(Thermal_Superconductor.ID, "Thermal Superconductor", "With the power of second sound!", o));
+        ItemList.Relativistic_Heat_Capacitor
+            .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
+        ItemList.Phononic_Seed_Crystal
+            .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

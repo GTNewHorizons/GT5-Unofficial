@@ -2,10 +2,14 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.transcendentPlasmaMixerRecipes;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.material.ELEMENT;
 
 public class TranscendentPlasmaMixerRecipes implements Runnable {
 
@@ -135,6 +139,20 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.PrimordialMatter.getFluid(1000L))
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
+            .noOptimize()
+            .addTo(transcendentPlasmaMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(24))
+            .fluidInputs(
+                new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1000),
+                Materials.Thorium.getPlasma(1000L),
+                new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000),
+                Materials.Calcium.getPlasma(1000L),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.Creon.getPlasma(5000L))
+            .duration(100)
+            .eut(TierEU.RECIPE_UMV)
             .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 

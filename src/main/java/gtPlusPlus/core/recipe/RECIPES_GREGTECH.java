@@ -50,10 +50,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+
 import cpw.mods.fml.common.Loader;
+import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
@@ -855,6 +859,20 @@ public class RECIPES_GREGTECH {
             .fluidOutputs(FluidUtils.getFluidStack("molten.precious metals alloy", 864))
             .eut(TierEU.RECIPE_UEV)
             .duration(9 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
+        // lossless phonon transfer medium
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(5),
+                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 5),
+                MyMaterial.metastableOganesson.get(OrePrefixes.dust, 1),
+                Materials.Praseodymium.getDust(15),
+                Materials.SuperconductorUIVBase.getDust(6))
+            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(4000L))
+            .fluidOutputs(MaterialsUEVplus.PhononMedium.getFluid(1000L))
+            .eut(TierEU.RECIPE_UIV)
+            .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }
 

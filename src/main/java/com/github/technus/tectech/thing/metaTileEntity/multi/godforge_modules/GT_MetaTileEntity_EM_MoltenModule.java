@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -213,13 +214,31 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace")
-            .addInfo("Controller block of the Molten Module")
-            .addInfo("Uses a Star to to melt Metals")
-            .addSeparator()
-            .beginStructureBlock(1, 4, 2, false)
-            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+        tt.addMachineType("Blast Smelter")
+            .addInfo("Controller block for the Helioflux Meltig Core, a module of the Godforge.")
+            .addInfo("Must be part of a Godforge to function.")
+            .addInfo("Used for high temperature material liquefaction.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("The second module of the Godforge, this module melts materials directly into")
+            .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
+            .addInfo("as a regular solid instead.")
+            .addInfo("This module is specialized towards parallel processing.")
+            .addInfo(TOOLTIP_BAR)
+            .beginStructureBlock(7, 7, 13, false)
+            .addStructureInfo("The structure is too complex! See schematic for details.")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "20"
+                    + EnumChatFormatting.GRAY
+                    + " Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }

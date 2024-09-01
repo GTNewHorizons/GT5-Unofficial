@@ -113,6 +113,7 @@ public class TecTech {
     @SuppressWarnings("unused")
     public void onLoadCompleted(FMLLoadCompleteEvent event) {
         eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
+        MainLoader.onLoadCompleted();
     }
 
     public static EyeOfHarmonyRecipeStorage eyeOfHarmonyRecipeStorage = null;
