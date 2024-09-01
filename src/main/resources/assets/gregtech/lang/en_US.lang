@@ -1416,8 +1416,12 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
+for.bees.authority.machinist=Diddy & Nilau
+
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
+
+for.flowers.flaming=Fire
 
 itemGroup.GTtools=Prebuild Tools
 
@@ -1432,6 +1436,7 @@ gregtech.speedAccelerated=Accelerated
 gregtech.lifeBlink=Blink
 gregtech.lifeEon=Eon
 gregtech.effectTreetwister=Treetwister
+gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
