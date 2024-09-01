@@ -46,24 +46,24 @@ public class AssemblyLine implements Runnable {
             .duration(4 * MINUTES + 10 * SECONDS)
             .addTo(AssemblyLine);
 
-        if (GalactiGreg.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))
-                .metadata(RESEARCH_TIME, 25 * MINUTES + 36 * SECONDS)
-                .itemInputs(
-                    ItemList.OreDrill4.get(1L),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
-                    Materials.Europium.getPlates(3),
-                    ItemList.Electric_Motor_LuV.get(9L),
-                    ItemList.Sensor_LuV.get(9L),
-                    ItemList.Field_Generator_LuV.get(9L),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
-                .fluidInputs(new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Neon.getFluidOrGas(20000))
-                .itemOutputs(ItemRegistry.voidminer[0].copy())
-                .eut(TierEU.RECIPE_LuV)
-                .duration(5 * MINUTES)
-                .addTo(AssemblyLine);
-        }
+
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))
+            .metadata(RESEARCH_TIME, 25 * MINUTES + 36 * SECONDS)
+            .itemInputs(
+                ItemList.OreDrill4.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
+                Materials.Europium.getPlates(3),
+                ItemList.Electric_Motor_LuV.get(9L),
+                ItemList.Sensor_LuV.get(9L),
+                ItemList.Field_Generator_LuV.get(9L),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
+            .fluidInputs(new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Neon.getFluidOrGas(20000))
+            .itemOutputs(ItemRegistry.voidminer[0].copy())
+            .eut(TierEU.RECIPE_LuV)
+            .duration(5 * MINUTES)
+            .addTo(AssemblyLine);
+
 
         GT_Values.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_LuV_CircuitAssembler.get(1L))

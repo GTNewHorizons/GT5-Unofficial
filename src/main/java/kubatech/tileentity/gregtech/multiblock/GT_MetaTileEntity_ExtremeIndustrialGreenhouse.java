@@ -247,10 +247,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
         .addElement(
             'g',
-            BartWorks.isModLoaded()
-                ? BorosilicateGlass
-                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)
-                : onElementPass(t -> t.glassTier = 100, ofBlock(Blocks.glass, 0)))
+            BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)
+                )
         .addElement(
             'd',
             ofBlock(

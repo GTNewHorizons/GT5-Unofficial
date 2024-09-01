@@ -486,13 +486,13 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             } else {
                 // Little easier egg: Fluoroantimonic acid has a pH value of -31, it's an acid so strong it will
                 // instantly shatter the glass in the structure.
-                if (GoodGenerator.isModLoaded()) {
-                    Fluid acid = FluidRegistry.getFluid("fluoroantimonic acid");
-                    if (stack != null && stack.getFluid()
-                        .equals(acid)) {
-                        // TODO: Actually break the glass and trigger achievement lol
-                    }
+
+                Fluid acid = FluidRegistry.getFluid("fluoroantimonic acid");
+                if (stack != null && stack.getFluid()
+                    .equals(acid)) {
+                    // TODO: Actually break the glass and trigger achievement lol
                 }
+
             }
 
             // Adjust pH with to new value

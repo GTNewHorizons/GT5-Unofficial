@@ -579,18 +579,18 @@ public class ItemRegistry {
             "MegaOilCracker",
             "Mega Oil Cracker").getStackForm(1L);
 
-        if (GalactiGreg.isModLoaded()) {
-            ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
-                VoidMinerIII.ID,
-                "VoidMiner3",
-                "Void Miner III").getStackForm(1L);
-            ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
-                VoidMinerII.ID,
-                "VoidMiner2",
-                "Void Miner II").getStackForm(1L);
-            ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
-                .getStackForm(1L);
-        }
+
+        ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
+            VoidMinerIII.ID,
+            "VoidMiner3",
+            "Void Miner III").getStackForm(1L);
+        ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
+            VoidMinerII.ID,
+            "VoidMiner2",
+            "Void Miner II").getStackForm(1L);
+        ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
+            .getStackForm(1L);
+
         TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(
             LowPowerLaserPipe.ID,
             "pipe.lowpowerlaser",
