@@ -30,8 +30,10 @@ import java.util.List;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.event.ClickEvent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.io.Files;
@@ -41,7 +43,6 @@ import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import kubatech.api.utils.ModUtils;
 
-@CommandHandler.ChildCommand
 public class CommandBees extends CommandBase {
 
     @Override
@@ -50,21 +51,16 @@ public class CommandBees extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "bees";
-    }
-
-    @Override
-    public int getRequiredPermissionLevel() {
-        return 4;
     }
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+    public void processCommand(ICommandSender sender, String[] args) {
 
         if (!ModUtils.isClientSided) {
-            p_71515_1_
+            sender
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command is single-player only!"));
             return;
         }
@@ -97,7 +93,13 @@ public class CommandBees extends CommandBase {
 
             writer.flush();
             writer.close();
-            p_71515_1_.addChatMessage(new ChatComponentText(f.getAbsolutePath()));
+            sender.addChatMessage(
+                new ChatComponentText(
+                    EnumChatFormatting.YELLOW + "Click to open file : "
+                        + EnumChatFormatting.RESET
+                        + f.getAbsolutePath()).setChatStyle(
+                            new ChatStyle()
+                                .setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, f.getAbsolutePath()))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

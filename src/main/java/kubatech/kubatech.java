@@ -22,8 +22,6 @@ package kubatech;
 
 import static kubatech.api.enums.ItemList.LegendaryRedTea;
 
-import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,7 +30,6 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.objectweb.asm.tree.ClassNode;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -50,7 +47,6 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import kubatech.api.enums.ItemList;
-import kubatech.api.helpers.ReflectionHelper;
 import kubatech.loaders.BlockLoader;
 import kubatech.network.CustomTileEntityPacket;
 import kubatech.network.LoadConfigPacket;
@@ -78,7 +74,8 @@ import kubatech.network.LoadConfigPacket;
         + "after: dreamcraft; ")
 public class kubatech {
 
-    public static kubatech instance = null;
+    @Mod.Instance(Tags.MODID)
+    public static kubatech instance;
     public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(Tags.MODID);
     public static final CreativeTabs KT = new CreativeTabs(Tags.MODID) {
 
@@ -123,22 +120,8 @@ public class kubatech {
     @SidedProxy(clientSide = Tags.MODID + ".ClientProxy", serverSide = Tags.MODID + ".CommonProxy")
     public static CommonProxy proxy;
 
-    public static Collection<ClassNode> myClasses;
-
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        instance = this;
-        final long timeStart = System.currentTimeMillis();
-        try {
-            myClasses = ReflectionHelper.getClasses(
-                this.getClass()
-                    .getPackage()
-                    .getName());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        final long timeToLoad = System.currentTimeMillis() - timeStart;
-        info("Class discovery took " + timeToLoad + "ms ! Found " + myClasses.size() + " classes.");
         proxy.preInit(event);
     }
 
