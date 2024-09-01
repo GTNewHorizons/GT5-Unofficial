@@ -216,11 +216,11 @@ import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
-import bwcrossmod.galacticgreg.GT_TileEntity_VoidMiners;
-import bwcrossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserBox;
-import bwcrossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserDynamo;
-import bwcrossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserHatch;
-import bwcrossmod.tectech.tileentites.tiered.TT_MetaTileEntity_Pipe_Energy_LowPower;
+import bwcrossmod.galacticgreg.MTEVoidMiners;
+import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserBox;
+import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserDynamo;
+import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserHatch;
+import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserPipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTech_API;
@@ -573,14 +573,14 @@ public class ItemRegistry {
         ItemRegistry.megaMachines[4] = new MTEMegaOilCracker(MegaOilCracker.ID, "MegaOilCracker", "Mega Oil Cracker")
             .getStackForm(1L);
 
-        ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
+        ItemRegistry.voidminer[2] = new MTEVoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
             .getStackForm(1L);
-        ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(VoidMinerII.ID, "VoidMiner2", "Void Miner II")
+        ItemRegistry.voidminer[1] = new MTEVoidMiners.VMZPM(VoidMinerII.ID, "VoidMiner2", "Void Miner II")
             .getStackForm(1L);
-        ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
+        ItemRegistry.voidminer[0] = new MTEVoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
             .getStackForm(1L);
 
-        TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(
+        TecTechPipeEnergyLowPower = new MTELowPowerLaserPipe(
             LowPowerLaserPipe.ID,
             "pipe.lowpowerlaser",
             "Low Power Laser Pipe").getStackForm(1L);
@@ -598,7 +598,7 @@ public class ItemRegistry {
 
         for (int amps = 32; amps <= 128; amps += 32) {
             for (int tier = 4; tier < 8; tier++) {
-                TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(
+                TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new MTELowPowerLaserBox(
                     LowPowerLaserConverter[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
                     GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Converter",
@@ -620,7 +620,7 @@ public class ItemRegistry {
             LowPowerLaserTargetHatch96A, LowPowerLaserTargetHatch128A };
         for (int amps = 32; amps <= 128; amps += 32) {
             for (int tier = 4; tier < 8; tier++) {
-                TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
+                TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new MTELowPowerLaserHatch(
                     LowPowerLaserTargetHatch[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
                     GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Target Hatch",
@@ -642,7 +642,7 @@ public class ItemRegistry {
             LowPowerLaserSourceHatch96A, LowPowerLaserSourceHatch128A };
         for (int amps = 32; amps <= 128; amps += 32) {
             for (int tier = 4; tier < 8; tier++) {
-                TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(
+                TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new MTELowPowerLaserDynamo(
                     LowPowerLaserSourceHatch[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
                     GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Source Hatch",

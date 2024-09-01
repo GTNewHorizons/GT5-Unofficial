@@ -44,7 +44,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 
-public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_DrillerBase {
+public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
@@ -63,7 +63,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
     }
 
-    public GT_TileEntity_VoidMiner_Base(int aID, String aName, String aNameRegional, int tier) {
+    public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
         this.TIER_MULTIPLIER = (byte) Math.max(tier, 1);
     }
@@ -80,7 +80,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         this.mBlacklist = aNBT.getBoolean("mBlacklist");
     }
 
-    public GT_TileEntity_VoidMiner_Base(String aName, int tier) {
+    public MTEVoidMinerBase(String aName, int tier) {
         super(aName);
         this.TIER_MULTIPLIER = (byte) tier;
     }

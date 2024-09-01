@@ -23,14 +23,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 
-public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLaserThingy {
+public class MTELowPowerLaserBox extends LowPowerLaserBase {
 
-    public TT_MetaTileEntity_LowPowerLaserBox(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
+    public MTELowPowerLaserBox(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
         ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aAmperes, 0, new String[0], aTextures);
     }
 
-    public TT_MetaTileEntity_LowPowerLaserBox(String aName, int aTier, long aAmperes, String[] aDescription,
+    public MTELowPowerLaserBox(String aName, int aTier, long aAmperes, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aAmperes, 0, aDescription, aTextures);
     }
@@ -94,12 +94,7 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new TT_MetaTileEntity_LowPowerLaserBox(
-            this.mName,
-            this.mTier,
-            this.AMPERES,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new MTELowPowerLaserBox(this.mName, this.mTier, this.AMPERES, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

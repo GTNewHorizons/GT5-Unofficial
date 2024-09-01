@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
-import bwcrossmod.galacticgreg.GT_TileEntity_VoidMiner_Base;
+import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -164,7 +164,7 @@ public class GTplusplus_Everglades implements ActionListener {
     }
 
     public void addVMDrop(Block block, int meta, float weight) {
-        GT_TileEntity_VoidMiner_Base.addBlockToDimensionList(CORE.EVERGLADES_ID, block, meta, weight);
+        MTEVoidMinerBase.addBlockToDimensionList(CORE.EVERGLADES_ID, block, meta, weight);
     }
 
     @EventHandler

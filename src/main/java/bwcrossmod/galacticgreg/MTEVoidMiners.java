@@ -18,9 +18,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class GT_TileEntity_VoidMiners {
+public class MTEVoidMiners {
 
-    public static class VMLUV extends GT_TileEntity_VoidMiner_Base {
+    public static class VMLUV extends MTEVoidMinerBase {
 
         public VMLUV(int aID, String aName, String aNameRegional) {
             super(aID, aName, aNameRegional, 1);
@@ -51,7 +51,7 @@ public class GT_TileEntity_VoidMiners {
         }
     }
 
-    public static class VMZPM extends GT_TileEntity_VoidMiner_Base {
+    public static class VMZPM extends MTEVoidMinerBase {
 
         public VMZPM(int aID, String aName, String aNameRegional) {
             super(aID, aName, aNameRegional, 2);
@@ -82,7 +82,7 @@ public class GT_TileEntity_VoidMiners {
         }
     }
 
-    public static class VMUV extends GT_TileEntity_VoidMiner_Base {
+    public static class VMUV extends MTEVoidMinerBase {
 
         public VMUV(int aID, String aName, String aNameRegional) {
             super(aID, aName, aNameRegional, 3);

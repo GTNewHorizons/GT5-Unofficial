@@ -18,10 +18,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-public class GT_NBT_DataBase {
+public class GTNBTDataBase {
 
     private static final BiMap<NBTTagCompound, Long> tagIdBiMap = HashBiMap.create();
-    private static final BiMap<GT_NBT_DataBase, Long> GTNBTBIMAP = HashBiMap.create();
+    private static final BiMap<GTNBTDataBase, Long> GTNBTBIMAP = HashBiMap.create();
 
     private static long maxID = Long.MIN_VALUE + 1;
 
@@ -31,32 +31,32 @@ public class GT_NBT_DataBase {
     private final String mDataTitle;
     private long id;
 
-    GT_NBT_DataBase(String mDataName, String mDataTitle, NBTTagCompound tagCompound) {
+    GTNBTDataBase(String mDataName, String mDataTitle, NBTTagCompound tagCompound) {
         this.mDataName = mDataName;
         this.mDataTitle = mDataTitle;
         this.tagCompound = tagCompound;
-        this.id = GT_NBT_DataBase.maxID;
-        GT_NBT_DataBase.tagIdBiMap.put(tagCompound, this.id);
-        GT_NBT_DataBase.GTNBTBIMAP.put(this, this.id);
-        ++GT_NBT_DataBase.maxID;
+        this.id = GTNBTDataBase.maxID;
+        GTNBTDataBase.tagIdBiMap.put(tagCompound, this.id);
+        GTNBTDataBase.GTNBTBIMAP.put(this, this.id);
+        ++GTNBTDataBase.maxID;
     }
 
-    static GT_NBT_DataBase getGTTagFromId(Long id) {
-        return GT_NBT_DataBase.GTNBTBIMAP.inverse()
+    static GTNBTDataBase getGTTagFromId(Long id) {
+        return GTNBTDataBase.GTNBTBIMAP.inverse()
             .get(id);
     }
 
-    static Long getIdFromGTTag(GT_NBT_DataBase tagCompound) {
-        return GT_NBT_DataBase.GTNBTBIMAP.get(tagCompound);
+    static Long getIdFromGTTag(GTNBTDataBase tagCompound) {
+        return GTNBTDataBase.GTNBTBIMAP.get(tagCompound);
     }
 
     static NBTTagCompound getTagFromId(Long id) {
-        return GT_NBT_DataBase.tagIdBiMap.inverse()
+        return GTNBTDataBase.tagIdBiMap.inverse()
             .get(id);
     }
 
     static Long getIdFromTag(NBTTagCompound tagCompound) {
-        return GT_NBT_DataBase.tagIdBiMap.get(tagCompound);
+        return GTNBTDataBase.tagIdBiMap.get(tagCompound);
     }
 
     public NBTTagCompound getTagCompound() {
@@ -68,7 +68,7 @@ public class GT_NBT_DataBase {
     }
 
     static long getMaxID() {
-        return GT_NBT_DataBase.maxID;
+        return GTNBTDataBase.maxID;
     }
 
     public String getmDataTitle() {
@@ -83,15 +83,15 @@ public class GT_NBT_DataBase {
         this.id = id;
     }
 
-    private GT_NBT_DataBase(NBTTagCompound tagCompound, String mDataName, String mDataTitle, long id) {
+    private GTNBTDataBase(NBTTagCompound tagCompound, String mDataName, String mDataTitle, long id) {
         this.tagCompound = tagCompound;
         this.mDataName = mDataName;
         this.mDataTitle = mDataTitle;
         this.id = id;
     }
 
-    public static GT_NBT_DataBase makeNewWithoutRegister(String mDataName, String mDataTitle,
+    public static GTNBTDataBase makeNewWithoutRegister(String mDataName, String mDataTitle,
         NBTTagCompound tagCompound) {
-        return new GT_NBT_DataBase(tagCompound, mDataName, mDataTitle, Long.MIN_VALUE);
+        return new GTNBTDataBase(tagCompound, mDataName, mDataTitle, Long.MIN_VALUE);
     }
 }

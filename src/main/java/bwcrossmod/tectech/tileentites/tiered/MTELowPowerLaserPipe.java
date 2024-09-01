@@ -33,20 +33,20 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
 
-public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Cable implements LowPowerLaser {
+public class MTELowPowerLaserPipe extends GT_MetaPipeEntity_Cable implements LowPowerLaser {
 
-    public TT_MetaTileEntity_Pipe_Energy_LowPower(int aID, String aName, String aNameRegional) {
+    public MTELowPowerLaserPipe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0.25f, Materials.BorosilicateGlass, 0, 0, 0, false, false);
     }
 
-    public TT_MetaTileEntity_Pipe_Energy_LowPower(String aName, float aThickNess, Materials aMaterial,
-        long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
+    public MTELowPowerLaserPipe(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter,
+        long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aName, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new TT_MetaTileEntity_Pipe_Energy_LowPower(
+        return new MTELowPowerLaserPipe(
             this.mName,
             this.mThickNess,
             this.mMaterial,

@@ -25,31 +25,30 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 
-public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_TieredMachineBlock
-    implements LowPowerLaser {
+public abstract class LowPowerLaserBase extends GT_MetaTileEntity_TieredMachineBlock implements LowPowerLaser {
 
     protected long AMPERES;
 
-    public TT_Abstract_LowPowerLaserThingy(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
-        int aInvSlotCount, String aDescription, ITexture... aTextures) {
+    public LowPowerLaserBase(int aID, String aName, String aNameRegional, int aTier, long aAmperes, int aInvSlotCount,
+        String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
-    public TT_Abstract_LowPowerLaserThingy(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
-        int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
+    public LowPowerLaserBase(int aID, String aName, String aNameRegional, int aTier, long aAmperes, int aInvSlotCount,
+        String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
-    public TT_Abstract_LowPowerLaserThingy(String aName, int aTier, long aAmperes, int aInvSlotCount,
-        String aDescription, ITexture[][][] aTextures) {
+    public LowPowerLaserBase(String aName, int aTier, long aAmperes, int aInvSlotCount, String aDescription,
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
-    public TT_Abstract_LowPowerLaserThingy(String aName, int aTier, long aAmperes, int aInvSlotCount,
-        String[] aDescription, ITexture[][][] aTextures) {
+    public LowPowerLaserBase(String aName, int aTier, long aAmperes, int aInvSlotCount, String[] aDescription,
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }

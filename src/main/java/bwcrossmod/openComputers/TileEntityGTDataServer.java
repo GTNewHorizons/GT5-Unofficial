@@ -40,10 +40,10 @@ import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
 
 @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.Names.OPEN_COMPUTERS)
-public class TileEntity_GTDataServer extends TileEntity
+public class TileEntityGTDataServer extends TileEntity
     implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
 
-    private final BiMap<Long, GT_NBT_DataBase> OrbDataBase = HashBiMap.create();
+    private final BiMap<Long, GTNBTDataBase> OrbDataBase = HashBiMap.create();
 
     private ItemStack[] mItems = new ItemStack[2];
     private byte TickTimer;
@@ -57,7 +57,7 @@ public class TileEntity_GTDataServer extends TileEntity
     @Callback
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
-        for (Map.Entry<Long, GT_NBT_DataBase> entry : this.OrbDataBase.entrySet()) {
+        for (Map.Entry<Long, GTNBTDataBase> entry : this.OrbDataBase.entrySet()) {
             ret.add(
                 entry.getValue()
                     .getId() + Long.MAX_VALUE
@@ -85,16 +85,16 @@ public class TileEntity_GTDataServer extends TileEntity
         if (this.isServerSide()) {
             if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataOrb.get(1))
                 && this.mItems[0].hasTagCompound()) {
-                if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
+                if (GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
                     this.OrbDataBase.put(
-                        GT_NBT_DataBase.getMaxID(),
-                        new GT_NBT_DataBase(
+                        GTNBTDataBase.getMaxID(),
+                        new GTNBTDataBase(
                             Behaviour_DataOrb.getDataName(this.mItems[0]),
                             Behaviour_DataOrb.getDataTitle(this.mItems[0]),
                             this.mItems[0].getTagCompound()));
                 } else {
-                    long id = GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound());
-                    this.OrbDataBase.put(id, GT_NBT_DataBase.getGTTagFromId(id));
+                    long id = GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound());
+                    this.OrbDataBase.put(id, GTNBTDataBase.getGTTagFromId(id));
                 }
             }
             if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataStick.get(1))
@@ -109,13 +109,12 @@ public class TileEntity_GTDataServer extends TileEntity
                     : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
                 String name = data == 1 ? "eBook"
                     : data == 2 ? "Punch Card Data" : data == 3 ? "Map Data" : "Custom Data";
-                if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
-                    this.OrbDataBase.put(
-                        GT_NBT_DataBase.getMaxID(),
-                        new GT_NBT_DataBase(name, title, this.mItems[0].getTagCompound()));
+                if (GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
+                    this.OrbDataBase
+                        .put(GTNBTDataBase.getMaxID(), new GTNBTDataBase(name, title, this.mItems[0].getTagCompound()));
                 } else {
-                    long id = GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound());
-                    this.OrbDataBase.put(id, GT_NBT_DataBase.getGTTagFromId(id));
+                    long id = GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound());
+                    this.OrbDataBase.put(id, GTNBTDataBase.getGTTagFromId(id));
                 }
             }
         }

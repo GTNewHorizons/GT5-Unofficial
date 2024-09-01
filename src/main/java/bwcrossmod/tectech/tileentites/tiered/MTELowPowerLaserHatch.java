@@ -16,38 +16,36 @@ package bwcrossmod.tectech.tileentites.tiered;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 
-public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hatch_DynamoTunnel
-    implements LowPowerLaser {
+public class MTELowPowerLaserHatch extends GT_MetaTileEntity_Hatch_EnergyTunnel implements LowPowerLaser {
 
-    public TT_MetaTileEntity_LowPowerLaserDynamo(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
+    public MTELowPowerLaserHatch(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, aAmp);
     }
 
-    public TT_MetaTileEntity_LowPowerLaserDynamo(String aName, int aTier, int aAmp, String[] aDescription,
-        ITexture[][][] aTextures) {
+    public MTELowPowerLaserHatch(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
+    public String[] getDescription() {
+        return mDescriptionArray;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new TT_MetaTileEntity_LowPowerLaserDynamo(
-            this.mName,
-            this.mTier,
-            this.Amperes,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new MTELowPowerLaserHatch(this.mName, this.mTier, this.Amperes, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public boolean isSender() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isReceiver() {
-        return false;
+        return true;
     }
 
     @Override
@@ -58,26 +56,5 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
     @Override
     public long getAMPERES() {
         return this.Amperes;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return mDescriptionArray;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            byte Tick = (byte) (int) (aTick % 20L);
-            if (16 == Tick && aBaseMetaTileEntity.getStoredEU() > 0L) {
-                this.setEUVar(aBaseMetaTileEntity.getStoredEU() - this.Amperes);
-                if (aBaseMetaTileEntity.getStoredEU() < 0L) {
-                    this.setEUVar(0L);
-                }
-            }
-            if (aBaseMetaTileEntity.getStoredEU() > this.getMinimumStoredEU()) {
-                this.moveAroundLowPower(aBaseMetaTileEntity);
-            }
-        }
     }
 }
