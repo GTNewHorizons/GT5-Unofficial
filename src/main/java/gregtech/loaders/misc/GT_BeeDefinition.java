@@ -69,8 +69,6 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
@@ -104,6 +102,7 @@ import gregtech.common.items.CombType;
 import gregtech.common.items.DropType;
 import gregtech.common.items.PropolisType;
 import gregtech.loaders.misc.bees.GT_Flowers;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 /**
  * Bride Class for Lambdas
