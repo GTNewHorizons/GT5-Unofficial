@@ -644,7 +644,6 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         return str.toArray(new String[0]);
     }
 
-
     @Override
     public void onRemoval() {
         if (moduleHatches != null && moduleHatches.size() > 0) {
