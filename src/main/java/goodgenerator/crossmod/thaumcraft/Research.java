@@ -16,9 +16,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.common.loaders.ItemRegistry;
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTech_API;

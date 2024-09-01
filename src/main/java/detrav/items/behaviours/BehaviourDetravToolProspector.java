@@ -20,9 +20,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
+import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import detrav.DetravScannerMod;

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTiered;
+import static bartworks.util.BW_Util.ofGlassTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;

@@ -21,9 +21,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
-
+import bartworks.system.material.Werkstoff;
+import bartworks.util.BW_Util;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;

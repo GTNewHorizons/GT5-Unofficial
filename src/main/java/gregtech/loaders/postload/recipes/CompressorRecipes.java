@@ -11,8 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;

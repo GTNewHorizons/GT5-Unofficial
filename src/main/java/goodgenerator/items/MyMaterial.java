@@ -1,12 +1,11 @@
 package goodgenerator.items;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
+import static bartworks.util.BW_Util.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.Pair;
-
+import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
+import bartworks.util.Pair;
 import goodgenerator.util.CharExchanger;
 import gregtech.api.enums.TextureSet;
 

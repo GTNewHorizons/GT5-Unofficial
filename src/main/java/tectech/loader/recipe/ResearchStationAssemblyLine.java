@@ -34,10 +34,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.rwtema.extrautils.ExtraUtils;
 
+import bartworks.common.loaders.ItemRegistry;
+import bartworks.system.material.WerkstoffLoader;
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;

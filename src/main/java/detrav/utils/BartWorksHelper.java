@@ -3,8 +3,8 @@ package detrav.utils;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.Chunk;
 
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
+import bartworks.system.material.BW_MetaGenerated_Ores;
+import bartworks.system.material.BW_MetaGenerated_SmallOres;
 
 public class BartWorksHelper {
 

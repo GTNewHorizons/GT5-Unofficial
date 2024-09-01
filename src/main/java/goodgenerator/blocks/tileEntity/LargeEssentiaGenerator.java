@@ -16,13 +16,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import goodgenerator.items.MyMaterial;

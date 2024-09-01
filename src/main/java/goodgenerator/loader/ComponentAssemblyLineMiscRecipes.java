@@ -31,8 +31,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.StackUtils;

@@ -8,8 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-
+import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.LargeFusionComputer;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;

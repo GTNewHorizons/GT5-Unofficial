@@ -14,9 +14,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.base.Objects;
 
+import bartworks.system.material.Werkstoff;
 import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
 import detrav.gui.textures.DetravMapTexture;

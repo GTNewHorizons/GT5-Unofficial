@@ -1,13 +1,12 @@
 package gtnhlanth.common.register;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.superscriptNumbers;
+import static bartworks.util.BW_Util.subscriptNumbers;
+import static bartworks.util.BW_Util.superscriptNumbers;
 
 import java.util.Arrays;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.util.Pair;
-
+import bartworks.system.material.Werkstoff;
+import bartworks.util.Pair;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;

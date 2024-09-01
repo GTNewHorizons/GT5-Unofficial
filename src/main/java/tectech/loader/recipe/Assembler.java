@@ -1,6 +1,6 @@
 package tectech.loader.recipe;
 
-import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.bw_realglas;
+import static bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;

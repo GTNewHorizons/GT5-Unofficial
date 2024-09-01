@@ -7,9 +7,9 @@ import java.util.Set;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
+import bartworks.common.configs.ConfigHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
@@ -20,8 +20,7 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 
 @IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE) // Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
-@IFMLLoadingPlugin.TransformerExclusions({ "com.github.bartimaeusnek.bartworks.ASM", "gtPlusPlus.preloader",
-    "gregtech.asm" })
+@IFMLLoadingPlugin.TransformerExclusions({ "bartworks.ASM", "gtPlusPlus.preloader", "gregtech.asm" })
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
 @SuppressWarnings("unused") // loaded by FML
 public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {

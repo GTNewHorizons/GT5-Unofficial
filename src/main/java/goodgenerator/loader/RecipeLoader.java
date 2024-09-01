@@ -35,8 +35,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;

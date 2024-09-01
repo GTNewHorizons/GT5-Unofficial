@@ -13,8 +13,7 @@ import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GT_Values;

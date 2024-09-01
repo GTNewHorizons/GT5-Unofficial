@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.chains;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
+import static bartworks.system.material.WerkstoffLoader.FluorBuergerit;
 import static gregtech.api.enums.MaterialsBotania.ManaDiamond;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;

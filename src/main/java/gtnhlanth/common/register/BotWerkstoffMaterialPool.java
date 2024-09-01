@@ -1,12 +1,12 @@
 package gtnhlanth.common.register;
 
-import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.Types.*;
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
+import static bartworks.system.material.Werkstoff.Types.*;
+import static bartworks.util.BW_Util.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.TextureSet.*;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.util.Pair;
+import bartworks.system.material.Werkstoff;
+import bartworks.util.Pair;
 
 /*
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE

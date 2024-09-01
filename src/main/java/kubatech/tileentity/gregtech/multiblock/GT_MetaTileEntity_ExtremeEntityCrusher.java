@@ -75,7 +75,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -100,6 +99,7 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
+import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;

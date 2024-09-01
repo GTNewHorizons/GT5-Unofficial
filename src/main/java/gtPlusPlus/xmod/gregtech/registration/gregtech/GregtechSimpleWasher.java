@@ -16,9 +16,9 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.collect.ImmutableList;
 
+import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

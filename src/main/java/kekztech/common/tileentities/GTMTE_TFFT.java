@@ -1,6 +1,6 @@
 package kekztech.common.tileentities;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
+import static bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;

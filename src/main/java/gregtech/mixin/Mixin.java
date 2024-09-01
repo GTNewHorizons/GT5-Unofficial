@@ -12,8 +12,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-
+import bartworks.common.configs.ConfigHandler;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 
 public enum Mixin {

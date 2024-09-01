@@ -132,10 +132,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
-import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.BW_GT_MaterialReference;
+import bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.Dyes;

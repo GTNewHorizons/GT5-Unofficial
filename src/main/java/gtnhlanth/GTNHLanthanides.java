@@ -2,8 +2,7 @@ package gtnhlanth;
 
 import java.util.logging.Logger;
 
-import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
-
+import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;

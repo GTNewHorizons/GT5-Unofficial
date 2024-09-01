@@ -26,9 +26,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.google.common.collect.ImmutableList;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
