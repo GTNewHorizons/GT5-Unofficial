@@ -67,7 +67,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
@@ -375,7 +375,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
             }
         }
         if (this.eEnergyMulti != null) {
-            for (GT_MetaTileEntity_Hatch_EnergyMulti hatch : this.eEnergyMulti) {
+            for (MTEHatchEnergyMulti hatch : this.eEnergyMulti) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
@@ -507,7 +507,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
             if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti tHatch) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
             if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add(tHatch);

@@ -37,9 +37,9 @@ public class Parameters {
         return eParamsOutStatus[hatchNo + 10 * parameterId];
     }
 
-    private final GT_MetaTileEntity_MultiblockBase_EM parent;
+    private final TTMultiblockBase parent;
 
-    Parameters(GT_MetaTileEntity_MultiblockBase_EM parent) {
+    Parameters(TTMultiblockBase parent) {
         this.parent = parent;
     }
 

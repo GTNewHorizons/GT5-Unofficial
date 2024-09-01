@@ -16,9 +16,9 @@ package bwcrossmod.tectech.tileentites.tiered;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
-public class MTELowPowerLaserDynamo extends GT_MetaTileEntity_Hatch_DynamoTunnel implements LowPowerLaser {
+public class MTELowPowerLaserDynamo extends MTEHatchDynamoTunnel implements LowPowerLaser {
 
     public MTELowPowerLaserDynamo(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, aAmp);

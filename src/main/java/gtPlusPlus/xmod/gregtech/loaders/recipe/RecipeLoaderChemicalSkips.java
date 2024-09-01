@@ -41,8 +41,8 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
-import tectech.recipe.TT_recipeAdder;
-import tectech.thing.block.QuantumGlassBlock;
+import tectech.recipe.TTRecipeAdder;
+import tectech.thing.block.BlockQuantumGlass;
 
 public class RecipeLoaderChemicalSkips {
 
@@ -671,7 +671,7 @@ public class RecipeLoaderChemicalSkips {
     }
 
     private static void tieredCasingRecipes() {
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.ForceFieldGlass.get(1),
             1024 * 30 * 20,
             1024,
@@ -688,7 +688,7 @@ public class RecipeLoaderChemicalSkips {
             60 * 20,
             (int) TierEU.RECIPE_UEV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.NeutronPulseManipulator.get(1),
             2048 * 30 * 20,
             2048,
@@ -706,7 +706,7 @@ public class RecipeLoaderChemicalSkips {
             75 * 20,
             (int) TierEU.RECIPE_UIV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.CosmicFabricManipulator.get(1),
             4096 * 30 * 20,
             4096,
@@ -723,7 +723,7 @@ public class RecipeLoaderChemicalSkips {
             GregtechItemList.InfinityInfusedManipulator.get(1),
             90 * 20,
             (int) TierEU.RECIPE_UMV);
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.InfinityInfusedManipulator.get(1),
             1024 * 30 * 20,
             1024,
@@ -741,7 +741,7 @@ public class RecipeLoaderChemicalSkips {
             60 * 20,
             (int) TierEU.RECIPE_UXV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_AdvancedRadiationProof.get(1),
             1024 * 30 * 20,
             1024,
@@ -756,7 +756,7 @@ public class RecipeLoaderChemicalSkips {
             60 * 20,
             (int) TierEU.RECIPE_UEV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.NeutronShieldingCore.get(1),
             2048 * 30 * 20,
             2048,
@@ -774,7 +774,7 @@ public class RecipeLoaderChemicalSkips {
             75 * 20,
             (int) TierEU.RECIPE_UIV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.CosmicFabricShieldingCore.get(1),
             4096 * 30 * 20,
             4096,
@@ -790,7 +790,7 @@ public class RecipeLoaderChemicalSkips {
             90 * 20,
             (int) TierEU.RECIPE_UMV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.InfinityInfusedShieldingCore.get(1),
             8192 * 30 * 20,
             8192,
@@ -808,7 +808,7 @@ public class RecipeLoaderChemicalSkips {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(QuantumGlassBlock.INSTANCE, 1),
+                new ItemStack(BlockQuantumGlass.INSTANCE, 1),
                 ItemList.Field_Generator_ZPM.get(1),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(6),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(6))

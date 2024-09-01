@@ -44,7 +44,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.recipe.common.CI;
-import tectech.recipe.TT_recipeAdder;
+import tectech.recipe.TTRecipeAdder;
 
 public class ComponentAssemblyLineMiscRecipes {
 
@@ -287,7 +287,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .addTo(AssemblyLine);
         // uhv 9
         t++;
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             Compassline_Casing_UV.get(1),
             375 << (t - 2),
             1 << (t - 3),
@@ -313,7 +313,7 @@ public class ComponentAssemblyLineMiscRecipes {
         sold = FluidRegistry.getFluid("molten.mutatedlivingsolder");
         // uev 10
         t++;
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             Compassline_Casing_UHV.get(1),
             375 << (t - 2),
             1 << (t - 3),
@@ -338,7 +338,7 @@ public class ComponentAssemblyLineMiscRecipes {
             (int) TierEU.RECIPE_UHV);
         // uiv 11
         t++;
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             Compassline_Casing_UEV.get(1),
             375 << (t - 2),
             1 << (t - 3),
@@ -363,7 +363,7 @@ public class ComponentAssemblyLineMiscRecipes {
             (int) TierEU.RECIPE_UEV);
         // umv 12
         t++;
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             Compassline_Casing_UIV.get(1),
             375 << (t - 2),
             1 << (t - 3),
@@ -388,7 +388,7 @@ public class ComponentAssemblyLineMiscRecipes {
             (int) TierEU.RECIPE_UIV);
         // uxv 13
         t++;
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             Compassline_Casing_UMV.get(1),
             375 << (t - 2),
             1 << (t - 3),

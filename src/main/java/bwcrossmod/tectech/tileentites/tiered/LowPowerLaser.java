@@ -18,7 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 
 public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel {
 
@@ -98,11 +98,11 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
                 }
 
                 if ((!(aMetaTileEntity instanceof LowPowerLaser lowPowerLaser) || !lowPowerLaser.isTunnel())
-                    && !(aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy)) {
+                    && !(aMetaTileEntity instanceof MTEPipeEnergy)) {
                     return;
                 }
 
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy tePipeEnergy) {
+                if (aMetaTileEntity instanceof MTEPipeEnergy tePipeEnergy) {
                     if (tePipeEnergy.connectionCount < 2) {
                         return;
                     }

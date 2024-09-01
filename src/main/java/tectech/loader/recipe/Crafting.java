@@ -10,7 +10,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import tectech.thing.CustomItemList;
-import tectech.thing.item.EuMeterGT;
+import tectech.thing.item.ItemEuMeterGT;
 
 public class Crafting implements Runnable {
 
@@ -26,7 +26,7 @@ public class Crafting implements Runnable {
 
         // GT EU reader
         GT_ModHandler.addCraftingRecipe(
-            new ItemStack(EuMeterGT.INSTANCE, 1),
+            new ItemStack(ItemEuMeterGT.INSTANCE, 1),
             GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "PGW", "SCW", "BRN", 'P', OrePrefixes.plateDouble.get(Materials.Steel), 'G',
                 OrePrefixes.plate.get(Materials.Glass), 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'S',

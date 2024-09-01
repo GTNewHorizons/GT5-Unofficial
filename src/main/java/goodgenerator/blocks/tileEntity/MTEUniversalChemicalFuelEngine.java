@@ -46,7 +46,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable {
@@ -120,9 +120,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
                 ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
+            } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
                 ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
+                return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
             }
         }
         return false;
@@ -311,7 +311,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             }
         }
         if (!eDynamoMulti.isEmpty()) {
-            GT_MetaTileEntity_Hatch_DynamoMulti tHatch = eDynamoMulti.get(0);
+            MTEHatchDynamoMulti tHatch = eDynamoMulti.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(
                     Math.min(

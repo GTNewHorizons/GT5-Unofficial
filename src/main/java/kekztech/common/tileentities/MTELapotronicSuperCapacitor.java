@@ -77,10 +77,10 @@ import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.client.gui.KTUITextures;
 import kekztech.common.Blocks;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
     implements ISurvivalConstructable {
@@ -178,18 +178,16 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         .addShape(STRUCTURE_PIECE_MID, transpose(new String[][] { { "ggggg", "gCCCg", "gCCCg", "gCCCg", "ggggg", }, }))
         .addElement(
             'b',
-            buildHatchAdder(MTELapotronicSuperCapacitor.class)
-                .atLeast(LSCHatchElement.Energy, LSCHatchElement.Dynamo, Maintenance)
-                .hatchItemFilterAnd(
-                    (t, h) -> ChannelDataAccessor.getChannelData(h, "glass") < 6
-                        ? filterByMTEClass(
-                            ImmutableList.of(
-                                GT_MetaTileEntity_Hatch_EnergyTunnel.class,
-                                GT_MetaTileEntity_Hatch_DynamoTunnel.class)).negate()
-                        : s -> true)
-                .casingIndex(CASING_TEXTURE_ID)
-                .dot(1)
-                .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
+            buildHatchAdder(
+                MTELapotronicSuperCapacitor.class).atLeast(LSCHatchElement.Energy, LSCHatchElement.Dynamo, Maintenance)
+                    .hatchItemFilterAnd(
+                        (t, h) -> ChannelDataAccessor.getChannelData(h, "glass") < 6
+                            ? filterByMTEClass(ImmutableList.of(MTEHatchEnergyTunnel.class, MTEHatchDynamoTunnel.class))
+                                .negate()
+                            : s -> true)
+                    .casingIndex(CASING_TEXTURE_ID)
+                    .dot(1)
+                    .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
         .addElement(
             'g',
             withChannel(
@@ -278,10 +276,10 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
 
-    private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
-    private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
-    private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
-    private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
+    private final Set<MTEHatchEnergyMulti> mEnergyHatchesTT = new HashSet<>();
+    private final Set<MTEHatchDynamoMulti> mDynamoHatchesTT = new HashSet<>();
+    private final Set<MTEHatchEnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
+    private final Set<MTEHatchDynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
     /**
      * Count the amount of capacitors of each tier in each slot. Index = meta - 1
      */
@@ -342,14 +340,14 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergyTunnel) {
             // Add TT Laser hatches
-            final GT_MetaTileEntity_Hatch_EnergyTunnel tHatch = ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity);
+            final MTEHatchEnergyTunnel tHatch = ((MTEHatchEnergyTunnel) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyTunnelsTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
             // Add TT hatches
-            final GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity;
+            final MTEHatchEnergyMulti tHatch = (MTEHatchEnergyMulti) aMetaTileEntity;
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatchesTT.add(tHatch);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
@@ -357,14 +355,14 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoHatches.add(tDynamo);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
+        } else if (aMetaTileEntity instanceof MTEHatchDynamoTunnel) {
             // Add TT Laser hatches
-            final GT_MetaTileEntity_Hatch_DynamoTunnel tDynamo = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
+            final MTEHatchDynamoTunnel tDynamo = (MTEHatchDynamoTunnel) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoTunnelsTT.add(tDynamo);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
+        } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
             // Add TT hatches
-            final GT_MetaTileEntity_Hatch_DynamoMulti tDynamo = (GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity;
+            final MTEHatchDynamoMulti tDynamo = (MTEHatchDynamoMulti) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoHatchesTT.add(tDynamo);
         }
@@ -699,7 +697,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         }
 
         // Draw energy from TT hatches
-        for (GT_MetaTileEntity_Hatch_EnergyMulti eHatch : mEnergyHatchesTT) {
+        for (MTEHatchEnergyMulti eHatch : mEnergyHatchesTT) {
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
@@ -712,7 +710,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         }
 
         // Output energy to TT hatches
-        for (GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT) {
+        for (MTEHatchDynamoMulti eDynamo : mDynamoHatchesTT) {
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
@@ -725,7 +723,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         }
 
         // Draw energy from TT Laser hatches
-        for (GT_MetaTileEntity_Hatch_EnergyTunnel eHatch : mEnergyTunnelsTT) {
+        for (MTEHatchEnergyTunnel eHatch : mEnergyTunnelsTT) {
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
@@ -739,7 +737,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         }
 
         // Output energy to TT Laser hatches
-        for (GT_MetaTileEntity_Hatch_DynamoTunnel eDynamo : mDynamoTunnelsTT) {
+        for (MTEHatchDynamoTunnel eDynamo : mDynamoTunnelsTT) {
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
@@ -1181,14 +1179,14 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
-        Energy(GT_MetaTileEntity_Hatch_EnergyMulti.class, GT_MetaTileEntity_Hatch_Energy.class) {
+        Energy(MTEHatchEnergyMulti.class, GT_MetaTileEntity_Hatch_Energy.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo(GT_MetaTileEntity_Hatch_DynamoMulti.class, GT_MetaTileEntity_Hatch_Dynamo.class) {
+        Dynamo(MTEHatchDynamoMulti.class, GT_MetaTileEntity_Hatch_Dynamo.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {

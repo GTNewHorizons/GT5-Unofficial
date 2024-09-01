@@ -57,7 +57,7 @@ import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
-import tectech.recipe.TT_recipeAdder;
+import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
 
 public class RecipesMachines {
@@ -1758,7 +1758,7 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Casing_Coil_QuantumForceTransformer.get(1),
             2048 * 120 * 20,
             2048,

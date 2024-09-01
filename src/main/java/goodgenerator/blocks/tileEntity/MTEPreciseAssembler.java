@@ -78,7 +78,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
@@ -201,8 +201,8 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
             return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            return mExoticEnergyHatches.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
+            return mExoticEnergyHatches.add((MTEHatchEnergyMulti) aMetaTileEntity);
         }
         return false;
     }

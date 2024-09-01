@@ -45,8 +45,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
@@ -91,8 +91,8 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     }
 
     private boolean checkNoLaser() {
-        for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
+        for (MTEHatchDynamoMulti tHatch : eDynamoMulti) {
+            if (tHatch instanceof MTEHatchDynamoTunnel) {
                 return false;
             }
         }
@@ -106,7 +106,7 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
             if (tHatch.mTier > mTierLimit) return false;
         }
-        for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
+        for (MTEHatchDynamoMulti tHatch : eDynamoMulti) {
             if (tHatch.mTier > mTierLimit) return false;
         }
         return true;

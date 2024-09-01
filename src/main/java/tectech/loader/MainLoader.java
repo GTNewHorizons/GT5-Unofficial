@@ -28,7 +28,7 @@ import tectech.loader.recipe.ResearchStationAssemblyLine;
 import tectech.loader.thing.CoverLoader;
 import tectech.loader.thing.MachineLoader;
 import tectech.loader.thing.ThingsLoader;
-import tectech.thing.casing.TT_Container_Casings;
+import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.Textures;
 
 @SuppressWarnings("deprecation")
@@ -86,10 +86,10 @@ public final class MainLoader {
         if (NewHorizonsCoreMod.isModLoaded()) {
             try {
                 Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
-                TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH")
+                TTCasingsContainer.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH")
                     .get(null);
 
-                if (TT_Container_Casings.sBlockCasingsNH == null) {
+                if (TTCasingsContainer.sBlockCasingsNH == null) {
                     throw new NullPointerException("sBlockCasingsNH Is not set at this time");
                 }
             } catch (Exception e) {

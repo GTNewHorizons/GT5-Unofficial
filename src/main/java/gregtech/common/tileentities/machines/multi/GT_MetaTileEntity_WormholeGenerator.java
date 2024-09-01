@@ -66,10 +66,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.tileentities.render.TileWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.casing.GT_Block_CasingsTT;
-import tectech.thing.casing.TT_Container_Casings;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.casing.BlockGTCasingsTT;
+import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class GT_MetaTileEntity_WormholeGenerator extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_WormholeGenerator> implements ISurvivalConstructable {
@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final byte GLASS_TIER_UNSET = -2;
 
-    private static final int TT_CASING_INDEX = GT_Block_CasingsTT.textureOffset;
+    private static final int TT_CASING_INDEX = BlockGTCasingsTT.textureOffset;
 
     private static final int TOP_HATCH = 0, BOTTOM_HATCH = 1, LEFT_HATCH = 2, RIGHT_HATCH = 3, BACK_HATCH = 4,
         FRONT_HATCH = 5, MAX_HATCHES = 6;
@@ -126,8 +126,8 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     private byte mGlassTier = -2;
     private boolean mStructureBadGlassTier = false;
 
-    private final GT_MetaTileEntity_Hatch_EnergyMulti[] mSendHatches = new GT_MetaTileEntity_Hatch_EnergyMulti[MAX_HATCHES];
-    private final GT_MetaTileEntity_Hatch_DynamoMulti[] mReceiveHatches = new GT_MetaTileEntity_Hatch_DynamoMulti[MAX_HATCHES];
+    private final MTEHatchEnergyMulti[] mSendHatches = new MTEHatchEnergyMulti[MAX_HATCHES];
+    private final MTEHatchDynamoMulti[] mReceiveHatches = new MTEHatchDynamoMulti[MAX_HATCHES];
 
     private final ItemStack singularity = AEApi.instance()
         .definitions()
@@ -203,7 +203,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
                 .atLeast(Maintenance, InputBus)
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(1)
-                .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
+                .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement(
             'A',
@@ -213,34 +213,34 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         )
         .addElement('D', ofBlock(GregTech_API.sBlockCasings8, 5)) // Europium Reinforced Radiation Proof Machine Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings4, 7)) // Fusion Coil Block
-        .addElement('F', lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 4))) // Molecular Casing
+        .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
         .addElement('t',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .anyOf(new TransferHatch(TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
-                .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
+                .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('b',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .anyOf(new TransferHatch(BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
-                .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
+                .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('l',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .anyOf(new TransferHatch(LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
-                .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
+                .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('r',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .anyOf(new TransferHatch(RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
-                .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
+                .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .build();
     // spotless:on
@@ -255,7 +255,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Arrays.asList(GT_MetaTileEntity_Hatch_EnergyMulti.class, GT_MetaTileEntity_Hatch_DynamoMulti.class);
+            return Arrays.asList(MTEHatchEnergyMulti.class, MTEHatchDynamoMulti.class);
         }
 
         @Override
@@ -267,12 +267,12 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
                 if (aMetaTileEntity == null) return false;
 
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti input) {
+                if (aMetaTileEntity instanceof MTEHatchEnergyMulti input) {
                     input.updateTexture(aBaseCasingIndex);
                     input.updateCraftingIcon(tile.getMachineCraftingIcon());
                     tile.mSendHatches[mIndex] = input;
                     return true;
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti output) {
+                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti output) {
                     output.updateTexture(aBaseCasingIndex);
                     output.updateCraftingIcon(tile.getMachineCraftingIcon());
                     tile.mReceiveHatches[mIndex] = output;

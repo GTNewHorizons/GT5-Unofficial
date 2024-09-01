@@ -49,7 +49,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -287,8 +287,8 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                     return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
                     return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-                    return this.eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
+                    return this.eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
                 } else {
                     return false;
                 }

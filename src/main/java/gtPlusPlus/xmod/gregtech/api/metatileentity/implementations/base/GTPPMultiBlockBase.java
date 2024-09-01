@@ -89,8 +89,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MteHatchSteamBusInput;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 // Glee8e - 11/12/21 - 2:15pm
 // Yeah, now I see what's wrong. Someone inherited from GregtechMeta_MultiBlockBase instead of
@@ -924,7 +924,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     }
 
     public boolean isThisHatchMultiDynamo(IMetaTileEntity aMetaTileEntity) {
-        return aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti;
+        return aMetaTileEntity instanceof MTEHatchDynamoMulti;
     }
 
     @Override
@@ -969,7 +969,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     }
 
     public boolean isThisHatchMultiEnergy(IMetaTileEntity aMetaTileEntity) {
-        return aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti;
+        return aMetaTileEntity instanceof MTEHatchEnergyMulti;
     }
 
     @Override
@@ -1620,14 +1620,14 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                 return t.mAirIntakes.size();
             }
         },
-        TTDynamo(GTPPMultiBlockBase::addMultiAmpDynamoToMachineList, GT_MetaTileEntity_Hatch_DynamoMulti.class) {
+        TTDynamo(GTPPMultiBlockBase::addMultiAmpDynamoToMachineList, MTEHatchDynamoMulti.class) {
 
             @Override
             public long count(GTPPMultiBlockBase<?> t) {
                 return t.mTecTechDynamoHatches.size();
             }
         },
-        TTEnergy(GTPPMultiBlockBase::addMultiAmpEnergyToMachineList, GT_MetaTileEntity_Hatch_EnergyMulti.class) {
+        TTEnergy(GTPPMultiBlockBase::addMultiAmpEnergyToMachineList, MTEHatchEnergyMulti.class) {
 
             @Override
             public long count(GTPPMultiBlockBase<?> t) {

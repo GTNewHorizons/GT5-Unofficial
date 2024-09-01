@@ -1,8 +1,8 @@
 package tectech.proxy;
 
 import static tectech.TecTech.RANDOM;
-import static tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
-import static tectech.thing.casing.TT_Container_Casings.forgeOfGodsRenderBlock;
+import static tectech.thing.casing.TTCasingsContainer.eyeOfHarmonyRenderBlock;
+import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
@@ -22,35 +22,35 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.Reference;
-import tectech.rendering.EOH.EOH_ItemRenderer;
-import tectech.rendering.EOH.EOH_TESR;
-import tectech.thing.block.GodforgeGlassBlock;
-import tectech.thing.block.GodforgeGlassRender;
-import tectech.thing.block.QuantumGlassBlock;
-import tectech.thing.block.QuantumGlassRender;
+import tectech.rendering.EOH.EOHItemRenderer;
+import tectech.rendering.EOH.EOHTileEntitySR;
+import tectech.thing.block.BlockGodforgeGlass;
+import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.block.RenderForgeOfGods;
-import tectech.thing.block.TileEyeOfHarmony;
-import tectech.thing.block.TileForgeOfGods;
-import tectech.thing.item.RenderForgeOfGodsItem;
+import tectech.thing.block.RenderGodforgeGlass;
+import tectech.thing.block.RenderQuantumGlass;
+import tectech.thing.block.TileEntityEyeOfHarmony;
+import tectech.thing.block.TileEntityForgeOfGods;
+import tectech.thing.item.ItemRenderForgeOfGods;
 
 public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderInfo() {
-        QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
+        BlockQuantumGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(BlockQuantumGlass.renderID, new RenderQuantumGlass());
 
         MinecraftForgeClient
-            .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOH_ItemRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new EOH_TESR());
+            .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOHItemRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
 
-        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
-            GodforgeGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
-            RenderingRegistry.registerBlockHandler(GodforgeGlassBlock.renderID, new GodforgeGlassRender());
+        if (tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
+            BlockGodforgeGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
+            RenderingRegistry.registerBlockHandler(BlockGodforgeGlass.renderID, new RenderGodforgeGlass());
 
             MinecraftForgeClient
-                .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new RenderForgeOfGodsItem());
-            ClientRegistry.bindTileEntitySpecialRenderer(TileForgeOfGods.class, new RenderForgeOfGods());
+                .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForgeOfGods.class, new RenderForgeOfGods());
         }
     }
 

@@ -52,7 +52,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -111,8 +111,8 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
                     return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-                    return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
+                    return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
                 } else {
                     return false;
                 }

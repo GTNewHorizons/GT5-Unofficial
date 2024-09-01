@@ -28,7 +28,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.API.BorosilicateGlass;
 import bartworks.API.GlassTier;
-import tectech.thing.block.QuantumGlassBlock;
+import tectech.thing.block.BlockQuantumGlass;
 
 // Register all your glasses here.
 public class RegisterGlassTiers {
@@ -70,7 +70,7 @@ public class RegisterGlassTiers {
 
         // Other mods.
         GlassTier.addCustomGlass(IndustrialCraft2.ID, "blockAlloyGlass", 0, 4);
-        GlassTier.addCustomGlass(QuantumGlassBlock.INSTANCE, 0, 8);
+        GlassTier.addCustomGlass(BlockQuantumGlass.INSTANCE, 0, 8);
 
         if (EnderIO.isModLoaded()) {
             for (int i = 0; i < 6; ++i) {

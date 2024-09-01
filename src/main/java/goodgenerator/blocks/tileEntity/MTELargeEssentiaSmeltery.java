@@ -42,8 +42,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.visnet.VisNetHandler;
@@ -140,7 +140,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (this.multiDefinition == null) {
             this.multiDefinition = StructureDefinition.<MTELargeEssentiaSmeltery>builder()
                 .addShape(
@@ -277,9 +277,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                 if (((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier < 3) return false;
                 ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-                ((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.eEnergyMulti.add(((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity));
+            } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
+                ((MTEHatchEnergyMulti) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.eEnergyMulti.add(((MTEHatchEnergyMulti) aMetaTileEntity));
             } else {
                 return false;
             }

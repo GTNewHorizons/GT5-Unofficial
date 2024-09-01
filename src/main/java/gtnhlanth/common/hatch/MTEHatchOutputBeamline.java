@@ -14,7 +14,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
-import tectech.util.TT_Utility;
+import tectech.util.TTUtility;
 
 public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
 
@@ -28,7 +28,7 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
 
     public MTEHatchOutputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");
-        TT_Utility.setTier(tier, this);
+        TTUtility.setTier(tier, this);
     }
 
     public MTEHatchOutputBeamline(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

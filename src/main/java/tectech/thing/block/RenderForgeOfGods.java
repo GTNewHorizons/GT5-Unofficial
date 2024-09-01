@@ -1,10 +1,10 @@
 package tectech.thing.block;
 
 import static tectech.Reference.MODID;
-import static tectech.rendering.EOH.EOH_RenderingUtils.renderStarLayer;
-import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_0;
-import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_1;
-import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_2;
+import static tectech.rendering.EOH.EOHRenderingUtils.renderStarLayer;
+import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_0;
+import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_1;
+import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_2;
 
 import java.awt.Color;
 
@@ -26,7 +26,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof TileForgeOfGods)) return;
+        if (!(tile instanceof TileEntityForgeOfGods)) return;
 
         {
             GL11.glPushMatrix();

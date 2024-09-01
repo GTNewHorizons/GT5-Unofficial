@@ -23,7 +23,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import tectech.thing.CustomItemList;
-import tectech.thing.block.QuantumGlassBlock;
+import tectech.thing.block.BlockQuantumGlass;
 
 public class Assembler implements Runnable {
 
@@ -47,7 +47,7 @@ public class Assembler implements Runnable {
         // Quantum Glass
         GT_Values.RA.stdBuilder()
             .itemInputs(CustomItemList.eM_Containment.get(1), GT_ModHandler.getIC2Item("reinforcedGlass", 1L))
-            .itemOutputs(new ItemStack(QuantumGlassBlock.INSTANCE, 1))
+            .itemOutputs(new ItemStack(BlockQuantumGlass.INSTANCE, 1))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
                     .getMolten(576))

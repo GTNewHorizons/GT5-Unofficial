@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import tectech.mechanics.dataTransport.DataPacket;
-import tectech.util.TT_Utility;
+import tectech.util.TTUtility;
 
 public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
     implements IConnectsToBeamline {
@@ -29,7 +29,7 @@ public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends GT
 
     protected MTEHatchBeamlineConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
-        TT_Utility.setTier(aTier, this);
+        TTUtility.setTier(aTier, this);
     }
 
     protected MTEHatchBeamlineConnector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

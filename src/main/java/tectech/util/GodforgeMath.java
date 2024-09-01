@@ -2,12 +2,12 @@ package tectech.util;
 
 import java.math.BigInteger;
 
-import tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_ForgeOfGods;
-import tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_BaseModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_ExoticModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_MoltenModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_PlasmaModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_SmeltingModule;
+import tectech.thing.metaTileEntity.multi.MTEForgeOfGods;
+import tectech.thing.metaTileEntity.multi.godforge_modules.MTEBaseModule;
+import tectech.thing.metaTileEntity.multi.godforge_modules.MTEExoticModule;
+import tectech.thing.metaTileEntity.multi.godforge_modules.MTEMoltenModule;
+import tectech.thing.metaTileEntity.multi.godforge_modules.MTEPlasmaModule;
+import tectech.thing.metaTileEntity.multi.godforge_modules.MTESmeltingModule;
 
 public class GodforgeMath {
 
@@ -15,7 +15,7 @@ public class GodforgeMath {
         return (int) (Math.random() * (max - min)) + min;
     }
 
-    public static double calculateFuelConsumption(GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static double calculateFuelConsumption(MTEForgeOfGods godforge) {
         double upgradeFactor = 1;
         if (godforge.isUpgradeActive(2)) {
             upgradeFactor = 0.8;
@@ -29,11 +29,11 @@ public class GodforgeMath {
         } else return Math.max(godforge.getFuelFactor() / 25 * upgradeFactor, 1);
     }
 
-    public static int calculateStartupFuelConsumption(GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static int calculateStartupFuelConsumption(MTEForgeOfGods godforge) {
         return (int) Math.max(godforge.getFuelFactor() * 25 * Math.pow(1.2, godforge.getFuelFactor()), 1);
     }
 
-    public static int calculateMaxFuelFactor(GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static int calculateMaxFuelFactor(MTEForgeOfGods godforge) {
         int fuelCap = 5;
         if (godforge.isUpgradeActive(27)) {
             fuelCap = Integer.MAX_VALUE;
@@ -48,7 +48,7 @@ public class GodforgeMath {
         return Math.max(fuelCap, 1);
     }
 
-    public static int calculateEffectiveFuelFactor(GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static int calculateEffectiveFuelFactor(MTEForgeOfGods godforge) {
         int fuelFactor = godforge.getFuelFactor();
         if (fuelFactor <= 43) {
             return fuelFactor;
@@ -57,12 +57,11 @@ public class GodforgeMath {
         }
     }
 
-    public static void calculateMaxHeatForModules(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void calculateMaxHeatForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
         double logBase = 1.5;
         int baseHeat = 12601;
         if (godforge.isUpgradeActive(12)) {
-            if (module instanceof GT_MetaTileEntity_EM_SmeltingModule) {
+            if (module instanceof MTESmeltingModule) {
                 logBase = 1.12;
             } else {
                 logBase = 1.18;
@@ -73,12 +72,11 @@ public class GodforgeMath {
         module.setHeat(recipeHeat);
     }
 
-    public static int calculateOverclockHeat(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge, Integer recipeHeat) {
+    public static int calculateOverclockHeat(MTEBaseModule module, MTEForgeOfGods godforge, Integer recipeHeat) {
         int actualHeat;
         double exponent;
         if (godforge.isUpgradeActive(20)) {
-            if (module instanceof GT_MetaTileEntity_EM_SmeltingModule) {
+            if (module instanceof MTESmeltingModule) {
                 exponent = 0.85;
             } else {
                 exponent = 0.8;
@@ -96,8 +94,7 @@ public class GodforgeMath {
         return actualHeat;
     }
 
-    public static void calculateSpeedBonusForModules(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void calculateSpeedBonusForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
         double speedBonus = 1;
 
         if (godforge.isUpgradeActive(1)) {
@@ -105,14 +102,14 @@ public class GodforgeMath {
         }
 
         if (godforge.isUpgradeActive(22)) {
-            if (module instanceof GT_MetaTileEntity_EM_PlasmaModule) {
+            if (module instanceof MTEPlasmaModule) {
                 speedBonus /= Math.pow(module.getMaxParallel(), 0.02);
             } else {
                 speedBonus /= Math.pow(module.getMaxParallel(), 0.012);
             }
         }
 
-        if (module instanceof GT_MetaTileEntity_EM_ExoticModule) {
+        if (module instanceof MTEExoticModule) {
             if (godforge.isUpgradeActive(25)) {
                 speedBonus = Math.sqrt(speedBonus);
             } else {
@@ -123,8 +120,7 @@ public class GodforgeMath {
         module.setSpeedBonus((float) speedBonus);
     }
 
-    public static void calculateMaxParallelForModules(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void calculateMaxParallelForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
         int baseParallel = 0;
         float fuelFactorMultiplier = 1;
         float heatMultiplier = 1;
@@ -132,21 +128,21 @@ public class GodforgeMath {
         int node53 = 1;
         boolean isMoltenOrSmeltingWithUpgrade = false;
 
-        if (module instanceof GT_MetaTileEntity_EM_SmeltingModule) {
+        if (module instanceof MTESmeltingModule) {
             baseParallel = 1024;
         }
-        if (module instanceof GT_MetaTileEntity_EM_MoltenModule) {
+        if (module instanceof MTEMoltenModule) {
             baseParallel = 512;
         }
-        if (module instanceof GT_MetaTileEntity_EM_PlasmaModule) {
+        if (module instanceof MTEPlasmaModule) {
             baseParallel = 384;
         }
-        if (module instanceof GT_MetaTileEntity_EM_ExoticModule) {
+        if (module instanceof MTEExoticModule) {
             baseParallel = 36;
         }
 
-        if (module instanceof GT_MetaTileEntity_EM_MoltenModule
-            || (module instanceof GT_MetaTileEntity_EM_SmeltingModule && godforge.isUpgradeActive(16))) {
+        if (module instanceof MTEMoltenModule
+            || (module instanceof MTESmeltingModule && godforge.isUpgradeActive(16))) {
             isMoltenOrSmeltingWithUpgrade = true;
         }
 
@@ -187,7 +183,7 @@ public class GodforgeMath {
             * heatMultiplier
             * upgradeAmountMultiplier);
 
-        if (module instanceof GT_MetaTileEntity_EM_ExoticModule) {
+        if (module instanceof MTEExoticModule) {
             if (godforge.isUpgradeActive(25)) {
                 maxParallel = (int) Math.max(9 * Math.floor(Math.sqrt(maxParallel) / 9), 36);
             } else {
@@ -198,8 +194,7 @@ public class GodforgeMath {
         module.setMaxParallel(maxParallel);
     }
 
-    public static void calculateEnergyDiscountForModules(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void calculateEnergyDiscountForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
         double fillRatioDiscount = 1;
         double maxBatteryDiscount = 1;
 
@@ -210,14 +205,14 @@ public class GodforgeMath {
         if (godforge.isUpgradeActive(19)) {
             double fillRatioMinusZeroPointFive = (double) godforge.getBatteryCharge() / godforge.getMaxBatteryCharge()
                 - 0.5;
-            if (module instanceof GT_MetaTileEntity_EM_PlasmaModule) {
+            if (module instanceof MTEPlasmaModule) {
                 fillRatioDiscount = 1 - (Math.pow(fillRatioMinusZeroPointFive, 2) * (-0.6) + 0.15);
             } else {
                 fillRatioDiscount = 1 - (Math.pow(fillRatioMinusZeroPointFive, 2) * (-0.6) + 0.15) * 2 / 3;
             }
         }
 
-        if (module instanceof GT_MetaTileEntity_EM_ExoticModule) {
+        if (module instanceof MTEExoticModule) {
             if (!godforge.isUpgradeActive(25)) {
                 fillRatioDiscount = 1;
                 maxBatteryDiscount = 1;
@@ -230,8 +225,7 @@ public class GodforgeMath {
         module.setEnergyDiscount((float) (fillRatioDiscount * maxBatteryDiscount));
     }
 
-    public static void calculateProcessingVoltageForModules(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void calculateProcessingVoltageForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
         long voltage = Integer.MAX_VALUE;
 
         if (godforge.isUpgradeActive(4)) {
@@ -245,8 +239,7 @@ public class GodforgeMath {
         module.setProcessingVoltage(voltage);
     }
 
-    public static void setMiscModuleParameters(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void setMiscModuleParameters(MTEBaseModule module, MTEForgeOfGods godforge) {
         int plasmaTier = 0;
         double overclockTimeFactor = 2;
 
@@ -257,12 +250,12 @@ public class GodforgeMath {
         }
 
         if (godforge.isUpgradeActive(14)) {
-            if (module instanceof GT_MetaTileEntity_EM_PlasmaModule) {
+            if (module instanceof MTEPlasmaModule) {
                 overclockTimeFactor = 2.3;
             } else {
                 overclockTimeFactor = 2.15;
             }
-            if (module instanceof GT_MetaTileEntity_EM_ExoticModule) {
+            if (module instanceof MTEExoticModule) {
                 if (godforge.isUpgradeActive(25)) {
                     overclockTimeFactor = 2 + Math.pow(overclockTimeFactor - 2, 2);
                 } else {
@@ -279,26 +272,24 @@ public class GodforgeMath {
         module.setOverclockTimeFactor(overclockTimeFactor);
     }
 
-    public static boolean allowModuleConnection(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static boolean allowModuleConnection(MTEBaseModule module, MTEForgeOfGods godforge) {
 
-        if (module instanceof GT_MetaTileEntity_EM_MoltenModule && godforge.isUpgradeActive(5)) {
+        if (module instanceof MTEMoltenModule && godforge.isUpgradeActive(5)) {
             return true;
         }
 
-        if (module instanceof GT_MetaTileEntity_EM_PlasmaModule && godforge.isUpgradeActive(7)) {
+        if (module instanceof MTEPlasmaModule && godforge.isUpgradeActive(7)) {
             return true;
         }
 
-        if (module instanceof GT_MetaTileEntity_EM_ExoticModule && godforge.isUpgradeActive(11)) {
+        if (module instanceof MTEExoticModule && godforge.isUpgradeActive(11)) {
             return true;
         }
 
-        return module instanceof GT_MetaTileEntity_EM_SmeltingModule;
+        return module instanceof MTESmeltingModule;
     }
 
-    public static void queryMilestoneStats(GT_MetaTileEntity_EM_BaseModule module,
-        GT_MetaTileEntity_EM_ForgeOfGods godforge) {
+    public static void queryMilestoneStats(MTEBaseModule module, MTEForgeOfGods godforge) {
         godforge.addTotalPowerConsumed(module.getPowerTally());
         module.setPowerTally(BigInteger.ZERO);
         godforge.addTotalRecipesProcessed(module.getRecipeTally());

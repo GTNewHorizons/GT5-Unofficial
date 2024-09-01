@@ -60,10 +60,10 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
 import tconstruct.tools.TinkerTools;
-import tectech.recipe.TT_recipeAdder;
+import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
-import tectech.thing.block.GodforgeGlassBlock;
-import tectech.thing.block.QuantumGlassBlock;
+import tectech.thing.block.BlockGodforgeGlass;
+import tectech.thing.block.BlockQuantumGlass;
 import vexatos.tgregworks.reference.PartTypes;
 import vexatos.tgregworks.util.TGregUtils;
 
@@ -94,7 +94,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             : FluidRegistry.getFluid("molten.solderingalloy");
 
         // Infinite Oil Rig
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.OilDrill4.get(1),
             16777216,
             2048,
@@ -113,7 +113,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // Infinity Coil
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Coil_AwakenedDraconium.get(1),
             16_777_216,
             2048,
@@ -130,7 +130,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UEV);
 
         // Hypogen Coil
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Coil_Infinity.get(1),
             16_777_216 * 2,
             2048 * 2,
@@ -147,7 +147,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
 
         // Eternal coil
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Coil_Hypogen.get(1),
             16_777_216 * 4,
             8_192,
@@ -173,7 +173,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             // Energy Hatches
             {
                 // Energy Hatch UHV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Energy_UV.get(1L),
                     24000,
                     16,
@@ -207,7 +207,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UHV);
 
                 // Energy Hatch UEV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Energy_UHV.get(1L),
                     48000,
                     32,
@@ -226,7 +226,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UEV);
 
                 // Energy Hatch UIV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Energy_UEV.get(1L),
                     96_000,
                     64,
@@ -246,7 +246,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UIV);
 
                 // Energy Hatch UMV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Energy_UIV.get(1L),
                     192000,
                     128,
@@ -268,7 +268,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UMV);
 
                 // Energy Hatch UXV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Energy_UMV.get(1L),
                     384000,
                     256,
@@ -294,7 +294,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             // Dynamo Hatch
             {
                 // Dynamo Hatch UHV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Dynamo_UV.get(1L),
                     48000,
                     32,
@@ -328,7 +328,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UHV);
 
                 // Dynamo Hatch UEV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Dynamo_UHV.get(1L),
                     96000,
                     64,
@@ -347,7 +347,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UEV);
 
                 // Dynamo Hatch UIV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Dynamo_UEV.get(1L),
                     192_000,
                     128,
@@ -367,7 +367,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UIV);
 
                 // Dynamo Hatch UMV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Dynamo_UIV.get(1L),
                     384000,
                     256,
@@ -389,7 +389,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UMV);
 
                 // Dynamo Hatch UXV
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Hatch_Dynamo_UMV.get(1L),
                     384000,
                     256,
@@ -414,7 +414,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // UHV Circuit Wetwaremainframe
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_Wetwaresupercomputer.get(1L),
             24000,
             64,
@@ -446,7 +446,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             300000);
 
         // Bioware SuperComputer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_Biowarecomputer.get(1L),
             48000,
             128,
@@ -470,7 +470,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UV);
 
         // Bio Mainframe
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_Biowaresupercomputer.get(1L),
             96000,
             256,
@@ -501,7 +501,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // Optical Assembly
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_OpticalProcessor.get(1L),
             192_000,
             256,
@@ -522,7 +522,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // Optical Computer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_OpticalAssembly.get(1L),
             384_000,
             512,
@@ -545,7 +545,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // Optical Mainframe
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_OpticalComputer.get(1L),
             768_000,
             1024,
@@ -571,7 +571,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UEV);
 
         // Laser Vacuum Mirror
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.LASERpipe.get(1L),
             20_000,
             16,
@@ -586,7 +586,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // Transcendent Plasma Mixer - TPM.
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_energyTunnel6_UEV.get(1),
             32_000_000,
             4096,
@@ -616,7 +616,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             final int baseStargateTime = 125_000 * 20;
 
             // Stargate shield foil
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GT_OreDictUnificator
                     .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1L),
                 (int) TierEU.RECIPE_MAX,
@@ -644,7 +644,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UMV);
 
             // Stargate chevron
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 getItemContainer("StargateShieldingFoil").get(1L),
                 (int) TierEU.RECIPE_MAX,
                 32_768,
@@ -679,7 +679,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UMV);
 
             // Stargate Frame Part
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
                 (int) TierEU.RECIPE_MAX,
                 32_768,
@@ -714,7 +714,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         if (EternalSingularity.isModLoaded()) {
 
             // DTPF Controller.
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_Dim_Bridge.get(1),
                 32_000_000,
                 4096,
@@ -740,7 +740,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UIV);
 
             // Dimensional bridge.
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_Dim_Injector.get(1),
                 8_000_000,
                 4096,
@@ -758,7 +758,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UIV);
 
             // Dimensional injection casing.
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_Dim_Trans.get(1),
                 2_000_000,
                 2048,
@@ -779,7 +779,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UIV);
 
             // Dimensionally Transcendent Casing.
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 getModItem(Avaritia.ID, "Singularity", 1L, 0),
                 2_000_000,
                 2048,
@@ -795,7 +795,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UIV);
 
             // Transdimensional Alignment Matrix
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.MicroTransmitter_UV.get(1),
                 32_000_000,
                 8192,
@@ -816,7 +816,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // Deep Dark Portal
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier8", 1, 0),
             16_777_216,
             2048,
@@ -841,7 +841,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         {
 
             // Ultimate Battery
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Energy_Cluster.get(1L),
                 12000,
                 16,
@@ -862,7 +862,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 400000);
 
             // Really Ultimate Battery
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM2.get(1L),
                 24000,
                 64,
@@ -885,7 +885,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 1600000);
 
             // Extremely Ultimate Battery
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM3.get(1L),
                 1_200_000,
                 128,
@@ -909,7 +909,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
             if (GTPlusPlusEverglades.isModLoaded()) {
                 // Insanely Ultimate Battery
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.ZPM4.get(1),
                     24_000_000,
                     1_280,
@@ -933,7 +933,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UIV);
 
                 // Mega Ultimate Battery
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.ZPM5.get(1L),
                     480_000_000,
                     12_288,
@@ -961,7 +961,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // MK4 Computer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Compressed_Fusion_Reactor.get(1),
             320000,
             512,
@@ -983,7 +983,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // MK4 Coils
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Fusion_Coil.get(1L),
             160000,
             512,
@@ -1002,7 +1002,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // MK4 Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Casing_Fusion2.get(1L),
             80000,
             512,
@@ -1022,7 +1022,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV);
 
         // MK5 Computer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.FusionComputer_UV2.get(1),
             2560000,
             4096,
@@ -1045,7 +1045,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UEV);
 
         // MK5 Coils
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Casing_Fusion_Internal.get(1),
             2560000,
             4096,
@@ -1064,7 +1064,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UEV);
 
         // MK5 Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Casing_Fusion_External.get(1L),
             2560000,
             4096,
@@ -1085,7 +1085,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         if (BloodMagic.isModLoaded() && DraconicEvolution.isModLoaded()) {
             // Draconic Evolution Fusion Crafter Controller
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 new ItemStack(defcCasingBlock, 1, 8),
                 16_777_216,
                 1024,
@@ -1104,7 +1104,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 1500,
                 (int) TierEU.RECIPE_UEV);
             // DE Schematics Cores Tier 1
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 new ItemStack(defcCasingBlock, 1, 9),
                 5_000_000,
                 512,
@@ -1120,7 +1120,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UV);
 
             // DE Schematics Cores Tier 2
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 getModItem(DraconicEvolution.ID, "draconicCore", 1, 0),
                 10_000_000,
                 1024,
@@ -1136,7 +1136,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UHV);
 
             // DE Schematics Cores Tier 3
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 getModItem(DraconicEvolution.ID, "wyvernCore", 1, 0),
                 20_000_000,
                 2048,
@@ -1152,7 +1152,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UEV);
 
             // DE Schematics Cores Tier 4
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0),
                 40_000_000,
                 4096,
@@ -1169,7 +1169,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // Debug maintenance hatch
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Hatch_AutoMaintenance.get(1L),
             2764800,
             128,
@@ -1186,7 +1186,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UV);
 
         // Debug uncertainty resolver
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.UncertaintyX_Hatch.get(1L),
             72_000_000,
             5_120,
@@ -1230,7 +1230,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------- UHV Motor -------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Motor_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1258,7 +1258,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // --------------------- UHV Electric Pump ---------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Pump_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1280,7 +1280,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ----------------------- UHV Conveyor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Conveyor_Module_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1301,7 +1301,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UHV Robot Arm --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Robot_Arm_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1323,7 +1323,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         // -------------------------------------------------------------
 
         // -------------------- UHV Electric Piston --------------------
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Piston_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1346,7 +1346,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UHV Emitter ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Emitter_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1370,7 +1370,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UHV Sensor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Sensor_UV.get(1L),
             total_computation,
             comp_per_second,
@@ -1394,7 +1394,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UHV Field Generator ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Field_Generator_UV.get(1),
             total_computation,
             comp_per_second,
@@ -1444,7 +1444,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------- UEV Motor -------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Motor_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1472,7 +1472,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // --------------------- UEV Electric Pump ---------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Pump_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1494,7 +1494,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ----------------------- UEV Conveyor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Conveyor_Module_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1516,7 +1516,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UEV Robot Arm --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Robot_Arm_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1538,7 +1538,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         // -------------------------------------------------------------
 
         // -------------------- UEV Electric Piston --------------------
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Piston_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1561,7 +1561,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UEV Emitter ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Emitter_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1585,7 +1585,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UEV Sensor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Sensor_UHV.get(1L),
             total_computation,
             comp_per_second,
@@ -1608,7 +1608,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UEV Field Generator ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Field_Generator_UHV.get(1),
             total_computation,
             comp_per_second,
@@ -1659,7 +1659,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------- UIV Motor -------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Motor_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1687,7 +1687,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // --------------------- UIV Electric Pump ---------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Pump_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1709,7 +1709,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ----------------------- UIV Conveyor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Conveyor_Module_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1731,7 +1731,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UIV Robot Arm --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Robot_Arm_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1754,7 +1754,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UIV Electric Piston --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Piston_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1777,7 +1777,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UIV Emitter ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Emitter_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1798,7 +1798,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UIV Sensor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Sensor_UEV.get(1L),
             total_computation,
             comp_per_second,
@@ -1819,7 +1819,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UIV Field Generator ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Field_Generator_UEV.get(1),
             total_computation,
             comp_per_second,
@@ -1876,7 +1876,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------- UMV Motor -------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Motor_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -1898,7 +1898,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // --------------------- UMV Electric Pump ---------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Pump_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -1920,7 +1920,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ----------------------- UMV Conveyor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Conveyor_Module_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -1942,7 +1942,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UMV Robot Arm --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Robot_Arm_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -1965,7 +1965,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UMV Electric Piston --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Piston_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -1988,7 +1988,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UMV Emitter ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Emitter_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -2009,7 +2009,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UMV Sensor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Sensor_UIV.get(1L),
             total_computation,
             comp_per_second,
@@ -2030,7 +2030,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UMV Field Generator ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Field_Generator_UIV.get(1),
             total_computation,
             comp_per_second,
@@ -2080,7 +2080,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------- UXV Motor -------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Motor_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2119,7 +2119,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // --------------------- UXV Electric Pump ---------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Pump_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2148,7 +2148,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ----------------------- UXV Conveyor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Conveyor_Module_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2175,7 +2175,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UXV Robot Arm --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Robot_Arm_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2205,7 +2205,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // -------------------- UXV Electric Piston --------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Electric_Piston_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2238,7 +2238,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UXV Emitter ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Emitter_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2270,7 +2270,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UXV Sensor ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Sensor_UMV.get(1L),
             totalComputation,
             compPerSecond,
@@ -2300,7 +2300,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ UXV Field Generator ------------------------
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Field_Generator_UMV.get(1),
             totalComputation,
             compPerSecond,
@@ -2367,7 +2367,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // EOH Controller Recipe.
         {
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Machine_Multi_PlasmaForge.get(1),
                 512_000_000, // total comp
                 2 * 16_384, // comp/s
@@ -2399,7 +2399,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // EOH Spatial Individual Casing
         {
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 // Dyson Swarm Module Deployment Unit Base Casing
                 getModItem(GalaxySpace.ID, "dysonswarmparts", 1, 2),
                 256_000_000, // total comp
@@ -2457,7 +2457,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 set = 1;
 
                 absoluteTier = 0;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.EOH_Reinforced_Spatial_Casing.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2481,7 +2481,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 tier++;
                 absoluteTier = 1;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2505,7 +2505,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 tier++;
                 absoluteTier = 2;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2533,7 +2533,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 tier = 1;
                 set = 2;
                 absoluteTier = 3;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2558,7 +2558,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 tier++;
                 absoluteTier = 4;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2583,7 +2583,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 tier++;
                 absoluteTier = 5;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2611,7 +2611,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 tier = 1;
                 set = 3;
                 absoluteTier = 6;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2636,7 +2636,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 tier++;
                 absoluteTier = 7;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2661,7 +2661,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 tier++;
                 absoluteTier = 8;
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2739,7 +2739,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
             for (int absoluteTier = 0; absoluteTier < 9; absoluteTier++) {
 
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                     researchStuff[absoluteTier],
                     (absoluteTier + 1) * 48_000_000, // total comp
                     (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2828,7 +2828,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             for (int absoluteTier = 0; absoluteTier < 9; absoluteTier++) {
 
                 // spotless:off
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
                         researchStuff[absoluteTier],
                         (absoluteTier + 1) * 48_000_000, // total comp
                         (absoluteTier + 1) * baseCompPerSec, // comp/s
@@ -2873,7 +2873,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // EOH Reinforced Temporal casings
         {
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.AcceleratorUV.get(1),
                 256_000_000, // total comp
                 16_384, // comp/s
@@ -2905,7 +2905,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // EOH Infinite Spacetime Energy Boundary Casing
         {
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 1),
                 256_000_000, // total comp
                 16_384, // comp/s
@@ -2944,7 +2944,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // Astral Array Fabricator
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
             480_000_000,
             32_768,
@@ -2976,7 +2976,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         if (EternalSingularity.isModLoaded()) {
             // Controller
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
                 48_000_000,
                 8_192,
@@ -3005,7 +3005,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // Magnetic Confinement Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1),
             48_000_000,
             8_192,
@@ -3027,7 +3027,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         if (GalacticraftAmunRa.isModLoaded()) {
             // Structure Casing
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 CustomItemList.Godforge_MagneticConfinementCasing.get(1),
                 48_000_000,
                 8_192,
@@ -3053,7 +3053,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // Guidance Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.Godforge_BoundlessStructureCasing.get(1),
             48_000_000,
             8_192,
@@ -3071,7 +3071,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
 
         // Energy Siphon Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.Godforge_GuidanceCasing.get(1),
             48_000_000,
             8_192,
@@ -3092,13 +3092,13 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
 
         // Gravitational Lens
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(QuantumGlassBlock.INSTANCE, 1),
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            new ItemStack(BlockQuantumGlass.INSTANCE, 1),
             48_000_000,
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { new ItemStack(QuantumGlassBlock.INSTANCE, 8),
+            new Object[] { new ItemStack(BlockQuantumGlass.INSTANCE, 8),
                 new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
                 new ItemStack(
                     Particle.getBaseParticle(Particle.GRAVITON)
@@ -3114,12 +3114,12 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(16 * 144),
                 MaterialsUEVplus.Creon.getMolten(16 * 144),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(1024 * 144) },
-            new ItemStack(GodforgeGlassBlock.INSTANCE, 1),
+            new ItemStack(BlockGodforgeGlass.INSTANCE, 1),
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
         // Graviton Modulator 1
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Battery_Gem_4.get(1),
             48_000_000,
             8_192,
@@ -3139,7 +3139,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
 
         // Graviton Modulator 2
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
             96_000_000,
             16_384,
@@ -3160,7 +3160,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // Graviton Modulator 3
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
             192_000_000,
             32_768,
@@ -3186,7 +3186,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UXV);
 
         // Phonon Transmission Conduit
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Relativistic_Heat_Capacitor.get(1),
             48_000_000,
             8_192,
@@ -3207,7 +3207,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         ItemStack megaEBF = GT_Utility.copyAmount(64, ItemRegistry.megaMachines[0]);
 
         // Smelting Module Controller
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             // mega ebf controller
             ItemRegistry.megaMachines[0],
             48_000_000,
@@ -3230,7 +3230,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // Molten Module Controller
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Mega_AlloyBlastSmelter.get(1),
             48_000_000,
             8_192,
@@ -3253,7 +3253,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // Plasma Module Controller
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.FluidHeaterUIV.get(1),
             48_000_000,
             8_192,
@@ -3276,7 +3276,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // Exotic Module Controller
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1),
             48_000_000,
             8_192,
@@ -3421,7 +3421,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         for (int i = 0; i < wirelessHatches.length; i++) {
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 (i == 0) ? ItemList.Tesseract.get(1) : wirelessHatches[i - 1],
                 totalComputation,
                 compPerSecond,
@@ -3443,7 +3443,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         for (int i = 0; i < wirelessHatches_4A.length; i++) {
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 energyHatches_4A[i],
                 totalComputation * 4,
                 compPerSecond * 4,
@@ -3467,7 +3467,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         for (int i = 0; i < wirelessHatches_16A.length; i++) {
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 energyHatches_16A[i],
                 totalComputation * 16,
                 compPerSecond * 16,
@@ -3491,7 +3491,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         for (int i = 0; i < wirelessHatches_64A.length; i++) {
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 energyHatches_64A[i],
                 totalComputation * 64,
                 compPerSecond * 64,
@@ -3515,7 +3515,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         for (int i = 0; i < wirelessLasers.length; i++) {
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 laserTargets_UXV[i],
                 totalComputation * 64,
                 compPerSecond * 64,
@@ -3541,7 +3541,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         // ------------------------ 4MA+ Lasers ------------------------
 
         // 4M UMV Target
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_energyTunnel7_UMV.get(1),
             totalComputation * 48,
             compPerSecond * 48,
@@ -3557,7 +3557,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Target
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_energyTunnel8_UMV.get(1),
             totalComputation * 64,
             compPerSecond * 64,
@@ -3573,7 +3573,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Target
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_energyTunnel8_UXV.get(1),
             totalComputation * 64,
             compPerSecond * 64,
@@ -3593,7 +3593,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UXV);
 
         // 4M UMV Source
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_dynamoTunnel7_UMV.get(1),
             totalComputation * 48,
             compPerSecond * 48,
@@ -3609,7 +3609,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Source
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_dynamoTunnel7_UXV.get(1),
             totalComputation * 64,
             compPerSecond * 64,
@@ -3625,7 +3625,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Source
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_dynamoTunnel8_UXV.get(1),
             totalComputation * 64,
             compPerSecond * 64,
@@ -3648,7 +3648,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         for (int i = 0; i < wirelessHatches.length; i++) {
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 (i == 0) ? ItemList.EnergisedTesseract.get(1) : wirelessDynamos[i - 1],
                 totalComputation,
                 compPerSecond,
@@ -3670,7 +3670,7 @@ public class ResearchStationAssemblyLine implements Runnable {
     public void runLateRecipes() {
         if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE && EternalSingularity.isModLoaded()) {
             // Shielding Casing
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.TranscendentMetal, 1),
                 48_000_000,
                 8_192,

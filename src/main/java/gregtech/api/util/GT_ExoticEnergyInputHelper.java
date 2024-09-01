@@ -9,8 +9,8 @@ import java.util.List;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class GT_ExoticEnergyInputHelper {
 
@@ -20,8 +20,8 @@ public class GT_ExoticEnergyInputHelper {
     private static final List<Class<? extends GT_MetaTileEntity_Hatch>> sExoticEnergyHatchType = new ArrayList<>();
 
     static {
-        register(GT_MetaTileEntity_Hatch_EnergyMulti.class);
-        register(GT_MetaTileEntity_Hatch_EnergyTunnel.class);
+        register(MTEHatchEnergyMulti.class);
+        register(MTEHatchEnergyTunnel.class);
     }
 
     public static void register(Class<? extends GT_MetaTileEntity_Hatch> clazz) {

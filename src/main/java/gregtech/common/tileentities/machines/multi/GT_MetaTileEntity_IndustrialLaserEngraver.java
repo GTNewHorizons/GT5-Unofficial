@@ -62,7 +62,7 @@ import gregtech.common.tileentities.render.TileLaser;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             's',
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
                 .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
-                .hatchClass(GT_MetaTileEntity_Hatch_DynamoTunnel.class)
+                .hatchClass(MTEHatchDynamoTunnel.class)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
                 .dot(3)
                 .build())
@@ -109,7 +109,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     protected TileLaser renderer;
     private byte glassTier = 0;
-    private GT_MetaTileEntity_Hatch_DynamoTunnel laserSource = null;
+    private MTEHatchDynamoTunnel laserSource = null;
     private int laserAmps = 0;
     private int laserTier = 0;
     private String tierName = "LV";
@@ -117,8 +117,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
-                laserSource = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
+            if (aMetaTileEntity instanceof MTEHatchDynamoTunnel) {
+                laserSource = (MTEHatchDynamoTunnel) aMetaTileEntity;
                 laserSource.updateTexture(aBaseCasingIndex);
                 // Snap the laser source toward the plate. Player can rotate it if they want after but this will look
                 // nicer

@@ -34,7 +34,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -50,7 +50,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     }
 
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<MTECoolantTower>builder()
                 .addShape(

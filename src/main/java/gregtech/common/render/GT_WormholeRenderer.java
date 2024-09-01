@@ -1,6 +1,6 @@
 package gregtech.common.render;
 
-import static tectech.rendering.EOH.EOH_RenderingUtils.addRenderedBlockInWorld;
+import static tectech.rendering.EOH.EOHRenderingUtils.addRenderedBlockInWorld;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;

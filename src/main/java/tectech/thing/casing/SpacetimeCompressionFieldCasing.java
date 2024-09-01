@@ -39,10 +39,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 16;
 
     public SpacetimeCompressionFieldCasing() {
-        super(
-            GT_Item_Casings_Spacetime.class,
-            "gt.spacetime_compression_field_generator",
-            GT_Material_Casings.INSTANCE);
+        super(ItemCasingsSpacetime.class, "gt.spacetime_compression_field_generator", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }

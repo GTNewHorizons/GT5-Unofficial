@@ -27,7 +27,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
 
@@ -187,7 +187,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             }
         }
         if (this.eEnergyMulti != null) {
-            for (GT_MetaTileEntity_Hatch_EnergyMulti hatch : this.eEnergyMulti) {
+            for (MTEHatchEnergyMulti hatch : this.eEnergyMulti) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(3, 6) : 53);
             }
         }

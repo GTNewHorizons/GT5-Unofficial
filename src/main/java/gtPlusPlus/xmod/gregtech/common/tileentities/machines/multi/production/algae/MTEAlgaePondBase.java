@@ -55,7 +55,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaeFarm;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import tectech.thing.casing.TT_Container_Casings;
+import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
@@ -150,7 +150,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                         onElementPass(
                             x -> ++x.mCasing,
                             addTieredBlock(
-                                TT_Container_Casings.sBlockCasingsNH,
+                                TTCasingsContainer.sBlockCasingsNH,
                                 MTEAlgaePondBase::setMeta,
                                 MTEAlgaePondBase::getMeta,
                                 10,
@@ -375,7 +375,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTech_API.sBlockCasings1
-                || aInitStructureCheck == TT_Container_Casings.sBlockCasingsNH) {
+                || aInitStructureCheck == TTCasingsContainer.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }
             return 0;

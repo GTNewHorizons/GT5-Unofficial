@@ -64,7 +64,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
-import tectech.recipe.TT_recipeAdder;
+import tectech.recipe.TTRecipeAdder;
 
 public class RecipeLoader2 {
 
@@ -1530,7 +1530,7 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRefer.Compact_Fusion_MK3.get(1),
             2_560_000,
             4_096,
@@ -1566,7 +1566,7 @@ public class RecipeLoader2 {
             .addTo(preciseAssemblerRecipes);
 
         // Compact MK5 Computer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRefer.Compact_Fusion_MK4.get(1),
             10_240_000,
             16_384,

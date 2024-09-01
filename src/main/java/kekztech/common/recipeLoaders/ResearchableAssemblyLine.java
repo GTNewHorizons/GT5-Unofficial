@@ -17,7 +17,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import kekztech.common.Blocks;
-import tectech.recipe.TT_recipeAdder;
+import tectech.recipe.TTRecipeAdder;
 
 public class ResearchableAssemblyLine implements Runnable {
 
@@ -28,7 +28,7 @@ public class ResearchableAssemblyLine implements Runnable {
             : FluidRegistry.getFluid("molten.solderingalloy");
 
         // Extremely Ultimate Capacitor (UEV)
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             1200000,
             128,
@@ -53,7 +53,7 @@ public class ResearchableAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UEV);
 
         // Insanely Ultimate Capacitor (UIV)
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
             24_000_000,
             1_280,
@@ -79,7 +79,7 @@ public class ResearchableAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
 
         // Mega Ultimate Capacitor (UMV)
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
             480_000_000,
             12_288,
@@ -106,7 +106,7 @@ public class ResearchableAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV);
 
         // Ultimate Capacitor (UHV)
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
             12000,
             16,

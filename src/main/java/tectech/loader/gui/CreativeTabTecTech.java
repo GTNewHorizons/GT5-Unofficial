@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import tectech.thing.CustomItemList;
-import tectech.thing.casing.TT_Container_Casings;
+import tectech.thing.casing.TTCasingsContainer;
 
 public class CreativeTabTecTech extends CreativeTabs {
 
@@ -21,7 +21,7 @@ public class CreativeTabTecTech extends CreativeTabs {
     @SideOnly(Side.CLIENT)
     @Override
     public Item getTabIconItem() {
-        return Item.getItemFromBlock(TT_Container_Casings.sBlockCasingsTT); // High power casing
+        return Item.getItemFromBlock(TTCasingsContainer.sBlockCasingsTT); // High power casing
     }
 
     @Override

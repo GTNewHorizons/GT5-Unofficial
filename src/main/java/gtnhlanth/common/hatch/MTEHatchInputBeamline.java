@@ -13,7 +13,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
-import tectech.util.TT_Utility;
+import tectech.util.TTUtility;
 
 public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> {
 
@@ -30,7 +30,7 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
     public MTEHatchInputBeamline(int id, String name, String nameRegional, int tier) {
 
         super(id, name, nameRegional, tier, "");
-        TT_Utility.setTier(tier, this);
+        TTUtility.setTier(tier, this);
     }
 
     public MTEHatchInputBeamline(String name, int tier, String[] desc, ITexture[][][] textures) {

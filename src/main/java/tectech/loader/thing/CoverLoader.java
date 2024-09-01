@@ -7,13 +7,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_RenderedTexture;
 import tectech.TecTech;
-import tectech.thing.cover.GT_Cover_TM_EnderFluidLink;
-import tectech.thing.cover.GT_Cover_TM_PowerPassUpgrade;
-import tectech.thing.cover.GT_Cover_TM_TeslaCoil;
-import tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
-import tectech.thing.item.EnderFluidLinkCover;
-import tectech.thing.item.PowerPassUpgradeCover;
-import tectech.thing.item.TeslaCoilCover;
+import tectech.thing.cover.CoverEnderFluidLink;
+import tectech.thing.cover.CoverPowerPassUpgrade;
+import tectech.thing.cover.CoverTeslaCoil;
+import tectech.thing.cover.CoverTeslaCoilUltimate;
+import tectech.thing.item.ItemEnderFluidLinkCover;
+import tectech.thing.item.ItemPowerPassUpgradeCover;
+import tectech.thing.item.ItemTeslaCoilCover;
 
 public class CoverLoader implements Runnable {
 
@@ -27,21 +27,21 @@ public class CoverLoader implements Runnable {
             "iconsets/POWERPASSUPGRADE_OVERLAY");
 
         GregTech_API.registerCover(
-            new ItemStack(TeslaCoilCover.INSTANCE, 1, 0),
+            new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 0),
             new GT_RenderedTexture(TESLA_OVERLAY),
-            new GT_Cover_TM_TeslaCoil());
+            new CoverTeslaCoil());
         GregTech_API.registerCover(
-            new ItemStack(TeslaCoilCover.INSTANCE, 1, 1),
+            new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 1),
             new GT_RenderedTexture(TESLA_OVERLAY_ULTIMATE),
-            new GT_Cover_TM_TeslaCoil_Ultimate());
+            new CoverTeslaCoilUltimate());
         GregTech_API.registerCover(
-            new ItemStack(EnderFluidLinkCover.INSTANCE, 1, 0),
+            new ItemStack(ItemEnderFluidLinkCover.INSTANCE, 1, 0),
             new GT_RenderedTexture(ENDERFLUIDLINK_OVERLAY),
-            new GT_Cover_TM_EnderFluidLink());
+            new CoverEnderFluidLink());
         GregTech_API.registerCover(
-            new ItemStack(PowerPassUpgradeCover.INSTANCE, 1, 0),
+            new ItemStack(ItemPowerPassUpgradeCover.INSTANCE, 1, 0),
             new GT_RenderedTexture(POWERPASSUPGRADE_OVERLAY),
-            new GT_Cover_TM_PowerPassUpgrade());
+            new CoverPowerPassUpgrade());
         TecTech.LOGGER.info("Cover functionality registered");
     }
 }

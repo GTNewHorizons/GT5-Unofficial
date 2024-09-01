@@ -26,7 +26,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
-import tectech.recipe.TT_recipeAdder;
+import tectech.recipe.TTRecipeAdder;
 
 public class TecTechResearchLoader {
 
@@ -35,7 +35,7 @@ public class TecTechResearchLoader {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRegistry.voidminer[0].copy(),
             1024000,
             256,
@@ -51,7 +51,7 @@ public class TecTechResearchLoader {
             5 * MINUTES,
             (int) TierEU.RECIPE_ZPM);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRegistry.voidminer[1].copy(),
             8192000,
             512,
@@ -67,7 +67,7 @@ public class TecTechResearchLoader {
             5 * MINUTES,
             (int) TierEU.RECIPE_UV);
 
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Machine_Multi_ImplosionCompressor.get(1L),
             64000,
             48,
