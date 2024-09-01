@@ -174,7 +174,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ThoriumHighTemperatureReactor
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerI;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
-import static gregtech.api.enums.Mods.GalactiGreg;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -579,15 +578,10 @@ public class ItemRegistry {
             "MegaOilCracker",
             "Mega Oil Cracker").getStackForm(1L);
 
-
-        ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
-            VoidMinerIII.ID,
-            "VoidMiner3",
-            "Void Miner III").getStackForm(1L);
-        ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
-            VoidMinerII.ID,
-            "VoidMiner2",
-            "Void Miner II").getStackForm(1L);
+        ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
+            .getStackForm(1L);
+        ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(VoidMinerII.ID, "VoidMiner2", "Void Miner II")
+            .getStackForm(1L);
         ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
             .getStackForm(1L);
 

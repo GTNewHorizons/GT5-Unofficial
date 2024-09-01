@@ -24,7 +24,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.ProjectRedIllumination;
 import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
@@ -247,8 +246,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
         .addElement(
             'g',
-            BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)
-                )
+            BorosilicateGlass
+                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'd',
             ofBlock(

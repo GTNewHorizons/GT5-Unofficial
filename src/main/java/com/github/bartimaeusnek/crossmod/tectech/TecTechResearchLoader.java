@@ -13,7 +13,6 @@
 
 package com.github.bartimaeusnek.crossmod.tectech;
 
-import static gregtech.api.enums.Mods.GalactiGreg;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
 import net.minecraftforge.fluids.Fluid;
@@ -37,7 +36,6 @@ public class TecTechResearchLoader {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
-
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemRegistry.voidminer[0].copy(),
             1024000,
@@ -46,8 +44,8 @@ public class TecTechResearchLoader {
             24,
             new Object[] { ItemRegistry.voidminer[0].copy(),
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
-                Materials.BlackPlutonium.getPlates(3), ItemList.Electric_Motor_ZPM.get(9L),
-                ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
+                Materials.BlackPlutonium.getPlates(3), ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L),
+                ItemList.Field_Generator_ZPM.get(9L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L) },
             new FluidStack[] { new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Krypton.getFluidOrGas(20000) },
             ItemRegistry.voidminer[1].copy(),
@@ -65,12 +63,10 @@ public class TecTechResearchLoader {
                 Materials.Neutronium.getPlates(3), ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L),
                 ItemList.Field_Generator_UV.get(9L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L) },
-            new FluidStack[] { new FluidStack(solderIndalloy, 1440),
-                WerkstoffLoader.Oganesson.getFluidOrGas(20000) },
+            new FluidStack[] { new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Oganesson.getFluidOrGas(20000) },
             ItemRegistry.voidminer[2].copy(),
             5 * MINUTES,
             (int) TierEU.RECIPE_UV);
-
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Machine_Multi_ImplosionCompressor.get(1L),
