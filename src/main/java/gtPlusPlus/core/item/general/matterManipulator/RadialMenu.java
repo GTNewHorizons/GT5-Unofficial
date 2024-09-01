@@ -39,7 +39,7 @@ public class RadialMenu extends Widget implements Interactable {
         for(var option : options) {
             option.isDisabled = option.disabled.getAsBoolean();
 
-            if (option.isDisabled) {
+            if (!option.isDisabled) {
                 weightSum += option.weight;
             }
         }
