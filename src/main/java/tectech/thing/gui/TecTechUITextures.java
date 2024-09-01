@@ -1,6 +1,6 @@
-package com.github.technus.tectech.thing.gui;
+package tectech.thing.gui;
 
-import static com.github.technus.tectech.Reference.MODID;
+import static tectech.Reference.MODID;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

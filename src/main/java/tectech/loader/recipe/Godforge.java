@@ -1,8 +1,5 @@
-package com.github.technus.tectech.loader.recipe;
+package tectech.loader.recipe;
 
-import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
-import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
-import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -10,6 +7,9 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FOG_EXOTIC_TIER;
 import static gregtech.api.util.GT_RecipeConstants.FOG_PLASMA_TIER;
+import static tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
+import static tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
+import static tectech.util.GodforgeMath.getRandomIntInRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +18,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.github.technus.tectech.thing.CustomItemList;
 
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
@@ -34,6 +32,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import tectech.thing.CustomItemList;
 
 public class Godforge implements Runnable {
 

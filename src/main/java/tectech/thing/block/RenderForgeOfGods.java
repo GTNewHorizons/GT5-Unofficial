@@ -1,10 +1,10 @@
-package com.github.technus.tectech.thing.block;
+package tectech.thing.block;
 
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.rendering.EOH.EOH_RenderingUtils.renderStarLayer;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_0;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_1;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_2;
+import static tectech.Reference.MODID;
+import static tectech.rendering.EOH.EOH_RenderingUtils.renderStarLayer;
+import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_0;
+import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_1;
+import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_2;
 
 import java.awt.Color;
 

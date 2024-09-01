@@ -1,10 +1,10 @@
-package com.github.technus.tectech.thing.item;
+package tectech.thing.item;
 
-import static com.github.technus.tectech.rendering.EOH.EOH_RenderingUtils.renderStarLayer;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.*;
-import static com.github.technus.tectech.thing.block.RenderForgeOfGods.disableOpaqueColorInversion;
-import static com.github.technus.tectech.thing.block.RenderForgeOfGods.enableOpaqueColorInversion;
-import static com.github.technus.tectech.thing.block.RenderForgeOfGods.enablePseudoTransparentColorInversion;
+import static tectech.rendering.EOH.EOH_RenderingUtils.renderStarLayer;
+import static tectech.rendering.EOH.EOH_TESR.*;
+import static tectech.thing.block.RenderForgeOfGods.disableOpaqueColorInversion;
+import static tectech.thing.block.RenderForgeOfGods.enableOpaqueColorInversion;
+import static tectech.thing.block.RenderForgeOfGods.enablePseudoTransparentColorInversion;
 
 import java.awt.Color;
 

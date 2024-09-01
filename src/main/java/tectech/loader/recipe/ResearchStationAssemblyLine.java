@@ -1,8 +1,6 @@
-package com.github.technus.tectech.loader.recipe;
+package tectech.loader.recipe;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.google.common.math.LongMath.pow;
-import static common.Blocks.lscLapotronicEnergyUnit;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static gregtech.api.enums.Mods.*;
@@ -22,12 +20,14 @@ import static gtPlusPlus.core.material.ELEMENT.STANDALONE.ASTRAL_TITANIUM;
 import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN;
 import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
 import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
+import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 import static kubatech.api.enums.ItemList.DEFCAwakenedSchematic;
 import static kubatech.api.enums.ItemList.DEFCChaoticSchematic;
 import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
 import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
+import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -36,13 +36,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.technus.tectech.recipe.TT_recipeAdder;
-import com.github.technus.tectech.thing.CustomItemList;
-import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.rwtema.extrautils.ExtraUtils;
-import common.Blocks;
-import common.TileEntities;
 
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import goodgenerator.items.MyMaterial;
@@ -63,7 +57,13 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import kekztech.common.Blocks;
+import kekztech.common.TileEntities;
 import tconstruct.tools.TinkerTools;
+import tectech.recipe.TT_recipeAdder;
+import tectech.thing.CustomItemList;
+import tectech.thing.block.GodforgeGlassBlock;
+import tectech.thing.block.QuantumGlassBlock;
 import vexatos.tgregworks.reference.PartTypes;
 import vexatos.tgregworks.util.TGregUtils;
 

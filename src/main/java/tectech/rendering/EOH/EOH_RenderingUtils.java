@@ -1,12 +1,12 @@
-package com.github.technus.tectech.rendering.EOH;
+package tectech.rendering.EOH;
 
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_0;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_1;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_2;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.spaceModel;
-import static com.github.technus.tectech.rendering.EOH.EOH_TESR.starModel;
 import static java.lang.Math.pow;
+import static tectech.Reference.MODID;
+import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_0;
+import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_1;
+import static tectech.rendering.EOH.EOH_TESR.STAR_LAYER_2;
+import static tectech.rendering.EOH.EOH_TESR.spaceModel;
+import static tectech.rendering.EOH.EOH_TESR.starModel;
 
 import java.awt.Color;
 

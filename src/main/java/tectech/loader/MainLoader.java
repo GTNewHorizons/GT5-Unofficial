@@ -1,12 +1,12 @@
-package com.github.technus.tectech.loader;
+package tectech.loader;
 
-import static com.github.technus.tectech.TecTech.LOGGER;
-import static com.github.technus.tectech.TecTech.configTecTech;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
-import static com.github.technus.tectech.TecTech.proxy;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static tectech.TecTech.LOGGER;
+import static tectech.TecTech.configTecTech;
+import static tectech.TecTech.creativeTabTecTech;
+import static tectech.TecTech.proxy;
+import static tectech.loader.TecTechConfig.DEBUG_MODE;
 
 import java.util.HashMap;
 
@@ -15,22 +15,21 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
-import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
-import com.github.technus.tectech.loader.recipe.ResearchStationAssemblyLine;
-import com.github.technus.tectech.loader.thing.CoverLoader;
-import com.github.technus.tectech.loader.thing.MachineLoader;
-import com.github.technus.tectech.loader.thing.ThingsLoader;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.metaTileEntity.Textures;
-
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
+import tectech.TecTech;
+import tectech.loader.gui.CreativeTabTecTech;
+import tectech.loader.recipe.BaseRecipeLoader;
+import tectech.loader.recipe.ResearchStationAssemblyLine;
+import tectech.loader.thing.CoverLoader;
+import tectech.loader.thing.MachineLoader;
+import tectech.loader.thing.ThingsLoader;
+import tectech.thing.casing.TT_Container_Casings;
+import tectech.thing.metaTileEntity.Textures;
 
 @SuppressWarnings("deprecation")
 public final class MainLoader {

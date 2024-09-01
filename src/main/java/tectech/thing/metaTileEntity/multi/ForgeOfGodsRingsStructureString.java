@@ -1,6 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
-import static com.github.technus.tectech.util.TT_Utility.replaceLetters;
+import static tectech.util.TT_Utility.replaceLetters;
 
 public abstract class ForgeOfGodsRingsStructureString {
 

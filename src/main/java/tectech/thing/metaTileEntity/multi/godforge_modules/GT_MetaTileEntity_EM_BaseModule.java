@@ -1,11 +1,11 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge_modules;
 
-import static com.github.technus.tectech.thing.casing.TT_Container_Casings.GodforgeCasings;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static tectech.thing.casing.TT_Container_Casings.GodforgeCasings;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -20,8 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.thing.gui.TecTechUITextures;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -54,6 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_StructureUtility;
+import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 
 public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_MultiblockBase_EM {
 
