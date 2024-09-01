@@ -216,7 +216,7 @@ public enum CombType {
     // Additions to rare metals, moved here so we don't shift all comb IDs
     NEODYMIUM(166, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
     EUROPIUM(167, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
-    DIDDY(168, "diddy", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
+    MACHINIST(168, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);

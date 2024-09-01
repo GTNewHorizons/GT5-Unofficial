@@ -54,7 +54,7 @@ dependencies {
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
 
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.9.7:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.9.10:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.8.2-GTNH:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.4.1:dev')
@@ -64,7 +64,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.51:dev")
     // this is required because forestry is an hidden hard dep, revert this if you fixed the hidden hard dep
-    implementation("com.github.GTNewHorizons:ForestryMC:4.9.7:dev") { transitive = false }
+    implementation("com.github.GTNewHorizons:ForestryMC:4.9.10:dev") { transitive = false }
 
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta4:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
@@ -91,7 +91,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.12-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.21-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.22-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.6.22-GTNH:dev') {transitive =  false}
@@ -110,7 +110,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing iApiary
-    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.7:dev")
+    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.10:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
