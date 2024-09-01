@@ -733,7 +733,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 Voltage.LV);
         }
         addCentrifugeToItemStack(
-            CombType.DIDDY,
+            CombType.MACHINIST,
             new ItemStack[] { GT_ModHandler.getModItem(Forestry.ID, "royalJelly", 1L, 0),
                 GT_ModHandler.getModItem(Forestry.ID, "pollen", 1L, 0),
                 GT_ModHandler.getModItem(Forestry.ID, "honeyDrop", 1L, 0),

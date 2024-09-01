@@ -1662,13 +1662,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.requireResource(GameRegistry.findBlock(ExtraCells2.ID, "walrus"), 0);
         }
     }),
-    DIDDY(GT_BranchDefinition.ORGANIC, "Diddy", true, new Color(85, 37, 130), new Color(253, 185, 39), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DIDDY), 0.2f);
+    MACHINIST(GT_BranchDefinition.ORGANIC, "Machinist", true, new Color(85, 37, 130), new Color(253, 185, 39), beeSpecies -> {
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MACHINIST), 0.2f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(NORMAL);
         beeSpecies.setHasEffect();
     }, template -> {
-        AlleleHelper.instance.set(template, SPEED, GT_Bees.speedBlinding);
+        AlleleHelper.instance.set(template, SPEED, GT_Bees.superSpeed);
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
         AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
