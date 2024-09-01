@@ -1669,7 +1669,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setTemperature(NORMAL);
             beeSpecies.setHasEffect();
         }, template -> {
-            AlleleHelper.instance.set(template, SPEED, GT_Bees.superSpeed);
+            AlleleHelper.instance.set(template, SPEED, Speed.FASTEST);
             AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
             AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
