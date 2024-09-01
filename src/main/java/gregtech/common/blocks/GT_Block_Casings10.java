@@ -32,6 +32,8 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
             .addStringLocalization(getUnlocalizedName() + ".11.name", "Extreme Density Space-Bending Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".12.name", "Background Radiation Absorbent Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Solidifier Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Solidifier Radiator");
 
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
@@ -46,6 +48,8 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         ItemList.Heating_Duct_Casing.set(new ItemStack(this, 1, 10));
         ItemList.Extreme_Density_Casing.set(new ItemStack(this, 1, 11));
         ItemList.Background_Radiation_Casing.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_Fluid_Solidifier.set(new ItemStack(this, 1, 13));
+        ItemList.Radiator_Fluid_Solidifier.set(new ItemStack(this, 1, 14));
     }
 
     @Override
@@ -70,6 +74,8 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
             case 10 -> Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getIcon();
             case 11 -> Textures.BlockIcons.EXTREME_DENSITY_CASING.getIcon();
             case 12 -> Textures.BlockIcons.RADIATION_ABSORBENT_CASING.getIcon();
+            case 13 -> Textures.BlockIcons.MACHINE_CASING_MS160.getIcon();
+            case 14 -> Textures.BlockIcons.RADIATOR_MS160.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

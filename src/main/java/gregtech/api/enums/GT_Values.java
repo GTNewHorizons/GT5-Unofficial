@@ -656,6 +656,10 @@ public class GT_Values {
         + "Ba"
         + EnumChatFormatting.LIGHT_PURPLE
         + "ps";
+    public static final String AuthorOmdaCZ = "Author: " + EnumChatFormatting.BLUE
+        + "Omda"
+        + EnumChatFormatting.RED
+        + "CZ";
 
     public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
         + EnumChatFormatting.BOLD

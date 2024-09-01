@@ -1058,6 +1058,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiAutocl
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiSolidifier;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
@@ -1608,6 +1609,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Multi_Canner.set(
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_Solidifier.set(
+            new GT_MetaTileEntity_MultiSolidifier(
+                MULTI_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.solidifier",
+                "Fluid Shaper 2024").getStackForm(1));
 
         ItemList.WormholeGenerator.set(
             new GT_MetaTileEntity_WormholeGenerator(
