@@ -123,6 +123,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTab, List<ItemStack> subItems) {
         final ItemStack stack = new ItemStack(this, 1);
+        setState(stack, getState(stack));
         subItems.add(stack.copy());
         ElectricItem.manager.charge(stack, getMaxCharge(null), Integer.MAX_VALUE, true, false);
         subItems.add(stack);
@@ -391,15 +392,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
         }
 
-        if(ticksUsed >= 40 && (ticksUsed % 10) == 0 && !player.worldObj.isRemote) {
-            GT_Utility.sendSoundToPlayers(
-                player.worldObj,
-                SoundResource.MOB_ENDERMEN_PORTAL,
-                1.0F,
-                -1,
-                (int) (player.posX + 0.5),
-                (int) (player.posY + 0.5),
-                (int) (player.posZ + 0.5));
+        if(ticksUsed >= 20 && (ticksUsed % 10) == 0 && !player.worldObj.isRemote) {
             PENDING_BUILDS.get(player).tryPlaceBlocks(stack, player);
         }
     }

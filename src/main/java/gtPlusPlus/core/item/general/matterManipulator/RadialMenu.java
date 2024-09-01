@@ -105,9 +105,9 @@ public class RadialMenu extends Widget implements Interactable {
                 isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
 
             if(isHoveredOver) {
-                GlStateManager.color(0.75f, 0.75f, 0.75f);
+                GL11.glColor3f(0.75f, 0.75f, 0.75f);
             } else {
-                GlStateManager.color(0, 0, 0);
+                GL11.glColor3f(0, 0, 0);
             }
 
             GlStateManager.glBegin(GL11.GL_TRIANGLE_STRIP);
