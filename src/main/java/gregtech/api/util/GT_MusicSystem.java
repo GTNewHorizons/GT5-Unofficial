@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,6 +32,7 @@ import com.google.gson.GsonBuilder;
 import com.jcraft.jorbis.VorbisFile;
 
 import baubles.api.BaublesApi;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -628,9 +628,9 @@ public final class GT_MusicSystem {
                 final ArrayList<URL> candidates = Collections.list(
                     GT_MusicSystem.class.getClassLoader()
                         .getResources("soundmeta/durations.json"));
-                final Path configPath = Paths.get("")
-                    .toAbsolutePath()
-                    .resolve("config")
+                final Path configPath = Loader.instance()
+                    .getConfigDir()
+                    .toPath()
                     .resolve("soundmeta")
                     .resolve("durations.json");
                 if (Files.exists(configPath)) {
