@@ -689,7 +689,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
     }
 
-    private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial,
+    private static void generateNonGTFluidPipes(final GT_Materials material, final Material GGMaterial,
         final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof) {
         final int transferRatePerTick = transferRatePerSec / 20;
 

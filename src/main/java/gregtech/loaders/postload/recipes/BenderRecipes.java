@@ -7,7 +7,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -317,8 +317,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(MyMaterial.tairitsu.get(OrePrefixes.ingot, 9), GT_Utility.getIntegratedCircuit(9))
-            .itemOutputs(MyMaterial.tairitsu.get(OrePrefixes.plateDense, 1))
+            .itemInputs(GGMaterial.tairitsu.get(OrePrefixes.ingot, 9), GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GGMaterial.tairitsu.get(OrePrefixes.plateDense, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(benderRecipes);

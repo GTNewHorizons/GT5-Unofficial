@@ -19,7 +19,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -597,7 +597,7 @@ public class Godforge implements Runnable {
                 0,
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                     ItemList.SuperconductorComposite.get(32),
-                    MyMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
+                    GGMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
                     getModItem(EternalSingularity.ID, "eternal_singularity", 8L), ItemList.Robot_Arm_UIV.get(64L),
                     ItemList.Field_Generator_UEV.get(64L) });
 

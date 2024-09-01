@@ -52,7 +52,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -865,7 +865,7 @@ public class RECIPES_GREGTECH {
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(5),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 5),
-                MyMaterial.metastableOganesson.get(OrePrefixes.dust, 1),
+                GGMaterial.metastableOganesson.get(OrePrefixes.dust, 1),
                 Materials.Praseodymium.getDust(15),
                 Materials.SuperconductorUIVBase.getDust(6))
             .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(4000L))

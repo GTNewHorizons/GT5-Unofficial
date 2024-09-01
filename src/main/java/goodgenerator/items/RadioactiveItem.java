@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import gregtech.api.util.GT_Utility;
 import ic2.core.IC2Potion;
 
-public class RadioactiveItem extends MyItems {
+public class RadioactiveItem extends GGItem {
 
     protected final int mRadio;
 

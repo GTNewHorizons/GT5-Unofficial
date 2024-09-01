@@ -33,7 +33,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import goodgenerator.util.StackUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -399,7 +399,7 @@ public class ComponentAssemblyLineMiscRecipes {
                     .get(OrePrefixes.frameGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
                 GT_OreDictUnificator
                     .get(OrePrefixes.plateDense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                MyMaterial.shirabon.get(OrePrefixes.plateDense, 3), ComponentType.Robot_Arm.getComponent(t)
+                GGMaterial.shirabon.get(OrePrefixes.plateDense, 3), ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
                     .get(10),
@@ -407,10 +407,10 @@ public class ComponentAssemblyLineMiscRecipes {
                     .get(16),
                 GT_OreDictUnificator
                     .get(OrePrefixes.gearGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                MyMaterial.shirabon.get(OrePrefixes.gearGt, 2),
+                GGMaterial.shirabon.get(OrePrefixes.gearGt, 2),
                 GT_OreDictUnificator
                     .get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 8),
-                MyMaterial.shirabon.get(OrePrefixes.gearGtSmall, 8),
+                GGMaterial.shirabon.get(OrePrefixes.gearGtSmall, 8),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 4), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },

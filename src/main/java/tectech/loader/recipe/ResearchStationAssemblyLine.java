@@ -39,7 +39,7 @@ import com.rwtema.extrautils.ExtraUtils;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -807,7 +807,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.EnergisedTesseract.get(32),
                     GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 64),
-                    MyMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32) },
+                    GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32) },
                 new FluidStack[] { new FluidStack(solderUEV, 1024 * 144), Materials.Lead.getPlasma(64 * 144),
                     MaterialsUEVplus.Space.getMolten(64 * 144) },
                 ItemList.Transdimensional_Alignment_Matrix.get(1),
@@ -2980,7 +2980,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 16),
-                    MyMaterial.metastableOganesson.get(OrePrefixes.plateDense, 16),
+                    GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 16),
                     new ItemStack(
                         Particle.getBaseParticle(Particle.GRAVITON)
                             .getItem(),
@@ -3671,7 +3671,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 64,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SixPhasedCopper, 4),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CosmicNeutronium, 16),
-                    MyMaterial.tairitsu.get(OrePrefixes.plateDense, 16),
+                    GGMaterial.tairitsu.get(OrePrefixes.plateDense, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
                     getModItem(EternalSingularity.ID, "combined_singularity", 1L, 2),

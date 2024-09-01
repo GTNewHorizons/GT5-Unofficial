@@ -29,7 +29,7 @@ import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTi
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
@@ -182,7 +182,7 @@ public class GT_PurifiedWaterRecipes {
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationPlasmaHeatingRecipes);
 
-        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS.add(MyMaterial.orundum.get(OrePrefixes.lens, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS.add(GGMaterial.orundum.get(OrePrefixes.lens, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
             .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1));
         GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS

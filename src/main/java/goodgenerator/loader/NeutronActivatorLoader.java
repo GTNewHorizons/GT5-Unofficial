@@ -1,12 +1,12 @@
 package goodgenerator.loader;
 
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
-import static goodgenerator.items.MyMaterial.plutoniumBasedLiquidFuel;
-import static goodgenerator.items.MyMaterial.plutoniumBasedLiquidFuelExcited;
-import static goodgenerator.items.MyMaterial.thoriumBasedLiquidFuelDepleted;
-import static goodgenerator.items.MyMaterial.thoriumBasedLiquidFuelExcited;
-import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuel;
-import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuelExcited;
+import static goodgenerator.items.GGMaterial.plutoniumBasedLiquidFuel;
+import static goodgenerator.items.GGMaterial.plutoniumBasedLiquidFuelExcited;
+import static goodgenerator.items.GGMaterial.thoriumBasedLiquidFuelDepleted;
+import static goodgenerator.items.GGMaterial.thoriumBasedLiquidFuelExcited;
+import static goodgenerator.items.GGMaterial.uraniumBasedLiquidFuel;
+import static goodgenerator.items.GGMaterial.uraniumBasedLiquidFuelExcited;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
