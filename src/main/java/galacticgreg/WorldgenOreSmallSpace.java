@@ -13,7 +13,7 @@ import galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.SmallOreBuilder;
 
-public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
+public class WorldgenOreSmallSpace extends GT_Worldgen {
 
     public final short mMinY;
     public final short mMaxY;
@@ -24,7 +24,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
     private long mProfilingEnd;
     private Map<String, Boolean> allowedDims;
 
-    public GT_Worldgen_GT_Ore_SmallPieces_Space(SmallOreBuilder ore) {
+    public WorldgenOreSmallSpace(SmallOreBuilder ore) {
         super(ore.smallOreName, GalacticGreg.smallOreWorldgenList, ore.enabledByDefault);
 
         mMinY = (short) ore.minY;
@@ -84,7 +84,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
         if (this.mMeta > 0) {
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + pRandom.nextInt(this.mAmount) / 2); i < j; i++) {
-                GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(
+                TileEntitySpaceOres.setOuterSpaceOreBlock(
                     tMDD,
                     pWorld,
                     pChunkX + pRandom.nextInt(16),

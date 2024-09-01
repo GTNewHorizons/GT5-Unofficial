@@ -6,7 +6,7 @@ import static gregtech.common.OreMixBuilder.OW;
 import static gregtech.common.OreMixBuilder.THE_END;
 import static gregtech.common.OreMixBuilder.TWILIGHT_FOREST;
 
-import galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
+import galacticgreg.WorldgenOreLayerSpace;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.OreMixBuilder;
@@ -976,7 +976,7 @@ public enum OreMixes {
         return new GT_Worldgen_GT_Ore_Layer(this.oreMixBuilder);
     }
 
-    public GT_Worldgen_GT_Ore_Layer_Space addGaGregOreLayer() {
-        return new GT_Worldgen_GT_Ore_Layer_Space(this.oreMixBuilder);
+    public WorldgenOreLayerSpace addGaGregOreLayer() {
+        return new WorldgenOreLayerSpace(this.oreMixBuilder);
     }
 }

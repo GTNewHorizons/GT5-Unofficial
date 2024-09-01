@@ -18,9 +18,9 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.oregen.BWOreLayer;
 import cpw.mods.fml.common.registry.GameRegistry;
-import galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
-import galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
 import galacticgreg.GalacticGreg;
+import galacticgreg.WorldgenOreLayerSpace;
+import galacticgreg.WorldgenOreSmallSpace;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTech_API;
@@ -229,10 +229,9 @@ public class VoidMinerUtility {
         // Normal Ore Veins
         GalacticGreg.oreVeinWorldgenList.stream()
             .filter(
-                gt_worldgen -> gt_worldgen.mEnabled
-                    && gt_worldgen instanceof GT_Worldgen_GT_Ore_Layer_Space oreLayerSpace
+                gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof WorldgenOreLayerSpace oreLayerSpace
                     && oreLayerSpace.isEnabledForDim(finalDef))
-            .map(gt_worldgen -> (GT_Worldgen_GT_Ore_Layer_Space) gt_worldgen)
+            .map(gt_worldgen -> (WorldgenOreLayerSpace) gt_worldgen)
             .forEach(element -> {
                 dropMap.addDrop(element.mPrimaryMeta, element.mWeight, false);
                 dropMap.addDrop(element.mSecondaryMeta, element.mWeight, false);
@@ -243,10 +242,9 @@ public class VoidMinerUtility {
         // Normal Small Ores
         GalacticGreg.smallOreWorldgenList.stream()
             .filter(
-                gt_worldgen -> gt_worldgen.mEnabled
-                    && gt_worldgen instanceof GT_Worldgen_GT_Ore_SmallPieces_Space oreSmallPiecesSpace
+                gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof WorldgenOreSmallSpace oreSmallPiecesSpace
                     && oreSmallPiecesSpace.isEnabledForDim(finalDef))
-            .map(gt_worldgen -> (GT_Worldgen_GT_Ore_SmallPieces_Space) gt_worldgen)
+            .map(gt_worldgen -> (WorldgenOreSmallSpace) gt_worldgen)
             .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
         return dropMap;
     }

@@ -3,11 +3,11 @@ package galacticgreg;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.SmallOres;
 
-public class WorldGenGaGT implements Runnable {
+public class WorldgenGaGT implements Runnable {
 
     @Override
     public void run() {
-        new GT_Worldgenerator_Space();
+        new WorldGeneratorSpace();
 
         /*
          * This part here enables every GT Small Ore for Space Dims.

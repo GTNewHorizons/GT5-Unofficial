@@ -12,7 +12,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 
-public class GT_TileEntity_Ores_Space {
+public class TileEntitySpaceOres {
 
     // Renamed function to prevent function shadowing with base GT-code
     public static boolean setOuterSpaceOreBlock(ModDimensionDef pDimensionDef, World pWorld, int pX, int pY, int pZ,

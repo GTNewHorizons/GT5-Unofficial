@@ -30,7 +30,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_Worldgenerator;
 
-public class GT_Worldgenerator_Space implements IWorldGenerator {
+public class WorldGeneratorSpace implements IWorldGenerator {
 
     public static boolean sAsteroids = true;
     private final EventBus eventBus = new EventBus();
@@ -43,7 +43,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
     private long mProfilingStart;
     private long mProfilingEnd;
 
-    public GT_Worldgenerator_Space() {
+    public WorldGeneratorSpace() {
         GameRegistry.registerWorldGenerator(this, Integer.MAX_VALUE);
     }
 
@@ -124,7 +124,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
                 int tGraniteMeta = 0;
 
                 // Select Random OreGroup and Asteroid Material
-                GTOreGroup tOreGroup = GT_Worldgen_GT_Ore_Layer_Space.getRandomOreGroup(pDimensionDef, pRandom, true);
+                GTOreGroup tOreGroup = WorldgenOreLayerSpace.getRandomOreGroup(pDimensionDef, pRandom, true);
                 AsteroidBlockComb tABComb = pDimensionDef.getRandomAsteroidMaterial();
                 if (tABComb == null) return;
 
@@ -306,7 +306,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
                                         "Skipping ore-placement event (HiddenOres=true; TargetBlockPosition=AsteroidShell)");
                                 } else {
                                     // try to place the ore block. The result is stored in tPlacedOreBlock
-                                    tPlacedOreBlock = GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(
+                                    tPlacedOreBlock = TileEntitySpaceOres.setOuterSpaceOreBlock(
                                         pDimensionDef,
                                         pWorld,
                                         si.getX(),
@@ -449,24 +449,24 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
                 int tFoundOreMeta = -1;
                 // First find a small ore...
                 for (int i = 0; (i < 256) && (continueSearch); i++) {
-                    tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
+                    tRandomWeight = pRandom.nextInt(WorldgenOreLayerSpace.sWeight);
                     for (GT_Worldgen tWorldGen : GalacticGreg.smallOreWorldgenList) {
 
-                        if (!(tWorldGen instanceof GT_Worldgen_GT_Ore_SmallPieces_Space)) {
+                        if (!(tWorldGen instanceof WorldgenOreSmallSpace)) {
                             continue;
                         }
                         // That is enabled for *this* dim...
-                        if (!((GT_Worldgen_GT_Ore_SmallPieces_Space) tWorldGen).isEnabledForDim(pDimDef)) continue;
+                        if (!((WorldgenOreSmallSpace) tWorldGen).isEnabledForDim(pDimDef)) continue;
 
                         // And in the correct y-level, of ObeyLimits is true...
-                        if (pAConf.ObeyHeightLimits
-                            && !((GT_Worldgen_GT_Ore_SmallPieces_Space) tWorldGen).isAllowedForHeight(pY)) continue;
+                        if (pAConf.ObeyHeightLimits && !((WorldgenOreSmallSpace) tWorldGen).isAllowedForHeight(pY))
+                            continue;
 
                         // Care about weight
-                        tRandomWeight -= ((GT_Worldgen_GT_Ore_SmallPieces_Space) tWorldGen).mAmount;
+                        tRandomWeight -= ((WorldgenOreSmallSpace) tWorldGen).mAmount;
                         if (tRandomWeight <= 0) {
                             // And return found ore meta
-                            tFoundOreMeta = ((GT_Worldgen_GT_Ore_SmallPieces_Space) tWorldGen).mMeta;
+                            tFoundOreMeta = ((WorldgenOreSmallSpace) tWorldGen).mMeta;
                             continueSearch = false;
                         }
                     }
@@ -476,7 +476,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
                     int tCustomOffset = (GTOreTypes.SmallOres.getOffset() + pTargetBlockOffset);
 
                     // Set the smallOre block
-                    GT_TileEntity_Ores_Space
+                    TileEntitySpaceOres
                         .setOuterSpaceOreBlock(pDimDef, pWorld, pX, pY, pZ, tFoundOreMeta, true, tCustomOffset);
                     tFlag = false;
                 }
@@ -502,15 +502,15 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
         GalacticGreg.Logger.trace("Running orevein-gen in Dim %s", pDimensionDef.getDimIdentifier());
 
         if (GT_Worldgenerator.isOreChunk(pX / 16, pZ / 16)) {
-            if ((GT_Worldgen_GT_Ore_Layer_Space.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
+            if ((WorldgenOreLayerSpace.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
 
                 boolean temp = true;
                 int tRandomWeight;
                 for (int i = 0; (i < 256) && (temp); i++) {
-                    tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
+                    tRandomWeight = pRandom.nextInt(WorldgenOreLayerSpace.sWeight);
                     for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) {
-                        if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space)
-                            tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
+                        if (tWorldGen instanceof WorldgenOreLayerSpace)
+                            tRandomWeight -= ((WorldgenOreLayerSpace) tWorldGen).mWeight;
 
                         if (tRandomWeight <= 0) {
                             try {

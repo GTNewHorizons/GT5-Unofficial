@@ -35,7 +35,7 @@ import static gregtech.common.SmallOreBuilder.OW;
 import static gregtech.common.SmallOreBuilder.THE_END;
 import static gregtech.common.SmallOreBuilder.TWILIGHT_FOREST;
 
-import galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
+import galacticgreg.WorldgenOreSmallSpace;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.SmallOreBuilder;
 
@@ -549,7 +549,7 @@ public enum SmallOres {
         return new GT_Worldgen_GT_Ore_SmallPieces(this.smallOreBuilder);
     }
 
-    public GT_Worldgen_GT_Ore_SmallPieces_Space addGaGregSmallOre() {
-        return new GT_Worldgen_GT_Ore_SmallPieces_Space(this.smallOreBuilder);
+    public WorldgenOreSmallSpace addGaGregSmallOre() {
+        return new WorldgenOreSmallSpace(this.smallOreBuilder);
     }
 }
