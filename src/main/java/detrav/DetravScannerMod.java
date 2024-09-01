@@ -39,7 +39,7 @@ public class DetravScannerMod {
     public static DetravScannerMod instance;
 
     public DetravScannerMod() {
-        GregTech_API.sAfterGTPreload.add(new Detrav_AfterGTPreload_Loader());
+        GregTech_API.sAfterGTPreload.add(new DetravLoaderAfterGTPreload());
         isDreamcraftLoaded = Loader.isModLoaded("dreamcraft");
         isBartWorksLoaded = Loader.isModLoaded("bartworks");
         isGTppLoaded = Loader.isModLoaded("miscutils");
