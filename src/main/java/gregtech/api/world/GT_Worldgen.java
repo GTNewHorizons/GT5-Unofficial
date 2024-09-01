@@ -103,11 +103,16 @@ public abstract class GT_Worldgen {
             }
 
             // ugly, but idk how to do it better without hard depping on tf provider in ore constructors
-            if (this instanceof GT_Worldgen_GT_Ore_SmallPieces) {
-                value = ((GT_Worldgen_GT_Ore_SmallPieces) this).twilightForest && aWorld.provider.dimensionId == 7;
+            if (this instanceof GT_Worldgen_GT_Ore_SmallPieces ore) {
+                if (ore.twilightForest && aWorld.provider.dimensionId == 7) {
+                    value = true;
+                }
             }
-            if (this instanceof GT_Worldgen_GT_Ore_Layer) {
-                value = ((GT_Worldgen_GT_Ore_Layer) this).twilightForest && aWorld.provider.dimensionId == 7;
+
+            if (this instanceof GT_Worldgen_GT_Ore_Layer ore) {
+                if (ore.twilightForest && aWorld.provider.dimensionId == 7) {
+                    value = true;
+                }
             }
 
             mDimensionMap.put(aDimName, value);

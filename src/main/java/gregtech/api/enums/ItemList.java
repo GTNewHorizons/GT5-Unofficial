@@ -2556,6 +2556,10 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal;
+    ResearchCompleter, // Populated in EMT
+    SpaceElevatorController, // Populated in GTNH-Intergalactic
+    // semicolon after the comment to reduce merge conflicts
+    ;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
         Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
