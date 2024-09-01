@@ -35,14 +35,13 @@ import kubatech.config.Config;
 import kubatech.kubatech;
 import kubatech.network.LoadConfigPacket;
 
-@CommandHandler.ChildCommand
 public class CommandConfig extends CommandBase {
 
     enum Translations {
 
         INVALID_OPTION,
         SUCCESS,
-        USAGE,;
+        USAGE;
 
         final String key;
 
@@ -75,29 +74,23 @@ public class CommandConfig extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "config " + USAGE.get();
     }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 4;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        if (p_71515_2_.length == 0 || !p_71515_2_[0].equals("reload")) {
-            p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
+    public void processCommand(ICommandSender sender, String[] args) {
+        if (args.length == 0 || !args[0].equals("reload")) {
+            sender.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
             return;
         }
         Config.synchronizeConfiguration();
         MinecraftServer.getServer()
-            .getConfigurationManager().playerEntityList.forEach(p -> {
-                if (!(p instanceof EntityPlayerMP)) return;
-                kubatech.info("Sending config to " + ((EntityPlayerMP) p).getDisplayName());
-                kubatech.NETWORK.sendTo(LoadConfigPacket.instance, (EntityPlayerMP) p);
+            .getConfigurationManager().playerEntityList.forEach(player -> {
+                if (!(player instanceof EntityPlayerMP)) return;
+                kubatech.info("Sending config to " + player.getDisplayName());
+                kubatech.NETWORK.sendTo(LoadConfigPacket.instance, player);
             });
-        p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS.get()));
+        sender.addChatMessage(new ChatComponentText(SUCCESS.get()));
     }
 }

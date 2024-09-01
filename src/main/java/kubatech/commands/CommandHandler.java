@@ -25,10 +25,6 @@ import static kubatech.commands.CommandHandler.Translations.GENERIC_HELP;
 import static kubatech.commands.CommandHandler.Translations.INVALID;
 import static kubatech.commands.CommandHandler.Translations.USAGE;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,8 +37,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import kubatech.kubatech;
 
 public class CommandHandler extends CommandBase {
 
@@ -78,8 +72,18 @@ public class CommandHandler extends CommandBase {
         }
     }
 
-    private static final List<String> aliases = Collections.singletonList("kt");
-    public static final HashMap<String, ICommand> commands = new HashMap<>();
+    public static final HashMap<String, ICommand> childCommands = new HashMap<>();
+
+    static {
+        registerChildCommand(new CommandBees());
+        registerChildCommand(new CommandConfig());
+        registerChildCommand(new CommandHelp());
+        registerChildCommand(new CommandTea());
+    }
+
+    private static void registerChildCommand(ICommand command) {
+        childCommands.put(command.getCommandName(), command);
+    }
 
     @Override
     public String getCommandName() {
@@ -87,70 +91,42 @@ public class CommandHandler extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "kubatech " + USAGE.get();
     }
 
     @SuppressWarnings("rawtypes")
     @Override
     public List getCommandAliases() {
-        return aliases;
+        return Collections.singletonList("kt");
     }
 
     @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        if (p_71515_1_.getEntityWorld().isRemote) return;
-        if (p_71515_2_.length == 0) {
-            p_71515_1_.addChatMessage(new ChatComponentText(INVALID.get(getCommandUsage(p_71515_1_))));
-            p_71515_1_.addChatMessage(new ChatComponentText(GENERIC_HELP.get()));
+    public void processCommand(ICommandSender sender, String[] args) {
+        if (sender.getEntityWorld().isRemote) return;
+        if (args.length == 0) {
+            sender.addChatMessage(new ChatComponentText(INVALID.get(getCommandUsage(sender))));
+            sender.addChatMessage(new ChatComponentText(GENERIC_HELP.get()));
             return;
         }
-        if (!commands.containsKey(p_71515_2_[0])) {
-            p_71515_1_.addChatMessage(new ChatComponentText(CANT_FIND.get(p_71515_2_[0])));
-            p_71515_1_.addChatMessage(new ChatComponentText(GENERIC_HELP.get()));
+        if (!childCommands.containsKey(args[0])) {
+            sender.addChatMessage(new ChatComponentText(CANT_FIND.get(args[0])));
+            sender.addChatMessage(new ChatComponentText(GENERIC_HELP.get()));
             return;
         }
-        ICommand cmd = commands.get(p_71515_2_[0]);
-        if (!cmd.canCommandSenderUseCommand(p_71515_1_)) {
+        ICommand cmd = childCommands.get(args[0]);
+        if (!cmd.canCommandSenderUseCommand(sender)) {
             ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation(
                 "commands.generic.permission");
             chatcomponenttranslation2.getChatStyle()
                 .setColor(EnumChatFormatting.RED);
-            p_71515_1_.addChatMessage(chatcomponenttranslation2);
-        } else cmd.processCommand(
-            p_71515_1_,
-            p_71515_2_.length > 1 ? Arrays.copyOfRange(p_71515_2_, 1, p_71515_2_.length) : new String[0]);
+            sender.addChatMessage(chatcomponenttranslation2);
+        } else cmd.processCommand(sender, args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
     }
 
-    public static void addCommand(ICommand command) {
-        commands.put(command.getCommandName(), command);
-    }
-
-    static {
-        String ChildCommandDesc = "L" + ChildCommand.class.getName()
-            .replace(".", "/") + ";";
-        kubatech.myClasses.stream()
-            .filter(
-                clazz -> clazz.invisibleAnnotations != null && clazz.invisibleAnnotations.stream()
-                    .anyMatch(ann -> ann.desc.equals(ChildCommandDesc)))
-            .forEach(clazz -> {
-                try {
-                    addCommand(
-                        (ICommand) Class.forName(clazz.name.replace("/", "."))
-                            .getConstructor()
-                            .newInstance());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-    }
-
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.CLASS)
-    public @interface ChildCommand {}
 }
