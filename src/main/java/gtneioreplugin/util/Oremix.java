@@ -1,6 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
-
-import static pers.gwyog.gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
+package gtneioreplugin.util;
 
 import java.util.Map;
 
@@ -84,7 +82,7 @@ public class Oremix implements Comparable<Oremix> {
     }
 
     public static String getCsvHeader() {
-        String[] headers = new String[sizeData + DimNameDisplayed.length];
+        String[] headers = new String[sizeData + DimensionHelper.DimNameDisplayed.length];
         headers[0] = "Ore Mix Name";
         headers[1] = "Primary Ore";
         headers[2] = "Secondary Ore";
@@ -95,14 +93,14 @@ public class Oremix implements Comparable<Oremix> {
         headers[7] = "Density";
         headers[8] = "Size";
         headers[9] = "Weight";
-        for (int i = 0; i < DimNameDisplayed.length; i++) {
-            headers[sizeData + i] = DimensionHelper.getFullName(DimNameDisplayed[i]);
+        for (int i = 0; i < DimensionHelper.DimNameDisplayed.length; i++) {
+            headers[sizeData + i] = DimensionHelper.getFullName(DimensionHelper.DimNameDisplayed[i]);
         }
         return String.join(",", headers);
     }
 
     public String getCsvEntry() {
-        String[] values = new String[sizeData + DimNameDisplayed.length];
+        String[] values = new String[sizeData + DimensionHelper.DimNameDisplayed.length];
         values[0] = oreMixName;
         values[1] = primary;
         values[2] = secondary;
@@ -113,8 +111,9 @@ public class Oremix implements Comparable<Oremix> {
         values[7] = Integer.toString(density);
         values[8] = Integer.toString(size);
         values[9] = Integer.toString(weight);
-        for (int i = 0; i < DimNameDisplayed.length; i++) {
-            values[sizeData + i] = Boolean.toString(dimensions.getOrDefault(DimNameDisplayed[i], false));
+        for (int i = 0; i < DimensionHelper.DimNameDisplayed.length; i++) {
+            values[sizeData + i] = Boolean
+                .toString(dimensions.getOrDefault(DimensionHelper.DimNameDisplayed[i], false));
         }
         return String.join(",", values);
     }

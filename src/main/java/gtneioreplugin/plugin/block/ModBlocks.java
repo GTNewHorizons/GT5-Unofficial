@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.block;
+package gtneioreplugin.plugin.block;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import net.minecraft.block.Block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
+import gtneioreplugin.plugin.item.ItemDimensionDisplay;
+import gtneioreplugin.util.DimensionHelper;
 
 public class ModBlocks {
 

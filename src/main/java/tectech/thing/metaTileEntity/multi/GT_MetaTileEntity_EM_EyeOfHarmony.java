@@ -79,8 +79,8 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
+import gtneioreplugin.plugin.block.BlockDimensionDisplay;
+import gtneioreplugin.plugin.block.ModBlocks;
 import tectech.TecTech;
 import tectech.recipe.EyeOfHarmonyRecipe;
 import tectech.recipe.TecTechRecipeMaps;

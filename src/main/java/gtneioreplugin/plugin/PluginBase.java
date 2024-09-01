@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin;
+package gtneioreplugin.plugin;
 
 import java.awt.Rectangle;
 

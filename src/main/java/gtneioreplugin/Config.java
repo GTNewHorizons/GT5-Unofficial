@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin;
+package gtneioreplugin;
 
 @com.gtnewhorizon.gtnhlib.config.Config(
     modid = GTNEIOrePlugin.MODID,

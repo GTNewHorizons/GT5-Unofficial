@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
+package gtneioreplugin.util;
 
 import static galacticgreg.api.enums.DimensionDef.DimNames.ANUBIS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
@@ -38,7 +38,6 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TRITON;
 import static galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
 import static galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
-import static pers.gwyog.gtneioreplugin.Config.maxTooltipLines;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,6 +47,7 @@ import java.util.Map;
 import net.minecraft.util.StatCollector;
 
 import gregtech.common.OreMixBuilder;
+import gtneioreplugin.Config;
 
 public class DimensionHelper {
 
@@ -173,10 +173,10 @@ public class DimensionHelper {
             }
         }
 
-        if (dims.length > maxTooltipLines) {
+        if (dims.length > Config.maxTooltipLines) {
             dims = StringPaddingHack.stringsToSpacedColumns(
                 dims,
-                dims.length / maxTooltipLines + (dims.length % maxTooltipLines == 0 ? 0 : 1),
+                dims.length / Config.maxTooltipLines + (dims.length % Config.maxTooltipLines == 0 ? 0 : 1),
                 2);
         }
 

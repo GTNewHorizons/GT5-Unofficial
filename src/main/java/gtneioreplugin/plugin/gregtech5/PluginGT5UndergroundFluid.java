@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.gregtech5;
+package gtneioreplugin.plugin.gregtech5;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import net.minecraftforge.fluids.FluidStack;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import gregtech.api.util.GT_Utility;
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
-import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
-import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
-import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper.UndergroundFluidWrapper;
+import gtneioreplugin.plugin.PluginBase;
+import gtneioreplugin.plugin.item.ItemDimensionDisplay;
+import gtneioreplugin.util.GT5UndergroundFluidHelper;
+import gtneioreplugin.util.GT5UndergroundFluidHelper.UndergroundFluidWrapper;
 
 public class PluginGT5UndergroundFluid extends PluginBase {
 

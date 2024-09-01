@@ -1,6 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.gregtech5;
-
-import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
+package gtneioreplugin.plugin.gregtech5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,10 +11,11 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.Loader;
-import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import gtneioreplugin.plugin.item.ItemDimensionDisplay;
+import gtneioreplugin.util.DimensionHelper;
+import gtneioreplugin.util.GT5OreLayerHelper;
+import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
 
@@ -64,10 +63,10 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         this.arecipes.add(
             new CachedVeinStatRecipe(
                 oreVein.veinName,
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_PRIMARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_SECONDARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_BETWEEN),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, VEIN_SPORADIC)));
+                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_PRIMARY),
+                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SECONDARY),
+                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_BETWEEN),
+                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SPORADIC)));
     }
 
     private Collection<OreLayerWrapper> getAllVeins() {
@@ -96,7 +95,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         if (Loader.isModLoaded("visualprospecting")) {
             drawVeinNameLine(I18n.format(oreLayer.veinName) + " ");
         } else {
-            String veinName = getGTOreLocalizedName(oreLayer.Meta[VEIN_PRIMARY]);
+            String veinName = getGTOreLocalizedName(oreLayer.Meta[OreVeinLayer.VEIN_PRIMARY]);
             if (veinName.contains("Ore")) drawVeinNameLine(veinName.split("Ore")[0]);
             else if (veinName.contains("Sand")) drawVeinNameLine(veinName.split("Sand")[0]);
             else drawVeinNameLine(veinName + " ");
@@ -108,14 +107,18 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private static void drawVeinLayerNames(OreLayerWrapper oreLayer) {
-        drawVeinLayerNameLine(oreLayer, VEIN_PRIMARY, 50);
-        drawVeinLayerNameLine(oreLayer, VEIN_SECONDARY, 60);
-        drawVeinLayerNameLine(oreLayer, VEIN_BETWEEN, 70);
-        drawVeinLayerNameLine(oreLayer, VEIN_SPORADIC, 80);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_PRIMARY, 50);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SECONDARY, 60);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_BETWEEN, 70);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
     }
 
     private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
-        drawLine(getOreVeinLayerName(veinLayer), getGTOreLocalizedName(oreLayer.Meta[veinLayer]), 2, height);
+        drawLine(
+            OreVeinLayer.getOreVeinLayerName(veinLayer),
+            getGTOreLocalizedName(oreLayer.Meta[veinLayer]),
+            2,
+            height);
     }
 
     private static void drawVeinInfo(OreLayerWrapper oreLayer) {

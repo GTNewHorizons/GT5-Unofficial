@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.gregtech5;
+package gtneioreplugin.plugin.gregtech5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +11,10 @@ import net.minecraft.item.ItemStack;
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
+import gtneioreplugin.plugin.item.ItemDimensionDisplay;
+import gtneioreplugin.util.DimensionHelper;
+import gtneioreplugin.util.GT5OreSmallHelper;
+import gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
 
 public class PluginGT5SmallOreStat extends PluginGT5Base {
 

@@ -1,6 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
-
-import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.LOG;
+package gtneioreplugin.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ import gregtech.GT_Mod;
 import gregtech.api.objects.GT_UO_Dimension;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.GT_UO_Fluid;
+import gtneioreplugin.GTNEIOrePlugin;
 
 public class GT5UndergroundFluidHelper {
 
@@ -52,7 +51,7 @@ public class GT5UndergroundFluidHelper {
                     }
                 }
                 if (dimension == null) {
-                    LOG.warn("Unknown dimension found in GT5 config: " + rawDimension);
+                    GTNEIOrePlugin.LOG.warn("Unknown dimension found in GT5 config: " + rawDimension);
                     continue;
                 }
 
@@ -119,7 +118,7 @@ public class GT5UndergroundFluidHelper {
             case "BarnardaF" -> "BF";
             case "TCetiE" -> "TE";
             default -> {
-                LOG.warn("Unknown dimension name while parsing: " + rawDimension);
+                GTNEIOrePlugin.LOG.warn("Unknown dimension name while parsing: " + rawDimension);
                 yield null;
             }
         };

@@ -1,8 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
-
-import static pers.gwyog.gtneioreplugin.Config.CSVName;
-import static pers.gwyog.gtneioreplugin.Config.CSVnameSmall;
-import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.instanceDir;
+package gtneioreplugin.util;
 
 import java.io.BufferedWriter;
 import java.nio.file.Files;
@@ -12,8 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import gtneioreplugin.Config;
+import gtneioreplugin.GTNEIOrePlugin;
+import gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
+import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
 // todo: yeet any opencsv usage.
 public class CSVMaker implements Runnable {
@@ -44,8 +42,8 @@ public class CSVMaker implements Runnable {
             }
 
             BufferedWriter one = Files.newBufferedWriter(
-                instanceDir.toPath()
-                    .resolve(CSVnameSmall));
+                GTNEIOrePlugin.instanceDir.toPath()
+                    .resolve(Config.CSVnameSmall));
             Collections.sort(SmallOreVeins);
 
             // header first
@@ -101,8 +99,8 @@ public class CSVMaker implements Runnable {
                 it.remove(); // avoids a ConcurrentModificationException
             }
             BufferedWriter one = Files.newBufferedWriter(
-                instanceDir.toPath()
-                    .resolve(CSVName));
+                GTNEIOrePlugin.instanceDir.toPath()
+                    .resolve(Config.CSVName));
             Collections.sort(OreVeins);
 
             // header first

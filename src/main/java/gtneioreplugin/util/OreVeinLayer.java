@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
+package gtneioreplugin.util;
 
 public class OreVeinLayer {
 

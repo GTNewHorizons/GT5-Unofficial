@@ -1,6 +1,6 @@
-package pers.gwyog.gtneioreplugin.util;
+package gtneioreplugin.util;
 
-import static pers.gwyog.gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
+import static gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
 
 import java.util.Map;
 

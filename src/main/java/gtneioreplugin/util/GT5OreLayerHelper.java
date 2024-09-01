@@ -1,7 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
-
-import static pers.gwyog.gtneioreplugin.util.DimensionHelper.getDims;
-import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
+package gtneioreplugin.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +45,7 @@ public class GT5OreLayerHelper {
         for (OreMixes mix : OreMixes.values())
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
-            bufferedDims.put(layer, getDims(layer));
+            bufferedDims.put(layer, DimensionHelper.getDims(layer));
         }
 
         // --- Handling of dimToOreWrapper ---
@@ -117,9 +114,10 @@ public class GT5OreLayerHelper {
         }
 
         public boolean containsOre(short materialIndex) {
-            return Meta[VEIN_PRIMARY] == materialIndex || Meta[VEIN_SECONDARY] == materialIndex
-                || Meta[VEIN_BETWEEN] == materialIndex
-                || Meta[VEIN_SPORADIC] == materialIndex;
+            return Meta[OreVeinLayer.VEIN_PRIMARY] == materialIndex
+                || Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex
+                || Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex
+                || Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex;
         }
     }
 }

@@ -27,9 +27,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+import gtneioreplugin.plugin.block.BlockDimensionDisplay;
+import gtneioreplugin.util.GT5OreLayerHelper;
+import gtneioreplugin.util.GT5OreSmallHelper;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 

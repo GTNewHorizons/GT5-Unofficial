@@ -1,6 +1,4 @@
-package pers.gwyog.gtneioreplugin.util;
-
-import static pers.gwyog.gtneioreplugin.util.DimensionHelper.getDims;
+package gtneioreplugin.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,7 +121,7 @@ public class GT5OreSmallHelper {
 
         }
         for (OreSmallWrapper oreSmallWrapper : mapOreSmallWrapper.values()) {
-            bufferedDims.put(oreSmallWrapper, getDims(oreSmallWrapper));
+            bufferedDims.put(oreSmallWrapper, DimensionHelper.getDims(oreSmallWrapper));
         }
 
         // --- Handling of dimToOreWrapper ---

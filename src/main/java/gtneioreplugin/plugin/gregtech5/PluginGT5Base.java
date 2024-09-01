@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.gregtech5;
+package gtneioreplugin.plugin.gregtech5;
 
 import net.minecraft.client.resources.I18n;
 
@@ -6,7 +6,7 @@ import codechicken.lib.gui.GuiDraw;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
+import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
 

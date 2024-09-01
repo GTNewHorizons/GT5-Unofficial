@@ -1,37 +1,25 @@
-package pers.gwyog.gtneioreplugin.plugin;
+package gtneioreplugin.plugin;
 
 import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
-import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
+import gtneioreplugin.GTNEIOrePlugin;
 
 public class IMCForNEI {
 
     public static void IMCSender() {
         // Though these 2 are already registered in NEI jar, we need to re-register
         // because new DimensionDisplayItems made tabs a bit taller.
-        sendHandler("pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat", "gregtech:gt.blockores:386");
+        sendHandler("gregtech5.plugin.gtneioreplugin.PluginGT5VeinStat", "gregtech:gt.blockores:386");
 
-        sendHandler("pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat", "gregtech:gt.blockores:85");
+        sendHandler("gregtech5.plugin.gtneioreplugin.PluginGT5SmallOreStat", "gregtech:gt.blockores:85");
 
-        sendHandler(
-            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-            "gregtech:gt.metaitem.01:32619");
-        sendCatalyst(
-            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-            "gregtech:gt.blockmachines:1157");
-        sendCatalyst(
-            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-            "gregtech:gt.blockmachines:141");
-        sendCatalyst(
-            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-            "gregtech:gt.blockmachines:142");
-        sendCatalyst(
-            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-            "gregtech:gt.blockmachines:149");
-        sendCatalyst(
-            "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
-            "gregtech:gt.blockmachines:148");
+        sendHandler("gregtech5.plugin.gtneioreplugin.PluginGT5UndergroundFluid", "gregtech:gt.metaitem.01:32619");
+        sendCatalyst("gregtech5.plugin.gtneioreplugin.PluginGT5UndergroundFluid", "gregtech:gt.blockmachines:1157");
+        sendCatalyst("gregtech5.plugin.gtneioreplugin.PluginGT5UndergroundFluid", "gregtech:gt.blockmachines:141");
+        sendCatalyst("gregtech5.plugin.gtneioreplugin.PluginGT5UndergroundFluid", "gregtech:gt.blockmachines:142");
+        sendCatalyst("gregtech5.plugin.gtneioreplugin.PluginGT5UndergroundFluid", "gregtech:gt.blockmachines:149");
+        sendCatalyst("gregtech5.plugin.gtneioreplugin.PluginGT5UndergroundFluid", "gregtech:gt.blockmachines:148");
     }
 
     private static void sendHandler(String name, String itemStack) {

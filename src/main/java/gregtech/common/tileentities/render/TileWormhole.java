@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
+import gtneioreplugin.plugin.block.ModBlocks;
+import gtneioreplugin.util.DimensionHelper;
 
 public class TileWormhole extends TileEntity {
 

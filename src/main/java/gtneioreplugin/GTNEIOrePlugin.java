@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin;
+package gtneioreplugin;
 
 import java.io.File;
 
@@ -19,12 +19,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Version;
-import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-import pers.gwyog.gtneioreplugin.util.CSVMaker;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
+import gtneioreplugin.plugin.IMCForNEI;
+import gtneioreplugin.plugin.block.ModBlocks;
+import gtneioreplugin.util.CSVMaker;
+import gtneioreplugin.util.GT5OreLayerHelper;
+import gtneioreplugin.util.GT5OreSmallHelper;
+import gtneioreplugin.util.GT5UndergroundFluidHelper;
 
 @Mod(
     modid = GTNEIOrePlugin.MODID,

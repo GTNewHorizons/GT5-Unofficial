@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.renderer;
+package gtneioreplugin.plugin.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -8,7 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
+import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 
 public class ItemDimensionDisplayRenderer implements IItemRenderer {
 
