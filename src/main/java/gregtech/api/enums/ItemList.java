@@ -2558,6 +2558,7 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_IV,
     WirelessHeadphones,
     ResearchCompleter, // Populated in EMT
+    SpaceElevatorController, // Populated in GTNH-Intergalactic
     // semicolon after the comment to reduce merge conflicts
     ;
 

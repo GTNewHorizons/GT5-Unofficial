@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
 
@@ -108,16 +110,16 @@ public class RecipeLoader_TreeFarm {
 
     private static void generateGTPPTrees() {
         GregtechMetaTileEntityTreeFarm.registerTreeProducts( // Rainforest Oak
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "blockRainforestOakSapling", 1, 0),
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "blockRainforestOakLog", 3, 0),
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "blockRainforestOakLeaves", 1, 0),
+            new ItemStack(BOP_Block_Registrator.sapling_Rainforest, 1, 0),
+            new ItemStack(BOP_Block_Registrator.log_Rainforest, 3, 0),
+            new ItemStack(BOP_Block_Registrator.leaves_Rainforest, 1, 0),
             new ItemStack(Items.apple, 1, 0));
 
         GregtechMetaTileEntityTreeFarm.registerTreeProducts( // Pine
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "blockPineSapling", 1, 0),
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "blockPineLogLog", 1, 0),
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "blockPineLeaves", 1, 0),
-            GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "item.BasicAgrichemItem", 1, 24));
+            new ItemStack(BOP_Block_Registrator.sapling_Pine, 1, 0),
+            new ItemStack(BOP_Block_Registrator.log_Pine, 1, 0),
+            new ItemStack(BOP_Block_Registrator.leaves_Pine, 1, 0),
+            new ItemStack(AgriculturalChem.mAgrichemItem1, 1, 24));
     }
 
     private static void generateTwilightForestTrees() {
