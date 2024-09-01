@@ -3,7 +3,7 @@ package gregtech.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import bloodasp.galacticgreg.api.enums.DimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 
 public class OreMixBuilder {

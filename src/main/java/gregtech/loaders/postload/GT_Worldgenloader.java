@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import bloodasp.galacticgreg.WorldGenGaGT;
+import galacticgreg.WorldGenGaGT;
 import gregtech.api.enums.GTStones;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.SmallOres;

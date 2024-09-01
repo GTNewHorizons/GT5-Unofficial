@@ -1,6 +1,6 @@
 package bwcrossmod.galacticgreg;
 
-import static bloodasp.galacticgreg.registry.GalacticGregRegistry.getModContainers;
+import static galacticgreg.registry.GalacticGregRegistry.getModContainers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +17,12 @@ import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.oregen.BW_OreLayer;
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
-import bloodasp.galacticgreg.GalacticGreg;
-import bloodasp.galacticgreg.api.ModContainer;
-import bloodasp.galacticgreg.api.ModDimensionDef;
 import cpw.mods.fml.common.registry.GameRegistry;
+import galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
+import galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
+import galacticgreg.GalacticGreg;
+import galacticgreg.api.ModContainer;
+import galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;

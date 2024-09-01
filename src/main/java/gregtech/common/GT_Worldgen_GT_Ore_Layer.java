@@ -17,7 +17,7 @@ import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import bloodasp.galacticgreg.api.enums.DimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
