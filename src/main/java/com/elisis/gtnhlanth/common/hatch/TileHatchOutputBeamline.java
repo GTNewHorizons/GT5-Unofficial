@@ -2,9 +2,6 @@ package com.elisis.gtnhlanth.common.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.IConnectsToBeamline;
 import com.elisis.gtnhlanth.common.beamline.TileBeamline;
@@ -16,6 +13,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Log;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
 
@@ -84,6 +85,43 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         IConnectsToBeamline current = this, source = this, next;
         int range = 0;
+        
+        ForgeDirection front = this.getBaseMetaTileEntity().getFrontFacing();
+        
+        for (int distance = 1; distance <= 129; distance++) { // 128 pipes max
+        	
+        	IGregTechTileEntity nextTE = (IGregTechTileEntity) this.getBaseMetaTileEntity().getTileEntityAtSideAndDistance(front, distance); // Straight line transmission only
+        	
+        	if (nextTE == null) {
+        		return;
+        	}	
+        	
+        	IMetaTileEntity nextMeta = nextTE.getMetaTileEntity();
+        	
+        	if (nextMeta == null ||  !(nextMeta instanceof IConnectsToBeamline)) { // Non-beamliney block
+        		return;
+        	}
+        	
+        	if (((IConnectsToBeamline) nextMeta) instanceof TileHatchInputBeamline) {
+        		((TileHatchInputBeamline) nextMeta).setContents(q); // Reached another multi
+        		break;
+        		
+        	} else if (((IConnectsToBeamline) nextMeta) instanceof TileBeamline) { // Another pipe follows
+        		
+        		if (((TileBeamline) nextMeta).isDataInputFacing(front.getOpposite())) { // Connected to previous pipe
+        			((TileBeamline) nextMeta).markUsed();
+        		} else {
+        			return;
+        		}
+        		
+        	} else {
+        		return;
+        	}
+        	
+        }
+        
+        
+        /*
         while ((next = current.getNext(source)) != null && range++ < 100) {
             if (next instanceof TileHatchInputBeamline) {
                 ((TileHatchInputBeamline) next).setContents(q);
@@ -91,7 +129,7 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
             }
             source = current;
             current = next;
-        }
+        }*/
         q = null;
     }
 

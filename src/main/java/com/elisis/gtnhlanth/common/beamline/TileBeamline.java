@@ -110,7 +110,9 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
 
     @Override
     public IConnectsToBeamline getNext(IConnectsToBeamline source) {
-
+    	
+    	/*
+    	
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
             if ((mConnections & 1 << dir.ordinal()) == 0) {
@@ -142,7 +144,7 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
                     }
                 }
             }
-        }
+        }*/
 
         return null;
     }
