@@ -25,6 +25,11 @@ public final class MapFluidStackIngredient extends AbstractMapIngredient {
     }
 
     @Override
+    public int sortingPriority() {
+        return 100;
+    }
+
+    @Override
     protected int hash() {
         return fluid.hashCode();
     }

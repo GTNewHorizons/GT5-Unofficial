@@ -2,9 +2,7 @@ package gregtech.api.util.item;
 
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
-import java.nio.IntBuffer;
 import java.util.Arrays;
-import java.util.Comparator;
 
 import javax.annotation.Nonnull;
 
@@ -16,15 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.util.GT_Utility;
 
 public class ItemHolder {
-
-    public static final Comparator<ItemHolder> COMPARATOR = Comparator
-        .comparingInt((ItemHolder i) -> Item.getIdFromItem(i.getItem()))
-        .thenComparing(ItemHolder::getMeta)
-        .thenComparing((ItemHolder i) -> IntBuffer.wrap(i.getOreDictTagIDs()))
-        .thenComparing(
-            (ItemHolder i) -> i.getNBT() == null ? ""
-                : i.getNBT()
-                    .toString());
 
     private final Item item;
     private final int meta;

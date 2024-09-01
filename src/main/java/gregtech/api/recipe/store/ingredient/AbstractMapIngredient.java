@@ -8,6 +8,11 @@ public abstract class AbstractMapIngredient {
     protected AbstractMapIngredient() {}
 
     /**
+     * @return the sorting priority of this ingredient <strong>class</strong>
+     */
+    public abstract int sortingPriority();
+
+    /**
      * @return the hashcode of this ingredient
      */
     protected abstract int hash();

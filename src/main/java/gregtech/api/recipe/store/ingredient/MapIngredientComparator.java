@@ -2,6 +2,8 @@ package gregtech.api.recipe.store.ingredient;
 
 import java.util.Comparator;
 
+import org.jetbrains.annotations.NotNull;
+
 public final class MapIngredientComparator implements Comparator<AbstractMapIngredient> {
 
     public static final Comparator<AbstractMapIngredient> INSTANCE = new MapIngredientComparator();
@@ -9,21 +11,29 @@ public final class MapIngredientComparator implements Comparator<AbstractMapIngr
     private MapIngredientComparator() {}
 
     @Override
-    public int compare(AbstractMapIngredient o1, AbstractMapIngredient o2) {
-        if (o1 instanceof MapItemStackIngredient item1) {
-            if (o2 instanceof MapItemStackIngredient item2) {
-                return MapItemStackIngredient.COMPARATOR.compare(item1, item2);
-            } else {
-                return -1;
-            }
-        } else if (o1 instanceof MapFluidStackIngredient fluid1) {
-            if (o2 instanceof MapFluidStackIngredient fluid2) {
-                return MapFluidStackIngredient.COMPARATOR.compare(fluid1, fluid2);
-            } else {
-                return 1;
-            }
-        } else {
-            throw new IllegalArgumentException("AbstractMapIngredient is of unknown subclass");
+    public int compare(@NotNull AbstractMapIngredient o1, @NotNull AbstractMapIngredient o2) {
+        int result = Integer.compare(o1.sortingPriority(), o2.sortingPriority());
+        if (result != 0) {
+            return result;
         }
+
+        return compareSubClass(o1, o2);
+    }
+
+    private static int compareSubClass(@NotNull AbstractMapIngredient o1, @NotNull AbstractMapIngredient o2) {
+        if (o1 instanceof MapItemStackIngredient ingredient) {
+            return MapItemStackIngredient.COMPARATOR.compare(ingredient, (MapItemStackIngredient) o2);
+        }
+        if (o1 instanceof MapItemStackNBTIngredient ingredient) {
+            return MapItemStackNBTIngredient.COMPARATOR.compare(ingredient, (MapItemStackNBTIngredient) o2);
+        }
+        if (o1 instanceof MapOreDictIngredient ingredient) {
+            return MapOreDictIngredient.COMPARATOR.compare(ingredient, (MapOreDictIngredient) o2);
+        }
+        if (o1 instanceof MapFluidStackIngredient ingredient) {
+            return MapFluidStackIngredient.COMPARATOR.compare(ingredient, (MapFluidStackIngredient) o2);
+        }
+
+        throw new IllegalArgumentException("AbstractMapIngredient is of unknown class: " + o1.getClass());
     }
 }

@@ -1,7 +1,10 @@
 package gregtech.api.recipe.store.ingredient;
 
 import java.util.Comparator;
+import java.util.Objects;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -9,34 +12,52 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.item.ItemHolder;
 
+/**
+ * Basic ingredient for Item and Metadata
+ */
 public final class MapItemStackIngredient extends AbstractMapIngredient {
 
-    public static final Comparator<MapItemStackIngredient> COMPARATOR = (a, b) -> {
+    private static final Comparator<MapItemStackIngredient> CIRCUIT_COMPARATOR = (a, b) -> {
         // circuits get priority as a trie search depth optimization
-        if (GT_Utility.isAnyIntegratedCircuit(a.stack)) {
-            if (!GT_Utility.isAnyIntegratedCircuit(b.stack)) {
+        if (GT_Utility.isAnyIntegratedCircuit(a.item, a.meta)) {
+            if (!GT_Utility.isAnyIntegratedCircuit(b.item, b.meta)) {
                 return -1;
             }
-        } else if (GT_Utility.isAnyIntegratedCircuit(b.stack)) {
+        } else if (GT_Utility.isAnyIntegratedCircuit(b.item, b.meta)) {
             return 1;
         }
 
-        return ItemHolder.COMPARATOR.compare(a.stack, b.stack);
+        return 0;
     };
 
-    private final ItemHolder stack;
+    public static final Comparator<MapItemStackIngredient> COMPARATOR = CIRCUIT_COMPARATOR
+        .thenComparingInt((MapItemStackIngredient i) -> Item.getIdFromItem(i.item))
+        .thenComparingInt((MapItemStackIngredient i) -> i.meta);
 
-    public MapItemStackIngredient(@NotNull ItemHolder stack) {
-        this.stack = stack;
+    private final Item item;
+    private final int meta;
+
+    public MapItemStackIngredient(@NotNull ItemHolder holder) {
+        this(holder.getItem(), holder.getMeta());
     }
 
     public MapItemStackIngredient(@NotNull ItemStack stack) {
-        this(new ItemHolder(stack));
+        this(Objects.requireNonNull(stack.getItem()), Items.feather.getDamage(stack));
+    }
+
+    public MapItemStackIngredient(@NotNull Item item, int meta) {
+        this.item = item;
+        this.meta = meta;
+    }
+
+    @Override
+    public int sortingPriority() {
+        return 10;
     }
 
     @Override
     protected int hash() {
-        return stack.hashCode();
+        return GT_Utility.stackHashCode(item, meta);
     }
 
     @Override
@@ -44,11 +65,11 @@ public final class MapItemStackIngredient extends AbstractMapIngredient {
         if (this == o) return true;
         if (!(o instanceof MapItemStackIngredient that)) return false;
 
-        return stack.equals(that.stack);
+        return meta == that.meta && item.equals(that.item);
     }
 
     @Override
     public String toString() {
-        return "MapItemStackIngredient{" + stack + '}';
+        return "MapItemStackIngredient{" + new ItemStack(item, 1, meta) + '}';
     }
 }

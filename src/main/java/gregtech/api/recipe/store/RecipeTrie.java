@@ -1,14 +1,7 @@
 package gregtech.api.recipe.store;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.WeakHashMap;
-import java.util.function.Consumer;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -17,21 +10,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import gregtech.api.recipe.store.ingredient.AbstractMapIngredient;
-import gregtech.api.recipe.store.ingredient.MapFluidStackIngredient;
-import gregtech.api.recipe.store.ingredient.MapIngredientComparator;
-import gregtech.api.recipe.store.ingredient.MapItemStackIngredient;
+import gregtech.api.recipe.store.ingredient.*;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.function.Either;
 import gregtech.api.util.item.ItemHolder;
 import gregtech.common.config.gregtech.ConfigGeneral;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectArrays;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 public final class RecipeTrie {
@@ -39,10 +29,12 @@ public final class RecipeTrie {
     // debug
     private static final boolean CRASH_ON_EMPTY = false;
 
-    private static final Map<AbstractMapIngredient, WeakReference<AbstractMapIngredient>> itemIngredientRoot = new WeakHashMap<>();
-    private static final Map<AbstractMapIngredient, WeakReference<AbstractMapIngredient>> fluidIngredientRoot = new WeakHashMap<>();
+    private static final Map<AbstractMapIngredient, WeakReference<AbstractMapIngredient>> ingredientCache = new WeakHashMap<>();
 
-    private final TrieBranch rootBranch = new TrieBranch();
+    final TrieBranch rootBranch = new TrieBranch();
+
+    private boolean hasOreDictInputs;
+    private boolean hasNBTMatchInputs;
 
     private int size;
 
@@ -178,7 +170,7 @@ public final class RecipeTrie {
      * @param recipe the recipe
      * @return the trie ingredients for the recipe
      */
-    private static @NotNull AbstractMapIngredient @Nullable [] createIngredients(@NotNull GT_Recipe recipe) {
+    private @NotNull AbstractMapIngredient @Nullable [] createIngredients(@NotNull GT_Recipe recipe) {
         int length = recipe.mInputs.length + recipe.mFluidInputs.length;
         if (length == 0) {
             return null;
@@ -187,16 +179,21 @@ public final class RecipeTrie {
         ObjectArrayList<AbstractMapIngredient> list = new ObjectArrayList<>(length);
         if (recipe.mInputs.length > 0) {
             var unique = uniqueIngredients(recipe.mInputs);
-            unique.sort(ItemHolder.COMPARATOR);
             for (var input : unique) {
-                list.add(deduplicateIngredient(itemIngredientRoot, new MapItemStackIngredient(input)));
+                list.add(deduplicateIngredient(ingredientCache, MapIngredientFactory.from(input)));
+
+                // TODO partial nbt match inputs here
+                // this.hasNBTMatchInputs = true;
             }
+        }
+        if (recipe instanceof GT_Recipe.GT_Recipe_WithAlt oreDictRecipe) {
+            // TODO oredict goes here
+            this.hasOreDictInputs = true;
         }
         if (recipe.mFluidInputs.length > 0) {
             var unique = uniqueIngredients(recipe.mFluidInputs);
-            unique.sort(MapFluidStackIngredient.FLUID_COMPARATOR);
             for (var input : unique) {
-                list.add(deduplicateIngredient(fluidIngredientRoot, new MapFluidStackIngredient(input)));
+                list.add(deduplicateIngredient(ingredientCache, new MapFluidStackIngredient(input)));
             }
         }
 
@@ -211,26 +208,32 @@ public final class RecipeTrie {
      * @param stacks the stacks to deduplicate
      * @return the deduplicated list of stacks
      */
-    private static @NotNull List<@NotNull ItemHolder> uniqueIngredients(@Nullable ItemStack @NotNull [] stacks) {
-        List<ItemHolder> list = new ObjectArrayList<>(stacks.length);
+    private static @NotNull List<@NotNull ItemStack> uniqueIngredients(@Nullable ItemStack @NotNull [] stacks) {
+        List<ItemStack> list = new ObjectArrayList<>(stacks.length);
         for (var stack : stacks) {
             if (stack == null) {
                 continue;
             }
 
-            ItemHolder itemHolder = new ItemHolder(stack);
             boolean isEqual = false;
             for (var seen : list) {
-                if (seen.equals(itemHolder)) {
+                if (seen.getItem() != stack.getItem()) {
+                    continue;
+                }
+                if (seen.getItemDamage() != stack.getItemDamage()) {
+                    continue;
+                }
+                if (Objects.equals(seen.getTagCompound(), stack.getTagCompound())) {
                     isEqual = true;
                     break;
                 }
             }
+
             if (isEqual) {
                 continue;
             }
 
-            list.add(itemHolder);
+            list.add(stack);
         }
 
         return list;
@@ -441,13 +444,17 @@ public final class RecipeTrie {
      * @param predicate   the predicate to determine if the recipe matches
      * @return the recipe
      */
-    public @Nullable GT_Recipe find(@NotNull AbstractMapIngredient @NotNull [] ingredients,
+    public @Nullable GT_Recipe find(@NotNull AbstractMapIngredient @NotNull [] @NotNull [] ingredients,
         @NotNull Predicate<GT_Recipe> predicate) {
+        BitSet skipList = new BitSet();
         for (int i = 0; i < ingredients.length; i++) {
-            GT_Recipe recipe = find(ingredients, rootBranch, predicate, i);
+            skipList.set(i);
+            GT_Recipe recipe = find(ingredients, rootBranch, predicate, i, 0, skipList);
             if (recipe != null) {
                 return recipe;
             }
+
+            skipList.clear(i);
         }
 
         return null;
@@ -458,20 +465,33 @@ public final class RecipeTrie {
      * @param fluids the fluids to convert
      * @return an array of ingredients
      */
-    private static @NotNull AbstractMapIngredient @NotNull [] toIngredients(@NotNull ItemHolder @NotNull [] items,
+    private @NotNull AbstractMapIngredient @NotNull [] @NotNull [] toIngredients(@NotNull ItemHolder @NotNull [] items,
         @NotNull FluidStack @NotNull [] fluids) {
-        AbstractMapIngredient[] ingredients = new AbstractMapIngredient[items.length + fluids.length];
-        int index = 0;
-        for (ItemHolder item : items) {
-            ingredients[index++] = new MapItemStackIngredient(item);
+        List<AbstractMapIngredient[]> list = new ArrayList<>(items.length + fluids.length);
+        for (ItemHolder stack : items) {
+            List<AbstractMapIngredient> inner = new ObjectArrayList<>(1);
+            // regular input
+            inner.add(MapIngredientFactory.from(stack));
+
+            if (hasOreDictInputs) {
+                for (int i : stack.getOreDictTagIDs()) {
+                    inner.add(new MapOreDictIngredient(i));
+                }
+            }
+
+            if (hasNBTMatchInputs) {
+                // TODO partial nbt match
+                // inner.add(new MapPartialNBTIngredient(stack));
+            }
+            inner.sort(MapIngredientComparator.INSTANCE);
+            list.add(inner.toArray(new AbstractMapIngredient[0]));
         }
 
-        for (FluidStack fluid : fluids) {
-            ingredients[index++] = new MapFluidStackIngredient(fluid);
+        for (FluidStack stack : fluids) {
+            list.add(new AbstractMapIngredient[] { new MapFluidStackIngredient(stack) });
         }
 
-        ObjectArrays.stableSort(ingredients, MapIngredientComparator.INSTANCE);
-        return ingredients;
+        return list.toArray(new AbstractMapIngredient[0][]);
     }
 
     /**
@@ -479,20 +499,33 @@ public final class RecipeTrie {
      * @param fluids the fluids to convert
      * @return an array of ingredients
      */
-    private static @NotNull AbstractMapIngredient @NotNull [] toIngredients(@NotNull ItemStack @NotNull [] items,
+    private @NotNull AbstractMapIngredient @NotNull [] @NotNull [] toIngredients(@NotNull ItemStack @NotNull [] items,
         @NotNull FluidStack @NotNull [] fluids) {
-        AbstractMapIngredient[] ingredients = new AbstractMapIngredient[items.length + fluids.length];
-        int index = 0;
-        for (ItemStack item : items) {
-            ingredients[index++] = new MapItemStackIngredient(item);
+        List<AbstractMapIngredient[]> list = new ArrayList<>(items.length + fluids.length);
+        for (ItemStack stack : items) {
+            List<AbstractMapIngredient> inner = new ObjectArrayList<>(1);
+            // regular input
+            inner.add(MapIngredientFactory.from(stack));
+
+            if (hasOreDictInputs) {
+                for (int i : OreDictionary.getOreIDs(stack)) {
+                    inner.add(new MapOreDictIngredient(i));
+                }
+            }
+
+            if (hasNBTMatchInputs) {
+                // TODO partial nbt match
+                // inner.add(new MapPartialNBTIngredient(stack));
+            }
+            inner.sort(MapIngredientComparator.INSTANCE);
+            list.add(inner.toArray(new AbstractMapIngredient[0]));
         }
 
-        for (FluidStack fluid : fluids) {
-            ingredients[index++] = new MapFluidStackIngredient(fluid);
+        for (FluidStack stack : fluids) {
+            list.add(new AbstractMapIngredient[] { new MapFluidStackIngredient(stack) });
         }
 
-        ObjectArrays.stableSort(ingredients, MapIngredientComparator.INSTANCE);
-        return ingredients;
+        return list.toArray(new AbstractMapIngredient[0][]);
     }
 
     /**
@@ -502,36 +535,52 @@ public final class RecipeTrie {
      * @param index       the ingredient index
      * @return the found recipe
      */
-    private static @Nullable GT_Recipe find(@NotNull AbstractMapIngredient @NotNull [] ingredients,
-        @NotNull TrieBranch branch, @NotNull Predicate<GT_Recipe> predicate, int index) {
-        if (index == ingredients.length) {
+    private static @Nullable GT_Recipe find(@NotNull AbstractMapIngredient @NotNull [] @NotNull [] ingredients,
+        @NotNull TrieBranch branch, @NotNull Predicate<GT_Recipe> predicate, int index, int count,
+        @NotNull BitSet skipList) {
+        if (count == ingredients.length) {
             // ingredients exhausted
             return null;
         }
 
-        var result = branch.getNodes()
-            .get(ingredients[index]);
-        if (result == null) {
-            // no branch to continue with
-            return null;
-        }
-
-        GT_Recipe recipe = result.left();
-        if (recipe != null) {
-            if (predicate.test(recipe)) {
-                return recipe;
+        for (var ingredient : ingredients[index]) {
+            var result = branch.getNodes()
+                .get(ingredient);
+            if (result == null) {
+                // no branch to continue with, try the next possible ingredient
+                continue;
             }
-            return null;
-        }
 
-        TrieBranch nextBranch = result.right();
-        assert nextBranch != null;
-
-        // recursion: try every unused ingredient as the next branch in the route
-        for (int i = index + 1; i < ingredients.length; i++) {
-            recipe = find(ingredients, nextBranch, predicate, i);
+            GT_Recipe recipe = result.left();
             if (recipe != null) {
-                return recipe;
+                if (predicate.test(recipe)) {
+                    return recipe;
+                }
+
+                // found a recipe, but the predicate fails, so look for more
+                continue;
+            }
+
+            TrieBranch nextBranch = result.right();
+            assert nextBranch != null;
+
+            int i = (index + 1) % ingredients.length;
+            while (i != index) {
+                if (skipList.get(i)) {
+                    i = (i + 1) % ingredients.length;
+                    continue;
+                }
+                skipList.set(i);
+
+                // recursion: try every unused ingredient as the next branch in the route
+                recipe = find(ingredients, nextBranch, predicate, i, count + 1, skipList);
+                skipList.clear(i);
+
+                if (recipe != null) {
+                    return recipe;
+                }
+
+                i = (i + 1) % ingredients.length;
             }
         }
 
@@ -549,8 +598,12 @@ public final class RecipeTrie {
         @NotNull FluidStack @NotNull [] fluids) {
         Set<GT_Recipe> set = new ObjectOpenHashSet<>();
         var ingredients = toIngredients(items, fluids);
+        BitSet skipList = new BitSet();
+
         for (int i = 0; i < ingredients.length; i++) {
-            findAll(ingredients, rootBranch, set, i);
+            skipList.set(i);
+            findAll(ingredients, rootBranch, set, i, 0, skipList);
+            skipList.clear(i);
         }
         return set;
     }
@@ -561,172 +614,43 @@ public final class RecipeTrie {
      * @param set         the set to store recipes in
      * @param index       the ingredient index
      */
-    private static void findAll(@NotNull AbstractMapIngredient @NotNull [] ingredients, @NotNull TrieBranch branch,
-        @NotNull Set<GT_Recipe> set, int index) {
-        if (index == ingredients.length) {
+    private static void findAll(@NotNull AbstractMapIngredient @NotNull [] @NotNull [] ingredients,
+        @NotNull TrieBranch branch, @NotNull Set<GT_Recipe> set, int index, int count, @NotNull BitSet skipList) {
+        if (count == ingredients.length) {
             // ingredients exhausted
             return;
         }
 
-        var result = branch.getNodes()
-            .get(ingredients[index]);
-        if (result == null) {
-            // no branch to continue with
-            return;
-        }
+        for (var ingredient : ingredients[index]) {
+            var result = branch.getNodes()
+                .get(ingredient);
+            if (result == null) {
+                continue;
+            }
 
-        GT_Recipe recipe = result.left();
-        if (recipe != null) {
-            set.add(recipe);
-            return;
-        }
-
-        TrieBranch nextBranch = result.right();
-        assert nextBranch != null;
-
-        // recursion: try every unused ingredient as the next branch in the route
-        for (int i = index + 1; i < ingredients.length; i++) {
-            findAll(ingredients, nextBranch, set, i);
-        }
-    }
-
-    private static final class RecipeTrieSpliterator implements Spliterator<GT_Recipe> {
-
-        private static final int CHARACTERISTICS = Spliterator.NONNULL | Spliterator.IMMUTABLE;
-
-        private final RecipeTrie trie;
-        private final AbstractMapIngredient[] ingredients;
-        private final Predicate<GT_Recipe> predicate;
-
-        private final Deque<Integer> posStack = new ArrayDeque<>();
-        private final Deque<Integer> endStack = new ArrayDeque<>();
-        private final Deque<TrieBranch> branchStack = new ArrayDeque<>();
-
-        private RecipeTrieSpliterator(@NotNull RecipeTrie trie, @NotNull AbstractMapIngredient @NotNull [] ingredients,
-            @NotNull Predicate<GT_Recipe> predicate) {
-            this.trie = trie;
-            this.ingredients = ingredients;
-            this.predicate = predicate;
-            this.posStack.push(0);
-            this.endStack.push(ingredients.length);
-            this.branchStack.push(trie.rootBranch);
-        }
-
-        private RecipeTrieSpliterator(@NotNull RecipeTrieSpliterator spliterator, int start, int end,
-            @NotNull TrieBranch branch) {
-            this.trie = spliterator.trie;
-            this.ingredients = spliterator.ingredients;
-            this.predicate = spliterator.predicate;
-            this.posStack.addLast(start);
-            this.posStack.addAll(spliterator.posStack);
-            this.endStack.addLast(end);
-            this.endStack.addAll(spliterator.endStack);
-            this.branchStack.addLast(branch);
-            this.branchStack.addAll(spliterator.branchStack);
-        }
-
-        @Override
-        public boolean tryAdvance(Consumer<? super GT_Recipe> action) {
-            GT_Recipe recipe = seek();
+            GT_Recipe recipe = result.left();
             if (recipe != null) {
-                action.accept(recipe);
-                return true;
+                set.add(recipe);
+                continue;
             }
 
-            return false;
-        }
+            TrieBranch nextBranch = result.right();
+            assert nextBranch != null;
 
-        /**
-         * @return the next recipe
-         */
-        private @Nullable GT_Recipe seek() {
-            if (isEmpty()) {
-                return null;
-            }
-
-            final int end = endStack.removeLast();
-            TrieBranch branch = branchStack.removeLast();
-            for (int i = posStack.removeLast(); i < end; i++) {
-                var result = branch.getNodes()
-                    .get(ingredients[i]);
-                if (result == null) {
-                    // keep searching at this depth
+            int i = (index + 1) % ingredients.length;
+            while (i != index) {
+                if (skipList.get(i)) {
+                    i = (i + 1) % ingredients.length;
                     continue;
                 }
+                skipList.set(i);
 
-                GT_Recipe recipe = result.left();
-                if (recipe != null && predicate.test(recipe)) {
-                    // store the position and branch to resume from next time
-                    posStack.addLast(i + 1); // need to advance to the next position
-                    endStack.addLast(end);
-                    branchStack.addLast(branch);
-                    return recipe;
-                }
+                // recursion: try every unused ingredient as the next branch in the route
+                findAll(ingredients, nextBranch, set, i, count + 1, skipList);
+                skipList.clear(i);
 
-                TrieBranch nextBranch = result.right();
-                assert nextBranch != null;
-
-                // recursion: start at the next ingredient in the new branch
-                posStack.addLast(i + 1);
-                endStack.addLast(ingredients.length);
-                branchStack.addLast(nextBranch);
-                return seek();
+                i = (i + 1) % ingredients.length;
             }
-            return null;
-        }
-
-        @Override
-        public @Nullable Spliterator<GT_Recipe> trySplit() {
-            if (isEmpty()) {
-                return null;
-            }
-
-            return trySplit(new ArrayDeque<>(posStack), new ArrayDeque<>(endStack), new ArrayDeque<>(branchStack));
-        }
-
-        /**
-         * Recursively attempt to split the workload in half and give the other half to a new spliterator.
-         *
-         * @param poses    the starting positions
-         * @param ends     the end positions
-         * @param branches the branches
-         * @return a spliterator with half of the current one's work.
-         */
-        private @Nullable Spliterator<GT_Recipe> trySplit(@NotNull Deque<Integer> poses, @NotNull Deque<Integer> ends,
-            @NotNull Deque<TrieBranch> branches) {
-            if (isEmpty()) {
-                return null;
-            }
-
-            int pos = poses.removeLast();
-            int end = ends.getFirst();
-            TrieBranch branch = branches.getFirst();
-
-            int mid = (pos + end) >>> 1;
-            if (pos > mid) {
-                // cannot split here, need to split higher up in the trie
-                ends.removeLast();
-                branches.removeFirst();
-                return trySplit(poses, ends, branches);
-            }
-
-            Spliterator<GT_Recipe> spliterator = new RecipeTrieSpliterator(this, pos, mid, branch);
-            this.posStack.addFirst(mid); // current starts in the middle now
-            return spliterator;
-        }
-
-        private boolean isEmpty() {
-            return posStack.isEmpty() || endStack.isEmpty() || branchStack.isEmpty();
-        }
-
-        @Override
-        public long estimateSize() {
-            return endStack.getLast() - posStack.getLast();
-        }
-
-        @Override
-        public int characteristics() {
-            return CHARACTERISTICS;
         }
     }
 }
