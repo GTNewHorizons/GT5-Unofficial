@@ -7,7 +7,6 @@ import java.util.HashMap;
 import gregtech.GT_Mod;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_PollenType;
@@ -44,9 +43,6 @@ public class GTPP_Bees {
             drop = new GTPP_Drop();
             combs = new GTPP_Comb();
 
-            Logger.BEES("Loading types.");
-            initTypes();
-
             Logger.BEES("Adding recipes.");
             GTPP_Drop.initDropsRecipes();
             GTPP_Propolis.initPropolisRecipes();
@@ -57,13 +53,5 @@ public class GTPP_Bees {
 
             Logger.BEES("Done!");
         }
-    }
-
-    private static void initTypes() {
-        ReflectionUtils.loadClass("gtPlusPlus.xmod.forestry.bees.registry.GTPP_BeeDefinition");
-        ReflectionUtils.loadClass("gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType");
-        ReflectionUtils.loadClass("gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType");
-        ReflectionUtils.loadClass("gtPlusPlus.xmod.forestry.bees.handler.GTPP_PollenType");
-        ReflectionUtils.loadClass("gtPlusPlus.xmod.forestry.bees.handler.GTPP_PropolisType");
     }
 }
