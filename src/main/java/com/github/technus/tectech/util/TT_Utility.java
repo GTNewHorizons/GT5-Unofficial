@@ -165,4 +165,24 @@ public final class TT_Utility {
         }
         return previousValue;
     }
+
+    public static String[][] appendStringArrays(String[][] firstArray, String[][] secondArray) {
+        int totalLength = firstArray.length + secondArray.length;
+        String[][] resultArray = new String[totalLength][];
+
+        System.arraycopy(firstArray, 0, resultArray, 0, firstArray.length);
+        System.arraycopy(secondArray, 0, resultArray, firstArray.length, secondArray.length);
+        return resultArray;
+    }
+
+    public static String[][] replaceLetters(String[][] array, String replacement) {
+        String[][] outputArray = new String[array.length][];
+        for (int i = 0; i < array.length; i++) {
+            outputArray[i] = new String[array[i].length];
+            for (int j = 0; j < array[i].length; j++) {
+                outputArray[i][j] = array[i][j].replaceAll("[A-Z]", replacement);
+            }
+        }
+        return outputArray;
+    }
 }
