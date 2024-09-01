@@ -16,7 +16,6 @@ import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GraviSuite;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SGCraft;
@@ -2385,7 +2384,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 64, // amperage
                 new Object[] {
                     // Space elevator controller.
-                    getModItem(GregTech.ID, "gt.blockmachines", 16, 14003), ItemList.Machine_Multi_PlasmaForge.get(4),
+                    ItemList.SpaceElevatorController.get(16), ItemList.Machine_Multi_PlasmaForge.get(4),
 
                     CustomItemList.EOH_Infinite_Energy_Casing.get(1),
                     CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
