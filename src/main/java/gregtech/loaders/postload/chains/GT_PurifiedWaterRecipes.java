@@ -155,9 +155,9 @@ public class GT_PurifiedWaterRecipes {
         // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
         // correct I believe.
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(1000L))
-            .itemOutputs(Materials.Aluminium.getDust(2))
-            .fluidOutputs(Materials.Oxygen.getGas(3000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
+            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(10000L))
+            .itemOutputs(Materials.Aluminium.getDust(11))
+            .fluidOutputs(Materials.Oxygen.getGas(29000L), Materials.DilutedHydrochloricAcid.getFluid(58000L))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
