@@ -20,7 +20,6 @@ import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.io.FileUtils;
@@ -33,6 +32,7 @@ import com.google.gson.GsonBuilder;
 import com.jcraft.jorbis.VorbisFile;
 
 import baubles.api.BaublesApi;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -628,8 +628,9 @@ public final class GT_MusicSystem {
                 final ArrayList<URL> candidates = Collections.list(
                     GT_MusicSystem.class.getClassLoader()
                         .getResources("soundmeta/durations.json"));
-                final Path configPath = Launch.minecraftHome.toPath()
-                    .resolve("config")
+                final Path configPath = Loader.instance()
+                    .getConfigDir()
+                    .toPath()
                     .resolve("soundmeta")
                     .resolve("durations.json");
                 if (Files.exists(configPath)) {
