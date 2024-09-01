@@ -11,13 +11,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.recipe.RECIPES_MachineComponents;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.recipe.RecipesMachineComponents;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_HV;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_LV;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_MV;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEBoilerHV;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEBoilerLV;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEBoilerMV;
 
 public class GregtechAdvancedBoilers {
 
@@ -29,11 +29,11 @@ public class GregtechAdvancedBoilers {
     private static void run1() {
         // Boilers
         GregtechItemList.Boiler_Advanced_LV
-            .set(new GT_MetaTileEntity_Boiler_LV(Boiler_Advanced_LV.ID, "Advanced Boiler [LV]", 1).getStackForm(1L));
+            .set(new MTEBoilerLV(Boiler_Advanced_LV.ID, "Advanced Boiler [LV]", 1).getStackForm(1L));
         GregtechItemList.Boiler_Advanced_MV
-            .set(new GT_MetaTileEntity_Boiler_MV(Boiler_Advanced_MV.ID, "Advanced Boiler [MV]", 2).getStackForm(1L));
+            .set(new MTEBoilerMV(Boiler_Advanced_MV.ID, "Advanced Boiler [MV]", 2).getStackForm(1L));
         GregtechItemList.Boiler_Advanced_HV
-            .set(new GT_MetaTileEntity_Boiler_HV(Boiler_Advanced_HV.ID, "Advanced Boiler [HV]", 3).getStackForm(1L));
+            .set(new MTEBoilerHV(Boiler_Advanced_HV.ID, "Advanced Boiler [HV]", 3).getStackForm(1L));
 
         ItemStack chassisT1 = ItemUtils
             .getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 0, 1);
@@ -72,9 +72,9 @@ public class GregtechAdvancedBoilers {
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.MV), 'W',
                 OrePrefixes.plate.get(Materials.Aluminium), 'G', OrePrefixes.pipeSmall.get(Materials.Steel) });
 
-        ItemStack pipeTier1 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier7, 1);
-        ItemStack pipeTier2 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier8, 1);
-        ItemStack pipeTier3 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier9, 1);
+        ItemStack pipeTier1 = ItemUtils.getItemStackOfAmountFromOreDict(RecipesMachineComponents.pipeTier7, 1);
+        ItemStack pipeTier2 = ItemUtils.getItemStackOfAmountFromOreDict(RecipesMachineComponents.pipeTier8, 1);
+        ItemStack pipeTier3 = ItemUtils.getItemStackOfAmountFromOreDict(RecipesMachineComponents.pipeTier9, 1);
 
         // Boiler Recipes
         GT_ModHandler.addCraftingRecipe(
@@ -91,7 +91,8 @@ public class GregtechAdvancedBoilers {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_MV, 'P', pipeTier2, 'C',
-                OrePrefixes.circuit.get(Materials.MV), 'W', chassisT2, 'G', ALLOY.SILICON_CARBIDE.getGear(1) });
+                OrePrefixes.circuit.get(Materials.MV), 'W', chassisT2, 'G',
+                MaterialsAlloy.SILICON_CARBIDE.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_HV.get(1L),
@@ -99,6 +100,7 @@ public class GregtechAdvancedBoilers {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_HV, 'P', pipeTier3, 'C',
-                OrePrefixes.circuit.get(Materials.HV), 'W', chassisT3, 'G', ALLOY.SILICON_CARBIDE.getGear(1) });
+                OrePrefixes.circuit.get(Materials.HV), 'W', chassisT3, 'G',
+                MaterialsAlloy.SILICON_CARBIDE.getGear(1) });
     }
 }

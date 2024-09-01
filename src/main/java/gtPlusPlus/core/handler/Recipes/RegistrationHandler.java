@@ -1,10 +1,10 @@
 package gtPlusPlus.core.handler.Recipes;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.recipe.RECIPES_General;
-import gtPlusPlus.core.recipe.RECIPES_Machines;
-import gtPlusPlus.core.recipe.RECIPE_Batteries;
+import gtPlusPlus.core.handler.CompatHandler;
+import gtPlusPlus.core.recipe.RecipesBatteries;
+import gtPlusPlus.core.recipe.RecipesGeneral;
+import gtPlusPlus.core.recipe.RecipesMachines;
 
 public class RegistrationHandler {
 
@@ -16,10 +16,10 @@ public class RegistrationHandler {
     }
 
     private static void init() {
-        RECIPES_General.loadRecipes();
-        RECIPES_Machines.loadRecipes();
-        RECIPE_Batteries.loadRecipes();
+        RecipesGeneral.loadRecipes();
+        RecipesMachines.loadRecipes();
+        RecipesBatteries.loadRecipes();
         Logger.INFO("Loaded: " + recipesSuccess + " Failed: " + recipesFailed);
-        COMPAT_HANDLER.areInitItemsLoaded = true;
+        CompatHandler.areInitItemsLoaded = true;
     }
 }

@@ -8,7 +8,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GT_RecipeConstants.NFR_COIL_TIER;
-import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,7 +22,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class FuelRecipeLoader {
 
@@ -172,7 +172,7 @@ public class FuelRecipeLoader {
         // MK VI Naquadah Fuel
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ELEMENT.STANDALONE.ASTRAL_TITANIUM.getDust(64),
+                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(64),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
@@ -188,7 +188,7 @@ public class FuelRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 4),
-                ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),

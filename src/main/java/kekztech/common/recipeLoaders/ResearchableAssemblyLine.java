@@ -1,8 +1,8 @@
 package kekztech.common.recipeLoaders;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gtPlusPlus.core.material.ELEMENT.STANDALONE.DRAGON_METAL;
-import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.DRAGON_METAL;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;

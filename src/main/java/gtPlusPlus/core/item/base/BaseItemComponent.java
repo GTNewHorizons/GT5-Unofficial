@@ -28,7 +28,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -169,7 +169,7 @@ public class BaseItemComponent extends Item {
     }
 
     public String getCorrectTextures() {
-        if (!CORE.ConfigSwitches.useGregtechTextures) {
+        if (!GTPPCore.ConfigSwitches.useGregtechTextures) {
             return GTPlusPlus.ID + ":" + "item" + this.componentType.COMPONENT_NAME;
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";
@@ -250,7 +250,7 @@ public class BaseItemComponent extends Item {
                     }
 
                     if (this.componentMaterial.isRadioactive) {
-                        list.add(CORE.GT_Tooltip_Radioactive.get());
+                        list.add(GTPPCore.GT_Tooltip_Radioactive.get());
                     }
 
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
@@ -324,7 +324,7 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return (CORE.ConfigSwitches.useGregtechTextures ? true : false);
+        return (GTPPCore.ConfigSwitches.useGregtechTextures ? true : false);
     }
 
     @SuppressWarnings("unchecked")
@@ -332,10 +332,10 @@ public class BaseItemComponent extends Item {
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
         if (this.componentType == ComponentTypes.CELL || this.componentType == ComponentTypes.PLASMACELL) {
-            if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
-            if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
         }
@@ -380,7 +380,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (CORE.ConfigSwitches.useGregtechTextures) {
+        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
             if (pass == 0) {
                 return this.base;
             }
@@ -392,7 +392,7 @@ public class BaseItemComponent extends Item {
     @Override
     public void registerIcons(final IIconRegister i) {
 
-        if (CORE.ConfigSwitches.useGregtechTextures) {
+        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
             this.base = i.registerIcon(getCorrectTextures());
             this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
         } else {

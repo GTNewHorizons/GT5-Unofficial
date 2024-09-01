@@ -11,16 +11,16 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
-public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, Runnable {
+public class ProcessingElectricSnips implements IOreRecipeRegistrator, Runnable {
 
     public ProcessingElectricSnips() {
         GregtechOrePrefixes.toolElectricSnips.add(this);
@@ -127,9 +127,9 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
             OrePrefixes.wireFine.get(Materials.Electrum),
             aInputCutter,
             OrePrefixes.wireFine.get(Materials.Electrum),
-            ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
+            MaterialsElements.STANDALONE.WHITE_METAL.getGear(1),
             CI.getElectricMotor(aVoltageTier, 1),
-            ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
+            MaterialsElements.STANDALONE.WHITE_METAL.getGear(1),
             OrePrefixes.plate.get(aMaterial),
             aBattery,
             OrePrefixes.plate.get(aMaterial),

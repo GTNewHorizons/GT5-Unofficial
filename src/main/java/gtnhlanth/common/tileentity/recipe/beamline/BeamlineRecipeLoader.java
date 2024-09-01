@@ -13,7 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -80,7 +80,7 @@ public class BeamlineRecipeLoader {
          * NEUTRON
          */
         BeamlineRecipeAdder2.instance.addSourceChamberRecipe(
-            new ItemStack[] { ELEMENT.getInstance().CALIFORNIUM.getDust(1) },
+            new ItemStack[] { MaterialsElements.getInstance().CALIFORNIUM.getDust(1) },
             null,
             Particle.NEUTRON.ordinal(),
             10,

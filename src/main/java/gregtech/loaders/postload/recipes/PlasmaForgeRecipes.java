@@ -16,7 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class PlasmaForgeRecipes implements Runnable {
@@ -57,11 +57,11 @@ public class PlasmaForgeRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
                 .fluidInputs(
-                    ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(72 * 144),
-                    ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * 72 * 144),
-                    ELEMENT.STANDALONE.HYPOGEN.getFluidStack(36 * 144),
-                    ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * 72 * 144),
-                    ELEMENT.STANDALONE.RHUGNOR.getFluidStack(18 * 144),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(72 * 144),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * 72 * 144),
+                    MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36 * 144),
+                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * 72 * 144),
+                    MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(18 * 144),
                     MaterialsUEVplus.Mellion.getMolten(72 * 144))
                 .fluidOutputs(MaterialsUEVplus.SixPhasedCopper.getMolten(72 * 144L))
                 .duration(60 * SECONDS)

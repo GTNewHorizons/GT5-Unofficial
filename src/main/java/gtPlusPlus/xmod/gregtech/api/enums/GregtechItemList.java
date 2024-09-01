@@ -10,12 +10,12 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
+import gtPlusPlus.xmod.gregtech.api.interfaces.IGregtechItemContainer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
  */
-public enum GregtechItemList implements GregtechItemContainer {
+public enum GregtechItemList implements IGregtechItemContainer {
 
     /**
      * Items

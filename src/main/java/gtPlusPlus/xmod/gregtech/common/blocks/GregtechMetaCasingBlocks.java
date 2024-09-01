@@ -11,7 +11,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler;
 
 public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
@@ -24,7 +24,7 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
             if (i == 2 || i == 3 || i == 4) {
                 continue;
             }
-            TAE.registerTexture(0, i, new GTPP_CopiedBlockTexture(this, 6, i));
+            TAE.registerTexture(0, i, new GTPPCopiedBlockTexture(this, 6, i));
         }
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Centrifuge Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");

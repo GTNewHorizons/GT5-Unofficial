@@ -1113,7 +1113,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
 // 366
@@ -12286,35 +12286,35 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private void registerHighAmpTransformer() {
         ItemList.Transformer_HA_UEV_UHV.set(
-            new GregtechMetaTransformerHiAmp(
+            new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
                 "transformer.ha.tier.09",
                 "Highly Ultimate Hi-Amp Transformer",
                 9,
                 "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_HA_UIV_UEV.set(
-            new GregtechMetaTransformerHiAmp(
+            new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
                 "transformer.ha.tier.10",
                 "Extremely Ultimate Hi-Amp Transformer",
                 10,
                 "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_HA_UMV_UIV.set(
-            new GregtechMetaTransformerHiAmp(
+            new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
                 "transformer.ha.tier.11",
                 "Insanely Ultimate Hi-Amp Transformer",
                 11,
                 "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_HA_UXV_UMV.set(
-            new GregtechMetaTransformerHiAmp(
+            new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
                 "transformer.ha.tier.12",
                 "Mega Ultimate Hi-Amp Transformer",
                 12,
                 "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_HA_MAX_UXV.set(
-            new GregtechMetaTransformerHiAmp(
+            new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
                 "transformer.ha.tier.13",
                 "Extended Mega Ultimate Hi-Amp Transformer",

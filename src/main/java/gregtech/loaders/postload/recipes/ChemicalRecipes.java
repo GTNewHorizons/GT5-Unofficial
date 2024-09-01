@@ -11,8 +11,8 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
-import static gtPlusPlus.core.material.MISC_MATERIALS.CALCIUM_CHLORIDE;
-import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_NITRATE;
+import static gtPlusPlus.core.material.MaterialMisc.CALCIUM_CHLORIDE;
+import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.IFuelHandler;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BurnableFuelHandler implements IFuelHandler {
@@ -13,7 +13,7 @@ public class BurnableFuelHandler implements IFuelHandler {
     @Override
     public int getBurnTime(ItemStack aStack) {
         // Iterate over my burnables.
-        for (Pair<Integer, ItemStack> temp : CORE.burnables) {
+        for (Pair<Integer, ItemStack> temp : GTPPCore.burnables) {
             int aStackID = Item.getIdFromItem(aStack.getItem());
             int burnID = Item.getIdFromItem(
                 temp.getValue()

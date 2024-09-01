@@ -22,8 +22,8 @@ import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
 public class GTPPRecipeMaps {
 
@@ -148,7 +148,7 @@ public class GTPPRecipeMaps {
             }
             return GT_UITextures.OVERLAY_SLOT_MOLECULAR_1;
         })
-        .progressBar(GTPP_UITextures.PROGRESSBAR_FLUID_REACTOR, ProgressBar.Direction.CIRCULAR_CW)
+        .progressBar(GTPPUITextures.PROGRESSBAR_FLUID_REACTOR, ProgressBar.Direction.CIRCULAR_CW)
         .progressBarPos(82, 24)
         .neiSpecialInfoFormatter(recipeInfo -> {
             int tier = recipeInfo.recipe.mSpecialValue + 1;
@@ -230,11 +230,7 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> treeGrowthSimulatorFakeRecipes = RecipeMapBuilder
         .of("gtpp.recipe.treefarm")
-        .maxIO(
-            GregtechMetaTileEntityTreeFarm.Mode.values().length,
-            GregtechMetaTileEntityTreeFarm.Mode.values().length,
-            0,
-            0)
+        .maxIO(MTETreeFarm.Mode.values().length, MTETreeFarm.Mode.values().length, 0, 0)
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)

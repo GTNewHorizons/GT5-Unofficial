@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -149,7 +149,7 @@ public class ItemBlockGtBlock extends ItemBlock {
 
         if (this.mMaterial != null) {
             if (this.mMaterial.vRadiationLevel > 0) {
-                list.add(CORE.GT_Tooltip_Radioactive.get());
+                list.add(GTPPCore.GT_Tooltip_Radioactive.get());
             }
         }
 

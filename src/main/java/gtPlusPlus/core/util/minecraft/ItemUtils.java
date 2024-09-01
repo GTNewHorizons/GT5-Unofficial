@@ -41,16 +41,16 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
+import gtPlusPlus.preloader.PreloaderCore;
+import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
@@ -308,7 +308,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-        if (CORE_Preloader.DEBUG_MODE) {
+        if (PreloaderCore.DEBUG_MODE) {
             Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(1));
             Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(2));
             Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(3));
@@ -503,7 +503,7 @@ public class ItemUtils {
             output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
         }
 
-        new RecipeGen_DustGeneration(material, disableExtraRecipes);
+        new RecipeGenDustGeneration(material, disableExtraRecipes);
 
         return output;
     }
@@ -695,7 +695,7 @@ public class ItemUtils {
     }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
-        return CORE.burnables.add(new Pair<>(burn, aBurnable));
+        return GTPPCore.burnables.add(new Pair<>(burn, aBurnable));
     }
 
     public static boolean checkForInvalidItems(ItemStack mInput) {
@@ -842,7 +842,7 @@ public class ItemUtils {
         final Class aSkookClass = aSkookum.getClass();
         if (aSkookClass.isInstance(mItem) || mItem instanceof GT_MetaGenerated_Tool_01
             || mItem instanceof MetaGeneratedGregtechTools
-            || mItem instanceof Gregtech_MetaTool
+            || mItem instanceof GTMetaTool
             || mItem == aSkookum) {
             return true;
         }

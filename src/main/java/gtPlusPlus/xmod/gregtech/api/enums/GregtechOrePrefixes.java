@@ -31,8 +31,8 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
+import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
 
@@ -130,8 +130,8 @@ public enum GregtechOrePrefixes {
 
     private final Collection<Materials> mNotGeneratedItems = new HashSet<>(), mIgnoredMaterials = new HashSet<>(),
         mGeneratedItems = new HashSet<>();
-    private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<>();
-    private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
+    private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
+    private final ArrayList<IOreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
     public final ItemStack mContainerItem = null;
     public final ICondition<ISubTagContainer> mCondition = null;
     public byte mDefaultStackSize = 64;
@@ -353,7 +353,7 @@ public enum GregtechOrePrefixes {
         return this.mFamiliarPrefixes.add(aPrefix);
     }
 
-    public boolean add(final Interface_OreRecipeRegistrator aRegistrator) {
+    public boolean add(final IOreRecipeRegistrator aRegistrator) {
         if (aRegistrator == null) {
             return false;
         }
@@ -365,7 +365,7 @@ public enum GregtechOrePrefixes {
         if ((aMaterial != null)
             && ((aMaterial != GT_Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
             && GT_Utility.isStackValid(aStack)) {
-            for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessing) {
+            for (final IOreRecipeRegistrator tRegistrator : this.mOreProcessing) {
                 if (D2) {
                     GT_Log.ore.println(
                         "Processing '" + aOreDictName
@@ -386,7 +386,7 @@ public enum GregtechOrePrefixes {
         final ItemStack aStack) {
         if ((aMaterial != null) && ((aMaterial != Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
             && GT_Utility.isStackValid(aStack)) {
-            for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
+            for (final IOreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
                 if (D2) {
                     GT_Log.ore.println(
                         "Processing '" + aOreDictName
@@ -727,8 +727,8 @@ public enum GregtechOrePrefixes {
             this.mToolSpeed = aToolSpeed;
             this.mIconSet = aIconSet;
             if (aMetaItemSubID >= 0) {
-                if (CORE.sMU_GeneratedMaterials[aMetaItemSubID] == null) {
-                    CORE.sMU_GeneratedMaterials[aMetaItemSubID] = this;
+                if (GTPPCore.sMU_GeneratedMaterials[aMetaItemSubID] == null) {
+                    GTPPCore.sMU_GeneratedMaterials[aMetaItemSubID] = this;
                 } else {
                     throw new IllegalArgumentException("The Index " + aMetaItemSubID + " is already used!");
                 }

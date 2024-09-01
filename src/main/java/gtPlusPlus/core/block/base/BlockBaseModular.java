@@ -20,7 +20,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -198,7 +198,7 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        if (!CORE.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
+        if (!GTPPCore.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
             || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }

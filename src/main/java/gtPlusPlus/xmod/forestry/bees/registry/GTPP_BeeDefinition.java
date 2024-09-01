@@ -43,19 +43,19 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_BeeDefinition;
 import gregtech.loaders.misc.GT_Bees;
-import gtPlusPlus.core.material.ELEMENT.STANDALONE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialsElements.STANDALONE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
+import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
 public enum GTPP_BeeDefinition implements IBeeDefinition {
 
     DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true,
         Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
             beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
-            beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPP_CombType.DRAGONBLOOD), 0.10f);
+            beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.DRAGONBLOOD), 0.10f);
             beeSpecies.setHumidity(ARID);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
             beeSpecies.setHasEffect();
@@ -74,7 +74,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SALT), 0.15f);
-            beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPP_CombType.FORCE), 0.10f);
+            beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.FORCE), 0.10f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.HOT);
             beeSpecies.setHasEffect();
@@ -90,15 +90,15 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         }),;
 
     private final GTPP_BranchDefinition branch;
-    private final GTPP_AlleleBeeSpecies species;
-    private final Consumer<GTPP_AlleleBeeSpecies> mSpeciesProperties;
+    private final GTPPAlleleBeeSpecies species;
+    private final Consumer<GTPPAlleleBeeSpecies> mSpeciesProperties;
     private final Consumer<IAllele[]> mAlleles;
     private final Consumer<GTPP_BeeDefinition> mMutations;
     private IAllele[] template;
     private IBeeGenome genome;
 
     GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Materials aMat, boolean dominant, int primary,
-        int secondary, Consumer<GTPP_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
         Consumer<GTPP_BeeDefinition> aMutations) {
         this(
             branch,
@@ -113,7 +113,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     }
 
     GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Material aMat, boolean dominant, int primary,
-        int secondary, Consumer<GTPP_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
         Consumer<GTPP_BeeDefinition> aMutations) {
         this.mAlleles = aAlleles;
         this.mMutations = aMutations;
@@ -130,7 +130,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
                 .replaceAll(" ", ""),
             aMat);
         this.branch = branch;
-        this.species = new GTPP_AlleleBeeSpecies(
+        this.species = new GTPPAlleleBeeSpecies(
             uid,
             dominant,
             name,
@@ -185,7 +185,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         return ret;
     }
 
-    private final void setSpeciesProperties(GTPP_AlleleBeeSpecies species2) {
+    private final void setSpeciesProperties(GTPPAlleleBeeSpecies species2) {
         this.mSpeciesProperties.accept(species2);
     }
 
@@ -240,7 +240,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
      */
     private final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
         float chancedivider) {
-        return new GTPP_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
+        return new GTPPBeeMutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
     }
 
     private final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,

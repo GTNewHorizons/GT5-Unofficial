@@ -759,37 +759,37 @@ public class Material {
         for (MaterialStack m : this.getComposites()) {
 
             // Gems
-            if (m.getStackMaterial() == ELEMENT.getInstance().AER) {
+            if (m.getStackMaterial() == MaterialsElements.getInstance().AER) {
                 aGem++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().AQUA) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().AQUA) {
                 aGem++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().IGNIS) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().IGNIS) {
                 aGem++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().TERRA) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().TERRA) {
                 aGem++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().MAGIC) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().MAGIC) {
                 aGem++;
             }
             // Shiny Materials
-            if (m.getStackMaterial() == ELEMENT.getInstance().GOLD) {
+            if (m.getStackMaterial() == MaterialsElements.getInstance().GOLD) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().SILVER) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().SILVER) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().PLATINUM) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().PLATINUM) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().TITANIUM) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().TITANIUM) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().GERMANIUM) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().GERMANIUM) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().GALLIUM) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().GALLIUM) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().MERCURY) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().MERCURY) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().MAGIC) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().MAGIC) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().SAMARIUM) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().SAMARIUM) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().TANTALUM) {
+            } else if (m.getStackMaterial() == MaterialsElements.getInstance().TANTALUM) {
                 aShiny++;
             }
         }
@@ -831,7 +831,7 @@ public class Material {
                 if (r.getStackMaterial()
                     .getTextureSet().mSetName.toLowerCase()
                         .contains("fluid")) {
-                    sets.put(ELEMENT.getInstance().GOLD);
+                    sets.put(MaterialsElements.getInstance().GOLD);
                 } else {
                     sets.put(r.getStackMaterial());
                 }

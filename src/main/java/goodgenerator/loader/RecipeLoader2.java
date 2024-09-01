@@ -59,8 +59,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
@@ -1336,7 +1336,7 @@ public class RecipeLoader2 {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Osmiridium, 2),
                     GGMaterial.marM200.get(OrePrefixes.plateDouble, 2),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1),
-                    ELEMENT.getInstance().RUTHENIUM.getBolt(32),
+                    MaterialsElements.getInstance().RUTHENIUM.getBolt(32),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Platinum, 8))
                 .fluidInputs(GGMaterial.zircaloy4.getMolten(576))
                 .itemOutputs(ItemRefer.Imprecise_Electronic_Unit.get(2))
@@ -1539,10 +1539,11 @@ public class RecipeLoader2 {
             new Object[] { GregtechItemList.FusionComputer_UV2.get(48), new Object[] { "circuitInfinite", 1 },
                 new Object[] { "circuitInfinite", 1 }, new Object[] { "circuitInfinite", 1 },
                 new Object[] { "circuitInfinite", 1 }, ItemList.Circuit_Wafer_PPIC.get(64), ItemList.UHV_Coil.get(16),
-                ALLOY.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8), ItemList.Field_Generator_UHV.get(8),
+                MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
+                ItemList.Field_Generator_UHV.get(8),
                 GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GenericChem.TEFLON.getFluidStack(2304), GGMaterial.dalisenite.getMolten(1152),
-                ALLOY.BOTMIUM.getFluidStack(288) },
+                MaterialsAlloy.BOTMIUM.getFluidStack(288) },
             ItemRefer.Compact_Fusion_MK4.get(1),
             6000,
             (int) TierEU.RECIPE_UV);
@@ -1555,7 +1556,9 @@ public class RecipeLoader2 {
                 ItemRefer.HiC_T5.get(4),
                 CI.getEnergyCore(5, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
-            .fluidInputs(ALLOY.BLACK_TITANIUM.getFluidStack(1152), GGMaterial.metastableOganesson.getMolten(576))
+            .fluidInputs(
+                MaterialsAlloy.BLACK_TITANIUM.getFluidStack(1152),
+                GGMaterial.metastableOganesson.getMolten(576))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
@@ -1572,10 +1575,10 @@ public class RecipeLoader2 {
             new Object[] { GregtechItemList.FusionComputer_UV3.get(48), new Object[] { "circuitBio", 1 },
                 new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 },
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.UHV_Coil.get(64),
-                ELEMENT.STANDALONE.HYPOGEN.getPlateDense(8), ItemRefer.HiC_T5.get(8),
+                MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8), ItemRefer.HiC_T5.get(8),
                 ItemList.Field_Generator_UEV.get(8), GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
-            new FluidStack[] { GGMaterial.tairitsu.getMolten(2304), ALLOY.OCTIRON.getFluidStack(1152),
-                ELEMENT.STANDALONE.RHUGNOR.getFluidStack(288) },
+            new FluidStack[] { GGMaterial.tairitsu.getMolten(2304), MaterialsAlloy.OCTIRON.getFluidStack(1152),
+                MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(288) },
             ItemRefer.Compact_Fusion_MK5.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);

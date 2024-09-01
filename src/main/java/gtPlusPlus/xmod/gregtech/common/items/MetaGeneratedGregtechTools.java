@@ -5,8 +5,8 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
-import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngleGrinder;
-import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricSnips;
+import gtPlusPlus.xmod.gregtech.common.tools.ToolAngleGrinder;
+import gtPlusPlus.xmod.gregtech.common.tools.ToolElectricSnips;
 
 public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 
@@ -30,7 +30,7 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
             ANGLE_GRINDER,
             "Angle Grinder",
             "Hand-held electric filing device",
-            new TOOL_Gregtech_AngleGrinder(),
+            new ToolAngleGrinder(),
             GregtechToolDictNames.craftingToolAngleGrinder,
             ToolDictNames.craftingToolFile,
             new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
@@ -43,7 +43,7 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                 ELECTRIC_SNIPS,
                 "Automatic Snips",
                 "Hand-held electric wire cutter",
-                new TOOL_Gregtech_ElectricSnips(),
+                new ToolElectricSnips(),
                 GregtechToolDictNames.craftingToolElectricSnips,
                 ToolDictNames.craftingToolWireCutter,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),

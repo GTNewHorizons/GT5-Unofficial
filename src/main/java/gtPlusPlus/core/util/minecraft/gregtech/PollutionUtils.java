@@ -14,8 +14,8 @@ import gregtech.common.GT_Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
-import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -103,33 +103,33 @@ public class PollutionUtils {
                 if (CD != null) {
                     Logger.INFO("[PollutionCompat] Found carbon dioxide fluid, registering it.");
                     PollutionUtils.mPollutionFluidStacks.put(CD);
-                    MISC_MATERIALS.CARBON_DIOXIDE.registerComponentForMaterial(CD);
+                    MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(CD);
                     ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonDioxide", 1);
                     if (ItemUtils.checkForInvalidItems(cellCD)) {
                         Logger.INFO("[PollutionCompat] Found carbon dioxide cell, registering component.");
-                        MISC_MATERIALS.CARBON_DIOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
+                        MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
                     } else {
                         Logger.INFO("[PollutionCompat] Did not find carbon dioxide cell, registering new component.");
-                        new BaseItemCell(MISC_MATERIALS.CARBON_DIOXIDE);
+                        new BaseItemCell(MaterialMisc.CARBON_DIOXIDE);
                     }
                 } else {
-                    MaterialGenerator.generate(MISC_MATERIALS.CARBON_DIOXIDE, false, false);
+                    MaterialGenerator.generate(MaterialMisc.CARBON_DIOXIDE, false, false);
                 }
 
                 if (CM != null) {
                     Logger.INFO("[PollutionCompat] Found carbon monoxide fluid, registering it.");
                     PollutionUtils.mPollutionFluidStacks.put(CM);
-                    MISC_MATERIALS.CARBON_MONOXIDE.registerComponentForMaterial(CM);
+                    MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(CM);
                     ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonMonoxide", 1);
                     if (ItemUtils.checkForInvalidItems(cellCD)) {
                         Logger.INFO("[PollutionCompat] Found carbon monoxide cell, registering component.");
-                        MISC_MATERIALS.CARBON_MONOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
+                        MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
                     } else {
                         Logger.INFO("[PollutionCompat] Did not find carbon monoxide cell, registering new component.");
-                        new BaseItemCell(MISC_MATERIALS.CARBON_MONOXIDE);
+                        new BaseItemCell(MaterialMisc.CARBON_MONOXIDE);
                     }
                 } else {
-                    MaterialGenerator.generate(MISC_MATERIALS.CARBON_MONOXIDE, false, false);
+                    MaterialGenerator.generate(MaterialMisc.CARBON_MONOXIDE, false, false);
                 }
 
                 if (SD != null) {

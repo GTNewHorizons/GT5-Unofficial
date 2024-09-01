@@ -18,7 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DynamoBuffer;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchDynamoBuffer;
 
 public class GregtechBufferDynamos {
 
@@ -28,61 +28,61 @@ public class GregtechBufferDynamos {
 
     private static void run2() {
         GregtechItemList.Hatch_Buffer_Dynamo_ULV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_ULV.ID,
                 "hatch.dynamo.buffer.tier.00",
                 "ULV Dynamo Hatch [Buffered]",
                 0).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_LV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_LV.ID,
                 "hatch.dynamo.buffer.tier.01",
                 "LV Dynamo Hatch [Buffered]",
                 1).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_MV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_MV.ID,
                 "hatch.dynamo.buffer.tier.02",
                 "MV Dynamo Hatch [Buffered]",
                 2).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_HV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_HV.ID,
                 "hatch.dynamo.buffer.tier.03",
                 "HV Dynamo Hatch [Buffered]",
                 3).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_EV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_EV.ID,
                 "hatch.dynamo.buffer.tier.04",
                 "EV Dynamo Hatch [Buffered]",
                 4).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_IV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_IV.ID,
                 "hatch.dynamo.buffer.tier.05",
                 "IV Dynamo Hatch [Buffered]",
                 5).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_LuV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_LuV.ID,
                 "hatch.dynamo.buffer.tier.06",
                 "LuV Dynamo Hatch [Buffered]",
                 6).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_ZPM.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_ZPM.ID,
                 "hatch.dynamo.buffer.tier.07",
                 "ZPM Dynamo Hatch [Buffered]",
                 7).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_UV.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_UV.ID,
                 "hatch.dynamo.buffer.tier.08",
                 "UV Dynamo Hatch [Buffered]",
                 8).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_MAX.set(
-            new GT_MetaTileEntity_Hatch_DynamoBuffer(
+            new MTEHatchDynamoBuffer(
                 Hatch_Buffer_Dynamo_MAX.ID,
                 "hatch.dynamo.buffer.tier.09",
                 "UHV Dynamo Hatch [Buffered]",

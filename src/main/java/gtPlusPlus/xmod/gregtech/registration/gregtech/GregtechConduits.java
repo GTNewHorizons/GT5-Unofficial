@@ -24,10 +24,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -35,8 +35,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntityFluid;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluid;
 
 public class GregtechConduits {
 
@@ -48,10 +48,10 @@ public class GregtechConduits {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-        if (CORE.ConfigSwitches.enableCustom_Cables) {
+        if (GTPPCore.ConfigSwitches.enableCustom_Cables) {
             run1();
         }
-        if (CORE.ConfigSwitches.enableCustom_Pipes) {
+        if (GTPPCore.ConfigSwitches.enableCustom_Pipes) {
             run2();
             run3();
         }
@@ -192,24 +192,66 @@ public class GregtechConduits {
         wireFactory("RedstoneAlloy", 32, BaseWireID + 45, 0, 2, 1, new short[] { 178, 34, 34, 0 });
 
         // need to go back id because fluid pipes already occupy
-        makeCustomWires(ELEMENT.STANDALONE.HYPOGEN, BaseWireID - 15, 0, 0, 8, GT_Values.V[11], false, true);
+        makeCustomWires(MaterialsElements.STANDALONE.HYPOGEN, BaseWireID - 15, 0, 0, 8, GT_Values.V[11], false, true);
 
     }
 
     private static void run2() {
-        generateNonGTFluidPipes(GT_Materials.Staballoy, ALLOY.STABALLOY, BasePipeID, 12500, 7500, true);
-        generateNonGTFluidPipes(GT_Materials.Tantalloy60, ALLOY.TANTALLOY_60, BasePipeID + 5, 10000, 4250, true);
-        generateNonGTFluidPipes(GT_Materials.Tantalloy61, ALLOY.TANTALLOY_61, BasePipeID + 10, 12000, 5800, true);
+        generateNonGTFluidPipes(GT_Materials.Staballoy, MaterialsAlloy.STABALLOY, BasePipeID, 12500, 7500, true);
+        generateNonGTFluidPipes(
+            GT_Materials.Tantalloy60,
+            MaterialsAlloy.TANTALLOY_60,
+            BasePipeID + 5,
+            10000,
+            4250,
+            true);
+        generateNonGTFluidPipes(
+            GT_Materials.Tantalloy61,
+            MaterialsAlloy.TANTALLOY_61,
+            BasePipeID + 10,
+            12000,
+            5800,
+            true);
         if (Thaumcraft.isModLoaded()) {
             generateNonGTFluidPipes(GT_Materials.Void, null, BasePipeID + 15, 1600, 25000, true);
         }
         generateGTFluidPipes(Materials.Europium, BasePipeID + 20, 12000, 7500, true);
-        generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID + 25, 500, 2000, true);
-        generateNonGTFluidPipes(GT_Materials.MaragingSteel300, ALLOY.MARAGING300, BasePipeID + 30, 14000, 2500, true);
-        generateNonGTFluidPipes(GT_Materials.MaragingSteel350, ALLOY.MARAGING350, BasePipeID + 35, 16000, 2500, true);
-        generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID + 40, 15000, 4800, true);
-        generateNonGTFluidPipes(GT_Materials.Inconel792, ALLOY.INCONEL_792, BasePipeID + 45, 16000, 5500, true);
-        generateNonGTFluidPipes(GT_Materials.HastelloyX, ALLOY.HASTELLOY_X, BasePipeID + 50, 20000, 4200, true);
+        generateNonGTFluidPipes(GT_Materials.Potin, MaterialsAlloy.POTIN, BasePipeID + 25, 500, 2000, true);
+        generateNonGTFluidPipes(
+            GT_Materials.MaragingSteel300,
+            MaterialsAlloy.MARAGING300,
+            BasePipeID + 30,
+            14000,
+            2500,
+            true);
+        generateNonGTFluidPipes(
+            GT_Materials.MaragingSteel350,
+            MaterialsAlloy.MARAGING350,
+            BasePipeID + 35,
+            16000,
+            2500,
+            true);
+        generateNonGTFluidPipes(
+            GT_Materials.Inconel690,
+            MaterialsAlloy.INCONEL_690,
+            BasePipeID + 40,
+            15000,
+            4800,
+            true);
+        generateNonGTFluidPipes(
+            GT_Materials.Inconel792,
+            MaterialsAlloy.INCONEL_792,
+            BasePipeID + 45,
+            16000,
+            5500,
+            true);
+        generateNonGTFluidPipes(
+            GT_Materials.HastelloyX,
+            MaterialsAlloy.HASTELLOY_X,
+            BasePipeID + 50,
+            20000,
+            4200,
+            true);
 
         generateGTFluidPipes(Materials.Tungsten, BasePipeID + 55, 4320, 7200, true);
         if (EnderIO.isModLoaded()) {
@@ -220,7 +262,7 @@ public class GregtechConduits {
 
         generateNonGTFluidPipes(
             GT_Materials.TriniumNaquadahCarbonite,
-            ALLOY.TRINIUM_NAQUADAH_CARBON,
+            MaterialsAlloy.TRINIUM_NAQUADAH_CARBON,
             30500,
             20,
             250000,
@@ -246,7 +288,7 @@ public class GregtechConduits {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 0,
                 "wire." + aMaterial.mName.toLowerCase() + ".01",
                 "1x " + aMaterial.mDefaultLocalName + " Wire",
@@ -261,7 +303,7 @@ public class GregtechConduits {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt02,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 1,
                 "wire." + aMaterial.mName.toLowerCase() + ".02",
                 "2x " + aMaterial.mDefaultLocalName + " Wire",
@@ -276,7 +318,7 @@ public class GregtechConduits {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt04,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 2,
                 "wire." + aMaterial.mName.toLowerCase() + ".04",
                 "4x " + aMaterial.mDefaultLocalName + " Wire",
@@ -291,7 +333,7 @@ public class GregtechConduits {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt08,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 3,
                 "wire." + aMaterial.mName.toLowerCase() + ".08",
                 "8x " + aMaterial.mDefaultLocalName + " Wire",
@@ -306,7 +348,7 @@ public class GregtechConduits {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt12,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 4,
                 "wire." + aMaterial.mName.toLowerCase() + ".12",
                 "12x " + aMaterial.mDefaultLocalName + " Wire",
@@ -321,7 +363,7 @@ public class GregtechConduits {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt16,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 5,
                 "wire." + aMaterial.mName.toLowerCase() + ".16",
                 "16x " + aMaterial.mDefaultLocalName + " Wire",
@@ -337,7 +379,7 @@ public class GregtechConduits {
             GT_OreDictUnificator.registerOre(
                 OrePrefixes.cableGt01,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 6,
                     "cable." + aMaterial.mName.toLowerCase() + ".01",
                     "1x " + aMaterial.mDefaultLocalName + " Cable",
@@ -352,7 +394,7 @@ public class GregtechConduits {
             GT_OreDictUnificator.registerOre(
                 OrePrefixes.cableGt02,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 7,
                     "cable." + aMaterial.mName.toLowerCase() + ".02",
                     "2x " + aMaterial.mDefaultLocalName + " Cable",
@@ -367,7 +409,7 @@ public class GregtechConduits {
             GT_OreDictUnificator.registerOre(
                 OrePrefixes.cableGt04,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 8,
                     "cable." + aMaterial.mName.toLowerCase() + ".04",
                     "4x " + aMaterial.mDefaultLocalName + " Cable",
@@ -382,7 +424,7 @@ public class GregtechConduits {
             GT_OreDictUnificator.registerOre(
                 OrePrefixes.cableGt08,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 9,
                     "cable." + aMaterial.mName.toLowerCase() + ".08",
                     "8x " + aMaterial.mDefaultLocalName + " Cable",
@@ -397,7 +439,7 @@ public class GregtechConduits {
             GT_OreDictUnificator.registerOre(
                 OrePrefixes.cableGt12,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 10,
                     "cable." + aMaterial.mName.toLowerCase() + ".12",
                     "12x " + aMaterial.mDefaultLocalName + " Cable",
@@ -412,7 +454,7 @@ public class GregtechConduits {
             GT_OreDictUnificator.registerOre(
                 OrePrefixes.cableGt16,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 11,
                     "cable." + aMaterial.mName.toLowerCase() + ".16",
                     "16x " + aMaterial.mDefaultLocalName + " Cable",
@@ -446,7 +488,7 @@ public class GregtechConduits {
         registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 0,
                 "wire." + aMaterial.getLocalizedName()
                     .toLowerCase() + ".01",
@@ -461,7 +503,7 @@ public class GregtechConduits {
         registerOre(
             OrePrefixes.wireGt02,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 1,
                 "wire." + aMaterial.getLocalizedName()
                     .toLowerCase() + ".02",
@@ -476,7 +518,7 @@ public class GregtechConduits {
         registerOre(
             OrePrefixes.wireGt04,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 2,
                 "wire." + aMaterial.getLocalizedName()
                     .toLowerCase() + ".04",
@@ -491,7 +533,7 @@ public class GregtechConduits {
         registerOre(
             OrePrefixes.wireGt08,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 3,
                 "wire." + aMaterial.getLocalizedName()
                     .toLowerCase() + ".08",
@@ -506,7 +548,7 @@ public class GregtechConduits {
         registerOre(
             OrePrefixes.wireGt12,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 4,
                 "wire." + aMaterial.getLocalizedName()
                     .toLowerCase() + ".12",
@@ -521,7 +563,7 @@ public class GregtechConduits {
         registerOre(
             OrePrefixes.wireGt16,
             aMaterial,
-            new GregtechMetaPipeEntity_Cable(
+            new GTPPMTECable(
                 aStartID + 5,
                 "wire." + aMaterial.getLocalizedName()
                     .toLowerCase() + ".16",
@@ -537,7 +579,7 @@ public class GregtechConduits {
             registerOre(
                 OrePrefixes.cableGt01,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 6,
                     "cable." + aMaterial.getLocalizedName()
                         .toLowerCase() + ".01",
@@ -552,7 +594,7 @@ public class GregtechConduits {
             registerOre(
                 OrePrefixes.cableGt02,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 7,
                     "cable." + aMaterial.getLocalizedName()
                         .toLowerCase() + ".02",
@@ -567,7 +609,7 @@ public class GregtechConduits {
             registerOre(
                 OrePrefixes.cableGt04,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 8,
                     "cable." + aMaterial.getLocalizedName()
                         .toLowerCase() + ".04",
@@ -582,7 +624,7 @@ public class GregtechConduits {
             registerOre(
                 OrePrefixes.cableGt08,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 9,
                     "cable." + aMaterial.getLocalizedName()
                         .toLowerCase() + ".08",
@@ -597,7 +639,7 @@ public class GregtechConduits {
             registerOre(
                 OrePrefixes.cableGt12,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 10,
                     "cable." + aMaterial.getLocalizedName()
                         .toLowerCase() + ".12",
@@ -612,7 +654,7 @@ public class GregtechConduits {
             registerOre(
                 OrePrefixes.cableGt16,
                 aMaterial,
-                new GregtechMetaPipeEntity_Cable(
+                new GTPPMTECable(
                     aStartID + 11,
                     "cable." + aMaterial.getLocalizedName()
                         .toLowerCase() + ".16",
@@ -695,7 +737,7 @@ public class GregtechConduits {
 
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
-            new GregtechMetaPipeEntityFluid(
+            new GTPPMTEFluid(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
                 "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
@@ -706,7 +748,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
-            new GregtechMetaPipeEntityFluid(
+            new GTPPMTEFluid(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
                 "Small " + material.mDefaultLocalName + " Fluid Pipe",
@@ -717,7 +759,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
-            new GregtechMetaPipeEntityFluid(
+            new GTPPMTEFluid(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName + "",
                 "" + material.mDefaultLocalName + " Fluid Pipe",
@@ -728,7 +770,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
-            new GregtechMetaPipeEntityFluid(
+            new GTPPMTEFluid(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
                 "Large " + material.mDefaultLocalName + " Fluid Pipe",
@@ -739,7 +781,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
-            new GregtechMetaPipeEntityFluid(
+            new GTPPMTEFluid(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
                 "Huge " + material.mDefaultLocalName + " Fluid Pipe",

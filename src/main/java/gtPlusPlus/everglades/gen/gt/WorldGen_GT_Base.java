@@ -17,9 +17,9 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgenerator;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
+import gtPlusPlus.xmod.gregtech.HandlerGT;
 
 public class WorldGen_GT_Base implements IWorldGenerator {
 
@@ -60,10 +60,10 @@ public class WorldGen_GT_Base implements IWorldGenerator {
         0,
         0,
         0,
-        ELEMENT.getInstance().IRON,
-        ELEMENT.getInstance().IRON,
-        ELEMENT.getInstance().IRON,
-        ELEMENT.getInstance().IRON);
+        MaterialsElements.getInstance().IRON,
+        MaterialsElements.getInstance().IRON,
+        MaterialsElements.getInstance().IRON,
+        MaterialsElements.getInstance().IRON);
 
     public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
 
@@ -80,14 +80,14 @@ public class WorldGen_GT_Base implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
         IChunkProvider chunkProvider) {
-        if (world.provider.dimensionId == Dimension_Everglades.DIMID) {
+        if (world.provider.dimensionId == DimensionEverglades.DIMID) {
             generateSafely(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
     }
 
     public synchronized void generateSafely(Random random, int chunkX, int chunkZ, World world,
         IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        int xDim = Dimension_Everglades.DIMID;
+        int xDim = DimensionEverglades.DIMID;
         switch (world.provider.dimensionId) {
             case -1: // Nether
                 // generateNether(world, random, chunkX * 16, chunkZ * 16);
@@ -118,7 +118,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                     new XSTR(Math.abs(aRandom.nextInt()) + 1),
                     aX,
                     aZ,
-                    Dimension_Everglades.DIMID,
+                    DimensionEverglades.DIMID,
                     aWorld,
                     aChunkGenerator,
                     aChunkProvider,
@@ -540,7 +540,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 
             // Do leftover worldgen for this chunk (GT_Stones and GT_small_ores)
             try {
-                for (WorldGen_GT tWorldGen : HANDLER_GT.sWorldgenListEverglades) {
+                for (WorldGen_GT tWorldGen : HandlerGT.sWorldgenListEverglades) {
                     /*
                      * if (debugWorldGen) GT_Log.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
                      */

@@ -9,8 +9,8 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
-import gtPlusPlus.preloader.Preloader_Logger;
+import gtPlusPlus.preloader.PreloaderCore;
+import gtPlusPlus.preloader.PreloaderLogger;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
@@ -51,14 +51,14 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             // Do not transform if using lwjgl3
             && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
             boolean isClientSettingsClass = !transformedName.equals("org.lwjgl.input.Keyboard");
-            Preloader_Logger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
+            PreloaderLogger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
             return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter()
                 .toByteArray();
         }
 
         // Fix the OreDictionary - Forge
         if (transformedName.equals(FORGE_ORE_DICTIONARY) && AsmConfig.enableOreDictPatch) {
-            Preloader_Logger.INFO("OreDictTransformer", "Transforming " + transformedName);
+            PreloaderLogger.INFO("OreDictTransformer", "Transforming " + transformedName);
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
             new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
             return classWriter.toByteArray();
@@ -66,15 +66,15 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
         // Fix the OreDictionary COFH
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER)
-            && (AsmConfig.enableCofhPatch || CORE_Preloader.DEV_ENVIRONMENT)) {
-            Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
+            && (AsmConfig.enableCofhPatch || PreloaderCore.DEV_ENVIRONMENT)) {
+            PreloaderLogger.INFO("COFH", "Transforming " + transformedName);
             return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter()
                 .toByteArray();
         }
 
         if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
-            Preloader_Logger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
-            return new ClassTransformer_IC2_GetHarvestTool(basicClass, !CORE_Preloader.DEV_ENVIRONMENT, transformedName)
+            PreloaderLogger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
+            return new ClassTransformer_IC2_GetHarvestTool(basicClass, !PreloaderCore.DEV_ENVIRONMENT, transformedName)
                 .getWriter()
                 .toByteArray();
         }
@@ -82,8 +82,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         // Fix Thaumcraft stuff
         // Patching ItemWispEssence to allow invalid item handling
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
-            Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
-            return new ClassTransformer_TC_ItemWispEssence(basicClass, !CORE_Preloader.DEV_ENVIRONMENT).getWriter()
+            PreloaderLogger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
+            return new ClassTransformer_TC_ItemWispEssence(basicClass, !PreloaderCore.DEV_ENVIRONMENT).getWriter()
                 .toByteArray();
         }
 

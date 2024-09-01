@@ -51,8 +51,8 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -163,7 +163,7 @@ public class BioRecipes {
             .getFluid();
         mSulfuricWasteWater = FluidUtils.getFluidStack("sulfuricapatite", 1)
             .getFluid();
-        mAmmonia = MISC_MATERIALS.AMMONIA.getFluidStack(1)
+        mAmmonia = MaterialMisc.AMMONIA.getFluidStack(1)
             .getFluid();
         mEthylene = FluidUtils.getFluidStack("ethylene", 1)
             .getFluid();
@@ -187,9 +187,9 @@ public class BioRecipes {
             .getFluid();
         mLiquidPlastic = FluidUtils.getWildcardFluidStack("plastic", 1)
             .getFluid();
-        mCarbonDioxide = MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(1)
+        mCarbonDioxide = MaterialMisc.CARBON_DIOXIDE.getFluidStack(1)
             .getFluid();
-        mCarbonMonoxide = MISC_MATERIALS.CARBON_MONOXIDE.getFluidStack(1)
+        mCarbonMonoxide = MaterialMisc.CARBON_MONOXIDE.getFluidStack(1)
             .getFluid();
         mChlorine = FluidUtils.getFluidStack("chlorine", 1)
             .getFluid();
@@ -789,7 +789,7 @@ public class BioRecipes {
     private static void recipePelletMold() {
         GregtechItemList.Pellet_Mold.set(ItemUtils.getSimpleStack(AgriculturalChem.mPelletMold, 1));
         GT_Values.RA.stdBuilder()
-            .itemInputs(ALLOY.TUMBAGA.getBlock(1))
+            .itemInputs(MaterialsAlloy.TUMBAGA.getBlock(1))
             .itemOutputs(GregtechItemList.Pellet_Mold.get(1))
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 4 * 3)

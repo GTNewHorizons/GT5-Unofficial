@@ -14,7 +14,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksAbstract {
@@ -53,7 +53,7 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
             .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
         GT_LanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
-        TAE.registerTexture(84, new GTPP_CopiedBlockTexture(this, 6, 2));
+        TAE.registerTexture(84, new GTPPCopiedBlockTexture(this, 6, 2));
         GT_LanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
 

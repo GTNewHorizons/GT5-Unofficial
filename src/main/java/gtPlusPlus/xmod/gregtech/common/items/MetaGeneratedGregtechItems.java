@@ -5,42 +5,42 @@ import static gregtech.client.GT_TooltipHandler.Tier.EV;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Casing_Gem_1;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Casing_Gem_2;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Casing_Gem_3;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Casing_Gem_4;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Gem_1;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Gem_2;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Gem_3;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Gem_4;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_RE_EV_Cadmium;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_RE_EV_Lithium;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_RE_EV_Sodium;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Compressed_Fusion_Reactor;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Cover_Overflow_EV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Cover_Overflow_HV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Cover_Overflow_IV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Cover_Overflow_LV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Cover_Overflow_MV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Distillus_Upgrade_Chip;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Gregtech_Computer_Cube;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Laser_Lens_Special;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Laser_Lens_WoodsGlass;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Maceration_Upgrade_Chip;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Pellet_RTG_AM241;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Pellet_RTG_PO210;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Pellet_RTG_PU238;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Pellet_RTG_SR90;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Shape_Extruder_WindmillShaft;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_EV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_HV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_IV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_LV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_LuV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_MV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_UHV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_UV;
-import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.TransmissionComponent_ZPM;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_1;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_2;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_3;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_4;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Gem_1;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Gem_2;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Gem_3;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Gem_4;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_RE_EV_Cadmium;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_RE_EV_Lithium;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_RE_EV_Sodium;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Compressed_Fusion_Reactor;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_EV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_HV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_IV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_LV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_MV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Distillus_Upgrade_Chip;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Gregtech_Computer_Cube;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Laser_Lens_Special;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Laser_Lens_WoodsGlass;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Maceration_Upgrade_Chip;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_AM241;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_PO210;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_PU238;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_SR90;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Shape_Extruder_WindmillShaft;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_EV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_HV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_IV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_LV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_LuV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_MV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_UHV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_UV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_ZPM;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -54,11 +54,11 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
+import gtPlusPlus.xmod.gregtech.api.items.GTMetaItemX32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow;
+import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflow;
 
-public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
+public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
     public static final MetaGeneratedGregtechItems INSTANCE;
 
@@ -373,31 +373,31 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
             new GT_MultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[4][0],
                 new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new GTPP_Cover_Overflow(64));
+            new CoverOverflow(64));
         GregTech_API.registerCover(
             GregtechItemList.Cover_Overflow_MV.get(1L),
             new GT_MultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new GTPP_Cover_Overflow(512));
+            new CoverOverflow(512));
         GregTech_API.registerCover(
             GregtechItemList.Cover_Overflow_HV.get(1L),
             new GT_MultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new GTPP_Cover_Overflow(4096));
+            new CoverOverflow(4096));
         GregTech_API.registerCover(
             GregtechItemList.Cover_Overflow_EV.get(1L),
             new GT_MultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new GTPP_Cover_Overflow(32768));
+            new CoverOverflow(32768));
         GregTech_API.registerCover(
             GregtechItemList.Cover_Overflow_IV.get(1L),
             new GT_MultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new GTPP_Cover_Overflow(262144));
+            new CoverOverflow(262144));
     }
 
 }

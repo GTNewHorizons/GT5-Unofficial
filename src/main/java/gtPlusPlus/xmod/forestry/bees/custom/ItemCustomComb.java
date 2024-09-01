@@ -111,23 +111,23 @@ public class ItemCustomComb extends Item {
         tComb = getStackForType(CustomCombs.PLASTIC);
         addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plastic, 1), 20);
         tComb = getStackForType(CustomCombs.PTFE);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPP_Bees.PTFE, 1), 10);
+        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PTFE, 1), 10);
         tComb = getStackForType(CustomCombs.PBS);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPP_Bees.PBS, 1), 5);
+        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PBS, 1), 5);
 
         // Fuels
         tComb = getStackForType(CustomCombs.BIOMASS);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropBiomassBlob), 5);
+        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropBiomassBlob), 5);
         tComb = getStackForType(CustomCombs.PBS);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropEthanolBlob), 5);
+        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropEthanolBlob), 5);
 
         // Misc Materials
         tComb = getStackForType(CustomCombs.FORCE);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropForceGem), 5);
+        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropForceGem), 5);
         tComb = getStackForType(CustomCombs.FLUORINE);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropFluorineBlob), 5);
+        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropFluorineBlob), 5);
         tComb = getStackForType(CustomCombs.NIKOLITE);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropNikoliteDust), 5);
+        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropNikoliteDust), 5);
     }
 
     public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance) {

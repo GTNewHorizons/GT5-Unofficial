@@ -32,7 +32,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
+import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -152,7 +152,7 @@ public class AgriculturalChem extends ItemPackage {
 
         mAlgae = new ItemAlgaeBase();
         mAgrichemItem1 = new ItemAgrichemBase();
-        mBioCircuit = new GTPP_IntegratedCircuit_Item("BioRecipeSelector", "bioscience/BioCircuit");
+        mBioCircuit = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
         GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
 
         mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);

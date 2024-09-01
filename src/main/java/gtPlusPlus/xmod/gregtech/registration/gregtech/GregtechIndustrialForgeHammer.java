@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_IndustrialForgeHam
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialForgeHammer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialForgeHammer;
 
 public class GregtechIndustrialForgeHammer {
 
@@ -15,7 +15,7 @@ public class GregtechIndustrialForgeHammer {
 
     private static void run1() {
         GregtechItemList.Controller_IndustrialForgeHammer.set(
-            new GregtechMetaTileEntity_IndustrialForgeHammer(
+            new MTEIndustrialForgeHammer(
                 Controller_IndustrialForgeHammer.ID,
                 "industrialhammer.controller.tier.single",
                 "Industrial Sledgehammer").getStackForm(1L));

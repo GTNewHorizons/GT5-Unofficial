@@ -14,7 +14,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
 
@@ -65,7 +65,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             if (i == 4 || i == 10 || i == 11 || i == 12 || i == 14) {
                 continue;
             }
-            TAE.registerTexture(1, i, new GTPP_CopiedBlockTexture(this, 6, i));
+            TAE.registerTexture(1, i, new GTPPCopiedBlockTexture(this, 6, i));
         }
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Thermal Processing Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");

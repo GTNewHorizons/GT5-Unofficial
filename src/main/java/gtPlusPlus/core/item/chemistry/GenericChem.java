@@ -29,13 +29,13 @@ import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.NONMATERIAL;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -63,10 +63,10 @@ public class GenericChem extends ItemPackage {
         false,
         null,
         0,
-        new MaterialStack(NONMATERIAL.PTFE, 75),
-        new MaterialStack(NONMATERIAL.PLASTIC, 15),
-        new MaterialStack(ELEMENT.getInstance().CARBON, 5),
-        new MaterialStack(ELEMENT.getInstance().SODIUM, 5));
+        new MaterialStack(MaterialsOther.PTFE, 75),
+        new MaterialStack(MaterialsOther.PLASTIC, 15),
+        new MaterialStack(MaterialsElements.getInstance().CARBON, 5),
+        new MaterialStack(MaterialsElements.getInstance().SODIUM, 5));
 
     /**
      * Fluids
@@ -146,7 +146,7 @@ public class GenericChem extends ItemPackage {
         MaterialGenerator.generate(TEFLON, false);
 
         mGenericChemItem1 = new ItemGenericChemBase();
-        mAdvancedCircuit = new GTPP_IntegratedCircuit_Item("T3RecipeSelector", "science/general/AdvancedCircuit");
+        mAdvancedCircuit = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
         GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
 
         registerItemStacks();
@@ -383,10 +383,10 @@ public class GenericChem extends ItemPackage {
     private void recipeSodiumEthoxide() {
         // C2H5OH + Na → C2H5ONa + H
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1))
+            .itemInputs(GT_Utility.getIntegratedCircuit(16), MaterialsElements.getInstance().SODIUM.getDust(1))
             .itemOutputs(ItemUtils.getSimpleStack(mSodiumEthoxide, 9))
             .fluidInputs(Materials.Ethanol.getFluid(1000))
-            .fluidOutputs(ELEMENT.getInstance().HYDROGEN.getFluidStack(1000))
+            .fluidOutputs(MaterialsElements.getInstance().HYDROGEN.getFluidStack(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -475,7 +475,7 @@ public class GenericChem extends ItemPackage {
                 FluidUtils.getFluidStack("plasma.tin", 18000),
                 FluidUtils.getFluidStack("plasma.bismuth", 18000),
                 FluidUtils.getFluidStack("cryotheum", 4000))
-            .fluidOutputs(MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280))
+            .fluidOutputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
             .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -618,7 +618,7 @@ public class GenericChem extends ItemPackage {
                 getTierFourChip(),
                 CI.getEmptyCatalyst(10),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6L),
-                ELEMENT.getInstance().RUTHENIUM.getDust(6))
+                MaterialsElements.getInstance().RUTHENIUM.getDust(6))
             .itemOutputs(ItemUtils.getSimpleStack(mPurpleCatalyst, 10))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -646,7 +646,7 @@ public class GenericChem extends ItemPackage {
                 getTierThreeChip(),
                 CI.getEmptyCatalyst(10),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
-                ELEMENT.getInstance().RHODIUM.getDust(4))
+                MaterialsElements.getInstance().RHODIUM.getDust(4))
             .itemOutputs(ItemUtils.getSimpleStack(mPinkCatalyst, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -674,7 +674,7 @@ public class GenericChem extends ItemPackage {
                 CI.getEmptyCatalyst(5),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5))
-            .fluidInputs(MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000))
+            .fluidInputs(MaterialMisc.SOLID_ACID_MIXTURE.getFluidStack(1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

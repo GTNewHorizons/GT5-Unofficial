@@ -26,7 +26,7 @@ import static gregtech.api.util.GT_RecipeBuilder.QUARTER_INGOT;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
-import static gtPlusPlus.core.material.ALLOY.INCONEL_690;
+import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -48,7 +48,7 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class AssemblerRecipes implements Runnable {
 
@@ -3538,7 +3538,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, MaterialsUEVplus.TranscendentMetal, 1),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.SuperconductorUIVBase, 64),
-                ALLOY.QUANTUM.getPlate(8),
+                MaterialsAlloy.QUANTUM.getPlate(8),
                 ItemList.Electric_Pump_UIV.get(1))
             .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(100))
             .itemOutputs(ItemList.Thermal_Superconductor.get(1))
@@ -3549,7 +3549,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Thermal_Superconductor.get(2),
-                ALLOY.QUANTUM.getPlate(12),
+                MaterialsAlloy.QUANTUM.getPlate(12),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SuperconductorUIVBase, 8),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SixPhasedCopper, 3),
                 ItemList.Field_Generator_UEV.get(1))

@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
-import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlocksAbstract {
@@ -38,22 +38,22 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Abyssal Pipe Casing");
 
         int aMappingID = 0;
-        sMaterialMapping.put(aMappingID++, ALLOY.EGLIN_STEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.INCONEL_792.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.INCOLOY_MA956.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.NITINOL_60.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.ZERON_100.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.PIKYONIUM.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.TITANSTEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.ABYSSAL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.BABBIT_ALLOY.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.INCONEL_690.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.STELLITE.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.NITINOL_60.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.LAFIUM.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.CINOBITE.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.TITANSTEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, ALLOY.ABYSSAL.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.EGLIN_STEEL.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_792.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCOLOY_MA956.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.NITINOL_60.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ZERON_100.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.PIKYONIUM.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.TITANSTEEL.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ABYSSAL.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.BABBIT_ALLOY.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_690.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.STELLITE.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.NITINOL_60.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.LAFIUM.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.CINOBITE.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.TITANSTEEL.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ABYSSAL.getRgbAsHex());
     }
 
     @Override

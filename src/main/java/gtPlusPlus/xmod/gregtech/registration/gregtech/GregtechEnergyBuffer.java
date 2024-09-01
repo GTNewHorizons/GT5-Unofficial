@@ -18,7 +18,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTEEnergyBuffer;
 
 public class GregtechEnergyBuffer {
 
@@ -34,7 +34,7 @@ public class GregtechEnergyBuffer {
 
         // Energy Buffers
         GregtechItemList.Energy_Buffer_1by1_ULV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_ULV.ID,
                 "energybuffer.tier.00",
                 "Ultra Low Voltage Energy Buffer",
@@ -42,15 +42,10 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_LV.set(
-            new GregtechMetaEnergyBuffer(
-                Energy_Buffer_1by1_LV.ID,
-                "energybuffer.tier.01",
-                "Low Voltage Energy Buffer",
-                1,
-                "",
-                1).getStackForm(1L));
+            new MTEEnergyBuffer(Energy_Buffer_1by1_LV.ID, "energybuffer.tier.01", "Low Voltage Energy Buffer", 1, "", 1)
+                .getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_MV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_MV.ID,
                 "energybuffer.tier.02",
                 "Medium Voltage Energy Buffer",
@@ -58,7 +53,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_HV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_HV.ID,
                 "energybuffer.tier.03",
                 "High Voltage Energy Buffer",
@@ -66,7 +61,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_EV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_EV.ID,
                 "energybuffer.tier.04",
                 "Extreme Voltage Energy Buffer",
@@ -74,7 +69,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_IV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_IV.ID,
                 "energybuffer.tier.05",
                 "Insane Voltage Energy Buffer",
@@ -82,7 +77,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_LuV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_LuV.ID,
                 "energybuffer.tier.06",
                 "Ludicrous Voltage Energy Buffer",
@@ -90,7 +85,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_ZPM.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_ZPM.ID,
                 "energybuffer.tier.07",
                 "ZPM Voltage Energy Buffer",
@@ -98,7 +93,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_UV.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_UV.ID,
                 "energybuffer.tier.08",
                 "Ultimate Voltage Energy Buffer",
@@ -106,7 +101,7 @@ public class GregtechEnergyBuffer {
                 "",
                 1).getStackForm(1L));
         GregtechItemList.Energy_Buffer_1by1_MAX.set(
-            new GregtechMetaEnergyBuffer(
+            new MTEEnergyBuffer(
                 Energy_Buffer_1by1_MAX.ID,
                 "energybuffer.tier.09",
                 "MAX Voltage Energy Buffer",

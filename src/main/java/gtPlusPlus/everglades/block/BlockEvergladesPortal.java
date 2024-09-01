@@ -21,9 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.everglades.world.TeleporterDimensionMod;
 
 public class BlockEvergladesPortal extends BlockBreakable implements ITileTooltip {
@@ -75,7 +75,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
 
         for (BlockPos side : portal.getSurroundingBlocks()) {
             Block b = side.getBlockAtPos();
-            if (b == Dimension_Everglades.blockPortalFrame || b == Dimension_Everglades.portalBlock) {
+            if (b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock) {
                 blockCount++;
             }
         }
@@ -135,12 +135,12 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     public boolean tryToCreatePortal(World par1World, int par2, int par3, int par4) {
         byte b0 = 0;
         byte b1 = 0;
-        if (par1World.getBlock(par2 - 1, par3, par4) == Dimension_Everglades.blockPortalFrame
-            || par1World.getBlock(par2 + 1, par3, par4) == Dimension_Everglades.blockPortalFrame) {
+        if (par1World.getBlock(par2 - 1, par3, par4) == DimensionEverglades.blockPortalFrame
+            || par1World.getBlock(par2 + 1, par3, par4) == DimensionEverglades.blockPortalFrame) {
             b0 = 1;
         }
-        if (par1World.getBlock(par2, par3, par4 - 1) == Dimension_Everglades.blockPortalFrame
-            || par1World.getBlock(par2, par3, par4 + 1) == Dimension_Everglades.blockPortalFrame) {
+        if (par1World.getBlock(par2, par3, par4 - 1) == DimensionEverglades.blockPortalFrame
+            || par1World.getBlock(par2, par3, par4 + 1) == DimensionEverglades.blockPortalFrame) {
             b1 = 1;
         }
         if (b0 == b1) {
@@ -158,7 +158,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                     if (l != -1 && l != 2 || i1 != -1 && i1 != 3) {
                         Block j1 = par1World.getBlock(par2 + b0 * l, par3 + i1, par4 + b1 * l);
                         if (flag) {
-                            if (j1 != Dimension_Everglades.blockPortalFrame) {
+                            if (j1 != DimensionEverglades.blockPortalFrame) {
                                 return false;
                             }
                         }
@@ -189,7 +189,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         World par1World = portal.world;
         for (BlockPos side : portal.getSurroundingBlocks()) {
             Block b = side.getBlockAtPos();
-            if (b == Dimension_Everglades.blockPortalFrame || b == Dimension_Everglades.portalBlock) {
+            if (b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock) {
                 blockCount++;
             }
         }
@@ -208,22 +208,22 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         for (i1 = y; par1World.getBlock(x, i1 - 1, z) == this; --i1) {
             ;
         }
-        if (par1World.getBlock(x, i1 - 1, z) != Dimension_Everglades.blockPortalFrame) {
+        if (par1World.getBlock(x, i1 - 1, z) != DimensionEverglades.blockPortalFrame) {
             par1World.setBlockToAir(x, y, z);
         } else {
             int j1;
             for (j1 = 1; j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this; ++j1) {
                 ;
             }
-            if (j1 == 3 && par1World.getBlock(x, i1 + j1, z) == Dimension_Everglades.blockPortalFrame) {
+            if (j1 == 3 && par1World.getBlock(x, i1 + j1, z) == DimensionEverglades.blockPortalFrame) {
                 boolean flag = par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this;
                 boolean flag1 = par1World.getBlock(x, y, z - 1) == this || par1World.getBlock(x, y, z + 1) == this;
                 if (flag && flag1) {
                     par1World.setBlockToAir(x, y, z);
                 } else {
-                    if ((par1World.getBlock(x + b0, y, z + b1) != Dimension_Everglades.blockPortalFrame
+                    if ((par1World.getBlock(x + b0, y, z + b1) != DimensionEverglades.blockPortalFrame
                         || par1World.getBlock(x - b0, y, z - b1) != this)
-                        && (par1World.getBlock(x - b0, y, z - b1) != Dimension_Everglades.blockPortalFrame
+                        && (par1World.getBlock(x - b0, y, z - b1) != DimensionEverglades.blockPortalFrame
                             || par1World.getBlock(x + b0, y, z + b1) != this)) {
                         par1World.setBlockToAir(x, y, z);
                     }
@@ -288,14 +288,14 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             && ((par5Entity instanceof EntityPlayerMP thePlayer))) {
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 100;
-            } else if (thePlayer.dimension != Dimension_Everglades.DIMID) {
+            } else if (thePlayer.dimension != DimensionEverglades.DIMID) {
                 thePlayer.timeUntilPortal = 100;
                 thePlayer.mcServer.getConfigurationManager()
                     .transferPlayerToDimension(
                         thePlayer,
-                        Dimension_Everglades.DIMID,
+                        DimensionEverglades.DIMID,
                         new TeleporterDimensionMod(
-                            thePlayer.mcServer.worldServerForDimension(Dimension_Everglades.DIMID)));
+                            thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIMID)));
             } else {
                 thePlayer.timeUntilPortal = 100;
                 thePlayer.mcServer.getConfigurationManager()
@@ -322,33 +322,33 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
      * A randomly called display update to be able to add particles or other items for display
      */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        if (CORE.RANDOM.nextInt(100) == 0) {
+        if (GTPPCore.RANDOM.nextInt(100) == 0) {
             par1World.playSound(
                 par2 + 0.5D,
                 par3 + 0.5D,
                 par4 + 0.5D,
                 "portal.portal",
                 0.5F,
-                CORE.RANDOM.nextFloat() * 0.4F + 0.8F,
+                GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F,
                 false);
         }
         for (int l = 0; l < 4; ++l) {
-            double d0 = par2 + CORE.RANDOM.nextFloat();
-            double d1 = par3 + CORE.RANDOM.nextFloat();
-            double d2 = par4 + CORE.RANDOM.nextFloat();
+            double d0 = par2 + GTPPCore.RANDOM.nextFloat();
+            double d1 = par3 + GTPPCore.RANDOM.nextFloat();
+            double d2 = par4 + GTPPCore.RANDOM.nextFloat();
             double d3 = 0.0D;
             double d4 = 0.0D;
             double d5 = 0.0D;
-            int i1 = CORE.RANDOM.nextInt(2) * 2 - 1;
-            d3 = (CORE.RANDOM.nextFloat() - 0.5D) * 0.5D;
-            d4 = (CORE.RANDOM.nextFloat() - 0.5D) * 0.5D;
-            d5 = (CORE.RANDOM.nextFloat() - 0.5D) * 0.5D;
+            int i1 = GTPPCore.RANDOM.nextInt(2) * 2 - 1;
+            d3 = (GTPPCore.RANDOM.nextFloat() - 0.5D) * 0.5D;
+            d4 = (GTPPCore.RANDOM.nextFloat() - 0.5D) * 0.5D;
+            d5 = (GTPPCore.RANDOM.nextFloat() - 0.5D) * 0.5D;
             if (par1World.getBlock(par2 - 1, par3, par4) != this && par1World.getBlock(par2 + 1, par3, par4) != this) {
                 d0 = par2 + 0.5D + 0.25D * i1;
-                d3 = CORE.RANDOM.nextFloat() * 2.0F * i1;
+                d3 = GTPPCore.RANDOM.nextFloat() * 2.0F * i1;
             } else {
                 d2 = par4 + 0.5D + 0.25D * i1;
-                d5 = CORE.RANDOM.nextFloat() * 2.0F * i1;
+                d5 = GTPPCore.RANDOM.nextFloat() * 2.0F * i1;
             }
             par1World.spawnParticle("reddust", d0 + 0.1D, d1, d2, d3, d4, d5);
             par1World.spawnParticle("smoke", d0, d1 + 0.1D, d2, 0, 0, 0);

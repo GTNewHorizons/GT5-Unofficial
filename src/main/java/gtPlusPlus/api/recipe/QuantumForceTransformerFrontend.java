@@ -8,7 +8,7 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GT_NEI_DefaultHandler;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_QuantumForceTransformer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEQuantumForceTransformer;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -27,7 +27,7 @@ public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
     public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         // Replicates the default behaviour, but since we cannot actually modify the mChance variable we need to
         // essentially re-implement it.
-        int chance = GregtechMetaTileEntity_QuantumForceTransformer.getBaseOutputChance(neiCachedRecipe.mRecipe);
+        int chance = MTEQuantumForceTransformer.getBaseOutputChance(neiCachedRecipe.mRecipe);
         String chanceFormat = getChanceFormat(chance);
         for (PositionedStack stack : neiCachedRecipe.mOutputs) {
             if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {

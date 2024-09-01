@@ -25,16 +25,16 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.data.Quad;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.NONMATERIAL;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
-import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
+import gtPlusPlus.xmod.bop.BiomesOPlentyHandler;
+import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 
 public class MilledOreProcessing extends ItemPackage {
@@ -217,57 +217,57 @@ public class MilledOreProcessing extends ItemPackage {
         // milledSphalerite
         registerOreDataForMilledType(
             SphaleriteFlotationFroth,
-            ELEMENT.getInstance().ZINC,
+            MaterialsElements.getInstance().ZINC,
             180,
-            ELEMENT.getInstance().IRON,
+            MaterialsElements.getInstance().IRON,
             120,
-            ELEMENT.getInstance().INDIUM,
+            MaterialsElements.getInstance().INDIUM,
             64,
-            ELEMENT.getInstance().GERMANIUM,
+            MaterialsElements.getInstance().GERMANIUM,
             15);
         // milledChalcopyrite
         registerOreDataForMilledType(
             ChalcopyriteFlotationFroth,
-            ELEMENT.getInstance().COPPER,
+            MaterialsElements.getInstance().COPPER,
             180,
-            ELEMENT.getInstance().IRON,
+            MaterialsElements.getInstance().IRON,
             120,
-            ELEMENT.getInstance().CADMIUM,
+            MaterialsElements.getInstance().CADMIUM,
             50,
-            ELEMENT.getInstance().INDIUM,
+            MaterialsElements.getInstance().INDIUM,
             10);
         // milledNickel
         registerOreDataForMilledType(
             NickelFlotationFroth,
-            ELEMENT.getInstance().NICKEL,
+            MaterialsElements.getInstance().NICKEL,
             150,
-            ELEMENT.getInstance().COBALT,
+            MaterialsElements.getInstance().COBALT,
             120,
-            ELEMENT.getInstance().RHODIUM,
+            MaterialsElements.getInstance().RHODIUM,
             32,
-            ELEMENT.getInstance().RUTHENIUM,
+            MaterialsElements.getInstance().RUTHENIUM,
             16);
         // milledPlatinum
         registerOreDataForMilledType(
             PlatinumFlotationFroth,
-            ELEMENT.getInstance().PLATINUM,
+            MaterialsElements.getInstance().PLATINUM,
             120,
-            ELEMENT.getInstance().RHODIUM,
+            MaterialsElements.getInstance().RHODIUM,
             60,
-            ELEMENT.getInstance().SELENIUM,
+            MaterialsElements.getInstance().SELENIUM,
             40,
-            ELEMENT.getInstance().TELLURIUM,
+            MaterialsElements.getInstance().TELLURIUM,
             10);
         // milledPentlandite
         registerOreDataForMilledType(
             PentlanditeFlotationFroth,
-            ELEMENT.getInstance().IRON,
+            MaterialsElements.getInstance().IRON,
             150,
-            ELEMENT.getInstance().NICKEL,
+            MaterialsElements.getInstance().NICKEL,
             100,
-            ELEMENT.getInstance().PROMETHIUM,
+            MaterialsElements.getInstance().PROMETHIUM,
             20,
-            ELEMENT.getInstance().HAFNIUM,
+            MaterialsElements.getInstance().HAFNIUM,
             10);
 
         /*
@@ -276,68 +276,68 @@ public class MilledOreProcessing extends ItemPackage {
         // milledRedstone
         registerOreDataForMilledType(
             RedstoneFlotationFroth,
-            NONMATERIAL.REDSTONE,
+            MaterialsOther.REDSTONE,
             300,
-            ELEMENT.getInstance().CHROMIUM,
+            MaterialsElements.getInstance().CHROMIUM,
             60,
             MaterialUtils.generateMaterialFromGtENUM(Materials.Firestone),
             45,
-            ELEMENT.getInstance().DYSPROSIUM,
+            MaterialsElements.getInstance().DYSPROSIUM,
             16);
         // milledSpessartine
         registerOreDataForMilledType(
             SpessartineFlotationFroth,
-            ELEMENT.getInstance().MANGANESE,
+            MaterialsElements.getInstance().MANGANESE,
             150,
-            ELEMENT.getInstance().ALUMINIUM,
+            MaterialsElements.getInstance().ALUMINIUM,
             90,
-            ELEMENT.getInstance().OSMIUM,
+            MaterialsElements.getInstance().OSMIUM,
             30,
-            ELEMENT.getInstance().STRONTIUM,
+            MaterialsElements.getInstance().STRONTIUM,
             20);
         // milledGrossular
         registerOreDataForMilledType(
             GrossularFlotationFroth,
-            ELEMENT.getInstance().CALCIUM,
+            MaterialsElements.getInstance().CALCIUM,
             180,
-            ELEMENT.getInstance().ALUMINIUM,
+            MaterialsElements.getInstance().ALUMINIUM,
             110,
-            ELEMENT.getInstance().TUNGSTEN,
+            MaterialsElements.getInstance().TUNGSTEN,
             60,
-            ELEMENT.getInstance().THALLIUM,
+            MaterialsElements.getInstance().THALLIUM,
             15);
         // milledAlmandine
         registerOreDataForMilledType(
             AlmandineFlotationFroth,
-            ELEMENT.getInstance().ALUMINIUM,
+            MaterialsElements.getInstance().ALUMINIUM,
             150,
-            ELEMENT.getInstance().MAGNESIUM,
+            MaterialsElements.getInstance().MAGNESIUM,
             75,
-            ELEMENT.getInstance().YTTRIUM,
+            MaterialsElements.getInstance().YTTRIUM,
             25,
-            ELEMENT.getInstance().YTTERBIUM,
+            MaterialsElements.getInstance().YTTERBIUM,
             15);
         // milledPyrope
         registerOreDataForMilledType(
             PyropeFlotationFroth,
-            ELEMENT.getInstance().MAGNESIUM,
+            MaterialsElements.getInstance().MAGNESIUM,
             110,
-            ELEMENT.getInstance().MANGANESE,
+            MaterialsElements.getInstance().MANGANESE,
             70,
             MaterialUtils.generateMaterialFromGtENUM(Materials.Borax),
             60,
-            ELEMENT.getInstance().RHENIUM,
+            MaterialsElements.getInstance().RHENIUM,
             20);
         // milledMonazite TODO
         registerOreDataForMilledType(
             MonaziteFlotationFroth,
-            ELEMENT.getInstance().ERBIUM,
+            MaterialsElements.getInstance().ERBIUM,
             64,
-            ELEMENT.getInstance().LANTHANUM,
+            MaterialsElements.getInstance().LANTHANUM,
             32,
-            ELEMENT.getInstance().LUTETIUM,
+            MaterialsElements.getInstance().LUTETIUM,
             16,
-            ELEMENT.getInstance().EUROPIUM,
+            MaterialsElements.getInstance().EUROPIUM,
             8);
     }
 
@@ -648,16 +648,16 @@ public class MilledOreProcessing extends ItemPackage {
 
         ItemStack aCrushedPine = ItemUtils.getSimpleStack(AgriculturalChem.mCrushedPine, 1);
 
-        aLogs.add(ItemUtils.getSimpleStack(BOP_Block_Registrator.log_Pine));
-        aLeaves.add(ItemUtils.getSimpleStack(BOP_Block_Registrator.leaves_Pine));
-        aSaplings.add(ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine));
+        aLogs.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.log_Pine));
+        aLeaves.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.leaves_Pine));
+        aSaplings.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine));
         aPinecones.add(ItemUtils.getSimpleStack(AgriculturalChem.mPinecone, 1));
 
         if (BiomesOPlenty.isModLoaded()) {
-            aLogs.add(HANDLER_BiomesOPlenty.getStack(HANDLER_BiomesOPlenty.logs4, 0, 1));
-            aLeaves.add(HANDLER_BiomesOPlenty.getStack(HANDLER_BiomesOPlenty.colorizedLeaves2, 1, 1));
-            aSaplings.add(HANDLER_BiomesOPlenty.getStack(HANDLER_BiomesOPlenty.colorizedSaplings, 5, 1));
-            aPinecones.add(ItemUtils.simpleMetaStack(HANDLER_BiomesOPlenty.mPineCone, 13, 1));
+            aLogs.add(BiomesOPlentyHandler.getStack(BiomesOPlentyHandler.logs4, 0, 1));
+            aLeaves.add(BiomesOPlentyHandler.getStack(BiomesOPlentyHandler.colorizedLeaves2, 1, 1));
+            aSaplings.add(BiomesOPlentyHandler.getStack(BiomesOPlentyHandler.colorizedSaplings, 5, 1));
+            aPinecones.add(ItemUtils.simpleMetaStack(BiomesOPlentyHandler.mPineCone, 13, 1));
         }
         if (Forestry.isModLoaded()) {
             ItemStack aForestryLog = ItemUtils.getItemStackFromFQRN("Forestry:logs", 1);

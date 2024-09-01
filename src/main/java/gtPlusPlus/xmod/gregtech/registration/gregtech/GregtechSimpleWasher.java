@@ -27,14 +27,14 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.data.Quad;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
 
     public static void run() {
-        if (CORE.ConfigSwitches.enableMachine_SimpleWasher) {
+        if (GTPPCore.ConfigSwitches.enableMachine_SimpleWasher) {
             generateDirtyDustRecipes();
             generateDirtyCrushedRecipes();
             // Register the Simple Washer Entity.
@@ -91,7 +91,7 @@ public class GregtechSimpleWasher {
                     "Deprecated ULV Simple Washer",
                     0,
                     new String[] { "It's like an automatic Cauldron for washing dusts.",
-                        "§cDEPRECATED: No recipe.§r Make a Simple Washer I.", CORE.GT_Tooltip.get() },
+                        "§cDEPRECATED: No recipe.§r Make a Simple Washer I.", GTPPCore.GT_Tooltip.get() },
                     simpleWasherRecipes,
                     1,
                     1,
@@ -113,7 +113,7 @@ public class GregtechSimpleWasher {
                             washer.getValue_3(),
                             tier,
                             new String[] { "It's like an automatic Cauldron for washing dusts.",
-                                CORE.GT_Tooltip.get() },
+                                GTPPCore.GT_Tooltip.get() },
                             simpleWasherRecipes,
                             1,
                             1,

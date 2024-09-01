@@ -26,7 +26,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_ToggleVisual;
+import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
 public class MetaCustomCoverItem extends Item {
 
@@ -75,7 +75,7 @@ public class MetaCustomCoverItem extends Item {
             GregTech_API.registerCover(
                 thisStack,
                 new GT_MultiTexture(new ITexture[] { new GT_RenderedTexture(mTextures[i]) }),
-                new GTPP_Cover_ToggleVisual());
+                new CoverToggleVisual());
         }
     }
 

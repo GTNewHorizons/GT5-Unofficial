@@ -34,7 +34,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -374,7 +374,7 @@ public class Utils {
             return null;
         }
 
-        ItemStack stack = CORE.sBookList.get(mapping);
+        ItemStack stack = GTPPCore.sBookList.get(mapping);
         if (stack != null) {
             return GT_Utility.copyAmount(1L, stack);
         }
@@ -426,7 +426,7 @@ public class Utils {
         GT_Log.out.println(logMessage);
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);
-        CORE.sBookList.put(mapping, stack);
+        GTPPCore.sBookList.put(mapping, stack);
 
         Logger.INFO(String.format("Creating book: %s by %s. Using Meta %d.", title, author, ID));
 

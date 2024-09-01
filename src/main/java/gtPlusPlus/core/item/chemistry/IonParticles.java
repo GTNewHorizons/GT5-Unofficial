@@ -15,7 +15,7 @@ import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.Utils;
 
 public class IonParticles extends BaseItemParticle {
@@ -24,16 +24,16 @@ public class IonParticles extends BaseItemParticle {
     public static HashMap<Integer, String> MetaToNameMap = new HashMap<>();
 
     public IonParticles() {
-        super("Ion", ELEMENT.NAMES.length, EnumRarity.rare);
+        super("Ion", MaterialsElements.NAMES.length, EnumRarity.rare);
     }
 
-    public static IIcon[] overlays = new IIcon[ELEMENT.NAMES.length];
+    public static IIcon[] overlays = new IIcon[MaterialsElements.NAMES.length];
     public static IIcon baseTexture;
 
     static {
         // Generate Ions
         int key = 0;
-        for (String s : ELEMENT.NAMES) {
+        for (String s : MaterialsElements.NAMES) {
             // Map names to Meta
             NameToMetaMap.put(Utils.sanitizeString(s.toLowerCase()), key);
             MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
@@ -60,7 +60,7 @@ public class IonParticles extends BaseItemParticle {
 
     @Override
     public String getUnlocalizedName(final ItemStack itemStack) {
-        return "item.particle.ion" + "." + ELEMENT.NAMES[itemStack.getItemDamage()];
+        return "item.particle.ion" + "." + MaterialsElements.NAMES[itemStack.getItemDamage()];
     }
 
     private static boolean createNBT(ItemStack rStack) {

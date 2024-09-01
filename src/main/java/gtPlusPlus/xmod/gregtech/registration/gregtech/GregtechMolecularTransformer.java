@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_MolecularTransform
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialMolecularTransformer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialMolecularTransformer;
 
 public class GregtechMolecularTransformer {
 
@@ -15,7 +15,7 @@ public class GregtechMolecularTransformer {
 
     private static void run1() {
         GregtechItemList.Controller_MolecularTransformer.set(
-            new GregtechMetaTileEntity_IndustrialMolecularTransformer(
+            new MTEIndustrialMolecularTransformer(
                 Controller_MolecularTransformer.ID,
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));

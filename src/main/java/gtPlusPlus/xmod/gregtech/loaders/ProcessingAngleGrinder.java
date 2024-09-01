@@ -11,15 +11,15 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
-public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, Runnable {
+public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
 
     public ProcessingAngleGrinder() {
         GregtechOrePrefixes.toolAngleGrinder.add(this);
@@ -128,6 +128,6 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                 CI.getElectricMotor(aVoltageTier, 1), 'S', OrePrefixes.screw.get(Materials.Titanium), 'L',
                 OrePrefixes.stickLong.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial), 'G',
-                ELEMENT.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
+                MaterialsElements.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
     }
 }

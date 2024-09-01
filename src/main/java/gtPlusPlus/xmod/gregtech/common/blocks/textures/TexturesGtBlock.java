@@ -12,11 +12,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 
 public class TexturesGtBlock {
 
-    private static final boolean mAnimated = CORE.ConfigSwitches.enableAnimatedTextures;
+    private static final boolean mAnimated = GTPPCore.ConfigSwitches.enableAnimatedTextures;
     private static final AutoMap<Runnable> mCustomiconMap = new AutoMap<>();
 
     /*

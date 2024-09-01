@@ -5,11 +5,12 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.MaterialsOres;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
 /**
  * Created by bartimaeusnek on 19.04.2018.
@@ -21,35 +22,34 @@ public class GTppHelper {
 
     public static void generate_OreIDs() {
         short n = 0;
-        for (; n < gtPlusPlus.core.material.ORES.class.getFields().length; ++n) {
+        for (; n < MaterialsOres.class.getFields().length; ++n) {
             try {
                 Short i = (short) (n + 1);
-                Material m = ((Material) gtPlusPlus.core.material.ORES.class.getFields()[n]
-                    .get(gtPlusPlus.core.material.ORES.class.getFields()[n]));
+                Material m = ((Material) MaterialsOres.class.getFields()[n].get(MaterialsOres.class.getFields()[n]));
                 decodeoresGTpp.put(i, m);
                 encodeoresGTpp.put(m, i);
             } catch (Exception ignored) {}
         }
         // Manually add ores from other places than the ore class
         // Fluorite
-        decodeoresGTpp.put((short) (++n + 1), FLUORIDES.FLUORITE);
-        encodeoresGTpp.put(FLUORIDES.FLUORITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialsFluorides.FLUORITE);
+        encodeoresGTpp.put(MaterialsFluorides.FLUORITE, (short) (n + 1));
         // Rare Earths
-        decodeoresGTpp.put((short) (++n + 1), MISC_MATERIALS.RARE_EARTH_LOW);
-        encodeoresGTpp.put(MISC_MATERIALS.RARE_EARTH_LOW, (short) (n + 1));
-        decodeoresGTpp.put((short) (++n + 1), MISC_MATERIALS.RARE_EARTH_MID);
-        encodeoresGTpp.put(MISC_MATERIALS.RARE_EARTH_MID, (short) (n + 1));
-        decodeoresGTpp.put((short) (++n + 1), MISC_MATERIALS.RARE_EARTH_HIGH);
-        encodeoresGTpp.put(MISC_MATERIALS.RARE_EARTH_HIGH, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialMisc.RARE_EARTH_LOW);
+        encodeoresGTpp.put(MaterialMisc.RARE_EARTH_LOW, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialMisc.RARE_EARTH_MID);
+        encodeoresGTpp.put(MaterialMisc.RARE_EARTH_MID, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialMisc.RARE_EARTH_HIGH);
+        encodeoresGTpp.put(MaterialMisc.RARE_EARTH_HIGH, (short) (n + 1));
         // Koboldite
-        decodeoresGTpp.put((short) (++n + 1), ALLOY.KOBOLDITE);
-        encodeoresGTpp.put(ALLOY.KOBOLDITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialsAlloy.KOBOLDITE);
+        encodeoresGTpp.put(MaterialsAlloy.KOBOLDITE, (short) (n + 1));
         // Runite
-        decodeoresGTpp.put((short) (++n + 1), ELEMENT.STANDALONE.RUNITE);
-        encodeoresGTpp.put(ELEMENT.STANDALONE.RUNITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialsElements.STANDALONE.RUNITE);
+        encodeoresGTpp.put(MaterialsElements.STANDALONE.RUNITE, (short) (n + 1));
         // Ancient granite
-        decodeoresGTpp.put((short) (++n + 1), ELEMENT.STANDALONE.GRANITE);
-        encodeoresGTpp.put(ELEMENT.STANDALONE.GRANITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), MaterialsElements.STANDALONE.GRANITE);
+        encodeoresGTpp.put(MaterialsElements.STANDALONE.GRANITE, (short) (n + 1));
     }
 
     public static boolean isGTppBlock(Block tBlock) {

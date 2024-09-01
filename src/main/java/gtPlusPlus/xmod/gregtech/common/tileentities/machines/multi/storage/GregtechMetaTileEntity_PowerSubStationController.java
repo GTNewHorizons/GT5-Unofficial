@@ -12,8 +12,8 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
-import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
-import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import javax.annotation.Nullable;
 
@@ -69,17 +69,17 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
-public class GregtechMetaTileEntity_PowerSubStationController extends
-    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_PowerSubStationController
+    extends GTPPMultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> implements ISurvivalConstructable {
 
     private static enum TopState {
         MayBeTop,
@@ -135,7 +135,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
             .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
             .addSubChannelUsage("height", "Height of structure")
-            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -896,13 +896,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 40))
             .widget(
-                new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ENERGY_FRAME)
+                new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_ENERGY_FRAME)
                     .setPos(4, 155)
                     .setSize(149, 7))
             .widget(new FakeSyncWidget.FloatSyncer(this::getProgress, val -> clientProgress = val))
             .widget(
                 new ProgressBar().setProgress(this::getProgress)
-                    .setTexture(GTPP_UITextures.PROGRESSBAR_PSS_ENERGY, 147)
+                    .setTexture(GTPPUITextures.PROGRESSBAR_PSS_ENERGY, 147)
                     .setDirection(ProgressBar.Direction.RIGHT)
                     .setPos(5, 156)
                     .setSize(147, 5))

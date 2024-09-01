@@ -9,7 +9,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class TranscendentPlasmaMixerRecipes implements Runnable {
 
@@ -145,9 +145,9 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(
-                new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1000),
+                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1000),
                 Materials.Thorium.getPlasma(1000L),
-                new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000),
+                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000),
                 Materials.Calcium.getPlasma(1000L),
                 MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000L))
             .fluidOutputs(MaterialsUEVplus.Creon.getPlasma(5000L))

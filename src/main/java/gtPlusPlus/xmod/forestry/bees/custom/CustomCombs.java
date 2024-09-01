@@ -11,8 +11,8 @@ public enum CustomCombs {
     SILICON("silicon", true, Materials.Silicon, 100),
     RUBBER("rubber", true, Materials.Rubber, 100),
     PLASTIC("polyethylene", true, Materials.Plastic, 75),
-    PTFE("polytetrafluoroethylene", true, GTPP_Bees.PTFE, 50),
-    PBS("styrene-butadiene", true, GTPP_Bees.PBS, 25),
+    PTFE("polytetrafluoroethylene", true, GTPPBees.PTFE, 50),
+    PBS("styrene-butadiene", true, GTPPBees.PBS, 25),
 
     // Fuels
     BIOMASS("biomass", true, Materials.Biomass, 100),

@@ -2,9 +2,9 @@ package gtPlusPlus.everglades.gen.gt;
 
 import java.util.Hashtable;
 
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.ORES;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.MaterialsOres;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
 public class WorldGen_Ores {
 
@@ -15,10 +15,10 @@ public class WorldGen_Ores {
         1,
         1,
         128,
-        ELEMENT.getInstance().IRON,
-        ELEMENT.getInstance().IRON,
-        ELEMENT.getInstance().IRON,
-        ELEMENT.getInstance().IRON);
+        MaterialsElements.getInstance().IRON,
+        MaterialsElements.getInstance().IRON,
+        MaterialsElements.getInstance().IRON,
+        MaterialsElements.getInstance().IRON);
 
     /**
      * Custom ore Veins
@@ -30,10 +30,10 @@ public class WorldGen_Ores {
         30,
         2,
         16,
-        ORES.AGARDITE_CD,
-        ORES.AGARDITE_LA,
-        ORES.DEMICHELEITE_BR,
-        ORES.IRARSITE);
+        MaterialsOres.AGARDITE_CD,
+        MaterialsOres.AGARDITE_LA,
+        MaterialsOres.DEMICHELEITE_BR,
+        MaterialsOres.IRARSITE);
 
     public static WorldGen_GT_Ore_Layer Vein2 = new WorldGen_GT_Ore_Layer(
         "vein2",
@@ -42,10 +42,10 @@ public class WorldGen_Ores {
         30,
         2,
         16,
-        ORES.AGARDITE_ND,
-        ORES.AGARDITE_Y,
-        ORES.KASHINITE,
-        ORES.CERITE);
+        MaterialsOres.AGARDITE_ND,
+        MaterialsOres.AGARDITE_Y,
+        MaterialsOres.KASHINITE,
+        MaterialsOres.CERITE);
 
     public static WorldGen_GT_Ore_Layer Vein3 = new WorldGen_GT_Ore_Layer(
         "vein3",
@@ -54,10 +54,10 @@ public class WorldGen_Ores {
         30,
         3,
         32,
-        ORES.CERITE,
-        ORES.NICHROMITE,
-        ORES.XENOTIME,
-        ORES.HIBONITE);
+        MaterialsOres.CERITE,
+        MaterialsOres.NICHROMITE,
+        MaterialsOres.XENOTIME,
+        MaterialsOres.HIBONITE);
 
     public static WorldGen_GT_Ore_Layer Vein4 = new WorldGen_GT_Ore_Layer(
         "vein4",
@@ -66,10 +66,10 @@ public class WorldGen_Ores {
         40,
         3,
         32,
-        ORES.GEIKIELITE,
-        ORES.CRYOLITE,
-        ORES.GADOLINITE_CE,
-        ORES.AGARDITE_ND);
+        MaterialsOres.GEIKIELITE,
+        MaterialsOres.CRYOLITE,
+        MaterialsOres.GADOLINITE_CE,
+        MaterialsOres.AGARDITE_ND);
 
     public static WorldGen_GT_Ore_Layer Vein5 = new WorldGen_GT_Ore_Layer(
         "vein5",
@@ -78,10 +78,10 @@ public class WorldGen_Ores {
         20,
         2,
         48,
-        ORES.HIBONITE,
-        ORES.YTTRIALITE,
-        ORES.ZIRCONILITE,
-        ORES.CERITE);
+        MaterialsOres.HIBONITE,
+        MaterialsOres.YTTRIALITE,
+        MaterialsOres.ZIRCONILITE,
+        MaterialsOres.CERITE);
     public static WorldGen_GT_Ore_Layer Vein6 = new WorldGen_GT_Ore_Layer(
         "vein6",
         0,
@@ -89,10 +89,10 @@ public class WorldGen_Ores {
         20,
         2,
         48,
-        ORES.XENOTIME,
-        ORES.ZIRKELITE,
-        ORES.CROCROITE,
-        ORES.IRARSITE);
+        MaterialsOres.XENOTIME,
+        MaterialsOres.ZIRKELITE,
+        MaterialsOres.CROCROITE,
+        MaterialsOres.IRARSITE);
     public static WorldGen_GT_Ore_Layer Vein7 = new WorldGen_GT_Ore_Layer(
         "vein7",
         40,
@@ -100,10 +100,10 @@ public class WorldGen_Ores {
         20,
         2,
         48,
-        ORES.HONEAITE,
-        ORES.MIESSIITE,
-        ORES.SAMARSKITE_Y,
-        ORES.SAMARSKITE_YB);
+        MaterialsOres.HONEAITE,
+        MaterialsOres.MIESSIITE,
+        MaterialsOres.SAMARSKITE_Y,
+        MaterialsOres.SAMARSKITE_YB);
     public static WorldGen_GT_Ore_Layer Vein8 = new WorldGen_GT_Ore_Layer(
         "vein8",
         0,
@@ -111,10 +111,10 @@ public class WorldGen_Ores {
         20,
         2,
         48,
-        ORES.TITANITE,
-        ORES.ZIMBABWEITE,
-        ORES.ZIRCON,
-        ORES.FLORENCITE);
+        MaterialsOres.TITANITE,
+        MaterialsOres.ZIMBABWEITE,
+        MaterialsOres.ZIRCON,
+        MaterialsOres.FLORENCITE);
 
     public static WorldGen_GT_Ore_Layer Vein9 = new WorldGen_GT_Ore_Layer(
         "vein9",
@@ -123,10 +123,10 @@ public class WorldGen_Ores {
         20,
         1,
         48,
-        ORES.LANTHANITE_CE,
-        FLUORIDES.FLUORITE,
-        ORES.LAFOSSAITE,
-        ORES.FLORENCITE);
+        MaterialsOres.LANTHANITE_CE,
+        MaterialsFluorides.FLUORITE,
+        MaterialsOres.LAFOSSAITE,
+        MaterialsOres.FLORENCITE);
     public static WorldGen_GT_Ore_Layer Vein10 = new WorldGen_GT_Ore_Layer(
         "vein10",
         20,
@@ -134,10 +134,10 @@ public class WorldGen_Ores {
         20,
         2,
         32,
-        ORES.GEIKIELITE,
-        ORES.YTTROCERITE,
-        ORES.LANTHANITE_LA,
-        ORES.RADIOBARITE);
+        MaterialsOres.GEIKIELITE,
+        MaterialsOres.YTTROCERITE,
+        MaterialsOres.LANTHANITE_LA,
+        MaterialsOres.RADIOBARITE);
     public static WorldGen_GT_Ore_Layer Vein11 = new WorldGen_GT_Ore_Layer(
         "vein11",
         30,
@@ -145,10 +145,10 @@ public class WorldGen_Ores {
         20,
         1,
         48,
-        FLUORIDES.FLUORITE,
-        ORES.KASHINITE,
-        ORES.ZIRCON,
-        ORES.CRYOLITE);
+        MaterialsFluorides.FLUORITE,
+        MaterialsOres.KASHINITE,
+        MaterialsOres.ZIRCON,
+        MaterialsOres.CRYOLITE);
     public static WorldGen_GT_Ore_Layer Vein12 = new WorldGen_GT_Ore_Layer(
         "vein12",
         40,
@@ -156,10 +156,10 @@ public class WorldGen_Ores {
         20,
         3,
         32,
-        ORES.CERITE,
-        ORES.ALBURNITE,
-        ORES.MIESSIITE,
-        ORES.HIBONITE);
+        MaterialsOres.CERITE,
+        MaterialsOres.ALBURNITE,
+        MaterialsOres.MIESSIITE,
+        MaterialsOres.HIBONITE);
 
     /**
      * Best Rarest Veins 2017
@@ -171,10 +171,10 @@ public class WorldGen_Ores {
         5,
         1,
         16,
-        ORES.CRYOLITE,
-        ORES.RADIOBARITE,
-        ORES.HONEAITE,
-        ORES.FLORENCITE);
+        MaterialsOres.CRYOLITE,
+        MaterialsOres.RADIOBARITE,
+        MaterialsOres.HONEAITE,
+        MaterialsOres.FLORENCITE);
 
     public static WorldGen_GT_Ore_Layer Vein14 = new WorldGen_GT_Ore_Layer(
         "vein14",
@@ -183,10 +183,10 @@ public class WorldGen_Ores {
         8,
         2,
         16,
-        ORES.DEMICHELEITE_BR,
-        ORES.PERROUDITE,
-        ORES.IRARSITE,
-        ORES.RADIOBARITE);
+        MaterialsOres.DEMICHELEITE_BR,
+        MaterialsOres.PERROUDITE,
+        MaterialsOres.IRARSITE,
+        MaterialsOres.RADIOBARITE);
 
     public static WorldGen_GT_Ore_Layer Vein15 = new WorldGen_GT_Ore_Layer(
         "vein15",
@@ -195,10 +195,10 @@ public class WorldGen_Ores {
         5,
         3,
         24,
-        ORES.FLUORCAPHITE,
-        ORES.LAFOSSAITE,
-        ORES.GADOLINITE_CE,
-        ORES.GADOLINITE_Y);
+        MaterialsOres.FLUORCAPHITE,
+        MaterialsOres.LAFOSSAITE,
+        MaterialsOres.GADOLINITE_CE,
+        MaterialsOres.GADOLINITE_Y);
 
     public static WorldGen_GT_Ore_Layer Vein16 = new WorldGen_GT_Ore_Layer(
         "vein16",
@@ -207,10 +207,10 @@ public class WorldGen_Ores {
         4,
         2,
         32,
-        ORES.YTTROCERITE,
-        ORES.LEPERSONNITE,
-        ORES.LAUTARITE,
-        FLUORIDES.FLUORITE);
+        MaterialsOres.YTTROCERITE,
+        MaterialsOres.LEPERSONNITE,
+        MaterialsOres.LAUTARITE,
+        MaterialsFluorides.FLUORITE);
 
     public static WorldGen_GT_Ore_Layer Vein17 = new WorldGen_GT_Ore_Layer(
         "vein17",
@@ -219,10 +219,10 @@ public class WorldGen_Ores {
         4,
         1,
         32,
-        ORES.FLORENCITE,
-        ORES.LAUTARITE,
-        ORES.SAMARSKITE_YB,
-        ORES.POLYCRASE);
+        MaterialsOres.FLORENCITE,
+        MaterialsOres.LAUTARITE,
+        MaterialsOres.SAMARSKITE_YB,
+        MaterialsOres.POLYCRASE);
     public static WorldGen_GT_Ore_Layer Vein18 = new WorldGen_GT_Ore_Layer(
         "vein18",
         15,
@@ -230,10 +230,10 @@ public class WorldGen_Ores {
         4,
         1,
         48,
-        ORES.GADOLINITE_CE,
-        ORES.GADOLINITE_Y,
-        ORES.AGARDITE_LA,
-        ORES.AGARDITE_CD);
+        MaterialsOres.GADOLINITE_CE,
+        MaterialsOres.GADOLINITE_Y,
+        MaterialsOres.AGARDITE_LA,
+        MaterialsOres.AGARDITE_CD);
 
     public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
 

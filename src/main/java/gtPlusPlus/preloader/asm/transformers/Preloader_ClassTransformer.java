@@ -56,7 +56,7 @@ public class Preloader_ClassTransformer {
                     .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Unobfuscated]");
                 super.visitMethodInsn(
                     INVOKESTATIC,
-                    "gtPlusPlus/preloader/Preloader_GT_OreDict",
+                    "gtPlusPlus/preloader/PreloaderGTOreDict",
                     "shouldPreventRegistration",
                     "(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)Z",
                     false);
@@ -65,7 +65,7 @@ public class Preloader_ClassTransformer {
                     .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Obfuscated]");
                 super.visitMethodInsn(
                     INVOKESTATIC,
-                    "gtPlusPlus/preloader/Preloader_GT_OreDict",
+                    "gtPlusPlus/preloader/PreloaderGTOreDict",
                     "shouldPreventRegistration",
                     "(Ljava/lang/String;Ladd;)Z",
                     false);

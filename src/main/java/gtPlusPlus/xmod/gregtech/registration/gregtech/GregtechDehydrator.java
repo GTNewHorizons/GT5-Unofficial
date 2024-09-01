@@ -26,16 +26,16 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialDehydrator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialDehydrator;
 
 public class GregtechDehydrator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
-        if (CORE.ConfigSwitches.enableMachine_Dehydrators) {
+        if (GTPPCore.ConfigSwitches.enableMachine_Dehydrators) {
             run1();
         }
     }
@@ -87,7 +87,7 @@ public class GregtechDehydrator {
                 "machine.dehydrator.tier.00",
                 "Basic Dehydrator I",
                 2,
-                new String[] { "This dehydrates your Grapes into Raisins.", CORE.GT_Tooltip.get() },
+                new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() },
                 GTPPRecipeMaps.chemicalDehydratorRecipes,
                 2,
                 9,
@@ -107,7 +107,7 @@ public class GregtechDehydrator {
                 "machine.dehydrator.tier.01",
                 "Basic Dehydrator II",
                 3,
-                new String[] { "This dehydrates your Grapes into Raisins.", CORE.GT_Tooltip.get() },
+                new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() },
                 GTPPRecipeMaps.chemicalDehydratorRecipes,
                 2,
                 9,
@@ -117,7 +117,7 @@ public class GregtechDehydrator {
                 "DEHYDRATOR",
                 new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
                     OrePrefixes.wireFine.get(Materials.Electrum), 'C', CIRCUIT, 'W',
-                    OrePrefixes.cableGt04.get(Materials.Silver), 'G', ALLOY.POTIN.getGear(1) })
+                    OrePrefixes.cableGt04.get(Materials.Silver), 'G', MaterialsAlloy.POTIN.getGear(1) })
                         .setRecipeCatalystPriority(5)
                         .getStackForm(1L));
 
@@ -128,7 +128,7 @@ public class GregtechDehydrator {
                 "advancedmachine.dehydrator.tier.01",
                 "Chemical Dehydrator I",
                 4,
-                new String[] { "A hangover is the way your body reacts to dehydration.", CORE.GT_Tooltip.get() },
+                new String[] { "A hangover is the way your body reacts to dehydration.", GTPPCore.GT_Tooltip.get() },
                 GTPPRecipeMaps.chemicalDehydratorRecipes,
                 2,
                 9,
@@ -137,7 +137,7 @@ public class GregtechDehydrator {
                 SpecialEffects.NONE,
                 "DEHYDRATOR",
                 new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT1, 'C', CIRCUIT, 'W',
-                    OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', ALLOY.TUMBAGA.getGear(1) })
+                    OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TUMBAGA.getGear(1) })
                         .setRecipeCatalystPriority(4)
                         .getStackForm(1L));
 
@@ -147,7 +147,7 @@ public class GregtechDehydrator {
                 "advancedmachine.dehydrator.tier.02",
                 "Chemical Dehydrator II",
                 5,
-                new String[] { "A hangover is the way your body reacts to dehydration.", CORE.GT_Tooltip.get() },
+                new String[] { "A hangover is the way your body reacts to dehydration.", GTPPCore.GT_Tooltip.get() },
                 GTPPRecipeMaps.chemicalDehydratorRecipes,
                 2,
                 9,
@@ -156,7 +156,7 @@ public class GregtechDehydrator {
                 SpecialEffects.NONE,
                 "DEHYDRATOR",
                 new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT2, 'C', CIRCUIT, 'W',
-                    OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', ALLOY.INCONEL_690.getGear(1) })
+                    OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', MaterialsAlloy.INCONEL_690.getGear(1) })
                         .setRecipeCatalystPriority(3)
                         .getStackForm(1L));
 
@@ -166,7 +166,7 @@ public class GregtechDehydrator {
                 "advancedmachine.dehydrator.tier.03",
                 "Chemical Dehydrator III",
                 6,
-                new String[] { "You could probably make space icecream with this..", CORE.GT_Tooltip.get() },
+                new String[] { "You could probably make space icecream with this..", GTPPCore.GT_Tooltip.get() },
                 GTPPRecipeMaps.chemicalDehydratorRecipes,
                 2,
                 9,
@@ -175,7 +175,7 @@ public class GregtechDehydrator {
                 SpecialEffects.NONE,
                 "DEHYDRATOR",
                 new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT3, 'C', CIRCUIT, 'W',
-                    OrePrefixes.cableGt04.get(Materials.Naquadah), 'G', ALLOY.HASTELLOY_N.getGear(1) })
+                    OrePrefixes.cableGt04.get(Materials.Naquadah), 'G', MaterialsAlloy.HASTELLOY_N.getGear(1) })
                         .setRecipeCatalystPriority(2)
                         .getStackForm(1L));
 
@@ -185,7 +185,7 @@ public class GregtechDehydrator {
                 "advancedmachine.dehydrator.tier.04",
                 "Chemical Dehydrator IV",
                 7,
-                new String[] { "You can definitely make space icecream with this..", CORE.GT_Tooltip.get() },
+                new String[] { "You can definitely make space icecream with this..", GTPPCore.GT_Tooltip.get() },
                 GTPPRecipeMaps.chemicalDehydratorRecipes,
                 2,
                 9,
@@ -194,15 +194,13 @@ public class GregtechDehydrator {
                 SpecialEffects.NONE,
                 "DEHYDRATOR",
                 new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT4, 'C', CIRCUIT, 'W',
-                    OrePrefixes.cableGt04.get(Materials.Osmium), 'G', ALLOY.ZERON_100.getGear(1) })
+                    OrePrefixes.cableGt04.get(Materials.Osmium), 'G', MaterialsAlloy.ZERON_100.getGear(1) })
                         .setRecipeCatalystPriority(1)
                         .getStackForm(1L));
 
         // Advanced
         GregtechItemList.Controller_Vacuum_Furnace.set(
-            new GregtechMetaTileEntity_IndustrialDehydrator(
-                Controller_Vacuum_Furnace.ID,
-                "multimachine.adv.vacuumfurnace",
-                "Utupu-Tanuri").getStackForm(1L));
+            new MTEIndustrialDehydrator(Controller_Vacuum_Furnace.ID, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri")
+                .getStackForm(1L));
     }
 }

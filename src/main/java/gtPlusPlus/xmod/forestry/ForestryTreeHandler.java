@@ -11,7 +11,7 @@ import forestry.api.arboriculture.TreeManager;
 import forestry.arboriculture.genetics.TreeDefinition;
 import forestry.plugins.PluginArboriculture;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
 public class ForestryTreeHandler {
 
@@ -45,7 +45,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            GregtechMetaTileEntityTreeFarm.registerForestryTree(
+            MTETreeFarm.registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
@@ -83,7 +83,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            GregtechMetaTileEntityTreeFarm.registerForestryTree(
+            MTETreeFarm.registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),

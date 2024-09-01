@@ -31,7 +31,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
-import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -186,7 +186,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             if (f != null) {
                 if (f.isFluidEqual(FluidUtils.getWildcardFluidStack("formaldehyde", 1))) {
                     return 1;
-                } else if (f.isFluidEqual(MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1))) {
+                } else if (f.isFluidEqual(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1))) {
                     return 2;
                 }
             }
@@ -471,7 +471,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             ArrayList<ItemStack> t2Cells = OreDictionary.getOres("cellHydrogenCyanide");
             didFill = addFluid(t1Cells, aInput, FluidUtils.getWildcardFluidStack("formaldehyde", 1000));
             if (!didFill) {
-                didFill = addFluid(t2Cells, aInput, MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1000));
+                didFill = addFluid(t2Cells, aInput, MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1000));
             }
         }
 

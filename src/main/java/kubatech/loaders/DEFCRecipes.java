@@ -36,7 +36,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
-import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
+import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import kubatech.Tags;
 
 public class DEFCRecipes {
@@ -306,7 +306,7 @@ public class DEFCRecipes {
             .itemInputs(
                 new ItemStack(Blocks.dragon_egg, 0),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTPP_CombType.DRAGONBLOOD.getStackForType(1))
+                GTPPCombType.DRAGONBLOOD.getStackForType(1))
             .fluidInputs(Materials.Radon.getPlasma(216))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(TierEU.RECIPE_UHV)
@@ -319,7 +319,7 @@ public class DEFCRecipes {
             .itemInputs(
                 GT_ModHandler.getModItem(Witchery.ID, "infinityegg", 0),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTPP_CombType.DRAGONBLOOD.getStackForType(1))
+                GTPPCombType.DRAGONBLOOD.getStackForType(1))
             .fluidInputs(Materials.Radon.getPlasma(108))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
             .eut(TierEU.RECIPE_UHV)

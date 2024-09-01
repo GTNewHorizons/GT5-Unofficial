@@ -19,7 +19,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
@@ -81,8 +81,11 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
-                    aWorld
-                        .playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                    aWorld.playSoundAtEntity(
+                        aPlayer,
+                        "random.bow",
+                        0.5F,
+                        0.4F / (GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -132,8 +135,11 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
-                    aWorld
-                        .playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                    aWorld.playSoundAtEntity(
+                        aPlayer,
+                        "random.bow",
+                        0.5F,
+                        0.4F / (GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }

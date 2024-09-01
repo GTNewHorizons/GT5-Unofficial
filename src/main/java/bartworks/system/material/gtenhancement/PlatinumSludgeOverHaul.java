@@ -78,8 +78,8 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
-import static gtPlusPlus.core.material.ALLOY.HELICOPTER;
-import static gtPlusPlus.core.material.ELEMENT.STANDALONE.WHITE_METAL;
+import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.WHITE_METAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;

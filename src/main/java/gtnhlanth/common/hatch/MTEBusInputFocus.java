@@ -8,12 +8,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.GT_MetaTileEntity_Hatch_NbtConsumable;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchNbtConsumable;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtnhlanth.common.item.ICanFocus;
 import gtnhlanth.util.Util;
 
-public class MTEBusInputFocus extends GT_MetaTileEntity_Hatch_NbtConsumable {
+public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
     private static final int INPUT_SLOTS = 4;
 
