@@ -1662,25 +1662,26 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.requireResource(GameRegistry.findBlock(ExtraCells2.ID, "walrus"), 0);
         }
     }),
-    MACHINIST(GT_BranchDefinition.ORGANIC, "Machinist", true, new Color(85, 37, 130), new Color(253, 185, 39), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MACHINIST), 0.2f);
-        beeSpecies.setHumidity(EnumHumidity.NORMAL);
-        beeSpecies.setTemperature(NORMAL);
-        beeSpecies.setHasEffect();
-    }, template -> {
-        AlleleHelper.instance.set(template, SPEED, GT_Bees.superSpeed);
-        AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
-        AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-        AlleleHelper.instance.set(template, NOCTURNAL, true);
-        AlleleHelper.instance.set(template, FLOWER_PROVIDER, GT_Flowers.FLAMING);
-        AlleleHelper.instance.set(template, FERTILITY, Fertility.MAXIMUM);
-        AlleleHelper.instance.set(template, EFFECT, getEffect(GREGTECH, "MachineBoost"));
-    }, dis -> {
-        IBeeMutationCustom tMutation = dis
-            .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Imperial"), 1);
-        tMutation.addMutationCondition(new GT_Bees.ActiveGTMachineMutationCondition());
-    }),
+    MACHINIST(GT_BranchDefinition.ORGANIC, "Machinist", true, new Color(85, 37, 130), new Color(253, 185, 39),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MACHINIST), 0.2f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, GT_Bees.superSpeed);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, GT_Flowers.FLAMING);
+            AlleleHelper.instance.set(template, FERTILITY, Fertility.MAXIMUM);
+            AlleleHelper.instance.set(template, EFFECT, getEffect(GREGTECH, "MachineBoost"));
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Imperial"), 1);
+            tMutation.addMutationCondition(new GT_Bees.ActiveGTMachineMutationCondition());
+        }),
     // Space Bees
     SPACE(GT_BranchDefinition.SPACE, "Space", true, new Color(0x003366), new Color(0xC0C0C0), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.02f);
