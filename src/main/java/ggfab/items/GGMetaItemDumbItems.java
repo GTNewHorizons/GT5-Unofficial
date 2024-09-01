@@ -29,7 +29,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
 // mostly stolen from gt5 itself.
-public class GGMetaItem_DumbItems extends GT_MetaBase_Item {
+public class GGMetaItemDumbItems extends GT_MetaBase_Item {
 
     public static final int MAX_ID = 32766;
     private final BitSet mEnabledItems = new BitSet();
@@ -37,7 +37,7 @@ public class GGMetaItem_DumbItems extends GT_MetaBase_Item {
     private final ArrayList<IIcon> mIconList = new ArrayList<>();
     private final TIntObjectMap<IItemContainer> mIconOverride = new TIntObjectHashMap<>();
 
-    public GGMetaItem_DumbItems(String aUnlocalized) {
+    public GGMetaItemDumbItems(String aUnlocalized) {
         super(aUnlocalized);
     }
 

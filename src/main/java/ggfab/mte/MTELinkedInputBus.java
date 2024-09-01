@@ -48,7 +48,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
-public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
+public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
     implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;
@@ -60,7 +60,7 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
     private State mState;
     private WorldSave save;
 
-    public MTE_LinkedInputBus(int id, String name, String nameRegional, int tier) {
+    public MTELinkedInputBus(int id, String name, String nameRegional, int tier) {
         super(
             id,
             name,
@@ -72,13 +72,13 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
                 GGConstants.GGMARK_TOOLTIP, });
     }
 
-    public MTE_LinkedInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTELinkedInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTE_LinkedInputBus(mName, mTier, mDescriptionArray, mTextures);
+        return new MTELinkedInputBus(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

@@ -12,9 +12,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
-import ggfab.items.GGMetaItem_DumbItems;
-import ggfab.mte.MTE_AdvAssLine;
-import ggfab.mte.MTE_LinkedInputBus;
+import ggfab.items.GGMetaItemDumbItems;
+import ggfab.mte.MTEAdvAssLine;
+import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -41,9 +41,9 @@ public class GigaGramFab {
     public void preInit(FMLPreInitializationEvent event) {
         GregTech_API.sAfterGTPreload.add(() -> {
             GGItemList.AdvAssLine
-                .set(new MTE_AdvAssLine(13532, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
+                .set(new MTEAdvAssLine(13532, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                new MTE_LinkedInputBus(13533, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+                new MTELinkedInputBus(13533, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
             GGItemList.ToolCast_MV.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                     13534,
@@ -144,7 +144,7 @@ public class GigaGramFab {
     public void postInit(FMLPostInitializationEvent event) {}
 
     private void initDumbItem1() {
-        GGMetaItem_DumbItems i1 = new GGMetaItem_DumbItems("ggfab.d1");
+        GGMetaItemDumbItems i1 = new GGMetaItemDumbItems("ggfab.d1");
         int id = 0;
         {
             int idShape = 30;

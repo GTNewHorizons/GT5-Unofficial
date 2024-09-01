@@ -102,7 +102,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
-public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTE_AdvAssLine>
+public class MTEAdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTEAdvAssLine>
     implements ISurvivalConstructable {
 
     private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
@@ -111,8 +111,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private static final String STRUCTURE_PIECE_LAST = "last";
     public static final String TAG_KEY_CURRENT_STICK = "mCurrentStick";
     public static final String TAG_KEY_PROGRESS_TIMES = "mProgressTimeArray";
-    private static final IStructureDefinition<MTE_AdvAssLine> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTE_AdvAssLine>builder()
+    private static final IStructureDefinition<MTEAdvAssLine> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEAdvAssLine>builder()
         // @formatter:off
             .addShape(
                     STRUCTURE_PIECE_FIRST,
@@ -157,26 +157,26 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 ofBlock(GregTech_API.sBlockCasings2, 0)))
         .addElement(
             'd',
-            buildHatchAdder(MTE_AdvAssLine.class).atLeast(DataHatchElement.DataAccess)
+            buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataAccess)
                 .dot(2)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
                 .buildAndChain(GregTech_API.sBlockCasings3, 10))
         .addElement(
             'b',
-            buildHatchAdder(MTE_AdvAssLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
+            buildHatchAdder(MTEAdvAssLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                 .casingIndex(16)
                 .dot(3)
                 .allowOnly(ForgeDirection.DOWN)
                 .buildAndChain(
                     ofBlock(GregTech_API.sBlockCasings2, 0),
-                    ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
+                    ofHatchAdder(MTEAdvAssLine::addOutputToMachineList, 16, 4)))
         .addElement(
             'I',
             ofChain(
                 // all blocks nearby use solid steel casing, so let's use the texture of that
                 InputBus.newAny(16, 5, ForgeDirection.DOWN),
-                ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
+                ofHatchAdder(MTEAdvAssLine::addOutputToMachineList, 16, 4)))
         .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
         .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
         .build();
@@ -202,17 +202,17 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     // per slice, but will never go over this amount.
     private static final int BATCH_MODE_DESIRED_TICKS_PER_SLICE = 128;
 
-    public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
+    public MTEAdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTE_AdvAssLine(String aName) {
+    public MTEAdvAssLine(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTE_AdvAssLine(mName);
+        return new MTEAdvAssLine(mName);
     }
 
     public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -442,7 +442,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     @Override
-    public IStructureDefinition<MTE_AdvAssLine> getStructureDefinition() {
+    public IStructureDefinition<MTEAdvAssLine> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -1085,7 +1085,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
     }
 
-    private enum DataHatchElement implements IHatchElement<MTE_AdvAssLine> {
+    private enum DataHatchElement implements IHatchElement<MTEAdvAssLine> {
 
         DataAccess;
 
@@ -1095,12 +1095,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
 
         @Override
-        public IGT_HatchAdder<MTE_AdvAssLine> adder() {
-            return MTE_AdvAssLine::addDataAccessToMachineList;
+        public IGT_HatchAdder<MTEAdvAssLine> adder() {
+            return MTEAdvAssLine::addDataAccessToMachineList;
         }
 
         @Override
-        public long count(MTE_AdvAssLine t) {
+        public long count(MTEAdvAssLine t) {
             return t.mDataAccessHatches.size();
         }
     }
