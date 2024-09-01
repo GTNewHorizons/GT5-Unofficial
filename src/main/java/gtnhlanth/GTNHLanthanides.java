@@ -33,9 +33,7 @@ public class GTNHLanthanides {
     @Mod.Instance(Tags.MODID)
     public static GTNHLanthanides instance;
 
-    @SidedProxy(
-        clientSide = "com.elisis.gtnhlanth.client.ClientProxy",
-        serverSide = "com.elisis.gtnhlanth.common.CommonProxy")
+    @SidedProxy(clientSide = "gtnhlanth.client.ClientProxy", serverSide = "gtnhlanth.common.CommonProxy")
     public static CommonProxy proxy;
 
     @EventHandler

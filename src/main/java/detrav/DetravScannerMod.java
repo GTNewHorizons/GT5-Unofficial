@@ -32,7 +32,7 @@ public class DetravScannerMod {
     public static boolean isBartWorksLoaded = false;
     public static boolean isGTppLoaded = false;
 
-    @SidedProxy(clientSide = "com.detrav.proxies.ClientProxy", serverSide = "com.detrav.proxies.ServerProxy")
+    @SidedProxy(clientSide = "detrav.proxies.ClientProxy", serverSide = "detrav.proxies.ServerProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance(DetravScannerMod.MODID)

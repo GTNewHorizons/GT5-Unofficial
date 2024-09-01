@@ -47,7 +47,7 @@ public class KekzCore {
     @Mod.Instance(Mods.Names.KEKZ_TECH)
     public static KekzCore instance;
 
-    @SidedProxy(clientSide = "client.ClientProxy", serverSide = "kekztech.ServerProxy")
+    @SidedProxy(clientSide = "kekztech.client.ClientProxy", serverSide = "kekztech.ServerProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler
