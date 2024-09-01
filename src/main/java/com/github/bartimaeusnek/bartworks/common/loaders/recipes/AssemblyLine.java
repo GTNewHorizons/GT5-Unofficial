@@ -1,6 +1,5 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
-import static gregtech.api.enums.Mods.GalactiGreg;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -46,7 +45,6 @@ public class AssemblyLine implements Runnable {
             .duration(4 * MINUTES + 10 * SECONDS)
             .addTo(AssemblyLine);
 
-
         GT_Values.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))
             .metadata(RESEARCH_TIME, 25 * MINUTES + 36 * SECONDS)
@@ -63,7 +61,6 @@ public class AssemblyLine implements Runnable {
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(AssemblyLine);
-
 
         GT_Values.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_LuV_CircuitAssembler.get(1L))
