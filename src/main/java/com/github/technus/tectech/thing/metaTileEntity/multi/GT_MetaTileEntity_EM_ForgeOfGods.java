@@ -139,6 +139,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private boolean inversion = false;
     private boolean gravitonShardEjection = false;
     private boolean noFormatting = false;
+    private boolean isRenderActive = false;
     public ArrayList<GT_MetaTileEntity_EM_BaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -164,8 +165,13 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private static final double RECIPE_LOG_CONSTANT = Math.log(6);
     private static final double FUEL_LOG_CONSTANT = Math.log(3);
     protected static final String STRUCTURE_PIECE_MAIN = "main";
+    protected static final String STRUCTURE_PIECE_SHAFT = "beam_shaft";
+    protected static final String STRUCTURE_PIECE_FIRST_RING = "first_ring";
+    protected static final String STRUCTURE_PIECE_FIRST_RING_AIR = "first_ring_air";
     protected static final String STRUCTURE_PIECE_SECOND_RING = "second_ring";
+    protected static final String STRUCTURE_PIECE_SECOND_RING_AIR = "second_ring_air";
     protected static final String STRUCTURE_PIECE_THIRD_RING = "third_ring";
+    protected static final String STRUCTURE_PIECE_THIRD_RING_AIR = "third_ring_air";
     private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE
         + "--------------------------------------------";
     private static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
@@ -215,8 +221,13 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     public static final IStructureDefinition<GT_MetaTileEntity_EM_ForgeOfGods> STRUCTURE_DEFINITION = IStructureDefinition
         .<GT_MetaTileEntity_EM_ForgeOfGods>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ForgeOfGodsStructureString.MAIN_STRUCTURE)
+        .addShape(STRUCTURE_PIECE_SHAFT, ForgeOfGodsStructureString.BEAM_SHAFT)
+        .addShape(STRUCTURE_PIECE_FIRST_RING, ForgeOfGodsStructureString.FIRST_RING)
+        .addShape(STRUCTURE_PIECE_FIRST_RING_AIR, ForgeOfGodsStructureString.FIRST_RING_AIR)
         .addShape(STRUCTURE_PIECE_SECOND_RING, ForgeOfGodsRingsStructureString.SECOND_RING)
+        .addShape(STRUCTURE_PIECE_SECOND_RING_AIR, ForgeOfGodsRingsStructureString.SECOND_RING_AIR)
         .addShape(STRUCTURE_PIECE_THIRD_RING, ForgeOfGodsRingsStructureString.THIRD_RING)
+        .addShape(STRUCTURE_PIECE_THIRD_RING_AIR, ForgeOfGodsRingsStructureString.THIRD_RING_AIR)
         .addElement('A', classicHatches(TEXTURE_INDEX + 3, 1, GodforgeCasings, 3))
         .addElement('B', ofBlock(GodforgeCasings, 0))
         .addElement('C', ofBlock(GodforgeCasings, 1))
@@ -234,6 +245,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 .dot(3)
                 .buildAndChain(GodforgeCasings, 0))
         .addElement('K', ofBlock(GodforgeCasings, 6))
+        .addElement('L', ofBlock(Blocks.air, 0))
         .build();
 
     public GT_MetaTileEntity_EM_ForgeOfGods(int aID, String aName, String aNameRegional) {
@@ -300,8 +312,18 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         moduleHatches.clear();
 
         // Check structure of multi
-        if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1)) {
+        if (isRenderActive) {
+            if (!structureCheck_EM(STRUCTURE_PIECE_SHAFT, 63, 14, 1)
+                || !structureCheck_EM(STRUCTURE_PIECE_FIRST_RING_AIR, 63, 14, -59)) {
+                destroyRenderer();
+                return false;
+            }
+        } else if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1)) {
             return false;
+        }
+
+        if (internalBattery != 0 && !isRenderActive) {
+            createRenderer();
         }
 
         // Check there is 1 input bus
@@ -336,10 +358,21 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             return false;
         }
 
-        if (isUpgradeActive(26) && checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
-            ringAmount = 2;
-            if (isUpgradeActive(29) && checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
+        if (isUpgradeActive(26)) {
+            if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
+                ringAmount = 2;
+            }
+            if (isRenderActive && ringAmount >= 2 && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67)) {
+                destroyRenderer();
+            }
+        }
+
+        if (isUpgradeActive(29)) {
+            if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 ringAmount = 3;
+            }
+            if (isRenderActive && ringAmount == 3 && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76)) {
+                destroyRenderer();
             }
         }
 
@@ -397,6 +430,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         if (stellarFuelAmount >= neededStartupFuel) {
                             stellarFuelAmount -= neededStartupFuel;
                             increaseBattery(neededStartupFuel);
+                            createRenderer();
                         }
                     } else {
                         fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
@@ -516,7 +550,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         }
     }
 
-    private void createRenderBlock() {
+    private void createRenderer() {
 
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
 
@@ -540,6 +574,63 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
 
         rendererTileEntity.setRenderSize(20);
         rendererTileEntity.setRenderRotationSpeed(5);
+
+        switch (ringAmount) {
+            case 2 -> {
+                buildPiece(STRUCTURE_PIECE_FIRST_RING_AIR, null, false, 63, 14, -59);
+                buildPiece(STRUCTURE_PIECE_SECOND_RING_AIR, null, false, 55, 11, -67);
+            }
+            case 3 -> {
+                buildPiece(STRUCTURE_PIECE_FIRST_RING_AIR, null, false, 63, 14, -59);
+                buildPiece(STRUCTURE_PIECE_SECOND_RING_AIR, null, false, 55, 11, -67);
+                buildPiece(STRUCTURE_PIECE_THIRD_RING_AIR, null, false, 47, 13, -76);
+            }
+            default -> {
+                buildPiece(STRUCTURE_PIECE_FIRST_RING_AIR, null, false, 63, 14, -59);
+            }
+        }
+
+        isRenderActive = true;
+    }
+
+    private void destroyRenderer() {
+
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+
+        switch (ringAmount) {
+            case 2 -> {
+                buildPiece(STRUCTURE_PIECE_FIRST_RING, null, false, 63, 14, -59);
+                buildPiece(STRUCTURE_PIECE_SECOND_RING, null, false, 55, 11, -67);
+            }
+            case 3 -> {
+                buildPiece(STRUCTURE_PIECE_FIRST_RING, null, false, 63, 14, -59);
+                buildPiece(STRUCTURE_PIECE_SECOND_RING, null, false, 55, 11, -67);
+                buildPiece(STRUCTURE_PIECE_THIRD_RING, null, false, 47, 13, -76);
+            }
+            default -> {
+                buildPiece(STRUCTURE_PIECE_FIRST_RING, null, false, 63, 14, -59);
+            }
+        }
+
+        isRenderActive = false;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        destroyRenderer();
     }
 
     @Override
@@ -553,10 +644,6 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         return str.toArray(new String[0]);
     }
 
-    @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        createRenderBlock();
-    }
 
     @Override
     public void onRemoval() {
@@ -2829,6 +2916,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     module.disconnect();
                 }
             }
+            destroyRenderer();
         } else {
             internalBattery -= amount;
             totalFuelConsumed += amount;
@@ -2907,6 +2995,8 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         NBT.setInteger("starFuelStored", stellarFuelAmount);
         NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
+        NBT.setBoolean("isRenderActive", isRenderActive);
+        NBT.setInteger("ringAmount", ringAmount);
 
         // Store booleanArray of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -2945,6 +3035,8 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         totalFuelConsumed = NBT.getLong("totalFuelConsumed");
         stellarFuelAmount = NBT.getInteger("starFuelStored");
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
+        isRenderActive = NBT.getBoolean("isRenderActive");
+        ringAmount = NBT.getInteger("ringAmount");
 
         NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
 
