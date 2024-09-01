@@ -775,7 +775,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
-        if (GregTech.ID.equals(e.modID) && "client".equals(e.configID)) {
+        if (GregTech.ID.equals(e.modID) && "kekztech/client".equals(e.configID)) {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GT_ClientPreference();
             GT_PreLoad.loadClientConfig();

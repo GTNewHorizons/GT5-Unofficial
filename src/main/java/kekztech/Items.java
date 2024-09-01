@@ -5,9 +5,8 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import common.items.MetaItem_CraftingComponent;
-
-import util.Util;
+import kekztech.common.items.MetaItem_CraftingComponent;
+import kekztech.util.Util;
 
 public enum Items {
 

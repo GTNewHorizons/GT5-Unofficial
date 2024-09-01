@@ -19,10 +19,10 @@ import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.DIM_BRIDGE_CASING;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.DIM_INJECTION_CASING;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.DIM_TRANS_CASING;
+import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
