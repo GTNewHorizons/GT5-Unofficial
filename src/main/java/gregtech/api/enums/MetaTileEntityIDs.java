@@ -1455,6 +1455,7 @@ public enum MetaTileEntityIDs {
     WORMHOLE_GENERATOR_CONTROLLER(13115),
     MegaChemicalReactor(13366),
     MegaOilCracker(13367),
+    SpaceElevatorController(14003),
     ExtremeEntityCrusherController(14201),
     ExtremeIndustrialApiaryController(14202),
     BETTER_JUKEBOX_LV(14301),
