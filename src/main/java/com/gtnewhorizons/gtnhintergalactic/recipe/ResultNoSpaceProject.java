@@ -1,7 +1,10 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
@@ -58,6 +61,19 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
                 "GT5U.gui.text.missing_project",
                 StatCollector.translateToLocal(neededProject),
                 StatCollector.translateToLocal(neededLocation));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setString("neededProject", neededProject);
+        tag.setString("neededLocation", neededLocation);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        neededProject = tag.getString("needProject");
+        neededLocation = tag.getString("neededLocation");
     }
 
     /**

@@ -50,49 +50,24 @@ public class MachineRecipes implements Runnable {
     @Override
     public void run() {
 
-        ItemStack hypogenFrameBox_8, hypogenScrew_32, preciseAssembler_1, highComputationStationT3_32,
-                highComputationStationT4_32, highComputationStationT5_32, metaStableOgScrew_64, shirabonGear_8,
-                shirabonGearSmall_16, titaniumBetaCScrew_64, voidMiner;
-        Fluid hypogenFluid, celestialTungstenFluid;
+        // exit early if not in pack
+        if (!Loader.isModLoaded("dreamcraft")) return;
 
-        if (Loader.isModLoaded("miscutils")) {
-            hypogenFrameBox_8 = ELEMENT.STANDALONE.HYPOGEN.getFrameBox(8);
-            hypogenScrew_32 = ELEMENT.STANDALONE.HYPOGEN.getScrew(32);
-            hypogenFluid = ELEMENT.STANDALONE.HYPOGEN.getFluid();
-            celestialTungstenFluid = ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluid();
-        } else {
-            hypogenFrameBox_8 = GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 8);
-            hypogenScrew_32 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 32);
-            hypogenFluid = Materials.Infinity.getFluid(0).getFluid();
-            celestialTungstenFluid = MaterialsUEVplus.SpaceTime.getFluid(0).getFluid();
-        }
+        ItemStack hypogenFrameBox_8 = ELEMENT.STANDALONE.HYPOGEN.getFrameBox(8);
+        ItemStack hypogenScrew_32 = ELEMENT.STANDALONE.HYPOGEN.getScrew(32);
+        Fluid hypogenFluid = ELEMENT.STANDALONE.HYPOGEN.getFluid();
+        Fluid celestialTungstenFluid = ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluid();
 
-        if (Loader.isModLoaded("GoodGenerator")) {
-            preciseAssembler_1 = ItemRefer.Precise_Assembler.get(1);
-            highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
-            highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
-            highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
-            metaStableOgScrew_64 = MyMaterial.metastableOganesson.get(OrePrefixes.screw, 64);
-            shirabonGear_8 = MyMaterial.shirabon.get(OrePrefixes.gearGt, 8);
-            shirabonGearSmall_16 = MyMaterial.shirabon.get(OrePrefixes.gearGtSmall, 16);
-            titaniumBetaCScrew_64 = MyMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
-        } else {
-            preciseAssembler_1 = ItemList.Machine_IV_Assembler.get(1);
-            highComputationStationT3_32 = GT_OreDictUnificator
-                    .get(OrePrefixes.circuit, Materials.SuperconductorUHV, 32);
-            highComputationStationT4_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 32);
-            highComputationStationT5_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 32);
-            metaStableOgScrew_64 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 64);
-            shirabonGear_8 = GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Infinity, 8);
-            shirabonGearSmall_16 = GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Infinity, 16);
-            titaniumBetaCScrew_64 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 64);
-        }
+        ItemStack preciseAssembler_1 = ItemRefer.Precise_Assembler.get(1);
+        ItemStack highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
+        ItemStack highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
+        ItemStack highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
+        ItemStack metaStableOgScrew_64 = MyMaterial.metastableOganesson.get(OrePrefixes.screw, 64);
+        ItemStack shirabonGear_8 = MyMaterial.shirabon.get(OrePrefixes.gearGt, 8);
+        ItemStack shirabonGearSmall_16 = MyMaterial.shirabon.get(OrePrefixes.gearGtSmall, 16);
+        ItemStack titaniumBetaCScrew_64 = MyMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
 
-        if (Loader.isModLoaded("bartworks")) {
-            voidMiner = ItemRegistry.voidminer[2];
-        } else {
-            voidMiner = ItemList.OreDrill4.get(1);
-        }
+        ItemStack voidMiner = ItemRegistry.voidminer[2];
 
         // Planetary Gas Siphon Controller
         RecipeUtil.addRecipe(
