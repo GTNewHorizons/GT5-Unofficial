@@ -14,10 +14,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.google.common.collect.BiMap;
 
-import gregtech.GT_Mod;
-import gregtech.api.objects.GT_UO_Dimension;
-import gregtech.api.objects.GT_UO_DimensionList;
-import gregtech.api.objects.GT_UO_Fluid;
+import gregtech.GTMod;
+import gregtech.api.objects.GTUODimension;
+import gregtech.api.objects.GTUODimensionList;
+import gregtech.api.objects.GTUOFluid;
 import gtneioreplugin.GTNEIOrePlugin;
 
 public class GT5UndergroundFluidHelper {
@@ -30,11 +30,11 @@ public class GT5UndergroundFluidHelper {
     @SuppressWarnings("unchecked")
     public static void init() {
         try {
-            Field fieldDimensionList = GT_UO_DimensionList.class.getDeclaredField("fDimensionList");
+            Field fieldDimensionList = GTUODimensionList.class.getDeclaredField("fDimensionList");
             fieldDimensionList.setAccessible(true);
-            BiMap<String, GT_UO_Dimension> dimensionList = (BiMap<String, GT_UO_Dimension>) fieldDimensionList
-                .get(GT_Mod.gregtechproxy.mUndergroundOil);
-            for (Map.Entry<String, GT_UO_Dimension> dimensionEntry : dimensionList.entrySet()) {
+            BiMap<String, GTUODimension> dimensionList = (BiMap<String, GTUODimension>) fieldDimensionList
+                .get(GTMod.gregtechproxy.mUndergroundOil);
+            for (Map.Entry<String, GTUODimension> dimensionEntry : dimensionList.entrySet()) {
                 String rawDimension = dimensionEntry.getKey();
                 String dimension;
                 try {
@@ -55,17 +55,16 @@ public class GT5UndergroundFluidHelper {
                     continue;
                 }
 
-                Field fieldFluids = GT_UO_Dimension.class.getDeclaredField("fFluids");
+                Field fieldFluids = GTUODimension.class.getDeclaredField("fFluids");
                 fieldFluids.setAccessible(true);
-                BiMap<String, GT_UO_Fluid> fluids = (BiMap<String, GT_UO_Fluid>) fieldFluids
-                    .get(dimensionEntry.getValue());
+                BiMap<String, GTUOFluid> fluids = (BiMap<String, GTUOFluid>) fieldFluids.get(dimensionEntry.getValue());
 
                 int maxChance = 0;
-                for (Map.Entry<String, GT_UO_Fluid> fluidEntry : fluids.entrySet()) {
+                for (Map.Entry<String, GTUOFluid> fluidEntry : fluids.entrySet()) {
                     maxChance += fluidEntry.getValue().Chance;
                 }
 
-                for (Map.Entry<String, GT_UO_Fluid> fluidEntry : fluids.entrySet()) {
+                for (Map.Entry<String, GTUOFluid> fluidEntry : fluids.entrySet()) {
                     Fluid fluid = FluidRegistry.getFluid(fluidEntry.getKey());
                     if (fluid != null) {
                         UndergroundFluidWrapper wrapper = new UndergroundFluidWrapper(

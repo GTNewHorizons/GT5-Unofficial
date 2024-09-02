@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.objects;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 
 /**
  * Made this to get rid of deprecation warnings <i>everywhere</i>.
@@ -11,7 +11,7 @@ import gregtech.api.objects.GT_RenderedTexture;
  *
  */
 @SuppressWarnings("deprecation")
-public class GTPPRenderedTexture extends GT_RenderedTexture {
+public class GTPPRenderedTexture extends GTRenderedTexture {
 
     public GTPPRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
         super(aIcon, aRGBa, aAllowAlpha);

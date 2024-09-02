@@ -1,7 +1,7 @@
 package tectech.thing.metaTileEntity.multi.godforge_modules;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -31,7 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -39,9 +39,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 
@@ -73,7 +73,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * getMaxParallel();
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
@@ -87,7 +87,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * maxParallel;
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
@@ -104,7 +104,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
@@ -139,11 +139,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
                     : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
             .setBackground(() -> {
                 if (isMultiStepPlasmaCapable) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
                 }
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
@@ -167,7 +167,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16)
             .setPos(174, 80)
-            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
     }
 
     protected Widget createTestButton3() {
@@ -181,7 +181,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(70, 16)
             .setPos(174, 60)
-            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
     }
 
     @Override
@@ -211,8 +211,8 @@ public class MTEPlasmaModule extends MTEBaseModule {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Fabricator")
             .addInfo("Controller block for the Heliothermal Plasma Fabricator, a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")

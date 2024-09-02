@@ -21,17 +21,17 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -42,7 +42,7 @@ import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
 import ic2.core.item.DamageHandler;
 
-public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
+public class MTECropHarvestor extends MTEBasicTank {
 
     private static final int SLOT_WEEDEX_1 = 1;
     private static final int SLOT_WEEDEX_2 = 2;
@@ -57,7 +57,7 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
         super(
             aID,
             "basicmachine.cropharvester.0" + aTier,
-            "Crop Manager (" + GT_Values.VN[aTier] + ")",
+            "Crop Manager (" + GTValues.VN[aTier] + ")",
             aTier,
             21,
             aDescription);
@@ -110,17 +110,17 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public long getMinimumStoredEU() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
     public long maxEUStore() {
-        return GT_Values.V[this.mTier] * (this.mTier * GT_Values.V[this.mTier]);
+        return GTValues.V[this.mTier] * (this.mTier * GTValues.V[this.mTier]);
     }
 
     @Override
     public long maxEUInput() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
@@ -135,7 +135,7 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -268,11 +268,11 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
 
                 // If the slot is empty, create a new stack for the drop item, else check if it is the same as the drop
                 // and merge if possible
-                if (invStack == null || GT_Utility.isStackInvalid(invStack) || invStack.stackSize == 0) {
+                if (invStack == null || GTUtility.isStackInvalid(invStack) || invStack.stackSize == 0) {
                     int stackSize = Math.min(dropAmount, dropItem.getMaxStackSize());
-                    getBaseMetaTileEntity().setInventorySlotContents(i, GT_Utility.copyAmount(stackSize, dropItem));
+                    getBaseMetaTileEntity().setInventorySlotContents(i, GTUtility.copyAmount(stackSize, dropItem));
                     dropAmount -= stackSize;
-                } else if (GT_Utility.areStacksEqual(invStack, dropItem)) {
+                } else if (GTUtility.areStacksEqual(invStack, dropItem)) {
                     int space = Math.min(invStack.getMaxStackSize(), getInventoryStackLimit()) - invStack.stackSize;
                     if (dropAmount <= space) {
                         // if the drop amount fits
@@ -522,7 +522,7 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return true;
     }
 
@@ -572,27 +572,27 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     @Override
@@ -648,7 +648,7 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_MODE)
                 .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
                 .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(47, 63)
                 .setSize(18, 18));
         builder.widget(
@@ -656,7 +656,7 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_TOGGLE)
                 .addTooltip(0, "Enable Harvest")
                 .addTooltip(1, "Disable Harvest")
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(67, 63)
                 .setSize(18, 18));
         builder.widget(
@@ -693,7 +693,7 @@ public class MTECropHarvestor extends GT_MetaTileEntity_BasicTank {
         builder
             .widget(
                 new ProgressBar()
-                    .setTexture(GTPPUITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_WATER, 54)
+                    .setTexture(GTPPUITextures.PROGRESSBAR_BOILER_EMPTY, GTUITextures.PROGRESSBAR_BOILER_WATER, 54)
                     .setDirection(ProgressBar.Direction.UP)
                     .setProgress(() -> (float) getFluidAmount() / getCapacity())
                     .setSynced(false, false)

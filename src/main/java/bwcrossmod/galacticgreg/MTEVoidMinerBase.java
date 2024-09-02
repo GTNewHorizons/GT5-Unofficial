@@ -14,12 +14,12 @@
 package bwcrossmod.galacticgreg;
 
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 
 import java.util.List;
 import java.util.Map;
@@ -36,15 +36,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
+import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
-public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
+public abstract class MTEVoidMinerBase extends MTEDrillerBase {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
@@ -98,7 +98,7 @@ public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
     @Override
     protected void setElectricityStats() {
         try {
-            this.mEUt = this.isPickingPipes ? 60 : Math.toIntExact(GT_Values.V[this.getMinTier()]);
+            this.mEUt = this.isPickingPipes ? 60 : Math.toIntExact(GTValues.V[this.getMinTier()]);
         } catch (ArithmeticException e) {
             e.printStackTrace();
             this.mEUt = Integer.MAX_VALUE - 7;
@@ -128,15 +128,15 @@ public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+    protected MultiblockTooltipBuilder createTooltip() {
         String casings = this.getCasingBlockItem()
             .get(0)
             .getDisplayName();
 
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
-            .addInfo("Controller Block for the Void Miner " + GT_Values.VN[this.getMinTier()])
-            .addInfo("Consumes " + GT_Values.V[this.getMinTier()] + "EU/t")
+            .addInfo("Controller Block for the Void Miner " + GTValues.VN[this.getMinTier()])
+            .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
             .addInfo(
                 "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
             .addInfo(
@@ -167,7 +167,7 @@ public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
-    protected List<IHatchElement<? super GT_MetaTileEntity_DrillerBase>> getAllowedHatches() {
+    protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, InputBus, OutputBus, Maintenance, Energy);
     }
 
@@ -180,13 +180,13 @@ public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
         float currentWeight = 0.f;
         while (true) {
             float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.dropMap.getInternalMap()
+            for (Map.Entry<GTUtility.ItemId, Float> entry : this.dropMap.getInternalMap()
                 .entrySet()) {
                 currentWeight += entry.getValue();
                 if (randomNumber < currentWeight) return entry.getKey()
                     .getItemStack();
             }
-            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
+            for (Map.Entry<GTUtility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
                 .entrySet()) {
                 currentWeight += entry.getValue();
                 if (randomNumber < currentWeight) return entry.getKey()
@@ -289,14 +289,14 @@ public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
     private void handleOutputs() {
         final List<ItemStack> inputOres = this.getStoredInputs()
             .stream()
-            .filter(GT_Utility::isOre)
+            .filter(GTUtility::isOre)
             .collect(Collectors.toList());;
         final ItemStack output = this.nextOre();
         output.stackSize = multiplier;
         if (inputOres.size() == 0 || this.mBlacklist && inputOres.stream()
-            .noneMatch(is -> GT_Utility.areStacksEqual(is, output))
+            .noneMatch(is -> GTUtility.areStacksEqual(is, output))
             || !this.mBlacklist && inputOres.stream()
-                .anyMatch(is -> GT_Utility.areStacksEqual(is, output)))
+                .anyMatch(is -> GTUtility.areStacksEqual(is, output)))
             this.addOutput(output);
         this.updateSlots();
     }
@@ -304,6 +304,6 @@ public abstract class MTEVoidMinerBase extends GT_MetaTileEntity_DrillerBase {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.mBlacklist = !this.mBlacklist;
-        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
+        GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
     }
 }

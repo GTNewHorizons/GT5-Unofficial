@@ -3,9 +3,9 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static java.lang.Math.floor;
 import static java.lang.Math.log;
 import static java.lang.Math.max;
@@ -81,21 +81,21 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
@@ -176,7 +176,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
         + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GT_OreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
+        : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
 
     private final boolean debugMode = true;
 
@@ -238,7 +238,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         .addElement('I', ofBlock(GodforgeCasings, 7))
         .addElement(
             'J',
-            GT_HatchElementBuilder.<MTEForgeOfGods>builder()
+            HatchElementBuilder.<MTEForgeOfGods>builder()
                 .atLeast(moduleElement.Module)
                 .casingIndex(TEXTURE_INDEX)
                 .dot(3)
@@ -336,7 +336,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 return false;
             }
 
-            if (!(mOutputBusses.get(0) instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+            if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
                 return false;
             }
         }
@@ -405,14 +405,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
                 if (mInputBusses.size() != 0) {
                     if (internalBattery == 0) {
-                        GT_MetaTileEntity_Hatch_InputBus inputBus = mInputBusses.get(0);
+                        MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
                         if (inputBusInventory != null) {
                             for (int i = 0; i < inputBusInventory.length; i++) {
                                 ItemStack itemStack = inputBusInventory[i];
                                 if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
                                     int stacksize = itemStack.stackSize;
-                                    if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
+                                    if (inputBus instanceof MTEHatchInputBusME meBus) {
                                         ItemStack realItem = meBus.getRealInventory()[i + 16];
                                         if (realItem == null) {
                                             break;
@@ -440,7 +440,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                         validFuelList.get(selectedFuelType),
                                         (int) fuelConsumption);
                                     FluidStack fluidReal;
-                                    if (mInputHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                                    if (mInputHatches.get(0) instanceof MTEHatchInputME meHatch) {
                                         fluidReal = meHatch.drain(ForgeDirection.UNKNOWN, fluidNeeded, true);
                                     } else {
                                         fluidReal = mInputHatches.get(0)
@@ -530,10 +530,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGT_HatchAdder<MTEForgeOfGods> adder;
+        private final IGTHatchAdder<MTEForgeOfGods> adder;
 
         @SafeVarargs
-        moduleElement(IGT_HatchAdder<MTEForgeOfGods> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        moduleElement(IGTHatchAdder<MTEForgeOfGods> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -543,7 +543,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return mteClasses;
         }
 
-        public IGT_HatchAdder<? super MTEForgeOfGods> adder() {
+        public IGTHatchAdder<? super MTEForgeOfGods> adder() {
             return adder;
         }
     }
@@ -876,7 +876,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -899,7 +899,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
         return builder.build();
     }
 
@@ -909,7 +909,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -931,7 +931,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(4, 35)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD))
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
             .widget(
                 new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
                     .setPos(64, 24)
@@ -1732,7 +1732,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 materialPaidUpgrades = new boolean[7];
             })
                 .setSize(40, 15)
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .addTooltip(translateToLocal("fog.debug.resetbutton.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
                 .addChild(
@@ -1752,11 +1752,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         .setPos(4, 16)
                         .addTooltip(translateToLocal("fog.debug.gravitonshardsetter.tooltip"))
                         .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD))
+                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
                 .addChild(
                     new ButtonWidget().setOnClick((clickData, widget) -> Arrays.fill(upgrades, true))
                         .setSize(40, 15)
-                        .setBackground(GT_UITextures.BUTTON_STANDARD)
+                        .setBackground(GTUITextures.BUTTON_STANDARD)
                         .addTooltip(translateToLocal("fog.debug.unlockall.text"))
                         .setTooltipShowUpDelay(TOOLTIP_DELAY)
                         .setPos(0, 35))
@@ -1931,9 +1931,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setSize(40, 15)
                 .setBackground(() -> {
                     if (upgrades[currentUpgradeID]) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED };
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED };
                     } else {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD };
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD };
                     }
                 })
                 .addTooltip(translateToLocal("fog.upgrade.confirm"))
@@ -1972,7 +1972,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         return new IDrawable[] { TecTechUITextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18 };
                     }
                 } else {
-                    return new IDrawable[] { GT_UITextures.TRANSPARENT };
+                    return new IDrawable[] { GTUITextures.TRANSPARENT };
                 }
             })
             .setPos(xCoord, yCoord)
@@ -2056,7 +2056,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final DynamicPositionedColumn column6 = new DynamicPositionedColumn();
         List<DynamicPositionedColumn> columnList = Arrays.asList(column1, column2, column3, column4, column5, column6);
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -2110,7 +2110,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         })
             .setPlayClickSound(true)
-            .setBackground(GT_UITextures.BUTTON_STANDARD)
+            .setBackground(GTUITextures.BUTTON_STANDARD)
             .setSize(179, 18))
             .addChild(
                 new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.consumeUpgradeMats"))
@@ -2127,7 +2127,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             int cleanDiv4 = index / 4;
             if (i < uniqueItems) {
                 builder.widget(
-                    new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD_PRESSED)
+                    new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
                         .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
                         .setSize(18, 18));
                 columnList.get(cleanDiv4)
@@ -2147,7 +2147,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             .setSize(18, 8));
             } else {
                 builder.widget(
-                    new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD_DISABLED)
+                    new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_DISABLED)
                         .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
                         .setSize(18, 18));
             }
@@ -2337,8 +2337,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Stellar Forge")
             .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
             .addInfo(TOOLTIP_BAR)
@@ -2715,11 +2715,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
             while (gravitonShardsAvailable >= 64) {
-                addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64));
+                addOutput(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64));
                 gravitonShardsAvailable -= 64;
             }
             addOutput(
-                GT_OreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, gravitonShardsAvailable));
+                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, gravitonShardsAvailable));
             gravitonShardsAvailable = 0;
         }
     }
@@ -2938,7 +2938,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {}
+    protected void setHatchRecipeMap(MTEHatchInput hatch) {}
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {

@@ -3,7 +3,7 @@ package galacticgreg.api;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 /**
  * Representation of the various GregTech ores, with their counterpart in VanillaBlocks, and the OreOffset that is
@@ -14,11 +14,11 @@ public enum GTOreTypes {
     /**
      * The Definition for Gregtech's RedGranite
      **/
-    RedGranite(4000, GregTech_API.sBlockGranites, 8, 3),
+    RedGranite(4000, GregTechAPI.sBlockGranites, 8, 3),
     /**
      * The Definition for Gregtech's BlackGranite
      */
-    BlackGranite(3000, GregTech_API.sBlockGranites, 0, 3),
+    BlackGranite(3000, GregTechAPI.sBlockGranites, 0, 3),
     /**
      * The Definition for EndStone
      */

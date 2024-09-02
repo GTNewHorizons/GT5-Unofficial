@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.util.Utils;
 
 public enum CustomCombs {
@@ -82,7 +82,7 @@ public enum CustomCombs {
 
     public String getName() {
         // return "gt.comb."+this.name;
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             "comb." + this.name,
             this.name.substring(0, 1)
                 .toUpperCase() + this.name.substring(1) + " Comb");

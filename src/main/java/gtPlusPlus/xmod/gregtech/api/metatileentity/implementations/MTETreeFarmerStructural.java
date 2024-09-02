@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.MTETreeFarmerBase;
 
 public class MTETreeFarmerStructural extends MTETreeFarmerBase {
@@ -32,7 +32,7 @@ public class MTETreeFarmerStructural extends MTETreeFarmerBase {
 
     @Override
     public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
+        return new GTRenderedTexture(Textures.BlockIcons.VOID);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package gregtech.api.multitileentity.base;
 
-import static gregtech.api.enums.GT_Values.NW;
+import static gregtech.api.enums.GTValues.NW;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.net.GT_Packet_SendCoverData;
+import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
@@ -45,7 +45,7 @@ public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
         } else {
             // Otherwise, send the data right away
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
-            NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_SendCoverData(coverInfo, this), xCoord, zCoord);
+            NW.sendPacketToAllPlayersInRange(worldObj, new GTPacketSendCoverData(coverInfo, this), xCoord, zCoord);
 
             // Just in case
             coverInfo.setNeedsUpdate(false);

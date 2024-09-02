@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import java.util.Collection;
 
@@ -13,19 +13,19 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 
-public abstract class MTERocketFuelGeneratorBase extends GT_MetaTileEntity_BasicTank implements RecipeMapWorkable {
+public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements RecipeMapWorkable {
 
     protected int pollMin, pollMax;
 
@@ -85,7 +85,7 @@ public abstract class MTERocketFuelGeneratorBase extends GT_MetaTileEntity_Basic
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -239,7 +239,7 @@ public abstract class MTERocketFuelGeneratorBase extends GT_MetaTileEntity_Basic
             if ((this.mInventory[this.getInputSlot()] != null)
                 && (aBaseMetaTileEntity.getUniversalEnergyStored()
                     < ((this.maxEUOutput() * 20) + this.getMinimumStoredEU()))
-                && (GT_Utility.getFluidForFilledItem(this.mInventory[this.getInputSlot()], true) == null)) {
+                && (GTUtility.getFluidForFilledItem(this.mInventory[this.getInputSlot()], true) == null)) {
                 final int tFuelValue = this.getFuelValue(this.mInventory[this.getInputSlot()]);
                 if (tFuelValue > 0) {
                     final ItemStack tEmptyContainer = this.getEmptyContainer(this.mInventory[this.getInputSlot()]);
@@ -277,9 +277,9 @@ public abstract class MTERocketFuelGeneratorBase extends GT_MetaTileEntity_Basic
             return 0;
         }
         FluidStack tLiquid;
-        final Collection<GT_Recipe> tRecipeList = this.getRecipeMap()
+        final Collection<GTRecipe> tRecipeList = this.getRecipeMap()
             .getAllRecipes();
-        for (final GT_Recipe tFuel : tRecipeList) {
+        for (final GTRecipe tFuel : tRecipeList) {
             if ((tLiquid = tFuel.mFluidInputs[0]) != null) {
                 if (aLiquid.isFluidEqual(tLiquid)) {
                     int aperOp = this.consumedFluidPerOperation(tLiquid);
@@ -291,10 +291,10 @@ public abstract class MTERocketFuelGeneratorBase extends GT_MetaTileEntity_Basic
     }
 
     public int getFuelValue(final ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || (this.getRecipeMap() == null)) {
+        if (GTUtility.isStackInvalid(aStack) || (this.getRecipeMap() == null)) {
             return 0;
         }
-        final GT_Recipe tFuel = this.getRecipeMap()
+        final GTRecipe tFuel = this.getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) {
             return (int) ((tFuel.mSpecialValue * 1000L * this.getEfficiency()) / 100);
@@ -303,22 +303,22 @@ public abstract class MTERocketFuelGeneratorBase extends GT_MetaTileEntity_Basic
     }
 
     public ItemStack getEmptyContainer(final ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || (this.getRecipeMap() == null)) {
+        if (GTUtility.isStackInvalid(aStack) || (this.getRecipeMap() == null)) {
             return null;
         }
-        final GT_Recipe tFuel = this.getRecipeMap()
+        final GTRecipe tFuel = this.getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) {
-            return GT_Utility.copy(tFuel.getOutput(0));
+            return GTUtility.copy(tFuel.getOutput(0));
         }
-        return GT_Utility.getContainerItem(aStack, true);
+        return GTUtility.getContainerItem(aStack, true);
     }
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && ((this.getFuelValue(aStack) > 0)
-            || (this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0));
+            || (this.getFuelValue(GTUtility.getFluidForFilledItem(aStack, true)) > 0));
     }
 
     @Override

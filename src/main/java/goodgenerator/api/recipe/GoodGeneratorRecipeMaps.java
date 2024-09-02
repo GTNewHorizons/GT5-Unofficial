@@ -7,12 +7,12 @@ import java.util.Comparator;
 import net.minecraft.util.StatCollector;
 
 import goodgenerator.client.GUI.GGUITextures;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 
 public class GoodGeneratorRecipeMaps {
@@ -41,9 +41,9 @@ public class GoodGeneratorRecipeMaps {
             int maxNKE = recipeInfo.recipe.mSpecialValue / 10000;
             return Arrays.asList(
                 StatCollector.translateToLocal("value.neutron_activator.0"),
-                GT_Utility.formatNumbers(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
+                GTUtility.formatNumbers(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
                 StatCollector.translateToLocal("value.neutron_activator.1"),
-                GT_Utility.formatNumbers(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
+                GTUtility.formatNumbers(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
         })
         .build();
     public static final RecipeMap<ExtremeHeatExchangerBackend> extremeHeatExchangerFuels = RecipeMapBuilder
@@ -56,7 +56,7 @@ public class GoodGeneratorRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> preciseAssemblerRecipes = RecipeMapBuilder
         .of("gg.recipe.precise_assembler")
         .maxIO(4, 1, 4, 0)
-        .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .progressBarPos(85, 30)
         .neiTransferRect(80, 30, 35, 18)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("value.precise_assembler"))
@@ -70,7 +70,7 @@ public class GoodGeneratorRecipeMaps {
             recipeInfo -> Collections.singletonList(
                 StatCollector.translateToLocalFormatted(
                     "value.component_assembly_line",
-                    GT_Values.VN[recipeInfo.recipe.mSpecialValue])))
+                    GTValues.VN[recipeInfo.recipe.mSpecialValue])))
         .dontUseProgressBar()
         .addSpecialTexture(70, 11, 72, 40, GGUITextures.PICTURE_COMPONENT_ASSLINE)
         .frontend(ComponentAssemblyLineFrontend::new)

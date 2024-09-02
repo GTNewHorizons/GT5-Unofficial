@@ -51,8 +51,8 @@ import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.MaterialFix;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -283,8 +283,8 @@ public class Loaders {
         for (int i = 0; i < 9; i++) {
             Loaders.NeutronAccelerators[i] = new MTENeutronAccelerator(
                 neutronAcceleratorIDs[i],
-                "Neutron Accelerator " + GT_Values.VN[i],
-                "Neutron Accelerator " + GT_Values.VN[i],
+                "Neutron Accelerator " + GTValues.VN[i],
+                "Neutron Accelerator " + GTValues.VN[i],
                 i).getStackForm(1L);
         }
         Loaders.NS = new MTENeutronSensor(MetaTileEntityIDs.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5)
@@ -459,7 +459,7 @@ public class Loaders {
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][2] = TextureFactory
                 .of(supercriticalFluidTurbineCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][3] = TextureFactory
-                .of(GregTech_API.sBlockConcretes, 8);
+                .of(GregTechAPI.sBlockConcretes, 8);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][4] = TextureFactory
                 .of(impreciseUnitCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][5] = TextureFactory

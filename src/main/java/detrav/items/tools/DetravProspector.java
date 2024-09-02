@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolProspector;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class DetravProspector extends DetravToolElectricProspectorBase {
 
@@ -28,7 +28,7 @@ public class DetravProspector extends DetravToolElectricProspectorBase {
         return Textures01.mTextures[0];
     }
 
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new BehaviourDetravToolProspector(15));
     }
 }

@@ -9,9 +9,9 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -250,34 +250,34 @@ public class BookHandler {
                 "Valid Tiered Machine Casings:" + "\n"
                     + "\n"
                     + "1 - "
-                    + GT_Values.VN[0]
+                    + GTValues.VN[0]
                     + "\n"
                     + "2 - "
-                    + GT_Values.VN[1]
+                    + GTValues.VN[1]
                     + "\n"
                     + "3 - "
-                    + GT_Values.VN[2]
+                    + GTValues.VN[2]
                     + "\n"
                     + "4 - "
-                    + GT_Values.VN[3]
+                    + GTValues.VN[3]
                     + "\n"
                     + "5 - "
-                    + GT_Values.VN[4]
+                    + GTValues.VN[4]
                     + "\n"
                     + "6 - "
-                    + GT_Values.VN[5]
+                    + GTValues.VN[5]
                     + "\n"
                     + "7 - "
-                    + GT_Values.VN[6]
+                    + GTValues.VN[6]
                     + "\n"
                     + "8 - "
-                    + GT_Values.VN[7]
+                    + GTValues.VN[7]
                     + "\n"
                     + "9 - "
-                    + GT_Values.VN[8]
+                    + GTValues.VN[8]
                     + "\n"
                     + "10 - "
-                    + GT_Values.VN[9],
+                    + GTValues.VN[9],
 
                 // Pipe Casings
                 """
@@ -430,10 +430,10 @@ public class BookHandler {
             new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
                 ItemUtils.getSimpleStack(Items.lava_bucket) },
             ItemBookWritten_ThermalBoiler);
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             ItemBookWritten_MultiMachineManual,
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
-                | GT_ModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "Xw", 'X', ItemUtils.getSimpleStack(Items.writable_book) });
         RecipeUtils.addShapelessGregtechRecipe(
             new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
@@ -450,8 +450,8 @@ public class BookHandler {
 
         for (int i = 0; i < mBookKeeperCount; i++) {
             ItemStack bookstack = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, i, 1);
-            GT_OreDictUnificator.registerOre("bookWritten", bookstack);
-            GT_OreDictUnificator.registerOre("craftingBook", bookstack);
+            GTOreDictUnificator.registerOre("bookWritten", bookstack);
+            GTOreDictUnificator.registerOre("craftingBook", bookstack);
         }
     }
 

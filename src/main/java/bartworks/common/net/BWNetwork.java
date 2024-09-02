@@ -32,9 +32,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.server.FMLServerHandler;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.net.GT_Packet;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.enums.GTValues;
+import gregtech.api.net.GTPacket;
+import gregtech.api.net.GTPacketNew;
 import gregtech.api.net.IGT_NetworkHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -47,20 +47,19 @@ import io.netty.handler.codec.MessageToMessageCodec;
  */
 @SuppressWarnings("deprecation")
 @ChannelHandler.Sharable
-public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_New> implements IGT_NetworkHandler {
+public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew> implements IGT_NetworkHandler {
 
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private final GT_Packet_New[] mSubChannels;
+    private final GTPacketNew[] mSubChannels;
 
     public BWNetwork() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", this, new BWNetwork.HandlerShared());
-        this.mSubChannels = new GT_Packet_New[] { new RendererPacket(), new CircuitProgrammerPacket(),
+        this.mSubChannels = new GTPacketNew[] { new RendererPacket(), new CircuitProgrammerPacket(),
             new MetaBlockPacket(), new OreDictCachePacket(), new ServerJoinedPacket(), new EICPacket() };
     }
 
     @Override
-    protected void encode(ChannelHandlerContext aContext, GT_Packet_New aPacket, List<Object> aOutput)
-        throws Exception {
+    protected void encode(ChannelHandlerContext aContext, GTPacketNew aPacket, List<Object> aOutput) throws Exception {
         aOutput.add(
             new FMLProxyPacket(
                 Unpooled.buffer()
@@ -82,7 +81,7 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
     }
 
     @Override
-    public void sendToPlayer(@Nonnull GT_Packet aPacket, @Nonnull EntityPlayerMP aPlayer) {
+    public void sendToPlayer(@Nonnull GTPacket aPacket, @Nonnull EntityPlayerMP aPlayer) {
         this.mChannel.get(Side.SERVER)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.PLAYER);
@@ -93,7 +92,7 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
             .writeAndFlush(aPacket);
     }
 
-    public void sendToAllPlayersinWorld(@Nonnull GT_Packet aPacket, World world) {
+    public void sendToAllPlayersinWorld(@Nonnull GTPacket aPacket, World world) {
         for (String name : FMLServerHandler.instance()
             .getServer()
             .getAllUsernames()) {
@@ -109,7 +108,7 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
     }
 
     @Override
-    public void sendToAllAround(@Nonnull GT_Packet aPacket, NetworkRegistry.TargetPoint aPosition) {
+    public void sendToAllAround(@Nonnull GTPacket aPacket, NetworkRegistry.TargetPoint aPosition) {
         this.mChannel.get(Side.SERVER)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
@@ -121,7 +120,7 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
     }
 
     @Override
-    public void sendToAll(@Nonnull GT_Packet aPacket) {
+    public void sendToAll(@Nonnull GTPacket aPacket) {
         this.mChannel.get(Side.SERVER)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.ALL);
@@ -130,7 +129,7 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
     }
 
     @Override
-    public void sendToServer(@Nonnull GT_Packet aPacket) {
+    public void sendToServer(@Nonnull GTPacket aPacket) {
         this.mChannel.get(Side.CLIENT)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
@@ -139,7 +138,7 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
     }
 
     @Override
-    public void sendPacketToAllPlayersInRange(World aWorld, @Nonnull GT_Packet aPacket, int aX, int aZ) {
+    public void sendPacketToAllPlayersInRange(World aWorld, @Nonnull GTPacket aPacket, int aX, int aZ) {
         if (!aWorld.isRemote) {
 
             for (Object tObject : aWorld.playerEntities) {
@@ -158,14 +157,14 @@ public class BWNetwork extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_N
     }
 
     @Sharable
-    static final class HandlerShared extends SimpleChannelInboundHandler<GT_Packet_New> {
+    static final class HandlerShared extends SimpleChannelInboundHandler<GTPacketNew> {
 
         HandlerShared() {}
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, GT_Packet_New aPacket) throws Exception {
-            EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
-            aPacket.process(aPlayer == null ? null : GT_Values.GT.getThePlayer().worldObj);
+        protected void channelRead0(ChannelHandlerContext ctx, GTPacketNew aPacket) throws Exception {
+            EntityPlayer aPlayer = GTValues.GT.getThePlayer();
+            aPacket.process(aPlayer == null ? null : GTValues.GT.getThePlayer().worldObj);
         }
     }
 }

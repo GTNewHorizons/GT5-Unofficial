@@ -5,12 +5,12 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.MTETransformer;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
-public class MTETransformerTT extends GT_MetaTileEntity_Transformer {
+public class MTETransformerTT extends MTETransformer {
 
     public MTETransformerTT(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "");

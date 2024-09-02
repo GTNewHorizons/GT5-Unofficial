@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.enums.GT_Values.GT;
+import static gregtech.api.enums.GTValues.GT;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;

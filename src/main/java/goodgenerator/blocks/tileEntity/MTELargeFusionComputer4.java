@@ -18,12 +18,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -40,24 +40,24 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("Galaxy Collapse.")
             .addInfo("Controller block for the Compact Fusion Reactor MK-IV Prototype.")
             .addInfo(
-                EnumChatFormatting.AQUA + GT_Utility.formatNumbers(getSingleHatchPower())
+                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
                     + " EU/t and "
                     + EnumChatFormatting.AQUA
-                    + GT_Utility.formatNumbers(capableStartupCanonical() / 32 / M)
+                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
                     + "M"
                     + EnumChatFormatting.GRAY
                     + " EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo(
-                "If the recipe requires a voltage tier over " + GT_Utility.getColoredTierNameFromTier((byte) tier())
+                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
             .addInfo("Make sure the whole structure is built in the 3x3")
@@ -86,7 +86,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             .addOutputHatch("1-16, Hint block with dot 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
-                "ALL Hatches must be " + GT_Utility.getColoredTierNameFromTier((byte) hatchTier())
+                "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
             .toolTipFinisher("Good Generator");
@@ -178,7 +178,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     @Override
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+            for (MTEHatchEnergy hatch : this.mEnergyHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }
@@ -188,12 +188,12 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             }
         }
         if (this.mOutputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (MTEHatchOutput hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }
         if (this.mInputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (MTEHatchInput hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }

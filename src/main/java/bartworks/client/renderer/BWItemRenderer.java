@@ -30,8 +30,8 @@ import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_RenderUtil;
+import gregtech.api.util.GTUtility;
+import gregtech.common.render.GTRenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class BWItemRenderer implements IItemRenderer {
@@ -44,7 +44,7 @@ public class BWItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack aStack, IItemRenderer.ItemRenderType aType) {
-        if (!GT_Utility.isStackInvalid(aStack) && aStack.getItemDamage() >= 0) {
+        if (!GTUtility.isStackInvalid(aStack) && aStack.getItemDamage() >= 0) {
             return aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON
                 || aType == IItemRenderer.ItemRenderType.INVENTORY
                 || aType == IItemRenderer.ItemRenderType.EQUIPPED
@@ -56,7 +56,7 @@ public class BWItemRenderer implements IItemRenderer {
     @Override
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack,
         IItemRenderer.ItemRendererHelper aHelper) {
-        if (GT_Utility.isStackInvalid(aStack)) {
+        if (GTUtility.isStackInvalid(aStack)) {
             return false;
         }
         return aType == IItemRenderer.ItemRenderType.ENTITY;
@@ -64,7 +64,7 @@ public class BWItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(IItemRenderer.ItemRenderType type, ItemStack aStack, Object... data) {
-        if (!GT_Utility.isStackInvalid(aStack)) {
+        if (!GTUtility.isStackInvalid(aStack)) {
             short aMetaData = (short) aStack.getItemDamage();
             if (aMetaData >= 0) {
                 BWMetaItems.BW_GT_MetaGen_Item_Hook aItem = (BWMetaItems.BW_GT_MetaGen_Item_Hook) aStack.getItem();
@@ -84,10 +84,10 @@ public class BWItemRenderer implements IItemRenderer {
                 GL11.glBlendFunc(770, 771);
                 if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
                     if (aMetaData < CircuitImprintLoader.reverseIDs)
-                        GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                        GTRenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     else {
                         for (int i = 0; i < 4; i++) {
-                            GT_RenderUtil.renderItemIcon(
+                            GTRenderUtil.renderItemIcon(
                                 tIcon,
                                 0.0D + i * 2D,
                                 0.0D + i * 2D,
@@ -115,7 +115,7 @@ public class BWItemRenderer implements IItemRenderer {
                     Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                     GL11.glBlendFunc(770, 771);
                     if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
-                        GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                        GTRenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
                         ItemRenderer.renderItemIn2D(
                             Tessellator.instance,

@@ -1,6 +1,6 @@
 package bartworks.common.tileentities.multis.mega;
 
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.Arrays;
 
@@ -17,14 +17,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.util.GTUtility;
 
-public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extends MTEExtendedPowerMultiBlockBase<T> {
 
     protected MegaMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -40,7 +39,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>>
 
     protected long[] getCurrentInfoData() {
         long storedEnergy = 0, maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch hatch : this.getExoticAndNormalEnergyHatchList()) {
+        for (MTEHatch hatch : this.getExoticAndNormalEnergyHatchList()) {
             storedEnergy += hatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += hatch.getBaseMetaTileEntity()
@@ -53,7 +52,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>>
     public String[] getInfoData() {
         int mPollutionReduction = 0;
 
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -61,7 +60,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>>
         long storedEnergy = ttHatches[0];
         long maxEnergy = ttHatches[1];
 
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -77,36 +76,36 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>>
         String[] baseInfo = {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(this.mProgresstime / 20)
+                + GTUtility.formatNumbers(this.mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
+                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(storedEnergy)
+                + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-this.lEUt)
+                + GTUtility.formatNumbers(-this.lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getMaxInputVoltage())
+                + GTUtility.formatNumbers(this.getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
-                + GT_Utility.formatNumbers(this.getMaxInputAmps())
+                + GTUtility.formatNumbers(this.getMaxInputAmps())
                 + "A) = "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(nominalV)
+                + GTUtility.formatNumbers(nominalV)
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW

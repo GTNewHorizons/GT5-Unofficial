@@ -1,8 +1,8 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Arrays;
 
@@ -15,18 +15,18 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 
 public class Centrifuge implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Thorium.getDust(1))
             .itemOutputs(
                 Materials.Thorium.getDust(1),
@@ -42,25 +42,25 @@ public class Centrifuge implements Runnable {
         ItemStack[] pellets = new ItemStack[6];
         Arrays.fill(pellets, new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 64, 4));
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 3),
-                GT_Utility.getIntegratedCircuit(17))
+                GTUtility.getIntegratedCircuit(17))
             .itemOutputs(pellets)
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 5),
-                GT_Utility.getIntegratedCircuit(17))
+                GTUtility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 64, 6))
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 6))
             .itemOutputs(Materials.Lead.getDust(1))
             .outputChances(300)
@@ -71,10 +71,10 @@ public class Centrifuge implements Runnable {
         int i = 0;
         for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 3),
-                    GT_Utility.getIntegratedCircuit(17))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
@@ -84,16 +84,16 @@ public class Centrifuge implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 5),
-                    GT_Utility.getIntegratedCircuit(17))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 6))
                 .duration(2 * MINUTES + 30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
 
-            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder()
+            GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 6))
                 .itemOutputs(
                     fuel.recycledItems[0],
@@ -112,8 +112,8 @@ public class Centrifuge implements Runnable {
             i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
         }
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(17))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(17))
             .itemOutputs(BioItemList.getOther(4))
             .fluidInputs(new FluidStack(BioCultureLoader.eColi.getFluid(), 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 10))
@@ -121,16 +121,16 @@ public class Centrifuge implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(17))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(17))
             .fluidInputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[3], 250))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(17))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(17))
             .fluidInputs(new FluidStack(BioCultureLoader.CommonYeast.getFluid(), 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[2], 10))
             .duration(60 * SECONDS)

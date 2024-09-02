@@ -13,16 +13,16 @@
 
 package bartworks.system.material;
 
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.GTValues.W;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public enum BWNonMetaMaterialItems implements IItemContainer {
 
@@ -43,14 +43,14 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
         this.mHasNotBeenSet = false;
         if (aItem == null) return this;
         ItemStack aStack = new ItemStack(aItem, 1, 0);
-        this.mStack = GT_Utility.copyAmount(1, aStack);
+        this.mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
     @Override
     public IItemContainer set(ItemStack aStack) {
         this.mHasNotBeenSet = false;
-        this.mStack = GT_Utility.copyAmount(1, aStack);
+        this.mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
@@ -64,7 +64,7 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
     public Item getItem() {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(this.mStack)) return null;
+        if (GTUtility.isStackInvalid(this.mStack)) return null;
         return this.mStack.getItem();
     }
 
@@ -72,7 +72,7 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
     public Block getBlock() {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        return GT_Utility.getBlockFromItem(this.getItem());
+        return GTUtility.getBlockFromItem(this.getItem());
     }
 
     @Override
@@ -87,8 +87,8 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
 
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        return GT_Utility
+        if (GTUtility.isStackInvalid(aStack)) return false;
+        return GTUtility
             .areUnificationsEqual((ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
     }
 
@@ -96,64 +96,64 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
     public ItemStack get(long aAmount, Object... aReplacements) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(this.mStack));
+        if (GTUtility.isStackInvalid(this.mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(this.mStack));
+        if (GTUtility.isStackInvalid(this.mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(this.mStack));
+        if (GTUtility.isStackInvalid(this.mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility
-            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
+        if (GTUtility.isStackInvalid(this.mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility
+            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override
     public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements) {
         ItemStack rStack = this.get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) return null;
+        if (GTUtility.isStackInvalid(rStack)) return null;
         rStack.setStackDisplayName(aDisplayName);
-        return GT_Utility.copyAmount(aAmount, rStack);
+        return GTUtility.copyAmount(aAmount, rStack);
     }
 
     @Override
     public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
         ItemStack rStack = this.get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) return null;
-        GT_ModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
-        return GT_Utility.copyAmount(aAmount, rStack);
+        if (GTUtility.isStackInvalid(rStack)) return null;
+        GTModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
+        return GTUtility.copyAmount(aAmount, rStack);
     }
 
     @Override
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(this.mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(this.mStack));
+        if (GTUtility.isStackInvalid(this.mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, this.get(1));
+        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, this.get(1));
         return this;
     }
 
@@ -161,7 +161,7 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, this.getWildcard(1));
+        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, this.getWildcard(1));
         return this;
     }
 }

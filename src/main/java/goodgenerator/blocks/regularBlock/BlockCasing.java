@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.main.GoodGenerator;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 public class BlockCasing extends Block {
 
@@ -34,7 +34,7 @@ public class BlockCasing extends Block {
         this.name = name;
         this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockCasing(String name, String[] texture) {
@@ -45,7 +45,7 @@ public class BlockCasing extends Block {
         this.textureNames = texture;
         this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockCasing(String name, String[] texture, Material material) {
@@ -56,7 +56,7 @@ public class BlockCasing extends Block {
         this.textureNames = texture;
         this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -90,15 +90,15 @@ public class BlockCasing extends Block {
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aMetaData)) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aMetaData)) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 

@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -24,8 +24,8 @@ public abstract class NonGTBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected abstract GT_Recipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, @Nullable GT_Recipe cachedRecipe);
+    protected abstract GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
+        @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe);
 
     @Override
     protected boolean doesOverwriteFindRecipe() {
@@ -46,7 +46,7 @@ public abstract class NonGTBackend extends RecipeMapBackend {
     public void reInit() {}
 
     @Override
-    protected GT_Recipe addToItemMap(GT_Recipe recipe) {
+    protected GTRecipe addToItemMap(GTRecipe recipe) {
         return recipe;
     }
 }

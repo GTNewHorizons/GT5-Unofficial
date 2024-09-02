@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -40,7 +40,7 @@ public enum GTPPDropType {
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GT_LanguageManager.addStringLocalization("gtplusplus.drop." + this.mNameUnlocal, this.mName + " Drop");
+        GTLanguageManager.addStringLocalization("gtplusplus.drop." + this.mNameUnlocal, this.mName + " Drop");
     }
 
     public void setHidden() {
@@ -48,7 +48,7 @@ public enum GTPPDropType {
     }
 
     public String getName() {
-        return GT_LanguageManager.getTranslation("gtplusplus.drop." + this.mNameUnlocal);
+        return GTLanguageManager.getTranslation("gtplusplus.drop." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

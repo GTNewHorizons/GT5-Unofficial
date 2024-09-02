@@ -69,7 +69,7 @@ import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.values;
 import static gregtech.api.enums.OrePrefixes.wireFine;
-import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -134,9 +134,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.fluid.GT_FluidFactory;
+import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
@@ -1607,7 +1607,7 @@ public class WerkstoffLoader {
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
-            ItemStack ret = GT_OreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), amount);
+            ItemStack ret = GTOreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), amount);
             if (ret != null) return ret;
             ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
             if (ret != null) return ret;
@@ -1799,7 +1799,7 @@ public class WerkstoffLoader {
             if (werkstoff.hasItemType(cell)) {
                 if (!FluidRegistry.isFluidRegistered(werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Fluid: " + werkstoff.getDefaultName());
-                    Fluid fluid = GT_FluidFactory.builder(werkstoff.getDefaultName())
+                    Fluid fluid = GTFluidFactory.builder(werkstoff.getDefaultName())
                         .withLocalizedName(werkstoff.getDefaultName())
                         .withStateAndTemperature(
                             werkstoff.getStats()
@@ -1817,7 +1817,7 @@ public class WerkstoffLoader {
             if (werkstoff.hasItemType(OrePrefixes.cellMolten)) {
                 if (!FluidRegistry.isFluidRegistered("molten." + werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Molten: " + werkstoff.getDefaultName());
-                    Fluid fluid = GT_FluidFactory.builder("molten." + werkstoff.getDefaultName())
+                    Fluid fluid = GTFluidFactory.builder("molten." + werkstoff.getDefaultName())
                         .withLocalizedName("Molten " + werkstoff.getDefaultName())
                         .withStateAndTemperature(
                             FluidState.MOLTEN,
@@ -1995,20 +1995,20 @@ public class WerkstoffLoader {
     }
 
     public static void addVanillaCasingsToGTOreDictUnificator() {
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .addAssociation(OrePrefixes.blockCasing, Materials.Aluminium, ItemList.Casing_FrostProof.get(1L), false);
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .addAssociation(OrePrefixes.blockCasing, Materials.Nickel, ItemList.Casing_HeatProof.get(1L), false);
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .addAssociation(OrePrefixes.blockCasing, Materials.Lead, ItemList.Casing_RadiationProof.get(1L), false);
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .addAssociation(OrePrefixes.blockCasing, Materials.Steel, ItemList.Casing_SolidSteel.get(1L), false);
-        GT_OreDictUnificator.addAssociation(
+        GTOreDictUnificator.addAssociation(
             OrePrefixes.blockCasing,
             Materials.TungstenSteel,
             ItemList.Casing_RobustTungstenSteel.get(1L),
             false);
-        GT_OreDictUnificator.addAssociation(
+        GTOreDictUnificator.addAssociation(
             OrePrefixes.blockCasing,
             Materials.Polytetrafluoroethylene,
             ItemList.Casing_Chemically_Inert.get(1L),
@@ -2040,9 +2040,9 @@ public class WerkstoffLoader {
         Materials blockMat = new Materials(-1, null, 0, 0, 0, false, "bwblocks", "bwblocks", null, true, null);
 
         for (int i = 0; i < 16; i++) {
-            GT_OreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
-            GT_OreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);
-            GT_OreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks, 1, i), true);
+            GTOreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
+            GTOreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);
+            GTOreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks, 1, i), true);
         }
 
         MATERIALS_MAP.remove("bwores");
@@ -2075,8 +2075,8 @@ public class WerkstoffLoader {
     private static void runAdditionalOreDict() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.hasItemType(ore)) {
-                GT_OreDictUnificator.registerOre(ore + werkstoff.getVarName(), werkstoff.get(ore));
-                GT_OreDictUnificator.registerOre(oreSmall + werkstoff.getVarName(), werkstoff.get(oreSmall));
+                GTOreDictUnificator.registerOre(ore + werkstoff.getVarName(), werkstoff.get(ore));
+                GTOreDictUnificator.registerOre(oreSmall + werkstoff.getVarName(), werkstoff.get(oreSmall));
                 werkstoff.getADDITIONAL_OREDICT()
                     .forEach(e -> OreDictionary.registerOre(ore + e, werkstoff.get(ore)));
                 werkstoff.getADDITIONAL_OREDICT()
@@ -2088,7 +2088,7 @@ public class WerkstoffLoader {
                 werkstoff.get(lens));
 
             if (werkstoff.hasItemType(gem) || werkstoff.hasItemType(ingot)) {
-                GT_OreDictUnificator.registerOre(block + werkstoff.getVarName(), werkstoff.get(block));
+                GTOreDictUnificator.registerOre(block + werkstoff.getVarName(), werkstoff.get(block));
                 werkstoff.getADDITIONAL_OREDICT()
                     .forEach(e -> OreDictionary.registerOre(block + e, werkstoff.get(block)));
             }
@@ -2100,6 +2100,6 @@ public class WerkstoffLoader {
                         .forEach(od -> OreDictionary.registerOre(od + s, werkstoff.get(od))));
         }
 
-        GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
+        GTOreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
     }
 }

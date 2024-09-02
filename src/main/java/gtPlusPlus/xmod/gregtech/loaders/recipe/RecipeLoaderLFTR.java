@@ -1,14 +1,14 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -64,7 +64,7 @@ public class RecipeLoaderLFTR {
         FluidStack Li2BeF4 = MaterialsNuclides.Li2BeF4.getFluidStack(200);
 
         // LiFBeF2ThF4UF4 - T3
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4)
             .fluidOutputs(
                 MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(100),
@@ -77,7 +77,7 @@ public class RecipeLoaderLFTR {
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4)
             .fluidOutputs(
                 MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50),
@@ -90,7 +90,7 @@ public class RecipeLoaderLFTR {
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4U235 - T1
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4)
             .fluidOutputs(
                 MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(25),

@@ -18,8 +18,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -35,20 +35,20 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEThoriumHighTempReactor> {
+public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor> {
 
     private static final int BASECASINGINDEX = 44;
 
@@ -83,19 +83,19 @@ public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBl
                         "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
                     { "  bbb~bbb  ", " bbbbbbbbb ", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb",
                         "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", " bbbbbbbbb ", "  bbbbbbb  " }, }))
-        .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12)))
+        .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings3, 12)))
         .addElement(
             'b',
             ofChain(
                 ofHatchAdder(MTEThoriumHighTempReactor::addOutputToMachineList, BASECASINGINDEX, 1),
                 ofHatchAdder(MTEThoriumHighTempReactor::addMaintenanceToMachineList, BASECASINGINDEX, 1),
                 ofHatchAdder(MTEThoriumHighTempReactor::addEnergyInputToMachineList, BASECASINGINDEX, 1),
-                onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12))))
+                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
         .addElement(
             'B',
             ofChain(
                 ofHatchAdder(MTEThoriumHighTempReactor::addInputToMachineList, BASECASINGINDEX, 2),
-                onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings3, 12))))
+                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
         // ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2,
         // GregTech_API.sBlockCasings3, 12))
         .build();
@@ -129,17 +129,17 @@ public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBl
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor")
             .addInfo("Controller block for the Thorium High Temperature Reactor (THTR)")
-            .addInfo("Needs to be primed with " + GT_Utility.formatNumbers(HELIUM_NEEDED) + " of helium")
+            .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles)")
             .addInfo("Consumes up to 0.5% of total Fuel Pellets per Operation depending on efficiency")
             .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
             .addInfo("Reactor will take 4 800L/t of coolant multiplied by efficiency")
-            .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t")
+            .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
             .addSeparator()
             .beginStructureBlock(11, 12, 11, true)
@@ -215,7 +215,7 @@ public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBl
             if (this.fuelsupply < maxcapacity) {
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
-                    if (GT_Utility.areStacksEqual(
+                    if (GTUtility.areStacksEqual(
                         itemStack,
                         new ItemStack(THTRMaterials.aTHTR_Materials, 1, THTRMaterials.MATERIAL_FUEL_INDEX))) {
                         int toget = Math.min(maxcapacity - this.fuelsupply, itemStack.stackSize);
@@ -290,7 +290,7 @@ public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBl
         int takecoolant = this.coolanttaking;
         int drainedamount = 0;
 
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                 FluidStack drained = tHatch.drain(takecoolant, true);
@@ -335,16 +335,16 @@ public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBl
     @Override
     public String[] getInfoData() {
         return new String[] { "Progress:",
-            GT_Utility.formatNumbers(this.mProgresstime / 20) + "secs /"
-                + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
+            GTUtility.formatNumbers(this.mProgresstime / 20) + "secs /"
+                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
                 + "secs",
             "TRISO-Pebbles:",
-            GT_Utility.formatNumbers(this.fuelsupply) + "pcs. / " + GT_Utility.formatNumbers(this.fuelsupply) + "psc.",
+            GTUtility.formatNumbers(this.fuelsupply) + "pcs. / " + GTUtility.formatNumbers(this.fuelsupply) + "psc.",
             "Helium-Level:",
-            GT_Utility.formatNumbers(this.HeliumSupply) + "L / "
-                + GT_Utility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)
+            GTUtility.formatNumbers(this.HeliumSupply) + "L / "
+                + GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)
                 + "L",
-            "Coolant/t:", GT_Utility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolanttaking) + "L/t",
+            "Coolant/t:", GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolanttaking) + "L/t",
             "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
     }
 
@@ -381,11 +381,11 @@ public class MTEThoriumHighTempReactor extends GT_MetaTileEntity_EnhancedMultiBl
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "THTR mode cannot be changed while the machine is running.");
+            GTUtility.sendChatToPlayer(aPlayer, "THTR mode cannot be changed while the machine is running.");
             return;
         }
         this.empty = !this.empty;
-        GT_Utility.sendChatToPlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             "THTR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
     }

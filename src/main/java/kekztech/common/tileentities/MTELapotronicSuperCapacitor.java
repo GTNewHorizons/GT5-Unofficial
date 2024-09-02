@@ -6,10 +6,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
@@ -57,22 +57,22 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.client.gui.KTUITextures;
 import kekztech.common.Blocks;
@@ -82,7 +82,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
-public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
+public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
     implements ISurvivalConstructable {
 
     private enum TopState {
@@ -317,12 +317,12 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         return STRUCTURE_DEFINITION;
     }
 
-    private void processInputHatch(GT_MetaTileEntity_Hatch aHatch, int aBaseCasingIndex) {
+    private void processInputHatch(MTEHatch aHatch, int aBaseCasingIndex) {
         mMaxEUIn += aHatch.maxEUInput() * aHatch.maxAmperesIn();
         aHatch.updateTexture(aBaseCasingIndex);
     }
 
-    private void processOutputHatch(GT_MetaTileEntity_Hatch aHatch, int aBaseCasingIndex) {
+    private void processOutputHatch(MTEHatch aHatch, int aBaseCasingIndex) {
         mMaxEUOut += aHatch.maxEUOutput() * aHatch.maxAmperesOut();
         aHatch.updateTexture(aBaseCasingIndex);
     }
@@ -330,14 +330,13 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
     private boolean addBottomHatches(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches
-                .add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+        if (!(aMetaTileEntity instanceof MTEHatch)) return false;
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+        } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
             // Add GT hatches
-            final GT_MetaTileEntity_Hatch_Energy tHatch = ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+            final MTEHatchEnergy tHatch = ((MTEHatchEnergy) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
         } else if (aMetaTileEntity instanceof MTEHatchEnergyTunnel) {
@@ -350,9 +349,9 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             final MTEHatchEnergyMulti tHatch = (MTEHatchEnergyMulti) aMetaTileEntity;
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatchesTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+        } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
             // Add GT hatches
-            final GT_MetaTileEntity_Hatch_Dynamo tDynamo = (GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity;
+            final MTEHatchDynamo tDynamo = (MTEHatchDynamo) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoHatches.add(tDynamo);
         } else if (aMetaTileEntity instanceof MTEHatchDynamoTunnel) {
@@ -390,17 +389,17 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Energy Storage")
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
+                    + GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
                     + EnumChatFormatting.GRAY
                     + " EU/t passive loss per "
-                    + GT_Values.TIER_COLORS[9]
-                    + GT_Values.VN[9]
+                    + GTValues.TIER_COLORS[9]
+                    + GTValues.VN[9]
                     + EnumChatFormatting.GRAY
                     + " capacitor.")
             .addInfo(
@@ -413,7 +412,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             .addSeparator()
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
             .addInfo(
-                GT_Values.TIER_COLORS[8] + GT_Values.VN[8]
+                GTValues.TIER_COLORS[8] + GTValues.VN[8]
                     + EnumChatFormatting.GRAY
                     + "-tier glass required for "
                     + EnumChatFormatting.BLUE
@@ -426,24 +425,24 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             .addSeparator()
             .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
             .addInfo(
-                "This mode can only be enabled if you have a " + GT_Values.TIER_COLORS[9]
-                    + GT_Values.VN[9]
+                "This mode can only be enabled if you have a " + GTValues.TIER_COLORS[9]
+                    + GTValues.VN[9]
                     + EnumChatFormatting.GRAY
                     + "+ capacitor in the multiblock.")
             .addInfo(
                 "When enabled every " + EnumChatFormatting.BLUE
-                    + GT_Utility
+                    + GTUtility
                         .formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
                     + EnumChatFormatting.GRAY
                     + " ticks the LSC will attempt to re-balance against your")
             .addInfo("wireless EU network.")
             .addInfo(
                 "If there is less than " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
+                    + GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
                     + EnumChatFormatting.GRAY
                     + "("
-                    + GT_Values.TIER_COLORS[9]
-                    + GT_Values.VN[9]
+                    + GTValues.TIER_COLORS[9]
+                    + GTValues.VN[9]
                     + EnumChatFormatting.GRAY
                     + ") EU in the LSC")
             .addInfo("it will withdraw from the network and add to the LSC.")
@@ -460,20 +459,20 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             .addController("Front center bottom")
             .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
             .addOtherStructurePart(
-                "Lapotronic Capacitor (" + GT_Values.TIER_COLORS[4]
-                    + GT_Values.VN[4]
+                "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
+                    + GTValues.VN[4]
                     + EnumChatFormatting.GRAY
                     + "-"
-                    + GT_Values.TIER_COLORS[8]
-                    + GT_Values.VN[8]
+                    + GTValues.TIER_COLORS[8]
+                    + GTValues.VN[8]
                     + EnumChatFormatting.GRAY
                     + "), Ultimate Capacitor ("
-                    + GT_Values.TIER_COLORS[9]
-                    + GT_Values.VN[9]
+                    + GTValues.TIER_COLORS[9]
+                    + GTValues.VN[9]
                     + EnumChatFormatting.GRAY
                     + "-"
-                    + GT_Values.TIER_COLORS[12]
-                    + GT_Values.VN[12]
+                    + GTValues.TIER_COLORS[12]
+                    + GTValues.VN[12]
                     + EnumChatFormatting.GRAY
                     + ")",
                 "Center 3x(1-47)x3 above base (9-423 blocks)")
@@ -484,8 +483,8 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             .addDynamoHatch("Any casing")
             .addOtherStructurePart(
                 "Laser Target/Source Hatches",
-                "Any casing, must be using " + GT_Values.TIER_COLORS[8]
-                    + GT_Values.VN[8]
+                "Any casing, must be using " + GTValues.TIER_COLORS[8]
+                    + GTValues.VN[8]
                     + EnumChatFormatting.GRAY
                     + "-tier glass")
             .addStructureInfo("You can have several I/O Hatches")
@@ -671,7 +670,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         long temp_stored = 0L;
 
         // Draw energy from GT hatches
-        for (GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
+        for (MTEHatchEnergy eHatch : super.mEnergyHatches) {
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
@@ -684,7 +683,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         }
 
         // Output energy to GT hatches
-        for (GT_MetaTileEntity_Hatch_Dynamo eDynamo : super.mDynamoHatches) {
+        for (MTEHatchDynamo eDynamo : super.mDynamoHatches) {
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
@@ -926,8 +925,8 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         ll.add("Total Capacity: " + nf.format(capacity) + " EU");
         ll.add("Total Capacity: " + toStandardForm(capacity) + " EU");
         ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + " EU/t");
-        ll.add("EU IN: " + GT_Utility.formatNumbers(inputLastTick) + " EU/t");
-        ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + " EU/t");
+        ll.add("EU IN: " + GTUtility.formatNumbers(inputLastTick) + " EU/t");
+        ll.add("EU OUT: " + GTUtility.formatNumbers(outputLastTick) + " EU/t");
         ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
         ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
 
@@ -955,22 +954,22 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             "Wireless mode: " + (wireless_mode ? EnumChatFormatting.GREEN + "enabled" + EnumChatFormatting.RESET
                 : EnumChatFormatting.RED + "disabled" + EnumChatFormatting.RESET));
         ll.add(
-            GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
+            GTValues.TIER_COLORS[9] + GTValues.VN[9]
                 + EnumChatFormatting.RESET
                 + " Capacitors detected: "
                 + getUHVCapacitorCount());
         ll.add(
-            GT_Values.TIER_COLORS[10] + GT_Values.VN[10]
+            GTValues.TIER_COLORS[10] + GTValues.VN[10]
                 + EnumChatFormatting.RESET
                 + " Capacitors detected: "
                 + getUEVCapacitorCount());
         ll.add(
-            GT_Values.TIER_COLORS[11] + GT_Values.VN[11]
+            GTValues.TIER_COLORS[11] + GTValues.VN[11]
                 + EnumChatFormatting.RESET
                 + " Capacitors detected: "
                 + getUIVCapacitorCount());
         ll.add(
-            GT_Values.TIER_COLORS[12] + GT_Values.VN[12]
+            GTValues.TIER_COLORS[12] + GTValues.VN[12]
                 + EnumChatFormatting.RESET
                 + " Capacitors detected: "
                 + getUMVCapacitorCount());
@@ -1114,12 +1113,12 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (canUseWireless()) {
             wireless_mode = !wireless_mode;
-            GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
+            GTUtility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
         } else {
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
-                "Wireless mode cannot be enabled without at least 1 " + GT_Values.TIER_COLORS[9]
-                    + GT_Values.VN[9]
+                "Wireless mode cannot be enabled without at least 1 " + GTValues.TIER_COLORS[9]
+                    + GTValues.VN[9]
                     + EnumChatFormatting.RESET
                     + "+ capacitor.");
             wireless_mode = false;
@@ -1140,7 +1139,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.BUTTON_STANDARD);
                 if (canUseWireless) {
                     if (wireless_mode) {
                         ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_ON);
@@ -1166,7 +1165,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.BUTTON_STANDARD);
                     ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_REBALANCE);
                     return ret.toArray(new IDrawable[0]);
                 })
@@ -1179,14 +1178,14 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
-        Energy(MTEHatchEnergyMulti.class, GT_MetaTileEntity_Hatch_Energy.class) {
+        Energy(MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo(MTEHatchDynamoMulti.class, GT_MetaTileEntity_Hatch_Dynamo.class) {
+        Dynamo(MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
@@ -1207,7 +1206,7 @@ public class MTELapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMulti
         }
 
         @Override
-        public IGT_HatchAdder<? super MTELapotronicSuperCapacitor> adder() {
+        public IGTHatchAdder<? super MTELapotronicSuperCapacitor> adder() {
             return MTELapotronicSuperCapacitor::addBottomHatches;
         }
     }

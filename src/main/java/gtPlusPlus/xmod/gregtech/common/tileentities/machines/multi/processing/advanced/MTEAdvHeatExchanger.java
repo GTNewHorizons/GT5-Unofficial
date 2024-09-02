@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -20,21 +20,21 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -59,7 +59,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     { " c~c ", "cPPPc", "cPPPc", "cPPPc", " ccc " }, { " hhh ", "hHHHh", "hHHHh", "hHHHh", " hhh " },
                     { " f f ", "f   f", "     ", "f   f", " f f " },
                     { " f f ", "f   f", "     ", "f   f", " f f " }, }))
-        .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
+        .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement('f', ofBlock(getFrame(), 0))
         .addElement(
             'C',
@@ -84,8 +84,8 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         .build();
     public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
 
-    private GT_MetaTileEntity_Hatch_Input mInputHotFluidHatch;
-    private GT_MetaTileEntity_Hatch_Output mOutputColdFluidHatch;
+    private MTEHatchInput mInputHotFluidHatch;
+    private MTEHatchOutput mOutputColdFluidHatch;
     private boolean superheated = false;
     private int superheated_threshold = 0;
     private float water;
@@ -100,8 +100,8 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the XL Heat Exchanger")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
@@ -241,7 +241,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 // tGeneratedEU = distilledConsumed * 160; // EXACTLY how much steam to generate, producing a perfect
                 // 1:160 ratio with distilled water consumption
 
-                FluidStack distilledStack = GT_ModHandler.getDistilledWater(distilledConsumed);
+                FluidStack distilledStack = GTModHandler.getDistilledWater(distilledConsumed);
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
@@ -249,10 +249,10 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                                                                                                      // superheated
                                                                                                      // steam
                     } else {
-                        addOutput(GT_ModHandler.getSteam(tGeneratedEU)); // Generate regular steam
+                        addOutput(GTModHandler.getSteam(tGeneratedEU)); // Generate regular steam
                     }
                 } else {
-                    GT_Log.exp.println(this.mName + " had no more Distilled water!");
+                    GTLog.exp.println(this.mName + " had no more Distilled water!");
                     explodeMultiblock(); // Generate crater
                 }
             }
@@ -282,9 +282,9 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            mOutputColdFluidHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchOutput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            mOutputColdFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
         }
         return false;
@@ -294,10 +294,10 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            mInputHotFluidHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            mInputHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
         }
         return false;
@@ -333,18 +333,18 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + GTUtility.formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
                 + StatCollector.translateToLocal("GT5U.LHE.steam")
                 + ": "
                 + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GT_Utility.formatNumbers(superheated ? -2 * lEUt : -lEUt)
+                + GTUtility.formatNumbers(superheated ? -2 * lEUt : -lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
@@ -366,7 +366,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 + StatCollector.translateToLocal("GT5U.LHE.threshold")
                 + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(superheated_threshold)
+                + GTUtility.formatNumbers(superheated_threshold)
                 + EnumChatFormatting.RESET };
     }
 

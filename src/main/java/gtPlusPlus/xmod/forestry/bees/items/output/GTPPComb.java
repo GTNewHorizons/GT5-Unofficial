@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
@@ -17,8 +17,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
@@ -103,13 +103,13 @@ public class GTPPComb extends Item {
 
         addChemicalRecipe(
             GTPPCombType.DRAGONBLOOD,
-            new ItemStack[] { GT_ModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
+            new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
                 GTPP_Bees.propolis.getStackForType(GTPPPropolisType.DRAGONBLOOD),
                 GTPP_Bees.drop.getStackForType(GTPPDropType.DRAGONBLOOD) },
             new int[] { 3000, 1500, 500 });
         addChemicalRecipe(
             GTPPCombType.FORCE,
-            new ItemStack[] { GT_ModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
+            new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
                 GTPP_Bees.propolis.getStackForType(GTPPPropolisType.FORCE),
                 GTPP_Bees.drop.getStackForType(GTPPDropType.FORCE) },
             new int[] { 5000, 3000, 1000 });
@@ -119,7 +119,7 @@ public class GTPPComb extends Item {
         Material aMat = aInputStack.mMaterial;
         long aEU = aMat.vVoltageMultiplier;
         int aTier = Math.max(aMat.vTier / 2, 1);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)
             .duration(aTier * 20 * 60)

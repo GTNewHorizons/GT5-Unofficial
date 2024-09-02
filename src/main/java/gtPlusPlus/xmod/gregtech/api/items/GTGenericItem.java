@@ -25,9 +25,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 
@@ -47,9 +47,9 @@ public class GTGenericItem extends Item implements IProjectileItem {
         final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
-        GT_LanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
-        if (GT_Utility.isStringValid(aEnglishTooltip)) {
-            GT_LanguageManager.addStringLocalization(
+        GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
+        if (GTUtility.isStringValid(aEnglishTooltip)) {
+            GTLanguageManager.addStringLocalization(
                 this.mTooltip = this.mName + ".tooltip_main",
                 aEnglishTooltip,
                 aWriteToolTipIntoLangFile);
@@ -104,9 +104,9 @@ public class GTGenericItem extends Item implements IProjectileItem {
             aList.add((aStack.getMaxDamage() - this.getDamage(aStack)) + " / " + aStack.getMaxDamage());
         }
         if (this.mTooltip != null) {
-            aList.add(GT_LanguageManager.getTranslation(this.mTooltip));
+            aList.add(GTLanguageManager.getTranslation(this.mTooltip));
         }
-        if (GT_ModHandler.isElectricItem(aStack)) {
+        if (GTModHandler.isElectricItem(aStack)) {
             aList.add("Tier: " + this.getTier(aStack));
         }
         this.addAdditionalToolTips(aList, aStack);

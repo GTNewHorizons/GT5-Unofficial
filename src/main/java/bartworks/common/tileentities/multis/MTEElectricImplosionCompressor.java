@@ -21,18 +21,18 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -81,19 +81,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
-public class MTEElectricImplosionCompressor extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor> implements ISurvivalConstructable {
+public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
+    implements ISurvivalConstructable {
 
     private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
     private Boolean piston = true;
@@ -120,7 +120,7 @@ public class MTEElectricImplosionCompressor extends
                 new String[][] { { "ccc", "cec", "ccc" }, { "ttt", "tft", "ttt" }, { "ttt", "tft", "ttt" },
                     { "nnn", "nnn", "nnn" }, { "nNn", "NNN", "nNn" }, { "nnn", "nnn", "nnn" }, { "t~t", "tft", "ttt" },
                     { "ttt", "tft", "ttt" }, { "CCC", "CeC", "CCC" }, }))
-        .addElement('c', ofChain(ofBlock(GregTech_API.sBlockCasings2, 0), ofBlock(GregTech_API.sBlockCasings3, 4)))
+        .addElement('c', ofChain(ofBlock(GregTechAPI.sBlockCasings2, 0), ofBlock(GregTechAPI.sBlockCasings3, 4)))
         .addElement('t', ofBlock(BW_BLOCKS[2], 1))
         .addElement('f', ofBlock(BW_BLOCKS[2], 0))
         .addElement(
@@ -138,16 +138,16 @@ public class MTEElectricImplosionCompressor extends
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings2, 0)),
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings3, 4))))
+                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
+                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
         .addElement(
             'e',
             buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .dot(2)
                 .buildAndChain(
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings2, 0)),
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings3, 4))))
+                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
+                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
         .addElement('N', new IStructureElement<>() {
 
             // Much of this based on StructureUtility.ofBlocksTiered
@@ -205,13 +205,13 @@ public class MTEElectricImplosionCompressor extends
             private static final long serialVersionUID = 8171991663102417651L;
 
             {
-                this.add(Pair.of(GregTech_API.sBlockMetal5, 2));
+                this.add(Pair.of(GregTechAPI.sBlockMetal5, 2));
                 if (Mods.Avaritia.isModLoaded()) {
                     this.add(Pair.of(LudicrousBlocks.resource_block, 1));
                 }
-                this.add(Pair.of(GregTech_API.sBlockMetal9, 4));
-                this.add(Pair.of(GregTech_API.sBlockMetal9, 3));
-                this.add(Pair.of(GregTech_API.sBlockMetal9, 8));
+                this.add(Pair.of(GregTechAPI.sBlockMetal9, 4));
+                this.add(Pair.of(GregTechAPI.sBlockMetal9, 3));
+                this.add(Pair.of(GregTechAPI.sBlockMetal9, 8));
             }
 
         };
@@ -225,13 +225,13 @@ public class MTEElectricImplosionCompressor extends
         if (block == null) {
             return -1;
         }
-        if (block == GregTech_API.sBlockMetal5 && meta == 2) {
+        if (block == GregTechAPI.sBlockMetal5 && meta == 2) {
             return 1; // Neutronium
         }
         if (block == LudicrousBlocks.resource_block && meta == 1) {
             return 2; // Infinity
         }
-        if (block == GregTech_API.sBlockMetal9) {
+        if (block == GregTechAPI.sBlockMetal9) {
             return switch (meta) {
                 case 4 -> 3; // Transcendent Metal
                 case 3 -> 4; // SpaceTime
@@ -261,8 +261,8 @@ public class MTEElectricImplosionCompressor extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
             .addInfo("Explosions are fun")
             .addInfo("Controller block for the Electric Implosion Compressor")
@@ -300,7 +300,7 @@ public class MTEElectricImplosionCompressor extends
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 long voltage = MTEElectricImplosionCompressor.this.getAverageInputVoltage();
                 // Only allow a minimum of T-1 energy hatch
                 if (recipe.mEUt > voltage * 4) {
@@ -311,7 +311,7 @@ public class MTEElectricImplosionCompressor extends
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 // For overclocking we'll allow all power to be used
                 return super.createOverclockCalculator(recipe)
                     .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
@@ -419,7 +419,7 @@ public class MTEElectricImplosionCompressor extends
 
         if (!this.getBaseMetaTileEntity()
             .hasMufflerUpgrade())
-            GT_Utility.doSoundAtClient(
+            GTUtility.doSoundAtClient(
                 sound,
                 10,
                 1f,
@@ -461,8 +461,8 @@ public class MTEElectricImplosionCompressor extends
         this.setBlockTier(0);
         boolean isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
 
-        List<GT_MetaTileEntity_Hatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
-        for (GT_MetaTileEntity_Hatch hatch : energyHatches) {
+        List<MTEHatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
+        for (MTEHatch hatch : energyHatches) {
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
 
@@ -549,9 +549,9 @@ public class MTEElectricImplosionCompressor extends
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
             return true;
         }

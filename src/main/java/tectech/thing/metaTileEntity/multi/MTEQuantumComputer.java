@@ -2,11 +2,11 @@ package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -40,13 +40,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.WirelessComputationPacket;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -351,8 +351,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum
                                                                                               // Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
@@ -410,10 +410,10 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
             if (wirelessModeEnabled) {
-                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
                 WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
                 WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
             }
         }
@@ -493,7 +493,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchRack) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eRacks.add((MTEHatchRack) aMetaTileEntity);
         }
         return false;
@@ -508,7 +508,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchWirelessComputationOutput) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             // Add to wireless computation outputs, so we can detect these and turn on wireless mode,
             // but also add to regular outputs, so they are used as output data hatches by the quantum computer
             return eWirelessComputationOutputs.add((MTEHatchWirelessComputationOutput) aMetaTileEntity)
@@ -586,7 +586,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         }
 
         @Override
-        public IGT_HatchAdder<? super MTEQuantumComputer> adder() {
+        public IGTHatchAdder<? super MTEQuantumComputer> adder() {
             return MTEQuantumComputer::addRackToMachineList;
         }
 
@@ -606,7 +606,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         }
 
         @Override
-        public IGT_HatchAdder<? super MTEQuantumComputer> adder() {
+        public IGTHatchAdder<? super MTEQuantumComputer> adder() {
             return MTEQuantumComputer::addWirelessDataOutputToMachineList;
         }
 

@@ -70,7 +70,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Version;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -126,9 +126,9 @@ public final class MainMod {
         BioCultureLoader.run();
 
         Werkstoff.init();
-        GregTech_API.sAfterGTPostload.add(new CircuitPartLoader());
+        GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
         if (SideReference.Side.Client) {
-            GregTech_API.sBeforeGTLoad.add(new PrefixTextureLinker());
+            GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
 
         RegisterGlassTiers.run();

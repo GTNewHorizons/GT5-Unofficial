@@ -2,11 +2,11 @@ package tectech.loader.recipe;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.FOG_EXOTIC_TIER;
-import static gregtech.api.util.GT_RecipeConstants.FOG_PLASMA_TIER;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.FOG_EXOTIC_TIER;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
 import static tectech.util.GodforgeMath.getRandomIntInRange;
@@ -21,14 +21,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -126,7 +126,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < solids_t0_1step.length; i++) {
                     boolean multistep = false;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(solids_t0_1step[i])
                         .fluidOutputs(solid_plasmas_t0_1step[i])
                         .duration(10 * TICKS)
@@ -162,7 +162,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < solids_t0_xstep.length; i++) {
                     boolean multistep = true;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(solids_t0_xstep[i])
                         .fluidOutputs(solid_plasmas_t0_xstep[i])
                         .duration(2 * SECONDS)
@@ -183,7 +183,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < solids_t1_1step.length; i++) {
                     boolean multistep = false;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(solids_t1_1step[i])
                         .fluidOutputs(solid_plasmas_t1_1step[i])
                         .duration(5 * SECONDS)
@@ -203,7 +203,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < solids_t1_xstep.length; i++) {
                     boolean multistep = true;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(solids_t1_xstep[i])
                         .fluidOutputs(solid_plasmas_t1_xstep[i])
                         .duration(7 * SECONDS)
@@ -231,7 +231,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < solids_t2_1step.length; i++) {
                     boolean multistep = false;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(solids_t2_1step[i])
                         .fluidOutputs(solid_plasmas_t2_1step[i])
                         .duration(15 * SECONDS)
@@ -252,7 +252,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < solids_t2_xstep.length; i++) {
                     boolean multistep = true;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(solids_t2_xstep[i])
                         .fluidOutputs(solid_plasmas_t2_xstep[i])
                         .duration(25 * SECONDS)
@@ -285,7 +285,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
                     boolean multistep = false;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_1step[i])
                         .fluidOutputs(fluid_plasmas_t0_1step[i])
                         .duration(1 * SECONDS)
@@ -308,7 +308,7 @@ public class Godforge implements Runnable {
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
                     boolean multistep = true;
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_xstep[i])
                         .fluidOutputs(fluid_plasmas_t0_xstep[i])
                         .duration(3 * SECONDS)
@@ -335,7 +335,7 @@ public class Godforge implements Runnable {
 
         // Exotic module fake recipes
         {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
                 .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
@@ -346,7 +346,7 @@ public class Godforge implements Runnable {
                 .fake()
                 .addTo(godforgeExoticMatterRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
                 .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(144))
@@ -589,17 +589,17 @@ public class Godforge implements Runnable {
         // For NEI
         for (FluidStack fluid : exoticModulePlasmaFluidMap.keySet()) {
             fluid.amount = getRandomIntInRange(1, 64);
-            quarkGluonFluidItemsForNEI.add(GT_Utility.getFluidDisplayStack(fluid, true));
+            quarkGluonFluidItemsForNEI.add(GTUtility.getFluidDisplayStack(fluid, true));
         }
         for (ItemStack item : exoticModulePlasmaItemMap.keySet()) {
             item.stackSize = getRandomIntInRange(1, 64);
             quarkGluonItemsForNEI.add(item);
         }
         for (int i = 0; i < 21; i++) {
-            magmatterTimeFluidItemsForNEI.add(
-                GT_Utility.getFluidDisplayStack(MaterialsUEVplus.Time.getMolten(getRandomIntInRange(1, 50)), true));
+            magmatterTimeFluidItemsForNEI
+                .add(GTUtility.getFluidDisplayStack(MaterialsUEVplus.Time.getMolten(getRandomIntInRange(1, 50)), true));
             magmatterSpaceFluidItemsForNEI.add(
-                GT_Utility.getFluidDisplayStack(MaterialsUEVplus.Space.getMolten(getRandomIntInRange(51, 100)), true));
+                GTUtility.getFluidDisplayStack(MaterialsUEVplus.Space.getMolten(getRandomIntInRange(51, 100)), true));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
@@ -607,7 +607,7 @@ public class Godforge implements Runnable {
         if (EternalSingularity.isModLoaded() && GalaxySpace.isModLoaded()) {
             godforgeUpgradeMats.put(
                 0,
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                     ItemList.SuperconductorComposite.get(32),
                     GGMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
                     getModItem(EternalSingularity.ID, "eternal_singularity", 8L), ItemList.Robot_Arm_UIV.get(64L),
@@ -638,14 +638,14 @@ public class Godforge implements Runnable {
                     CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
                     ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4),
                     MaterialsElements.STANDALONE.RHUGNOR.getGear(64),
-                    GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
                     getModItem(EternalSingularity.ID, "eternal_singularity", 32L), ItemList.Robot_Arm_UIV.get(64L),
                     ItemList.Field_Generator_UEV.get(64L) });
 
             godforgeUpgradeMats.put(
                 26,
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
                     MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(64),
                     MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(64),
                     CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
@@ -654,10 +654,10 @@ public class Godforge implements Runnable {
 
             godforgeUpgradeMats.put(
                 29,
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 4),
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 4),
                     CustomItemList.EOH_Infinite_Energy_Casing.get(64),
                     CustomItemList.StabilisationFieldGeneratorTier5.get(16), ItemList.ZPM6.get(16),
                     ItemList.Field_Generator_UMV.get(64) });

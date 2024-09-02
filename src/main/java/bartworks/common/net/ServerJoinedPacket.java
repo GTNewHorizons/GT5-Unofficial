@@ -19,10 +19,10 @@ import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.MainMod;
 import bartworks.common.configs.ConfigHandler;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.GTPacketNew;
 import io.netty.buffer.ByteBuf;
 
-public class ServerJoinedPacket extends GT_Packet_New {
+public class ServerJoinedPacket extends GTPacketNew {
 
     private byte config;
 
@@ -47,7 +47,7 @@ public class ServerJoinedPacket extends GT_Packet_New {
     }
 
     @Override
-    public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
+    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
         this.config = byteArrayDataInput.readByte();
         return this;
     }

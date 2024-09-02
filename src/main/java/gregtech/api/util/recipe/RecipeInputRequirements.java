@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.item.ItemHolder;
 
 public class RecipeInputRequirements {
@@ -24,7 +24,7 @@ public class RecipeInputRequirements {
     protected Set<Fluid> fluidInputsMet = new HashSet<>();
     protected boolean metAllFluid = false;
 
-    public RecipeInputRequirements(@Nonnull GT_Recipe recipe) {
+    public RecipeInputRequirements(@Nonnull GTRecipe recipe) {
         this(recipe.mInputs, recipe.mFluidInputs);
     }
 
@@ -42,7 +42,7 @@ public class RecipeInputRequirements {
     }
 
     /**
-     * 
+     *
      * @param itemInputs we have and want to fill this request
      * @return {@code true} when all item inputs are met
      */
@@ -59,7 +59,7 @@ public class RecipeInputRequirements {
     }
 
     /**
-     * 
+     *
      * @param fluidInputs we have and want to fill this request
      * @return {@code true} when all fluid inputs are met
      */

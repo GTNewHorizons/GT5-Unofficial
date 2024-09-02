@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.stream.Stream;
 
@@ -30,7 +30,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -39,10 +39,10 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -120,7 +120,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             // We still want to run if we lack water (and subsequently explode).
             @NotNull
             @Override
-            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (lastRecipe != null && depleteInput(lastRecipe.mFluidInputs[0], true)) {
                     return Stream.of(lastRecipe);
                 }
@@ -134,8 +134,8 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-                GT_Recipe adjustedRecipe = recipe.copy();
+            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+                GTRecipe adjustedRecipe = recipe.copy();
 
                 // Hack the recipe logic to not consume water, so that we can explode.
                 for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
@@ -240,7 +240,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
     private boolean useWater(int steamAmount) {
         // Round up to not dupe decimal amounts of water.
-        int waterAmount = Math.floorDiv(steamAmount + GT_Values.STEAM_PER_WATER - 1, GT_Values.STEAM_PER_WATER);
+        int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
         if (depleteInput(FluidUtils.getWater(waterAmount)) || depleteInput(FluidUtils.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;
@@ -249,7 +249,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             if (dryHeatCounter < dryHeatMaximum) {
                 ++dryHeatCounter;
             } else {
-                GT_Log.exp.println(this.mName + " was too hot and had no more Water!");
+                GTLog.exp.println(this.mName + " was too hot and had no more Water!");
                 explodeMultiblock(); // Generate crater
             }
             return false;
@@ -276,8 +276,8 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Thermal Boiler Controller")
             .addInfo("Converts Water & Heat into Steam")

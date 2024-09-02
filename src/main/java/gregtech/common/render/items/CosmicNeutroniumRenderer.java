@@ -1,6 +1,6 @@
 package gregtech.common.render.items;
 
-import static gregtech.common.render.GT_RenderUtil.colorGTItem;
+import static gregtech.common.render.GTRenderUtil.colorGTItem;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -14,9 +14,9 @@ import org.lwjgl.opengl.GL12;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.Textures;
-import gregtech.common.render.GT_RenderUtil;
+import gregtech.common.render.GTRenderUtil;
 
-public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
+public class CosmicNeutroniumRenderer extends GeneratedMaterialRenderer {
 
     // spotless:off
     private static final Pos2d point0 = new Pos2d(0  - 10, 0  - 10);
@@ -90,10 +90,10 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
             colorGTItem(item);
 
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                GTRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GT_RenderUtil.renderItem(type, icon);
+                GTRenderUtil.renderItem(type, icon);
             }
             GL11.glPopMatrix();
         }

@@ -9,7 +9,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.recipe.common.CI;
@@ -109,7 +109,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                     // Check Circuit Type
                     ItemStack aOutput;
                     if (aTypeInSlot == 0) {
-                        aOutput = GT_Utility.getIntegratedCircuit(e);
+                        aOutput = GTUtility.getIntegratedCircuit(e);
                     } else if (aTypeInSlot == 1) {
                         aOutput = CI.getNumberedBioCircuit(e);
                     } else if (aTypeInSlot == 2) {

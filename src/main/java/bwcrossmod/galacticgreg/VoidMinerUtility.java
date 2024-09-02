@@ -23,12 +23,12 @@ import galacticgreg.WorldgenOreLayerSpace;
 import galacticgreg.WorldgenOreSmallSpace;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
+import gregtech.api.util.GTUtility;
+import gregtech.common.WorldgenGTOreLayer;
+import gregtech.common.WorldgenGTOreSmallPieces;
 
 public class VoidMinerUtility {
 
@@ -40,7 +40,7 @@ public class VoidMinerUtility {
     public static class DropMap {
 
         private float totalWeight;
-        private final Map<GT_Utility.ItemId, Float> internalMap;
+        private final Map<GTUtility.ItemId, Float> internalMap;
 
         public DropMap() {
             internalMap = new HashMap<>();
@@ -57,7 +57,7 @@ public class VoidMinerUtility {
             if (isBWOres) {
                 addDrop(WerkstoffLoader.BWOres, meta, weight);
             } else {
-                addDrop(GregTech_API.sBlockOres1, meta, weight);
+                addDrop(GregTechAPI.sBlockOres1, meta, weight);
             }
         }
 
@@ -97,7 +97,7 @@ public class VoidMinerUtility {
         }
 
         private void addDrop(Item item, int meta, float weight) {
-            GT_Utility.ItemId ore = GT_Utility.ItemId.createNoCopy(item, meta, null);
+            GTUtility.ItemId ore = GTUtility.ItemId.createNoCopy(item, meta, null);
             internalMap.merge(ore, weight, Float::sum);
             totalWeight += weight;
         }
@@ -106,7 +106,7 @@ public class VoidMinerUtility {
             return totalWeight;
         }
 
-        public Map<GT_Utility.ItemId, Float> getInternalMap() {
+        public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
         }
     }
@@ -151,8 +151,8 @@ public class VoidMinerUtility {
         DropMap dropMap = new DropMap();
 
         // Ore Veins
-        Predicate<GT_Worldgen_GT_Ore_Layer> oreLayerPredicate = makeOreLayerPredicate(dimId);
-        GT_Worldgen_GT_Ore_Layer.sList.stream()
+        Predicate<WorldgenGTOreLayer> oreLayerPredicate = makeOreLayerPredicate(dimId);
+        WorldgenGTOreLayer.sList.stream()
             .filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen))
             .forEach(element -> {
                 dropMap.addDrop(element.mPrimaryMeta, element.mWeight, false);
@@ -162,8 +162,8 @@ public class VoidMinerUtility {
             });
 
         // Small Ores
-        Predicate<GT_Worldgen_GT_Ore_SmallPieces> smallOresPredicate = makeSmallOresPredicate(dimId);
-        GT_Worldgen_GT_Ore_SmallPieces.sList.stream()
+        Predicate<WorldgenGTOreSmallPieces> smallOresPredicate = makeSmallOresPredicate(dimId);
+        WorldgenGTOreSmallPieces.sList.stream()
             .filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen))
             .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
         return dropMap;
@@ -174,7 +174,7 @@ public class VoidMinerUtility {
      *
      * @return the predicate
      */
-    private static Predicate<GT_Worldgen_GT_Ore_Layer> makeOreLayerPredicate(int dimensionId) {
+    private static Predicate<WorldgenGTOreLayer> makeOreLayerPredicate(int dimensionId) {
         return switch (dimensionId) {
             case -1 -> gt_worldgen -> gt_worldgen.mNether;
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
@@ -189,7 +189,7 @@ public class VoidMinerUtility {
      *
      * @return the predicate
      */
-    private static Predicate<GT_Worldgen_GT_Ore_SmallPieces> makeSmallOresPredicate(int dimensionId) {
+    private static Predicate<WorldgenGTOreSmallPieces> makeSmallOresPredicate(int dimensionId) {
         return switch (dimensionId) {
             case -1 -> gt_worldgen -> gt_worldgen.mNether;
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
@@ -267,7 +267,7 @@ public class VoidMinerUtility {
      */
     public static void addMaterialToDimensionList(int DimensionID, ISubTagContainer Material, float weight) {
         if (Material instanceof Materials gtMaterial) {
-            addBlockToDimensionList(DimensionID, GregTech_API.sBlockOres1, gtMaterial.mMetaItemSubID, weight);
+            addBlockToDimensionList(DimensionID, GregTechAPI.sBlockOres1, gtMaterial.mMetaItemSubID, weight);
         } else if (Material instanceof Werkstoff werkstoff) {
             addBlockToDimensionList(DimensionID, WerkstoffLoader.BWOres, werkstoff.getmID(), weight);
         }

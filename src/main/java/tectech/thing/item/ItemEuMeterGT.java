@@ -23,8 +23,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.util.GTUtility;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -58,7 +58,7 @@ public class ItemEuMeterGT extends Item {
             }
 
             if (tTileEntity instanceof BaseMetaTileEntity) {
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     EnumChatFormatting.AQUA + "----- X:"
                         + aX
@@ -71,7 +71,7 @@ public class ItemEuMeterGT extends Item {
                         + " S:"
                         + ordinalSide
                         + " -----");
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": "
                         + EnumChatFormatting.YELLOW
@@ -80,7 +80,7 @@ public class ItemEuMeterGT extends Item {
                         + '/'
                         + EnumChatFormatting.GREEN
                         + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Stored_EU", clientLocale) + ": "
                         + EnumChatFormatting.YELLOW
@@ -89,7 +89,7 @@ public class ItemEuMeterGT extends Item {
                         + '/'
                         + EnumChatFormatting.GREEN
                         + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Average_IO", clientLocale) + ": "
                         + EnumChatFormatting.YELLOW
@@ -98,7 +98,7 @@ public class ItemEuMeterGT extends Item {
                         + '/'
                         + EnumChatFormatting.YELLOW
                         + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Average_IO_(max)", clientLocale) + ": "
                         + EnumChatFormatting.GOLD
@@ -107,7 +107,7 @@ public class ItemEuMeterGT extends Item {
                         + '/'
                         + EnumChatFormatting.GOLD
                         + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Average_IO_max", clientLocale) + ": "
                         + EnumChatFormatting.RED
@@ -116,7 +116,7 @@ public class ItemEuMeterGT extends Item {
                         + '/'
                         + EnumChatFormatting.RED
                         + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Amperage_IO_(max)", clientLocale) + ": "
                         + EnumChatFormatting.GOLD
@@ -125,7 +125,7 @@ public class ItemEuMeterGT extends Item {
                         + '/'
                         + EnumChatFormatting.GOLD
                         + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Side_capabilities", clientLocale) + ": "
                         + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom(side)
@@ -136,18 +136,18 @@ public class ItemEuMeterGT extends Item {
                             : ""));
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
-                if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
+                if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {
                     ArrayList<String> tList = new ArrayList<>();
-                    GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
+                    GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
                     for (String str : tList) {
-                        GT_Utility.sendChatToPlayer(aPlayer, str);
+                        GTUtility.sendChatToPlayer(aPlayer, str);
                     }
                 }
                 return true;
             }
         }
         if (!(aPlayer instanceof EntityPlayerMP)) {
-            GT_Utility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
         }
         return false;
     }

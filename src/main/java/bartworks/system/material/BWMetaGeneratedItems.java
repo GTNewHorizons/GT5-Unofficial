@@ -38,13 +38,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
-public class BWMetaGeneratedItems extends GT_MetaGenerated_Item implements IRadMaterial {
+public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
 
     public static final CreativeTabs metaTab = new CreativeTabs("bartworksMetaMaterials") {
 
@@ -60,7 +60,7 @@ public class BWMetaGeneratedItems extends GT_MetaGenerated_Item implements IRadM
     public BWMetaGeneratedItems(OrePrefixes orePrefixes, Object unused) {
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
-        this.itemTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
             orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
     }
@@ -68,14 +68,14 @@ public class BWMetaGeneratedItems extends GT_MetaGenerated_Item implements IRadM
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
-        this.itemTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
             orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
             if (!w.hasItemType(this.orePrefixes)) continue;
-            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
+            GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
         }
     }
 
@@ -121,14 +121,14 @@ public class BWMetaGeneratedItems extends GT_MetaGenerated_Item implements IRadM
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
-            aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify"));
+            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.purify"));
         }
         if (this.orePrefixes == OrePrefixes.crushed)
-            aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
+            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
 
         if (aStack != null && aStack.getItem() instanceof BWMetaGeneratedItems
             && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
-            aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
+            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
 
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
         if (werkstoff != null) {
@@ -191,12 +191,12 @@ public class BWMetaGeneratedItems extends GT_MetaGenerated_Item implements IRadM
         if (w == null || w.getStats() == null) return;
 
         if (w.getStats()
-            .isToxic() && !GT_Utility.isWearingFullBioHazmat(bPlayer)) {
+            .isToxic() && !GTUtility.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
         if (w.getStats()
-            .isRadioactive() && !GT_Utility.isWearingFullRadioHazmat(bPlayer)) {
+            .isRadioactive() && !GTUtility.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }

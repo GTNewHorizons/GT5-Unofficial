@@ -1,6 +1,6 @@
 package tectech.recipe;
 
-import static gregtech.api.util.GT_Utility.trans;
+import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Collections;
@@ -16,7 +16,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
@@ -54,17 +54,17 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
-                GT_Utility.formatNumbers(
+                GTUtility.formatNumbers(
                     (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
-        recipeInfo.drawText(trans("153", "Usage: ") + GT_Utility.formatNumbers(eut * ampere) + " EU/t");
-        recipeInfo.drawText(trans("154", "Voltage: ") + GT_Utility.formatNumbers(eut) + " EU/t");
-        recipeInfo.drawText(trans("155", "Amperage: ") + GT_Utility.formatNumbers(ampere));
+        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut * ampere) + " EU/t");
+        recipeInfo.drawText(trans("154", "Voltage: ") + GTUtility.formatNumbers(eut) + " EU/t");
+        recipeInfo.drawText(trans("155", "Amperage: ") + GTUtility.formatNumbers(ampere));
         recipeInfo
-            .drawText(translateToLocalFormatted("tt.nei.research.computation", GT_Utility.formatNumbers(computation)));
+            .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.min_computation",
-                GT_Utility.formatNumbers(minComputationPerSec)));
+                GTUtility.formatNumbers(minComputationPerSec)));
     }
 
     @Override

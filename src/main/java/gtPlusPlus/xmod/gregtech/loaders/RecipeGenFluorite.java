@@ -5,9 +5,9 @@ import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -150,7 +150,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Macerate
          */
         // Macerate ore to Crushed
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getOre(1))
             .itemOutputs(material.getCrushed(2))
             .duration(20 * SECONDS)
@@ -160,7 +160,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
 
         // Macerate raw ore to Crushed
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
             .itemOutputs(material.getCrushed(2))
             .duration(20 * SECONDS)
@@ -170,7 +170,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate raw ore to Crushed ore'");
 
         // Macerate Centrifuged to Pure Dust
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedCentrifuged(1))
             .itemOutputs(matDust, matDustA)
             .outputChances(100_00, 10_00)
@@ -180,7 +180,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
 
         Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
             .itemOutputs(material.getCrushedCentrifuged(1), tinyDustA, dustStone)
             .duration(25 * SECONDS)
@@ -200,7 +200,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 + dustStone.getDisplayName()
                 + ".");
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.FLUORITE.getCrushed(2))
             .itemOutputs(
                 MaterialsFluorides.FLUORITE.getCrushedPurified(8),
@@ -216,7 +216,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Forge Hammer
          */
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedCentrifuged(1))
             .itemOutputs(matDust)
             .duration(10 * TICKS)
@@ -229,7 +229,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Centrifuge
          */
         // Purified Dust to Clean
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getDustPurified(1))
             .itemOutputs(matDust, tinyDustA)
             .eut(tVoltageMultiplier / 2)
@@ -239,7 +239,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
 
         // Impure Dust to Clean
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getDustImpure(1))
             .itemOutputs(matDust, tinyDustB)
             .eut(tVoltageMultiplier / 2)
@@ -253,7 +253,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         if (aGregtechHydro == null) {
             aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
         }
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(5), MaterialsFluorides.FLUORITE.getDust(37))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),

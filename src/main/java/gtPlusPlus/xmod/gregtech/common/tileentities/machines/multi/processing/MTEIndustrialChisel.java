@@ -3,12 +3,12 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,12 +31,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_StreamUtil;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -53,7 +53,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     private static IStructureDefinition<MTEIndustrialChisel> STRUCTURE_DEFINITION = null;
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
-    private GT_Recipe mCachedRecipe;
+    private GTRecipe mCachedRecipe;
 
     public MTEIndustrialChisel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -74,8 +74,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
@@ -161,8 +161,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
     private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {
         if (mInputCache != null && mOutputCache != null && mCachedRecipe != null) {
-            if (GT_Utility.areStacksEqual(aStack, mInputCache)
-                && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
+            if (GTUtility.areStacksEqual(aStack, mInputCache) && GTUtility.areStacksEqual(aSpecialSlot, mOutputCache)) {
                 return true;
             }
         }
@@ -175,7 +174,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         return false;
     }
 
-    private void cacheItem(ItemStack aInputItem, ItemStack aOutputItem, GT_Recipe aRecipe) {
+    private void cacheItem(ItemStack aInputItem, ItemStack aOutputItem, GTRecipe aRecipe) {
         mInputCache = aInputItem.copy();
         mOutputCache = aOutputItem.copy();
         mCachedRecipe = aRecipe;
@@ -214,17 +213,17 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         return tOutput;
     }
 
-    private GT_Recipe generateChiselRecipe(ItemStack aInput) {
+    private GTRecipe generateChiselRecipe(ItemStack aInput) {
         boolean tIsCached = hasValidCache(aInput, this.target, true);
         if (tIsCached || aInput != null && hasChiselResults(aInput)) {
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
             if (tOutput != null) {
-                if (mCachedRecipe != null && GT_Utility.areStacksEqual(aInput, mInputCache)
-                    && GT_Utility.areStacksEqual(tOutput, mOutputCache)) {
+                if (mCachedRecipe != null && GTUtility.areStacksEqual(aInput, mInputCache)
+                    && GTUtility.areStacksEqual(tOutput, mOutputCache)) {
                     return mCachedRecipe;
                 }
                 // We can chisel this
-                GT_Recipe aRecipe = new GT_Recipe(
+                GTRecipe aRecipe = new GTRecipe(
                     false,
                     new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
                     new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
@@ -244,8 +243,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         return null;
     }
 
-    private GT_Recipe getRecipe() {
-        for (GT_MetaTileEntity_Hatch_InputBus bus : this.mInputBusses) {
+    private GTRecipe getRecipe() {
+        for (MTEHatchInputBus bus : this.mInputBusses) {
             if (bus instanceof MTEHatchChiselBus) { // Chisel buses
                 if (bus.mInventory[bus.getSizeInventory() - 1] == null) continue;
                 this.target = bus.mInventory[bus.getSizeInventory() - 1];
@@ -253,7 +252,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 for (int i = bus.getSizeInventory() - 2; i >= 0; i--) {
                     ItemStack itemsInSlot = bus.mInventory[i];
                     if (itemsInSlot != null) {
-                        GT_Recipe tRecipe = generateChiselRecipe(itemsInSlot);
+                        GTRecipe tRecipe = generateChiselRecipe(itemsInSlot);
                         if (tRecipe != null) {
                             return tRecipe;
                         }
@@ -264,7 +263,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack itemsInSlot = bus.mInventory[i];
                     if (itemsInSlot != null) {
-                        GT_Recipe tRecipe = generateChiselRecipe(itemsInSlot);
+                        GTRecipe tRecipe = generateChiselRecipe(itemsInSlot);
                         if (tRecipe != null) {
                             return tRecipe;
                         }
@@ -282,8 +281,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
             @Nonnull
             @Override
-            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GT_StreamUtil.ofNullable(getRecipe());
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return GTStreamUtil.ofNullable(getRecipe());
             }
         }.setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)
@@ -297,7 +296,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
     @Override
     public int getMaxParallelRecipes() {
-        return (16 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (16 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     private static ResourceLocation sChiselSound = null;
@@ -312,9 +311,9 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         switch (aIndex) {
-            case PROCESS_START_SOUND_INDEX -> GT_Utility
+            case PROCESS_START_SOUND_INDEX -> GTUtility
                 .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
-            case INTERRUPT_SOUND_INDEX -> GT_Utility
+            case INTERRUPT_SOUND_INDEX -> GTUtility
                 .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }

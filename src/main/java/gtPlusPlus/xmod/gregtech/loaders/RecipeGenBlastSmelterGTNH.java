@@ -10,10 +10,10 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeCategories;
@@ -73,7 +73,7 @@ public class RecipeGenBlastSmelterGTNH {
         Logger.INFO("[ABS] Starting recipe generation based on EBF recipe map.");
         Logger.INFO("[ABS] Caching Ingots and their Molten fluid..");
         // Ingots/Dusts -> Fluids
-        for (GT_Recipe x : RecipeMaps.fluidExtractionRecipes.getAllRecipes()) {
+        for (GTRecipe x : RecipeMaps.fluidExtractionRecipes.getAllRecipes()) {
             ItemStack validInput = null;
             FluidStack validOutput = null;
             // If there aren't both non empty inputs and outputs, we skip
@@ -109,7 +109,7 @@ public class RecipeGenBlastSmelterGTNH {
 
         Logger.INFO("[ABS] Caching Ingots and their Hot form...");
         // Hot Ingots -> Cold Ingots
-        for (GT_Recipe x : RecipeMaps.vacuumFreezerRecipes.getAllRecipes()) {
+        for (GTRecipe x : RecipeMaps.vacuumFreezerRecipes.getAllRecipes()) {
             ItemStack validInput = null;
             ItemStack validOutput = null;
             // If we the input is an ingot and it and the output are valid, map it to cache.
@@ -136,7 +136,7 @@ public class RecipeGenBlastSmelterGTNH {
 
         Logger.INFO("[ABS] Generating recipes based on existing EBF recipes.");
         // Okay, so now lets Iterate existing EBF recipes.
-        for (GT_Recipe x : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
+        for (GTRecipe x : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
             ItemStack[] inputs, outputs;
             FluidStack[] inputsF;
             int voltage, time, special;
@@ -201,14 +201,14 @@ public class RecipeGenBlastSmelterGTNH {
                     // If no circuit was found, add a circuit here
                     if (!circuitFound) {
                         l = 1;
-                        newInput[0] = GT_Utility.getIntegratedCircuit(inputs.length);
+                        newInput[0] = GTUtility.getIntegratedCircuit(inputs.length);
                     }
 
                     for (ItemStack y : inputs) {
                         newInput[l++] = y;
                     }
 
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(newInput)
                         .fluidInputs(inputsF)
                         .fluidOutputs(mMoltenStack)

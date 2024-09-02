@@ -1,6 +1,6 @@
 package tectech.util;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -12,7 +12,7 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
 /**
  * Created by Tec on 21.03.2017.
@@ -110,7 +110,7 @@ public final class TTUtility {
 
     public static void setTier(int tier, Object me) {
         try {
-            Field field = GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
+            Field field = MTETieredMachineBlock.class.getField("mTier");
             field.setAccessible(true);
             field.set(me, (byte) tier);
         } catch (Exception e) {

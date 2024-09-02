@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -41,7 +41,7 @@ public enum GTPPCombType {
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GT_LanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, this.mName + " Comb");
+        GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, this.mName + " Comb");
     }
 
     public void setHidden() {
@@ -49,7 +49,7 @@ public enum GTPPCombType {
     }
 
     public String getName() {
-        return GT_LanguageManager.getTranslation("gtplusplus.comb." + this.mNameUnlocal);
+        return GTLanguageManager.getTranslation("gtplusplus.comb." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

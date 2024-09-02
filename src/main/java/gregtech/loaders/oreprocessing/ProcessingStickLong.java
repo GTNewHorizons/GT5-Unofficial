@@ -2,21 +2,21 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Proxy;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTProxy;
 
 public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -28,17 +28,17 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-            GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
-                GT_ModHandler.RecipeBits.BUFFERED,
+            GTModHandler.addCraftingRecipe(
+                GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial) });
         }
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
 
-            if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
+            if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
                     .fluidInputs(
                         Materials.Water.getFluid(
                             Math.max(
@@ -51,11 +51,11 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);
 
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
                     .fluidInputs(
-                        GT_ModHandler.getDistilledWater(
+                        GTModHandler.getDistilledWater(
                             Math.max(
                                 3,
                                 Math.min(
@@ -66,9 +66,9 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);
 
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
                             Math.max(
@@ -84,13 +84,13 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
 
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
-                        GT_Proxy.tBits,
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
+                        GTProxy.tBits,
                         new Object[] { "sf", "G ", 'G', OrePrefixes.gemFlawless.get(aMaterial) });
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 2L),
-                        GT_Proxy.tBits,
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 2L),
+                        GTProxy.tBits,
                         new Object[] { "sf", "G ", 'G', OrePrefixes.gemExquisite.get(aMaterial) });
                 }
             }
@@ -98,10 +98,10 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
         if (!aMaterial.contains(SubTag.NO_SMASHING)) {
             // Bender recipes
             {
-                if (GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L) != null) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(1))
-                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L))
+                if (GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L) != null) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, 16))
                         .addTo(benderRecipes);
@@ -110,9 +110,9 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
 
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial))
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
-                        GT_Proxy.tBits,
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
+                        GTProxy.tBits,
                         new Object[] { "ShS", 'S', OrePrefixes.stick.get(aMaterial) });
                 }
         }

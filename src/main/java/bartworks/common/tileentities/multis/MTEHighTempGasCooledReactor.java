@@ -15,10 +15,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_Values.AuthorKuba;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.enums.GTValues.AuthorKuba;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +40,8 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -49,16 +49,16 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEHighTempGasCooledReactor> {
+public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor> {
 
     private static final int BASECASINGINDEX = 181;
 
@@ -93,19 +93,19 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
                         "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
                     { "  bbb~bbb  ", " bbbbbbbbb ", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb",
                         "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", " bbbbbbbbb ", "  bbbbbbb  " }, }))
-        .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5)))
+        .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5)))
         .addElement(
             'b',
             ofChain(
                 ofHatchAdder(MTEHighTempGasCooledReactor::addOutputToMachineList, BASECASINGINDEX, 1),
                 ofHatchAdder(MTEHighTempGasCooledReactor::addMaintenanceToMachineList, BASECASINGINDEX, 1),
                 ofHatchAdder(MTEHighTempGasCooledReactor::addEnergyInputToMachineList, BASECASINGINDEX, 1),
-                onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5))))
+                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
         .addElement(
             'B',
             ofChain(
                 ofHatchAdder(MTEHighTempGasCooledReactor::addInputToMachineList, BASECASINGINDEX, 2),
-                onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5))))
+                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
         // ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2,
         // GregTech_API.sBlockCasings8, 5))
         .build();
@@ -140,8 +140,8 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor")
             .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
             .addInfo(AuthorKuba)
@@ -153,7 +153,7 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
             .addInfo("and affects total recipe time (at 100% eff, -50% total recipe time")
             .addInfo(
                 "Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
-            .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t")
+            .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 1 hour")
             .addSeparator()
             .beginStructureBlock(11, 12, 11, true)
@@ -327,7 +327,7 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
                     this.fuelsupply,
                     HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
-                for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
                     if (tHatch.storeAll(iStack)) {
                         storedAll = true;
                         break;
@@ -357,7 +357,7 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
             int takecoolant = this.coolanttaking;
             int drainedamount = 0;
 
-            for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
                 FluidStack tLiquid = tHatch.getFluid();
                 if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                     FluidStack drained = tHatch.drain(takecoolant, true);
@@ -405,16 +405,16 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
     @Override
     public String[] getInfoData() {
         return new String[] { "Mode:", this.empty ? "Emptying" : "Normal", "Progress:",
-            GT_Utility.formatNumbers(this.mProgresstime / 20) + "s / "
-                + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
+            GTUtility.formatNumbers(this.mProgresstime / 20) + "s / "
+                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
                 + "s",
             "Fuel type:",
             this.fueltype == -1 ? "NONE" : "TRISO (" + HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish + ")",
-            "Fuel amount:", GT_Utility.formatNumbers(this.fuelsupply) + " pcs.", "Helium-Level:",
-            GT_Utility.formatNumbers(this.HeliumSupply) + "L / "
-                + GT_Utility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)
+            "Fuel amount:", GTUtility.formatNumbers(this.fuelsupply) + " pcs.", "Helium-Level:",
+            GTUtility.formatNumbers(this.HeliumSupply) + "L / "
+                + GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)
                 + "L",
-            "Coolant:", GT_Utility.formatNumbers(this.coolanttaking) + "L/s", "Problems:",
+            "Coolant:", GTUtility.formatNumbers(this.coolanttaking) + "L/s", "Problems:",
             String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
     }
 
@@ -452,11 +452,11 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "HTGR mode cannot be changed while the machine is running.");
+            GTUtility.sendChatToPlayer(aPlayer, "HTGR mode cannot be changed while the machine is running.");
             return;
         }
         this.empty = !this.empty;
-        GT_Utility.sendChatToPlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
     }
@@ -504,8 +504,8 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
             public String sEnglish;
             public ItemStack mainItem;
             public ItemStack secondaryItem;
-            public ItemStack[] recycledItems = { GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI,
-                GT_Values.NI };
+            public ItemStack[] recycledItems = { GTValues.NI, GTValues.NI, GTValues.NI, GTValues.NI, GTValues.NI,
+                GTValues.NI };
             public FluidStack recycledFluid;
             public int[] recycleChances;
             public String tooltip;
@@ -547,7 +547,7 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
             "Thorium",
             WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
             Materials.Uranium235.getDust(4),
-            GT_Values.NF,
+            GTValues.NF,
             new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                 Materials.Lutetium.getDust(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
             new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
@@ -592,7 +592,7 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
 
         public static void registeraTHR_Materials() {
             for (LangEntry_ iName : aHTGR_Localizations)
-                GT_LanguageManager.addStringLocalization(iName.sName, iName.sEnglish);
+                GTLanguageManager.addStringLocalization(iName.sName, iName.sEnglish);
             GameRegistry.registerItem(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, "bw.HTGRMaterials");
         }
 
@@ -602,7 +602,7 @@ public class MTEHighTempGasCooledReactor extends GT_MetaTileEntity_EnhancedMulti
             for (@SuppressWarnings("unused")
             Fuel_ fuel : sHTGR_Fuel) {
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4))
                     .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 5))
                     .duration(1 * HOURS)

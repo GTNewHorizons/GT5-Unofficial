@@ -21,7 +21,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class MTELowPowerLaserBox extends LowPowerLaserBase {
 
@@ -163,7 +163,7 @@ public class MTELowPowerLaserBox extends LowPowerLaserBase {
     public String[] getDescription() {
         return new String[] { "Like a transformer... but for LASERS!",
             "Transfer rate: " + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getTotalPower())
+                + GTUtility.formatNumbers(this.getTotalPower())
                 + EnumChatFormatting.WHITE
                 + " EU/t",
             BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };

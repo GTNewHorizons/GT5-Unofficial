@@ -18,13 +18,13 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -32,7 +32,7 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchObjectHolder extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo {
+public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
 
     private static Textures.BlockIcons.CustomIcon EM_H;
     private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
@@ -63,12 +63,12 @@ public class MTEHatchObjectHolder extends GT_MetaTileEntity_Hatch implements IAd
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(EM_H_ACTIVE) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_H_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(EM_H) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_H) };
     }
 
     @Override
@@ -118,7 +118,7 @@ public class MTEHatchObjectHolder extends GT_MetaTileEntity_Hatch implements IAd
         // else if(heat>0)
         // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         // else
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

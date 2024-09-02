@@ -7,27 +7,27 @@ import static goodgenerator.loader.Loaders.highDensityThorium;
 import static goodgenerator.loader.Loaders.highDensityThoriumNugget;
 import static goodgenerator.loader.Loaders.highDensityUranium;
 import static goodgenerator.loader.Loaders.highDensityUraniumNugget;
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
@@ -37,7 +37,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         if (EternalSingularity.isModLoaded()) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemOutputs(getModItem(EternalSingularity.ID, "eternal_singularity", 1L))
                 .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(72L))
                 .duration(1 * MINUTES + 40 * SECONDS)
@@ -47,7 +47,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
             if (UniversalSingularities.isModLoaded()) {
                 // Raw Exposed Optical Chip
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Silicon_Wafer7.get(1L),
                         // Fluxed Electrum Singularity.
@@ -58,7 +58,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .noOptimize()
                     .addTo(electricImplosionCompressorRecipes);
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(
                         // fluxed electrum singularity
                         getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
@@ -69,7 +69,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(electricImplosionCompressorRecipes);
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(
                         // iron singularity
                         getModItem(Avaritia.ID, "Singularity", 1L, 0))
@@ -82,7 +82,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             }
         }
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
             .itemOutputs(new ItemStack(highDensityPlutonium, 1))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
@@ -91,7 +91,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityUraniumNugget, 5))
             .itemOutputs(new ItemStack(highDensityUranium, 1))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
@@ -100,7 +100,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityThoriumNugget, 5))
             .itemOutputs(new ItemStack(highDensityThorium, 1))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
@@ -110,11 +110,11 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .addTo(electricImplosionCompressorRecipes);
 
         // Magneto material recipe for base fluid.
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
             .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(64 * 144L))
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * 144L))
             .duration(4 * SECONDS)
@@ -123,8 +123,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .addTo(electricImplosionCompressorRecipes);
 
         // Infinity Catalyst
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -133,8 +133,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         if (UniversalSingularities.isModLoaded()) {
             // Fluxed Singularity
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.block, Materials.ElectrumFlux, 16L))
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.ElectrumFlux, 16L))
                 .itemOutputs(getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
                 .duration(1)
                 .eut(TierEU.RECIPE_UIV)
@@ -142,7 +142,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 .addTo(electricImplosionCompressorRecipes);
 
             // Iron Singularity
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 0))
                 .fluidInputs(Materials.Iron.getMolten(7296 * 9 * 144L))
                 .duration(1)
@@ -151,17 +151,17 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 .addTo(electricImplosionCompressorRecipes);
 
             // Copper Singularity
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.Copper.getMolten(3648 * 9 * 144L))
                 .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 5))
                 .duration(1 * TICKS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(electricImplosionCompressorRecipes);
 
-            ItemStack diamondBlocks = GT_Utility
-                .copyAmountUnsafe(729, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Diamond, 1L));
+            ItemStack diamondBlocks = GTUtility
+                .copyAmountUnsafe(729, GTOreDictUnificator.get(OrePrefixes.block, Materials.Diamond, 1L));
             // Diamond Singularity
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(diamondBlocks)
                 .itemOutputs(getModItem(UniversalSingularities.ID, "universal.vanilla.singularity", 1L, 2))
                 .duration(1 * TICKS)
@@ -169,7 +169,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 .addTo(electricImplosionCompressorRecipes);
         }
         // MHDCSM V2
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(MaterialsUEVplus.Eternity.getNanite(1), MaterialsUEVplus.Universium.getNanite(1))
             .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(128 * 144L))
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * 144L))
@@ -209,14 +209,14 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         final int partFraction = (int) (144 * part.mMaterialAmount / M);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                GT_OreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
+                GTOreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
             .itemOutputs(
-                GT_OreDictUnificator
+                GTOreDictUnificator
                     .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
             .fluidInputs(
                 MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter

@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.common.blocks.ItemCasingsAbstract;
 
-public class ItemBlockDEFCCasing extends GT_Item_Casings_Abstract {
+public class ItemBlockDEFCCasing extends ItemCasingsAbstract {
 
     public ItemBlockDEFCCasing(Block block) {
         super(block);

@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.AlgaeFarm_Controller;
 import static gregtech.api.enums.MetaTileEntityIDs.Bus_Catalysts;
 import static gregtech.api.enums.MetaTileEntityIDs.ChemicalPlant_Controller;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -39,15 +39,15 @@ public class GregtechAlgaeContent {
         // Bronze
         MTEChemicalPlant.registerMachineCasingForTier(0, ModBlocks.blockCustomMachineCasings, 0, 10);
         // Steel
-        MTEChemicalPlant.registerMachineCasingForTier(1, GregTech_API.sBlockCasings2, 0, 16);
+        MTEChemicalPlant.registerMachineCasingForTier(1, GregTechAPI.sBlockCasings2, 0, 16);
         // Aluminium
         MTEChemicalPlant.registerMachineCasingForTier(2, ModBlocks.blockCustomMachineCasings, 1, 17);
         // Stainless
-        MTEChemicalPlant.registerMachineCasingForTier(3, GregTech_API.sBlockCasings4, 1, 49);
+        MTEChemicalPlant.registerMachineCasingForTier(3, GregTechAPI.sBlockCasings4, 1, 49);
         // Titanium
-        MTEChemicalPlant.registerMachineCasingForTier(4, GregTech_API.sBlockCasings4, 2, 50);
+        MTEChemicalPlant.registerMachineCasingForTier(4, GregTechAPI.sBlockCasings4, 2, 50);
         // Tungsten
-        MTEChemicalPlant.registerMachineCasingForTier(5, GregTech_API.sBlockCasings4, 0, 48);
+        MTEChemicalPlant.registerMachineCasingForTier(5, GregTechAPI.sBlockCasings4, 0, 48);
         // Laurenium
         MTEChemicalPlant.registerMachineCasingForTier(6, ModBlocks.blockCustomMachineCasings, 2, 84);
         // Botmium

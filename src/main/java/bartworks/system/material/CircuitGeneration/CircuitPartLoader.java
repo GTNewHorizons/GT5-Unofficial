@@ -92,7 +92,7 @@ import static gregtech.api.enums.ItemList.Optically_Compatible_Memory;
 import static gregtech.api.enums.ItemList.Optically_Perfected_CPU;
 import static gregtech.api.enums.ItemList.values;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,12 +103,12 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.client.renderer.BWItemRenderer;
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 
 public class CircuitPartLoader implements Runnable {
 
@@ -151,7 +151,7 @@ public class CircuitPartLoader implements Runnable {
         for (ItemList single : CIRCUIT_PARTS) {
             if (!single.hasBeenSet()) continue;
             ItemStack itemStack = single.get(1);
-            if (!GT_Utility.isStackValid(itemStack)) continue;
+            if (!GTUtility.isStackValid(itemStack)) continue;
             ArrayList<String> toolTip = new ArrayList<>();
             if (FMLCommonHandler.instance()
                 .getEffectiveSide()
@@ -165,16 +165,16 @@ public class CircuitPartLoader implements Runnable {
                         true);
             String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
             // tt += "Internal Name = "+single;
-            String localised = GT_LanguageManager
-                .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
+            String localised = GTLanguageManager
+                .getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
             BWMetaItems.getCircuitParts()
                 .addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised + "s", tt);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     single.get(16)
                         .copy(),
-                    GT_Utility.getIntegratedCircuit(16))
+                    GTUtility.getIntegratedCircuit(16))
                 .itemOutputs(
                     BWMetaItems.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))

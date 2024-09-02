@@ -6,7 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
@@ -64,10 +64,10 @@ public class MTERedstoneLamp extends MTERedstoneBase {
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(sIconList[0]) };
+        return new ITexture[] { new GTRenderedTexture(sIconList[0]) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(sIconList[1]) };
+        return new ITexture[] { new GTRenderedTexture(sIconList[1]) };
     }
 }

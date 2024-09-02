@@ -2,8 +2,8 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +37,7 @@ import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -47,17 +46,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 
 public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -67,7 +66,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     protected int casingAmount = 0;
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
-    private GT_Recipe lastRecipe;
+    private GTRecipe lastRecipe;
     protected static final NumberFormatMUI numberFormat;
     static {
         numberFormat = new NumberFormatMUI();
@@ -102,8 +101,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe)
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
                     .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
                     .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
             }
@@ -140,9 +139,9 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         float aX, float aY, float aZ) {
         batchMode = !batchMode;
         if (batchMode) {
-            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
         } else {
-            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
     }
@@ -180,8 +179,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         return GoodGeneratorRecipeMaps.neutronActivatorRecipes;
     }
 
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator")
             .addInfo("Controller block for the Neutron Activator")
             .addInfo("Superluminal-velocity Motion.")
@@ -229,12 +228,15 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     'C',
                     ofChain(
                         buildHatchAdder(MTENeutronActivator.class)
-                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.InputBus, GT_HatchElement.Maintenance)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.InputHatch,
+                                gregtech.api.enums.HatchElement.InputBus,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(49)
                             .dot(1)
                             .build(),
-                        onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTech_API.sBlockCasings4, 1))))
-                .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 6))
+                        onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement('G', Glasses.chainAllGlasses())
                 .addElement('P', ofBlock(Loaders.speedingPipe, 0))
@@ -243,15 +245,15 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     ofChain(
                         buildHatchAdder(MTENeutronActivator.class)
                             .atLeast(
-                                GT_HatchElement.OutputHatch,
-                                GT_HatchElement.OutputBus,
-                                GT_HatchElement.Maintenance,
+                                gregtech.api.enums.HatchElement.OutputHatch,
+                                gregtech.api.enums.HatchElement.OutputBus,
+                                gregtech.api.enums.HatchElement.Maintenance,
                                 NeutronHatchElement.NeutronAccelerator,
                                 NeutronHatchElement.NeutronSensor)
                             .casingIndex(49)
                             .dot(2)
                             .build(),
-                        onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTech_API.sBlockCasings4, 1))))
+                        onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .build();
         }
         return multiDefinition;
@@ -282,10 +284,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTENeutronAccelerator) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mNeutronAccelerator.add((MTENeutronAccelerator) aMetaTileEntity);
             } else if (aMetaTileEntity instanceof MTENeutronSensor) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mNeutronSensor.add((MTENeutronSensor) aMetaTileEntity);
             }
         }
@@ -370,7 +372,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         for (ItemStack input : getStoredInputs()) {
             if (input.isItemEqual(Materials.Graphite.getDust(1)) || input.isItemEqual(Materials.Beryllium.getDust(1))) {
                 int consume = Math.min(this.eV / 10000000, input.stackSize);
-                depleteInput(GT_Utility.copyAmount(consume, input));
+                depleteInput(GTUtility.copyAmount(consume, input));
                 this.eV -= 10000000 * consume;
             }
         }
@@ -415,12 +417,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 + EnumChatFormatting.RESET
                 + " s",
             "Current Neutron Kinetic Energy Input: " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(currentNKEInput)
+                + GTUtility.formatNumbers(currentNKEInput)
                 + EnumChatFormatting.RESET
                 + "eV",
             StatCollector.translateToLocal("scanner.info.NA") + " "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GT_Utility.formatNumbers(getCurrentNeutronKineticEnergy())
+                + GTUtility.formatNumbers(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
                 + "eV" };
     }
@@ -494,10 +496,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGT_HatchAdder<MTENeutronActivator> adder;
+        private final IGTHatchAdder<MTENeutronActivator> adder;
 
         @SafeVarargs
-        NeutronHatchElement(IGT_HatchAdder<MTENeutronActivator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        NeutronHatchElement(IGTHatchAdder<MTENeutronActivator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -507,7 +509,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             return mteClasses;
         }
 
-        public IGT_HatchAdder<? super MTENeutronActivator> adder() {
+        public IGTHatchAdder<? super MTENeutronActivator> adder() {
             return adder;
         }
     }

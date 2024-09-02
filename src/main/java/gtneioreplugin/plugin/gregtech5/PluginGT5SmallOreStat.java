@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -115,7 +115,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     private List<ItemStack> getStoneDusts(int maximumIndex) {
         List<ItemStack> materialDustStackList = new ArrayList<>();
         for (int i = 0; i < maximumIndex; i++) materialDustStackList
-            .add(GT_OreDictUnificator.get(OrePrefixes.dust, GT5OreSmallHelper.getDroppedDusts()[i], 1L));
+            .add(GTOreDictUnificator.get(OrePrefixes.dust, GT5OreSmallHelper.getDroppedDusts()[i], 1L));
         return materialDustStackList;
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gtnhlanth.Tags;
 
 public class BlockCasing extends Block {
@@ -24,14 +24,14 @@ public class BlockCasing extends Block {
         super(Material.iron);
         this.name = name;
         this.setBlockTextureName(Tags.MODID + ":casing." + name);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockCasing(String name, Material material) {
         super(material);
         this.name = name;
         this.setBlockTextureName(Tags.MODID + ":casing." + name);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -56,14 +56,14 @@ public class BlockCasing extends Block {
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetaData);
     }
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
-        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
     }
 
     @Override

@@ -14,12 +14,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
-public class MTEHatchCreativeMaintenance extends GT_MetaTileEntity_Hatch_Maintenance {
+public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
     private static Textures.BlockIcons.CustomIcon face;
 
@@ -52,12 +52,12 @@ public class MTEHatchCreativeMaintenance extends GT_MetaTileEntity_Hatch_Mainten
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(face) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(face) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(face) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(face) };
     }
 
     @Override

@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -38,8 +38,8 @@ public class RecipeGenAssembler extends RecipeGenBase {
 
         // Frame Box
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { material.getRod(1), material.getFrameBox(1) })) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(material.getRod(4), GT_Utility.getIntegratedCircuit(4))
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getRod(4), GTUtility.getIntegratedCircuit(4))
                 .itemOutputs(material.getFrameBox(1))
                 .duration(3 * SECONDS)
                 .eut(material.vVoltageMultiplier)
@@ -60,21 +60,21 @@ public class RecipeGenAssembler extends RecipeGenBase {
     @Deprecated
     private static void addAssemblerRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1,
         final int seconds, final int euCost) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(input1, input2)
             .itemOutputs(output1)
             .fluidInputs(FluidUtils.getFluidStack("molten.solderingalloy", 16))
             .duration(seconds)
             .eut(euCost)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(input1, input2)
             .itemOutputs(output1)
             .fluidInputs(FluidUtils.getFluidStack("molten.tin", 32))
             .duration(seconds)
             .eut(euCost)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(input1, input2)
             .itemOutputs(output1)
             .fluidInputs(FluidUtils.getFluidStack("molten.lead", 48))

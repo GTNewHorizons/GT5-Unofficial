@@ -7,7 +7,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PowerSubStation;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
@@ -53,19 +53,19 @@ public class GregtechPowerSubStation {
                 "Discharging Bus (EV)",
                 4).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_MV.get(1L),
             CI.bitsd,
             new Object[] { "C", "M", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_EV.get(1L),
             CI.bitsd,
             new Object[] { "C", "M", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_MV.get(1L),
             CI.bitsd,
             new Object[] { "M", "C", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_EV.get(1L),
             CI.bitsd,
             new Object[] { "M", "C", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });

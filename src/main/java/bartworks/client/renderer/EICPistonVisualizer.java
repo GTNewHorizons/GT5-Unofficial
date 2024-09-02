@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 @SideOnly(Side.CLIENT)
 public class EICPistonVisualizer extends EntityFX {
@@ -51,7 +51,7 @@ public class EICPistonVisualizer extends EntityFX {
             int neighborMeta = this.worldObj.getBlockMetadata(nX, nY, nZ);
             tieredBlock = Pair.of(neighborBlock, neighborMeta);
         } else {
-            tieredBlock = Pair.of(GregTech_API.sBlockMetal5, 2);
+            tieredBlock = Pair.of(GregTechAPI.sBlockMetal5, 2);
         }
 
         IIcon icon = tieredBlock.getKey()

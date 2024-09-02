@@ -1,6 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -18,7 +18,7 @@ import tectech.util.TTUtility;
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class MTEHatchDynamoMulti extends GT_MetaTileEntity_Hatch {
+public class MTEHatchDynamoMulti extends MTEHatch {
 
     public final int maxAmperes;
     public int Amperes;

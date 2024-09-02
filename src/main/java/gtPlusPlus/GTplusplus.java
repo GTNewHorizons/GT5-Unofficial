@@ -27,6 +27,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondFakeRecipe;
@@ -204,13 +205,13 @@ public class GTplusplus implements ActionListener {
         if (GTPPCore.DEVENV) {
             // 750 - 999 are reserved for Alkalus.
             for (int i = 750; i < 1000; i++) {
-                if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
+                if (GregTechAPI.METATILEENTITIES[i] == null) {
                     Logger.INFO("MetaID " + i + " is free.");
                 }
             }
             // 30000 - 31999 are reserved for Alkalus.
             for (int i = 30000; i < 32000; i++) {
-                if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
+                if (GregTechAPI.METATILEENTITIES[i] == null) {
                     Logger.INFO("MetaID " + i + " is free.");
                 }
             }

@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -17,7 +17,7 @@ public class TecTechRecipeMaps {
 
     public static void init() {}
 
-    public static final List<GT_Recipe.GT_Recipe_AssemblyLine> researchableALRecipeList = new ArrayList<>();
+    public static final List<GTRecipe.GT_Recipe_AssemblyLine> researchableALRecipeList = new ArrayList<>();
 
     public static final RecipeMap<RecipeMapBackend> eyeOfHarmonyRecipes = RecipeMapBuilder.of("gt.recipe.eyeofharmony")
         .maxIO(
@@ -26,7 +26,7 @@ public class TecTechRecipeMaps {
             EyeOfHarmonyFrontend.maxFluidInputs,
             EyeOfHarmonyFrontend.maxFluidOutputs)
         .minInputs(1, 0)
-        .progressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+        .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
         .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
@@ -41,12 +41,12 @@ public class TecTechRecipeMaps {
         .useSpecialSlot()
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isSpecial) {
-                return GT_UITextures.OVERLAY_SLOT_DATA_ORB;
+                return GTUITextures.OVERLAY_SLOT_DATA_ORB;
             }
             if (isOutput) {
                 return TecTechUITextures.OVERLAY_SLOT_MESH;
             }
-            return GT_UITextures.OVERLAY_SLOT_MICROSCOPE;
+            return GTUITextures.OVERLAY_SLOT_MICROSCOPE;
         })
         .addSpecialTexture(19, 12, 84, 60, TecTechUITextures.PICTURE_HEAT_SINK)
         .addSpecialTexture(41, 22, 40, 40, TecTechUITextures.PICTURE_RACK_LARGE)

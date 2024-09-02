@@ -1,13 +1,13 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 
-public class MTENeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
+public class MTENeutronAccelerator extends MTEHatchEnergy {
 
     public MTENeutronAccelerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

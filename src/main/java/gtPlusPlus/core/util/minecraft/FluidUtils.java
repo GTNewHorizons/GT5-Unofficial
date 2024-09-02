@@ -2,7 +2,7 @@ package gtPlusPlus.core.util.minecraft;
 
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.HashMap;
 
@@ -16,10 +16,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -302,7 +302,7 @@ public class FluidUtils {
         }
 
         if (register) {
-            GT_LanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), aLocalName);
+            GTLanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), aLocalName);
             if (FluidRegistry.registerFluid(rFluid)) {
                 switch (aState) {
                     case 0 -> {
@@ -375,7 +375,7 @@ public class FluidUtils {
         if ((aFullContainer != null) && (aEmptyContainer != null)
             && !FluidContainerRegistry
                 .registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Cell_Empty.get(1L))
                 .itemOutputs(aFullContainer)
                 .fluidInputs(new FluidStack(rFluid, aFluidAmount))
@@ -529,7 +529,7 @@ public class FluidUtils {
                 aGenerateCell);
 
             if (dustStack != null) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(dustStack)
                     .fluidOutputs(FluidUtils.getFluidStack(gtFluid, amountPerItem))
                     .duration(1 * SECONDS)
@@ -537,7 +537,7 @@ public class FluidUtils {
                     .addTo(fluidExtractionRecipes);
             }
             if (dustStack2 != null) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(dustStack2)
                     .fluidOutputs(FluidUtils.getFluidStack(gtFluid, amountPerItem))
                     .duration(1 * SECONDS)

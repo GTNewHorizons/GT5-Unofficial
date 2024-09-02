@@ -1,16 +1,16 @@
 package gregtech.api.objects.overclockdescriber;
 
-import static gregtech.api.util.GT_Utility.trans;
+import static gregtech.api.util.GTUtility.trans;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
@@ -34,8 +34,8 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     }
 
     @Override
-    public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
-        return GT_OverclockCalculator.ofNoOverclock(recipe)
+    public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
+        return OverclockCalculator.ofNoOverclock(recipe)
             .setEUtDiscount(euPerTickMultiplier)
             .setSpeedBoost(durationMultiplier);
     }
@@ -48,13 +48,13 @@ public class SteamOverclockDescriber extends OverclockDescriber {
         recipeInfo.drawText(trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
     }
 
-    private String getTotalPowerString(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(convertEUToSteam(calculator.getConsumption() * calculator.getDuration()))
+    private String getTotalPowerString(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(convertEUToSteam(calculator.getConsumption() * calculator.getDuration()))
             + " Steam";
     }
 
-    private String getSteamUsageString(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s Steam";
+    private String getSteamUsageString(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s Steam";
     }
 
     private static long convertEUToSteam(long eu) {

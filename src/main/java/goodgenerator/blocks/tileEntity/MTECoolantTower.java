@@ -3,8 +3,8 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.*;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,20 +20,19 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
@@ -83,15 +82,17 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
                                 "HB       BH", "HB       BH", " HB     BH ", "  HBBBBBH  ", "   HHHHH   " },
                             { "   CCCCC   ", "  C     C  ", " C       C ", "C         C", "C         C", "C         C",
                                 "C         C", "C         C", " C       C ", "  C     C  ", "   CCCCC   " }, }))
-                .addElement('B', ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8))
+                .addElement('B', ofBlockAnyMeta(GregTechAPI.sBlockConcretes, 8))
                 .addElement('C', ofFrame(Materials.TungstenCarbide))
                 .addElement(
                     'H',
                     buildHatchAdder(MTECoolantTower.class)
-                        .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
+                        .atLeast(
+                            gregtech.api.enums.HatchElement.InputHatch,
+                            gregtech.api.enums.HatchElement.OutputHatch)
                         .casingIndex(CASING_INDEX)
                         .dot(1)
-                        .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
+                        .buildAndChain(ofBlockAnyMeta(GregTechAPI.sBlockConcretes, 8)))
                 .build();
         }
         return multiDefinition;
@@ -103,8 +104,8 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Controller block for the Coolant Tower.")
             .addInfo("Turn Steam back to Distilled Water.")
@@ -147,17 +148,17 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         this.mMaxProgresstime = 20;
         int steam = 0;
 
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
-        addOutput(GT_ModHandler.getDistilledWater(steam / 160));
+        addOutput(GTModHandler.getDistilledWater(steam / 160));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int maybeDrainHatch(GT_MetaTileEntity_Hatch_Input tHatch) {
-        if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+    private int maybeDrainHatch(MTEHatchInput tHatch) {
+        if (tHatch instanceof MTEHatchMultiInput) {
             int drained = 0;
-            for (FluidStack maybeSteam : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+            for (FluidStack maybeSteam : ((MTEHatchMultiInput) tHatch).getStoredFluid()) {
                 drained += maybeDrainSteam(tHatch, maybeSteam);
             }
             return drained;
@@ -165,9 +166,9 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         return maybeDrainSteam(tHatch, tHatch.getFillableStack());
     }
 
-    private int maybeDrainSteam(GT_MetaTileEntity_Hatch_Input tHatch, FluidStack maybeSteam) {
+    private int maybeDrainSteam(MTEHatchInput tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
-        if (!GT_Utility.areFluidsEqual(maybeSteam, GT_ModHandler.getSteam(1))) return 0;
+        if (!GTUtility.areFluidsEqual(maybeSteam, GTModHandler.getSteam(1))) return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;
     }

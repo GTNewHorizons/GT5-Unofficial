@@ -14,7 +14,7 @@
 package bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -37,22 +37,22 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class BWMetaItems {
 
@@ -69,7 +69,7 @@ public class BWMetaItems {
             .addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
@@ -79,7 +79,7 @@ public class BWMetaItems {
             .addTo(formingPressRecipes);
 
         RecipeMaps.autoclaveRecipes.add(
-            new GT_Recipe(
+            new GTRecipe(
                 false,
                 new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2) },
                 new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
@@ -163,7 +163,7 @@ public class BWMetaItems {
             if (aStack.getTagCompound() != null) {
                 ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
                 String itemName = tagStack != null
-                    ? GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(tagStack))
+                    ? GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(tagStack))
                     : "a circuit";
 
                 if (aStack.getItemDamage() == 0) {
@@ -184,7 +184,7 @@ public class BWMetaItems {
 
     }
 
-    public static class BW_GT_MetaGen_Item_Hook extends GT_MetaBase_Item {
+    public static class BW_GT_MetaGen_Item_Hook extends MetaBaseItem {
 
         public static final HashSet<BWMetaItems.BW_GT_MetaGen_Item_Hook> sInstances = new HashSet<>();
         public final IIcon[] mIconList;
@@ -226,9 +226,9 @@ public class BWMetaItems {
                 aToolTip = "";
             }
             ItemStack rStack = new ItemStack(this, 1, aID);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
-            List<TC_Aspects.TC_AspectStack> tAspects = new ArrayList<>();
+            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
+            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            List<TCAspects.TC_AspectStack> tAspects = new ArrayList<>();
             this.mEnabledItems.set(aID);
             Object[] var7 = aRandomData;
             int var8 = aRandomData.length;
@@ -238,7 +238,7 @@ public class BWMetaItems {
             for (var9 = 0; var9 < var8; ++var9) {
                 tRandomData = var7[var9];
                 if (tRandomData instanceof SubTag && tRandomData == SubTag.NO_UNIFICATION) {
-                    GT_OreDictUnificator.addToBlacklist(rStack);
+                    GTOreDictUnificator.addToBlacklist(rStack);
                 }
             }
 
@@ -261,23 +261,23 @@ public class BWMetaItems {
                     }
 
                     if (!(tRandomData instanceof SubTag)) {
-                        if (tRandomData instanceof TC_Aspects.TC_AspectStack) {
-                            ((TC_Aspects.TC_AspectStack) tRandomData).addToAspectList(tAspects);
+                        if (tRandomData instanceof TCAspects.TC_AspectStack) {
+                            ((TCAspects.TC_AspectStack) tRandomData).addToAspectList(tAspects);
                         } else if (tRandomData instanceof ItemData) {
-                            if (GT_Utility.isStringValid(tRandomData)) {
-                                GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                            if (GTUtility.isStringValid(tRandomData)) {
+                                GTOreDictUnificator.registerOre(tRandomData, rStack);
                             } else {
-                                GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                                GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                             }
                         } else if (tUseOreDict) {
-                            GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                            GTOreDictUnificator.registerOre(tRandomData, rStack);
                         }
                     }
                 }
             }
 
-            if (GregTech_API.sThaumcraftCompat != null) {
-                GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
+            if (GregTechAPI.sThaumcraftCompat != null) {
+                GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
             }
 
             return rStack;

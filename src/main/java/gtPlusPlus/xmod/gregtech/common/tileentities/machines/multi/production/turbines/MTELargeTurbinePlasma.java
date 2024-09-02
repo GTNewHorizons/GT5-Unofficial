@@ -13,16 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
@@ -71,7 +71,7 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
         if (aLiquid == null) {
             return 0;
         }
-        GT_Recipe tFuel = getRecipeMap().getBackend()
+        GTRecipe tFuel = getRecipeMap().getBackend()
             .findFuel(aLiquid);
         if (tFuel != null) {
             return tFuel.mSpecialValue;
@@ -140,29 +140,30 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
 
                     ItemStack aStack = getFullTurbineAssemblies().get(0)
                         .getTurbine();
-                    aTotalBaseEff += GT_Utility.safeInt(
-                        (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                    aTotalOptimalFlow += GT_Utility.safeInt(
-                        (long) Math.max(
-                            Float.MIN_NORMAL,
-                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                * 50));
+                    aTotalBaseEff += GTUtility.safeInt(
+                        (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
+                    aTotalOptimalFlow += GTUtility
+                        .safeInt(
+                            (long) Math.max(
+                                Float.MIN_NORMAL,
+                                ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
+                                    .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed
+                                    * 50));
 
                     // Calculate total EU/t (as shown on turbine tooltip (Fast mode doesn't affect))
                     double aEUPerTurbine = aTotalOptimalFlow * 40
                         * 0.0105
-                        * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier
-                        * (50.0f + (10.0f * ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)));
+                        * MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier
+                        * (50.0f + (10.0f * ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)));
                     aTotalOptimalFlow *= getSpeedMultiplier();
 
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+                    flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(aStack).mSteamMultiplier;
+                    flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(aStack).mGasMultiplier;
+                    flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);
@@ -194,7 +195,7 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
             // difference in power level (per tick)
             // This is how much the turbine can actually change during this tick
-            int maxChangeAllowed = Math.max(10, GT_Utility.safeInt((long) Math.abs(difference) / 100));
+            int maxChangeAllowed = Math.max(10, GTUtility.safeInt((long) Math.abs(difference) / 100));
 
             if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
                                                            // change
@@ -232,13 +233,13 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = GT_Utility
+            actualOptimalFlow = GTUtility
                 .safeInt((long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
-                                                                                        // optimal flow. Variable
-                                                                                        // required outside of loop for
+            int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
+                                                                                       // optimal flow. Variable
+                                                                                       // required outside of loop for
             // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;
@@ -266,15 +267,15 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
                 }
             }
             if (totalFlow <= 0) return 0;
-            tEU = GT_Utility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
+            tEU = GTUtility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
 
             if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
+                tEU = GTUtility.safeInt((long) (aBaseEff / 10000D * tEU));
             } else {
                 double efficiency = 1.0D - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
 
                 tEU = (int) (tEU * efficiency);
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
+                tEU = GTUtility.safeInt((long) (aBaseEff / 10000D * tEU));
             }
 
             return tEU;
@@ -304,11 +305,11 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
+        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }

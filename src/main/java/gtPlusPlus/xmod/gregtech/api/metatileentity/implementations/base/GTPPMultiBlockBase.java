@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,36 +45,36 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.ID_MetaTool_01;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.common.items.IDMetaTool01;
+import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
@@ -98,12 +98,12 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 // so any method in GregtechMetaTileEntity_IndustrialDehydrator would see generic field declared in
 // GregtechMeta_MultiBlockBase without generic parameter
 
-public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
+    extends MTEExtendedPowerMultiBlockBase<T> {
 
     public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
-    public GT_Recipe mLastRecipe;
+    public GTRecipe mLastRecipe;
 
     /**
      * Don't use this for recipe input check, otherwise you'll get duplicated fluids
@@ -112,8 +112,8 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch> mAllEnergyHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<>();
+    public ArrayList<MTEHatch> mAllEnergyHatches = new ArrayList<>();
+    public ArrayList<MTEHatch> mAllDynamoHatches = new ArrayList<>();
 
     public GTPPMultiBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -207,7 +207,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                         + StatCollector.translateToLocal("GTPP.machines.tier")
                         + ": "
                         + EnumChatFormatting.YELLOW
-                        + GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())]
+                        + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
                         + EnumChatFormatting.RESET));;
         }
         if (!this.mAllDynamoHatches.isEmpty()) {
@@ -302,7 +302,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public int getPollutionReductionForAllMufflers() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(calculatePollutionReductionForHatch(tHatch, 100), mPollutionReduction);
         }
         return mPollutionReduction;
@@ -310,7 +310,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public long getStoredEnergyInAllEnergyHatches() {
         long storedEnergy = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mAllEnergyHatches)) {
+        for (MTEHatch tHatch : filterValidMTEs(mAllEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
         }
@@ -319,7 +319,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public long getMaxEnergyStorageOfAllEnergyHatches() {
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mAllEnergyHatches)) {
+        for (MTEHatch tHatch : filterValidMTEs(mAllEnergyHatches)) {
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
@@ -328,7 +328,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public long getStoredEnergyInAllDynamoHatches() {
         long storedEnergy = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mAllDynamoHatches)) {
+        for (MTEHatch tHatch : filterValidMTEs(mAllDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
         }
@@ -337,7 +337,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public long getMaxEnergyStorageOfAllDynamoHatches() {
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mAllDynamoHatches)) {
+        for (MTEHatch tHatch : filterValidMTEs(mAllDynamoHatches)) {
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
@@ -395,7 +395,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
     }
 
@@ -406,11 +406,10 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
             return mEnergyHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getInputVoltage();
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches))
-            rEnergy += tHatch.getBaseMetaTileEntity()
-                .getInputVoltage()
-                * tHatch.getBaseMetaTileEntity()
-                    .getInputAmperage();
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) rEnergy += tHatch.getBaseMetaTileEntity()
+            .getInputVoltage()
+            * tHatch.getBaseMetaTileEntity()
+                .getInputAmperage();
         return rEnergy;
     }
 
@@ -426,25 +425,25 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         MetaTileEntity tTileEntity;
         for (final Iterator<MTEHatchInputBattery> localIterator = this.mChargeHatches.iterator(); localIterator
             .hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+                .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
         tTileEntity = null;
         for (final Iterator<MTEHatchOutputBattery> localIterator = this.mDischargeHatches.iterator(); localIterator
             .hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+                .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
         tTileEntity = null;
-        for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mTecTechDynamoHatches
-            .iterator(); localIterator.hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+        for (final Iterator<MTEHatch> localIterator = this.mTecTechDynamoHatches.iterator(); localIterator
+            .hasNext(); tTileEntity.getBaseMetaTileEntity()
+                .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
         tTileEntity = null;
-        for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mTecTechEnergyHatches
-            .iterator(); localIterator.hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+        for (final Iterator<MTEHatch> localIterator = this.mTecTechEnergyHatches.iterator(); localIterator
+            .hasNext(); tTileEntity.getBaseMetaTileEntity()
+                .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
 
@@ -472,7 +471,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public ItemStack findItemInInventory(ItemStack aSearchStack) {
         if (aSearchStack != null && this.mInputBusses.size() > 0) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : this.mInputBusses) {
+            for (MTEHatchInputBus bus : this.mInputBusses) {
                 if (bus != null) {
                     for (ItemStack uStack : bus.mInventory) {
                         if (uStack != null) {
@@ -555,18 +554,18 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         // Try setRecipeMap
 
         try {
-            if (aTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                resetRecipeMapForHatch((GT_MetaTileEntity_Hatch) aTileEntity, getRecipeMap());
+            if (aTileEntity instanceof MTEHatchInput) {
+                resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
-            if (aTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-                resetRecipeMapForHatch((GT_MetaTileEntity_Hatch) aTileEntity, getRecipeMap());
+            if (aTileEntity instanceof MTEHatchInputBus) {
+                resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
         } catch (Throwable t) {
             t.printStackTrace();
         }
 
         if (aList.isEmpty()) {
-            if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
+            if (aTileEntity instanceof MTEHatch) {
                 if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
                     log(
                         "Adding " + aTileEntity.getInventoryName()
@@ -601,7 +600,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                     }
                 }
             }
-            if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
+            if (aTileEntity instanceof MTEHatch) {
                 if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
                     log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
                 }
@@ -660,28 +659,28 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         }
 
         // Handle Fluid Hatches using seperate logic
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+        else if (aMetaTileEntity instanceof MTEHatchInput)
             aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
+        else if (aMetaTileEntity instanceof MTEHatchOutput)
             aDidAdd = addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
 
         // Process Remaining hatches using Vanilla GT Logic
         else if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             aDidAdd = addToMachineListInternal(mDualInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
+        } else if (aMetaTileEntity instanceof MTEHatchInputBus)
             aDidAdd = addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
+        else if (aMetaTileEntity instanceof MTEHatchOutputBus)
             aDidAdd = addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+        else if (aMetaTileEntity instanceof MTEHatchEnergy) {
             aDidAdd = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+        } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
             aDidAdd = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
+        } else if (aMetaTileEntity instanceof MTEHatchMaintenance)
             aDidAdd = addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler)
+        else if (aMetaTileEntity instanceof MTEHatchMuffler)
             aDidAdd = addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
 
         // return super.addToMachineList(aTileEntity, aBaseCasingIndex);
@@ -691,7 +690,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     @Override
     public boolean addMaintenanceToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -700,7 +699,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     @Override
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+        if (aMetaTileEntity instanceof MTEHatchMuffler) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -709,8 +708,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     @Override
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input
-            || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+        if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -719,8 +717,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     @Override
     public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output
-            || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+        if (aMetaTileEntity instanceof MTEHatchOutput || aMetaTileEntity instanceof MTEHatchOutputBus) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -739,7 +736,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     }
 
     public boolean addFluidInputToMachineList(final IMetaTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+        if (aMetaTileEntity instanceof MTEHatchInput) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -755,12 +752,12 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     public boolean resetRecipeMapForAllInputHatches(RecipeMap<?> aMap) {
         int cleared = 0;
-        for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+        for (MTEHatchInput g : this.mInputHatches) {
             if (resetRecipeMapForHatch(g, aMap)) {
                 cleared++;
             }
         }
-        for (GT_MetaTileEntity_Hatch_InputBus g : this.mInputBusses) {
+        for (MTEHatchInputBus g : this.mInputBusses) {
             if (resetRecipeMapForHatch(g, aMap)) {
                 cleared++;
             }
@@ -774,10 +771,9 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input
-                || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus
+            if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus
                 || aMetaTileEntity instanceof MteHatchSteamBusInput) {
-                return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch) aMetaTileEntity, aMap);
+                return resetRecipeMapForHatch((MTEHatch) aMetaTileEntity, aMap);
             } else {
                 return false;
             }
@@ -787,25 +783,24 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         }
     }
 
-    public boolean resetRecipeMapForHatch(GT_MetaTileEntity_Hatch aTileEntity, RecipeMap<?> aMap) {
+    public boolean resetRecipeMapForHatch(MTEHatch aTileEntity, RecipeMap<?> aMap) {
         if (aTileEntity == null) {
             return false;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input
-            || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus
+        if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus
             || aMetaTileEntity instanceof MteHatchSteamBusInput) {
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-                ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;
+            if (aMetaTileEntity instanceof MTEHatchInput) {
+                ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
+                ((MTEHatchInput) aMetaTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Hatch to " + aMap.unlocalizedName + ".");
                 } else {
                     log("Cleared Input Hatch.");
                 }
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-                ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;
-                ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;
+            } else if (aMetaTileEntity instanceof MTEHatchInputBus) {
+                ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = null;
+                ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
                 } else {
@@ -854,9 +849,9 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
             if (aMetaTileEntity == null) {
                 return false;
             }
-            Method mProper = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);
+            Method mProper = ReflectionUtils.getMethod(MTEHatch.class, "updateTexture", int.class);
             if (mProper != null) {
-                if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)) {
+                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
                     mProper.setAccessible(true);
                     mProper.invoke(aMetaTileEntity, aCasingID);
                     // log("Good Method Call for updateTexture.");
@@ -864,9 +859,9 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                 }
             } else {
                 log("Bad Method Call for updateTexture.");
-                if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)) {
+                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
                     if (aCasingID <= Byte.MAX_VALUE) {
-                        ((GT_MetaTileEntity_Hatch) aTileEntity).updateTexture(aCasingID);
+                        ((MTEHatch) aTileEntity).updateTexture(aCasingID);
                         log(
                             "Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
                         return true;
@@ -894,12 +889,12 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     /**
      * This is the array Used to Store the Tectech Multi-Amp Dynamo hatches.
      */
-    public ArrayList<GT_MetaTileEntity_Hatch> mTecTechDynamoHatches = new ArrayList<>();
+    public ArrayList<MTEHatch> mTecTechDynamoHatches = new ArrayList<>();
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Energy hatches.
      */
-    public ArrayList<GT_MetaTileEntity_Hatch> mTecTechEnergyHatches = new ArrayList<>();
+    public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
 
     /**
      * TecTech Multi-Amp Dynamo Support
@@ -930,7 +925,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     @Override
     public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo || isThisHatchMultiDynamo(aMetaTileEntity)) {
+        if (aMetaTileEntity instanceof MTEHatchDynamo || isThisHatchMultiDynamo(aMetaTileEntity)) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -940,7 +935,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch aHatch) {
+        if (aMetaTileEntity instanceof MTEHatch aHatch) {
             return mAllDynamoHatches.add(aHatch);
         }
         return false;
@@ -975,7 +970,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy || isThisHatchMultiEnergy(aMetaTileEntity)) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy || isThisHatchMultiEnergy(aMetaTileEntity)) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -985,7 +980,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch aHatch) {
+        if (aMetaTileEntity instanceof MTEHatch aHatch) {
             return mAllEnergyHatches.add(aHatch);
         }
         return false;
@@ -994,7 +989,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     /**
      * Pollution Management
      */
-    public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler hatch, int poll) {
+    public int calculatePollutionReductionForHatch(MTEHatchMuffler hatch, int poll) {
         return hatch.calculatePollutionReduction(poll);
     }
 
@@ -1024,7 +1019,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
                 // Logger.INFO("Holding Item.");
-                if (tCurrentItem.getItem() instanceof GT_MetaGenerated_Tool) {
+                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
                     // Logger.INFO("Is GT_MetaGenerated_Tool.");
                     int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
                     for (int id : aOreID) {
@@ -1046,7 +1041,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aHatchIndex = 0;
         PlayerUtils.messagePlayer(aPlayer, "Trying to clear " + mOutputHatches.size() + " output hatches.");
-        for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+        for (MTEHatchOutput hatch : this.mOutputHatches) {
             if (hatch.mFluid != null) {
                 PlayerUtils.messagePlayer(
                     aPlayer,
@@ -1069,9 +1064,9 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
             return true;
         }
@@ -1084,7 +1079,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
                     + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
@@ -1251,12 +1246,12 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
     protected void addNoPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(3, 4)
                 .setSize(152, 159));
         for (int i = 0; i < 9; i++) {
             builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD)
+                new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD)
                     .setPos(155, 3 + i * 18)
                     .setSize(18, 18));
         }
@@ -1318,7 +1313,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
         screenElements
             .widget(
-                new TextWidget(GT_Utility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
             .widget(
@@ -1328,7 +1323,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GT_Values.VOLTAGE_NAMES[(int) getInputTier()])
+                            + GTValues.VOLTAGE_NAMES[(int) getInputTier()])
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getInputTier() > 0))
             .widget(
@@ -1338,7 +1333,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GT_Values.VOLTAGE_NAMES[(int) getOutputTier()])
+                            + GTValues.VOLTAGE_NAMES[(int) getOutputTier()])
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getOutputTier() > 0))
             .widget(
@@ -1435,7 +1430,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
                                 + StatCollector.translateToLocal("GTPP.machines.tier")
                                 + ": "
                                 + EnumChatFormatting.YELLOW
-                                + GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())]
+                                + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
                                 + EnumChatFormatting.RESET))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1557,53 +1552,49 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
 
         mToolStacks.put(
             true + "WRENCH",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.WRENCH.ID, 1, GOOD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.WRENCH.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "CROWBAR",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.CROWBAR.ID, 1, GOOD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "HARDHAMMER",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.HARDHAMMER.ID, 1, GOOD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "SOFTHAMMER",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, GOOD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "SCREWDRIVER",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, GOOD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "SOLDERING_IRON_LV",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.SOLDERING_IRON_LV.ID, 1, GOOD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, GOOD, Materials.Tungsten, null));
 
         mToolStacks.put(
             false + "WRENCH",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.WRENCH.ID, 1, BAD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.WRENCH.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "CROWBAR",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.CROWBAR.ID, 1, BAD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "HARDHAMMER",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.HARDHAMMER.ID, 1, BAD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "SOFTHAMMER",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, BAD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "SCREWDRIVER",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, BAD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "SOLDERING_IRON_LV",
-            GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(ID_MetaTool_01.SOLDERING_IRON_LV.ID, 1, BAD, Materials.Tungsten, null));
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, BAD, Materials.Tungsten, null));
 
         ItemStack aGlassPane1 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassRed", 1);
         ItemStack aGlassPane2 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassLime", 1);
@@ -1641,16 +1632,16 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         }
 
         private final List<? extends Class<? extends IMetaTileEntity>> mMteClasses;
-        private final IGT_HatchAdder<? super GTPPMultiBlockBase<?>> mAdder;
+        private final IGTHatchAdder<? super GTPPMultiBlockBase<?>> mAdder;
 
         @SafeVarargs
-        GTPPHatchElement(IGT_HatchAdder<? super GTPPMultiBlockBase<?>> aAdder,
+        GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder,
             Class<? extends IMetaTileEntity>... aMteClasses) {
             this.mMteClasses = Arrays.asList(aMteClasses);
             this.mAdder = aAdder;
         }
 
-        GTPPHatchElement(IGT_HatchAdder<? super GTPPMultiBlockBase<?>> aAdder, String... aClassNames) {
+        GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder, String... aClassNames) {
             this.mMteClasses = Arrays.stream(aClassNames)
                 .map(ReflectionUtils::getClass)
                 .filter(Objects::nonNull)
@@ -1665,7 +1656,7 @@ public abstract class GTPPMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPow
         }
 
         @Override
-        public IGT_HatchAdder<? super GTPPMultiBlockBase<?>> adder() {
+        public IGTHatchAdder<? super GTPPMultiBlockBase<?>> adder() {
             return mAdder;
         }
     }

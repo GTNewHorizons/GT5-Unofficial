@@ -1,12 +1,12 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +18,10 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -185,21 +185,21 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         if (inputStacks.length == 1) {
             input[1] = input[0];
-            input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
+            input[0] = GTUtility.getIntegratedCircuit(inputStacks.length + 10);
         } else if (inputStacks.length == 2) {
             input[2] = input[1];
             input[1] = input[0];
-            input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
+            input[0] = GTUtility.getIntegratedCircuit(inputStacks.length + 10);
 
         } else if (inputStacks.length == 3) {
             input[3] = input[2];
             input[2] = input[1];
             input[1] = input[0];
-            input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
+            input[0] = GTUtility.getIntegratedCircuit(inputStacks.length + 10);
         }
 
         // Add mixer Recipe
-        FluidStack oxygen = GT_Values.NF;
+        FluidStack oxygen = GTValues.NF;
         if (material.getComposites() != null) {
             for (final MaterialStack x : material.getComposites()) {
                 if (material.getComposites()
@@ -238,14 +238,14 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         inputs.removeIf(Objects::isNull);
 
         if (oxygen == null) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(mixerRecipes);
         } else {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
                 .fluidInputs(oxygen)
@@ -302,21 +302,21 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         if (inputStacks.length == 1) {
             input2 = input1;
-            input1 = GT_Utility.getIntegratedCircuit(20);
+            input1 = GTUtility.getIntegratedCircuit(20);
         } else if (inputStacks.length == 2) {
             input3 = input2;
             input2 = input1;
-            input1 = GT_Utility.getIntegratedCircuit(20);
+            input1 = GTUtility.getIntegratedCircuit(20);
 
         } else if (inputStacks.length == 3) {
             input4 = input3;
             input3 = input2;
             input2 = input1;
-            input1 = GT_Utility.getIntegratedCircuit(20);
+            input1 = GTUtility.getIntegratedCircuit(20);
         }
 
         // Add mixer Recipe
-        FluidStack oxygen = GT_Values.NF;
+        FluidStack oxygen = GTValues.NF;
         if (material.getComposites() != null) {
             int compSlot = 0;
             for (final MaterialStack x : material.getComposites()) {
@@ -357,14 +357,14 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Add mixer Recipe
         try {
             if (oxygen == null) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(input1, input2, input3, input4)
                     .itemOutputs(outputStacks)
                     .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                     .eut(material.vVoltageMultiplier)
                     .addTo(mixerRecipes);
             } else {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(input1, input2, input3, input4)
                     .itemOutputs(outputStacks)
                     .fluidInputs(oxygen)
@@ -383,16 +383,16 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {
         // Small Dust
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(4, aMatInfo.getSmallDust(4)), ItemList.Schematic_Dust.get(0))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(4, aMatInfo.getSmallDust(4)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 
         // Tiny Dust
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(4, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(4, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
             .duration(5 * SECONDS)
             .eut(4)
@@ -434,7 +434,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             } else {
                 aOutput = aMatInfo.getIngot(1);
                 if (ItemUtils.checkForInvalidItems(aOutput)) {
-                    if (GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false)) {
+                    if (GTModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false)) {
                         Logger.MATERIALS("Successfully added a furnace recipe for " + aMatInfo.getLocalizedName());
                     } else {
                         Logger.MATERIALS("Failed to add a furnace recipe for " + aMatInfo.getLocalizedName());
@@ -458,7 +458,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         long aVoltage = aMatInfo.vVoltageMultiplier;
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(input1)
             .itemOutputs(output1)
             .duration(timeTaken)

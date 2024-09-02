@@ -7,7 +7,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 /**
  * Any blocks that are used as structure parts for GregTech multi machines have to inherit from this class. Otherwise
@@ -17,7 +17,7 @@ public abstract class BaseGTUpdateableBlock extends Block {
 
     protected BaseGTUpdateableBlock(Material material) {
         super(material);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
         super.setHarvestLevel("wrench", 2);
     }
 
@@ -43,15 +43,15 @@ public abstract class BaseGTUpdateableBlock extends Block {
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aMetaData)) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aMetaData)) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 }

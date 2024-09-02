@@ -44,27 +44,27 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class CircuitImprintLoader {
 
     public static short reverseIDs = Short.MAX_VALUE - 1;
 
-    public static final ArrayListMultimap<NBTTagCompound, GT_Recipe> recipeTagMap = ArrayListMultimap.create();
+    public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
     public static final HashBiMap<Short, ItemList> circuitIIconRefs = HashBiMap.create(20);
     public static final HashSet<ItemStack> blacklistSet = new HashSet<>();
     static final HashBiMap<CircuitData, ItemStack> bwCircuitTagMap = HashBiMap.create(20);
     private static final HashSet<IRecipe> recipeWorldCache = new HashSet<>();
-    private static final HashSet<GT_Recipe> gtrecipeWorldCache = new HashSet<>();
-    private static final HashSet<GT_Recipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
-    private static final HashSet<GT_Recipe> MODIFIED_CAL_RECIPES = new HashSet<>();
+    private static final HashSet<GTRecipe> gtrecipeWorldCache = new HashSet<>();
+    private static final HashSet<GTRecipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
+    private static final HashSet<GTRecipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
     public static void run() {
-        HashSet<GT_Recipe> toRem = new HashSet<>();
-        HashSet<GT_Recipe> toAdd = new HashSet<>();
+        HashSet<GTRecipe> toRem = new HashSet<>();
+        HashSet<GTRecipe> toAdd = new HashSet<>();
 
         deleteCALRecipesAndTags();
         rebuildCircuitAssemblerMap(toRem, toAdd);
@@ -83,14 +83,14 @@ public class CircuitImprintLoader {
         MODIFIED_CAL_RECIPES.clear();
     }
 
-    private static void rebuildCircuitAssemblerMap(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
+    private static void rebuildCircuitAssemblerMap(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd) {
         reAddOriginalRecipes();
         RecipeMaps.circuitAssemblerRecipes.getAllRecipes()
             .forEach(e -> CircuitImprintLoader.handleCircuitRecipeRebuilding(e, toRem, toAdd));
     }
 
-    private static void handleCircuitRecipeRebuilding(GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem,
-        HashSet<GT_Recipe> toAdd) {
+    private static void handleCircuitRecipeRebuilding(GTRecipe circuitRecipe, HashSet<GTRecipe> toRem,
+        HashSet<GTRecipe> toAdd) {
         ItemStack[] outputs = circuitRecipe.mOutputs;
         boolean isOrePass = isCircuitOreDict(outputs[0]);
         String unlocalizedName = outputs[0].getUnlocalizedName();
@@ -110,7 +110,7 @@ public class CircuitImprintLoader {
             if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
                 || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))
                 || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderUEV, 0))) {
-                GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
+                GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
             } else if (circuitRecipe.mEUt > BWUtil.getTierVoltage(ConfigHandler.cutoffTier)) toRem.add(circuitRecipe);
@@ -123,7 +123,7 @@ public class CircuitImprintLoader {
             .anyMatch(s -> "circuitPrimitiveArray".equals(s));
     }
 
-    private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
+    private static void exchangeRecipesInList(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd) {
         toAdd.forEach(RecipeMaps.circuitAssemblerRecipes::add);
         RecipeMaps.circuitAssemblerRecipes.getBackend()
             .removeRecipes(toRem);
@@ -131,8 +131,8 @@ public class CircuitImprintLoader {
         MODIFIED_CAL_RECIPES.addAll(toAdd);
     }
 
-    private static void addCutoffRecipeToSets(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd,
-        GT_Recipe circuitRecipe) {
+    private static void addCutoffRecipeToSets(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd,
+        GTRecipe circuitRecipe) {
         if (circuitRecipe.mEUt > BWUtil.getTierVoltage(ConfigHandler.cutoffTier)) {
             toRem.add(circuitRecipe);
             toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
@@ -140,8 +140,8 @@ public class CircuitImprintLoader {
     }
 
     @SuppressWarnings("deprecation")
-    public static GT_Recipe makeMoreExpensive(GT_Recipe original) {
-        GT_Recipe newRecipe = original.copy();
+    public static GTRecipe makeMoreExpensive(GTRecipe original) {
+        GTRecipe newRecipe = original.copy();
         for (ItemStack is : newRecipe.mInputs) {
             if (!BWUtil.isTieredCircuit(is)) {
                 is.stackSize = Math.min(is.stackSize * 6, 64);
@@ -154,7 +154,7 @@ public class CircuitImprintLoader {
         return newRecipe;
     }
 
-    public static GT_Recipe reBuildRecipe(GT_Recipe original) {
+    public static GTRecipe reBuildRecipe(GTRecipe original) {
         ItemStack[] in = new ItemStack[6];
         BiMap<ItemList, Short> inversed = CircuitImprintLoader.circuitIIconRefs.inverse();
 
@@ -173,7 +173,7 @@ public class CircuitImprintLoader {
             return null;
         }
 
-        return new GT_Recipe(
+        return new GTRecipe(
             false,
             in,
             new ItemStack[] { getOutputMultiplied(original) },
@@ -187,17 +187,16 @@ public class CircuitImprintLoader {
             0);
     }
 
-    private static ItemStack getOutputMultiplied(GT_Recipe original) {
+    private static ItemStack getOutputMultiplied(GTRecipe original) {
         ItemStack out = original.copy()
             .getOutput(0);
         out.stackSize *= 16;
         return out;
     }
 
-    private static void replaceCircuits(BiMap<ItemList, Short> inversed, GT_Recipe original, ItemStack[] in,
-        int index) {
+    private static void replaceCircuits(BiMap<ItemList, Short> inversed, GTRecipe original, ItemStack[] in, int index) {
         for (ItemList il : inversed.keySet()) {
-            if (GT_Utility.areStacksEqual(il.get(1), replaceCircuitParts(original.mInputs[index]))) {
+            if (GTUtility.areStacksEqual(il.get(1), replaceCircuitParts(original.mInputs[index]))) {
                 in[index] = BWMetaItems.getCircuitParts()
                     .getStack(inversed.get(il), original.mInputs[index].stackSize);
             }
@@ -214,7 +213,7 @@ public class CircuitImprintLoader {
 
     private static ItemStack replaceCircuitParts(ItemStack stack) {
         for (Pair<ItemStack, ItemStack> pair : circuitPartsToReplace) {
-            if (GT_Utility.areStacksEqual(pair.getKey(), stack)) {
+            if (GTUtility.areStacksEqual(pair.getKey(), stack)) {
                 ItemStack newStack = pair.getValue();
                 newStack.stackSize = stack.stackSize;
                 return newStack;
@@ -224,27 +223,27 @@ public class CircuitImprintLoader {
     }
 
     @SuppressWarnings("deprecation")
-    private static void replaceComponents(ItemStack[] in, GT_Recipe original, int index)
+    private static void replaceComponents(ItemStack[] in, GTRecipe original, int index)
         throws ArrayIndexOutOfBoundsException {
         if (original.mInputs[index] != null && in[index] == null) {
             // big wires
             if (BWUtil.checkStackAndPrefix(original.mInputs[index])
-                && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireGt01) {
-                in[index] = GT_OreDictUnificator.get(
+                && GTOreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireGt01) {
+                in[index] = GTOreDictUnificator.get(
                     OrePrefixes.wireGt16,
-                    GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                    GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
                     original.mInputs[index].stackSize);
                 // fine wires
             } else if (BWUtil.checkStackAndPrefix(original.mInputs[index])
-                && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
-                    in[index] = GT_OreDictUnificator.get(
+                && GTOreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
+                    in[index] = GTOreDictUnificator.get(
                         OrePrefixes.wireGt04,
-                        GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                        GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
                         original.mInputs[index].stackSize);
                     if (in[index] == null) {
-                        in[index] = GT_OreDictUnificator.get(
+                        in[index] = GTOreDictUnificator.get(
                             OrePrefixes.wireFine,
-                            GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
+                            GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
                             original.mInputs[index].stackSize * 16);
                     }
                     // other components
@@ -270,7 +269,7 @@ public class CircuitImprintLoader {
     private static boolean checkForBlacklistedComponents(ItemStack[] itemStacks) {
         for (ItemStack is : itemStacks) {
             for (ItemStack is2 : CircuitImprintLoader.blacklistSet) {
-                if (GT_Utility.areStacksEqual(is, is2)) return true;
+                if (GTUtility.areStacksEqual(is, is2)) return true;
             }
         }
         return false;
@@ -299,7 +298,7 @@ public class CircuitImprintLoader {
         ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
         int eut = Integer.MAX_VALUE;
 
-        for (GT_Recipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
+        for (GTRecipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
             eut = Math.min(eut, recipe.mEUt);
         }
 
@@ -311,7 +310,7 @@ public class CircuitImprintLoader {
                         OreDictionary.getOreIDs(stack) != null && OreDictionary.getOreIDs(stack).length > 0
                             ? OreDictionary.getOreIDs(stack)[0]
                             : -1))));
-        GT_Recipe slicingRecipe = new GT_Recipe(
+        GTRecipe slicingRecipe = new GTRecipe(
             true,
             new ItemStack[] { stack, ItemList.Shape_Slicer_Flat.get(0) },
             new ItemStack[] { BWMetaItems.getCircuitParts()
@@ -338,8 +337,8 @@ public class CircuitImprintLoader {
         IRecipe bwrecipe = new BWNBTDependantCraftingRecipe(circuit, imprintRecipe);
         ShapedOreRecipe gtrecipe = BWUtil.createGTCraftingRecipe(
             circuit,
-            GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.KEEPNBT
-                | GT_ModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.KEEPNBT
+                | GTModHandler.RecipeBits.BUFFERED,
             imprintRecipe);
 
         // Adds the actual recipe
@@ -351,7 +350,7 @@ public class CircuitImprintLoader {
     }
 
     public static NBTTagCompound getTagFromStack(ItemStack stack) {
-        if (GT_Utility.isStackValid(stack)) return BWUtil.setStackSize(stack.copy(), 1)
+        if (GTUtility.isStackValid(stack)) return BWUtil.setStackSize(stack.copy(), 1)
             .writeToNBT(new NBTTagCompound());
         return new NBTTagCompound();
     }

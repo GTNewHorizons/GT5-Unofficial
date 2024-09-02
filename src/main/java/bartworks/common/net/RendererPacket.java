@@ -22,10 +22,10 @@ import bartworks.MainMod;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.util.BWColorUtil;
 import bartworks.util.Coords;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.GTPacketNew;
 import io.netty.buffer.ByteBuf;
 
-public class RendererPacket extends GT_Packet_New {
+public class RendererPacket extends GTPacketNew {
 
     private Coords coords;
     private int integer;
@@ -69,7 +69,7 @@ public class RendererPacket extends GT_Packet_New {
     }
 
     @Override
-    public GT_Packet_New decode(ByteArrayDataInput dataInput) {
+    public GTPacketNew decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
         this.integer = BWColorUtil
             .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });

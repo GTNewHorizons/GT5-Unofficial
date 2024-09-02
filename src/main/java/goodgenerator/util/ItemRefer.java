@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.core.Ic2Items;
 
 public final class ItemRefer {
@@ -217,7 +217,7 @@ public final class ItemRefer {
     public ItemStack get(int amount) {
         if (mItem != null) return new ItemStack(mItem, amount, mMeta);
         if (mBlock != null) return new ItemStack(mBlock, amount, mMeta);
-        if (mItemStack != null) return GT_Utility.copyAmount(amount, mItemStack);
+        if (mItemStack != null) return GTUtility.copyAmount(amount, mItemStack);
         return new ItemStack(_null_, amount, 0);
     }
 }

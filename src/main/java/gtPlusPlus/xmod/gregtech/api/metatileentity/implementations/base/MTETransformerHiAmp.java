@@ -6,15 +6,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.MTETransformer;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class MTETransformerHiAmp extends GT_MetaTileEntity_Transformer {
+public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;
 
@@ -28,7 +29,7 @@ public class MTETransformerHiAmp extends GT_MetaTileEntity_Transformer {
 
     @Override
     public long maxEUStore() {
-        return ((512L + gregtech.api.enums.GT_Values.V[(this.mTier + 1)] * 2L) * 8);
+        return ((512L + GTValues.V[(this.mTier + 1)] * 2L) * 8);
     }
 
     @Override

@@ -2,9 +2,9 @@ package tectech.thing.metaTileEntity.multi.base.render;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.common.render.GT_RenderedTexture;
+import gregtech.common.render.GTRenderedTexture;
 
-public class TTRenderedExtendedFacingTexture extends GT_RenderedTexture {
+public class TTRenderedExtendedFacingTexture extends GTRenderedTexture {
 
     public TTRenderedExtendedFacingTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
         boolean stdOrient, boolean extFacing) {

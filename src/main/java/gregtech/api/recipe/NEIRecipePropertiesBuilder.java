@@ -10,7 +10,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.recipe.HandlerInfo;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.DefaultSpecialValueFormatter;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
@@ -36,7 +36,7 @@ public final class NEIRecipePropertiesBuilder {
     private boolean useCustomFilter;
     private boolean renderRealStackSizes = true;
 
-    private Comparator<GT_Recipe> comparator = GT_Recipe::compareTo;
+    private Comparator<GTRecipe> comparator = GTRecipe::compareTo;
 
     NEIRecipePropertiesBuilder() {}
 
@@ -93,7 +93,7 @@ public final class NEIRecipePropertiesBuilder {
         return this;
     }
 
-    public NEIRecipePropertiesBuilder recipeComparator(Comparator<GT_Recipe> comparator) {
+    public NEIRecipePropertiesBuilder recipeComparator(Comparator<GTRecipe> comparator) {
         this.comparator = comparator;
         return this;
     }

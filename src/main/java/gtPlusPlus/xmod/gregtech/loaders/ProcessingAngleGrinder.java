@@ -2,14 +2,14 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_ModHandler.RecipeBits;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTModHandler.RecipeBits;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
@@ -63,8 +63,8 @@ public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
                     Logger.MATERIALS("Generating Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
-                    final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
-                    final ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
+                    final ItemStack plate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
+                    final ItemStack longrod = GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
 
                     if ((null != plate && longrod != null)) {
                         addRecipe(aMaterial, 1600000L, 3, ItemList.Battery_RE_HV_Lithium.get(1));
@@ -111,7 +111,7 @@ public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
             1,
             aMaterial,
             Materials.Titanium,
-            new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
+            new long[] { aBatteryStorage, GTValues.V[aVoltageTier], 3L, -1L });
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {
@@ -122,7 +122,7 @@ public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
             return false;
         }
 
-        return GT_ModHandler.addCraftingRecipe(
+        return GTModHandler.addCraftingRecipe(
             aOutputStack,
             RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',

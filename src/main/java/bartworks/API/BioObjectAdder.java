@@ -15,7 +15,7 @@ package bartworks.API;
 
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.awt.Color;
 
@@ -28,11 +28,11 @@ import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import bartworks.util.BioPlasmid;
 import gregtech.api.enums.FluidState;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.fluid.GT_FluidFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.util.GTUtility;
 
 public final class BioObjectAdder {
 
@@ -167,7 +167,7 @@ public final class BioObjectAdder {
         for (BioCulture B : BioCulture.BIO_CULTURE_ARRAY_LIST) {
             if (B.getFluidNotSet()) {
                 B.setFluid(
-                    GT_FluidFactory.builder(
+                    GTFluidFactory.builder(
                         B.getName()
                             .replace(" ", "")
                             .toLowerCase() + "fluid")
@@ -183,8 +183,8 @@ public final class BioObjectAdder {
                         .buildAndRegister()
                         .asFluid());
 
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.getIntegratedCircuit(10))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(10))
                     .fluidInputs(new FluidStack(B.getFluid(), 1000))
                     .fluidOutputs(dnaFluid)
                     .duration(25 * SECONDS)

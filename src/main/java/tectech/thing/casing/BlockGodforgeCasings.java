@@ -12,13 +12,13 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 import tectech.thing.CustomItemList;
 
-public class BlockGodforgeCasings extends GT_Block_Casings_Abstract {
+public class BlockGodforgeCasings extends BlockCasingsAbstract {
 
     private static IIcon GodforgeTrim;
     private static IIcon GodforgeInner;
@@ -33,25 +33,25 @@ public class BlockGodforgeCasings extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 64;
 
     public BlockGodforgeCasings() {
-        super(ItemCasingsGodforge.class, "gt.godforgecasing", GT_Material_Casings.INSTANCE);
+        super(ItemCasingsGodforge.class, "gt.godforgecasing", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GTCopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".0.name", "Singularity Reinforced Stellar Shielding Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Celestial Matter Guidance Casing");
-        GT_LanguageManager.addStringLocalization(
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Celestial Matter Guidance Casing");
+        GTLanguageManager.addStringLocalization(
             getUnlocalizedName() + ".2.name",
             "Boundless Gravitationally Severed Structure Casing");
-        GT_LanguageManager.addStringLocalization(
+        GTLanguageManager.addStringLocalization(
             getUnlocalizedName() + ".3.name",
             "Transcendentally Amplified Magnetic Confinement Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Stellar Energy Siphon Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Remote Graviton Flow Modulator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Medial Graviton Flow Modulator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Central Graviton Flow Modulator");
-        GT_LanguageManager
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Stellar Energy Siphon Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Remote Graviton Flow Modulator");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Medial Graviton Flow Modulator");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Central Graviton Flow Modulator");
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".8.name", "Harmonic Phonon Transmission Conduit");
 
         CustomItemList.Godforge_SingularityShieldingCasing.set(new ItemStack(this, 1, 0));

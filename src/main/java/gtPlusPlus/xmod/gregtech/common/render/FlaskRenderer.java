@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.ItemVolumetricFlask;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.util.DrawUtil;
 
@@ -37,7 +37,7 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GT_VolumetricFlask cell = (GT_VolumetricFlask) item.getItem();
+        ItemVolumetricFlask cell = (ItemVolumetricFlask) item.getItem();
 
         int aType = cell.getMaxCapacity() == 8000 ? 0 : 1;
         IIcon icon = item.getIconIndex();

@@ -3,30 +3,30 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
-import static gregtech.common.items.ID_MetaTool_01.BRANCHCUTTER;
-import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_HV;
-import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_LV;
-import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_MV;
-import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_HV;
-import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_LV;
-import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_MV;
-import static gregtech.common.items.ID_MetaTool_01.KNIFE;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_BRANCHCUTTER;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_KNIFE;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_MULTITOOL;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_SAW;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_WIRECUTTER;
-import static gregtech.common.items.ID_MetaTool_01.SAW;
-import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
+import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
+import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
+import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
+import static gregtech.common.items.IDMetaTool01.CHAINSAW_HV;
+import static gregtech.common.items.IDMetaTool01.CHAINSAW_LV;
+import static gregtech.common.items.IDMetaTool01.CHAINSAW_MV;
+import static gregtech.common.items.IDMetaTool01.KNIFE;
+import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
+import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
+import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
+import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
+import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.SAW;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import java.util.ArrayList;
@@ -51,27 +51,27 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import forestry.api.arboriculture.IToolGrafter;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.ID_MetaTool_01;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
+import gregtech.common.items.IDMetaTool01;
+import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -114,8 +114,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller block for the Tree Growth Simulator")
             .addInfo("Farms and harvests trees using EU")
@@ -176,7 +176,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus_ME) return false;
+        if (aMetaTileEntity instanceof MTEHatchInputBusME) return false;
         return super.addInputBusToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
@@ -264,7 +264,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
          * In previous versions, a saw used to go in the controller slot. We do not want an update to stop processing of
          * a machine set up like this. Instead, a sapling is placed in this slot at the start of the next operation.
          */
-        if (aStack.getItem() instanceof GT_MetaGenerated_Tool_01) return true;
+        if (aStack.getItem() instanceof MetaGeneratedTool01) return true;
         return false;
     }
 
@@ -343,7 +343,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                     return SimpleCheckRecipeResult.ofFailure("no_output_for_sapling");
                 }
 
-                int tier = Math.max(1, GT_Utility.getTier(availableVoltage * availableAmperage));
+                int tier = Math.max(1, GTUtility.getTier(availableVoltage * availableAmperage));
                 int tierMultiplier = getTierMultiplier(tier);
 
                 List<ItemStack> outputs = new ArrayList<>();
@@ -376,7 +376,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 }
 
                 duration = TICKS_PER_OPERATION;
-                calculatedEut = GT_Values.VP[tier];
+                calculatedEut = GTValues.VP[tier];
 
                 for (Mode mode : Mode.values()) {
                     if (outputPerMode.get(mode) != null) {
@@ -407,11 +407,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 continue;
             }
             boolean canDamage = shouldDamage
-                ? GT_ModHandler.damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null)
-                : GT_ModHandler.damageOrDechargeItem(stack, 0, 0, null);
+                ? GTModHandler.damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null)
+                : GTModHandler.damageOrDechargeItem(stack, 0, 0, null);
             if (shouldDamage) {
-                if (!canDamage || GT_ModHandler.isElectricItem(stack)
-                    && !GT_ModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
+                if (!canDamage || GTModHandler.isElectricItem(stack)
+                    && !GTModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
                     depleteInput(stack);
                     addOutput(stack);
                 }
@@ -436,7 +436,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         int damage = toolStack.getItemDamage();
         switch (mode) {
             case LOG:
-                if (tool instanceof GT_MetaGenerated_Tool_01) {
+                if (tool instanceof MetaGeneratedTool01) {
 
                     if (damage == SAW.ID || damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
                         return 1;
@@ -453,7 +453,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 break;
 
             case SAPLING:
-                if (tool instanceof GT_MetaGenerated_Tool_01
+                if (tool instanceof MetaGeneratedTool01
                     && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
                         || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
@@ -468,7 +468,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 if (tool instanceof ItemShears && tool.isDamageable()) {
                     return 1;
                 }
-                if (tool instanceof GT_MetaGenerated_Tool_01) {
+                if (tool instanceof MetaGeneratedTool01) {
                     if (damage == POCKET_MULTITOOL.ID) {
                         return 1;
                     }
@@ -484,7 +484,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 break;
 
             case FRUIT:
-                if (tool instanceof GT_MetaGenerated_Tool_01
+                if (tool instanceof MetaGeneratedTool01
                     && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
                 }
@@ -539,9 +539,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      */
     private boolean legacyToolSwap() {
         ItemStack controllerSlot = getControllerSlot();
-        if (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool_01)) return false;
+        if (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool01)) return false;
 
-        for (GT_MetaTileEntity_Hatch_InputBus inputBus : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus inputBus : filterValidMTEs(mInputBusses)) {
             ItemStack[] inventory = inputBus.getRealInventory();
             for (int slot = 0; slot < inventory.length; ++slot) {
                 if (isValidSapling(inventory[slot])) {
@@ -734,30 +734,30 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      */
     private static final ItemStack[][] altToolsForNEI;
     static {
-        GT_MetaGenerated_Tool toolInstance = GT_MetaGenerated_Tool_01.INSTANCE;
+        MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
         altToolsForNEI = new ItemStack[][] {
             // Mode.LOG
             { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(ID_MetaTool_01.BUZZSAW_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(ID_MetaTool_01.BUZZSAW_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(ID_MetaTool_01.BUZZSAW_HV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
             // Mode.SAPLING
-            { toolInstance.getToolWithStats(ID_MetaTool_01.BRANCHCUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(ID_MetaTool_01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
-                GT_ModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
+            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
+                GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
             { new ItemStack(Items.shears),
-                toolInstance.getToolWithStats(ID_MetaTool_01.WIRECUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(ID_MetaTool_01.POCKET_WIRECUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null),
                 MetaGeneratedGregtechTools.getInstance()
                     .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
             // Mode.FRUIT
-            { toolInstance.getToolWithStats(ID_MetaTool_01.KNIFE.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(ID_MetaTool_01.POCKET_KNIFE.ID, 1, null, null, null), } };
+            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
     }
 
     /**
@@ -804,7 +804,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
-            new GT_Recipe.GT_Recipe_WithAlt(
+            new GTRecipe.GT_Recipe_WithAlt(
                 false,
                 null, // All inputs are taken from aAtl argument.
                 outputStacks,

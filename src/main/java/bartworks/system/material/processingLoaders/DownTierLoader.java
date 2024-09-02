@@ -21,7 +21,7 @@ import bartworks.util.BWUtil;
 import bartworks.util.StreamUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 public class DownTierLoader {
 
@@ -30,8 +30,8 @@ public class DownTierLoader {
             .stream()
             .filter(map -> StreamUtils.filterVisualMaps(map) && map != RecipeMaps.fusionRecipes)
             .forEach(map -> {
-                Set<GT_Recipe> newRecipes = new HashSet<>();
-                Set<GT_Recipe> toRem = new HashSet<>();
+                Set<GTRecipe> newRecipes = new HashSet<>();
+                Set<GTRecipe> toRem = new HashSet<>();
                 map.getAllRecipes()
                     .stream()
                     .filter(recipe -> Objects.nonNull(recipe) && recipe.mEUt > 128)

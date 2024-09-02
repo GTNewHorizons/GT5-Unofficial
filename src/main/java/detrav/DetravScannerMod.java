@@ -17,7 +17,7 @@ import detrav.utils.DetravCreativeTab;
 import detrav.utils.FluidColors;
 import detrav.utils.GTppHelper;
 import gregtech.GT_Version;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 @Mod(
     modid = DetravScannerMod.MODID,
@@ -39,7 +39,7 @@ public class DetravScannerMod {
     public static DetravScannerMod instance;
 
     public DetravScannerMod() {
-        GregTech_API.sAfterGTPreload.add(new DetravLoaderAfterGTPreload());
+        GregTechAPI.sAfterGTPreload.add(new DetravLoaderAfterGTPreload());
         isDreamcraftLoaded = Loader.isModLoaded("dreamcraft");
         isBartWorksLoaded = Loader.isModLoaded("bartworks");
         isGTppLoaded = Loader.isModLoaded("miscutils");

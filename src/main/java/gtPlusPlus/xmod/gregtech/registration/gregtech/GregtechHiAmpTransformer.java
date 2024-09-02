@@ -12,11 +12,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.Transformer_HA_ZPM_LuV;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
@@ -25,9 +25,9 @@ public class GregtechHiAmpTransformer {
 
     public static void run() {
 
-        long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-            | GT_ModHandler.RecipeBits.REVERSIBLE
-            | GT_ModHandler.RecipeBits.BUFFERED;
+        long bitsd = GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+            | GTModHandler.RecipeBits.REVERSIBLE
+            | GTModHandler.RecipeBits.BUFFERED;
 
         String mHammerName = "Mallet";
 
@@ -99,67 +99,67 @@ public class GregtechHiAmpTransformer {
         ItemStack mItem_3;
 
         mItem_1 = ItemUtils.simpleMetaStack(
-            ItemUtils.getSimpleStack(GregTech_API.sBlockCasings5)
+            ItemUtils.getSimpleStack(GregTechAPI.sBlockCasings5)
                 .getItem(),
             3,
             1);
         mItem_2 = ItemUtils.simpleMetaStack(
-            ItemUtils.getSimpleStack(GregTech_API.sBlockCasings5)
+            ItemUtils.getSimpleStack(GregTechAPI.sBlockCasings5)
                 .getItem(),
             4,
             1);
         mItem_3 = ItemUtils.simpleMetaStack(
-            ItemUtils.getSimpleStack(GregTech_API.sBlockCasings5)
+            ItemUtils.getSimpleStack(GregTechAPI.sBlockCasings5)
                 .getItem(),
             9,
             1);
 
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_LV_ULV.get(1L),
             bitsd,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_LV_ULV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Tin), 'B', OrePrefixes.wireGt04.get(Materials.Lead) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_MV_LV.get(1L),
             bitsd,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_MV_LV, 'C',
                 OrePrefixes.wireGt04.get(Materials.AnyCopper), 'B', OrePrefixes.wireGt04.get(Materials.Tin) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_HV_MV.get(1L),
             bitsd,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_HV_MV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Gold), 'B', OrePrefixes.wireGt04.get(Materials.AnyCopper) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_EV_HV.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_EV_HV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Aluminium), 'B', OrePrefixes.wireGt04.get(Materials.Gold), 'K',
                 ItemList.Casing_Coil_Cupronickel });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_IV_EV.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_IV_EV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Tungsten), 'B', OrePrefixes.wireGt04.get(Materials.Aluminium), 'K',
                 ItemList.Casing_Coil_Kanthal });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_LuV_IV.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_LuV_IV, 'C',
                 OrePrefixes.wireGt04.get(Materials.VanadiumGallium), 'B', OrePrefixes.wireGt04.get(Materials.Tungsten),
                 'K', ItemList.Casing_Coil_Nichrome });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_ZPM_LuV.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_ZPM_LuV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Naquadah), 'B', OrePrefixes.wireGt04.get(Materials.VanadiumGallium),
                 'K', mItem_1 });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_UV_ZPM.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_UV_ZPM, 'C',
                 OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'B', OrePrefixes.wireGt04.get(Materials.Naquadah),
                 'K', mItem_2 });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_MAX_UV.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_MAX_UV, 'C',

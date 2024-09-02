@@ -15,7 +15,7 @@ import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchDynamoBuffer;
@@ -87,52 +87,52 @@ public class GregtechBufferDynamos {
                 "hatch.dynamo.buffer.tier.09",
                 "UHV Dynamo Hatch [Buffered]",
                 9).getStackForm(1L));
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_ULV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_ULV, 'T', CI.getTieredCircuit(0), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.Lead) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_LV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_LV, 'T', CI.getTieredCircuit(1), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.Tin) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_MV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_MV, 'T', CI.getTieredCircuit(2), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.AnyCopper) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_HV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_HV, 'T', CI.getTieredCircuit(3), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.Gold) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_EV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_EV, 'T', CI.getTieredCircuit(4), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.Aluminium) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_IV, 'T', CI.getTieredCircuit(5), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.Tungsten) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_LuV, 'T', CI.getTieredCircuit(6), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.VanadiumGallium) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_ZPM.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_ZPM, 'T', CI.getTieredCircuit(7), 'C',
                 OrePrefixes.cableGt04.get((Object) Materials.Naquadah) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_UV.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UV, 'T', CI.getTieredCircuit(8), 'C',
                 OrePrefixes.wireGt12.get((Object) Materials.NaquadahAlloy) });
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_MAX.get(1L),
             bitsd,
             new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UHV, 'T', CI.getTieredCircuit(9), 'C',

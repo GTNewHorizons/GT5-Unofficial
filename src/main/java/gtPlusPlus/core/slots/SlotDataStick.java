@@ -4,7 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotDataStick extends Slot {
@@ -26,8 +26,8 @@ public class SlotDataStick extends Slot {
                 mDataItems[1] = CI.getDataOrb();
             }
             if (mDataItems[0] != null && mDataItems[1] != null) {
-                if (GT_Utility.areStacksEqual(itemstack, mDataItems[0], true)
-                    || GT_Utility.areStacksEqual(itemstack, mDataItems[1], true)) {
+                if (GTUtility.areStacksEqual(itemstack, mDataItems[0], true)
+                    || GTUtility.areStacksEqual(itemstack, mDataItems[1], true)) {
                     isValid = true;
                 }
             }

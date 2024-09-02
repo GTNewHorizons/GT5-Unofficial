@@ -1,13 +1,13 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 
@@ -15,7 +15,7 @@ public class FormingPress implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials),
                 Materials.Graphite.getDust(64))
@@ -24,7 +24,7 @@ public class FormingPress implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(formingPressRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 1),
                 Materials.Silicon.getDust(64))
@@ -33,7 +33,7 @@ public class FormingPress implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(formingPressRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 2),
                 Materials.Graphite.getDust(64))
@@ -44,7 +44,7 @@ public class FormingPress implements Runnable {
 
         int i = 0;
         for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i),
                     Materials.Carbon.getDust(64))
@@ -53,7 +53,7 @@ public class FormingPress implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(formingPressRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 1),
                     Materials.Silicon.getDust(64))
@@ -62,7 +62,7 @@ public class FormingPress implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(formingPressRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 2),
                     Materials.Graphite.getDust(64))

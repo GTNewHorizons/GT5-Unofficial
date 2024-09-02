@@ -30,7 +30,7 @@ import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
 
@@ -51,7 +51,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
         this.setCreativeTab(metaTab);
         this._prefixes = types;
         if (this._prefixes != null) {
-            this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 "bw.blocktype." + this._prefixes,
                 this._prefixes.mLocalizedMaterialPre + "%material" + this._prefixes.mLocalizedMaterialPost);
         }

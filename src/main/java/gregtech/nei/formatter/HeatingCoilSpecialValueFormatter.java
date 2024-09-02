@@ -8,7 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -24,7 +24,7 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.heat_capacity",
-                GT_Utility.formatNumbers(heat),
+                GTUtility.formatNumbers(heat),
                 HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import ic2.core.IC2Potion;
@@ -49,7 +49,7 @@ public class EntityUtils {
             if ((radiationLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                     if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)
-                            && !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
+                            && !GTUtility.isWearingFullRadioHazmat(entityLiving)) {
                         if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null) {
                             entityLiving.getActivePotionEffect(IC2Potion.radiation);
                         }
@@ -120,8 +120,8 @@ public class EntityUtils {
         if (!world.isRemote) {
             if ((heatLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    if (!GT_Utility.isWearingFullHeatHazmat(entityLiving)) {
-                        GT_Utility.applyHeatDamage(entityLiving, heatLevel);
+                    if (!GTUtility.isWearingFullHeatHazmat(entityLiving)) {
+                        GTUtility.applyHeatDamage(entityLiving, heatLevel);
                     }
                 }
             }
@@ -134,7 +134,7 @@ public class EntityUtils {
 
     /**
      * Provides the ability to provide custom drops upon the death of EntityLivingBase objects.
-     * 
+     *
      * @param aMobClass  - The Base Class you want to drop this item.
      * @param aStack     - The ItemStack, stack size is not respected.
      * @param aMaxAmount - The maximum size of the ItemStack which drops.

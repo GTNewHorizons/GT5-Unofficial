@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.HashMap;
@@ -40,11 +40,11 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -61,7 +61,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     implements ISurvivalConstructable {
 
     private boolean isUsingControllerCircuit = false;
-    private static final Item circuit = GT_Utility.getIntegratedCircuit(0)
+    private static final Item circuit = GTUtility.getIntegratedCircuit(0)
         .getItem();
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION = null;
@@ -90,8 +90,8 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Fishing Pond")
             .addInfo("Can process (Tier + 1) * 2 recipes")
@@ -221,7 +221,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
         ItemStack[] mFishOutput = generateLoot(this.mMode);
         mFishOutput = removeNulls(mFishOutput);
-        GT_Recipe g = new GT_Recipe(
+        GTRecipe g = new GTRecipe(
             true,
             new ItemStack[] {},
             mFishOutput,
@@ -232,10 +232,10 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             200,
             16,
             0);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(g.mEUt)
             .setEUt(tEnergy)
             .setDuration(g.mDuration);
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g)
+        ParallelHelper helper = new ParallelHelper().setRecipe(g)
             .setItemInputs(tItemInputs)
             .setFluidInputs(tFluidInputs)
             .setAvailableEUt(tEnergy)
@@ -267,7 +267,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     public int getMaxParallelRecipes() {
-        return (2 * (GT_Utility.getTier(this.getMaxInputVoltage()) + 1));
+        return (2 * (GTUtility.getTier(this.getMaxInputVoltage()) + 1));
     }
 
     @Override
@@ -393,7 +393,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     private int getCircuit(ItemStack[] t) {
         if (!this.isUsingControllerCircuit) {
             for (ItemStack j : t) {
-                if (j.getItem() == GT_Utility.getIntegratedCircuit(0)
+                if (j.getItem() == GTUtility.getIntegratedCircuit(0)
                     .getItem()) {
                     // Fish
                     if (j.getItemDamage() == 14) {

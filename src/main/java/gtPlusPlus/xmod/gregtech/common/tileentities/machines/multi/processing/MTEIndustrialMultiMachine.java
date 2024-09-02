@@ -3,15 +3,15 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,26 +39,26 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -93,7 +93,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
         for (int id = 0; id < 9; id++) {
             RecipeMap<?> recipeMap = getRecipeMap(id);
             if (recipeMap != null) {
-                String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).unlocalizedName);
+                String aNEI = GTLanguageManager.getTranslation(getRecipeMap(id).unlocalizedName);
                 aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";
             }
         }
@@ -118,13 +118,13 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+    protected MultiblockTooltipBuilder createTooltip() {
         String[] aBuiltStrings = new String[3];
         aBuiltStrings[0] = aToolTipNames[0] + ", " + aToolTipNames[1] + ", " + aToolTipNames[2];
         aBuiltStrings[1] = aToolTipNames[3] + ", " + aToolTipNames[4] + ", " + aToolTipNames[5];
         aBuiltStrings[2] = aToolTipNames[6] + ", " + aToolTipNames[7] + ", " + aToolTipNames[8];
 
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Industrial Multi-Machine")
             .addInfo("250% faster than using single block machines of the same voltage")
@@ -207,7 +207,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
     @Override
     public int getMaxParallelRecipes() {
-        return (2 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (2 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -241,7 +241,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
     private ItemStack getCircuit(ItemStack[] t) {
         for (ItemStack j : t) {
-            if (j.getItem() == GT_Utility.getIntegratedCircuit(0)
+            if (j.getItem() == GTUtility.getIntegratedCircuit(0)
                 .getItem()) {
                 if (j.getItemDamage() >= 20 && j.getItemDamage() <= 22) {
                     return j;
@@ -315,12 +315,12 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
             @Nonnull
             @Override
-            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 ItemStack circuit = getCircuit(inputItems);
                 if (circuit == null) {
                     return Stream.empty();
                 }
-                if (!GT_Utility.areStacksEqual(circuit, lastCircuit)) {
+                if (!GTUtility.areStacksEqual(circuit, lastCircuit)) {
                     lastRecipe = null;
                     lastCircuit = circuit;
                 }
@@ -399,7 +399,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             }
 
             // Logic for GT_MetaTileEntity_Hatch_Solidifier
-            for (GT_MetaTileEntity_Hatch_Input solidifierHatch : mInputHatches) {
+            for (MTEHatchInput solidifierHatch : mInputHatches) {
                 if (solidifierHatch instanceof MTEHatchSolidifier) {
                     ItemStack mold = ((MTEHatchSolidifier) solidifierHatch).getMold();
                     FluidStack fluid = solidifierHatch.getFluid();
@@ -407,7 +407,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
                     if (mold != null && fluid != null) {
                         List<ItemStack> inputItems = new ArrayList<>();
                         inputItems.add(mold);
-                        inputItems.add(GT_Utility.getIntegratedCircuit(22));
+                        inputItems.add(GTUtility.getIntegratedCircuit(22));
 
                         processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                         processingLogic.setInputFluids(fluid);
@@ -426,8 +426,8 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             processingLogic.clear();
             processingLogic.setInputFluids(getStoredFluids());
             // Default logic
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+            for (MTEHatchInputBus bus : mInputBusses) {
+                if (bus instanceof MTEHatchCraftingInputME) {
                     continue;
                 }
                 List<ItemStack> inputItems = new ArrayList<>();
@@ -458,21 +458,21 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
             if (tHatch instanceof MTEHatchSolidifier) {
                 continue;
             }
 
             setHatchRecipeMap(tHatch);
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+            if (tHatch instanceof MTEHatchMultiInput) {
+                for (FluidStack tFluid : ((MTEHatchMultiInput) tHatch).getStoredFluid()) {
                     if (tFluid != null) {
                         rList.add(tFluid);
                     }
                 }
-            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
+            } else if (tHatch instanceof MTEHatchInputME) {
                 if (tHatch.isValid()) {
-                    for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getStoredFluids()) {
+                    for (FluidStack fluidStack : ((MTEHatchInputME) tHatch).getStoredFluids()) {
                         if (fluidStack == null) continue;
                         rList.add(fluidStack);
                     }
@@ -533,8 +533,8 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
     }
 }

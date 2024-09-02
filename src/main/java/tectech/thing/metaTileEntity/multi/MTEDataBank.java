@@ -2,8 +2,8 @@ package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -33,13 +33,13 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.WirelessComputationPacket;
 import gregtech.common.WirelessDataStore;
 import tectech.Reference;
@@ -113,8 +113,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.name")) // Machine Type: Data Bank
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
                                                                                            // the Data Bank
@@ -234,14 +234,14 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess
-            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        } else
+            if (aMetaTileEntity instanceof MTEHatchDataAccess && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return eDataAccessHatches.add(aMetaTileEntity);
             } else if (aMetaTileEntity instanceof MTEHatchDataItemsInput) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 slave = true;
                 return eDataAccessHatches.add(aMetaTileEntity);
             }
@@ -270,10 +270,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
             if (wirelessModeEnabled) {
-                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
                 WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
                 WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
             }
         }
@@ -318,7 +318,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {
 
-        DataStick(GT_MetaTileEntity_Hatch_DataAccess.class) {
+        DataStick(MTEHatchDataAccess.class) {
 
             @Override
             public long count(MTEDataBank t) {
@@ -360,7 +360,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
 
         @Override
-        public IGT_HatchAdder<? super MTEDataBank> adder() {
+        public IGTHatchAdder<? super MTEDataBank> adder() {
             return MTEDataBank::addDataBankHatchToMachineList;
         }
     }

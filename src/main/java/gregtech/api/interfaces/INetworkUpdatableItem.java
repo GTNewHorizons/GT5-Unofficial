@@ -4,8 +4,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import gregtech.api.net.GTPacketUpdateItem;
+
 /**
- * Together with {@link gregtech.api.net.GT_Packet_UpdateItem} you can request server side to update item in hand with a
+ * Together with {@link GTPacketUpdateItem} you can request server side to update item in hand with a
  * NBT tag.
  * <p>
  * Usual NBT tag size limit applies.

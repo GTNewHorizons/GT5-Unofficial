@@ -38,11 +38,11 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
-import gregtech.loaders.misc.GT_BeeDefinition;
-import gregtech.loaders.misc.GT_Bees;
+import gregtech.loaders.misc.GTBeeDefinition;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements.STANDALONE;
 import gtPlusPlus.core.util.Utils;
@@ -54,7 +54,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
 
     DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true,
         Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
-            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
+            beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
             beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.DRAGONBLOOD), 0.10f);
             beeSpecies.setHumidity(ARID);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -68,12 +68,12 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             IBeeMutationCustom tMutation = dis.registerMutation("DRAGONESSENCE", "NEUTRONIUM", 2);
             tMutation.restrictHumidity(ARID);
             tMutation.requireResource(STANDALONE.DRAGON_METAL.getBlock(), 1);
-            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End")); // End Dim
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
         }),
     FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", STANDALONE.FORCE, true, Utils.rgbtoHexValue(250, 250, 20),
         Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SALT), 0.15f);
+            beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SALT), 0.15f);
             beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.FORCE), 0.10f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.HOT);
@@ -124,7 +124,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         String uid = "gtpp.bee.species" + species;
         String description = "for.description." + species;
         String name = "for.bees.species." + lowercaseName;
-        GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
+        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
         GTPP_Bees.sMaterialMappings.put(
             binomial.toLowerCase()
                 .replaceAll(" ", ""),
@@ -289,8 +289,8 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     public static IAlleleBeeSpecies getGregtechBeeType(String name) {
         try {
             // This is still cursed, but the species field is private and I don't want to go modify that right now
-            GT_BeeDefinition aBeeObject = GT_BeeDefinition.valueOf(name);
-            Field gtBeesField = ReflectionUtils.getField(GT_BeeDefinition.class, "species");
+            GTBeeDefinition aBeeObject = GTBeeDefinition.valueOf(name);
+            Field gtBeesField = ReflectionUtils.getField(GTBeeDefinition.class, "species");
             return ReflectionUtils.getFieldValue(gtBeesField, aBeeObject);
         } catch (Throwable t) {
             t.printStackTrace();

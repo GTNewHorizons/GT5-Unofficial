@@ -37,7 +37,7 @@ public class ColorsMetadataSection implements IMetadataSection {
             try {
                 if (!hex.isEmpty()) colorValue = Integer.parseUnsignedInt(hex, 16);
             } catch (final NumberFormatException e) {
-                GT_Log.err.println("Couldn't format color correctly of " + key + " -> " + hex);
+                GTLog.err.println("Couldn't format color correctly of " + key + " -> " + hex);
             }
             intMap.put(key, colorValue);
         }

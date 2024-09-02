@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 public class BWBlocks extends Block {
 
@@ -47,7 +47,7 @@ public class BWBlocks extends Block {
         this.name = name;
         this.textureNames = texture;
         this.setCreativeTab(MainMod.GT2);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BWBlocks(String name, String[] texture, CreativeTabs tabs) {
@@ -57,7 +57,7 @@ public class BWBlocks extends Block {
         this.name = name;
         this.textureNames = texture;
         this.setCreativeTab(tabs);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BWBlocks(String name, String[] texture, CreativeTabs tabs, Material material) {
@@ -67,7 +67,7 @@ public class BWBlocks extends Block {
         this.name = name;
         this.textureNames = texture;
         this.setCreativeTab(tabs);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -100,15 +100,15 @@ public class BWBlocks extends Block {
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aMetaData)) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aMetaData)) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 

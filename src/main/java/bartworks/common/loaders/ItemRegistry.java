@@ -223,13 +223,13 @@ import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserHatch;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserPipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
 
 public class ItemRegistry {
@@ -367,12 +367,12 @@ public class ItemRegistry {
             },
             MainMod.BWT), };
 
-    public static ItemStack[] diode2A = new ItemStack[GT_Values.VN.length];
-    public static ItemStack[] diode4A = new ItemStack[GT_Values.VN.length];
-    public static ItemStack[] diode8A = new ItemStack[GT_Values.VN.length];
-    public static ItemStack[] diode12A = new ItemStack[GT_Values.VN.length];
-    public static ItemStack[] diode16A = new ItemStack[GT_Values.VN.length];
-    public static ItemStack[] energyDistributor = new ItemStack[GT_Values.VN.length];
+    public static ItemStack[] diode2A = new ItemStack[GTValues.VN.length];
+    public static ItemStack[] diode4A = new ItemStack[GTValues.VN.length];
+    public static ItemStack[] diode8A = new ItemStack[GTValues.VN.length];
+    public static ItemStack[] diode12A = new ItemStack[GTValues.VN.length];
+    public static ItemStack[] diode16A = new ItemStack[GTValues.VN.length];
+    public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
     public static ItemStack[] acidGens = new ItemStack[3];
     public static ItemStack acidGensLV;
     public static ItemStack[] megaMachines = new ItemStack[5];
@@ -429,17 +429,17 @@ public class ItemRegistry {
             "Electric Implosion Compressor").getStackForm(1L);
 
         // EIC depend on neutronium block to pass on structure updates
-        int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | 1 << 2;
-        GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
+        int bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal5, 0) | 1 << 2;
+        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal5, bitmask);
 
         // Also spacetime, transcendent metal, and universium
-        bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
-        GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal9, bitmask);
+        bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
+        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal9, bitmask);
 
         if (Mods.Avaritia.isModLoaded()) {
             // Also infinity
-            bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
-            GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
+            bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
+            GregTechAPI.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
         }
 
         ItemRegistry.THTR = new MTEThoriumHighTempReactor(
@@ -455,9 +455,9 @@ public class ItemRegistry {
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
 
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
         int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,
@@ -481,59 +481,59 @@ public class ItemRegistry {
             EnergyDistributor_UEV.ID, EnergyDistributor_UIV.ID, EnergyDistributor_UMV.ID, EnergyDistributor_UXV.ID,
             EnergyDistributor_MAX.ID };
 
-        for (int i = 0; i < GT_Values.VN.length - 1; i++) {
+        for (int i = 0; i < GTValues.VN.length - 1; i++) {
             ItemRegistry.diode2A[i] = new MTEDiode(
                 Diode2A[i],
-                "diode" + "2A" + GT_Values.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i],
+                "diode" + "2A" + GTValues.VN[i],
+                StatCollector.translateToLocal("tile.diode.name") + " 2A " + GTValues.VN[i],
                 i).getStackForm(1L);
             ItemRegistry.diode4A[i] = new MTEDiode(
                 Diode4A[i],
-                "diode" + "4A" + GT_Values.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i],
+                "diode" + "4A" + GTValues.VN[i],
+                StatCollector.translateToLocal("tile.diode.name") + " 4A " + GTValues.VN[i],
                 i).getStackForm(1L);
             ItemRegistry.diode8A[i] = new MTEDiode(
                 Diode8A[i],
-                "diode" + "8A" + GT_Values.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 8A " + GT_Values.VN[i],
+                "diode" + "8A" + GTValues.VN[i],
+                StatCollector.translateToLocal("tile.diode.name") + " 8A " + GTValues.VN[i],
                 i).getStackForm(1L);
             ItemRegistry.diode12A[i] = new MTEDiode(
                 Diode12A[i],
-                "diode" + "12A" + GT_Values.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 12A " + GT_Values.VN[i],
+                "diode" + "12A" + GTValues.VN[i],
+                StatCollector.translateToLocal("tile.diode.name") + " 12A " + GTValues.VN[i],
                 i).getStackForm(1L);
             ItemRegistry.diode16A[i] = new MTEDiode(
                 Diode16A[i],
-                "diode" + "16A" + GT_Values.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 16A " + GT_Values.VN[i],
+                "diode" + "16A" + GTValues.VN[i],
+                StatCollector.translateToLocal("tile.diode.name") + " 16A " + GTValues.VN[i],
                 i).getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
-                "energydistributor" + GT_Values.VN[i],
-                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GT_Values.VN[i],
+                "energydistributor" + GTValues.VN[i],
+                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i],
                 i).getStackForm(1L);
         }
 
         ItemRegistry.acidGens[0] = new MTEAcidGenerator(
             AcidGeneratorMV.ID,
-            "acidgenerator" + GT_Values.VN[2],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[2],
+            "acidgenerator" + GTValues.VN[2],
+            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[2],
             2).getStackForm(1);
         ItemRegistry.acidGens[1] = new MTEAcidGenerator(
             AcidGeneratorHV.ID,
-            "acidgenerator" + GT_Values.VN[3],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[3],
+            "acidgenerator" + GTValues.VN[3],
+            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[3],
             3).getStackForm(1);
         ItemRegistry.acidGens[2] = new MTEAcidGenerator(
             AcidGeneratorEV.ID,
-            "acidgenerator" + GT_Values.VN[4],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[4],
+            "acidgenerator" + GTValues.VN[4],
+            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
             4).getStackForm(1);
 
         ItemRegistry.acidGensLV = new MTEAcidGenerator(
             AcidGeneratorLV.ID,
-            "acidgenerator" + GT_Values.VN[1],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[1],
+            "acidgenerator" + GTValues.VN[1],
+            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
             +1).getStackForm(1L);
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, 1, "DEHP", "Deep Earth Heating Pump")
@@ -600,8 +600,8 @@ public class ItemRegistry {
             for (int tier = 4; tier < 8; tier++) {
                 TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new MTELowPowerLaserBox(
                     LowPowerLaserConverter[amps / 32 - 1][tier - 4],
-                    GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Converter",
+                    GTValues.VN[tier] + "_LPLaser_Converter_" + amps,
+                    GTValues.VN[tier] + " " + amps + "A" + " Low Power Laser Converter",
                     tier,
                     amps).getStackForm(1L);
             }
@@ -622,8 +622,8 @@ public class ItemRegistry {
             for (int tier = 4; tier < 8; tier++) {
                 TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new MTELowPowerLaserHatch(
                     LowPowerLaserTargetHatch[amps / 32 - 1][tier - 4],
-                    GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Target Hatch",
+                    GTValues.VN[tier] + "_LPLaser_Hatch_" + amps,
+                    GTValues.VN[tier] + " " + amps + "A" + " Low Power Laser Target Hatch",
                     tier,
                     amps).getStackForm(1L);
             }
@@ -644,8 +644,8 @@ public class ItemRegistry {
             for (int tier = 4; tier < 8; tier++) {
                 TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new MTELowPowerLaserDynamo(
                     LowPowerLaserSourceHatch[amps / 32 - 1][tier - 4],
-                    GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Source Hatch",
+                    GTValues.VN[tier] + "_LPLaser_Dynamo_" + amps,
+                    GTValues.VN[tier] + " " + amps + "A" + " Low Power Laser Source Hatch",
                     tier,
                     amps).getStackForm(1L);
             }

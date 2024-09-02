@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity.enums;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 
 public enum GT_MultiTileUpgradeCasing {
 
@@ -57,7 +57,7 @@ public enum GT_MultiTileUpgradeCasing {
     Insulator_NextGen(107),
     Insulator_Omnipotent(108),
     Insulator_OmegaType(109),
-    NONE(GT_Values.W);
+    NONE(GTValues.W);
 
     private final int meta;
 

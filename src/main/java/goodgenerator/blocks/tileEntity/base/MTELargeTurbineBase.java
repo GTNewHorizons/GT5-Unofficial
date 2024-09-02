@@ -5,9 +5,9 @@ package goodgenerator.blocks.tileEntity.base;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.util.GT_StructureUtility.*;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.*;
 
 import java.util.ArrayList;
 
@@ -28,16 +28,16 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.MetaGeneratedTool01;
 
-public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTELargeTurbineBase>
+public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTELargeTurbineBase>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -137,10 +137,9 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack controllerSlot = getControllerSlot();
-        if ((counter & 7) == 0
-            && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
-                || controllerSlot.getItemDamage() < 170
-                || controllerSlot.getItemDamage() > 179)) {
+        if ((counter & 7) == 0 && (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool)
+            || controllerSlot.getItemDamage() < 170
+            || controllerSlot.getItemDamage() > 179)) {
             stopMachine();
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
@@ -153,15 +152,14 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = GT_Utility.safeInt(
-                    (long) ((5F
-                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
+                baseEff = GTUtility.safeInt(
+                    (long) ((5F + ((MetaGeneratedTool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
                         * 1000F));
-                optFlow = GT_Utility.safeInt(
+                optFlow = GTUtility.safeInt(
                     (long) Math.max(
                         Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
+                        ((MetaGeneratedTool) controllerSlot.getItem()).getToolStats(controllerSlot)
+                            .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mToolSpeed
                             * 50));
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(); // in case the turbine got removed
@@ -179,7 +177,7 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in
         // power level (per tick)
         // This is how much the turbine can actually change during this tick
-        int maxChangeAllowed = Math.max(10, GT_Utility.safeInt((long) Math.abs(difference) / 100));
+        int maxChangeAllowed = Math.max(10, GTUtility.safeInt((long) Math.abs(difference) / 100));
 
         if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
             int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
@@ -208,10 +206,10 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) {
+        if (GTUtility.isStackInvalid(aStack)) {
             return 0;
         }
-        if (aStack.getItem() instanceof GT_MetaGenerated_Tool_01) {
+        if (aStack.getItem() instanceof MetaGeneratedTool01) {
             return 10000;
         }
         return 0;
@@ -224,7 +222,7 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
 
     public long getMaximumOutput() {
         long aTotal = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             aTotal = aDynamo.maxAmperesOut() * aVoltage;
             break;
@@ -235,7 +233,7 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -251,15 +249,15 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
                 + EnumChatFormatting.RESET;
         int tDura = 0;
 
-        if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
-            tDura = GT_Utility.safeInt(
-                (long) (100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1])
-                    * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1])) + 1));
+        if (mInventory[1] != null && mInventory[1].getItem() instanceof MetaGeneratedTool01) {
+            tDura = GTUtility.safeInt(
+                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(mInventory[1])
+                    * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -269,7 +267,7 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(mEUt)
+                + GTUtility.formatNumbers(mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t", /* 1 */
             tMaintainance, /* 2 */
@@ -280,16 +278,16 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
                 + "%", /* 2 */
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(storedEnergy)
+                + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + /* 3 */ EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(GT_Utility.safeInt((long) realOptFlow))
+                + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
                 + EnumChatFormatting.RESET
                 + " L/t"
                 + /* 4 */ EnumChatFormatting.YELLOW
@@ -299,7 +297,7 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
                 + ")", /* 5 */
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
-                + GT_Utility.formatNumbers(storedFluid)
+                + GTUtility.formatNumbers(storedFluid)
                 + EnumChatFormatting.RESET
                 + "L", /* 6 */
             StatCollector.translateToLocal(
@@ -315,7 +313,7 @@ public abstract class MTELargeTurbineBase extends GT_MetaTileEntity_EnhancedMult
             .contains("Steam"))
             ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.safeInt((long) realOptFlow)
+                + GTUtility.safeInt((long) realOptFlow)
                 + EnumChatFormatting.RESET
                 + " L/t";
         return ret;

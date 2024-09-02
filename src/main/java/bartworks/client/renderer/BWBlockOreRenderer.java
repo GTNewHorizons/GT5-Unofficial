@@ -13,12 +13,12 @@
 
 package bartworks.client.renderer;
 
-import static gregtech.common.render.GT_Renderer_Block.renderNegativeXFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderNegativeYFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderNegativeZFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderPositiveXFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderPositiveYFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderPositiveZFacing;
+import static gregtech.common.render.GTRendererBlock.renderNegativeXFacing;
+import static gregtech.common.render.GTRendererBlock.renderNegativeYFacing;
+import static gregtech.common.render.GTRendererBlock.renderNegativeZFacing;
+import static gregtech.common.render.GTRendererBlock.renderPositiveXFacing;
+import static gregtech.common.render.GTRendererBlock.renderPositiveYFacing;
+import static gregtech.common.render.GTRendererBlock.renderPositiveZFacing;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -34,7 +34,7 @@ import bartworks.system.material.BWMetaGeneratedBlocks;
 import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 
 @ThreadSafeISBRH(perThread = true)
 public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
@@ -135,7 +135,7 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
         fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
+        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.setRenderBoundsFromBlock(aBlock);
         renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.DOWN), true);
         renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.UP), true);

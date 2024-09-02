@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
 import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
 
@@ -122,7 +122,7 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
             if (player instanceof EntityPlayer) {
 
                 // Apply Slow
-                if (!GT_Utility.getPotion(player, Potion.moveSlowdown.id)) {
+                if (!GTUtility.getPotion(player, Potion.moveSlowdown.id)) {
                     player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 1, true));
                 }
 

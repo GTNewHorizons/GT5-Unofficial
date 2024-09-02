@@ -13,7 +13,7 @@
 
 package bartworks.common.tileentities.tiered;
 
-import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
+import static gregtech.api.enums.GTValues.ticksBetweenSounds;
 
 import java.util.Collections;
 
@@ -49,8 +49,8 @@ import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -58,18 +58,17 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.ID_MetaTool_01;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.IDMetaTool01;
+import gregtech.common.items.MetaGeneratedTool01;
 
-public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
-    implements RecipeMapWorkable, IAddGregtechLogo {
+public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGregtechLogo {
 
     private final int cap;
     public int sievert;
@@ -81,7 +80,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     private byte coverage;
     private ItemStack lastUsedItem = null;
     private boolean lastFail = false;
-    private GT_Recipe lastRecipe = null;
+    private GTRecipe lastRecipe = null;
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -148,7 +147,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -187,7 +186,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                     return;
                 }
-                ItemData itemData = GT_OreDictUnificator.getAssociation(lStack);
+                ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                 if (itemData != null) {
                     Materials mat = itemData.mMaterial.mMaterial;
                     this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
@@ -195,12 +194,12 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                 }
 
-                if (this.lastFail && GT_Utility.areStacksEqual(this.lastUsedItem, lStack, true)) {
+                if (this.lastFail && GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
                     return;
                 }
 
                 if (!this.lastFail && this.lastUsedItem != null && this.lastRecipe != null) {
-                    if (GT_Utility.areStacksEqual(this.lastUsedItem, lStack, true)) {
+                    if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
                         this.mass = (byte) this.lastRecipe.mDuration;
                         this.decayTime = this.lastRecipe.mSpecialValue;
                         this.sievert = this.lastRecipe.mEUt;
@@ -335,7 +334,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
         super.startSoundLoop(aIndex, aX, aY, aZ);
         ResourceLocation rl = new ResourceLocation(MainMod.MOD_ID, "hatch.RadOn");
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(rl, 10, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(rl, 10, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -430,14 +429,14 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                 }
             })
                 .addTooltip("Radiation Shutter")
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(153, 5)
                 .setSize(18, 18))
             .widget(
                 new ItemDrawable(
-                    GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, null, null, null)).asWidget()
-                            .setPos(154, 6));
+                    MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, null, null, null))
+                        .asWidget()
+                        .setPos(154, 6));
     }
 
     private ModularWindow createShutterWindow(EntityPlayer player) {
@@ -469,7 +468,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                     .setScrollValues(1, 5, 50)
                     .setTextColor(Color.WHITE.dark(1))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                     .setPos(86, 27)
                     .setSize(30, 12))
             .widget(
@@ -489,7 +488,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
-            .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+        return new GUITextureSet().setMainBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
+            .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
     }
 }

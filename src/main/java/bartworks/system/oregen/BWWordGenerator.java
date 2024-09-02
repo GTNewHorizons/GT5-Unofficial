@@ -24,7 +24,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -124,7 +124,7 @@ public class BWWordGenerator implements IWorldGenerator {
                                     temp = false;
                                     break;
                                 } catch (Throwable e) {
-                                    e.printStackTrace(GT_Log.err);
+                                    e.printStackTrace(GTLog.err);
                                 }
                             }
                         }

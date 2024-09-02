@@ -4,9 +4,9 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
@@ -14,11 +14,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -102,16 +102,16 @@ public class HandlerRailcraft {
         for (int i = 0; i < aOutputs.length; i++) {
             // Recipes for the Charcoals and Cokes, outputting either Creosote or Charcoal Byproducts depending on the
             // fluid input
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInputs1[i], GT_Utility.getIntegratedCircuit(3))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs1[i], GTUtility.getIntegratedCircuit(3))
                 .itemOutputs(aInputs2[i])
                 .fluidOutputs(FluidUtils.getFluidStack("creosote", 100))
                 .eut(16)
                 .duration(1 * SECONDS)
                 .addTo(cokeOvenRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInputs1[i], GT_Utility.getIntegratedCircuit(4))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs1[i], GTUtility.getIntegratedCircuit(4))
                 .itemOutputs(aInputs2[i])
                 .fluidInputs(FluidUtils.getFluidStack("nitrogen", 100))
                 .fluidOutputs(FluidUtils.getFluidStack("charcoal_byproducts", 200))
@@ -119,16 +119,16 @@ public class HandlerRailcraft {
                 .duration(10 * TICKS)
                 .addTo(cokeOvenRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(3))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GTUtility.getIntegratedCircuit(3))
                 .itemOutputs(aOutputs[i])
                 .fluidOutputs(FluidUtils.getFluidStack("creosote", 200))
                 .eut(16)
                 .duration(2 * SECONDS)
                 .addTo(cokeOvenRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(4))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GTUtility.getIntegratedCircuit(4))
                 .itemOutputs(aOutputs[i])
                 .fluidInputs(FluidUtils.getFluidStack("nitrogen", 50))
                 .fluidOutputs(FluidUtils.getFluidStack("charcoal_byproducts", 100))
@@ -137,8 +137,8 @@ public class HandlerRailcraft {
                 .addTo(cokeOvenRecipes);
 
             // Generate Wood Tar and Wood Gas from these Cokes
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aOutputs[i], GT_Utility.getIntegratedCircuit(5))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aOutputs[i], GTUtility.getIntegratedCircuit(5))
                 .itemOutputs(Materials.Ash.getDustSmall(1))
                 .fluidInputs(FluidUtils.getFluidStack("steam", 100))
                 .fluidOutputs(Materials.WoodTar.getFluid(200))
@@ -146,8 +146,8 @@ public class HandlerRailcraft {
                 .duration(3 * SECONDS)
                 .addTo(cokeOvenRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aOutputs[i], GT_Utility.getIntegratedCircuit(6))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aOutputs[i], GTUtility.getIntegratedCircuit(6))
                 .itemOutputs(Materials.Ash.getDustSmall(1))
                 .fluidInputs(FluidUtils.getFluidStack("steam", 100))
                 .fluidOutputs(Materials.WoodGas.getGas(300))
@@ -156,9 +156,9 @@ public class HandlerRailcraft {
                 .addTo(cokeOvenRecipes);
 
             // Fluid Extracting the Charcoals for Wood Tar
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(aInputs2[i])
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L))
                 .outputChances(1000)
                 .fluidOutputs(Materials.WoodTar.getFluid(50L))
                 .duration(1 * SECONDS + 10 * TICKS)
@@ -167,8 +167,8 @@ public class HandlerRailcraft {
 
             // Processing the Charcoals with Oxygen to get CO and CO2
             // C + O = CO
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(Materials.Ash.getDustTiny(1))
                 .fluidInputs(Materials.Oxygen.getGas(500))
                 .fluidOutputs(Materials.CarbonMonoxide.getGas(500))
@@ -176,8 +176,8 @@ public class HandlerRailcraft {
                 .eut(8)
                 .addTo(UniversalChemical);
             // C + 2O = CO2
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(2))
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(Materials.Ash.getDustTiny(1))
                 .fluidInputs(Materials.Oxygen.getGas(2000))
                 .fluidOutputs(Materials.CarbonDioxide.getGas(1000))

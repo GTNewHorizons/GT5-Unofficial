@@ -3,7 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.StructureUtility.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -46,19 +46,18 @@ import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -323,19 +322,19 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement(
                     'I',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(GT_HatchElement.InputHatch)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.InputHatch)
                         .casingIndex(1537)
                         .dot(1)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'M',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(GT_HatchElement.Maintenance)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.Maintenance)
                         .casingIndex(1537)
                         .dot(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'O',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(GT_HatchElement.OutputHatch)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.OutputHatch)
                         .adder(MTEYottaFluidTank::addOutput)
                         .casingIndex(1537)
                         .dot(1)
@@ -365,13 +364,13 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             if (aMetaTileEntity == null) {
                 return false;
             } else {
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+                if (aMetaTileEntity instanceof MTEHatchOutput) {
+                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof MTEYOTTAHatch) {
                     // only one yothatch allowed
                     if (!this.mYottaHatch.isEmpty()) return false;
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                     ((MTEYOTTAHatch) aMetaTileEntity).setTank(this);
                     return this.mYottaHatch.add((MTEYOTTAHatch) aMetaTileEntity);
                 }
@@ -416,8 +415,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("Controller block for the YOTTank.")
             .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
@@ -513,7 +512,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
                 final int originalOutputAmount = outputAmount;
 
-                for (final GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
+                for (final MTEHatch outputHatch : mOutputHatches) {
                     final FluidStack fluidInHatch = outputHatch.mFluid;
 
                     final int remainingHatchSpace;

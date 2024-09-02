@@ -12,14 +12,14 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class CoverToggleVisual extends GT_CoverBehavior {
+public class CoverToggleVisual extends CoverBehavior {
 
     private static final Map<String, Integer> sConnectionStateForEntityMap = new ConcurrentHashMap<>();
     private static final Map<String, String> sPrefixMap = new ConcurrentHashMap<>();
@@ -41,7 +41,7 @@ public class CoverToggleVisual extends GT_CoverBehavior {
     public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         PlayerUtils
-            .messagePlayer(aPlayer, GT_Utility.trans("756", "Connectable: ") + getConnectionState(aCoverVariable));
+            .messagePlayer(aPlayer, GTUtility.trans("756", "Connectable: ") + getConnectionState(aCoverVariable));
         return super.onCoverRightclick(side, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
     }
 

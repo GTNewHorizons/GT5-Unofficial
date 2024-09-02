@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import tectech.thing.CustomItemList;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -27,7 +27,7 @@ public class CreativeTabTecTech extends CreativeTabs {
     @Override
     public void displayAllReleventItems(List<ItemStack> stuffToShow) {
         for (CustomItemList item : CustomItemList.values()) {
-            if (item.hasBeenSet() && item.getBlock() == GregTech_API.sBlockMachines) {
+            if (item.hasBeenSet() && item.getBlock() == GregTechAPI.sBlockMachines) {
                 stuffToShow.add(item.get(1));
             }
         }

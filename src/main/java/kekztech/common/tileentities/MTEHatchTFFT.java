@@ -22,16 +22,16 @@ import appeng.util.item.AEFluidStack;
 import appeng.util.item.FluidList;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Textures;
-import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
-public class MTEHatchTFFT extends GT_MetaTileEntity_Hatch implements IMEMonitor<IAEFluidStack> {
+public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> {
 
     @Optional.Interface(
         iface = "appeng.api.storage.IExternalStorageHandler",
@@ -113,7 +113,7 @@ public class MTEHatchTFFT extends GT_MetaTileEntity_Hatch implements IMEMonitor<
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (controller != null) {
-            final FluidTankGT sFluid = controller.getSelectedFluid();
+            final GTFluidTank sFluid = controller.getSelectedFluid();
             if (controller.getFluidSelector() == -1 || (sFluid != null && sFluid.contains(resource))) {
                 return controller.push(resource, doDrain);
             }
@@ -124,7 +124,7 @@ public class MTEHatchTFFT extends GT_MetaTileEntity_Hatch implements IMEMonitor<
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         if (controller != null) {
-            final FluidTankGT sFluid = controller.getSelectedFluid();
+            final GTFluidTank sFluid = controller.getSelectedFluid();
             if (controller.getFluidSelector() == -1) return controller.push(maxDrain, doDrain);
             if (sFluid != null) return controller.push(sFluid.get(maxDrain), doDrain);
         }

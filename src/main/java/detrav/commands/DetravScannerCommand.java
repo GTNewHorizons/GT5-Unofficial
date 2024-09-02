@@ -12,10 +12,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.chunk.Chunk;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.TileEntityOres;
 
 /**
  * Created by wital_000 on 17.03.2016.
@@ -96,13 +96,13 @@ public class DetravScannerCommand implements ICommand {
             int ySize = c.getHeightValue(x, z);
             for (int y = 1; y < ySize; y++) {
                 Block b = c.getBlock(x, y, z);
-                if (b == GregTech_API.sBlockOres1) {
+                if (b == GregTechAPI.sBlockOres1) {
                     TileEntity entity = c.getTileEntityUnsafe(x, y, z);
                     if (entity != null) {
-                        GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
+                        TileEntityOres gt_entity = (TileEntityOres) entity;
                         short meta = gt_entity.getMetaData();
                         String name = Materials.getLocalizedNameForItem(
-                            GT_LanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
+                            GTLanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
                             meta % 1000);
                         if (name.startsWith("Small")) continue;
                         if (fName == null || name.toLowerCase()

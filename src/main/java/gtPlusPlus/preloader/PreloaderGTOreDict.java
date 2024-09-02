@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.items.MetaGeneratedItem03;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -28,11 +28,11 @@ public class PreloaderGTOreDict {
                     .toLowerCase()
                     .equals(GregTech.ID)) {
                     final int damageValue = bannedItem.getItemDamage() - 32000;
-                    if (bannedItem.getItem() instanceof GT_MetaGenerated_Item_01) { // 700-720
+                    if (bannedItem.getItem() instanceof MetaGeneratedItem01) { // 700-720
                         if ((damageValue >= 700) && (damageValue <= 720)) {
                             return true;
                         }
-                    } else if (bannedItem.getItem() instanceof GT_MetaGenerated_Item_03) {
+                    } else if (bannedItem.getItem() instanceof MetaGeneratedItem03) {
                         if ((damageValue == 6) || (damageValue == 7)
                             || (damageValue == 11)
                             || (damageValue == 12)

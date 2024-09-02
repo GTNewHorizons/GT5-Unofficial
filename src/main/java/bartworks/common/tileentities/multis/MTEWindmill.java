@@ -20,7 +20,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,18 +74,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.ID_MetaTool_01;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.items.IDMetaTool01;
+import gregtech.common.items.MetaGeneratedTool01;
 
-public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWindmill>
+public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     implements ISurvivalConstructable, IGetTitleColor {
 
     private static final IIcon[] iIcons = new IIcon[2];
@@ -184,8 +184,8 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Windmill")
             .addInfo("Controller block for the Windmill")
             .addInfo("A primitive Grinder powered by Kinetic energy")
@@ -252,7 +252,7 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
             || block == Blocks.log2) {
             return new float[] { 1f, 1.5f };
         }
-        final ItemData association = GT_OreDictUnificator.getAssociation(itemStack);
+        final ItemData association = GTOreDictUnificator.getAssociation(itemStack);
         final OrePrefixes prefix = association == null ? null : association.mPrefix;
         if (prefix == null || association.mMaterial == null
             || association.mMaterial.mMaterial == null
@@ -286,7 +286,7 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
 
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
-        GT_Recipe tRecipe = RecipeMaps.maceratorRecipes
+        GTRecipe tRecipe = RecipeMaps.maceratorRecipes
             .findRecipe(this.getBaseMetaTileEntity(), false, false, V[1], null, itemStack);
         if (tRecipe == null) {
             return false;
@@ -354,13 +354,13 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
 
     @Override
     public boolean addOutput(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return false;
+        if (GTUtility.isStackInvalid(aStack)) return false;
 
         for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
             for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getStackInSlot(i) == null || GT_Utility.areStacksEqual(tHatch.getStackInSlot(i), aStack)
+                if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)
                     && aStack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                    if (GT_Utility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
+                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
                         ItemStack merge = tHatch.getStackInSlot(i)
                             .copy();
                         merge.stackSize = aStack.stackSize + tHatch.getStackInSlot(i).stackSize;
@@ -369,7 +369,7 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
                         tHatch.setInventorySlotContents(i, aStack.copy());
                     }
 
-                    if (GT_Utility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
+                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
                         aStack = null;
                         return true;
                     }
@@ -611,8 +611,8 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
                 new ItemDrawable(
                     () -> this.mMachine && !this.getBaseMetaTileEntity()
                         .isActive()
-                            ? GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, null, null, null)
+                            ? MetaGeneratedTool01.INSTANCE
+                                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, null, null, null)
                             : null).asWidget()
                                 .setPos(66, 66))
             .widget(
@@ -622,7 +622,7 @@ public class MTEWindmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEWin
                     val -> this.getBaseMetaTileEntity()
                         .setActive(val)))
             .widget(
-                new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure."))
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get())
                     .setMaxWidth(150)
                     .setEnabled(widget -> !this.mMachine)

@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -155,7 +155,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
                 for (int j = 0; j < mInternalOutputs.length; j++) {
                     if (mInternalOutputs[j] == null) {
-                        mInternalOutputs[j] = GT_Values.NI;
+                        mInternalOutputs[j] = GTValues.NI;
                         Logger.MATERIALS("[Centrifuge] Set slot " + j + "  to null.");
                     } else {
                         Logger.MATERIALS(
@@ -179,7 +179,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 } else {
                     inputs = new ItemStack[] { mainDust, emptyCell };
                 }
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
                     .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                     .outputChances(chances)
@@ -273,7 +273,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
                 for (int j = 0; j < mInternalOutputs.length; j++) {
                     if (mInternalOutputs[j] == null) {
-                        mInternalOutputs[j] = GT_Values.NI;
+                        mInternalOutputs[j] = GTValues.NI;
                         Logger.MATERIALS("[Dehydrator] Set slot " + j + "  to null.");
                     } else {
                         Logger.MATERIALS(
@@ -296,7 +296,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     inputs = new ItemStack[] { mainDust, emptyCell };
                 }
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
                     .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                     .outputChances(chances)

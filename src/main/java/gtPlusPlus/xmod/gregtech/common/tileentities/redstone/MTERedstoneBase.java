@@ -9,11 +9,11 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.objects.GTItemStack;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public abstract class MTERedstoneBase extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class MTERedstoneBase extends MTETieredMachineBlock {
 
     protected int mOpenerCount;
 
@@ -38,7 +38,7 @@ public abstract class MTERedstoneBase extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 

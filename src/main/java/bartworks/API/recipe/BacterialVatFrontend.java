@@ -15,7 +15,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
@@ -32,7 +32,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
             return currentTip;
@@ -42,7 +42,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
-        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.output.tooltip"));
             return currentTip;
@@ -51,16 +51,16 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected void drawNEIOverlayForInput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+    protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         drawFluidOverlay(stack);
     }
 
     @Override
-    protected void drawNEIOverlayForOutput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+    protected void drawNEIOverlayForOutput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         drawFluidOverlay(stack);
     }
 
-    private void drawFluidOverlay(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+    private void drawFluidOverlay(GTNEIDefaultHandler.FixedPositionedStack stack) {
         if (stack.isFluid()) {
             drawNEIOverlayText(
                 "+",

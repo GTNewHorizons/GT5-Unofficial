@@ -4,7 +4,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -16,7 +16,7 @@ public class ExtremeHeatExchangerBackend extends FuelBackend {
     }
 
     @Override
-    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+    public GTRecipe compileRecipe(GTRecipe recipe) {
         if (!(recipe instanceof ExtremeHeatExchangerRecipe)) {
             throw new RuntimeException("Recipe must be instance of ExtremeHeatExchangerRecipe");
         }

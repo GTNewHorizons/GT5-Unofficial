@@ -12,14 +12,14 @@ import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
 
@@ -43,24 +43,24 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("Millions of nuclear.")
             .addInfo("Controller block for the Compact Fusion Reactor MK-I Prototype.")
             .addInfo(
-                EnumChatFormatting.AQUA + GT_Utility.formatNumbers(getSingleHatchPower())
+                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
                     + " EU/t and "
                     + EnumChatFormatting.AQUA
-                    + GT_Utility.formatNumbers(capableStartupCanonical() / 32 / M)
+                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
                     + "M"
                     + EnumChatFormatting.GRAY
                     + " EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo(
-                "If the recipe requires a voltage tier over " + GT_Utility.getColoredTierNameFromTier((byte) tier())
+                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
             .addInfo("Make sure the whole structure is built in the 3x3")
@@ -85,7 +85,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
             .addOutputHatch("1-16, Hint block with dot 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
-                "ALL Hatches must be " + GT_Utility.getColoredTierNameFromTier((byte) hatchTier())
+                "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
             .toolTipFinisher("Good Generator");
@@ -104,7 +104,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
 
     @Override
     public Block getCasingBlock() {
-        return GregTech_API.sBlockCasings1;
+        return GregTechAPI.sBlockCasings1;
     }
 
     @Override

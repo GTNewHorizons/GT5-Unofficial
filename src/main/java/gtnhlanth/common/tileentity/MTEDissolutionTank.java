@@ -3,18 +3,18 @@ package gtnhlanth.common.tileentity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,24 +34,24 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
-public class MTEDissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEDissolutionTank>
+public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
     implements ISurvivalConstructable, ISecondaryDescribable {
 
     private final IStructureDefinition<MTEDissolutionTank> multiDefinition = StructureDefinition
@@ -68,8 +68,8 @@ public class MTEDissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(49)
                 .dot(1)
-                .buildAndChain(GregTech_API.sBlockCasings4, 1))
-        .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+        .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
         .build();
 
@@ -111,7 +111,7 @@ public class MTEDissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 if (!checkRatio(recipe, Arrays.asList(inputFluids))) {
                     criticalStopMachine();
                     return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("dissolution_ratio");
@@ -142,7 +142,7 @@ public class MTEDissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase
         return true;
     }
 
-    private boolean checkRatio(GT_Recipe tRecipe, List<FluidStack> tFluidInputs) {
+    private boolean checkRatio(GTRecipe tRecipe, List<FluidStack> tFluidInputs) {
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
@@ -233,8 +233,8 @@ public class MTEDissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Dissolution Tank")
             .addInfo("Controller block for the Dissolution Tank")
             .addInfo("Input Water and Fluid, output Fluid")

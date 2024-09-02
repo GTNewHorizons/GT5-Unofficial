@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.objects;
 import net.minecraft.block.Block;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.objects.GTCopiedBlockTexture;
 
 /**
  * Made this to get rid of deprecation warnings <i>everywhere</i>.
@@ -12,7 +12,7 @@ import gregtech.api.objects.GT_CopiedBlockTexture;
  *
  */
 @SuppressWarnings("deprecation")
-public class GTPPCopiedBlockTexture extends GT_CopiedBlockTexture {
+public class GTPPCopiedBlockTexture extends GTCopiedBlockTexture {
 
     public GTPPCopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa, boolean aAllowAlpha) {
         super(aBlock, aMeta, aMeta, aRGBa, aAllowAlpha);

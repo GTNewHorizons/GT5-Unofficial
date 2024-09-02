@@ -1,11 +1,11 @@
 package tectech.thing.metaTileEntity.multi.godforge_modules;
 
-import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
-import static gregtech.api.util.GT_ParallelHelper.addFluidsLong;
-import static gregtech.api.util.GT_ParallelHelper.addItemsLong;
-import static gregtech.api.util.GT_RecipeBuilder.BUCKETS;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTOreDictUnificator.getAssociation;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.ParallelHelper.addFluidsLong;
+import static gregtech.api.util.ParallelHelper.addItemsLong;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -33,10 +33,10 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import tectech.util.CommonValues;
 
 public class MTEMoltenModule extends MTEBaseModule {
@@ -67,7 +67,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
 
                 if (recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
@@ -106,7 +106,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
@@ -119,7 +119,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
@@ -135,7 +135,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
             @Nonnull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(recipe).setCustomItemOutputCalculation(currentParallel -> {
                     ArrayList<ItemStack> outputItems = new ArrayList<>();
                     for (int i = 0; i < recipe.mOutputs.length; i++) {
@@ -210,8 +210,8 @@ public class MTEMoltenModule extends MTEBaseModule {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
             .addInfo("Controller block for the Helioflux Meltig Core, a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")

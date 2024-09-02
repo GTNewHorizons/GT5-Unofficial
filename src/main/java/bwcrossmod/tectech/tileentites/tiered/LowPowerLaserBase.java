@@ -20,12 +20,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
-public abstract class LowPowerLaserBase extends GT_MetaTileEntity_TieredMachineBlock implements LowPowerLaser {
+public abstract class LowPowerLaserBase extends MTETieredMachineBlock implements LowPowerLaser {
 
     protected long AMPERES;
 
@@ -130,12 +130,12 @@ public abstract class LowPowerLaserBase extends GT_MetaTileEntity_TieredMachineB
 
     @Override
     public long maxEUInput() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
     public long maxEUOutput() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
@@ -145,11 +145,11 @@ public abstract class LowPowerLaserBase extends GT_MetaTileEntity_TieredMachineB
 
     @Override
     public long getMinimumStoredEU() {
-        return GT_Values.V[this.mTier + 1];
+        return GTValues.V[this.mTier + 1];
     }
 
     @Override
     public long maxEUStore() {
-        return 512L + GT_Values.V[this.mTier + 1] * 24L * this.AMPERES;
+        return 512L + GTValues.V[this.mTier + 1] * 24L * this.AMPERES;
     }
 }

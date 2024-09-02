@@ -37,10 +37,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverInfo;
-import gregtech.common.covers.GT_Cover_Metrics_Transmitter;
+import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
@@ -302,15 +302,15 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
     private static Stream<UUID> getCoverUUIDsFromItemStack(final ItemStack stack) {
         if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(GT_Values.NBT.COVERS, TAG_COMPOUND)) {
+            .hasKey(GTValues.NBT.COVERS, TAG_COMPOUND)) {
             final NBTTagList tagList = stack.getTagCompound()
-                .getTagList(GT_Values.NBT.COVERS, TAG_COMPOUND);
+                .getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
             return IntStream.range(0, tagList.tagCount())
                 .mapToObj(tagList::getCompoundTagAt)
                 .map(nbt -> new CoverInfo(null, nbt).getCoverData())
                 .filter(
-                    serializableObject -> serializableObject instanceof GT_Cover_Metrics_Transmitter.MetricsTransmitterData)
-                .map(data -> ((GT_Cover_Metrics_Transmitter.MetricsTransmitterData) data).getFrequency());
+                    serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)
+                .map(data -> ((CoverMetricsTransmitter.MetricsTransmitterData) data).getFrequency());
         }
         return Stream.empty();
     }
@@ -433,9 +433,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         public String getLocalizedCoordinates() {
             return StatCollector.translateToLocalFormatted(
                 "gt.db.metrics_cover.coords",
-                GT_Utility.formatNumbers(x),
-                GT_Utility.formatNumbers(y),
-                GT_Utility.formatNumbers(z));
+                GTUtility.formatNumbers(x),
+                GTUtility.formatNumbers(y),
+                GTUtility.formatNumbers(z));
         }
 
         @Override

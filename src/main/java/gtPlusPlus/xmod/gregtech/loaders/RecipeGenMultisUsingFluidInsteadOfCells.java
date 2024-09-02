@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.recipe.common.CI;
@@ -54,7 +54,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (mEmptyCell != null) {
             ItemStack aTempStack = mEmptyCell.copy();
             aTempStack.stackSize = aCell.stackSize;
-            return GT_Utility.areStacksEqual(aTempStack, aCell);
+            return GTUtility.areStacksEqual(aTempStack, aCell);
         }
         return false;
     }
@@ -63,7 +63,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (ingot == null) {
             return null;
         }
-        return GT_Utility.getFluidForFilledItem(ingot, true);
+        return GTUtility.getFluidForFilledItem(ingot, true);
     }
 
     public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
@@ -72,9 +72,9 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         int aInvalidRecipesToConvert = 0;
         int aOriginalCount = aInputs.getAllRecipes()
             .size();
-        ArrayList<GT_Recipe> deDuplicationInputArray = new ArrayList<>();
+        ArrayList<GTRecipe> deDuplicationInputArray = new ArrayList<>();
 
-        recipe: for (GT_Recipe x : aInputs.getAllRecipes()) {
+        recipe: for (GTRecipe x : aInputs.getAllRecipes()) {
             if (x != null) {
 
                 ItemStack[] aInputItems = x.mInputs.clone();
@@ -150,7 +150,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
-                GT_Recipe aNewRecipe = new GT_Recipe(
+                GTRecipe aNewRecipe = new GTRecipe(
                     false,
                     aNewItemInputs,
                     aNewItemOutputs,
@@ -172,10 +172,10 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             }
         }
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
-        List<GT_Recipe> deDuplicationOutputArray = GTRecipeUtils
+        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils
             .removeDuplicates(deDuplicationInputArray, aOutputs.unlocalizedName);
         // add each recipe from the above output to the intended recipe map
-        for (GT_Recipe recipe : deDuplicationOutputArray) {
+        for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
         Logger.INFO("Generated Recipes for " + aOutputs.unlocalizedName);

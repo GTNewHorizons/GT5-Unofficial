@@ -4,16 +4,16 @@ import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -27,20 +27,20 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         ItemStack aStack) {
         switch (aPrefix) {
             case crushedCentrifuged -> {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
                     .duration(10 * TICKS)
                     .eut(16)
                     .addTo(hammerRecipes);
 
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GT_OreDictUnificator.get(
+                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                        GTOreDictUnificator.get(
                             OrePrefixes.dust,
-                            GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                            GTUtility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                             1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
@@ -48,52 +48,52 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .addTo(maceratorRecipes);
             }
             case crushedPurified -> {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get(
+                        GTOreDictUnificator.get(
                             OrePrefixes.crushedCentrifuged,
                             aMaterial.mMacerateInto,
-                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                             1L),
-                        GT_OreDictUnificator.get(
+                        GTOreDictUnificator.get(
                             OrePrefixes.dust,
-                            GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                            GTUtility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                             1L))
                     .outputChances(10000, 1111)
                     .duration(25 * SECONDS)
                     .eut(48)
                     .addTo(thermalCentrifugeRecipes);
 
-                ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
+                ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
                 if (tGem == null) {
                     break;
                 }
 
                 switch (aMaterial.mName) {
-                    case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GT_Values.RA
+                    case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GTValues.RA
                         .stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
-                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
                             tGem,
-                            GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
                         .outputChances(300, 1200, 4500, 1400, 2800, 3500)
                         .duration(40 * SECONDS)
                         .eut(16)
                         .addTo(sifterRecipes);
-                    default -> GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1, aStack))
+                    default -> GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
-                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
                             tGem,
-                            GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
                         .outputChances(100, 400, 1500, 2000, 4000, 5000)
                         .duration(40 * SECONDS)
                         .eut(16)

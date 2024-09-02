@@ -7,8 +7,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.objects.GT_ArrayList;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.GTArrayList;
+import gregtech.api.util.GTUtility;
 
 public enum Dyes implements IColorModulationContainer {
 
@@ -50,7 +50,7 @@ public enum Dyes implements IColorModulationContainer {
     public final short[] mRGBa;
     public final short[] mOriginalRGBa;
     public final EnumChatFormatting formatting;
-    private final ArrayList<Fluid> mFluidDyes = new GT_ArrayList<>(false, 1);
+    private final ArrayList<Fluid> mFluidDyes = new GTArrayList<>(false, 1);
 
     Dyes(int aIndex, int aR, int aG, int aB, String aName) {
         this(aIndex, aR, aG, aB, aName, EnumChatFormatting.GRAY);
@@ -75,7 +75,7 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public static Dyes get(String aColor) {
-        Object tObject = GT_Utility.getFieldContent(Dyes.class, aColor, false, false);
+        Object tObject = GTUtility.getFieldContent(Dyes.class, aColor, false, false);
         if (tObject instanceof Dyes) return (Dyes) tObject;
         return _NULL;
     }

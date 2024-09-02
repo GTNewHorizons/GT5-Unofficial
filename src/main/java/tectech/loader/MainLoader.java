@@ -17,10 +17,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import tectech.TecTech;
 import tectech.loader.gui.CreativeTabTecTech;
 import tectech.loader.recipe.BaseRecipeLoader;
@@ -114,7 +114,7 @@ public final class MainLoader {
     }
 
     public static void addAfterGregTechPostLoadRunner() {
-        GregTech_API.sAfterGTPostload.add(() -> {
+        GregTechAPI.sAfterGTPostload.add(() -> {
             if (TecTech.configTecTech.NERF_FUSION) {
                 FixBrokenFusionRecipes();
             }
@@ -160,7 +160,7 @@ public final class MainLoader {
                 }
             }
         }
-        for (GT_Recipe r : RecipeMaps.fusionRecipes.getAllRecipes()) {
+        for (GTRecipe r : RecipeMaps.fusionRecipes.getAllRecipes()) {
             Fluid fluid = binds.get(r.mFluidOutputs[0].getFluid());
             if (fluid != null) {
                 if (DEBUG_MODE) {

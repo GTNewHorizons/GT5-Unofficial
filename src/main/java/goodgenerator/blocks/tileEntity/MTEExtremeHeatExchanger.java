@@ -2,9 +2,9 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,25 +33,24 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable {
@@ -60,8 +59,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
     public static double penalty_per_config = 0.015d;
     protected int casingAmount = 0;
-    protected GT_MetaTileEntity_Hatch_Input mHotFluidHatch;
-    protected GT_MetaTileEntity_Hatch_Output mCooledFluidHatch;
+    protected MTEHatchInput mHotFluidHatch;
+    protected MTEHatchOutput mCooledFluidHatch;
     private boolean transformed = false;
     private String hotName;
     private ExtremeHeatExchangerRecipe tRunningRecipe;
@@ -95,32 +94,37 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                     'B',
                     ofChain(
                         buildHatchAdder(MTEExtremeHeatExchanger.class)
-                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.Maintenance)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.InputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
                             .dot(1)
                             .build(),
-                        onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement(
                     'T',
                     ofChain(
                         buildHatchAdder(MTEExtremeHeatExchanger.class)
-                            .atLeast(GT_HatchElement.OutputHatch, GT_HatchElement.Maintenance)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.OutputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
                             .dot(2)
                             .build(),
-                        onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
                 .addElement('E', EHEHatches.ColdOutputHatch.newAny(48, 4))
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(MTEExtremeHeatExchanger.class).atLeast(GT_HatchElement.Maintenance)
+                        buildHatchAdder(MTEExtremeHeatExchanger.class)
+                            .atLeast(gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
                             .dot(5)
                             .build(),
-                        onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement('G', Glasses.chainAllGlasses())
-                .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
+                .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
                 .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0))
                 .build();
         }
@@ -131,9 +135,9 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            mHotFluidHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            mHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
         }
         return false;
@@ -143,9 +147,9 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            mCooledFluidHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchOutput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            mCooledFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
         }
         return false;
@@ -196,8 +200,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
             .addInfo("Controller block for the Extreme Heat Exchanger.")
             .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
@@ -264,10 +268,10 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             Fluid tReadySteam = transformed ? tRunningRecipe.getHeatedSteam() : tRunningRecipe.getNormalSteam();
             int waterAmount = (int) (this.mEUt / getUnitSteamPower(tReadySteam.getName())) / 160;
             if (waterAmount < 0) return false;
-            if (depleteInput(GT_ModHandler.getDistilledWater(waterAmount))) {
+            if (depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
                 addOutput(new FluidStack(tReadySteam, waterAmount * 160));
             } else {
-                GT_Log.exp.println(this.mName + " had no more Distilled water!");
+                GTLog.exp.println(this.mName + " had no more Distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
                     .doExplosion(V[8]);
                 return false;
@@ -315,11 +319,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + GTUtility.formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
@@ -335,12 +339,12 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 + " %",
             StatCollector.translateToLocal("scanner.info.XHE.0") + " "
                 + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GT_Utility.formatNumbers(this.mEUt)
+                + GTUtility.formatNumbers(this.mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("scanner.info.XHE.1") + " "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(tThreshold)
+                + GTUtility.formatNumbers(tThreshold)
                 + EnumChatFormatting.RESET
                 + " L/s" };
     }
@@ -379,7 +383,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
     private enum EHEHatches implements IHatchElement<MTEExtremeHeatExchanger> {
 
-        HotInputHatch(MTEExtremeHeatExchanger::addHotFluidInputToMachineList, GT_MetaTileEntity_Hatch_Input.class) {
+        HotInputHatch(MTEExtremeHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -387,8 +391,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 return 1;
             }
         },
-        ColdOutputHatch(MTEExtremeHeatExchanger::addColdFluidOutputToMachineList,
-            GT_MetaTileEntity_Hatch_Output.class) {
+        ColdOutputHatch(MTEExtremeHeatExchanger::addColdFluidOutputToMachineList, MTEHatchOutput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -398,9 +401,9 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGT_HatchAdder<MTEExtremeHeatExchanger> adder;
+        private final IGTHatchAdder<MTEExtremeHeatExchanger> adder;
 
-        EHEHatches(IGT_HatchAdder<MTEExtremeHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        EHEHatches(IGTHatchAdder<MTEExtremeHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -410,7 +413,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             return mteClasses;
         }
 
-        public IGT_HatchAdder<? super MTEExtremeHeatExchanger> adder() {
+        public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
         }
     }

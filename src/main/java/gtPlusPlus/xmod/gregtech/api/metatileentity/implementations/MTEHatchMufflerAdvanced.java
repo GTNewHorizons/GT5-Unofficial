@@ -10,24 +10,24 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.GT_Mod;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.GTMod;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.GT_Pollution;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.common.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchMufflerAdvanced extends GT_MetaTileEntity_Hatch_Muffler implements IAddGregtechLogo {
+public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGregtechLogo {
 
     protected int SLOT_FILTER = 0;
 
@@ -35,7 +35,7 @@ public class MTEHatchMufflerAdvanced extends GT_MetaTileEntity_Hatch_Muffler imp
     public void onConfigLoad() {
         super.onConfigLoad();
         try {
-            int a1 = GT_Mod.gregtechproxy.mPollutionSmogLimit;
+            int a1 = GTMod.gregtechproxy.mPollutionSmogLimit;
             if (a1 > 0) {
                 mPollutionSmogLimit = a1;
             }
@@ -69,12 +69,12 @@ public class MTEHatchMufflerAdvanced extends GT_MetaTileEntity_Hatch_Muffler imp
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MTEHatchMufflerAdvanced extends GT_MetaTileEntity_Hatch_Muffler imp
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -111,7 +111,7 @@ public class MTEHatchMufflerAdvanced extends GT_MetaTileEntity_Hatch_Muffler imp
             // Revert to reduction of the basic muffler.
             emission = super.calculatePollutionReduction(emission);
         }
-        GT_Pollution.addPollution(getBaseMetaTileEntity(), emission);
+        Pollution.addPollution(getBaseMetaTileEntity(), emission);
         return true;
     }
 
@@ -198,7 +198,7 @@ public class MTEHatchMufflerAdvanced extends GT_MetaTileEntity_Hatch_Muffler imp
         if (mInventory[SLOT_FILTER] != null) return false; // Has a non-filter item in inventory.
         if (parentTileEntity == null) return false; // Unknown parent multiblock.
 
-        if (parentTileEntity instanceof GT_MetaTileEntity_MultiBlockBase GTMultiBase) {
+        if (parentTileEntity instanceof MTEMultiBlockBase GTMultiBase) {
             for (var inputBus : GTMultiBase.mInputBusses) {
                 for (ItemStack stack : inputBus.mInventory) {
                     if (isAirFilter(stack)) {

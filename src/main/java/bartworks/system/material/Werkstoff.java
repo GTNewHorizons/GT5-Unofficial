@@ -44,18 +44,18 @@ import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.tgregworks.MaterialsInjector;
 import cpw.mods.fml.common.Loader;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
 import thaumcraft.api.aspects.Aspect;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -278,7 +278,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTech_API.sAfterGTPreload.add(() -> { this.getLocalizedName(); });
+        GregTechAPI.sAfterGTPreload.add(() -> { this.getLocalizedName(); });
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
@@ -316,7 +316,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         // this.toolTip = "The formula is to long...";
 
         // Ensure that localization key are written to the lang file
-        GregTech_API.sAfterGTPreload.add(() -> { this.getLocalizedToolTip(); });
+        GregTechAPI.sAfterGTPreload.add(() -> { this.getLocalizedToolTip(); });
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -406,7 +406,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     @SuppressWarnings("unchecked")
     public Pair<Object, Integer>[] getTCAspects(int ratio) {
         if (this.stats.mTC_Aspects == null) {
-            HashSet<TC_Aspects.TC_AspectStack> tc_aspectStacks = new HashSet<>();
+            HashSet<TCAspects.TC_AspectStack> tc_aspectStacks = new HashSet<>();
             HashSet<Pair<Object, Integer>> set = new HashSet<>();
             for (Pair<?, ?> p : this.getContents()
                 .getValue()) {
@@ -424,12 +424,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return ret;
     }
 
-    public List<TC_Aspects.TC_AspectStack> getGTWrappedTCAspects() {
-        final List<TC_Aspects.TC_AspectStack> ret = new ArrayList<>();
+    public List<TCAspects.TC_AspectStack> getGTWrappedTCAspects() {
+        final List<TCAspects.TC_AspectStack> ret = new ArrayList<>();
         Arrays.stream(this.getTCAspects())
             .forEach(objectIntegerPair -> {
-                new TC_Aspects.TC_AspectStack(
-                    TC_Aspects.valueOf(
+                new TCAspects.TC_AspectStack(
+                    TCAspects.valueOf(
                         ((Aspect) objectIntegerPair.getKey()).getName()
                             .toUpperCase(Locale.US)),
                     objectIntegerPair.getValue()).addToAspectList(ret);
@@ -492,7 +492,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         if (o == null || o.equals(Werkstoff.default_null_Werkstoff) || o.equals(Materials._NULL))
             return this.get(prefixes);
         if (o instanceof Werkstoff) return WerkstoffLoader.getCorrespondingItemStack(prefixes, (Werkstoff) o);
-        if (o instanceof Materials) return GT_OreDictUnificator.get(prefixes, o, 1L);
+        if (o instanceof Materials) return GTOreDictUnificator.get(prefixes, o, 1L);
         return null;
     }
 
@@ -501,10 +501,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getLocalizedName() {
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             String.format("bw.werkstoff.%05d.name", this.mID),
             this.defaultName,
-            !GregTech_API.sPostloadFinished);
+            !GregTechAPI.sPostloadFinished);
     }
 
     public String getVarName() {
@@ -516,10 +516,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getLocalizedToolTip() {
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             String.format("bw.werkstoff.%05d.tooltip", this.mID),
             this.toolTip,
-            !GregTech_API.sPostloadFinished);
+            !GregTechAPI.sPostloadFinished);
     }
 
     public Werkstoff.Stats getStats() {

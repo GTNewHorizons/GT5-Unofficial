@@ -1,9 +1,9 @@
 package tectech.thing.metaTileEntity.multi.godforge_modules;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -47,7 +47,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -57,9 +57,9 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 import tectech.util.GodforgeMath;
@@ -76,7 +76,7 @@ public class MTEExoticModule extends MTEBaseModule {
     private FluidStack[] randomizedFluidInput = new FluidStack[] {};
     private ItemStack[] randomizedItemInput = new ItemStack[] {};
     List<FluidStack> inputPlasmas = new ArrayList<>();
-    private GT_Recipe plasmaRecipe = null;
+    private GTRecipe plasmaRecipe = null;
     private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("bye")
         .maxIO(0, 0, 7, 2)
         .disableRegisterNEI()
@@ -106,7 +106,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (!recipeInProgress) {
                     actualParallel = getMaxParallel();
                     FluidStack outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000 * actualParallel);
@@ -147,7 +147,7 @@ public class MTEExoticModule extends MTEBaseModule {
                             Arrays.asList(convertItemToPlasma(randomizedItemInput, actualParallel)));
                         inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, actualParallel)));
                     }
-                    plasmaRecipe = new GT_Recipe(
+                    plasmaRecipe = new GTRecipe(
                         false,
                         null,
                         null,
@@ -167,7 +167,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (!recipeInProgress) {
                     maxParallel = 1;
                     wirelessEUt = (long) recipe.mEUt * maxParallel;
@@ -217,7 +217,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * maxParallel;
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
@@ -235,7 +235,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
@@ -417,7 +417,7 @@ public class MTEExoticModule extends MTEBaseModule {
         }
 
         tempRecipeMap.add(
-            new GT_Recipe(
+            new GTRecipe(
                 false,
                 null,
                 null,
@@ -449,22 +449,22 @@ public class MTEExoticModule extends MTEBaseModule {
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isMagmatterModeOn()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
                     if (isMagmatterCapable) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.BUTTON_STANDARD);
                     if (isMagmatterCapable) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
                     }
                 }
                 if (!isMagmatterCapable) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -491,8 +491,8 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Exotic Matter Producer")
             .addInfo("Controller block for the Heliofusion Exoticizer, a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")

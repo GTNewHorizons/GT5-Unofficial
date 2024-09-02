@@ -14,19 +14,19 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -35,7 +35,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
 @SuppressWarnings("deprecation")
-public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
+public class MTEHatchTurbine extends MTEHatch {
 
     public boolean mHasController = false;
     public boolean mUsingAnimation = true;
@@ -136,7 +136,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -164,7 +164,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
-            ((GT_MetaGenerated_Tool) aTurbine.getItem()).doDamage(
+            ((MetaGeneratedTool) aTurbine.getItem()).doDamage(
                 aTurbine,
                 (long) getDamageToComponent(aTurbine)
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
@@ -274,8 +274,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
     private ITexture getFrontFacingTurbineTexture() {
         if (!mHasController) {
             return this.getBaseMetaTileEntity()
-                .isActive() ? new GT_RenderedTexture(LARGETURBINE_ST_ACTIVE5)
-                    : new GT_RenderedTexture(LARGETURBINE_ST5);
+                .isActive() ? new GTRenderedTexture(LARGETURBINE_ST_ACTIVE5) : new GTRenderedTexture(LARGETURBINE_ST5);
         } else {
             if (usingAnimations()) {
                 if (isControllerActive()) {
@@ -312,7 +311,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return false;
     }
 
@@ -334,7 +333,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
                     .isActive());
             PlayerUtils.messagePlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
-                Materials aMat = GT_MetaGenerated_Tool.getPrimaryMaterial(getTurbine());
+                Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
                 String aSize = MTELargerTurbineBase
                     .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
                 PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
@@ -356,7 +355,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
             .isServerSide() && !aPlayer.isSneaking()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof GT_MetaGenerated_Tool) {
+                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
                     return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
                 }
             }
@@ -371,7 +370,7 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
             .isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof GT_MetaGenerated_Tool) {
+                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
                     return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
                 }
             }
@@ -380,30 +379,30 @@ public class MTEHatchTurbine extends GT_MetaTileEntity_Hatch {
     }
 
     public boolean onToolClick(ItemStack tCurrentItem, EntityPlayer aPlayer, ForgeDirection side) {
-        if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
+        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
             boolean aHasTurbine = this.hasTurbine();
             if (aPlayer.inventory.getFirstEmptyStack() >= 0 && aHasTurbine) {
                 if (PlayerUtils.isCreative(aPlayer)
-                    || GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                    || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                     aPlayer.inventory.addItemStackToInventory((this.getTurbine()));
                     this.mInventory[0] = null;
-                    GT_Utility.sendChatToPlayer(aPlayer, "Removed turbine with wrench.");
+                    GTUtility.sendChatToPlayer(aPlayer, "Removed turbine with wrench.");
                     return true;
                 }
             } else {
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     aHasTurbine ? "Cannot remove turbine, no free inventory space." : "No turbine to remove.");
             }
-        } else if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
+        } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
             if (mControllerLocation != null && mControllerLocation.length() > 0) {
                 if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
                     if (PlayerUtils.isCreative(aPlayer)
-                        || GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                        || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                         String tChat = "Trying to Reset linked Controller";
                         IGregTechTileEntity g = this.getBaseMetaTileEntity();
-                        GT_Utility.sendChatToPlayer(aPlayer, tChat);
-                        GT_Utility.sendSoundToPlayers(
+                        GTUtility.sendChatToPlayer(aPlayer, tChat);
+                        GTUtility.sendSoundToPlayers(
                             g.getWorld(),
                             SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
                             1.0F,

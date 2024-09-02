@@ -10,7 +10,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
@@ -38,19 +38,19 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 activeIcon,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(connIcon) };
+            new GTRenderedTexture(connIcon) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 sideIcon,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(connIcon) };
+            new GTRenderedTexture(connIcon) };
     }
 
     @Override

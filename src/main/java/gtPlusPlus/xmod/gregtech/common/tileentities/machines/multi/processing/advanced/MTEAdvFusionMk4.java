@@ -13,27 +13,27 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAdvFusionMk4 extends GT_MetaTileEntity_FusionComputer {
+public class MTEAdvFusionMk4 extends MTEFusionComputer {
 
     public static final Method mUpdateHatchTexture;
 
     static {
-        mUpdateHatchTexture = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);
+        mUpdateHatchTexture = ReflectionUtils.getMethod(MTEHatch.class, "updateTexture", int.class);
     }
 
     public MTEAdvFusionMk4(int aID, String aName, String aNameRegional) {
@@ -50,8 +50,8 @@ public class MTEAdvFusionMk4 extends GT_MetaTileEntity_FusionComputer {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A BLUE GIANT")
             .addInfo("Controller block for the Fusion Reactor Mk IV")
@@ -128,7 +128,7 @@ public class MTEAdvFusionMk4 extends GT_MetaTileEntity_FusionComputer {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                new GT_RenderedTexture(
+                new GTRenderedTexture(
                     Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
                     Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
                 TextureFactory.builder()
@@ -136,11 +136,11 @@ public class MTEAdvFusionMk4 extends GT_MetaTileEntity_FusionComputer {
                     .extFacing()
                     .build() };
         } else if (!aActive) {
-            return new ITexture[] { new GT_RenderedTexture(
+            return new ITexture[] { new GTRenderedTexture(
                 Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
                 Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         } else {
-            return new ITexture[] { new GT_RenderedTexture(
+            return new ITexture[] { new GTRenderedTexture(
                 TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA,
                 Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
@@ -148,7 +148,7 @@ public class MTEAdvFusionMk4 extends GT_MetaTileEntity_FusionComputer {
 
     @Override
     public ITexture getTextureOverlay() {
-        return new GT_RenderedTexture(
+        return new GTRenderedTexture(
             this.getBaseMetaTileEntity()
                 .isActive() ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1);
     }
@@ -162,17 +162,17 @@ public class MTEAdvFusionMk4 extends GT_MetaTileEntity_FusionComputer {
     public boolean turnCasingActive(final boolean status) {
         try {
             if (this.mEnergyHatches != null) {
-                for (final GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+                for (final MTEHatchEnergy hatch : this.mEnergyHatches) {
                     mUpdateHatchTexture.invoke(hatch, (status ? TAE.getIndexFromPage(2, 14) : 53));
                 }
             }
             if (this.mOutputHatches != null) {
-                for (final GT_MetaTileEntity_Hatch_Output hatch2 : this.mOutputHatches) {
+                for (final MTEHatchOutput hatch2 : this.mOutputHatches) {
                     mUpdateHatchTexture.invoke(hatch2, (status ? TAE.getIndexFromPage(2, 14) : 53));
                 }
             }
             if (this.mInputHatches != null) {
-                for (final GT_MetaTileEntity_Hatch_Input hatch3 : this.mInputHatches) {
+                for (final MTEHatchInput hatch3 : this.mInputHatches) {
                     mUpdateHatchTexture.invoke(hatch3, (status ? TAE.getIndexFromPage(2, 14) : 53));
                 }
             }

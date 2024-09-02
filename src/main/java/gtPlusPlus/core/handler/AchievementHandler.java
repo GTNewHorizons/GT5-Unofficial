@@ -17,7 +17,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -41,7 +41,7 @@ public class AchievementHandler {
     public AchievementHandler() {
 
         Logger.INFO("Initializing GT++ achievements");
-        GT_Log.out.println("Initializing GT++ achievements");
+        GTLog.out.println("Initializing GT++ achievements");
 
         // register first
         this.registerAchievement(
@@ -260,8 +260,8 @@ public class AchievementHandler {
 
         achievement.registerStat();
         if (GTPPCore.DEVENV) {
-            GT_Log.out.println("achievement." + textId + "=");
-            GT_Log.out.println("achievement." + textId + ".desc=");
+            GTLog.out.println("achievement." + textId + "=");
+            GTLog.out.println("achievement." + textId + ".desc=");
         }
 
         this.achievementList.put(textId, achievement);

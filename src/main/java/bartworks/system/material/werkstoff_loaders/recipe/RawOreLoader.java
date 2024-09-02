@@ -13,7 +13,7 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.gem;
@@ -21,15 +21,15 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTModHandler;
 
 public class RawOreLoader implements IWerkstoffRunnable {
 
@@ -38,7 +38,7 @@ public class RawOreLoader implements IWerkstoffRunnable {
         if (werkstoff.hasItemType(rawOre) && werkstoff.hasItemType(ingot)
             && !werkstoff.getStats()
                 .isBlastFurnace())
-            GT_ModHandler
+            GTModHandler
                 .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(rawOre, werkstoff), werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(rawOre)) {

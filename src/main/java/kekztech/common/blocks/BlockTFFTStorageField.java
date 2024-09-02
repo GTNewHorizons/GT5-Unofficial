@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import kekztech.KekzCore;
 import kekztech.common.itemBlocks.ItemBlockTFFTStorageField;
 import kekztech.common.tileentities.MTETankTFFT;
@@ -49,7 +49,7 @@ public class BlockTFFTStorageField extends BaseGTUpdateableBlock {
 
     // I guess glodblock won't mind
     static {
-        GT_Utility.addTexturePage((byte) 12);
+        GTUtility.addTexturePage((byte) 12);
         Textures.BlockIcons
             .setCasingTexture((byte) 12, (byte) 127, TextureFactory.of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE));
     }

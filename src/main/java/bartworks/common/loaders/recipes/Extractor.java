@@ -2,7 +2,7 @@ package bartworks.common.loaders.recipes;
 
 import static gregtech.api.enums.Mods.CropLoadCore;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BWUtil;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 
@@ -23,7 +23,7 @@ public class Extractor implements Runnable {
         if (CropLoadCore.isModLoaded() && !oreCropVine.isEmpty()) {
             for (ItemStack stack : oreCropVine) {
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(BWUtil.setStackSize(stack, 12))
                     .itemOutputs(BioItemList.getOther(1))
                     .duration(25 * SECONDS)
@@ -33,7 +33,7 @@ public class Extractor implements Runnable {
             }
         }
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Chip_Stemcell.get(1L))
             .itemOutputs(BioItemList.getOther(4))
             .duration(25 * SECONDS)

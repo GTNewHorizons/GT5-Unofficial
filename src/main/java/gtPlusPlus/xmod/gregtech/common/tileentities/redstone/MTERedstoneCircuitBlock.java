@@ -24,22 +24,22 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_CircuitryBehavior;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.CircuitryBehavior;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -109,12 +109,12 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
 
     @Override
     public long maxEUInput() {
-        return GT_Values.V[1];
+        return GTValues.V[1];
     }
 
     @Override
     public long maxEUOutput() {
-        return bOutput ? GT_Values.V[1] : 0;
+        return bOutput ? GTValues.V[1] : 0;
     }
 
     @Override
@@ -134,12 +134,12 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
 
     @Override
     public long maxEUStore() {
-        return GT_Values.V[3] * 1024;
+        return GTValues.V[3] * 1024;
     }
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -158,37 +158,37 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
 
     public void switchGateForward(boolean aShift) {
         try {
-            Set<Integer> tKeys = GregTech_API.sCircuitryBehaviors.keySet();
+            Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
             ArrayList<Integer> tList = new ArrayList<>();
             tList.addAll(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
-            if (!GregTech_API.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
+            if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
             int tIndex = Collections.binarySearch(tList, mGate);
             tIndex += aShift ? 16 : 1;
             while (tIndex >= tList.size()) tIndex -= tList.size();
             mGate = tList.get(tIndex);
             switchGate();
         } catch (Throwable e) {
-            GT_Log.err.print(e);
+            GTLog.err.print(e);
         }
     }
 
     public void switchGateBackward(boolean aShift) {
         try {
-            Set<Integer> tKeys = GregTech_API.sCircuitryBehaviors.keySet();
+            Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
             ArrayList<Integer> tList = new ArrayList<>();
             tList.addAll(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
-            if (!GregTech_API.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
+            if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
             int tIndex = Collections.binarySearch(tList, mGate);
             tIndex -= aShift ? 16 : 1;
             while (tIndex < 0) tIndex += tList.size();
             mGate = tList.get(tIndex);
             switchGate();
         } catch (Throwable e) {
-            GT_Log.err.print(e);
+            GTLog.err.print(e);
         }
     }
 
@@ -212,28 +212,28 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     public void stackGateData(int aIndex, ItemStack aStack) {
-        mGateData[aIndex] = GT_Utility.stackToInt(aStack);
+        mGateData[aIndex] = GTUtility.stackToInt(aStack);
         validateGateData();
     }
 
     private void switchGate() {
         resetRedstone();
         Arrays.fill(mGateData, 0);
-        GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
+        CircuitryBehavior tBehaviour = GregTechAPI.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.initParameters(mGateData, this);
         } catch (Throwable e) {
-            GT_Log.err.print(e);
+            GTLog.err.print(e);
         }
         validateGateData();
     }
 
     private void validateGateData() {
-        GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
+        CircuitryBehavior tBehaviour = GregTechAPI.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.validateParameters(mGateData, this);
         } catch (Throwable e) {
-            GT_Log.err.print(e);
+            GTLog.err.print(e);
         }
     }
 
@@ -252,7 +252,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
             mInventory[0] = mInventory[1] = mInventory[2] = mInventory[3] = mInventory[4] = null;
             if (getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()) {
                 if (getBaseMetaTileEntity().isActive()) {
-                    GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
+                    CircuitryBehavior tBehaviour = GregTechAPI.sCircuitryBehaviors.get(mGate);
                     if (tBehaviour != null) {
                         try {
                             tBehaviour.onTick(mGateData, this);
@@ -265,7 +265,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                             if (tBehaviour.displayItemStack(mGateData, this, 3))
                                 mInventory[4] = getCoverByID(mGateData[3]);
                         } catch (Throwable e) {
-                            GT_Log.err.print(e);
+                            GTLog.err.print(e);
                         }
                     }
                 }
@@ -311,11 +311,11 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public static final Map<Integer, ItemStack> sCoversItems = new HashMap<>();
 
     private static void initCovers() {
-        for (GT_ItemStack aKey : GregTech_API.sCovers.keySet()) {
+        for (GTItemStack aKey : GregTechAPI.sCovers.keySet()) {
             ItemStack aStack = aKey.toStack()
                 .copy();
             if (aStack != null) {
-                sCoversItems.put(GT_Utility.stackToInt(aStack), aStack);
+                sCoversItems.put(GTUtility.stackToInt(aStack), aStack);
             }
         }
     }
@@ -396,8 +396,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public GT_CoverBehavior getCover(ForgeDirection side) {
-        return (GT_CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+    public CoverBehavior getCover(ForgeDirection side) {
+        return (CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
     }
 
     @Override
@@ -441,42 +441,42 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
-    private GT_RenderedTexture getBase() {
-        return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
+    private GTRenderedTexture getBase() {
+        return new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Off) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Off) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off),
+            new GTRenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On),
+            new GTRenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Off) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Off) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_On) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_On) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] { getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On) };
+        return new ITexture[] { getBase(), new GTRenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On) };
     }
 
     @Override
@@ -495,12 +495,12 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                         index,
                         clickData.mouseButton == 0 ? clickData.shift ? +128 : +1 : clickData.shift ? -128 : -1);
                 } else {
-                    tStack = GT_Utility.copy(tStack);
+                    tStack = GTUtility.copy(tStack);
                     if (clickData.mouseButton != 0) tStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
                     stackGateData(index, tStack);
                 }
             })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPPUITextures.OVERLAY_BUTTON_PLUS_MINUS)
+                .setBackground(GTUITextures.BUTTON_STANDARD, GTPPUITextures.OVERLAY_BUTTON_PLUS_MINUS)
                 .setPos(7, 5 + i * 18)
                 .setSize(18, 18))
                 .widget(
@@ -510,15 +510,15 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         }
         builder.widget(
             new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+                .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_EMIT_ENERGY)
                 .addTooltip("Toggle EU Output")
                 .setPos(151, 5)
                 .setSize(18, 18))
             .widget(
                 new CycleButtonWidget()
                     .setToggle(() -> getBaseMetaTileEntity().isActive(), val -> getBaseMetaTileEntity().setActive(val))
-                    .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                     .setStaticTexture(GTPPUITextures.OVERLAY_BUTTON_ACTIVE_STATE)
                     .addTooltip("Toggle Active State")
                     .setPos(151, 23)
@@ -527,7 +527,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 if (clickData.mouseButton == 0) switchGateForward(clickData.shift);
                 else switchGateBackward(clickData.shift);
             })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPPUITextures.OVERLAY_BUTTON_CHANGE_MODE)
+                .setBackground(GTUITextures.BUTTON_STANDARD, GTPPUITextures.OVERLAY_BUTTON_CHANGE_MODE)
                 .addTooltip("Change Redstone Circuit")
                 .setPos(151, 41)
                 .setSize(18, 18));
@@ -557,7 +557,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                     val -> getBaseMetaTileEntity().setErrorDisplayID(val)));
 
         builder.widget(TextWidget.dynamicString(() -> {
-            GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+            CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
             if (tCircuit != null) return tCircuit.getName();
             return "";
         })
@@ -565,7 +565,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
             .setDefaultColor(COLOR_TEXT_WHITE.get())
             .setPos(46, 8))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDescription();
                 return "";
             })
@@ -573,7 +573,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 19))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 0);
                 return "";
             })
@@ -581,7 +581,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 33))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 1);
                 return "";
             })
@@ -589,7 +589,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 44))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 2);
                 return "";
             })
@@ -597,7 +597,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 55))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 3);
                 return "";
             })
@@ -605,10 +605,10 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 66))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 0);
-                    return tString == null ? GT_Utility.parseNumberToString(mGateData[0]) : tString;
+                    return tString == null ? GTUtility.parseNumberToString(mGateData[0]) : tString;
                 }
                 return "";
             })
@@ -616,10 +616,10 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(99, 33))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 1);
-                    return tString == null ? GT_Utility.parseNumberToString(mGateData[1]) : tString;
+                    return tString == null ? GTUtility.parseNumberToString(mGateData[1]) : tString;
                 }
                 return "";
             })
@@ -627,10 +627,10 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(99, 44))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 2);
-                    return tString == null ? GT_Utility.parseNumberToString(mGateData[2]) : tString;
+                    return tString == null ? GTUtility.parseNumberToString(mGateData[2]) : tString;
                 }
                 return "";
             })
@@ -638,10 +638,10 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(99, 55))
             .widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+                CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 3);
-                    return tString == null ? GT_Utility.parseNumberToString(mGateData[3]) : tString;
+                    return tString == null ? GTUtility.parseNumberToString(mGateData[3]) : tString;
                 }
                 return "";
             })

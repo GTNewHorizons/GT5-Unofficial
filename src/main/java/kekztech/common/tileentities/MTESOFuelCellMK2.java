@@ -9,7 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,23 +24,23 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.common.Blocks;
 
-public class MTESOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTESOFuelCellMK2> {
+public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2> {
 
     private final int OXYGEN_PER_SEC = 2000;
     private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
@@ -73,7 +73,7 @@ public class MTESOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
         .addElement(
             'c',
             ofChain(
-                onElementPass(te -> te.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 0)),
+                onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 0)),
                 ofHatchAdder(MTESOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
                 ofHatchAdder(MTESOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
                 ofHatchAdder(MTESOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
@@ -88,12 +88,12 @@ public class MTESOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(
-                "Consumes up to " + GT_Utility.formatNumbers(EU_PER_TICK * 20)
+                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")
@@ -151,12 +151,12 @@ public class MTESOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     @Override
     public CheckRecipeResult checkProcessing() {
         final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
-        Collection<GT_Recipe> recipeList = RecipeMaps.gasTurbineFuels.getAllRecipes();
+        Collection<GTRecipe> recipeList = RecipeMaps.gasTurbineFuels.getAllRecipes();
 
         for (FluidStack hatchFluid : storedFluids) {
-            for (GT_Recipe aFuel : recipeList) {
+            for (GTRecipe aFuel : recipeList) {
                 FluidStack liquid;
-                if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
+                if ((liquid = GTUtility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
                     && hatchFluid.isFluidEqual(liquid)) {
 
                     liquid.amount = (EU_PER_TICK * 20) / aFuel.mSpecialValue / Math.max(1, aFuel.mSpecialValue / 1000);

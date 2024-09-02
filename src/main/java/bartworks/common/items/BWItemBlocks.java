@@ -27,13 +27,13 @@ import bartworks.API.ITileAddsInformation;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public class BWItemBlocks extends ItemBlock {
 
-    private final String mNoMobsToolTip = GT_LanguageManager
+    private final String mNoMobsToolTip = GTLanguageManager
         .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    private final String mNoTileEntityToolTip = GT_LanguageManager
+    private final String mNoTileEntityToolTip = GTLanguageManager
         .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public BWItemBlocks(Block par1) {

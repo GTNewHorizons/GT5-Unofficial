@@ -1,15 +1,15 @@
 package tectech.thing.metaTileEntity.multi.base;
 
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static java.lang.Math.min;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 
@@ -61,7 +61,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -69,26 +69,26 @@ import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.GT_Pollution;
+import gregtech.common.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import tectech.Reference;
 import tectech.TecTech;
@@ -108,7 +108,7 @@ import tectech.util.TTUtility;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<TTMultiblockBase>
+public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase>
     implements IAlignment, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
@@ -386,8 +386,8 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addInfo("Nothing special just override me")
             .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
         return tt;
@@ -400,7 +400,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
     public String[] getInfoData() { // TODO Do it
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -414,27 +414,27 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         }
 
         return new String[] { "Progress:",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mProgresstime / 20)
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             "Energy Hatches:",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy)
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             (getPowerFlow() * eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(Math.abs(getPowerFlow()))
+                + GTUtility.formatNumbers(Math.abs(getPowerFlow()))
                 + EnumChatFormatting.RESET
                 + " EU/t at "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(eAmpereFlow)
+                + GTUtility.formatNumbers(eAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             "Tier Rating: " + EnumChatFormatting.YELLOW
@@ -446,7 +446,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
                 + EnumChatFormatting.RESET
                 + " Amp Rating: "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(eMaxAmpereFlow)
+                + GTUtility.formatNumbers(eMaxAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             "Problems: " + EnumChatFormatting.RED
@@ -464,11 +464,11 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
                 + EnumChatFormatting.BLUE
                 + eSafeVoid,
             "Computation: " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(eAvailableData)
+                + GTUtility.formatNumbers(eAvailableData)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(eRequiredData)
+                + GTUtility.formatNumbers(eRequiredData)
                 + EnumChatFormatting.RESET };
     }
 
@@ -824,7 +824,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aOutputItemsLength > 0) {
             mOutputItems = new ItemStack[aOutputItemsLength];
             for (int i = 0; i < mOutputItems.length; i++) {
-                mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
+                mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
             }
         }
 
@@ -833,7 +833,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aOutputFluidsLength > 0) {
             mOutputFluids = new FluidStack[aOutputFluidsLength];
             for (int i = 0; i < mOutputFluids.length; i++) {
-                mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
+                mOutputFluids[i] = GTUtility.loadFluid(aNBT, "mOutputFluids" + i);
             }
         }
 
@@ -1295,7 +1295,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             maxEUinputMax = V[0];
             maxEUoutputMin = V[15];
             maxEUoutputMax = V[0];
-            for (GT_MetaTileEntity_Hatch_Energy hatch : filterValidMTEs(mEnergyHatches)) {
+            for (MTEHatchEnergy hatch : filterValidMTEs(mEnergyHatches)) {
                 if (hatch.maxEUInput() < maxEUinputMin) {
                     maxEUinputMin = hatch.maxEUInput();
                 }
@@ -1311,7 +1311,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
                     maxEUinputMax = hatch.maxEUInput();
                 }
             }
-            for (GT_MetaTileEntity_Hatch_Dynamo hatch : filterValidMTEs(mDynamoHatches)) {
+            for (MTEHatchDynamo hatch : filterValidMTEs(mDynamoHatches)) {
                 if (hatch.maxEUOutput() < maxEUoutputMin) {
                     maxEUoutputMin = hatch.maxEUOutput();
                 }
@@ -1330,13 +1330,13 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             eMaxAmpereFlow = 0;
             eMaxAmpereGen = 0;
             // counts only full amps
-            for (GT_MetaTileEntity_Hatch_Energy hatch : filterValidMTEs(mEnergyHatches)) {
+            for (MTEHatchEnergy hatch : filterValidMTEs(mEnergyHatches)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin;
             }
             for (MTEHatchEnergyMulti hatch : filterValidMTEs(eEnergyMulti)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.Amperes;
             }
-            for (GT_MetaTileEntity_Hatch_Dynamo hatch : filterValidMTEs(mDynamoHatches)) {
+            for (MTEHatchDynamo hatch : filterValidMTEs(mDynamoHatches)) {
                 eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin;
             }
             for (MTEHatchDynamoMulti hatch : filterValidMTEs(eDynamoMulti)) {
@@ -1360,7 +1360,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
 
     protected final void powerPass(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1386,7 +1386,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
 
     protected final void powerPass_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1415,7 +1415,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
 
     protected final void powerInput() {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1439,7 +1439,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
 
     protected final void powerInput_EM() {
         long euVar;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1557,7 +1557,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         }
         long euVar = EU * Amperes;
         long diff;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
             if (tHatch.maxEUOutput() < EU) {
                 explodeMultiblock();
             }
@@ -1729,16 +1729,16 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
     }
 
     @Override
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> list = new ArrayList<>();
+    public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
+        List<MTEHatch> list = new ArrayList<>();
         list.addAll(mEnergyHatches);
         list.addAll(eEnergyMulti);
         return list;
     }
 
     @Override
-    public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
-        List<GT_MetaTileEntity_Hatch> list = new ArrayList<>();
+    public List<MTEHatch> getExoticEnergyHatches() {
+        List<MTEHatch> list = new ArrayList<>();
         list.addAll(eEnergyMulti);
         return list;
     }
@@ -1767,7 +1767,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             return;
         }
         extraExplosions_EM();
-        GT_Pollution.addPollution(getBaseMetaTileEntity(), 600000);
+        Pollution.addPollution(getBaseMetaTileEntity(), 600000);
         mInventory[1] = null;
         @SuppressWarnings("unchecked")
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
@@ -1823,35 +1823,35 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus) {
+            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput) {
+            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
+            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMuffler) {
+            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchParam) {
             return eParamHatches.add((MTEHatchParam) aMetaTileEntity);
@@ -1882,35 +1882,35 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus) {
+            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput) {
+            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
+            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMuffler) {
+            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchParam) {
             return eParamHatches.add((MTEHatchParam) aMetaTileEntity);
@@ -1941,8 +1941,8 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
 
         return false;
@@ -1969,9 +1969,9 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMuffler) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
         }
 
         return false;
@@ -1990,15 +1990,15 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             ((IDualInputHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
         }
 
         return false;
@@ -2013,13 +2013,13 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
         }
 
         return false;
@@ -2035,12 +2035,12 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
         }
         return false;
@@ -2056,12 +2056,12 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
         }
         return false;
@@ -2076,20 +2076,20 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
         }
         return false;
@@ -2131,7 +2131,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchParam) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((MTEHatchParam) aMetaTileEntity);
         }
         return false;
@@ -2147,7 +2147,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
         }
         return false;
@@ -2162,16 +2162,16 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchParam) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((MTEHatchParam) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
         }
         return false;
@@ -2186,9 +2186,9 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
         }
         return false;
     }
@@ -2203,11 +2203,11 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchDataInput) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDataOutput) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eOutputData.add((MTEHatchDataOutput) aMetaTileEntity);
         }
         return false;
@@ -2216,7 +2216,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
 
     protected static <T extends TTMultiblockBase> IStructureElement<T> classicHatches(int casingIndex, int dot,
         Block casingBlock, int casingMeta) {
-        return GT_HatchElementBuilder.<T>builder()
+        return HatchElementBuilder.<T>builder()
             .atLeast(
                 InputBus,
                 InputHatch,
@@ -2236,7 +2236,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
 
     protected static <T extends TTMultiblockBase> IStructureElement<T> allHatches(int casingIndex, int dot,
         Block casingBlock, int casingMeta) {
-        return GT_HatchElementBuilder.<T>builder()
+        return HatchElementBuilder.<T>builder()
             .atLeast(
                 InputBus,
                 InputHatch,
@@ -2300,10 +2300,10 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
         },;
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGT_HatchAdder<TTMultiblockBase> adder;
+        private final IGTHatchAdder<TTMultiblockBase> adder;
 
         @SafeVarargs
-        HatchElement(IGT_HatchAdder<TTMultiblockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        HatchElement(IGTHatchAdder<TTMultiblockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -2313,7 +2313,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
             return mteClasses;
         }
 
-        public IGT_HatchAdder<? super TTMultiblockBase> adder() {
+        public IGTHatchAdder<? super TTMultiblockBase> adder() {
             return adder;
         }
     }
@@ -2608,7 +2608,7 @@ public abstract class TTMultiblockBase extends GT_MetaTileEntity_ExtendedPowerMu
                     .setTextColor(Color.LIGHT_BLUE.normal)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .setPos(5, 20)
                     .setSize(90, 15))
             .widget(

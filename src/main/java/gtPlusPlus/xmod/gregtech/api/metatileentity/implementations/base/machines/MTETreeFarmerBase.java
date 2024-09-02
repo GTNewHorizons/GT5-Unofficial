@@ -6,11 +6,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public abstract class MTETreeFarmerBase extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class MTETreeFarmerBase extends MTETieredMachineBlock {
 
     public MTETreeFarmerBase(final int aID, final String aName, final String aNameRegional, final int aTier,
         final int aInvSlotCount, final String aDescription) {
@@ -139,23 +139,23 @@ public abstract class MTETreeFarmerBase extends GT_MetaTileEntity_TieredMachineB
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Podzol) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Podzol) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {

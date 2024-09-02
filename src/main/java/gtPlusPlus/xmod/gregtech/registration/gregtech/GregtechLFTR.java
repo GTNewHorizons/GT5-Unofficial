@@ -8,8 +8,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ThoriumReactor;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -33,7 +33,7 @@ public class GregtechLFTR {
                 .getStackForm(1L));
         // Reactor Processing Units
         GregtechItemList.ReactorProcessingUnit_IV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 ReactorProcessingUnit_IV.ID,
                 "rpu.tier.01",
                 "Reactor Processing Unit I",
@@ -48,7 +48,7 @@ public class GregtechLFTR {
                 "REACTOR_PROCESSING_UNIT",
                 null).getStackForm(1L));
         GregtechItemList.ReactorProcessingUnit_ZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 ReactorProcessingUnit_ZPM.ID,
                 "rpu.tier.02",
                 "Reactor Processing Unit II",
@@ -64,7 +64,7 @@ public class GregtechLFTR {
                 null).getStackForm(1L));
         // Cold Traps
         GregtechItemList.ColdTrap_IV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 ColdTrap_IV.ID,
                 "coldtrap.tier.01",
                 "Cold Trap I",
@@ -79,7 +79,7 @@ public class GregtechLFTR {
                 "COLD_TRAP",
                 null).getStackForm(1L));
         GregtechItemList.ColdTrap_ZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 ColdTrap_ZPM.ID,
                 "coldtrap.tier.02",
                 "Cold Trap II",

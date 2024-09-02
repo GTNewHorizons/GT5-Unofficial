@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
 import tectech.util.CommonValues;
@@ -34,12 +34,12 @@ public final class ItemTeslaStaff extends Item {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer aPlayer, Entity entity) {
-        GT_Utility.sendChatToPlayer(aPlayer, "Zapperoni!");
+        GTUtility.sendChatToPlayer(aPlayer, "Zapperoni!");
         if (!(aPlayer instanceof EntityPlayerMP)) {
             double aX = aPlayer.posX;
             double aY = aPlayer.posY;
             double aZ = aPlayer.posZ;
-            GT_Utility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
         }
         return false;
     }

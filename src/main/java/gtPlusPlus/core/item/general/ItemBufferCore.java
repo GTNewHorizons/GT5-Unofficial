@@ -10,7 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -42,7 +42,7 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(
             EnumChatFormatting.GRAY + "A key crafting component for "
-                + GT_Values.VN[this.coreTier - 1]
+                + GTValues.VN[this.coreTier - 1]
                 + " Applicances");
     }
 

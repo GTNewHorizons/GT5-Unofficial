@@ -23,13 +23,13 @@ import java.util.ArrayList;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -111,10 +111,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                             e.mLinkedMaterials = new ArrayList<>();
                             e.mLinkedMaterials.add(werkstoffBridgeMaterial);
                             if (werkstoff.hasItemType(dust)) {
-                                GT_OreDictUnificator
+                                GTOreDictUnificator
                                     .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
-                                GT_OreDictUnificator
-                                    .set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
+                                GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                             }
                             ElementSet = true;
                             break;
@@ -143,7 +142,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
                 if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
                     // only reload from lang file if not localized already
-                    werkstoffBridgeMaterial.mLocalizedName = GT_LanguageManager.addStringLocalization(
+                    werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
                         "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
                         werkstoffBridgeMaterial.mDefaultLocalName);
                 if (Thaumcraft.isModLoaded()) {
@@ -157,11 +156,11 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 if (werkstoff.getStats()
                     .isRadioactive()) {
                     werkstoffBridgeMaterial.setEnchantmentForArmors(
-                        Enchantment_Radioactivity.INSTANCE,
+                        EnchantmentRadioactivity.INSTANCE,
                         werkstoff.getStats()
                             .getEnchantmentlvl());
                     werkstoffBridgeMaterial.setEnchantmentForTools(
-                        Enchantment_Radioactivity.INSTANCE,
+                        EnchantmentRadioactivity.INSTANCE,
                         werkstoff.getStats()
                             .getEnchantmentlvl());
                 }

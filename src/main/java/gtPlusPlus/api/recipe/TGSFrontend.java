@@ -15,10 +15,10 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
@@ -80,7 +80,7 @@ public class TGSFrontend extends RecipeMapFrontend {
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-        GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
 
         /*
          * This gets a little complicated, because we want to assign tooltips to inputs/outputs based on which mode
@@ -99,7 +99,7 @@ public class TGSFrontend extends RecipeMapFrontend {
             return currentTip;
         }
 
-        GT_Recipe.GT_Recipe_WithAlt recipe = (GT_Recipe.GT_Recipe_WithAlt) neiCachedRecipe.mRecipe;
+        GTRecipe.GT_Recipe_WithAlt recipe = (GTRecipe.GT_Recipe_WithAlt) neiCachedRecipe.mRecipe;
 
         // Inputs
         int slot = 0;

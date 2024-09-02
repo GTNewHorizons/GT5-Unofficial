@@ -30,12 +30,12 @@ import bartworks.common.loaders.recipes.LaserEngraver;
 import bartworks.common.loaders.recipes.Mixer;
 import bartworks.common.loaders.recipes.Pulverizer;
 import bartworks.common.loaders.recipes.PyrolyseOven;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTModHandler;
 
 public class RecipeLoader {
 
-    public static final long BITSD = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-        | GT_ModHandler.RecipeBits.REVERSIBLE;
+    public static final long BITSD = GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+        | GTModHandler.RecipeBits.REVERSIBLE;
 
     public static void run() {
         new Assembler().run();

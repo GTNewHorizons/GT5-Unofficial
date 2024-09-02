@@ -26,8 +26,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class BWTileEntityMetaGeneratedSmallOre extends BWTileEntityMetaGeneratedOre {
 
@@ -41,53 +41,50 @@ public class BWTileEntityMetaGeneratedSmallOre extends BWTileEntityMetaGenerated
             Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
             ArrayList<ItemStack> tSelector = new ArrayList<>();
 
-            ItemStack tStack = GT_OreDictUnificator
-                .get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
+            ItemStack tStack = GTOreDictUnificator
+                .get(OrePrefixes.gemExquisite, aMaterial, GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 1; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator
-                .get(OrePrefixes.gemFlawless, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
+            tStack = GTOreDictUnificator
+                .get(OrePrefixes.gemFlawless, aMaterial, GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 2; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
+            tStack = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
             if (tStack != null) {
                 for (int i = 0; i < 12; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(
-                OrePrefixes.gemFlawed,
-                aMaterial,
-                GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L),
-                1L);
+            tStack = GTOreDictUnificator
+                .get(OrePrefixes.gemFlawed, aMaterial, GTOreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 5; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L);
+            tStack = GTOreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L);
             if (tStack != null) {
                 for (int i = 0; i < 10; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(
+            tStack = GTOreDictUnificator.get(
                 OrePrefixes.gemChipped,
                 aMaterial,
-                GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
                 1L);
             if (tStack != null) {
                 for (int i = 0; i < 5; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L);
+            tStack = GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L);
             if (tStack != null) {
                 for (int i = 0; i < 10; i++) {
                     tSelector.add(tStack);
@@ -97,12 +94,12 @@ public class BWTileEntityMetaGeneratedSmallOre extends BWTileEntityMetaGenerated
                 int i = 0;
 
                 for (int j = Math.max(1, aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0); i < j; ++i) {
-                    rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+                    rList.add(GTUtility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
                 }
             }
             if (tRandom.nextInt(3 + aFortune) > 1) {
                 rList.add(
-                    GT_OreDictUnificator
+                    GTOreDictUnificator
                         .get(tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, Materials.Stone, 1L));
             }
         }

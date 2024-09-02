@@ -5,12 +5,12 @@ import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -41,7 +41,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(9))
                 .itemOutputs(material.getBlock(1))
                 .duration(15 * SECONDS)
@@ -53,7 +53,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(1))
                 .itemOutputs(material.getRod(1), material.getSmallDust(2))
                 .duration(Math.max(material.getMass() / 8L, 1L))
@@ -64,7 +64,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
         }
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getRod(1))
                 .itemOutputs(material.getBolt(4))
                 .duration(Math.max(material.getMass() * 2L, 1L))
@@ -77,7 +77,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getHotIngot(1))) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getHotIngot(1))
                 .itemOutputs(material.getIngot(1))
                 .duration((int) Math.max(material.getMass() * 3L, 1L))
@@ -88,7 +88,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1))
             && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getRod(2))
                 .itemOutputs(material.getLongRod(1))
                 .duration((int) Math.max(material.getMass(), 1L))
@@ -97,7 +97,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
             Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Success");
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getLongRod(1))
                 .itemOutputs(material.getRod(2))
                 .duration(Math.max(material.getMass(), 1L))
@@ -108,7 +108,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
         if (ItemUtils.checkForInvalidItems(material.getBolt(1))
             && ItemUtils.checkForInvalidItems(material.getScrew(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getBolt(1))
                 .itemOutputs(material.getScrew(1))
                 .duration(Math.max(material.getMass() / 8L, 1L))

@@ -16,14 +16,14 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.WirelessDataStore;
 import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
-public class MTEHatchWirelessDataItemsOutput extends GT_MetaTileEntity_Hatch {
+public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     public InventoryDataPacket dataPacket = null;
 
@@ -125,18 +125,18 @@ public class MTEHatchWirelessDataItemsOutput extends GT_MetaTileEntity_Hatch {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 EM_D_ACTIVE,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(EM_D_CONN) };
+            new GTRenderedTexture(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 EM_D_SIDES,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(EM_D_CONN) };
+            new GTRenderedTexture(EM_D_CONN) };
     }
 }

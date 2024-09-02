@@ -1,6 +1,6 @@
 package tectech.thing.metaTileEntity.single;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -22,11 +22,11 @@ import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
@@ -37,7 +37,7 @@ import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
-public class MTETeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer implements ITeslaConnectable {
+public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
 
     // Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys()
@@ -291,7 +291,7 @@ public class MTETeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer implement
             } catch (Exception e) {
                 clientLocale = "en_US";
             }
-            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         }
         return true;
     }

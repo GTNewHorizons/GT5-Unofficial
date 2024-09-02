@@ -1,6 +1,6 @@
 package bartworks.client.ClientEventHandler;
 
-import static gregtech.api.util.GT_Utility.getColoredTierNameFromTier;
+import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;

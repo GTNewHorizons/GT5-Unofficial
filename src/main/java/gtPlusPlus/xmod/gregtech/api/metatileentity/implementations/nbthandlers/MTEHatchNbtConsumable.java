@@ -10,18 +10,18 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public abstract class MTEHatchNbtConsumable extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo {
+public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGregtechLogo {
 
     private final int mInputslotCount;
     private final int mTotalSlotCount;
@@ -76,7 +76,7 @@ public abstract class MTEHatchNbtConsumable extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public final boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -117,8 +117,8 @@ public abstract class MTEHatchNbtConsumable extends GT_MetaTileEntity_Hatch impl
         for (int i = 0; i <= getSlotID_LastInput(); i++) {
             for (int j = i + 1; j <= getSlotID_LastInput(); j++) {
                 if (mInventory[j] != null
-                    && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
+                    && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                    GTUtility.moveStackFromSlotAToSlotB(
                         getBaseMetaTileEntity(),
                         getBaseMetaTileEntity(),
                         j,
@@ -200,7 +200,7 @@ public abstract class MTEHatchNbtConsumable extends GT_MetaTileEntity_Hatch impl
                 // First check for duplicates
                 for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
                     if (mInventory[i] != null) {
-                        if (GT_Utility.areStacksEqual(aStackToMove, mInventory[i], true)) {
+                        if (GTUtility.areStacksEqual(aStackToMove, mInventory[i], true)) {
                             Logger.INFO("Found matching stack in slot " + i + ".");
                             aFoundMatching = true;
                             break;
@@ -260,7 +260,7 @@ public abstract class MTEHatchNbtConsumable extends GT_MetaTileEntity_Hatch impl
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
         if (aStack != null) {
             for (ItemStack aValid : getItemsValidForUsageSlots()) {
-                if (GT_Utility.areStacksEqual(aStack, aValid, true)) {
+                if (GTUtility.areStacksEqual(aStack, aValid, true)) {
                     return true;
                 }
             }

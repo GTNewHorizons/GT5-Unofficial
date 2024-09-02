@@ -5,8 +5,8 @@ import java.util.HashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.WeightedCollection;
@@ -16,8 +16,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeLoaderAlgaeFarm {
 
-    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCache = new HashMap<>();
-    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache = new HashMap<>();
+    private static final HashMap<Integer, AutoMap<GTRecipe>> mRecipeCache = new HashMap<>();
+    private static final HashMap<Integer, AutoMap<GTRecipe>> mRecipeCompostCache = new HashMap<>();
 
     public static void generateRecipes() {
         for (int i = 0; i < 15; i++) {
@@ -28,11 +28,11 @@ public class RecipeLoaderAlgaeFarm {
         }
     }
 
-    public static GT_Recipe getTieredRecipeFromCache(int aTier, boolean aCompost) {
-        HashMap<Integer, AutoMap<GT_Recipe>> aMap = aCompost ? mRecipeCompostCache : mRecipeCache;
+    public static GTRecipe getTieredRecipeFromCache(int aTier, boolean aCompost) {
+        HashMap<Integer, AutoMap<GTRecipe>> aMap = aCompost ? mRecipeCompostCache : mRecipeCache;
         String aComp = aCompost ? "(Compost)" : "";
 
-        AutoMap<GT_Recipe> aTemp = aMap.get(aTier);
+        AutoMap<GTRecipe> aTemp = aMap.get(aTier);
         if (aTemp == null || aTemp.isEmpty()) {
             aTemp = new AutoMap<>();
             aMap.put(aTier, aTemp);
@@ -54,7 +54,7 @@ public class RecipeLoaderAlgaeFarm {
         return aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1;
     }
 
-    private static GT_Recipe generateBaseRecipe(boolean aUsingCompost, int aTier) {
+    private static GTRecipe generateBaseRecipe(boolean aUsingCompost, int aTier) {
 
         // Type Safety
         if (aTier < 0) {
@@ -91,14 +91,14 @@ public class RecipeLoaderAlgaeFarm {
         // We set these elsewhere
         ItemStack[] aOutputs = getOutputsForTier(aTier);
 
-        GT_Recipe tRecipe = new GT_Recipe(
+        GTRecipe tRecipe = new GTRecipe(
             false,
             aInputs,
             aOutputs,
             (Object) null,
             new int[] {},
-            new FluidStack[] { GT_Values.NF },
-            new FluidStack[] { GT_Values.NF },
+            new FluidStack[] { GTValues.NF },
+            new FluidStack[] { GTValues.NF },
             (int) (aDurations[aTier] * aOutputTimeMulti.get() / 2), // Time
             0,
             0);

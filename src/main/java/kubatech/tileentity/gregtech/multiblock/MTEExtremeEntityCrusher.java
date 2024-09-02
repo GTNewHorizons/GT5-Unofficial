@@ -24,11 +24,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.InfernalMobs;
@@ -37,8 +37,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 import static kubatech.api.Variables.Author;
 import static kubatech.api.Variables.StructureHologram;
 
@@ -105,22 +105,22 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.Tags;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
@@ -183,14 +183,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
                     { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
                 })) // spotless:on
-        .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
+        .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'C',
             buildHatchAdder(MTEExtremeEntityCrusher.class)
                 .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0))))
+                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
         .addElement('f', ofFrame(Materials.Steel))
         .addElement(
@@ -260,8 +260,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
             .addInfo("Controller block for the Extreme Entity Crusher")
             .addInfo(Author)
@@ -393,24 +393,24 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
+            GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
             return;
         }
         if (aPlayer.isSneaking()) {
             if (!InfernalMobs.isModLoaded()) return;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
             if (!mIsProducingInfernalDrops)
-                GT_Utility.sendChatToPlayer(aPlayer, "Mobs will now be prevented from spawning infernal");
-            else GT_Utility.sendChatToPlayer(aPlayer, "Mobs can spawn infernal now");
+                GTUtility.sendChatToPlayer(aPlayer, "Mobs will now be prevented from spawning infernal");
+            else GTUtility.sendChatToPlayer(aPlayer, "Mobs can spawn infernal now");
         } else {
             if (!BloodMagic.isModLoaded()) return;
             isInRitualMode = !isInRitualMode;
             if (!isInRitualMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, "Ritual mode disabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Ritual mode disabled");
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, "Ritual mode enabled");
-                if (connectToRitual()) GT_Utility.sendChatToPlayer(aPlayer, "Successfully connected to the ritual");
-                else GT_Utility.sendChatToPlayer(aPlayer, "Can't connect to the ritual");
+                GTUtility.sendChatToPlayer(aPlayer, "Ritual mode enabled");
+                if (connectToRitual()) GTUtility.sendChatToPlayer(aPlayer, "Successfully connected to the ritual");
+                else GTUtility.sendChatToPlayer(aPlayer, "Can't connect to the ritual");
             }
         }
     }
@@ -420,7 +420,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         float aX, float aY, float aZ) {
         if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             mAnimationEnabled = !mAnimationEnabled;
-            GT_Utility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
+            GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
     }
@@ -560,8 +560,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             weaponCheck: {
-                GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null
-                    : this.mInputBusses.get(0);
+                MTEHatchInputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
                 if (inputbus != null && !inputbus.isValid()) inputbus = null;
                 ItemStack lootingHolder = inputbus == null ? null : inputbus.getStackInSlot(0);
                 if (lootingHolder == null) break weaponCheck;
@@ -661,8 +660,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             || mEnergyHatches.size() == 0
             || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
             return false;
-        if (mGlassTier < 8)
-            for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
+        if (mGlassTier < 8) for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
     }
@@ -699,7 +697,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         configurationElements.setSynced(true);
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
             if (this.mMaxProgresstime > 0) {
-                GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
                 return;
             }
 
@@ -707,12 +705,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
             if (!isInRitualMode) {
-                GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode disabled");
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode disabled");
             } else {
-                GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode enabled");
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode enabled");
                 if (connectToRitual())
-                    GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Successfully connected to the ritual");
-                else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
+                    GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Successfully connected to the ritual");
+                else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
             }
         })
             .setTextureGetter(toggleButtonTextureGetter)
@@ -722,16 +720,16 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
-                GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
                 return;
             }
 
             mIsProducingInfernalDrops = v;
 
             if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!mIsProducingInfernalDrops) GT_Utility
+            if (!mIsProducingInfernalDrops) GTUtility
                 .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
-            else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
+            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
         })
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
@@ -741,15 +739,15 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
             if (this.mMaxProgresstime > 0) {
-                GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
                 return;
             }
 
             voidAllDamagedAndEnchantedItems = v;
 
             if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!voidAllDamagedAndEnchantedItems) GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Void nothing");
-            else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Void all damaged and enchanted items");
+            if (!voidAllDamagedAndEnchantedItems) GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void nothing");
+            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void all damaged and enchanted items");
         })
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
@@ -765,7 +763,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public void createInventorySlots() {
         final SlotWidget spawnerSlot = new SlotWidget(inventoryHandler, 1);
         spawnerSlot.setBackground(
-            GT_UITextures.SLOT_DARK_GRAY,
+            GTUITextures.SLOT_DARK_GRAY,
             UITexture.fullImage(Tags.MODID, "gui/slot/gray_spawner")
                 .withFixedSize(16, 16)
                 .withOffset(1, 1));
@@ -773,7 +771,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         slotWidgets.add(spawnerSlot);
         final SlotWidget weaponSlot = new SlotWidget(weaponCache, 0);
         weaponSlot.setBackground(
-            GT_UITextures.SLOT_DARK_GRAY,
+            GTUITextures.SLOT_DARK_GRAY,
             UITexture.fullImage(Tags.MODID, "gui/slot/gray_sword")
                 .withFixedSize(16, 16)
                 .withOffset(1, 1));

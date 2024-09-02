@@ -7,7 +7,7 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class ResultWrongSievert implements CheckRecipeResult {
 
@@ -38,9 +38,9 @@ public class ResultWrongSievert implements CheckRecipeResult {
         return switch (this.type) {
             case EXACTLY -> StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.wrong_sievert_exactly",
-                GT_Utility.formatNumbers(this.required));
+                GTUtility.formatNumbers(this.required));
             case MINIMUM -> StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.wrong_sievert_min", GT_Utility.formatNumbers(this.required));
+                .translateToLocalFormatted("GT5U.gui.text.wrong_sievert_min", GTUtility.formatNumbers(this.required));
         };
     }
 

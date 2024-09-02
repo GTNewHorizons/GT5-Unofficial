@@ -17,14 +17,14 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
@@ -76,7 +76,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         if (aLiquid == null) {
             return 0;
         }
-        GT_Recipe tFuel = getRecipeMap().getBackend()
+        GTRecipe tFuel = getRecipeMap().getBackend()
             .findFuel(aLiquid);
         if (tFuel != null) {
             return tFuel.mSpecialValue;
@@ -126,15 +126,15 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 // wastes the extra fuel and generate aOptFlow directly
                 depleteInput(new FluidStack(firstFuelType, 1));
                 this.storedFluid += 1;
-                return GT_Utility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
+                return GTUtility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
             }
 
-            actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));
+            actualOptimalFlow = GTUtility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
-                                                                                        // optimal flow. Variable
-                                                                                        // required outside of loop for
+            int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
+                                                                                       // optimal flow. Variable
+                                                                                       // required outside of loop for
             // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;
@@ -151,14 +151,14 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 }
             }
             if (totalFlow <= 0) return 0;
-            tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
+            tEU = GTUtility.safeInt((long) totalFlow * fuelValue);
 
             if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+                tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             } else {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+                tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
 
             return tEU;
@@ -198,11 +198,11 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
+        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }

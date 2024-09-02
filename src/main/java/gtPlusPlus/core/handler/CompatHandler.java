@@ -12,8 +12,8 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -114,8 +114,8 @@ public class CompatHandler {
         // In-house
 
         for (int i = 1; i <= 10; i++) {
-            GT_OreDictUnificator.registerOre(
-                "bufferCore_" + GT_Values.VN[i - 1],
+            GTOreDictUnificator.registerOre(
+                "bufferCore_" + GTValues.VN[i - 1],
                 new ItemStack(ItemUtils.getItemFromFQRN("miscutils:item.itemBufferCore" + i)));
         }
     }

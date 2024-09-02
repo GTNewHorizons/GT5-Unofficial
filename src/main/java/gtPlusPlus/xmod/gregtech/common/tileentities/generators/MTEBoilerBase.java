@@ -15,19 +15,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
-public class MTEBoilerBase extends GT_MetaTileEntity_Boiler {
+public class MTEBoilerBase extends MTEBoiler {
 
     private final int steamPerSecond;
     private final int tier;
@@ -60,7 +60,7 @@ public class MTEBoilerBase extends GT_MetaTileEntity_Boiler {
     }
 
     public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT);
+        return new GTRenderedTexture(Textures.BlockIcons.BOILER_FRONT);
     }
 
     @Override
@@ -81,13 +81,13 @@ public class MTEBoilerBase extends GT_MetaTileEntity_Boiler {
         return rTextures;
     }
 
-    protected GT_RenderedTexture getCasingTexture() {
+    protected GTRenderedTexture getCasingTexture() {
         if (this.tier == 1) {
-            return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
+            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
         } else if (this.tier == 2) {
-            return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
+            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
         } else {
-            return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
+            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
         }
     }
 
@@ -269,15 +269,15 @@ public class MTEBoilerBase extends GT_MetaTileEntity_Boiler {
                 || fuel.getDisplayName()
                     .toLowerCase()
                     .contains("coke")) {
-                tile.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
             } else {
-                tile.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
             }
         }
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
         if (side != this.getBaseMetaTileEntity()
             .getFrontFacing()) {
             return true;
@@ -297,7 +297,7 @@ public class MTEBoilerBase extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST };
+        return new IDrawable[] { getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DUST };
     }
 
     @Override
@@ -307,12 +307,12 @@ public class MTEBoilerBase extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected IDrawable getOverlaySlotIn() {
-        return GT_UITextures.OVERLAY_SLOT_IN;
+        return GTUITextures.OVERLAY_SLOT_IN;
     }
 
     @Override
     protected IDrawable getOverlaySlotOut() {
-        return GT_UITextures.OVERLAY_SLOT_OUT;
+        return GTUITextures.OVERLAY_SLOT_OUT;
     }
 
     @Override

@@ -28,7 +28,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class ServerEventHandler {
 
@@ -66,7 +66,7 @@ public class ServerEventHandler {
                                 if (prefixes == null) {
                                     continue;
                                 }
-                                toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
                                 break loop;
                             }
                             for (String s : e.getADDITIONAL_OREDICT()) {
@@ -76,7 +76,7 @@ public class ServerEventHandler {
                                     if (prefixes == null) {
                                         continue;
                                     }
-                                    toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                    toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
                                     break loop;
                                 }
                             }

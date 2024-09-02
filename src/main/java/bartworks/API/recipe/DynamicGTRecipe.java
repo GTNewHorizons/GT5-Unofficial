@@ -6,13 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
-public class DynamicGTRecipe extends GT_Recipe {
+public class DynamicGTRecipe extends GTRecipe {
 
     public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
         int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
-        int aSpecialValue, GT_Recipe originalRecipe) {
+        int aSpecialValue, GTRecipe originalRecipe) {
         super(
             aOptimize,
             aInputs,

@@ -4,14 +4,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.AuthorColen;
-import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.enums.GTValues.AuthorColen;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
@@ -71,13 +71,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -883,7 +883,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 return false;
             }
 
-            if (!(mOutputBusses.get(0) instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+            if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
                 return false;
             }
         }
@@ -894,7 +894,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 return false;
             }
 
-            if (!(mOutputHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Output_ME)) {
+            if (!(mOutputHatches.get(0) instanceof MTEHatchOutputME)) {
                 return false;
             }
         }
@@ -905,7 +905,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 return false;
             }
 
-            if (mInputBusses.get(0) instanceof GT_MetaTileEntity_Hatch_InputBus_ME) {
+            if (mInputBusses.get(0) instanceof MTEHatchInputBusME) {
                 return false;
             }
         }
@@ -962,7 +962,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (getControllerSlot() == null) {
             ItemStack heldItem = aPlayer.getHeldItem();
-            if (GT_Utility.getBlockFromStack(heldItem) instanceof BlockDimensionDisplay) {
+            if (GTUtility.getBlockFromStack(heldItem) instanceof BlockDimensionDisplay) {
                 mInventory[getControllerSlotIndex()] = heldItem.copy();
                 mInventory[getControllerSlotIndex()].stackSize = 1;
                 aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
@@ -973,8 +973,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Spacetime Manipulator, EOH")
             .addInfo(TOOLTIP_BAR)
             .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
@@ -1239,7 +1239,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         currentCircuitMultiplier = 0;
         for (ItemStack itemStack : mInputBusses.get(0)
             .getRealInventory()) {
-            if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
+            if (GTUtility.isAnyIntegratedCircuit(itemStack)) {
                 currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
                 break;
             }
@@ -1526,12 +1526,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         while (amount >= Integer.MAX_VALUE) {
             ItemStack tmpItem = item.copy();
             tmpItem.stackSize = Integer.MAX_VALUE;
-            ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
+            ((MTEHatchOutputBusME) mOutputBusses.get(0)).store(tmpItem);
             amount -= Integer.MAX_VALUE;
         }
         ItemStack tmpItem = item.copy();
         tmpItem.stackSize = (int) amount;
-        ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
+        ((MTEHatchOutputBusME) mOutputBusses.get(0)).store(tmpItem);
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {
@@ -1540,12 +1540,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         while (amount >= Integer.MAX_VALUE) {
             FluidStack tmpFluid = fluid.copy();
             tmpFluid.amount = Integer.MAX_VALUE;
-            ((GT_MetaTileEntity_Hatch_Output_ME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+            ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
             amount -= Integer.MAX_VALUE;
         }
         FluidStack tmpFluid = fluid.copy();
         tmpFluid.amount = (int) amount;
-        ((GT_MetaTileEntity_Hatch_Output_ME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+        ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
     }
 
     @Override
@@ -1694,7 +1694,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .hasKey(PLANET_BLOCK)) {
             tooltip.add(
                 1,
-                GT_LanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ") + AQUA
+                GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ") + AQUA
                     + new ItemStack(
                         ModBlocks.getBlock(
                             stack.getTagCompound()

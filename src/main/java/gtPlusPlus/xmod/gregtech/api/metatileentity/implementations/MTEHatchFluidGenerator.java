@@ -13,14 +13,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
-public abstract class MTEHatchFluidGenerator extends GT_MetaTileEntity_Hatch_Input {
+public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     protected static XSTR floatGen = new XSTR();
     public int mProgresstime = 0, mMaxProgresstime = 0;
@@ -44,8 +44,8 @@ public abstract class MTEHatchFluidGenerator extends GT_MetaTileEntity_Hatch_Inp
 
     @Override
     public synchronized String[] getDescription() {
-        mDescriptionArray[1] = "Capacity: " + GT_Utility.formatNumbers(getCapacity()) + "L";
-        final String[] hatchTierString = new String[] { "Hatch Tier: " + GT_Utility.getColoredTierNameFromTier(mTier) };
+        mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L";
+        final String[] hatchTierString = new String[] { "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier) };
 
         String[] aCustomTips = getCustomTooltip();
         final String[] desc = new String[mDescriptionArray.length + aCustomTips.length + 2];
@@ -59,13 +59,13 @@ public abstract class MTEHatchFluidGenerator extends GT_MetaTileEntity_Hatch_Inp
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
+            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
+            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
     @Override

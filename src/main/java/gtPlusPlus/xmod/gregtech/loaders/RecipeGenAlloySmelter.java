@@ -5,7 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
@@ -36,7 +36,7 @@ public class RecipeGenAlloySmelter extends RecipeGenBase {
         // Nuggets
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getNugget(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(1), ItemList.Shape_Mold_Nugget.get(0))
                 .itemOutputs(material.getNugget(9))
                 .duration(duration)
@@ -47,7 +47,7 @@ public class RecipeGenAlloySmelter extends RecipeGenBase {
         // Gears
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getGear(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(8), ItemList.Shape_Mold_Gear.get(0))
                 .itemOutputs(material.getGear(1))
                 .duration(duration)
@@ -58,7 +58,7 @@ public class RecipeGenAlloySmelter extends RecipeGenBase {
         // Ingot
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getNugget(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getNugget(9), ItemList.Shape_Mold_Ingot.get(0))
                 .itemOutputs(material.getIngot(1))
                 .duration(duration)

@@ -29,22 +29,22 @@ import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.GT_Pollution;
-import gregtech.common.GT_UndergroundOil;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.common.items.behaviors.Behaviour_None;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.Pollution;
+import gregtech.common.UndergroundOil;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.items.behaviors.BehaviourNone;
 
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class BehaviourDetravToolProspector extends Behaviour_None {
+public class BehaviourDetravToolProspector extends BehaviourNone {
 
     static final int[] DISTANCEINTS = new int[] { 0, 4, 25, 64 };
     int distTextIndex;
@@ -60,8 +60,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
         mCosts = aCosts;
     }
 
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
+        int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
         SplittableRandom aRandom = new SplittableRandom();
         int chance = ((1 + aStack.getItemDamage()) * 8) > 100 ? 100 : (1 + aStack.getItemDamage()) * 8;
@@ -70,7 +70,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
 
         if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {
             if (!aWorld.isRemote && aRandom.nextInt(100) < chance) {
-                FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
+                FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                 addChatMassageByValue(aPlayer, fStack.amount / 2, "a Fluid");// fStack.getLocalizedName());
                 /*
                  * boolean fluid = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1)!=null
@@ -96,7 +96,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
             .getMaterial() == Material.rock
             || aWorld.getBlock(aX, aY, aZ)
                 .getMaterial() == Material.ground
-            || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
+            || aWorld.getBlock(aX, aY, aZ) == GregTechAPI.sBlockOres1) {
             if (!aWorld.isRemote) {
                 prospectChunks((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
             }
@@ -105,7 +105,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
         return false;
     }
 
-    protected void prospectChunks(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    protected void prospectChunks(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, SplittableRandom aRandom, int chance) {
         int bX = aX;
         int bZ = aZ;
@@ -122,7 +122,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
 
         aPlayer.addChatMessage(
             new ChatComponentText(
-                EnumChatFormatting.GOLD + GT_LanguageManager.sEnglishFile
+                EnumChatFormatting.GOLD + GTLanguageManager.sEnglishFile
                     .get("LanguageFile", "gt.scanner.prospecting", "Prospecting at ")
                     .getString() + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")"));
         for (int x = -(range); x < (range + 1); ++x) {
@@ -154,7 +154,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                     aPlayer,
                     aWorld.getChunkFromBlockCoords(aX, aZ),
                     aWorld.getTileEntity(aX, aY, aZ),
-                    GT_OreDictUnificator.getAssociation(
+                    GTOreDictUnificator.getAssociation(
                         new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))),
                     aRandom,
                     chance);
@@ -226,8 +226,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
     }
 
     // Used by Electric scanner when scanning the chunk whacked by the scanner. 100% chance find rate
-    protected void prospectSingleChunk(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld,
-        int aX, int aY, int aZ) {
+    protected void prospectSingleChunk(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+        int aY, int aZ) {
         ores = new HashMap<>();
         aPlayer.addChatMessage(
             new ChatComponentText(
@@ -239,7 +239,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
             aPlayer,
             aWorld.getChunkFromBlockCoords(aX, aZ),
             aWorld.getTileEntity(aX, aY, aZ),
-            GT_OreDictUnificator
+            GTOreDictUnificator
                 .getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))),
             new SplittableRandom(),
             1000);
@@ -266,8 +266,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                                                                                                           // aTileEntity)
     {
         if (aTileEntity != null) {
-            if (aTileEntity instanceof GT_TileEntity_Ores) {
-                GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
+            if (aTileEntity instanceof TileEntityOres) {
+                TileEntityOres gt_entity = (TileEntityOres) aTileEntity;
                 short meta = gt_entity.getMetaData();
                 String format = LanguageRegistry.instance()
                     .getStringLocalization("gt.blockores." + meta + ".name");
@@ -295,11 +295,10 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
 
                     Block tBlock = aChunk.getBlock(x, y, z);
                     short tMetaID = (short) aChunk.getBlockMetadata(x, y, z);
-                    if (tBlock instanceof GT_Block_Ores_Abstract) {
+                    if (tBlock instanceof BlockOresAbstract) {
                         TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x, y, z);
-                        if ((tTileEntity instanceof GT_TileEntity_Ores)
-                            && ((GT_TileEntity_Ores) tTileEntity).mNatural) {
-                            tMetaID = (short) ((GT_TileEntity_Ores) tTileEntity).getMetaData();
+                        if ((tTileEntity instanceof TileEntityOres) && ((TileEntityOres) tTileEntity).mNatural) {
+                            tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
                             try {
                                 String format = LanguageRegistry.instance()
                                     .getStringLocalization(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
@@ -321,10 +320,10 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                             (short) ((BartWorksHelper.getMetaFromBlock(aChunk, x, y, z, tBlock)) * -1),
                             null);
                         String type = BartWorksHelper.isSmallOre(tBlock) ? "oreSmall" : "ore";
-                        String translated = GT_LanguageManager.getTranslation("bw.blocktype." + type);
+                        String translated = GTLanguageManager.getTranslation("bw.blocktype." + type);
                         addOreToHashMap(translated.replace("%material", werkstoff.getLocalizedName()), aPlayer);
                     } else if (data == 1) {
-                        tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                        tAssotiation = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
                             .startsWith("ore"))) {
                             try {
@@ -416,6 +415,6 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
     }
 
     public static int getPolution(World aWorld, int aX, int aZ) {
-        return GT_Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
+        return Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
     }
 }

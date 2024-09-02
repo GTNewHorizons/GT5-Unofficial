@@ -1,6 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;
@@ -20,13 +20,13 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.TecTechConfig;
@@ -36,7 +36,7 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchCapacitor extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon TM_H;
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
@@ -73,12 +73,12 @@ public class MTEHatchCapacitor extends GT_MetaTileEntity_Hatch implements IAddUI
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TM_H_ACTIVE) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TM_H_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TM_H) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TM_H) };
     }
 
     @Override
@@ -120,7 +120,7 @@ public class MTEHatchCapacitor extends GT_MetaTileEntity_Hatch implements IAddUI
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

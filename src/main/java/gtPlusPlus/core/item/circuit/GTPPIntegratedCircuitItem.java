@@ -29,13 +29,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.gtnewhorizons.modularui.api.UIInfos;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.net.GT_Packet_UpdateItem;
+import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -72,13 +72,13 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         try {
             aList.add("Configuration == " + aStack.getItemDamage());
             aList.add(
-                GT_LanguageManager.addStringLocalization(
+                GTLanguageManager.addStringLocalization(
                     new StringBuilder().append(getUnlocalizedName())
                         .append(".tooltip.0")
                         .toString(),
                     "Right click to reconfigure"));
             aList.add(
-                GT_LanguageManager.addStringLocalization(
+                GTLanguageManager.addStringLocalization(
                     new StringBuilder().append(getUnlocalizedName())
                         .append(".tooltip.1")
                         .toString(),
@@ -192,7 +192,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     private static void onConfigured(ItemStack stack) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setByte("meta", (byte) stack.getItemDamage());
-        GT_Values.NW.sendToServer(new GT_Packet_UpdateItem(tag));
+        GTValues.NW.sendToServer(new GTPacketUpdateItem(tag));
     }
 
     private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(
@@ -201,9 +201,9 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         for (int j = 0, mainInventoryLength = mainInventory.length; j < mainInventoryLength; j++) {
             ItemStack toolStack = mainInventory[j];
 
-            if (!GT_Utility.isStackValid(toolStack)) continue;
+            if (!GTUtility.isStackValid(toolStack)) continue;
 
-            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList
+            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTechAPI.sCircuitProgrammerList
                 .entrySet())
                 if (p.getKey()
                     .test(toolStack)) return Pair.of(j, p.getValue());

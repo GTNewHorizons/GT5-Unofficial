@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -54,7 +54,7 @@ public class BaseItemPlate_OLD extends Item {
             .contains("itemplate")) {
             temp = this.unlocalName.replace("itemP", "p");
             if ((temp != null) && !temp.equals("")) {
-                GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+                GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
             }
         }
     }

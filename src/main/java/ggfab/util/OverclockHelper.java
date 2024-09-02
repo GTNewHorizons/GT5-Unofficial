@@ -1,13 +1,13 @@
 package ggfab.util;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class OverclockHelper {
 
     public static OverclockOutput normalOverclock(long recipeEUt, int duration, long inputVoltage, boolean perfectOC) {
         if (recipeEUt > inputVoltage) return null;
-        int recipeTier = Math.max(1, GT_Utility.getTier(recipeEUt)); // ULV no overclock
-        int machineTier = GT_Utility.getTier(inputVoltage);
+        int recipeTier = Math.max(1, GTUtility.getTier(recipeEUt)); // ULV no overclock
+        int machineTier = GTUtility.getTier(inputVoltage);
         int shift = perfectOC ? 2 : 1;
         while (recipeTier < machineTier && duration > 1) {
             duration >>= shift;

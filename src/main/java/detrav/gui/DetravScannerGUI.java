@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import detrav.gui.textures.DetravMapTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -106,7 +106,7 @@ public class DetravScannerGUI extends GuiScreen {
                                 + map.packet.metaMap.get(fluidId));
                         info.add(
                             StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
-                                + GT_Utility.formatNumbers(fluidAmount)
+                                + GTUtility.formatNumbers(fluidAmount)
                                 + " L");
                     } else info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 } else {

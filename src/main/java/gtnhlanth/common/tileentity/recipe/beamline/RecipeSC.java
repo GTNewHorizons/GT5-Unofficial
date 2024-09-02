@@ -7,11 +7,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.LanthItemList;
 
-public class RecipeSC extends GT_Recipe {
+public class RecipeSC extends GTRecipe {
 
     public int particleId;
     public int rate;
@@ -47,6 +47,6 @@ public class RecipeSC extends GT_Recipe {
         ItemStack[] mOutputsWithParticleArray = mOutputsWithParticle.toArray(new ItemStack[0]);
 
         if (aIndex < 0 || aIndex >= mOutputsWithParticleArray.length) return null;
-        return GT_Utility.copyOrNull(mOutputsWithParticleArray[aIndex]);
+        return GTUtility.copyOrNull(mOutputsWithParticleArray[aIndex]);
     }
 }

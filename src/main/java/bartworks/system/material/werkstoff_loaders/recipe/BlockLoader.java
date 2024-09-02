@@ -19,16 +19,16 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
-import gregtech.api.util.GT_RecipeConstants;
+import gregtech.api.util.GTRecipeConstants;
 
 public class BlockLoader implements IWerkstoffRunnable {
 
@@ -36,17 +36,17 @@ public class BlockLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (!werkstoff.hasItemType(block)) return;
         if (werkstoff.hasItemType(ingot)) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
                 .itemOutputs(werkstoff.get(ingot, 9))
                 .duration(16 * TICKS)
                 .eut(90)
-                .metadata(GT_RecipeConstants.RECYCLE, true)
+                .metadata(GTRecipeConstants.RECYCLE, true)
                 .addTo(UniversalArcFurnace);
         }
         if (werkstoff.hasItemType(cellMolten)) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
                 .fluidOutputs(werkstoff.getMolten(1296))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -57,7 +57,7 @@ public class BlockLoader implements IWerkstoffRunnable {
         }
         if (werkstoff.hasItemType(plate)) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
                 .itemOutputs(werkstoff.get(plate, 9))
                 .duration(

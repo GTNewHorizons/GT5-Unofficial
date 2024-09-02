@@ -11,14 +11,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTESolarTower;
 
-public class MTESolarHeater extends GT_MetaTileEntity_TieredMachineBlock {
+public class MTESolarHeater extends MTETieredMachineBlock {
 
     public boolean mHasTower = false;
     private MTESolarTower mTower = null;
@@ -68,49 +68,49 @@ public class MTESolarHeater extends GT_MetaTileEntity_TieredMachineBlock {
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     @Override
@@ -247,7 +247,7 @@ public class MTESolarHeater extends GT_MetaTileEntity_TieredMachineBlock {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return false;
     }
 

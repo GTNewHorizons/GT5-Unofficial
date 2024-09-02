@@ -12,17 +12,17 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
-public class BlockGTCasingsTT extends GT_Block_Casings_Abstract {
+public class BlockGTCasingsTT extends BlockCasingsAbstract {
 
     public static final byte texturePage = TecTech.tectechTexturePage1;
     public static final short textureOffset = texturePage << 7; // Start of PAGE 8 (which is the 9th page) (8*128)
@@ -31,39 +31,39 @@ public class BlockGTCasingsTT extends GT_Block_Casings_Abstract {
     private static final IIcon[] debug = new IIcon[6];
 
     public BlockGTCasingsTT() {
-        super(ItemCasingsTT.class, "gt.blockcasingsTT", GT_Material_Casings.INSTANCE);
+        super(ItemCasingsTT.class, "gt.blockcasingsTT", MaterialCasings.INSTANCE);
         setCreativeTab(TecTech.creativeTabTecTech);
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[texturePage][b] = new GTCopiedBlockTexture(this, 6, b);
             /* IMPORTANT for block recoloring **/
         }
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "High Power Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "High Power Casing");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Computer Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Computer Heat Vent");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Advanced Computer Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Computer Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Computer Heat Vent");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Advanced Computer Casing");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Molecular Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Advanced Molecular Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Containment Field Generator");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Molecular Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Advanced Molecular Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Containment Field Generator");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Molecular Coil");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Hollow Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Spacetime Altering Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Molecular Coil");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Hollow Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Spacetime Altering Casing");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Teleportation Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Dimensional Bridge Generator");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Teleportation Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Dimensional Bridge Generator");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultimate Molecular Casing");
-        GT_LanguageManager
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultimate Molecular Casing");
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides"); // NOT REGISTER AS
-                                                                                                    // TEXTURE FOR
-                                                                                                    // HATCHES!
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides"); // NOT REGISTER AS
+                                                                                                   // TEXTURE FOR
+                                                                                                   // HATCHES!
 
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
 

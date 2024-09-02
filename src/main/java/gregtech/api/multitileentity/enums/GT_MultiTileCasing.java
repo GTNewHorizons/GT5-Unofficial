@@ -3,7 +3,7 @@ package gregtech.api.multitileentity.enums;
 import static gregtech.api.util.GT_StructureUtilityMuTE.createMuTEStructureCasing;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.CASING_REGISTRY_NAME;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GT_StructureUtilityMuTE;
 
 public enum GT_MultiTileCasing {
@@ -19,7 +19,7 @@ public enum GT_MultiTileCasing {
     LaserEngraverUpgrade2(8),
     LaserEngraverUpgrade3(9),
     LaserEngraverUpgrade4(10),
-    NONE(GT_Values.W);
+    NONE(GTValues.W);
 
     private final int meta;
     private final GT_StructureUtilityMuTE.MuTEStructureCasing casing;

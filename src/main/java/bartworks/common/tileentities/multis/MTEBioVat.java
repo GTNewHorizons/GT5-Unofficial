@@ -25,7 +25,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,25 +66,25 @@ import bartworks.util.BioCulture;
 import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 
-public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVat> {
+public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -130,7 +130,7 @@ public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVa
                 ofHatchAdder(MTEBioVat::addInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(MTEBioVat::addRadiationInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(MTEBioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
-                onElementPass(e -> e.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1))))
+                onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
         .addElement(
             'g',
@@ -148,8 +148,8 @@ public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVa
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bacterial Vat")
             .addInfo("Controller block for the Bacterial Vat")
             .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
@@ -182,13 +182,13 @@ public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVa
 
     private int getInputCapacity() {
         return this.mInputHatches.stream()
-            .mapToInt(GT_MetaTileEntity_Hatch_Input::getCapacity)
+            .mapToInt(MTEHatchInput::getCapacity)
             .sum();
     }
 
     private int getOutputCapacity() {
         return this.mOutputHatches.stream()
-            .mapToInt(GT_MetaTileEntity_Hatch_Output::getCapacity)
+            .mapToInt(MTEHatchOutput::getCapacity)
             .sum();
     }
 
@@ -244,7 +244,7 @@ public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVa
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!BWUtil.areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, MTEBioVat.this.getControllerSlot()))
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 int[] conditions = MTEBioVat.specialValueUnpack(recipe.mSpecialValue);
@@ -267,14 +267,14 @@ public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVa
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
     }
 
-    protected GT_Recipe recipeWithMultiplier(GT_Recipe recipe, FluidStack[] fluidInputs) {
-        GT_Recipe tRecipe = recipe.copy();
+    protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
+        GTRecipe tRecipe = recipe.copy();
         int multiplier = getExpectedMultiplier(recipe.getFluidOutput(0), true);
         mExpectedMultiplier = multiplier;
         // Calculate max multiplier limited by input fluids
@@ -822,9 +822,9 @@ public class MTEBioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEBioVa
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
             return true;
         }

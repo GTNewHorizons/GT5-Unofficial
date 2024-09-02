@@ -11,12 +11,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import kubatech.Tags;
 import kubatech.api.enums.ItemList;
 
-public class BlockDEFCCasing extends GT_Block_Casings_Abstract {
+public class BlockDEFCCasing extends BlockCasingsAbstract {
 
     @SideOnly(Side.CLIENT)
     private IIcon[] texture;
@@ -27,12 +27,12 @@ public class BlockDEFCCasing extends GT_Block_Casings_Abstract {
         this.setResistance(30.0F);
         this.setCreativeTab(KT);
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Naquadah Alloy Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Bloody Ichorium Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Draconium Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Wyvern Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Awakened Draconium Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Chaotic Fusion Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Naquadah Alloy Fusion Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Bloody Ichorium Fusion Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Draconium Fusion Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Wyvern Fusion Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Awakened Draconium Fusion Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Chaotic Fusion Casing");
 
         ItemList.DEFCCasingBase.set(new ItemStack(this, 1, 7));
         ItemList.DEFCCasingT1.set(new ItemStack(this, 1, 8));

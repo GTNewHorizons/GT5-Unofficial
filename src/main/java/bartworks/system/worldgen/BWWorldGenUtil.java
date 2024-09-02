@@ -18,31 +18,31 @@ import java.util.Random;
 import net.minecraft.block.Block;
 
 import bartworks.common.configs.ConfigHandler;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 
 public class BWWorldGenUtil {
 
     private BWWorldGenUtil() {}
 
-    public static final Block GT_TILES = GregTech_API.sBlockMachines;
+    public static final Block GT_TILES = GregTechAPI.sBlockMachines;
 
     public static short getGenerator(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[0][tier][rand.nextInt(ConfigHandler.metasForTiers[0][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getGenerator(rand, tier);
+        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getGenerator(rand, tier);
     }
 
     public static short getBuffer(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[1][tier][rand.nextInt(ConfigHandler.metasForTiers[1][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getBuffer(rand, tier);
+        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getBuffer(rand, tier);
     }
 
     public static short getCable(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[2][tier][rand.nextInt(ConfigHandler.metasForTiers[2][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getCable(rand, tier);
+        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getCable(rand, tier);
     }
 
     public static short getMachine(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[3][tier][rand.nextInt(ConfigHandler.metasForTiers[3][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getMachine(rand, tier);
+        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getMachine(rand, tier);
     }
 }

@@ -1,6 +1,6 @@
 package gregtech.api.recipe.metadata;
 
-import static gregtech.api.util.GT_Utility.trans;
+import static gregtech.api.util.GTUtility.trans;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;

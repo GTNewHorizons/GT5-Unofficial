@@ -14,13 +14,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
-public class MTEHatchNaquadah extends GT_MetaTileEntity_Hatch_Input {
+public class MTEHatchNaquadah extends MTEHatchInput {
 
     public final FluidStack[] mFluidsToUse = new FluidStack[3];
     public final int mFluidCapacity;
@@ -52,13 +52,13 @@ public class MTEHatchNaquadah extends GT_MetaTileEntity_Hatch_Input {
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
+            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
+            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
     }
 
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
@@ -66,7 +66,7 @@ public class MTEHatchNaquadah extends GT_MetaTileEntity_Hatch_Input {
         if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             for (FluidStack f : mFluidsToUse) {
                 if (f != null) {
-                    if (GT_Utility.getFluidForFilledItem(aStack, true)
+                    if (GTUtility.getFluidForFilledItem(aStack, true)
                         .getFluid() == f.getFluid()) {
                         return true;
                     }
@@ -187,7 +187,7 @@ public class MTEHatchNaquadah extends GT_MetaTileEntity_Hatch_Input {
                 : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
 
             return new ITexture[] { g,
-                new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
+                new GTRenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
         }
 
         return side != facing

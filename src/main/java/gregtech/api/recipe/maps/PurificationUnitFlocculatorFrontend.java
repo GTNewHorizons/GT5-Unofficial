@@ -15,14 +15,14 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitFlocculation;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitFlocculation;
+import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -33,7 +33,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         super(
             80,
             uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_FLOCCULATION))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_FLOCCULATION))
                 .logoPos(new Pos2d(152, 100)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
@@ -60,30 +60,29 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     @Override
     @NotNull
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-        GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (stack
-            .isItemEqual(GT_Utility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(1000L), false))) {
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        if (stack.isItemEqual(GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(1000L), false))) {
             currentTip.add("Consumed during operation");
             currentTip.add(
-                "+" + GT_MetaTileEntity_PurificationUnitFlocculation.SUCCESS_PER_LEVEL
+                "+" + MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL
                     + "%/"
-                    + GT_MetaTileEntity_PurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL
+                    + MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL
                     + "L");
         } else if (stack
-            .isItemEqual(GT_Utility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(1000L), false))) {
+            .isItemEqual(GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(1000L), false))) {
                 currentTip.add("Returned in amount equivalent to consumed flocculant.");
             }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
     }
 
     @Override
-    public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.drawNEIOverlays(neiCachedRecipe);
 
         // Display flocculation chemical
         neiCachedRecipe.mInputs.add(
             new PositionedStack(
-                GT_Utility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100000L), true),
+                GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100000L), true),
                 5,
                 -1,
                 false));
@@ -91,7 +90,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         // Display waste output
         neiCachedRecipe.mOutputs.add(
             new PositionedStack(
-                GT_Utility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100000L), true),
+                GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100000L), true),
                 147,
                 48,
                 false));

@@ -19,18 +19,18 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class CasingRegistrator implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        GT_OreDictUnificator.addAssociation(
+        GTOreDictUnificator.addAssociation(
             OrePrefixes.blockCasing,
             werkstoff.getBridgeMaterial(),
             new ItemStack(WerkstoffLoader.BWBlockCasings, 1, werkstoff.getmID()),
             false);
-        GT_OreDictUnificator.addAssociation(
+        GTOreDictUnificator.addAssociation(
             OrePrefixes.blockCasingAdvanced,
             werkstoff.getBridgeMaterial(),
             new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, werkstoff.getmID()),

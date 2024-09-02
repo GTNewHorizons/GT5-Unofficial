@@ -22,12 +22,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
 
@@ -76,9 +76,9 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
         if (shouldSilkTouch) {
             rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
         } else {
-            switch (GT_Mod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.gregtechproxy.oreDropSystem) {
                 case Item -> {
-                    rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                    rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                 }
                 case FortuneItem -> {
                     // if shouldFortune and isNatural then get fortune drops
@@ -91,10 +91,10 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
                         if (aFortune > 3) aFortune = 3;
                         long amount = (long) new Random().nextInt(aFortune) + aMinAmount;
                         for (int i = 0; i < amount; i++) {
-                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                         }
                     } else {
-                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                        rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                     }
                 }
                 case UnifiedBlock -> {

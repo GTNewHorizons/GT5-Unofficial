@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.D1;
+import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,10 +22,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IItemBehaviour;
 import ic2.api.item.ElectricItem;
@@ -167,7 +167,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     }
                 } catch (final Throwable e) {
                     if (D1) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                 }
             }
@@ -196,7 +196,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     }
                 } catch (final Throwable e) {
                     if (D1) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                 }
             }
@@ -226,7 +226,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     }
                 } catch (final Throwable e) {
                     if (D1) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                 }
             }
@@ -245,7 +245,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
                 } catch (final Throwable e) {
                     if (D1) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                 }
             }
@@ -257,8 +257,8 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
         final boolean aF3_H) {
         final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
-            tString = GT_LanguageManager.getTranslation(tKey);
-        if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) {
+            tString = GTLanguageManager.getTranslation(tKey);
+        if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
             aList.add(tString);
         }
 
@@ -267,7 +267,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
             if (tStats[3] > 0) {
                 aList.add(
                     EnumChatFormatting.AQUA + "Contains "
-                        + GT_Utility.formatNumbers(tStats[3])
+                        + GTUtility.formatNumbers(tStats[3])
                         + " EU   Tier: "
                         + (tStats[2] >= 0 ? tStats[2] : 0)
                         + EnumChatFormatting.GRAY);
@@ -279,11 +279,11 @@ public abstract class GTMetaItemBase extends GTGenericItem
                 } else {
                     aList.add(
                         EnumChatFormatting.AQUA + ""
-                            + GT_Utility.formatNumbers(tCharge)
+                            + GTUtility.formatNumbers(tCharge)
                             + " / "
-                            + GT_Utility.formatNumbers(Math.abs(tStats[0]))
+                            + GTUtility.formatNumbers(Math.abs(tStats[0]))
                             + " EU - Voltage: "
-                            + GT_Utility.formatNumbers(
+                            + GTUtility.formatNumbers(
                                 V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
                             + EnumChatFormatting.GRAY);
                 }
@@ -295,12 +295,12 @@ public abstract class GTMetaItemBase extends GTGenericItem
             final FluidStack tFluid = this.getFluidContent(aStack);
             aList.add(
                 EnumChatFormatting.BLUE
-                    + ((tFluid == null ? "No Fluids Contained" : GT_Utility.getFluidName(tFluid, true)))
+                    + ((tFluid == null ? "No Fluids Contained" : GTUtility.getFluidName(tFluid, true)))
                     + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.BLUE
-                    + (GT_Utility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
-                        + GT_Utility.formatNumbers(tStats[0])
+                    + (GTUtility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
+                        + GTUtility.formatNumbers(tStats[0])
                         + "L")
                     + EnumChatFormatting.GRAY);
         }
@@ -434,7 +434,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
         }
         for (int i = 1; i < 5; i++) {
             final ItemStack tArmor = aPlayer.getEquipmentInSlot(i);
-            if (GT_ModHandler.isElectricItem(tArmor)) {
+            if (GTModHandler.isElectricItem(tArmor)) {
                 final IElectricItem tArmorItem = (IElectricItem) tArmor.getItem();
                 if (tArmorItem.canProvideEnergy(tArmor) && (tArmorItem.getTier(tArmor) >= this.getTier(aStack))) {
                     final double tCharge = ElectricItem.manager.discharge(
@@ -521,11 +521,11 @@ public abstract class GTMetaItemBase extends GTGenericItem
             return 0;
         }
 
-        final ItemStack tStack = GT_Utility.fillFluidContainer(aFluid, aStack, false, false);
+        final ItemStack tStack = GTUtility.fillFluidContainer(aFluid, aStack, false, false);
         if (tStack != null) {
             aStack.setItemDamage(tStack.getItemDamage());
             aStack.func_150996_a(tStack.getItem());
-            return GT_Utility.getFluidForFilledItem(tStack, false).amount;
+            return GTUtility.getFluidForFilledItem(tStack, false).amount;
         }
 
         final Long[] tStats = this.getFluidContainerStats(aStack);
@@ -580,9 +580,9 @@ public abstract class GTMetaItemBase extends GTGenericItem
             return null;
         }
 
-        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aStack, false);
+        FluidStack tFluid = GTUtility.getFluidForFilledItem(aStack, false);
         if ((tFluid != null) && (maxDrain >= tFluid.amount)) {
-            final ItemStack tStack = GT_Utility.getContainerItem(aStack, false);
+            final ItemStack tStack = GTUtility.getContainerItem(aStack, false);
             if (tStack == null) {
                 aStack.stackSize = 0;
                 return tFluid;
@@ -619,7 +619,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public FluidStack getFluidContent(final ItemStack aStack) {
         final Long[] tStats = this.getFluidContainerStats(aStack);
         if ((tStats == null) || (tStats[0] <= 0)) {
-            return GT_Utility.getFluidForFilledItem(aStack, false);
+            return GTUtility.getFluidForFilledItem(aStack, false);
         }
         final NBTTagCompound tNBT = aStack.getTagCompound();
         return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));

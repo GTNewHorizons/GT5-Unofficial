@@ -1,7 +1,7 @@
 package tectech.thing.casing;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -14,10 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.TierEU;
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.common.blocks.ItemCasingsAbstract;
 import tectech.util.CommonValues;
 
-public class ItemCasingsBA0 extends GT_Item_Casings_Abstract {
+public class ItemCasingsBA0 extends ItemCasingsAbstract {
 
     public ItemCasingsBA0(Block par1) {
         super(par1);

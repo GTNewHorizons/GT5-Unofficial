@@ -24,13 +24,13 @@ import detrav.net.DetravNetwork;
 import detrav.net.ProspectingPacket;
 import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.GT_UndergroundOil;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.UndergroundOil;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.TileEntityOres;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -41,7 +41,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         super(aCosts);
     }
 
-    public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
             int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
                 .intValue();
@@ -103,13 +103,13 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                             case 1:
                                 final Block tBlock = c.getBlock(x, y, z);
                                 short tMetaID = (short) c.getBlockMetadata(x, y, z);
-                                if (tBlock instanceof GT_Block_Ores_Abstract) {
+                                if (tBlock instanceof BlockOresAbstract) {
                                     TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
-                                    if ((tTileEntity instanceof GT_TileEntity_Ores)
-                                        && ((GT_TileEntity_Ores) tTileEntity).mNatural) {
-                                        tMetaID = (short) ((GT_TileEntity_Ores) tTileEntity).getMetaData();
+                                    if ((tTileEntity instanceof TileEntityOres)
+                                        && ((TileEntityOres) tTileEntity).mNatural) {
+                                        tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
                                         try {
-                                            String name = GT_LanguageManager
+                                            String name = GTLanguageManager
                                                 .getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
                                             if (data != 1 && name.startsWith(small_ore_keyword)) continue;
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
@@ -133,7 +133,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                         c.zPosition * 16 + z,
                                         BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
                                 } else if (data == 1) {
-                                    ItemData tAssotiation = GT_OreDictUnificator
+                                    ItemData tAssotiation = GTOreDictUnificator
                                         .getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                     if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
                                         .startsWith("ore"))) {
@@ -149,7 +149,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                 if ((x == 0) || (z == 0)) { // Skip doing the locations with the grid on them.
                                     break;
                                 }
-                                FluidStack fStack = GT_UndergroundOil.undergroundOil(
+                                FluidStack fStack = UndergroundOil.undergroundOil(
                                     aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z),
                                     -1);
                                 if (fStack.amount > 0) {
@@ -218,13 +218,13 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name + " " + value));
     }
 
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
+        int aZ, int aSide, float hitX, float hitY, float hitZ) {
         long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
         if (data < 2) {
             if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {
                 if (!aWorld.isRemote) {
-                    FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
+                    FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                     addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
                     if (!aPlayer.capabilities.isCreativeMode)
                         ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
@@ -238,7 +238,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             }
         }
         if (data < 3) if (!aWorld.isRemote) {
-            FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
+            FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
             addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
             if (!aPlayer.capabilities.isCreativeMode) ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
             return true;

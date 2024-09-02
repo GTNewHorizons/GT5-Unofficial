@@ -1,7 +1,7 @@
 package galacticgreg;
 
-import static gregtech.api.enums.GT_Values.oreveinPlacerOres;
-import static gregtech.api.enums.GT_Values.oreveinPlacerOresMultiplier;
+import static gregtech.api.enums.GTValues.oreveinPlacerOres;
+import static gregtech.api.enums.GTValues.oreveinPlacerOresMultiplier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +17,11 @@ import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.auxiliary.GTOreGroup;
 import galacticgreg.registry.GalacticGregRegistry;
-import gregtech.api.util.GT_Log;
-import gregtech.api.world.GT_Worldgen;
+import gregtech.api.util.GTLog;
+import gregtech.api.world.GTWorldgen;
 import gregtech.common.OreMixBuilder;
 
-public class WorldgenOreLayerSpace extends GT_Worldgen {
+public class WorldgenOreLayerSpace extends GTWorldgen {
 
     public static int sWeight = 0;
     public final short mMinY;
@@ -97,10 +97,9 @@ public class WorldgenOreLayerSpace extends GT_Worldgen {
             tReturn = _mBufferedVeinList.get(pDimensionDef.getDimIdentifier());
         else {
             tReturn = new ArrayList<>();
-            for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
-                if (tWorldGen instanceof WorldgenOreLayerSpace
-                    && ((WorldgenOreLayerSpace) tWorldGen).isEnabledForDim(pDimensionDef))
-                    tReturn.add(tWorldGen.mWorldGenName);
+            for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) if (tWorldGen instanceof WorldgenOreLayerSpace
+                && ((WorldgenOreLayerSpace) tWorldGen).isEnabledForDim(pDimensionDef))
+                tReturn.add(tWorldGen.mWorldGenName);
 
             _mBufferedVeinList.put(pDimensionDef.getDimIdentifier(), tReturn);
         }
@@ -126,10 +125,9 @@ public class WorldgenOreLayerSpace extends GT_Worldgen {
             int tRnd = pRandom.nextInt(tEnabledVeins.size());
             String tVeinName = tEnabledVeins.get(tRnd);
 
-            GT_Worldgen tGen = null;
-            for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
-                if (tWorldGen instanceof WorldgenOreLayerSpace
-                    && ((WorldgenOreLayerSpace) tWorldGen).mWorldGenName.equals(tVeinName)) tGen = tWorldGen;
+            GTWorldgen tGen = null;
+            for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) if (tWorldGen instanceof WorldgenOreLayerSpace
+                && ((WorldgenOreLayerSpace) tWorldGen).mWorldGenName.equals(tVeinName)) tGen = tWorldGen;
 
             if (tGen != null) {
                 // GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.get(tRndMix);
@@ -146,7 +144,7 @@ public class WorldgenOreLayerSpace extends GT_Worldgen {
                 int tRandomWeight;
                 for (int i = 0; (i < 256) && (temp); i++) {
                     tRandomWeight = pRandom.nextInt(WorldgenOreLayerSpace.sWeight);
-                    for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) {
+                    for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) {
                         if (!(tWorldGen instanceof WorldgenOreLayerSpace)) continue;
 
                         tRandomWeight -= ((WorldgenOreLayerSpace) tWorldGen).mWeight;
@@ -163,7 +161,7 @@ public class WorldgenOreLayerSpace extends GT_Worldgen {
                                     break;
                                 }
                             } catch (Throwable e) {
-                                e.printStackTrace(GT_Log.err);
+                                e.printStackTrace(GTLog.err);
                             }
                         }
                     }

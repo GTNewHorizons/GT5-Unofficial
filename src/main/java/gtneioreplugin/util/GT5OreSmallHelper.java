@@ -7,14 +7,14 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SmallOres;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.world.GT_Worldgen;
-import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
+import gregtech.common.WorldgenGTOreSmallPieces;
 
 public class GT5OreSmallHelper {
 
@@ -56,16 +56,15 @@ public class GT5OreSmallHelper {
             smallOreDefMap.put(ore.smallOreBuilder.smallOreName, ore.smallOreBuilder);
         }
 
-        for (GT_Worldgen worldGen : GregTech_API.sWorldgenList) {
-            if (!worldGen.mWorldGenName.startsWith("ore.small.")
-                || !(worldGen instanceof GT_Worldgen_GT_Ore_SmallPieces)) {
+        for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
+            if (!worldGen.mWorldGenName.startsWith("ore.small.") || !(worldGen instanceof WorldgenGTOreSmallPieces)) {
                 continue;
             }
 
-            GT_Worldgen_GT_Ore_SmallPieces worldGenSmallPieces = (GT_Worldgen_GT_Ore_SmallPieces) worldGen;
+            WorldgenGTOreSmallPieces worldGenSmallPieces = (WorldgenGTOreSmallPieces) worldGen;
             meta = worldGenSmallPieces.mMeta;
             if (meta < 0) break;
-            material = GregTech_API.sGeneratedMaterials[meta];
+            material = GregTechAPI.sGeneratedMaterials[meta];
             mapOreSmallWrapper.put(
                 worldGen.mWorldGenName,
                 new OreSmallWrapper(smallOreDefMap.get(worldGenSmallPieces.mWorldGenName)));
@@ -74,49 +73,49 @@ public class GT5OreSmallHelper {
             }
 
             List<ItemStack> stackList = new ArrayList<>();
-            stack = GT_OreDictUnificator
-                .get(OrePrefixes.gemExquisite, material, GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
+            stack = GTOreDictUnificator
+                .get(OrePrefixes.gemExquisite, material, GTOreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GT_OreDictUnificator
-                .get(OrePrefixes.gemFlawless, material, GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
+            stack = GTOreDictUnificator
+                .get(OrePrefixes.gemFlawless, material, GTOreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L);
+            stack = GTOreDictUnificator.get(OrePrefixes.gem, material, 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GT_OreDictUnificator
-                .get(OrePrefixes.gemFlawed, material, GT_OreDictUnificator.get(OrePrefixes.crushed, material, 1L), 1L);
+            stack = GTOreDictUnificator
+                .get(OrePrefixes.gemFlawed, material, GTOreDictUnificator.get(OrePrefixes.crushed, material, 1L), 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GT_OreDictUnificator.get(OrePrefixes.crushed, material, 1L);
+            stack = GTOreDictUnificator.get(OrePrefixes.crushed, material, 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GT_OreDictUnificator.get(
+            stack = GTOreDictUnificator.get(
                 OrePrefixes.gemChipped,
                 material,
-                GT_OreDictUnificator.get(OrePrefixes.dustImpure, material, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1L),
                 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, material, 1L);
+            stack = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            oreSmallList.add(new ItemStack(GregTech_API.sBlockOres1, 1, meta + SMALL_ORE_BASE_META));
+            oreSmallList.add(new ItemStack(GregTechAPI.sBlockOres1, 1, meta + SMALL_ORE_BASE_META));
             mapOreMetaToOreDrops.put(meta, stackList);
 
         }
@@ -191,7 +190,7 @@ public class GT5OreSmallHelper {
         public List<ItemStack> getMaterialDrops(int maximumIndex) {
             List<ItemStack> stackList = new ArrayList<>();
             for (int i = 0; i < maximumIndex; i++)
-                stackList.add(new ItemStack(GregTech_API.sBlockOres1, 1, oreMeta + SMALL_ORE_BASE_META + i * 1000));
+                stackList.add(new ItemStack(GregTechAPI.sBlockOres1, 1, oreMeta + SMALL_ORE_BASE_META + i * 1000));
             return stackList;
         }
     }

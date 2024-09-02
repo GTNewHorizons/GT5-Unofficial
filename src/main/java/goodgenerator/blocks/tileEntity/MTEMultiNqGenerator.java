@@ -3,7 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.main.GGConfigLoader.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,27 +31,26 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
@@ -100,17 +99,17 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             if (aMetaTileEntity == null) {
                 return false;
             } else {
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                if (aMetaTileEntity instanceof MTEHatch) {
+                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 }
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                    return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-                    return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-                    return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+                if (aMetaTileEntity instanceof MTEHatchInput) {
+                    return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof MTEHatchOutput) {
+                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
+                    return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+                    return this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
                     return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
                 } else {
@@ -141,18 +140,19 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     ofChain(
                         buildHatchAdder(MTEMultiNqGenerator.class)
                             .atLeast(
-                                HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
-                                GT_HatchElement.InputHatch,
-                                GT_HatchElement.OutputHatch,
-                                GT_HatchElement.Maintenance)
+                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
+                                    .or(gregtech.api.enums.HatchElement.Dynamo),
+                                gregtech.api.enums.HatchElement.InputHatch,
+                                gregtech.api.enums.HatchElement.OutputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(44)
                             .dot(1)
                             .build(),
-                        ofBlock(GregTech_API.sBlockCasings3, 12)))
-                .addElement('A', ofBlock(GregTech_API.sBlockCasings3, 12))
+                        ofBlock(GregTechAPI.sBlockCasings3, 12)))
+                .addElement('A', ofBlock(GregTechAPI.sBlockCasings3, 12))
                 .addElement('N', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
                 .addElement('C', ofBlock(Loaders.MAR_Casing, 0))
-                .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
+                .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
                 .build();
         }
         return multiDefinition;
@@ -214,7 +214,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         ArrayList<FluidStack> tFluids = getStoredFluids();
         for (int i = 0; i < tFluids.size() - 1; i++) {
             for (int j = i + 1; j < tFluids.size(); j++) {
-                if (GT_Utility.areFluidsEqual(tFluids.get(i), tFluids.get(j))) {
+                if (GTUtility.areFluidsEqual(tFluids.get(i), tFluids.get(j))) {
                     if ((tFluids.get(i)).amount >= (tFluids.get(j)).amount) {
                         tFluids.remove(j--);
                     } else {
@@ -225,7 +225,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             }
         }
 
-        GT_Recipe tRecipe = GoodGeneratorRecipeMaps.naquadahReactorFuels
+        GTRecipe tRecipe = GoodGeneratorRecipeMaps.naquadahReactorFuels
             .findRecipe(this.getBaseMetaTileEntity(), true, 1 << 30, tFluids.toArray(new FluidStack[0]));
         if (tRecipe != null) {
             Pair<FluidStack, Integer> excitedInfo = getExcited(tFluids.toArray(new FluidStack[0]), false);
@@ -279,7 +279,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
-            + GT_Utility.formatNumbers(Math.abs(this.trueOutput))
+            + GTUtility.formatNumbers(Math.abs(this.trueOutput))
             + EnumChatFormatting.RESET
             + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED
@@ -337,11 +337,11 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     public void addAutoEnergy(long outputPower) {
-        if (this.eDynamoMulti.size() > 0) for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+        if (this.eDynamoMulti.size() > 0) for (MTEHatch tHatch : this.eDynamoMulti) {
             long voltage = tHatch.maxEUOutput();
             long power = voltage * tHatch.maxAmperesOut();
             long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
+            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
             if (outputPower >= voltage) {
                 leftEnergy += outputPower;
                 outputAmperes = leftEnergy / voltage;
@@ -351,11 +351,11 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                 addEnergyOutput_EM(outputPower, 1);
             }
         }
-        if (this.mDynamoHatches.size() > 0) for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+        if (this.mDynamoHatches.size() > 0) for (MTEHatch tHatch : this.mDynamoHatches) {
             long voltage = tHatch.maxEUOutput();
             long power = voltage * tHatch.maxAmperesOut();
             long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
+            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
             if (outputPower >= voltage) {
                 leftEnergy += outputPower;
                 outputAmperes = leftEnergy / voltage;
@@ -399,8 +399,8 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Reactor")
             .addInfo("Controller block for the Naquadah Reactor")
             .addInfo("Environmentally Friendly!")
@@ -448,13 +448,12 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE),
-                TextureFactory.builder()
+                new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE), TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT) };
+                new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44) };
     }

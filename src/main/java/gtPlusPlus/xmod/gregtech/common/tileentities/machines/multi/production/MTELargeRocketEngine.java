@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.AirIntake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
@@ -29,18 +29,18 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -95,8 +95,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Large Rocket Engine")
             .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
@@ -285,7 +285,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     continue;
                 }
                 if (this.freeFuelTicks == 0) {
-                    for (final GT_Recipe aFuel : getRecipeMap().getAllRecipes()) {
+                    for (final GTRecipe aFuel : getRecipeMap().getAllRecipes()) {
                         final FluidStack tLiquid;
                         tLiquid = aFuel.mFluidInputs[0];
                         if (hatchFluid1.isFluidEqual(tLiquid)) {
@@ -294,7 +294,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                             }
                             this.fuelValue = aFuel.mSpecialValue * 3;
                             this.fuelRemaining = hatchFluid1.amount;
-                            this.lEUt = ((this.mEfficiency < 2000) ? 0 : GT_Values.V[5] << 1);
+                            this.lEUt = ((this.mEfficiency < 2000) ? 0 : GTValues.V[5] << 1);
                             this.mProgresstime = 1;
                             this.mMaxProgresstime = 1;
                             this.mEfficiencyIncrease = this.euProduction / 2000;
@@ -304,7 +304,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 } else {
                     this.mEfficiencyIncrease = this.euProduction / 2000;
                     this.freeFuelTicks--;
-                    this.lEUt = ((this.mEfficiency < 1000) ? 0 : GT_Values.V[5] << 1);
+                    this.lEUt = ((this.mEfficiency < 1000) ? 0 : GTValues.V[5] << 1);
                     this.mProgresstime = 1;
                     this.mMaxProgresstime = 1;
                     return CheckRecipeResultRegistry.GENERATING;
@@ -323,7 +323,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
      * @param aFuel
      * @return
      */
-    public boolean consumeFuel(GT_Recipe aFuel, int amount) {
+    public boolean consumeFuel(GTRecipe aFuel, int amount) {
         amount *= this.boostEu ? 0.3 : 0.9;
         this.freeFuelTicks = 0;
         int value = aFuel.mSpecialValue * 3;
@@ -387,7 +387,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
-        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
+        for (MTEHatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             long aTotal = aDynamo.maxAmperesOut() * aVoltage;
             // Check against voltage to check when hatch mixing
@@ -411,7 +411,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         int aAmpsToInject;
         int aRemainder;
 
-        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
+        for (MTEHatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);

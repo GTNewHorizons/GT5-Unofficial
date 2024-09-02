@@ -1,6 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.RecipeDisplayInfo;
@@ -45,12 +45,12 @@ public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
         // These look odd because recipeInfo.recipe.mEUt is actually the EU per litre of fluid processed, not
         // the EU/t.
         recipeInfo.drawText(
-            GT_Utility.trans("152", "Total: ")
+            GTUtility.trans("152", "Total: ")
                 + formatNumbers(1000L * recipeInfo.recipe.mDuration / 100L * recipeInfo.recipe.mEUt)
                 + " EU");
         // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
         long averageUsage = 10L * recipeInfo.recipe.mEUt;
         recipeInfo.drawText(
-            "Average: " + formatNumbers(averageUsage) + " EU/t" + GT_Utility.getTierNameWithParentheses(averageUsage));
+            "Average: " + formatNumbers(averageUsage) + " EU/t" + GTUtility.getTierNameWithParentheses(averageUsage));
     }
 }

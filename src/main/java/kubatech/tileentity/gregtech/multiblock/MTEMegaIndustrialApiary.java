@@ -27,15 +27,15 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static forestry.api.apiculture.BeeManager.beeRoot;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.Variables.buildAuthorList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -108,20 +108,20 @@ import forestry.apiculture.blocks.BlockAlveary;
 import forestry.apiculture.blocks.BlockApicultureType;
 import forestry.apiculture.genetics.Bee;
 import forestry.plugins.PluginApiculture;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import kubatech.Tags;
@@ -187,7 +187,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             buildHatchAdder(MTEMegaIndustrialApiary.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings1, 10))))
+                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings1, 10))))
         .addElement(
             'H',
             ofBlocksMap(
@@ -270,7 +270,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
         if (built == -1) {
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 env.getActor(),
                 EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water and flowers yourself !");
             return 0;
@@ -289,8 +289,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Mega Apiary")
             .addInfo("Controller block for Industrial Apicultural Acclimatiser and Drone Domestication Station")
             .addInfo(buildAuthorList("kuba6000", "Runakai"))
@@ -373,7 +373,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
+            GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
             return;
         }
         if (!aPlayer.isSneaking()) {
@@ -381,28 +381,28 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             if (mPrimaryMode == 3) mPrimaryMode = 0;
             switch (mPrimaryMode) {
                 case 0:
-                    GT_Utility.sendChatToPlayer(aPlayer, "Changed primary mode to: Input mode");
+                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Input mode");
                     break;
                 case 1:
-                    GT_Utility.sendChatToPlayer(aPlayer, "Changed primary mode to: Output mode");
+                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Output mode");
                     break;
                 case 2:
-                    GT_Utility.sendChatToPlayer(aPlayer, "Changed primary mode to: Operating mode");
+                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Operating mode");
                     break;
             }
         } else {
             if (!mStorage.isEmpty()) {
-                GT_Utility.sendChatToPlayer(aPlayer, "Can't change operating mode when the multi is not empty !");
+                GTUtility.sendChatToPlayer(aPlayer, "Can't change operating mode when the multi is not empty !");
                 return;
             }
             mSecondaryMode++;
             if (mSecondaryMode == 2) mSecondaryMode = 0;
             switch (mSecondaryMode) {
                 case 0:
-                    GT_Utility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Normal mode");
+                    GTUtility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Normal mode");
                     break;
                 case 1:
-                    GT_Utility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Swarmer mode");
+                    GTUtility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Swarmer mode");
                     break;
             }
         }
@@ -411,8 +411,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private void updateMaxSlots() {
         int mOld = mMaxSlots;
         long v = this.getMaxInputEu();
-        if (v < GT_Values.V[6]) mMaxSlots = 0;
-        else if (mSecondaryMode == 0) mMaxSlots = (int) (v / GT_Values.V[6]);
+        if (v < GTValues.V[6]) mMaxSlots = 0;
+        else if (mSecondaryMode == 0) mMaxSlots = (int) (v / GTValues.V[6]);
         else mMaxSlots = 1;
         if (mOld != 0 && mOld != mMaxSlots) {
             needsTVarUpdate = true;
@@ -519,7 +519,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         stacks.addAll(beeSimulator.getDrops(this, 64_00d * boosted));
                     }
 
-                    this.lEUt = -(int) ((double) GT_Values.V[6] * (double) mMaxSlots * 0.99d);
+                    this.lEUt = -(int) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = 100;
@@ -530,7 +530,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         this.updateSlots();
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
-                    calculateOverclock(GT_Values.V[5] - 2L, 1200);
+                    calculateOverclock(GTValues.V[5] - 2L, 1200);
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -590,7 +590,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         flowersCheck.addAll(flowersCache.keySet());
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
         if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
-            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches)
                 if (this.mGlassTier < hatchEnergy.mTier) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 190;
         flowersError = valid && !this.flowersCheck.isEmpty();
@@ -668,7 +668,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             if (mte.mStorage.size() >= mte.mMaxSlots) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (beeRoot.getType(aStack) == EnumBeeType.QUEEN) {
                 if (mte.mMaxProgresstime > 0) {
-                    GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
+                    GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
                     return super.transferStackInSlot(aPlayer, aSlotIndex);
                 }
                 World w = mte.getBaseMetaTileEntity()
@@ -728,7 +728,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
@@ -740,7 +740,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
                 .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(140, 4)
                 .setSize(55, 16));
 
@@ -774,7 +774,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (!widget.isClient()) widget.getContext()
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .addTooltip("Configuration")
                 .setSize(16, 16));
     }
@@ -783,7 +783,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         ModularWindow.Builder builder = ModularWindow.builder(200, 100);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
             .widget(new TextWidget("Configuration").setPos(25, 9))
@@ -796,7 +796,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         .setGetter(() -> mPrimaryMode)
                         .setSetter(val -> {
                             if (this.mMaxProgresstime > 0) {
-                                GT_Utility.sendChatToPlayer(player, "Can't change mode when running !");
+                                GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
                                 return;
                             }
                             mPrimaryMode = val;
@@ -804,13 +804,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             if (!(player instanceof EntityPlayerMP)) return;
                             switch (mPrimaryMode) {
                                 case 0:
-                                    GT_Utility.sendChatToPlayer(player, "Changed primary mode to: Input mode");
+                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Input mode");
                                     break;
                                 case 1:
-                                    GT_Utility.sendChatToPlayer(player, "Changed primary mode to: Output mode");
+                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Output mode");
                                     break;
                                 case 2:
-                                    GT_Utility.sendChatToPlayer(player, "Changed primary mode to: Operating mode");
+                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Operating mode");
                                     break;
                             }
                         })
@@ -826,7 +826,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
-                            GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                            GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
                         .addTooltip("Primary mode"))
                     .widget(
@@ -834,7 +834,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             .setGetter(() -> mSecondaryMode)
                             .setSetter(val -> {
                                 if (this.mMaxProgresstime > 0) {
-                                    GT_Utility.sendChatToPlayer(player, "Can't change mode when running !");
+                                    GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
                                     return;
                                 }
 
@@ -843,10 +843,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 if (!(player instanceof EntityPlayerMP)) return;
                                 switch (mSecondaryMode) {
                                     case 0:
-                                        GT_Utility.sendChatToPlayer(player, "Changed secondary mode to: Normal mode");
+                                        GTUtility.sendChatToPlayer(player, "Changed secondary mode to: Normal mode");
                                         break;
                                     case 1:
-                                        GT_Utility.sendChatToPlayer(player, "Changed secondary mode to: Swarmer mode");
+                                        GTUtility.sendChatToPlayer(player, "Changed secondary mode to: Swarmer mode");
                                         break;
                                 }
                             })
@@ -859,7 +859,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("Secondary mode"))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
@@ -870,7 +870,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
                     .setSize(18, 18)
                     .setPos(10, 30)
                     .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))

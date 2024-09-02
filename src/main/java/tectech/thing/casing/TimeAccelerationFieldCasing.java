@@ -15,15 +15,15 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 import tectech.thing.CustomItemList;
 import tectech.util.CommonValues;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
+public class TimeAccelerationFieldCasing extends BlockCasingsAbstract {
 
     private static IIcon textureTier0;
     private static IIcon textureTier1;
@@ -39,13 +39,13 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 48;
 
     public TimeAccelerationFieldCasing() {
-        super(ItemCasingsTimeAcceleration.class, "gt.time_acceleration_field_generator", GT_Material_Casings.INSTANCE);
+        super(ItemCasingsTimeAcceleration.class, "gt.time_acceleration_field_generator", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GTCopiedBlockTexture(this, 6, b);
         }
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
-            GT_LanguageManager.addStringLocalization(
+            GTLanguageManager.addStringLocalization(
                 getUnlocalizedName() + "." + i + ".name",
                 WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Time Dilation Field Generator");
         }

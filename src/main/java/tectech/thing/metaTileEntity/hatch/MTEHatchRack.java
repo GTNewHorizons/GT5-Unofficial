@@ -3,7 +3,7 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
-import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -32,14 +32,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.TecTech;
 import tectech.loader.TecTechConfig;
 import tectech.thing.gui.TecTechUITextures;
@@ -49,7 +49,7 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchRack extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon EM_R;
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
@@ -101,12 +101,12 @@ public class MTEHatchRack extends GT_MetaTileEntity_Hatch implements IAddGregtec
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(EM_R_ACTIVE) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_R_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(EM_R) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_R) };
     }
 
     @Override
@@ -178,7 +178,7 @@ public class MTEHatchRack extends GT_MetaTileEntity_Hatch implements IAddGregtec
         // else if(heat>0)
         // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         // else
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

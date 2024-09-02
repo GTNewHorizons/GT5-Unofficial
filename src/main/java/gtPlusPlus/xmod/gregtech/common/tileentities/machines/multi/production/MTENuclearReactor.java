@@ -4,14 +4,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Dynamo;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.filterByMTETier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,20 +32,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -86,8 +86,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
             .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
@@ -127,7 +127,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(final ForgeDirection side, final GTItemStack aStack) {
         return side != this.getBaseMetaTileEntity()
             .getFrontFacing();
     }
@@ -173,19 +173,16 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+            if (aMetaTileEntity instanceof MTEHatchMaintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo dynamo
-                && dynamo.getTierForStructure() >= 4
+            } else if (aMetaTileEntity instanceof MTEHatchDynamo dynamo && dynamo.getTierForStructure() >= 4
                 && dynamo.getTierForStructure() <= 6) {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
-                } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input hatch
-                    && hatch.getTierForStructure() >= 5) {
-                        return addToMachineList(aTileEntity, aBaseCasingIndex);
-                    } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output hatch
-                        && hatch.getTierForStructure() >= 5) {
-                            return addToMachineList(aTileEntity, aBaseCasingIndex);
-                        }
+                } else if (aMetaTileEntity instanceof MTEHatchInput hatch && hatch.getTierForStructure() >= 5) {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                } else if (aMetaTileEntity instanceof MTEHatchOutput hatch && hatch.getTierForStructure() >= 5) {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
         }
         return false;
     }
@@ -195,7 +192,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler hatch && hatch.getTierForStructure() >= 5) {
+            if (aMetaTileEntity instanceof MTEHatchMuffler hatch && hatch.getTierForStructure() >= 5) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             }
         }
@@ -319,27 +316,27 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     public boolean turnCasingActive(final boolean status) {
         // TODO
         if (this.mDynamoHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Dynamo hatch : this.mDynamoHatches) {
+            for (final MTEHatchDynamo hatch : this.mDynamoHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mMufflerHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
+            for (final MTEHatchMuffler hatch : this.mMufflerHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mOutputHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (final MTEHatchOutput hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mInputHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (final MTEHatchInput hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mMaintenanceHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
+            for (final MTEHatchMaintenance hatch : this.mMaintenanceHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
@@ -352,8 +349,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return OverclockCalculator
                     .ofNoOverclock(recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0) * 4L, recipe.mDuration);
             }
 
@@ -369,7 +366,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 mFuelRemaining = 0;
                 int li2bef4 = 0;
                 FluidStack aFuelFluid = null;

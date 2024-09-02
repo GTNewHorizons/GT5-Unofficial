@@ -2,16 +2,16 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -20,7 +20,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 public class RecipeLoaderGTNH {
 
     public static void generate() {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
             .itemOutputs(new ItemStack(Items.ender_pearl, 1, 0))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ender"), 250))
@@ -29,7 +29,7 @@ public class RecipeLoaderGTNH {
             .addTo(fluidSolidifierRecipes);
 
         // MK4
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium241.getMolten(144), Materials.Helium.getGas(1000))
             .fluidOutputs(MaterialsElements.getInstance().CURIUM.getFluidStack(144))
             .duration(4 * SECONDS + 16 * TICKS)
@@ -37,7 +37,7 @@ public class RecipeLoaderGTNH {
             .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialsElements.getInstance().CURIUM.getFluidStack(144), Materials.Helium.getPlasma(144))
             .fluidOutputs(MaterialsElements.getInstance().CALIFORNIUM.getFluidStack(144))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -45,7 +45,7 @@ public class RecipeLoaderGTNH {
             .metadata(FUSION_THRESHOLD, 750_000_000)
             .addTo(fusionRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium241.getMolten(144), Materials.Calcium.getPlasma(144))
             .fluidOutputs(Materials.Flerovium.getMolten(144))
             .duration(8 * SECONDS)

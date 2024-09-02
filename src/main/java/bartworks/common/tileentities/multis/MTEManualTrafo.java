@@ -18,13 +18,13 @@ import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdderOptional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,20 +37,20 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTEManualTrafo> {
+public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
 
     private byte mode;
     private int mTiers;
@@ -82,14 +82,14 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
             ofChain(
                 ofHatchAdder(MTEManualTrafo::addEnergyInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(MTEManualTrafo::addMaintenanceToMachineList, CASING_INDEX, 1),
-                ofBlock(GregTech_API.sBlockCasings1, 2)))
+                ofBlock(GregTechAPI.sBlockCasings1, 2)))
         .addElement(
             'o',
             ofHatchAdderOptional(
                 MTEManualTrafo::addDynamoToMachineList,
                 CASING_INDEX,
                 2,
-                GregTech_API.sBlockCasings1,
+                GregTechAPI.sBlockCasings1,
                 2))
         .addElement('t', ofBlock(BW_BLOCKS[2], 1))
         .addElement('f', ofBlock(BW_BLOCKS[2], 0))
@@ -101,10 +101,9 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
                 IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-                if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo || mte instanceof GT_MetaTileEntity_Hatch_Energy) {
+                if (mte instanceof MTEHatchDynamo || mte instanceof MTEHatchEnergy) {
                     int intier = te.mEnergyHatches.get(0).mTier;
-                    if (((GT_MetaTileEntity_TieredMachineBlock) mte).mTier
-                        == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
+                    if (((MTETieredMachineBlock) mte).mTier == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
                         te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
                         return true;
                     }
@@ -127,8 +126,8 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transformer")
             .addInfo("Controller block for the Manual Trafo")
             .addInfo("Operates in 4 diffrent modes:")
@@ -190,8 +189,8 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
     public boolean onRunningTickTabbedMode() {
         boolean ret = false;
-        for (GT_MetaTileEntity_Hatch_Dynamo E : this.mDynamoHatches) {
-            for (GT_MetaTileEntity_Hatch_Energy I : this.mEnergyHatches) {
+        for (MTEHatchDynamo E : this.mDynamoHatches) {
+            for (MTEHatchEnergy I : this.mEnergyHatches) {
 
                 long vtt = I.getEUVar() >= V[E.mTier] / 2 && E.getEUVar() < E.maxEUStore() ? I.getEUVar() : 0;
 
@@ -209,7 +208,7 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
     @Override
     public long getInputTier() {
-        if (this.mEnergyHatches.size() > 0) return GT_Utility.getTier(
+        if (this.mEnergyHatches.size() > 0) return GTUtility.getTier(
             this.mEnergyHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getInputVoltage());
@@ -218,7 +217,7 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
     @Override
     public long getOutputTier() {
-        if (this.mDynamoHatches.size() > 0) return GT_Utility.getTier(
+        if (this.mDynamoHatches.size() > 0) return GTUtility.getTier(
             this.mDynamoHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getOutputVoltage());
@@ -257,7 +256,7 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.size() == 0) return false;
 
         byte intier = this.mEnergyHatches.get(0).mTier;
-        for (GT_MetaTileEntity_Hatch_Energy in : this.mEnergyHatches) if (in.mTier != intier) return false;
+        for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) return false;
 
         int mHeight;
         for (mHeight = 1; mHeight <= 8; mHeight++) {
@@ -272,7 +271,7 @@ public class MTEManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         if (this.mDynamoHatches.size() == 0 || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
-        for (GT_MetaTileEntity_Hatch_Dynamo out : this.mDynamoHatches) {
+        for (MTEHatchDynamo out : this.mDynamoHatches) {
             if (out.mTier != outtier) return false;
         }
 

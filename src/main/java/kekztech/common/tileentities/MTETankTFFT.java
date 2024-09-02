@@ -6,11 +6,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -44,23 +44,22 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.items.ItemIntegratedCircuit;
 import kekztech.common.Blocks;
 
-public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETankTFFT>
-    implements ISurvivalConstructable {
+public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implements ISurvivalConstructable {
 
     public enum Field {
 
@@ -112,7 +111,7 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         }
 
         @Override
-        public IGT_HatchAdder<? super MTETankTFFT> adder() {
+        public IGTHatchAdder<? super MTETankTFFT> adder() {
             return MTETankTFFT::addMultiHatchToMachineList;
         }
 
@@ -263,11 +262,11 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
         .build();
 
-    public final FluidTankGT[] STORE = new FluidTankGT[MAX_DISTINCT_FLUIDS];
+    public final GTFluidTank[] STORE = new GTFluidTank[MAX_DISTINCT_FLUIDS];
 
     {
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
-            STORE[i] = new FluidTankGT(0);
+            STORE[i] = new GTFluidTank(0);
         }
     }
 
@@ -326,8 +325,8 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
             .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
@@ -440,7 +439,7 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         mEUt = this.runningCost;
         mMaxProgresstime = 20;
 
-        this.fluidSelector = (itemStack != null && itemStack.getItem() instanceof GT_IntegratedCircuit_Item)
+        this.fluidSelector = (itemStack != null && itemStack.getItem() instanceof ItemIntegratedCircuit)
             ? (byte) itemStack.getItemDamage()
             : -1;
 
@@ -457,11 +456,11 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
 
         // Push out fluids
         if (!this.mOutputHatches.isEmpty()) {
-            final FluidTankGT sFluid = this.getSelectedFluid();
+            final GTFluidTank sFluid = this.getSelectedFluid();
             boolean isFluidSelected = this.fluidSelector != -1;
 
             if (!isFluidSelected || !sFluid.isEmpty()) {
-                for (GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
+                for (MTEHatchOutput tHatch : this.mOutputHatches) {
                     int hatchCapacity = tHatch.getCapacity();
                     int hatchAmount = tHatch.getFluidAmount();
                     int remaining = hatchCapacity - hatchAmount;
@@ -522,7 +521,7 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
 
         ll.add(EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET);
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
-            FluidTankGT tank = STORE[i];
+            GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
                 ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, "NULL", 0, 0));
             } else {
@@ -613,7 +612,7 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         this.setDoVoidExcess(!doVoidExcess);
-        GT_Utility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
+        GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
     }
 
     private boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -645,12 +644,12 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         if (locked) return 0;
         int index = getFluidPosition(aFluid);
         if (index >= 0) {
-            FluidTankGT tank = STORE[index];
+            GTFluidTank tank = STORE[index];
             if (doPull) return tank.add(amount);
             return doVoidExcess ? amount
                 : tank.amount() + amount > tank.capacity() ? tank.capacity() - tank.amount() : amount;
         } else if (fluidCount() < MAX_DISTINCT_FLUIDS) {
-            FluidTankGT tank = STORE[getNullSlot()];
+            GTFluidTank tank = STORE[getNullSlot()];
             if (doPull) return tank.add(amount, aFluid);
             return doVoidExcess ? amount : Math.min(amount, tank.capacity());
         }
@@ -694,10 +693,10 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         }
 
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
-            FluidTankGT tank = STORE[i];
+            GTFluidTank tank = STORE[i];
             if (tank.setCapacity(capacityPerFluid)
                 .amount() > capacityPerFluid) {
-                STORE[i] = new FluidTankGT(tank.get(), capacityPerFluid, capacityPerFluid);
+                STORE[i] = new GTFluidTank(tank.get(), capacityPerFluid, capacityPerFluid);
             }
         }
     }
@@ -747,7 +746,7 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         return -1;
     }
 
-    public FluidTankGT firstNotNull() {
+    public GTFluidTank firstNotNull() {
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             if (!STORE[i].isEmpty()) return STORE[i];
         }
@@ -766,7 +765,7 @@ public class MTETankTFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETan
         return fluidSelector;
     }
 
-    public FluidTankGT getSelectedFluid() {
+    public GTFluidTank getSelectedFluid() {
         return fluidSelector != -1 ? STORE[fluidSelector] : null;
     }
 

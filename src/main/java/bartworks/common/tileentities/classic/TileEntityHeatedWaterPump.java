@@ -48,8 +48,8 @@ import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.ConfigHandler;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
+import gregtech.api.util.GTUtility;
+import gregtech.common.Pollution;
 
 public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank,
     ITileWithModularUI, ITileAddsInformation, ITileHasDifferentTextureSides {
@@ -167,7 +167,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             .ifPresent(e -> {
                 if (e.getTotalWorldTime() % 20 == 0) {
                     Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord))
-                        .ifPresent(c -> GT_Pollution.addPollution(c, ConfigHandler.pollutionHeatedWaterPumpSecond));
+                        .ifPresent(c -> Pollution.addPollution(c, ConfigHandler.pollutionHeatedWaterPumpSecond));
                 }
             });
     }
@@ -330,7 +330,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                + GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec)
+                + GTUtility.formatNumbers(ConfigHandler.mbWaterperSec)
                 + String.format(
                     StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
                     ConfigHandler.pollutionHeatedWaterPumpSecond),

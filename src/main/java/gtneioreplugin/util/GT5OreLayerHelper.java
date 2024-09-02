@@ -8,7 +8,7 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreMixes;
 import gregtech.common.OreMixBuilder;
@@ -110,7 +110,7 @@ public class GT5OreLayerHelper {
         }
 
         public ItemStack getLayerOre(int veinLayer, int materialIndex) {
-            return new ItemStack(GregTech_API.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
+            return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
         }
 
         public boolean containsOre(short materialIndex) {

@@ -3,10 +3,10 @@ package goodgenerator.blocks.tileEntity;
 import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,11 +44,11 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -56,31 +56,31 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTEPreciseAssembler>
+public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
@@ -122,7 +122,7 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                     'C',
                     withChannel(
                         "unit casing",
-                        GT_HatchElementBuilder.<MTEPreciseAssembler>builder()
+                        HatchElementBuilder.<MTEPreciseAssembler>builder()
                             .atLeast(
                                 InputBus,
                                 InputHatch,
@@ -156,10 +156,10 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                     withChannel(
                         "machine casing",
                         StructureUtility.ofBlocksTiered(
-                            (block, meta) -> block == GregTech_API.sBlockCasings1 ? meta : -2,
+                            (block, meta) -> block == GregTechAPI.sBlockCasings1 ? meta : -2,
                             IntStream.range(0, 10)
                                 .mapToObj(
-                                    meta -> org.apache.commons.lang3.tuple.Pair.of(GregTech_API.sBlockCasings1, meta))
+                                    meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
                                 .collect(Collectors.toList()),
                             -1,
                             MTEPreciseAssembler::setMachineTier,
@@ -177,29 +177,29 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus) {
+            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput) {
+            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
+            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMuffler) {
+            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
             return mExoticEnergyHatches.add((MTEHatchEnergyMulti) aMetaTileEntity);
@@ -232,7 +232,7 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mode = (this.mode + 1) % 2;
-            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.mode));
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.mode));
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
@@ -243,7 +243,7 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
 
             @Nonnull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (mode == 0) {
                     if (recipe.mSpecialValue > (casingTier + 1)) {
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
@@ -257,7 +257,7 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5F);
             }
         }.setMaxParallelSupplier(() -> mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1)));
@@ -278,8 +278,8 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
 
     public long getMachineVoltageLimit() {
         if (machineTier < 0) return 0;
-        if (machineTier >= 9) return GT_Values.V[energyHatchTier];
-        else return GT_Values.V[Math.min(machineTier, energyHatchTier)];
+        if (machineTier >= 9) return GTValues.V[energyHatchTier];
+        else return GTValues.V[Math.min(machineTier, energyHatchTier)];
     }
 
     @Override
@@ -326,8 +326,8 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Precise Assembler/Assembler")
             .addInfo("Controller block for the Precise Assembler")
             .addInfo("The error is no more than 7nm.")
@@ -387,10 +387,10 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
 
     private int checkEnergyHatchTier() {
         int tier = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
             tier = Math.max(tHatch.mTier, tier);
         }
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
             tier = Math.max(tHatch.mTier, tier);
         }
         return tier;
@@ -418,28 +418,28 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                 hatch.updateTexture(texture);
             }
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mInputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatch hatch : filterValidMTEs(mInputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mOutputHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mOutputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatch hatch : filterValidMTEs(mOutputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mEnergyHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mMaintenanceHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mMaintenanceHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mMufflerHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
             hatch.updateTexture(texture);
         }
     }
@@ -483,7 +483,7 @@ public class MTEPreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                 .setTextureGetter(
                     state -> state == 1 ? GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
                         : GGUITextures.OVERLAY_BUTTON_PRECISE_MODE)
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(80, 91)
                 .setSize(16, 16)
                 .dynamicTooltip(

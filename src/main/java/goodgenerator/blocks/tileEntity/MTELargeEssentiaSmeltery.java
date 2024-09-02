@@ -3,7 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Mods.ThaumicBases;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,20 +28,19 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
@@ -170,10 +169,10 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                     ofChain(
                         buildHatchAdder(MTELargeEssentiaSmeltery.class)
                             .atLeast(
-                                GT_HatchElement.Maintenance,
-                                GT_HatchElement.Energy,
-                                GT_HatchElement.InputBus,
-                                GT_HatchElement.InputHatch)
+                                gregtech.api.enums.HatchElement.Maintenance,
+                                gregtech.api.enums.HatchElement.Energy,
+                                gregtech.api.enums.HatchElement.InputBus,
+                                gregtech.api.enums.HatchElement.InputHatch)
                             .casingIndex(CASING_INDEX)
                             .dot(1)
                             .build(),
@@ -183,15 +182,15 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                             Loaders.essentiaOutputHatch,
                             0),
                         onElementPass(MTELargeEssentiaSmeltery::onCasingFound, ofBlock(Loaders.magicCasing, 0))))
-                .addElement('B', GT_HatchElement.Muffler.newAny(CASING_INDEX, 2))
+                .addElement('B', gregtech.api.enums.HatchElement.Muffler.newAny(CASING_INDEX, 2))
                 .build();
         }
         return this.multiDefinition;
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Smeltery")
             .addInfo("Controller block for the Large Essentia Smeltery")
             .addInfo("Necessary evil.")
@@ -273,10 +272,10 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity == null) {
                 return false;
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-                if (((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier < 3) return false;
-                ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+            } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
+                if (((MTEHatchEnergy) aMetaTileEntity).mTier < 3) return false;
+                ((MTEHatchEnergy) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
             } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
                 ((MTEHatchEnergyMulti) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.eEnergyMulti.add(((MTEHatchEnergyMulti) aMetaTileEntity));
@@ -511,8 +510,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             if (xstr.nextInt(100) < Math.max(100 - this.nodePurificationEfficiency, 0)) {
                 final World WORLD = this.getBaseMetaTileEntity()
                     .getWorld();
-                GT_MetaTileEntity_Hatch_Muffler mufflerHatch = this.mMufflerHatches
-                    .get(xstr.nextInt(this.mMufflerHatches.size()));
+                MTEHatchMuffler mufflerHatch = this.mMufflerHatches.get(xstr.nextInt(this.mMufflerHatches.size()));
                 int x = mufflerHatch.getBaseMetaTileEntity()
                     .getXCoord();
                 int y = mufflerHatch.getBaseMetaTileEntity()

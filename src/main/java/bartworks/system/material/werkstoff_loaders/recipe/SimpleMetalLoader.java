@@ -27,7 +27,7 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -35,16 +35,16 @@ import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Proxy;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTProxy;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
 
@@ -53,7 +53,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
         if (werkstoff.hasItemType(plate)) {
             if (werkstoff.hasItemType(gem)) {
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gem))
                     .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
                     .duration(
@@ -64,16 +64,16 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     .eut(16)
                     .addTo(latheRecipes);
 
-                GT_ModHandler.addCraftingRecipe(
+                GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick, 2),
-                    GT_Proxy.tBits,
+                    GTProxy.tBits,
                     new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
-                GT_ModHandler.addCraftingRecipe(
+                GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick),
-                    GT_Proxy.tBits,
+                    GTProxy.tBits,
                     new Object[] { "f ", " X", 'X', werkstoff.get(gem) });
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(stick, 2))
                     .itemOutputs(werkstoff.get(stickLong))
                     .duration(
@@ -89,9 +89,9 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     texSet.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(texSet, block.mTextureIndex)],
                     werkstoff.getRGBA(),
                     false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
-                GregTech_API.registerCover(werkstoff.get(plate), texture, null);
+                GregTechAPI.registerCover(werkstoff.get(plate), texture, null);
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(plate))
                     .itemOutputs(werkstoff.get(dust))
                     .duration(2 * TICKS)
@@ -101,27 +101,27 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 return;
             }
 
-            GT_ModHandler.addCraftingRecipe(
+            GTModHandler.addCraftingRecipe(
                 werkstoff.get(stick, 2),
-                GT_Proxy.tBits,
+                GTProxy.tBits,
                 new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
-            GT_ModHandler.addCraftingRecipe(
+            GTModHandler.addCraftingRecipe(
                 werkstoff.get(stick),
-                GT_Proxy.tBits,
+                GTProxy.tBits,
                 new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
-            GT_ModHandler.addCraftingRecipe(
+            GTModHandler.addCraftingRecipe(
                 werkstoff.get(plate),
-                GT_Proxy.tBits,
+                GTProxy.tBits,
                 new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
-            GT_ModHandler.addCraftingRecipe(
+            GTModHandler.addCraftingRecipe(
                 werkstoff.get(foil, 2),
-                GT_Proxy.tBits,
+                GTProxy.tBits,
                 new Object[] { "hX", 'X', werkstoff.get(plate) });
 
             benderRecipes.add(
-                new GT_Recipe(
+                new GTRecipe(
                     true,
-                    new ItemStack[] { werkstoff.get(ingot), GT_Utility.getIntegratedCircuit(1) },
+                    new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
                     new ItemStack[] { werkstoff.get(plate) },
                     null,
                     null,
@@ -134,7 +134,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     24,
                     0));
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
                 .itemOutputs(werkstoff.get(plate, 2))
                 .duration(
@@ -145,12 +145,12 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(hammerRecipes);
 
-            GregTech_API.registerCover(
+            GregTechAPI.registerCover(
                 werkstoff.get(plate),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false),
                 null);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
                 .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
                 .duration(
@@ -161,8 +161,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(latheRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate), GT_Utility.getIntegratedCircuit(1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(werkstoff.get(foil, 4))
                 .duration(
                     (int) Math.max(
@@ -172,8 +172,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(24)
                 .addTo(benderRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), GT_Utility.getIntegratedCircuit(10))
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
                 .itemOutputs(werkstoff.get(foil, 4))
                 .duration(
                     (int) Math.max(
@@ -183,7 +183,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(24)
                 .addTo(benderRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick, 2))
                 .itemOutputs(werkstoff.get(stickLong))
                 .duration(
@@ -194,7 +194,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(hammerRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Plate.get(0))
                 .itemOutputs(werkstoff.get(plate))
                 .duration(
@@ -205,7 +205,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(45)
                 .addTo(extruderRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Rod.get(0))
                 .itemOutputs(werkstoff.get(stick, 2))
                 .duration(
@@ -216,28 +216,28 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(45)
                 .addTo(extruderRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(2 * TICKS)
                 .eut(8)
                 .addTo(maceratorRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plate))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(2 * TICKS)
                 .eut(8)
                 .addTo(maceratorRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stickLong))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(2 * TICKS)
                 .eut(8)
                 .addTo(maceratorRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick))
                 .itemOutputs(werkstoff.get(dustSmall, 2))
                 .duration(2 * TICKS)

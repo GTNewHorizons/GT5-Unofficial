@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
@@ -36,11 +36,11 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                                                                                                      // also Blue =)
 
     public String getLocalisedName() {
-        return GT_LanguageManager.getTranslation(this.getName());
+        return GTLanguageManager.getTranslation(this.getName());
     }
 
     public void setLocalisedName(String localisedName) {
-        GT_LanguageManager.addStringLocalization(this.getName(), localisedName);
+        GTLanguageManager.addStringLocalization(this.getName(), localisedName);
     }
 
     Color color;

@@ -5,13 +5,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +30,21 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -103,7 +104,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .build();
     }
 
-    protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
+    protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
     protected int mCasing;
     protected boolean mTopLayerFound;
@@ -126,8 +127,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Sparge Tower")
             .addInfo("Controller block for the Sparging Tower")
             .addInfo("Runs gases through depleted molten salts to extract precious fluids")
@@ -172,7 +173,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     private static boolean generateRecipes() {
         for (GasSpargingRecipe aRecipe : GasSpargingRecipeMap.mRecipes) {
-            GT_Recipe newRecipe = new GT_Recipe(
+            GTRecipe newRecipe = new GTRecipe(
                 false,
                 new ItemStack[] {},
                 new ItemStack[] {},
@@ -197,12 +198,11 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> tFluidList = getStoredFluids();
-        long tVoltage = GT_Utility.roundUpVoltage(this.getMaxInputVoltage());
-        byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
+        long tVoltage = GTUtility.roundUpVoltage(this.getMaxInputVoltage());
+        byte tTier = (byte) Math.max(0, GTUtility.getTier(tVoltage));
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
-            GT_Recipe tRecipe = getRecipeMap()
-                .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids);
+            GTRecipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, GTValues.V[tTier], tFluids);
             if (tRecipe != null) {
                 FluidStack[] possibleOutputs = getPossibleByproductsOfSparge(
                     tRecipe.mFluidInputs[0],
@@ -308,7 +308,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-            || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch)) {
+            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) {
             Logger.INFO("Bad Output Hatch");
             return false;
         }
@@ -464,9 +464,9 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         int aLayerIndex = 0;
         PlayerUtils
             .messagePlayer(aPlayer, "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
-        for (List<GT_MetaTileEntity_Hatch_Output> layer : this.mOutputHatchesByLayer) {
+        for (List<MTEHatchOutput> layer : this.mOutputHatchesByLayer) {
             int aHatchIndex = 0;
-            for (GT_MetaTileEntity_Hatch_Output hatch : layer) {
+            for (MTEHatchOutput hatch : layer) {
                 if (hatch.mFluid != null) {
                     PlayerUtils.messagePlayer(
                         aPlayer,

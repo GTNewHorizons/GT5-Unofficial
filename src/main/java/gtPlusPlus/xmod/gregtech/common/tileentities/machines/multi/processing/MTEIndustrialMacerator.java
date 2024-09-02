@@ -4,12 +4,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.List;
 import java.util.Random;
@@ -33,18 +33,18 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -70,7 +70,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
     private static int getStructureCasingTier(Block b, int m) {
-        if (b == GregTech_API.sBlockCasings4 && m == 2) return 1;
+        if (b == GregTechAPI.sBlockCasings4 && m == 2) return 1;
         if (b == ModBlocks.blockCasingsMisc && m == 7) return 2;
         return 0;
     }
@@ -94,8 +94,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller block for the Industrial Maceration Stack")
             .addInfo("60% faster than using single block machines of the same voltage")
@@ -137,7 +137,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                     ofChain(
                         buildHatchAdder(MTEIndustrialMacerator.class)
                             .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
-                            .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
+                            .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2))
                             .allowOnly(ForgeDirection.NORTH)
                             .dot(1)
                             .build(),
@@ -145,9 +145,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                             m -> m.mCasing++,
                             ofBlocksTiered(
                                 MTEIndustrialMacerator::getStructureCasingTier,
-                                ImmutableList.of(
-                                    Pair.of(GregTech_API.sBlockCasings4, 2),
-                                    Pair.of(ModBlocks.blockCasingsMisc, 7)),
+                                ImmutableList
+                                    .of(Pair.of(GregTechAPI.sBlockCasings4, 2), Pair.of(ModBlocks.blockCasingsMisc, 7)),
                                 -1,
                                 (m, t) -> m.structureTier = t,
                                 m -> m.structureTier))))
@@ -194,12 +193,12 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     protected void updateHatchTexture() {
         int textureID = getCasingTextureId();
-        for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(textureID);
+        for (MTEHatch h : mInputBusses) h.updateTexture(textureID);
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mOutputBusses) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mMufflerHatches) h.updateTexture(textureID);
-        for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(textureID);
+        for (MTEHatch h : mOutputBusses) h.updateTexture(textureID);
+        for (MTEHatch h : mMaintenanceHatches) h.updateTexture(textureID);
+        for (MTEHatch h : mMufflerHatches) h.updateTexture(textureID);
+        for (MTEHatch h : mEnergyHatches) h.updateTexture(textureID);
     }
 
     @Override
@@ -227,7 +226,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     protected int getCasingTextureId() {
         if (structureTier == 2) return TAE.GTPP_INDEX(7);
-        return GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2);
+        return GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     }
 
     @Override
@@ -349,7 +348,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int getMaxParallelRecipes() {
         final long tVoltage = getMaxInputVoltage();
-        final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        final byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
         return Math.max(1, (controllerTier == 1 ? 2 : 8) * tTier);
     }
 
@@ -383,7 +382,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         if (tag.hasKey("tier")) {
             currentTip.add(
                 "Tier: " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(tag.getInteger("tier"))
+                    + GTUtility.formatNumbers(tag.getInteger("tier"))
                     + EnumChatFormatting.RESET);
         }
     }

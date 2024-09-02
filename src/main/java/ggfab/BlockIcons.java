@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 
 public enum BlockIcons implements IIconContainer, Runnable {
@@ -20,7 +20,7 @@ public enum BlockIcons implements IIconContainer, Runnable {
     private IIcon mIcon;
 
     BlockIcons() {
-        GregTech_API.sGTBlockIconload.add(this);
+        GregTechAPI.sGTBlockIconload.add(this);
     }
 
     @Override
@@ -40,6 +40,6 @@ public enum BlockIcons implements IIconContainer, Runnable {
 
     @Override
     public void run() {
-        mIcon = GregTech_API.sBlockIcons.registerIcon(RES_PATH + "iconsets/" + this);
+        mIcon = GregTechAPI.sBlockIcons.registerIcon(RES_PATH + "iconsets/" + this);
     }
 }

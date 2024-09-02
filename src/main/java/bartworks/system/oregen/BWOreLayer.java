@@ -36,16 +36,16 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.MurmurHash3;
 import bartworks.util.Pair;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.api.world.GTWorldgen;
+import gregtech.common.blocks.TileEntityOres;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
  */
-public abstract class BWOreLayer extends GT_Worldgen {
+public abstract class BWOreLayer extends GTWorldgen {
 
     public static final List<BWOreLayer> sList = new ArrayList<>();
     public static final ArrayListMultimap<Short, BWOreLayer> NEIMAP = ArrayListMultimap.create();
@@ -98,16 +98,16 @@ public abstract class BWOreLayer extends GT_Worldgen {
         ArrayList<ItemStack> ret = new ArrayList<>();
         ret.add(
             (this.bwOres & 0b1000) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mPrimaryMeta)
-                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mPrimaryMeta));
+                : new ItemStack(GregTechAPI.sBlockOres1, 1, this.mPrimaryMeta));
         ret.add(
             (this.bwOres & 0b0100) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mSecondaryMeta)
-                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mSecondaryMeta));
+                : new ItemStack(GregTechAPI.sBlockOres1, 1, this.mSecondaryMeta));
         ret.add(
             (this.bwOres & 0b0010) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mBetweenMeta)
-                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mBetweenMeta));
+                : new ItemStack(GregTechAPI.sBlockOres1, 1, this.mBetweenMeta));
         ret.add(
             (this.bwOres & 0b0001) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mSporadicMeta)
-                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mSporadicMeta));
+                : new ItemStack(GregTechAPI.sBlockOres1, 1, this.mSporadicMeta));
         return ret;
     }
 
@@ -184,7 +184,7 @@ public abstract class BWOreLayer extends GT_Worldgen {
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {
         // security stuff to prevent crashes with 2 TileEntites on the same Spot
         TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
-        if (te instanceof BWTileEntityMetaGeneratedOre || te instanceof GT_TileEntity_Ores) return true;
+        if (te instanceof BWTileEntityMetaGeneratedOre || te instanceof TileEntityOres) return true;
 
         if (aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0
             || aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0
@@ -215,10 +215,10 @@ public abstract class BWOreLayer extends GT_Worldgen {
     }
 
     public boolean setGTOreBlockSpace(World aWorld, int aX, int aY, int aZ, int aMetaData, Block block) {
-        if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) return true;
+        if (TileEntityOres.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) return true;
         aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
-        Block tOreBlock = GregTech_API.sBlockOres1;
+        Block tOreBlock = GregTechAPI.sBlockOres1;
         if (aMetaData < 0 || tBlock == Blocks.air) {
             return false;
         } else {
@@ -228,7 +228,7 @@ public abstract class BWOreLayer extends GT_Worldgen {
             aMetaData += 5000;
             aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (tTileEntity instanceof GT_TileEntity_Ores ore) {
+            if (tTileEntity instanceof TileEntityOres ore) {
                 ore.mMetaData = (short) aMetaData;
             }
             return true;

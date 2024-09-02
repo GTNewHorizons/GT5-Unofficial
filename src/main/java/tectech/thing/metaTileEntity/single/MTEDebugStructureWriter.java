@@ -23,15 +23,15 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.TecTech;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -39,10 +39,9 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 23.03.2017.
  */
-public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock
-    implements IAddUIWidgets, IAddGregtechLogo {
+public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
-    private static GT_RenderedTexture MARK;
+    private static GTRenderedTexture MARK;
     public short[] numbers = new short[6];
     public boolean size = false;
     public String[] result = new String[] { "Undefined" };
@@ -74,14 +73,14 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        MARK = new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/MARK"));
+        MARK = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/MARK"));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-            side != facing ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
+            side != facing ? new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
     }
 
     @Override
@@ -177,7 +176,7 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -209,7 +208,7 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
                 .setSize(17, 17)
                 .setPos(113, 56));
     }
@@ -217,7 +216,7 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
@@ -241,10 +240,10 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 40));
 
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 16, 151);
+        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
+        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
+        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
+        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 16, 151);
     }
 
     private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
@@ -275,7 +274,7 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
             40);
         builder.widget(
             new ButtonWidget().setOnClick((clickData, widget) -> { size = !size; })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, 58));
     }
@@ -286,7 +285,7 @@ public class MTEDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBloc
             new ButtonWidget()
                 .setOnClick(
                     (clickData, widget) -> { setter.accept(clickData.shift ? changeNumberShift : changeNumber); })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));
     }

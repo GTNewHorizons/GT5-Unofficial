@@ -38,7 +38,7 @@ import com.google.common.collect.Sets;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
@@ -62,17 +62,17 @@ public class ItemRockCutter extends ItemTool implements IElectricItem {
         ItemRockCutter.mineableBlocks = new HashSet<>();
         this.maxStackSize = 1;
         this.mCharge = 10000 * this.multi;
-        this.mTransfer = (int) GT_Values.V[this.mTier];
+        this.mTransfer = (int) GTValues.V[this.mTier];
         this.efficiencyOnProperMaterial = 2.0f * this.mTier;
         this.setCreativeTab(MainMod.GT2);
         this.setMaxDamage(27 + 10 * this.multi);
         this.setNoRepair();
-        this.setUnlocalizedName("GT_Rockcutter_Item_" + GT_Values.VN[this.mTier]);
+        this.setUnlocalizedName("GT_Rockcutter_Item_" + GTValues.VN[this.mTier]);
     }
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
+        aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GTValues.VN[this.mTier]);
     }
 
     @Override

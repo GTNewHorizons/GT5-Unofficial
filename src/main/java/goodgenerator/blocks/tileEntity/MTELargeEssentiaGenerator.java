@@ -2,7 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
@@ -29,22 +29,21 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
-import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import thaumcraft.api.aspects.Aspect;
@@ -100,10 +99,10 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     }
 
     public boolean checkHatchTier() {
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+        for (MTEHatchInput tHatch : mInputHatches) {
             if (tHatch.mTier > mTierLimit) return false;
         }
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+        for (MTEHatchDynamo tHatch : mDynamoHatches) {
             if (tHatch.mTier > mTierLimit) return false;
         }
         for (MTEHatchDynamoMulti tHatch : eDynamoMulti) {
@@ -148,7 +147,7 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
                 if ((mUpgrade & (1 << tMeta)) == 0 && tMeta != 0) {
                     tCurrentItem.stackSize--;
                     mUpgrade = mUpgrade | (1 << tMeta);
-                    GT_Utility.sendChatToPlayer(
+                    GTUtility.sendChatToPlayer(
                         aPlayer,
                         tCurrentItem.getDisplayName() + StatCollector.translateToLocal("largeessentiagenerator.chat"));
                 }
@@ -195,9 +194,10 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
                     ofChain(
                         buildHatchAdder(MTELargeEssentiaGenerator.class)
                             .atLeast(
-                                HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
-                                GT_HatchElement.Maintenance,
-                                GT_HatchElement.InputHatch)
+                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
+                                    .or(gregtech.api.enums.HatchElement.Dynamo),
+                                gregtech.api.enums.HatchElement.Maintenance,
+                                gregtech.api.enums.HatchElement.InputHatch)
                             .casingIndex(1536)
                             .dot(1)
                             .build(),
@@ -226,10 +226,10 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
 
     public int getVoltageLimit() {
         long voltage = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+        for (MTEHatch tHatch : this.eDynamoMulti) {
             voltage += tHatch.maxEUOutput();
         }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+        for (MTEHatch tHatch : this.mDynamoHatches) {
             voltage += tHatch.maxEUOutput();
         }
         if (voltage > Integer.MAX_VALUE) voltage = Integer.MAX_VALUE;
@@ -238,10 +238,10 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
 
     public int getAmpLimit() {
         long amp = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+        for (MTEHatch tHatch : this.eDynamoMulti) {
             amp += tHatch.maxAmperesOut();
         }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+        for (MTEHatch tHatch : this.mDynamoHatches) {
             amp += tHatch.maxAmperesOut();
         }
         if (amp > Integer.MAX_VALUE) amp = Integer.MAX_VALUE;
@@ -410,7 +410,7 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
 
     public long electricEssentia(Aspect aspect) {
         long baseValue = LargeEssentiaEnergyData.getAspectFuelValue(aspect);
-        double ceoOutput = Math.pow(3.0, GT_Utility.getTier(getVoltageLimit()));
+        double ceoOutput = Math.pow(3.0, GTUtility.getTier(getVoltageLimit()));
         return (long) (baseValue * ceoOutput);
     }
 
@@ -463,8 +463,8 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Generator")
             .addInfo("Controller block for the Large Essentia Generator")
             .addInfo("Maybe some Thaumaturges are upset by it. . .")
@@ -489,12 +489,12 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
-                new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
+                new GTRenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG_GLOW)
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
-                new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG) };
+                new GTRenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536) };
     }

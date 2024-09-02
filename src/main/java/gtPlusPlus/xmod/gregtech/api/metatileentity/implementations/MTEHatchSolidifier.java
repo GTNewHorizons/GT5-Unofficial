@@ -10,14 +10,14 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.util.GTUtility;
 
-public class MTEHatchSolidifier extends GT_MetaTileEntity_Hatch_Input {
+public class MTEHatchSolidifier extends MTEHatchInput {
 
     static final int moldSlot = 2;
     static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1), ItemList.Shape_Mold_Plate.get(1),
@@ -42,7 +42,7 @@ public class MTEHatchSolidifier extends GT_MetaTileEntity_Hatch_Input {
             "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
                 + "Large Processing Factory"
                 + EnumChatFormatting.RESET,
-            "#22 Circuit is imprinted in Hatch", "Capacity: " + GT_Utility.formatNumbers(getCapacity()) + "L",
+            "#22 Circuit is imprinted in Hatch", "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l"
                 + " - "
@@ -72,7 +72,7 @@ public class MTEHatchSolidifier extends GT_MetaTileEntity_Hatch_Input {
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == moldSlot && aStack != null) {
             for (final ItemStack itemStack : solidifierMolds) {
-                if (GT_Utility.areStacksEqual(itemStack, aStack, true)) {
+                if (GTUtility.areStacksEqual(itemStack, aStack, true)) {
                     return true;
                 }
             }
@@ -97,7 +97,7 @@ public class MTEHatchSolidifier extends GT_MetaTileEntity_Hatch_Input {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
             new SlotWidget(new MoldSlot(inventoryHandler, moldSlot)).setPos(125, 35)
-                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_MOLD)
+                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_MOLD)
                 .setSize(18, 18));
     }
 

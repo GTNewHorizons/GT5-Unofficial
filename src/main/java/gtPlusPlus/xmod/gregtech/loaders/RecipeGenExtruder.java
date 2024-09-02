@@ -1,14 +1,14 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -53,7 +53,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
             // Ingot Recipe
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getBlock(1), shape_Ingot)
                 .itemOutputs(material.getIngot(9))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
@@ -63,7 +63,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
             Logger.WARNING("Extruder Ingot Recipe: " + material.getLocalizedName() + " - Success");
 
             // Block Recipe
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(9), shape_Block)
                 .itemOutputs(material.getBlock(1))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
@@ -76,7 +76,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         // Plate Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getPlate(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(itemIngot, shape_Plate)
                 .itemOutputs(itemPlate)
                 .duration(10 * TICKS)
@@ -90,7 +90,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getRing(1))) {
             if (!material.isRadioactive) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(itemIngot, shape_Ring)
                     .itemOutputs(material.getRing(4))
                     .duration((int) Math.max(material.getMass() * 2L * 1, 1))
@@ -104,7 +104,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         // Gear Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1)))
             if (!material.isRadioactive) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(material.getIngot(4), shape_Gear)
                     .itemOutputs(itemGear)
                     .duration((int) Math.max(material.getMass() * 5L, 1))
@@ -117,7 +117,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         // Rod Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(itemIngot, shape_Rod)
                 .itemOutputs(material.getRod(2))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
@@ -130,7 +130,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         // Bolt Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
             if (!material.isRadioactive) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(itemIngot, shape_Bolt)
                     .itemOutputs(material.getBolt(8))
                     .duration((int) Math.max(material.getMass() * 2L * 1, 1))
@@ -145,7 +145,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getRotor(1))) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(5), ItemList.Shape_Extruder_Rotor.get(0))
                 .itemOutputs(material.getRotor(1))
                 .duration((int) Math.max(material.getMass() * 5L * 1, 1))

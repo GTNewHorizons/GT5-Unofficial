@@ -1,13 +1,13 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -54,7 +54,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Ingot
             if (ItemUtils.checkForInvalidItems(material.getIngot(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
                     .itemOutputs(material.getIngot(1))
                     .fluidInputs(material.getFluidStack(144))
@@ -67,7 +67,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Plate
             if (ItemUtils.checkForInvalidItems(material.getPlate(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Plate.get(0))
                     .itemOutputs(material.getPlate(1))
                     .fluidInputs(material.getFluidStack(144))
@@ -80,7 +80,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Nugget
             if (ItemUtils.checkForInvalidItems(material.getNugget(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0))
                     .itemOutputs(material.getNugget(1))
                     .fluidInputs(material.getFluidStack(16))
@@ -93,7 +93,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Gears
             if (ItemUtils.checkForInvalidItems(material.getGear(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Gear.get(0))
                     .itemOutputs(material.getGear(1))
                     .fluidInputs(material.getFluidStack(576))
@@ -107,7 +107,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Blocks
             if (ItemUtils.checkForInvalidItems(material.getBlock(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Block.get(0))
                     .itemOutputs(material.getBlock(1))
                     .fluidInputs(material.getFluidStack(144 * 9))
@@ -121,7 +121,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Rod
             if (ItemUtils.checkForInvalidItems(material.getRod(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Rod.get(0))
                     .itemOutputs(material.getRod(1))
                     .fluidInputs(material.getFluidStack(72))
@@ -135,7 +135,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Rod Long
             if (ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0))
                     .itemOutputs(material.getLongRod(1))
                     .fluidInputs(material.getFluidStack(144))
@@ -149,7 +149,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Bolt
             if (ItemUtils.checkForInvalidItems(material.getBolt(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Bolt.get(0))
                     .itemOutputs(material.getBolt(1))
                     .fluidInputs(material.getFluidStack(18))
@@ -163,7 +163,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Screw
             if (ItemUtils.checkForInvalidItems(material.getScrew(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Screw.get(0))
                     .itemOutputs(material.getScrew(1))
                     .fluidInputs(material.getFluidStack(18))
@@ -178,7 +178,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Ring
             if (ItemUtils.checkForInvalidItems(material.getRing(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Ring.get(0))
                     .itemOutputs(material.getRing(1))
                     .fluidInputs(material.getFluidStack(36))
@@ -193,7 +193,7 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Rotor
             if (ItemUtils.checkForInvalidItems(material.getRotor(1))) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Rotor.get(0))
                     .itemOutputs(material.getRotor(1))
                     .fluidInputs(material.getFluidStack(612))

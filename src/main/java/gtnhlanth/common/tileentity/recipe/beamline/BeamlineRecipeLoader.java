@@ -11,8 +11,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
@@ -57,7 +57,7 @@ public class BeamlineRecipeLoader {
          * ELECTRON
          */
         BeamlineRecipeAdder2.instance.addSourceChamberRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Tungsten, 1) },
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.stick, Materials.Tungsten, 1) },
             null,
             Particle.ELECTRON.ordinal(),
             20,
@@ -121,7 +121,7 @@ public class BeamlineRecipeLoader {
 
                     BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
                         wafer.get(1),
-                        GT_Utility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
+                        GTUtility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
                         new ItemStack(LanthItemList.maskMap.get(mask), 0),
                         1,
                         mask.getBaselineAmount() * (int) Math.pow(Math.sqrt(3), index - 1), // 3x recipe amount increase

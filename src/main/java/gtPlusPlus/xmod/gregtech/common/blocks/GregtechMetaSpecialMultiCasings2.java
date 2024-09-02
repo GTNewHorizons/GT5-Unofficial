@@ -13,8 +13,8 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -47,19 +47,19 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
     }
 
     public GregtechMetaSpecialMultiCasings2() {
-        super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", GT_Material_Casings.INSTANCE);
+        super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", MaterialCasings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             // TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
             // Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)
         }
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Resonance Chamber I");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Resonance Chamber II");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Resonance Chamber III");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Resonance Chamber IV");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Modulator I");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Modulator II");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Modulator III");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Modulator IV");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Resonance Chamber I");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Resonance Chamber II");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Resonance Chamber III");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Resonance Chamber IV");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Modulator I");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Modulator II");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Modulator III");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Modulator IV");
 
         GregtechItemList.ResonanceChamber_I.set(new ItemStack(this, 1, 0));
         GregtechItemList.ResonanceChamber_II.set(new ItemStack(this, 1, 1));

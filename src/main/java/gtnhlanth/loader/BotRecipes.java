@@ -8,11 +8,11 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 
 import java.util.HashSet;
@@ -21,13 +21,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import ic2.core.Ic2Items;
 
@@ -38,12 +38,12 @@ import ic2.core.Ic2Items;
 public class BotRecipes {
 
     public static void addGTRecipe() {
-        ItemStack C1 = GT_Utility.getIntegratedCircuit(1);
-        ItemStack C2 = GT_Utility.getIntegratedCircuit(2);
-        ItemStack C24 = GT_Utility.getIntegratedCircuit(24);
+        ItemStack C1 = GTUtility.getIntegratedCircuit(1);
+        ItemStack C2 = GTUtility.getIntegratedCircuit(2);
+        ItemStack C24 = GTUtility.getIntegratedCircuit(24);
 
         // CaCO3 + 2HCl = H2O + CO2 + CaCl2
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1))
             .itemOutputs(Materials.CarbonDioxide.getCells(1), WerkstoffLoader.CalciumChloride.get(dust, 3))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
@@ -57,7 +57,7 @@ public class BotRecipes {
         ItemStack scheelite = Materials.Scheelite.getDust(6);
 
         // Li2WO4 + 2Na = Na2WO4 + 2Li
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Tungstate.getDust(7), Materials.Sodium.getDust(2))
             .itemOutputs(Materials.Lithium.getDust(2))
             .fluidInputs(Materials.Water.getFluid(4000))
@@ -67,7 +67,7 @@ public class BotRecipes {
             .addTo(autoclaveRecipes);
 
         // MnWO4 + 2Na = Na2WO4 + Mn
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Huebnerit.get(dust, 6), Materials.Sodium.getDust(2))
             .itemOutputs(Materials.Manganese.getDust(1))
             .fluidInputs(Materials.Water.getFluid(4000))
@@ -77,7 +77,7 @@ public class BotRecipes {
             .addTo(autoclaveRecipes);
 
         // FeWO4 + 2Na = Na2WO4 + Fe
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Ferberite.get(dust, 6), Materials.Sodium.getDust(2))
             .itemOutputs(Materials.Iron.getDust(1))
             .fluidInputs(Materials.Water.getFluid(4000))
@@ -88,7 +88,7 @@ public class BotRecipes {
 
         // CaCl2 + Na2WO4 = 2NaCl + CaWO4
         ItemStack Ca2Cl = WerkstoffLoader.CalciumChloride.get(dust, 3);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(Ca2Cl)
             .itemOutputs(scheelite, Materials.Salt.getDust(4))
             .fluidInputs(sodiumTungsten)
@@ -98,7 +98,7 @@ public class BotRecipes {
 
         ItemStack H2WO4 = TungsticAcid.get(dust, 7);
         // CaWO4 + 2HCl = H2WO4 + CaCl2
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(scheelite)
             .itemOutputs(H2WO4, Ca2Cl)
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
@@ -108,7 +108,7 @@ public class BotRecipes {
 
         ItemStack WO3 = TungstenTrioxide.get(dust, 4);
         // H2WO4 = WO3 + H2O
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(H2WO4)
             .itemOutputs(WO3)
             .duration(10 * SECONDS)
@@ -117,11 +117,11 @@ public class BotRecipes {
             .addTo(blastFurnaceRecipes);
 
         // WO3 + 6H = W + 3H2O
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(WO3, C2)
             .itemOutputs(Materials.Tungsten.getDust(1))
             .fluidInputs(Materials.Hydrogen.getGas(6000))
-            .fluidOutputs(GT_ModHandler.getSteam(3000))
+            .fluidOutputs(GTModHandler.getSteam(3000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1000)
@@ -129,9 +129,9 @@ public class BotRecipes {
 
         WO3.stackSize = 8;
         // 2WO3 + 3C = 2W + 3CO2
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(WO3, Materials.Carbon.getDust(3))
-            .itemOutputs(GT_OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
+            .itemOutputs(GTOreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
             .fluidOutputs(Materials.CarbonDioxide.getGas(3000))
             .duration(6 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -142,28 +142,28 @@ public class BotRecipes {
         // LMP103S
         // 2Cl + CO = COCl2
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(12))
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.CarbonMonoxide.getCells(1), GTUtility.getIntegratedCircuit(12))
             .itemOutputs(Phosgene.get(cell, 1))
             .fluidInputs(Materials.Chlorine.getGas(2000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Chlorine.getCells(2), GT_Utility.getIntegratedCircuit(12))
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(12))
             .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.CarbonMonoxide.getCells(1), Materials.Chlorine.getCells(2))
             .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Chlorine.getCells(2), GT_Utility.getIntegratedCircuit(2))
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Empty.getCells(2))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
             .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000))
@@ -172,7 +172,7 @@ public class BotRecipes {
             .addTo(UniversalChemical);
 
         // H3PO4 = P + H2O
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(C2)
             .itemOutputs(Materials.Phosphorus.getDust(1))
             .fluidInputs(Materials.PhosphoricAcid.getFluid(1000))
@@ -184,7 +184,7 @@ public class BotRecipes {
         ItemStack cells = Ic2Items.cell.copy();
         cells.stackSize = 1;
         // NH4Cl = HCl + NH3
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(cells)
             .itemOutputs(Materials.Ammonia.getCells(1))
             .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000))
@@ -194,7 +194,7 @@ public class BotRecipes {
             .addTo(distilleryRecipes);
 
         // N2H4O3 + NaOH = NaNO3 + NH3 + H2O
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
             .fluidOutputs(Materials.Ammonia.getGas(1000))
@@ -202,7 +202,7 @@ public class BotRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3), C2)
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
             .fluidOutputs(Materials.Ammonia.getGas(1000), Materials.Water.getFluid(1000))
@@ -211,7 +211,7 @@ public class BotRecipes {
             .addTo(multiblockChemicalReactorRecipes);
 
         // N2H4O3 + NaOH + H =H2SO4= NH3 + HNO3 + Na + H2O
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(C24, AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(Materials.Sodium.getDust(1))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000))
@@ -224,8 +224,8 @@ public class BotRecipes {
             .addTo(multiblockChemicalReactorRecipes);
 
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Propane.getGas(1000), Materials.NitricAcid.getFluid(2000))
             .fluidOutputs(Nitromethane.getFluidOrGas(2000))
             .duration(15 * SECONDS)
@@ -238,16 +238,16 @@ public class BotRecipes {
     }
 
     public static void removeTungstenElectro() {
-        HashSet<GT_Recipe> toDel = new HashSet<>();
+        HashSet<GTRecipe> toDel = new HashSet<>();
         ItemStack[] toRemove = { Materials.Scheelite.getDust(1), Materials.Tungstate.getDust(1),
             WerkstoffLoader.Ferberite.get(dust, 1), WerkstoffLoader.Huebnerit.get(dust, 1) };
-        for (GT_Recipe tRecipe : electrolyzerRecipes.getAllRecipes()) {
+        for (GTRecipe tRecipe : electrolyzerRecipes.getAllRecipes()) {
             if (tRecipe.mFakeRecipe) continue;
             for (int i = 0; i < tRecipe.mInputs.length; i++) {
                 ItemStack tItem = tRecipe.mInputs[i];
-                if (item == null || !GT_Utility.isStackValid(tItem)) continue;
+                if (item == null || !GTUtility.isStackValid(tItem)) continue;
                 for (ItemStack tStack : toRemove) {
-                    if (GT_Utility.areStacksEqual(tItem, tStack)) {
+                    if (GTUtility.areStacksEqual(tItem, tStack)) {
                         toDel.add(tRecipe);
                         continue;
                     }

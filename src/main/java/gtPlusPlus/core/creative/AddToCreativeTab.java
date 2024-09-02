@@ -2,7 +2,7 @@ package gtPlusPlus.core.creative;
 
 import net.minecraft.creativetab.CreativeTabs;
 
-import gregtech.api.util.GT_CreativeTab;
+import gregtech.api.util.GTCreativeTab;
 
 public class AddToCreativeTab {
 
@@ -15,11 +15,11 @@ public class AddToCreativeTab {
 
     public static void initialiseTabs() {
         // GT_CreativeTab
-        tabBlock = new GT_CreativeTab("GTPP_BLOCKS", "GT++ Blocks");
-        tabMisc = new GT_CreativeTab("GTPP_MISC", "GT++ Misc");
-        tabTools = new GT_CreativeTab("GTPP_TOOLS", "GT++ Tools");
-        tabMachines = new GT_CreativeTab("GTPP_MACHINES", "GT++ Machines");
-        tabOther = new GT_CreativeTab("GTPP_OTHER", "GT++ Other");
-        tabBOP = new GT_CreativeTab("GTPP_OTHER_2", "GT++ Other II");
+        tabBlock = new GTCreativeTab("GTPP_BLOCKS", "GT++ Blocks");
+        tabMisc = new GTCreativeTab("GTPP_MISC", "GT++ Misc");
+        tabTools = new GTCreativeTab("GTPP_TOOLS", "GT++ Tools");
+        tabMachines = new GTCreativeTab("GTPP_MACHINES", "GT++ Machines");
+        tabOther = new GTCreativeTab("GTPP_OTHER", "GT++ Other");
+        tabBOP = new GTCreativeTab("GTPP_OTHER_2", "GT++ Other II");
     }
 }

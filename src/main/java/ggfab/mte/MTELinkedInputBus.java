@@ -35,21 +35,20 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import ggfab.GGConstants;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
-public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
-    implements IRecipeProcessingAwareHatch, IDataCopyable {
+public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;
     public static final String COPIED_DATA_IDENTIFIER = "linkedinputbus";
@@ -94,15 +93,15 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
                 .setSetter(this::setChannel)
                 .setTextColor(Color.WHITE.dark(1))
                 .setTextAlignment(Alignment.CenterLeft)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                 .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.change_freq_warn"))
                 .setSize(60, 18)
                 .setPos(48, 3))
             .widget(
                 new CycleButtonWidget().setToggle(this::isPrivate, this::setPrivate)
                     .setTextureGetter(
-                        i -> i == 1 ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK : GT_UITextures.OVERLAY_BUTTON_CROSS)
-                    .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                        i -> i == 1 ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                     .setSynced(true, true)
                     .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.private"))
                     .setSize(18, 18)
@@ -151,7 +150,7 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         if (aIndex == getCircuitSlot()) {
-            mInventory[0] = GT_Utility.copyAmount(0, aStack);
+            mInventory[0] = GTUtility.copyAmount(0, aStack);
             markDirty();
         } else if (mState != State.Blocked && mChannel != null && mRealInventory != null) {
             if (aIndex > 0 && aIndex <= SIZE_INVENTORY) {
@@ -179,7 +178,7 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
             && aIndex > getCircuitSlot()
             && aIndex < SIZE_INVENTORY + 1
             && (mRealInventory.stacks[aIndex - 1] == null
-                || GT_Utility.areStacksEqual(aStack, mRealInventory.stacks[aIndex - 1]))
+                || GTUtility.areStacksEqual(aStack, mRealInventory.stacks[aIndex - 1]))
             && allowPutStack(getBaseMetaTileEntity(), aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
@@ -194,7 +193,7 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
     @Override
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < SIZE_INVENTORY; i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
+            if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
                 return i == aIndex - 1;
         return mRealInventory.stacks[aIndex - 1] == null;
     }
@@ -222,7 +221,7 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
     }
 
     @Override
-    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
+    public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         if (mState == State.Activated) {
             assert mRealInventory != null;
             mRealInventory.used = false;
@@ -249,22 +248,22 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
         // sanity check
         if (mRealInventory == null) return;
         final int L = SIZE_INVENTORY;
-        HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(L);
-        HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(L);
-        List<GT_Utility.ItemId> order = new ArrayList<>(L);
+        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(L);
+        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(L);
+        List<GTUtility.ItemId> order = new ArrayList<>(L);
         List<Integer> validSlots = new ArrayList<>(L);
         for (int i = 0; i < L; i++) {
             validSlots.add(i);
             ItemStack s = mRealInventory.stacks[i];
             if (s == null) continue;
-            GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
+            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
             slots.merge(sID, s.stackSize, Integer::sum);
             if (!stacks.containsKey(sID)) stacks.put(sID, s);
             order.add(sID);
             mRealInventory.stacks[i] = null;
         }
         int slotindex = 0;
-        for (GT_Utility.ItemId sID : order) {
+        for (GTUtility.ItemId sID : order) {
             int toSet = slots.get(sID);
             if (toSet == 0) continue;
             int slot = validSlots.get(slotindex);
@@ -279,7 +278,7 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
 
     private void dropItems(ItemStack[] aStacks) {
         for (ItemStack stack : aStacks) {
-            if (!GT_Utility.isStackValid(stack)) continue;
+            if (!GTUtility.isStackValid(stack)) continue;
             EntityItem ei = new EntityItem(
                 getBaseMetaTileEntity().getWorld(),
                 getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
@@ -360,13 +359,13 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
                     mRealInventory.disableLimited = true;
                 }
             }
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.hatch.disableSort." + mRealInventory.disableSort) + "   "
                     + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
         } else {
             this.disableFilter = !this.disableFilter;
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
         }
@@ -380,7 +379,7 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setString("channel", getChannel());
-        tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
+        tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
         if (isPrivate()) {
             tag.setLong(
                 "owner1",
@@ -401,9 +400,9 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
             && !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type")))) {
             return false;
         }
-        ItemStack circuit = GT_Utility.loadItem(nbt, "circuit");
+        ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
         String channel = nbt.getString("channel");
-        if (GT_Utility.isStackInvalid(circuit)) circuit = null;
+        if (GTUtility.isStackInvalid(circuit)) circuit = null;
         if ("".equals(channel)) {
             return false;
         } else if (circuit != null && getConfigurationCircuits().stream()
@@ -437,9 +436,9 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
         }
-        ItemStack circuit = GT_Utility.loadItem(stick.stackTagCompound, "circuit");
+        ItemStack circuit = GTUtility.loadItem(stick.stackTagCompound, "circuit");
         String channel = stick.stackTagCompound.getString("channel");
-        if (GT_Utility.isStackInvalid(circuit)) circuit = null;
+        if (GTUtility.isStackInvalid(circuit)) circuit = null;
         if ("".equals(channel)) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
@@ -475,9 +474,9 @@ public class MTELinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus
         stick.stackTagCompound = getCopiedData(aPlayer);
         stick.setStackDisplayName("Linked Input Bus configuration");
         // abuse the title mechanism here. I assure you it will be fine (tm).
-        GT_Utility.ItemNBT.setBookTitle(stick, "Channel: " + getChannel());
+        GTUtility.ItemNBT.setBookTitle(stick, "Channel: " + getChannel());
         if (getBaseMetaTileEntity().getOwnerName() != null)
-            GT_Utility.ItemNBT.setBookAuthor(stick, getBaseMetaTileEntity().getOwnerName());
+            GTUtility.ItemNBT.setBookAuthor(stick, getBaseMetaTileEntity().getOwnerName());
     }
 
     private String getRealChannel() {

@@ -1,8 +1,8 @@
 package tectech.thing.casing;
 
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.enums.GT_Values.AuthorColen;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.enums.GTValues.AuthorColen;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.ItemCasingsAbstract;
 
-public class ItemCasingsSpacetime extends GT_Item_Casings_Abstract {
+public class ItemCasingsSpacetime extends ItemCasingsAbstract {
 
     public ItemCasingsSpacetime(Block par1) {
         super(par1);
@@ -33,14 +33,14 @@ public class ItemCasingsSpacetime extends GT_Item_Casings_Abstract {
             case 7:
             case 8:
                 aList.add(
-                    GT_LanguageManager.addStringLocalization(
+                    GTLanguageManager.addStringLocalization(
                         "EOH.Spacetime.Standard.Tooltip.0",
                         "Supports an internal spacetime volume of up to ")
                         + formatNumbers(pow(10, 5 + aStack.getItemDamage()))
                         + "km³.");
                 aList.add(
                     EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GT_LanguageManager.addStringLocalization(
+                        + GTLanguageManager.addStringLocalization(
                             "EOH.Spacetime.Standard.Tooltip.1",
                             "Capable of running recipes up to tier ")
                         + (aStack.getItemDamage() + 1));
@@ -48,7 +48,7 @@ public class ItemCasingsSpacetime extends GT_Item_Casings_Abstract {
             default:
                 aList.add(
                     EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                        + GT_LanguageManager
+                        + GTLanguageManager
                             .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
         aList.add(AuthorColen);

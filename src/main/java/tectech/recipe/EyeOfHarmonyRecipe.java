@@ -1,10 +1,10 @@
 package tectech.recipe;
 
 import static com.google.common.math.IntMath.pow;
-import static gregtech.api.GregTech_API.getUnificatedOreDictStack;
+import static gregtech.api.GregTechAPI.getUnificatedOreDictStack;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -204,10 +204,10 @@ public class EyeOfHarmonyRecipe {
     }
 
     private ItemStack getStoneDustType(String key) {
-        ItemStack placeholder = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
+        ItemStack placeholder = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
         return switch (key) {
-            case "Ne" -> GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
-            case "ED", "VA", "EA" -> GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
+            case "Ne" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
+            case "ED", "VA", "EA" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
             case "Mo" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1, placeholder);

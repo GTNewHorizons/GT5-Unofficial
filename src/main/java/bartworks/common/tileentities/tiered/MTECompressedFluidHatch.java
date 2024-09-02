@@ -21,10 +21,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.util.GTUtility;
 
-public class MTECompressedFluidHatch extends GT_MetaTileEntity_Hatch_Input {
+public class MTECompressedFluidHatch extends MTEHatchInput {
 
     public MTECompressedFluidHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -42,7 +42,7 @@ public class MTECompressedFluidHatch extends GT_MetaTileEntity_Hatch_Input {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return GT_Utility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1));
+        return GTUtility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1));
     }
 
     @Override

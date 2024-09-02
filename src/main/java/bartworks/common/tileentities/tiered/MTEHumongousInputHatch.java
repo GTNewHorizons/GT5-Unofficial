@@ -16,9 +16,9 @@ package bartworks.common.tileentities.tiered;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 
-public class MTEHumongousInputHatch extends GT_MetaTileEntity_Hatch_Input {
+public class MTEHumongousInputHatch extends MTEHatchInput {
 
     public MTEHumongousInputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 13);

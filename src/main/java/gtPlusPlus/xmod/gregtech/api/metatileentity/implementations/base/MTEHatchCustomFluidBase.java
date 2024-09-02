@@ -12,18 +12,18 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
-import gregtech.GT_Mod;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.GTMod;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
-public class MTEHatchCustomFluidBase extends GT_MetaTileEntity_Hatch {
+public class MTEHatchCustomFluidBase extends MTEHatch {
 
     public final Fluid mLockedFluid;
     public final int mFluidCapacity;
@@ -38,7 +38,7 @@ public class MTEHatchCustomFluidBase extends GT_MetaTileEntity_Hatch {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(aAmount) + "L" });
+            new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
@@ -53,7 +53,7 @@ public class MTEHatchCustomFluidBase extends GT_MetaTileEntity_Hatch {
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
-            FluidStack fs = GT_Utility.getFluidForFilledItem(aStack, true);
+            FluidStack fs = GTUtility.getFluidForFilledItem(aStack, true);
             return fs != null && fs.getFluid() == this.mLockedFluid;
         }
         return false;
@@ -67,14 +67,14 @@ public class MTEHatchCustomFluidBase extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
@@ -96,7 +96,7 @@ public class MTEHatchCustomFluidBase extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

@@ -9,21 +9,21 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.util.GTUtility;
 import ic2.api.energy.tile.IEnergySink;
 
 public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     private final IGregTechTileEntity myMeta;
-    private GT_MetaPipeEntity_Cable cableMeta = null;
+    private MTECable cableMeta = null;
 
     public TileIC2EnergySink(IGregTechTileEntity meta) {
         if (meta == null) throw new NullPointerException("no null metas");
         myMeta = meta;
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
         if (metaTile instanceof IMetaTileEntityCable) {
-            cableMeta = (GT_MetaPipeEntity_Cable) metaTile;
+            cableMeta = (MTECable) metaTile;
         }
         setWorldObj(meta.getWorld());
         xCoord = meta.getXCoord();
@@ -62,7 +62,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
      */
     @Override
     public int getSinkTier() {
-        return GT_Utility.getTier(cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage());
+        return GTUtility.getTier(cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage());
     }
 
     /**

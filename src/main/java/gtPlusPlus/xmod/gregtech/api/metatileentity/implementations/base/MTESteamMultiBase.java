@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -19,22 +19,22 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Waila;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -70,9 +70,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
-    protected abstract GT_RenderedTexture getFrontOverlay();
+    protected abstract GTRenderedTexture getFrontOverlay();
 
-    protected abstract GT_RenderedTexture getFrontOverlayActive();
+    protected abstract GTRenderedTexture getFrontOverlayActive();
 
     public abstract int getTierRecipes();
 
@@ -182,9 +182,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput) {
             log("Adding Steam Output Bus");
             aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+        } else if (aMetaTileEntity instanceof MTEHatchInput)
             aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output);
+        else if (aMetaTileEntity instanceof MTEHatchOutput);
 
         return aDidAdd;
     }
@@ -211,11 +211,11 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean depleteInput(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
+        if (GTUtility.isStackInvalid(aStack)) return false;
+        FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
         for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
-            if (GT_Utility.areStacksEqual(
+            if (GTUtility.areStacksEqual(
                 aStack,
                 tHatch.getBaseMetaTileEntity()
                     .getStackInSlot(0))) {
@@ -231,7 +231,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             tHatch.mRecipeMap = getRecipeMap();
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {
-                if (GT_Utility.areStacksEqual(
+                if (GTUtility.areStacksEqual(
                     aStack,
                     tHatch.getBaseMetaTileEntity()
                         .getStackInSlot(i))) {
@@ -255,7 +255,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                 rList.add(tHatch.getFillableStack());
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
+        for (MTEHatchInput hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
             rList.add(hatch.getFillableStack());
         }
         return rList;
@@ -281,8 +281,8 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean addOutput(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        aStack = GT_Utility.copy(aStack);
+        if (GTUtility.isStackInvalid(aStack)) return false;
+        aStack = GTUtility.copy(aStack);
         boolean outputSuccess = true;
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
@@ -295,7 +295,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                     }
                 }
             }
-            for (GT_MetaTileEntity_Hatch_Output tHatch : filterValidMTEs(mOutputHatches)) {
+            for (MTEHatchOutput tHatch : filterValidMTEs(mOutputHatches)) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
                         .addStackToSlot(1, single)) outputSuccess = true;
@@ -322,7 +322,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
-        for (final GT_MetaTileEntity_Hatch tBus : filterValidMTEs(mSteamOutputs)) {
+        for (final MTEHatch tBus : filterValidMTEs(mSteamOutputs)) {
             final IInventory tBusInv = tBus.getBaseMetaTileEntity();
             for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                 ret.add(tBus.getStackInSlot(i));
@@ -359,7 +359,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                 ret = true;
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+        for (MTEHatchInput g : this.mInputHatches) {
             if (resetRecipeMapForHatch(g, aMap)) {
                 ret = true;
             }
@@ -391,17 +391,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                     StatCollector.translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage)));
             }
         }
-        currentTip.add(
-            GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+        currentTip
+            .add(GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GT_Mod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+        if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }
 
-    protected static <T extends MTESteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
+    protected static <T extends MTESteamMultiBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
         return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList)
             .hatchIds(31040)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
@@ -435,7 +435,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         },;
 
         @Override
-        public IGT_HatchAdder<? super MTESteamMultiBase<?>> adder() {
+        public IGTHatchAdder<? super MTESteamMultiBase<?>> adder() {
             return MTESteamMultiBase::addToMachineList;
         }
     }

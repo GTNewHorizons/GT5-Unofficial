@@ -19,9 +19,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import tectech.TecTech;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -29,9 +29,9 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 23.03.2017.
  */
-public class MTEOwnerDetector extends GT_MetaTileEntity_TieredMachineBlock {
+public class MTEOwnerDetector extends MTETieredMachineBlock {
 
-    private static GT_RenderedTexture OWNER_ONLINE, OWNER_OFFLINE;
+    private static GTRenderedTexture OWNER_ONLINE, OWNER_OFFLINE;
     private String uuid;
     private boolean interdimensional = true;
 
@@ -63,8 +63,8 @@ public class MTEOwnerDetector extends GT_MetaTileEntity_TieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
     }
 
     @Override
@@ -144,7 +144,7 @@ public class MTEOwnerDetector extends GT_MetaTileEntity_TieredMachineBlock {
             clientLocale = "en_US";
         }
         interdimensional ^= true;
-        GT_Utility.sendChatToPlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
                 : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));

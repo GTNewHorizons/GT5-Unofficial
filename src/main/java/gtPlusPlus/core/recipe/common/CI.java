@@ -4,14 +4,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.ExternalMaterials;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -31,11 +31,11 @@ public class CI {
     public static ItemStack _NULL = ItemUtils.getErrorStack(1);
 
     // bits
-    public static long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
-        | GT_ModHandler.RecipeBits.BUFFERED;
-    public static long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-        | GT_ModHandler.RecipeBits.REVERSIBLE
-        | GT_ModHandler.RecipeBits.BUFFERED;
+    public static long bits = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
+        | GTModHandler.RecipeBits.BUFFERED;
+    public static long bitsd = GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+        | GTModHandler.RecipeBits.REVERSIBLE
+        | GTModHandler.RecipeBits.BUFFERED;
 
     // Circuits
     public static Object circuitPrimitive;
@@ -459,7 +459,7 @@ public class CI {
         if (a == null) {
             ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
             if (aCell != null) {
-                a = GT_Utility.getFluidForFilledItem(aCell, true);
+                a = GTUtility.getFluidForFilledItem(aCell, true);
                 a.amount = aAmount;
             }
         }
@@ -522,7 +522,7 @@ public class CI {
         }
 
         if (aPrefix == OrePrefixes.circuit) {
-            return GT_OreDictUnificator.get(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
+            return GTOreDictUnificator.get(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
         }
 
         // Check for Cables first, catch SuperConductor case and swap to wire.
@@ -931,7 +931,7 @@ public class CI {
         if (i > 8) {
             i = 8;
         }
-        return ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings5, i, 1);
+        return ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings5, i, 1);
     }
 
     public static ItemStack getNumberedBioCircuit(int i) {

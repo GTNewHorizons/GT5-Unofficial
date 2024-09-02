@@ -32,14 +32,14 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 
 public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
     public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+        this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.blocktype." + OrePrefixes.ore,
             OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
     }
@@ -48,7 +48,7 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
             if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
-            GT_ModHandler.addValuableOre(this, w.getmID(), 1);
+            GTModHandler.addValuableOre(this, w.getmID(), 1);
         }
     }
 

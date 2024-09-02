@@ -1,14 +1,14 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 
 public class ChemicalBath implements Runnable {
@@ -18,7 +18,7 @@ public class ChemicalBath implements Runnable {
 
         for (int i = 0; i < Dyes.dyeBrown.getSizeOfFluidList(); ++i) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
                 .fluidInputs(Dyes.dyeRed.getFluidDye(i, 36))
@@ -26,7 +26,7 @@ public class ChemicalBath implements Runnable {
                 .eut(2)
                 .addTo(chemicalBathRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
                 .fluidInputs(Dyes.dyeGreen.getFluidDye(i, 36))
@@ -34,7 +34,7 @@ public class ChemicalBath implements Runnable {
                 .eut(2)
                 .addTo(chemicalBathRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
                 .fluidInputs(Dyes.dyePurple.getFluidDye(i, 36))
@@ -42,7 +42,7 @@ public class ChemicalBath implements Runnable {
                 .eut(2)
                 .addTo(chemicalBathRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
                 .fluidInputs(Dyes.dyeYellow.getFluidDye(i, 36))
@@ -50,7 +50,7 @@ public class ChemicalBath implements Runnable {
                 .eut(2)
                 .addTo(chemicalBathRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
                 .fluidInputs(Dyes.dyeLime.getFluidDye(i, 36))
@@ -58,7 +58,7 @@ public class ChemicalBath implements Runnable {
                 .eut(2)
                 .addTo(chemicalBathRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 11))
                 .fluidInputs(Dyes.dyeBrown.getFluidDye(i, 36))
@@ -70,7 +70,7 @@ public class ChemicalBath implements Runnable {
 
         for (int i = 6; i < 11; i++) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, i))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .fluidInputs(Materials.Chlorine.getGas(50))

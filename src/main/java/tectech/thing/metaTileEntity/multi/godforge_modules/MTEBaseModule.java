@@ -42,16 +42,17 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -244,13 +245,13 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     @Override
     public long getMaxInputVoltage() {
-        return gregtech.api.enums.GT_Values.V[tier];
+        return GTValues.V[tier];
     }
 
     @Override
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (this instanceof MTESmeltingModule) {
-            return getStructureDefinition(GregTech_API.sBlockCasings5, 12);
+            return getStructureDefinition(GregTechAPI.sBlockCasings5, 12);
         }
         return getStructureDefinition(GodforgeCasings, 8);
     }
@@ -277,13 +278,13 @@ public class MTEBaseModule extends TTMultiblockBase {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85));
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
         builder.widget(
             inventorySlot.setPos(173, 167)
-                .setBackground(GT_UITextures.SLOT_DARK_GRAY));
+                .setBackground(GTUITextures.SLOT_DARK_GRAY));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
@@ -318,7 +319,7 @@ public class MTEBaseModule extends TTMultiblockBase {
             .setPlayClickSound(isVoltageConfigUnlocked)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.BUTTON_STANDARD);
                 if (isVoltageConfigUnlocked) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
                 } else {
@@ -345,7 +346,7 @@ public class MTEBaseModule extends TTMultiblockBase {
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
@@ -368,7 +369,7 @@ public class MTEBaseModule extends TTMultiblockBase {
                     .setTextColor(Color.WHITE.normal)
                     .setSize(150, 18)
                     .setPos(4, 25)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
                         builder));
@@ -433,7 +434,7 @@ public class MTEBaseModule extends TTMultiblockBase {
             .addElement('A', ofBlock(coilBlock, meta))
             .addElement(
                 'B',
-                GT_StructureUtility
+                StructureUtility
                     .ofHatchAdderOptional(MTEBaseModule::addClassicToMachineList, TEXTURE_INDEX, 1, GodforgeCasings, 0))
             .addElement('C', ofBlock(GodforgeCasings, 0))
             .addElement('D', ofBlock(GodforgeCasings, 1))

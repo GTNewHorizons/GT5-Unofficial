@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 import java.util.Map;
 import java.util.Random;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -273,7 +273,7 @@ public class MathUtils {
     }
 
     public static int safeInt(long number) {
-        return number > GT_Values.V[GT_Values.V.length - 1] ? safeInt(GT_Values.V[GT_Values.V.length - 1], 1)
+        return number > GTValues.V[GTValues.V.length - 1] ? safeInt(GTValues.V[GTValues.V.length - 1], 1)
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 

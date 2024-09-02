@@ -50,7 +50,7 @@ import com.kuba6000.mobsinfo.api.event.PreMobsRegistrationEvent;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import kubatech.Tags;
 import kubatech.config.Config;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
@@ -235,8 +235,8 @@ public class MobHandlerLoader {
         if (recipe != null) {
             event.additionalInformation.addAll(
                 Arrays.asList(
-                    GT_Utility.trans("153", "Usage: ") + GT_Utility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GT_Utility.trans("158", "Time: ") + GT_Utility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
+                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
         }
     }
 }

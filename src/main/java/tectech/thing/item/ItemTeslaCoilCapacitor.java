@@ -1,6 +1,6 @@
 package tectech.thing.item;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;

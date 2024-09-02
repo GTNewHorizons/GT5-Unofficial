@@ -30,8 +30,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 import static kubatech.api.Variables.Author;
 import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -93,25 +93,25 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GTVoltageIndex;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.enums.VoltageIndex;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
+import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import kubatech.Tags;
@@ -145,8 +145,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice
      * (That is because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
      */
-    public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = GTVoltageIndex.IV;
-    public static final int EIG_BALANCE_REGULAR_MODE_MIN_TIER = GTVoltageIndex.EV;
+    public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.IV;
+    public static final int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
     public static final int EIG_BALANCE_IC2_MODE_MIN_TIER = EIG_BALANCE_IC2_ACCELERATOR_TIER + 1;
     public static final double EIG_BALANCE_MAX_FERTILIZER_BOOST = 4.0d;
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
@@ -224,12 +224,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         .addElement(
             'c',
             ofChain(
-                onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)),
+                onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
                 ofHatchAdder(MTEExtremeIndustrialGreenhouse::addEnergyInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(MTEExtremeIndustrialGreenhouse::addMaintenanceToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(MTEExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(MTEExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX, 1)))
-        .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)))
+        .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)))
         .addElement(
             'l',
             ProjectRedIllumination.isModLoaded()
@@ -266,8 +266,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) return false;
 
         if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
-            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
-                if (this.glassTier < hatchEnergy.mTier) return false;
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
 
         boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
 
@@ -291,8 +290,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // region tooltip
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
         tt.addMachineType("Crop Farm")
             .addInfo("Controller block for the Extreme Industrial Greenhouse")
@@ -456,7 +455,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private void tryChangeSetupPhase(EntityPlayer aPlayer) {
         // TODO: Create l10n entries for the setup phase change messages.
         if (this.mMaxProgresstime > 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
+            GTUtility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
             return;
         }
         this.setupPhase++;
@@ -477,7 +476,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 break;
         }
         this.updateSeedLimits();
-        GT_Utility.sendChatToPlayer(aPlayer, phaseChangeMessage);
+        GTUtility.sendChatToPlayer(aPlayer, phaseChangeMessage);
     }
 
     /**
@@ -488,16 +487,16 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private void tryChangeMode(EntityPlayer aPlayer) {
         // TODO: Create l10n entries for the mode change messages.
         if (this.mMaxProgresstime > 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "You can't change mode if the machine is working!");
+            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if the machine is working!");
             return;
         }
         if (!this.buckets.isEmpty()) {
-            GT_Utility.sendChatToPlayer(aPlayer, "You can't change mode if there are seeds inside!");
+            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if there are seeds inside!");
             return;
         }
         this.mode = EIGModes.getNextMode(this.mode);
         this.updateSeedLimits();
-        GT_Utility.sendChatToPlayer(aPlayer, "Changed mode to: " + this.mode.getName());
+        GTUtility.sendChatToPlayer(aPlayer, "Changed mode to: " + this.mode.getName());
     }
 
     /**
@@ -509,9 +508,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         // TODO: Create l10n entries for the humidity status interactions.
         this.useNoHumidity = !this.useNoHumidity;
         if (this.useNoHumidity) {
-            GT_Utility.sendChatToPlayer(aPlayer, "No Humidity mode enabled.");
+            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode enabled.");
         } else {
-            GT_Utility.sendChatToPlayer(aPlayer, "No Humidity mode disabled.");
+            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode disabled.");
         }
     }
 
@@ -684,7 +683,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public static boolean isFertilizer(ItemStack item) {
         if (item == null || item.stackSize <= 0) return false;
         for (ItemStack fert : FERTILIZER_ITEM_LIST) {
-            if (GT_Utility.areStacksEqual(item, fert)) return true;
+            if (GTUtility.areStacksEqual(item, fert)) return true;
         }
         return false;
     }
@@ -694,10 +693,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (bucket.getSeedCount() <= 0) return true;
 
         // check if we have an ME output bus to output to.
-        for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
-            if (!(tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) continue;
+        for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+            if (!(tHatch instanceof MTEHatchOutputBusME)) continue;
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
-                ((GT_MetaTileEntity_Hatch_OutputBus_ME) tHatch).store(stack);
+                ((MTEHatchOutputBusME) tHatch).store(stack);
             }
             return true;
         }
@@ -710,7 +709,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .build();
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
-                for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
                     if (tHatch.storeAll(toOutput)) break;
                 }
             }
@@ -852,7 +851,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         this.mOutputItems = this.dropTracker.getDrops();
 
         // consume power
-        this.lEUt = -(long) ((double) GT_Values.V[tier] * 0.99d);
+        this.lEUt = -(long) ((double) GTValues.V[tier] * 0.99d);
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.updateSlots();
@@ -939,7 +938,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             // if (mte.buckets.size() >= mte.maxSeedTypes) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (mte.mMaxProgresstime > 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
+                GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
                 return super.transferStackInSlot(aPlayer, aSlotIndex);
             }
 
@@ -961,7 +960,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     if (!widget.isClient()) widget.getContext()
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .addTooltip("Configuration")
                 .setSize(16, 16));
     }
@@ -1005,7 +1004,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
@@ -1017,7 +1016,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
                 .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(140, 4)
                 .setSize(55, 16));
 
@@ -1045,7 +1044,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         ModularWindow.Builder builder = ModularWindow.builder(200, 100);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
             .widget(new TextWidget("Configuration").setPos(25, 9))
@@ -1072,7 +1071,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
-                            GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                            GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
                         .addTooltip("Setup mode"))
                     .widget(
@@ -1091,7 +1090,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("IC2 mode"))
                     .widget(
@@ -1110,7 +1109,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("No Humidity mode"))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
@@ -1122,7 +1121,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
                     .setSize(18, 18)
                     .setPos(10, 30)
                     .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))

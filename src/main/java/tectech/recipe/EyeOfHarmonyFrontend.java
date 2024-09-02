@@ -1,7 +1,7 @@
 package tectech.recipe;
 
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.DARK_RED;
@@ -27,10 +27,10 @@ import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
@@ -77,7 +77,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-        GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
         EyeOfHarmonyRecipe currentRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
 
@@ -108,17 +108,17 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                 if (stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
                     drawNEIOverlayText(translateToLocal("NC"), stack);
                 }
             }
         }
         for (PositionedStack stack : neiCachedRecipe.mOutputs) {
-            if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                 if (EOHRecipe.getItemStackToTrueStackSizeMap()
                     .containsKey(stack.item)) {
                     long stackSize = EOHRecipe.getItemStackToTrueStackSizeMap()
@@ -144,48 +144,48 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             List<String> result = new ArrayList<>();
 
             result.add(
-                GT_LanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
+                GTLanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
                     + formatNumbers(recipe.getHydrogenRequirement())
                     + " L");
             result.add(
-                GT_LanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
+                GTLanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
                     + formatNumbers(recipe.getHydrogenRequirement())
                     + " L");
             result.add(
-                GT_LanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
+                GTLanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
                     + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
 
             if (recipe.getEUOutput() < TRILLION) {
                 result.add(
-                    GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                    GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
                         + formatNumbers(recipe.getEUOutput())
                         + " EU");
             } else {
                 result.add(
-                    GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                    GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
                         + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
                         + " EU");
             }
 
             if (recipe.getEUOutput() < TRILLION) {
                 result.add(
-                    GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
+                    GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
                         + formatNumbers(recipe.getEUStartCost())
                         + " EU");
             } else {
                 result.add(
-                    GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
+                    GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
                         + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost())
                         + " EU");
             }
 
             result.add(
-                GT_LanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance", "Base Recipe Chance") + ": "
+                GTLanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance", "Base Recipe Chance") + ": "
                     + formatNumbers(100 * recipe.getBaseRecipeSuccessChance())
                     + "%");
             result.add(
-                GT_LanguageManager
-                    .addStringLocalization("EOH.Recipe.RecipeEnergyEfficiency", "Recipe Energy Efficiency") + ": "
+                GTLanguageManager.addStringLocalization("EOH.Recipe.RecipeEnergyEfficiency", "Recipe Energy Efficiency")
+                    + ": "
                     + formatNumbers(100 * recipe.getRecipeEnergyEfficiency())
                     + "%");
 
@@ -194,10 +194,10 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
                 result.add(
                     "" + DARK_RED
                         + BOLD
-                        + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.0", "Warning")
+                        + GTLanguageManager.addStringLocalization("EOH.Recipe.Warning.0", "Warning")
                         + RESET
                         + ": "
-                        + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.1", "Not all items displayed."));
+                        + GTLanguageManager.addStringLocalization("EOH.Recipe.Warning.1", "Not all items displayed."));
             }
 
             return result;

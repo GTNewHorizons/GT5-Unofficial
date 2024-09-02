@@ -21,7 +21,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.Pair;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
@@ -45,11 +45,11 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 public class CellLoader implements IWerkstoffRunnable {
 
@@ -161,7 +161,7 @@ public class CellLoader implements IWerkstoffRunnable {
             if (werkstoff.getStats()
                 .isElektrolysis())
                 RecipeMaps.electrolyzerRecipes.add(
-                    new GT_Recipe(
+                    new GTRecipe(
                         true,
                         new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
                         stOutputs.toArray(new ItemStack[0]),
@@ -187,7 +187,7 @@ public class CellLoader implements IWerkstoffRunnable {
             if (werkstoff.getStats()
                 .isCentrifuge())
                 RecipeMaps.centrifugeRecipes.add(
-                    new GT_Recipe(
+                    new GTRecipe(
                         true,
                         new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
                         stOutputs.toArray(new ItemStack[0]),
@@ -213,7 +213,7 @@ public class CellLoader implements IWerkstoffRunnable {
         }
 
         // Tank "Recipe"
-        GT_Utility.addFluidContainerData(
+        GTUtility.addFluidContainerData(
             new FluidContainerRegistry.FluidContainerData(
                 new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
                 werkstoff.get(cell),
@@ -224,7 +224,7 @@ public class CellLoader implements IWerkstoffRunnable {
             werkstoff.get(cell),
             Materials.Empty.getCells(1));
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Empty.getCells(1))
             .itemOutputs(werkstoff.get(cell))
             .fluidInputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000))
@@ -232,7 +232,7 @@ public class CellLoader implements IWerkstoffRunnable {
             .eut(2)
             .addTo(fluidCannerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(werkstoff.get(cell))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000))
@@ -244,12 +244,12 @@ public class CellLoader implements IWerkstoffRunnable {
             FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
                 new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
                 werkstoff.get(capsule),
-                GT_ModHandler.getModItem(Forestry.ID, "waxCapsule", 1),
+                GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1),
                 true);
-            GT_Utility.addFluidContainerData(emptyData);
+            GTUtility.addFluidContainerData(emptyData);
             FluidContainerRegistry.registerFluidContainer(emptyData);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(capsule))
                 .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000))
                 .duration(16 * TICKS)
@@ -259,7 +259,7 @@ public class CellLoader implements IWerkstoffRunnable {
 
         if (werkstoff.hasItemType(dust)) {
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dust))
                 .fluidOutputs(werkstoff.getFluidOrGas(1000))
                 .duration(
@@ -271,8 +271,8 @@ public class CellLoader implements IWerkstoffRunnable {
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(werkstoff.get(dust))
                 .fluidInputs(werkstoff.getFluidOrGas(1000))
                 .duration(
@@ -310,12 +310,12 @@ public class CellLoader implements IWerkstoffRunnable {
             }
             if (!ElementSet) return;
 
-            GT_OreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
+            GTOreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
 
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
-            Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
-            Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-            GT_Values.RA.stdBuilder()
+            BehaviourDataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
+            BehaviourDataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(cell))
                 .itemOutputs(scannerOutput)
                 .special(ItemList.Tool_DataOrb.get(1L))

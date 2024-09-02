@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 public class StreamUtils {
 
@@ -25,7 +25,7 @@ public class StreamUtils {
 
     public static Predicate<RecipeMap<?>> filterVisualMaps() {
         return recipeMap -> {
-            Optional<GT_Recipe> op = recipeMap.getAllRecipes()
+            Optional<GTRecipe> op = recipeMap.getAllRecipes()
                 .stream()
                 .findAny();
             return op.isPresent() && !op.get().mFakeRecipe;

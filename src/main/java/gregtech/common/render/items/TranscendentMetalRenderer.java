@@ -13,11 +13,11 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.render.TextureUtils;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTUtil;
 
-public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
+public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -69,7 +69,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glPushMatrix();
 
         Fluid fluid = fluidStack.getFluid();
-        applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true);
+        applyEffect(type, GTUtil.getRGBaArray(fluid.getColor()), true);
 
         TextureUtils.bindAtlas(fluid.getSpriteNumber());
         GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -124,7 +124,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        GL11.glRotatef((GT_Mod.gregtechproxy.getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
+        GL11.glRotatef((GTMod.gregtechproxy.getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {

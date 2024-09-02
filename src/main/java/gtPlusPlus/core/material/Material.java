@@ -1,6 +1,6 @@
 package gtPlusPlus.core.material;
 
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -381,7 +381,7 @@ public class Material {
         try {
             this.unlocalizedName = Utils.sanitizeString(materialName);
             this.localizedName = materialName;
-            this.translatedName = GT_LanguageManager
+            this.translatedName = GTLanguageManager
                 .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
             Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());

@@ -1,15 +1,15 @@
 package ggfab;
 
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.GTValues.W;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public enum GGItemList implements IItemContainer {
 
@@ -51,7 +51,7 @@ public enum GGItemList implements IItemContainer {
             return this;
         }
         ItemStack aStack = new ItemStack(aItem, 1, 0);
-        mStack = GT_Utility.copyAmount(1, aStack);
+        mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
@@ -64,7 +64,7 @@ public enum GGItemList implements IItemContainer {
     @Override
     public IItemContainer set(ItemStack aStack) {
         mHasNotBeenSet = false;
-        mStack = GT_Utility.copyAmount(1, aStack);
+        mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
@@ -73,7 +73,7 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        if (GT_Utility.isStackInvalid(mStack)) {
+        if (GTUtility.isStackInvalid(mStack)) {
             return null;
         }
         return mStack.getItem();
@@ -84,7 +84,7 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        return GT_Utility.getBlockFromStack(new ItemStack(getItem()));
+        return GTUtility.getBlockFromStack(new ItemStack(getItem()));
     }
 
     @Override
@@ -99,10 +99,10 @@ public enum GGItemList implements IItemContainer {
 
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
-        if (GT_Utility.isStackInvalid(aStack)) {
+        if (GTUtility.isStackInvalid(aStack)) {
             return false;
         }
-        return GT_Utility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+        return GTUtility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
     @Override
@@ -110,10 +110,10 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        if (GT_Utility.isStackInvalid(mStack)) {
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GTUtility.isStackInvalid(mStack)) {
+            return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
+        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -121,10 +121,10 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        if (GT_Utility.isStackInvalid(mStack)) {
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GTUtility.isStackInvalid(mStack)) {
+            return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -132,10 +132,10 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        if (GT_Utility.isStackInvalid(mStack)) {
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GTUtility.isStackInvalid(mStack)) {
+            return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -143,30 +143,30 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        if (GT_Utility.isStackInvalid(mStack)) {
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GTUtility.isStackInvalid(mStack)) {
+            return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GTOreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) {
+        if (GTUtility.isStackInvalid(rStack)) {
             return null;
         }
         rStack.setStackDisplayName(aDisplayName);
-        return GT_Utility.copyAmount(aAmount, rStack);
+        return GTUtility.copyAmount(aAmount, rStack);
     }
 
     @Override
     public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) {
+        if (GTUtility.isStackInvalid(rStack)) {
             return null;
         }
-        GT_ModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
-        return GT_Utility.copyAmount(aAmount, rStack);
+        GTModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
+        return GTUtility.copyAmount(aAmount, rStack);
     }
 
     @Override
@@ -174,10 +174,10 @@ public enum GGItemList implements IItemContainer {
         if (mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
-        if (GT_Utility.isStackInvalid(mStack)) {
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GTUtility.isStackInvalid(mStack)) {
+            return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -186,7 +186,7 @@ public enum GGItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
         for (Object tOreName : aOreNames) {
-            GT_OreDictUnificator.registerOre(tOreName, get(1));
+            GTOreDictUnificator.registerOre(tOreName, get(1));
         }
         return this;
     }
@@ -197,7 +197,7 @@ public enum GGItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
         for (Object tOreName : aOreNames) {
-            GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
+            GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
         }
         return this;
     }

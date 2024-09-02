@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
-import static gregtech.api.GregTech_API.mEUtoRF;
+import static gregtech.api.GregTechAPI.mEUtoRF;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.COFHCore;
 
@@ -20,12 +20,12 @@ import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTModHandler;
+import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.items.MetaGeneratedItem02;
+import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
@@ -96,11 +96,11 @@ public class ChargingHelper {
                                 if (mStartingEu - mEntityTemp.getEUVar() <= 0) {
                                     long mMaxDistance;
                                     if (mEntityTemp.getMode() == 0) {
-                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()]);
+                                        mMaxDistance = (4 * GTValues.V[mEntityTemp.getTier()]);
                                     } else if (mEntityTemp.getMode() == 1) {
                                         mMaxDistance = (mEntityTemp.getTier() * 10L);
                                     } else {
-                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()] / 2);
+                                        mMaxDistance = (4 * GTValues.V[mEntityTemp.getTier()] / 2);
                                     }
                                     double mDistance = calculateDistance(mEntityTemp, mPlayerMan);
                                     long mVoltageCost = MathUtils.findPercentageOfInt(mMaxDistance, (float) mDistance);
@@ -234,19 +234,18 @@ public class ChargingHelper {
                     }
 
                     // Try to get charge direct from NBT for GT and IC2 stacks
-                    if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01
-                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_01
-                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_02
-                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_03
+                    if (mTemp.getItem() instanceof MetaGeneratedTool01 || mTemp.getItem() instanceof MetaGeneratedItem01
+                        || mTemp.getItem() instanceof MetaGeneratedItem02
+                        || mTemp.getItem() instanceof MetaGeneratedItem03
                         || mTemp.getItem()
                             .getClass()
                             .getName()
-                            .equalsIgnoreCase(GT_MetaGenerated_Tool_01.class.getName())) {
+                            .equalsIgnoreCase(MetaGeneratedTool01.class.getName())) {
                         if (!NBTUtils.hasKey(mTemp, "GT.ItemCharge")) {
                             if (!mTemp.getDisplayName()
                                 .toLowerCase()
                                 .contains("battery")) {
-                                if (!GT_ModHandler.isElectricItem(mTemp)) {
+                                if (!GTModHandler.isElectricItem(mTemp)) {
                                     continue;
                                 }
                             } else {
@@ -284,8 +283,7 @@ public class ChargingHelper {
                     int mMultiVoltage = (int) (mMulti * mVoltageIncrease);
 
                     if ((mitemCurrentCharge + mMultiVoltage) <= mItemMaxCharge) {
-                        if (GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, Integer.MAX_VALUE, true, false)
-                            > 0) {
+                        if (GTModHandler.chargeElectricItem(mTemp, mMultiVoltage, Integer.MAX_VALUE, true, false) > 0) {
                             for (int i = 0; i < mMulti; i++) {
                                 ElectricItem.manager.charge(mTemp, mVoltageIncrease, Integer.MAX_VALUE, false, false);
                             }
@@ -300,7 +298,7 @@ public class ChargingHelper {
                     mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
                     if (mitemCurrentCharge < mItemMaxCharge && mitemCurrentCharge >= (mItemMaxCharge - mVoltage)) {
                         int xDif = (int) (mItemMaxCharge - mitemCurrentCharge);
-                        if (GT_ModHandler.chargeElectricItem(mTemp, xDif, Integer.MAX_VALUE, true, false) >= 0) {
+                        if (GTModHandler.chargeElectricItem(mTemp, xDif, Integer.MAX_VALUE, true, false) >= 0) {
                             if (ElectricItem.manager.getCharge(mTemp) >= mItemMaxCharge) {
                                 mEntity.setEUVar(mEntity.getEUVar() - (xDif));
                                 mEuStored = mEntity.getEUVar();
@@ -334,7 +332,7 @@ public class ChargingHelper {
         if (itemstack == null) {
             return false;
         }
-        if (GT_ModHandler.isElectricItem(itemstack)) {
+        if (GTModHandler.isElectricItem(itemstack)) {
             return true;
         }
         return itemstack.getItem() instanceof IElectricItem;

@@ -18,15 +18,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
-public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
+public class MTETesseractTerminal extends MTEBasicTank {
 
     public int mFrequency = 0;
     public UUID mOwner;
@@ -167,7 +167,7 @@ public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
             .compareTo(this.mOwner) == 0) {
             if (side == this.getBaseMetaTileEntity()
                 .getFrontFacing()) {
-                final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
+                final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0:
                         // Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
@@ -203,7 +203,7 @@ public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
             }
         } else if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) != 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+                GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
             }
         return true;
     }
@@ -215,7 +215,7 @@ public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
             .compareTo(this.mOwner) == 0) {
             if (side == this.getBaseMetaTileEntity()
                 .getFrontFacing()) {
-                final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
+                final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0 -> {
                         try {
@@ -246,7 +246,7 @@ public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
                         this.mFrequency += 512;
                     }
                 }
-                GT_Utility.sendChatToPlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     "Frequency: " + this.mFrequency
                         + (this.getTesseract(this.mFrequency, false) == null ? ""
@@ -256,7 +256,7 @@ public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
             }
         } else if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) != 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+                GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
             }
     }
 
@@ -580,10 +580,10 @@ public class MTETesseractTerminal extends GT_MetaTileEntity_BasicTank {
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == facing
-            ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-            : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GT_RenderedTexture(Textures.BlockIcons.VOID) };
+            ? new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+            : new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                new GTRenderedTexture(Textures.BlockIcons.VOID) };
     }
 
     // To-Do?

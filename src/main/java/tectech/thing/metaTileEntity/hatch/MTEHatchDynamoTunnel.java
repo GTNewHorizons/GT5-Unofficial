@@ -1,6 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,15 +16,15 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
@@ -48,7 +48,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                 translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(amps * V[tier])
+                    + GTUtility.formatNumbers(amps * V[tier])
                     + EnumChatFormatting.RESET
                     + " EU/t" },
             amps);
@@ -253,13 +253,13 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
@@ -276,7 +276,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(x, y + 16)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 
     @Override

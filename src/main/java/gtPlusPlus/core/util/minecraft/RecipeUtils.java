@@ -16,9 +16,9 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -195,7 +195,7 @@ public class RecipeUtils {
             return false;
         }
         // let gregtech handle shapeless recipes.
-        if (GT_ModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)) {
+        if (GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)) {
             return true;
         }
         return false;
@@ -294,7 +294,7 @@ public class RecipeUtils {
             boolean rReturn = false;
             ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance()
                 .getRecipeList();
-            aOutput = GT_OreDictUnificator.get(aOutput);
+            aOutput = GTOreDictUnificator.get(aOutput);
             int tList_sS = tList.size();
 
             for (int i = 0; i < tList_sS; ++i) {
@@ -302,19 +302,19 @@ public class RecipeUtils {
                 if (!aNotRemoveShapelessRecipes
                     || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {
-                        if (!gregtech.api.util.GT_ModHandler.sNativeRecipeClasses.contains(
+                        if (!GTModHandler.sNativeRecipeClasses.contains(
                             tRecipe.getClass()
                                 .getName())) {
                             continue;
                         }
-                    } else if (gregtech.api.util.GT_ModHandler.sSpecialRecipeClasses.contains(
+                    } else if (GTModHandler.sSpecialRecipeClasses.contains(
                         tRecipe.getClass()
                             .getName())) {
                                 continue;
                             }
 
                     ItemStack tStack = tRecipe.getRecipeOutput();
-                    if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
+                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
                         tList.remove(i--);
                         tList_sS = tList.size();
                         rReturn = true;

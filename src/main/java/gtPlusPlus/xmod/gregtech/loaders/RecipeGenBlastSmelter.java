@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import static gregtech.api.enums.GT_Values.VP;
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
@@ -14,10 +14,10 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeCategories;
@@ -104,7 +104,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         Logger.WARNING("[BAS] Size: " + mMaterialListSize);
 
         // Make a simple one Material MaterialStack[] and log it for validity.
-        circuitGT = GT_Utility.getIntegratedCircuit(1);
+        circuitGT = GTUtility.getIntegratedCircuit(1);
         final ItemStack[] tItemStackTest = new ItemStack[] { circuitGT, tStack };
         inputStackCount = 1;
         fluidAmount = 144 * inputStackCount;
@@ -131,7 +131,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         // Generate Recipes for all singular materials that can be made molten.
         if (hasMoreInputThanACircuit) {
             if (M.requiresBlastFurnace()) {
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(tItemStackTest)
                     .fluidOutputs(M.getFluidStack(fluidAmount))
                     .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
@@ -142,7 +142,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                 Logger.WARNING("[BAS] Failed.");
             }
         } else {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(tItemStackTest)
                 .fluidOutputs(M.getFluidStack(fluidAmount))
                 .eut(aVoltage)
@@ -150,7 +150,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                 .addTo(alloyBlastSmelterRecipes);
 
             Logger.WARNING("[BAS] Success.");
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
                 .itemOutputs(M.getIngot(1))
                 .fluidInputs(M.getFluidStack(144))
@@ -176,7 +176,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         // If this Material has some kind of compound list, proceed
 
         final gtPlusPlus.core.material.MaterialStack[] tempStack = new gtPlusPlus.core.material.MaterialStack[mMaterialListSize];
-        circuitGT = GT_Utility.getIntegratedCircuit(mMaterialListSize);
+        circuitGT = GTUtility.getIntegratedCircuit(mMaterialListSize);
 
         // Builds me a MaterialStack[] from the MaterialList of M.
         int ooo = 0;
@@ -285,7 +285,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         }
 
         // Adds Recipe
-        GT_RecipeBuilder builder = GT_Values.RA.stdBuilder();
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder();
         List<ItemStack> inputs = new ArrayList<>(Arrays.asList(components));
         inputs.removeIf(Objects::isNull);
         components = inputs.toArray(new ItemStack[0]);

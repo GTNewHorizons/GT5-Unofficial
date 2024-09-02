@@ -28,18 +28,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.blocks.BlockMachines;
+import gregtech.common.render.GTRendererBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.GTMethodHelper;
 
-public class MachineBlockRenderer extends GT_Renderer_Block {
+public class MachineBlockRenderer extends GTRendererBlock {
 
     public static MachineBlockRenderer INSTANCE;
     public final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -62,8 +62,8 @@ public class MachineBlockRenderer extends GT_Renderer_Block {
     }
 
     private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer) {
-        if (aMeta > 0 && aMeta < GregTech_API.METATILEENTITIES.length) {
-            IMetaTileEntity tMetaTileEntity = GregTech_API.METATILEENTITIES[aMeta];
+        if (aMeta > 0 && aMeta < GregTechAPI.METATILEENTITIES.length) {
+            IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aMeta];
             if (tMetaTileEntity != null) {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -1204,10 +1204,10 @@ public class MachineBlockRenderer extends GT_Renderer_Block {
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aMeta += 30400;
-        if (aBlock instanceof GT_Block_Machines) {
-            if (aMeta > 0 && aMeta < GregTech_API.METATILEENTITIES.length
-                && GregTech_API.METATILEENTITIES[aMeta] != null
-                && !GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)) {
+        if (aBlock instanceof BlockMachines) {
+            if (aMeta > 0 && aMeta < GregTechAPI.METATILEENTITIES.length
+                && GregTechAPI.METATILEENTITIES[aMeta] != null
+                && !GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
             }
         }

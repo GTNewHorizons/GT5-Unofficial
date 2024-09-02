@@ -7,31 +7,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.items.behaviors.Behaviour_None;
-import gregtech.common.items.behaviors.Behaviour_Wrench;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.items.behaviors.BehaviourNone;
+import gregtech.common.items.behaviors.BehaviourWrench;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class Behaviour_Choocher extends Behaviour_None {
+public class Behaviour_Choocher extends BehaviourNone {
 
     private boolean isWrench = true;
-    private final Behaviour_Wrench wrench = new Behaviour_Wrench(150);
+    private final BehaviourWrench wrench = new BehaviourWrench(150);
     private final Behaviour_Prospecting_Ex prospecting = new Behaviour_Prospecting_Ex(10, 1250);
-    private final String mTooltip1 = GT_LanguageManager
+    private final String mTooltip1 = GTLanguageManager
         .addStringLocalization("gt.behaviour.choochering1", "Current tool mode: ");
-    private final String mTooltip2 = GT_LanguageManager
+    private final String mTooltip2 = GTLanguageManager
         .addStringLocalization("gt.behaviour.choochering2", "Change tool mode using Shift+Rightclick.");
-    private final String mTooltipH = GT_LanguageManager
+    private final String mTooltipH = GTLanguageManager
         .addStringLocalization("gt.behaviour.prospectingEx", "Usable for Prospecting large areas.");
-    private final String mTooltipW = GT_LanguageManager
+    private final String mTooltipW = GTLanguageManager
         .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick.");
 
     public Behaviour_Choocher() {}
 
     @Override
-    public boolean onItemUseFirst(final GT_MetaBase_Item aItem, final ItemStack aStack, final EntityPlayer aPlayer,
+    public boolean onItemUseFirst(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
         final World aWorld, final int aX, final int aY, final int aZ, final ForgeDirection side, final float hitX,
         final float hitY, final float hitZ) {
         if (aWorld.isRemote) {
@@ -64,7 +64,7 @@ public class Behaviour_Choocher extends Behaviour_None {
     }
 
     @Override
-    public List<String> getAdditionalToolTips(final GT_MetaBase_Item aItem, final List<String> aList,
+    public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
 
         boolean inWrenchMode;

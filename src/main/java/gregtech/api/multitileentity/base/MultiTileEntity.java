@@ -1,7 +1,7 @@
 package gregtech.api.multitileentity.base;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.VALID_SIDES;
+import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.enums.GTValues.VALID_SIDES;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,15 +35,15 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTValues.NBT;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
@@ -52,18 +52,18 @@ import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.GTPacketMultiTileEntity;
+import gregtech.api.net.GTPacketNew;
 import gregtech.api.net.data.CommonData;
 import gregtech.api.net.data.CoordinateData;
 import gregtech.api.net.data.MultiTileEntityData;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.common.render.MultiTileBasicRender;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -98,16 +98,16 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     protected ForgeDirection facing = ForgeDirection.WEST; // Default to WEST, so it renders facing Left in the
                                                            // inventory
     protected byte color;
-    protected int rgba = GT_Values.UNCOLORED;
-    private short mteID = GT_Values.W, mteRegistry = GT_Values.W;
+    protected int rgba = GTValues.UNCOLORED;
+    private short mteID = GTValues.W, mteRegistry = GTValues.W;
     private String customName = null;
     private String ownerName = "";
-    private UUID ownerUUID = GT_Utility.defaultUuid;
+    private UUID ownerUUID = GTUtility.defaultUuid;
     private boolean lockUpgrade = false;
 
-    private final GT_Packet_MultiTileEntity fullPacket = new GT_Packet_MultiTileEntity(false);
-    private final GT_Packet_MultiTileEntity timedPacket = new GT_Packet_MultiTileEntity(false);
-    private final GT_Packet_MultiTileEntity graphicPacket = new GT_Packet_MultiTileEntity(false);
+    private final GTPacketMultiTileEntity fullPacket = new GTPacketMultiTileEntity(false);
+    private final GTPacketMultiTileEntity timedPacket = new GTPacketMultiTileEntity(false);
+    private final GTPacketMultiTileEntity graphicPacket = new GTPacketMultiTileEntity(false);
 
     public MultiTileEntity(boolean isTicking) {
         this.isTicking = isTicking;
@@ -213,7 +213,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         // Check if it is a World/Chunk-Loading Process calling readFromNBT
-        if (mteID == GT_Values.W || mteRegistry == GT_Values.W) {
+        if (mteID == GTValues.W || mteRegistry == GTValues.W) {
             // Read the ID Tags first
             mteID = nbt.getShort(NBT.MTE_ID);
             mteRegistry = nbt.getShort(NBT.MTE_REG);
@@ -224,7 +224,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                 if (tClass != null) {
                     // Add the Default Parameters. Useful for things that differ between different tiers/types of the
                     // same machine
-                    nbt = GT_Util.fuseNBT(nbt, tClass.getParameters());
+                    nbt = GTUtil.fuseNBT(nbt, tClass.getParameters());
                 }
             }
         }
@@ -255,7 +255,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             readMultiTileNBT(nbt);
 
             if (NetworkUtils.isDedicatedClient()) {
-                if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+                if (GregTechAPI.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
                     loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
                 } else {
                     copyTextures();
@@ -284,7 +284,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         nbt.setShort(NBT.MTE_ID, mteID);
         nbt.setShort(NBT.MTE_REG, mteRegistry);
         // write the Custom Name
-        if (GT_Utility.isStringValid(customName)) {
+        if (GTUtility.isStringValid(customName)) {
             final NBTTagCompound displayNBT;
             if (nbt.hasKey(NBT.DISPLAY)) {
                 displayNBT = nbt.getCompoundTag(NBT.DISPLAY);
@@ -349,7 +349,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public TileEntity getTileEntity(int aX, int aY, int aZ) {
         if (worldObj == null
             || (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ))) return null;
-        return GT_Util.getTileEntity(worldObj, aX, aY, aZ, true);
+        return GTUtil.getTileEntity(worldObj, aX, aY, aZ, true);
     }
 
     @Override
@@ -410,7 +410,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public String getCustomName() {
-        return GT_Utility.isStringValid(customName) ? customName : null;
+        return GTUtility.isStringValid(customName) ? customName : null;
     }
 
     @Override
@@ -468,7 +468,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
         if (shouldTriggerBlockUpdate()) {
             // If we're triggering a block update this will call onMachineBlockUpdate()
-            GregTech_API.causeMachineUpdate(worldObj, xCoord, yCoord, zCoord);
+            GregTechAPI.causeMachineUpdate(worldObj, xCoord, yCoord, zCoord);
         } else {
             // If we're not trigger a cascading one, call the update here.
             onMachineBlockUpdate();
@@ -653,7 +653,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         return true;
     }
 
@@ -696,13 +696,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public String getOwnerName() {
-        if (GT_Utility.isStringInvalid(ownerName)) return "Player";
+        if (GTUtility.isStringInvalid(ownerName)) return "Player";
         return ownerName;
     }
 
     @Override
     public String setOwnerName(String aName) {
-        if (GT_Utility.isStringInvalid(aName)) return ownerName = "Player";
+        if (GTUtility.isStringInvalid(aName)) return ownerName = "Player";
         return ownerName = aName;
     }
 
@@ -741,7 +741,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             return allowRightclick(aPlayer) && onRightClick(aPlayer, side, aX, aY, aZ);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("onBlockActivated Failed", e);
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
             return true;
         }
     }
@@ -752,7 +752,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
                 final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
-                    ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ)
+                    ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
             } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
@@ -764,37 +764,37 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             if (!privateAccess() || aPlayer.getDisplayName()
                 .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-                final ForgeDirection wrenchSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
+                final ForgeDirection wrenchSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
 
                 if (tCurrentItem != null) {
                     if (getColorization() >= 0
-                        && GT_Utility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
+                        && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                         // TODO (Colorization)
                     }
 
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList))
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList))
                         return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList))
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList))
                         return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList))
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList))
                         return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList))
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList))
                         return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList))
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList))
                         return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList))
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList))
                         return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
 
                     final ForgeDirection coverSide = getCoverIDAtSide(side) == 0 ? wrenchSide : side;
 
                     if (getCoverIDAtSide(coverSide) == 0) {
-                        if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                            if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
+                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
+                            if (GregTechAPI.getCoverBehaviorNew(tCurrentItem)
                                 .isCoverPlaceable(coverSide, tCurrentItem, this)
-                                && allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
+                                && allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
                                 setCoverItemAtSide(coverSide, tCurrentItem);
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                GT_Utility.sendSoundToPlayers(
+                                GTUtility.sendSoundToPlayers(
                                     worldObj,
                                     SoundResource.IC2_TOOLS_WRENCH,
                                     1.0F,
@@ -808,9 +808,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                             return true;
                         }
                     } else {
-                        if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
-                            if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                GT_Utility.sendSoundToPlayers(
+                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                                GTUtility.sendSoundToPlayers(
                                     worldObj,
                                     SoundResource.RANDOM_BREAK,
                                     1.0F,
@@ -825,7 +825,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                         }
                     }
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    side = (getCoverIDAtSide(side) == 0) ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ) : side;
+                    side = (getCoverIDAtSide(side) == 0) ? GTUtility.determineWrenchingSide(side, aX, aY, aZ) : side;
                     return getCoverIDAtSide(side) > 0 && getCoverBehaviorAtSideNew(side).onCoverShiftRightClick(
                         side,
                         getCoverIDAtSide(side),
@@ -867,7 +867,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             return false;
         }
 
-        GT_UIInfos.openGTTileEntityUI(this, aPlayer);
+        GTUIInfos.openGTTileEntityUI(this, aPlayer);
         System.out.println("Trying to open a UI");
         return true;
     }
@@ -875,15 +875,15 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
         float aY, float aZ, ItemStack aTool) {
         if (setMainFacing(wrenchSide)) {
-            GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
+            GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
+            GTUtility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
         return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
+        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
             setCoverDataAtSide(
                 wrenchSide,
                 getCoverBehaviorAtSideNew(wrenchSide).onCoverScrewdriverClick(
@@ -896,7 +896,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                     aY,
                     aZ));
             // TODO: Update connections!
-            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
+            GTUtility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
         return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
@@ -1033,20 +1033,20 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     /**
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
+    public GTPacketMultiTileEntity getClientDataPacket() {
 
-        final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(false);
+        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity(false);
         return packet;
     }
 
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
         if (worldObj == null || worldObj.isRemote) return;
-        final GT_Packet_New tPacket = getClientDataPacket();
+        final GTPacketNew tPacket = getClientDataPacket();
         if (aPlayer == null) {
-            GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, tPacket, getXCoord(), getZCoord());
+            GTValues.NW.sendPacketToAllPlayersInRange(worldObj, tPacket, getXCoord(), getZCoord());
         } else {
-            GT_Values.NW.sendToPlayer(tPacket, aPlayer);
+            GTValues.NW.sendToPlayer(tPacket, aPlayer);
         }
         sendCoverDataIfNeeded();
     }
@@ -1339,20 +1339,20 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
+    public void getFullPacketData(GTPacketMultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
         packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
-    public void getGraphicPacketData(GT_Packet_MultiTileEntity packet) {
+    public void getGraphicPacketData(GTPacketMultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
-    public void getTimedPacketData(GT_Packet_MultiTileEntity packet) {
+    public void getTimedPacketData(GTPacketMultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
@@ -1361,21 +1361,21 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public void sendFullPacket(@Nonnull EntityPlayerMP player) {
         fullPacket.clearData();
         getFullPacketData(fullPacket);
-        GT_Values.NW.sendToPlayer(fullPacket, player);
+        GTValues.NW.sendToPlayer(fullPacket, player);
     }
 
     @Override
     public void sendGraphicPacket() {
         graphicPacket.clearData();
         getGraphicPacketData(graphicPacket);
-        GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, graphicPacket, getXCoord(), getZCoord());
+        GTValues.NW.sendPacketToAllPlayersInRange(worldObj, graphicPacket, getXCoord(), getZCoord());
     }
 
     @Override
     public void sendTimedPacket() {
         timedPacket.clearData();
         getTimedPacketData(timedPacket);
-        GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, timedPacket, getXCoord(), getZCoord());
+        GTValues.NW.sendPacketToAllPlayersInRange(worldObj, timedPacket, getXCoord(), getZCoord());
     }
 
     @Override

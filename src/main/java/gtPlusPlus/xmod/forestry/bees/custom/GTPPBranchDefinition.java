@@ -26,7 +26,7 @@ public enum GTPPBranchDefinition {
     public final IAllele[] getTemplate() {
         Class gtBranchDefClass;
         try {
-            gtBranchDefClass = Class.forName("gregtech.loaders.misc.GT_BranchDefinition");
+            gtBranchDefClass = Class.forName("gregtech.loaders.misc.GTBranchDefinition");
             Enum enumA = mActualValues;
             Method methodMyMethod = gtBranchDefClass.getMethod("getTemplate");
 
@@ -47,7 +47,7 @@ public enum GTPPBranchDefinition {
     public final IClassification getBranch() {
         Class gtBranchDefClass;
         try {
-            gtBranchDefClass = Class.forName("gregtech.loaders.misc.GT_BranchDefinition");
+            gtBranchDefClass = Class.forName("gregtech.loaders.misc.GTBranchDefinition");
             Enum enum_MY_SAMPLE_ENUM = mActualValues;
             Method methodMyMethod = gtBranchDefClass.getMethod("getBranch");
 
@@ -66,7 +66,7 @@ public enum GTPPBranchDefinition {
 
     private Enum setEnumVar(String value) {
         try {
-            Class gtBranchDefClass = Class.forName("gregtech.loaders.misc.GT_BranchDefinition");
+            Class gtBranchDefClass = Class.forName("gregtech.loaders.misc.GTBranchDefinition");
             Enum branchDef = Enum.valueOf(gtBranchDefClass, value);
             return branchDef;
         } catch (ClassNotFoundException e) {

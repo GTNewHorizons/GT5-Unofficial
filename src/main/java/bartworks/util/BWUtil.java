@@ -13,11 +13,11 @@
 
 package bartworks.util;
 
-import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.GTValues.D1;
+import static gregtech.api.enums.GTValues.E;
+import static gregtech.api.enums.GTValues.M;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.GTValues.W;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -59,13 +59,13 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Shaped_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTShapedRecipe;
+import gregtech.api.util.GTUtility;
 
 public class BWUtil {
 
@@ -77,12 +77,12 @@ public class BWUtil {
     public static final int CLEANROOM = -200;
 
     public static String translateGTItemStack(ItemStack itemStack) {
-        if (!GT_Utility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;
-        String ret = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
+        if (!GTUtility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;
+        String ret = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack))
-            matname = GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
+            matname = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
         return ret.replace("%material", matname);
     }
 
@@ -96,8 +96,8 @@ public class BWUtil {
         return array[index];
     }
 
-    public static GT_Recipe copyAndSetTierToNewRecipe(GT_Recipe recipe, byte tier) {
-        byte oldTier = GT_Utility.getTier(recipe.mEUt);
+    public static GTRecipe copyAndSetTierToNewRecipe(GTRecipe recipe, byte tier) {
+        byte oldTier = GTUtility.getTier(recipe.mEUt);
         int newTime = recipe.mDuration;
         int newVoltage = recipe.mEUt;
         if (tier < oldTier) {
@@ -233,16 +233,16 @@ public class BWUtil {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return itemStack != null && GT_OreDictUnificator.getAssociation(itemStack) != null
-            && GT_OreDictUnificator.getAssociation(itemStack).mPrefix != null
-            && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null
-            && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
+        return itemStack != null && GTOreDictUnificator.getAssociation(itemStack) != null
+            && GTOreDictUnificator.getAssociation(itemStack).mPrefix != null
+            && GTOreDictUnificator.getAssociation(itemStack).mMaterial != null
+            && GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
     }
 
-    public static int abstractHashGTRecipe(GT_Recipe recipe) {
+    public static int abstractHashGTRecipe(GTRecipe recipe) {
         int hash = 31;
         hash += recipe.mDuration / 20 * 31;
-        hash += GT_Utility.getTier(recipe.mEUt) * 31;
+        hash += GTUtility.getTier(recipe.mEUt) * 31;
         hash += BWUtil.specialToByte(recipe.mSpecialValue) * 31;
         hash += recipe.mInputs.length * 31;
         for (ItemStack mInput : recipe.mInputs) {
@@ -304,7 +304,7 @@ public class BWUtil {
     }
 
     public static byte getTier(long voltage) {
-        if (voltage <= Integer.MAX_VALUE - 7) return GT_Utility.getTier(voltage);
+        if (voltage <= Integer.MAX_VALUE - 7) return GTUtility.getTier(voltage);
         byte t = 0;
         while (voltage > 8L) {
             voltage >>= 2;
@@ -323,11 +323,11 @@ public class BWUtil {
     }
 
     public static boolean areStacksEqualOrNull(ItemStack aStack1, ItemStack aStack2) {
-        return aStack1 == null && aStack2 == null || GT_Utility.areStacksEqual(aStack1, aStack2);
+        return aStack1 == null && aStack2 == null || GTUtility.areStacksEqual(aStack1, aStack2);
     }
 
     public static boolean areStacksEqualOrEachNull(ItemStack aStack1, ItemStack aStack2) {
-        return aStack1 == null || aStack2 == null || GT_Utility.areStacksEqual(aStack1, aStack2);
+        return aStack1 == null || aStack2 == null || GTUtility.areStacksEqual(aStack1, aStack2);
     }
 
     public static byte getByteFromRarity(EnumRarity rarity) {
@@ -489,10 +489,10 @@ public class BWUtil {
     public static List<IRecipe> getGTBufferedRecipeList()
         throws SecurityException, IllegalArgumentException, IllegalAccessException {
         if (sBufferedRecipeList == null) {
-            sBufferedRecipeList = FieldUtils.getDeclaredField(GT_ModHandler.class, "sBufferRecipeList", true);
+            sBufferedRecipeList = FieldUtils.getDeclaredField(GTModHandler.class, "sBufferRecipeList", true);
         }
         if (sBufferedRecipeList == null) {
-            sBufferedRecipeList = FieldUtils.getField(GT_ModHandler.class, "sBufferRecipeList", true);
+            sBufferedRecipeList = FieldUtils.getField(GTModHandler.class, "sBufferRecipeList", true);
         }
         return (List<IRecipe>) sBufferedRecipeList.get(null);
     }
@@ -502,19 +502,19 @@ public class BWUtil {
             aResult,
             new Enchantment[0],
             new int[0],
-            (aBitMask & GT_ModHandler.RecipeBits.MIRRORED) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.BUFFERED) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.KEEPNBT) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.DISMANTLEABLE) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.NOT_REMOVABLE) == 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.REVERSIBLE) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0L,
-            (aBitMask & GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.DISMANTLEABLE) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.NOT_REMOVABLE) == 0L,
+            (aBitMask & GTModHandler.RecipeBits.REVERSIBLE) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0L,
+            (aBitMask & GTModHandler.RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0L,
+            (aBitMask & GTModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0L,
             aRecipe);
     }
 
@@ -524,7 +524,7 @@ public class BWUtil {
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
-        aResult = GT_OreDictUnificator.get(true, aResult);
+        aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length <= 0) return null;
@@ -641,18 +641,18 @@ public class BWUtil {
             for (; idx < aRecipe.length; idx += 2) {
                 if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                     if (D1) {
-                        GT_Log.err.println(
+                        GTLog.err.println(
                             "WARNING: Missing Item for shaped Recipe: "
                                 + (aResult == null ? "null" : aResult.getDisplayName()));
-                        for (Object tContent : aRecipe) GT_Log.err.println(tContent);
+                        for (Object tContent : aRecipe) GTLog.err.println(tContent);
                     }
                     return null;
                 }
                 Character chr = (Character) aRecipe[idx];
                 Object in = aRecipe[idx + 1];
                 if (in instanceof ItemStack) {
-                    tItemStackMap.put(chr, GT_Utility.copy(in));
-                    tItemDataMap.put(chr, GT_OreDictUnificator.getItemData((ItemStack) in));
+                    tItemStackMap.put(chr, GTUtility.copy(in));
+                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData((ItemStack) in));
                 } else if (in instanceof ItemData) {
                     String tString = in.toString();
                     switch (tString) {
@@ -672,7 +672,7 @@ public class BWUtil {
                             tItemDataMap.put(chr, (ItemData) in);
                             break;
                     }
-                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     aRecipe[idx + 1] = in.toString();
@@ -689,7 +689,7 @@ public class BWUtil {
                         tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
                         tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                 } else {
@@ -705,8 +705,8 @@ public class BWUtil {
                     x++;
                     tData[x] = tItemDataMap.get(chr);
                 }
-                if (GT_Utility.arrayContainsNonNull(tData))
-                    GT_OreDictUnificator.addItemData(aResult, new ItemData(tData));
+                if (GTUtility.arrayContainsNonNull(tData))
+                    GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
             }
 
             if (aCheckForCollisions && tRemoveRecipe) {
@@ -719,10 +719,10 @@ public class BWUtil {
                     if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
                         Items.feather.setDamage(tRecipe[x], 0);
                 }
-                tThereWasARecipe = GT_ModHandler.removeRecipe(tRecipe) != null;
+                tThereWasARecipe = GTModHandler.removeRecipe(tRecipe) != null;
             }
         } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
         }
 
         if (aResult == null || aResult.stackSize <= 0) return null;
@@ -730,7 +730,7 @@ public class BWUtil {
         if (aRemoveAllOthersWithSameOutput || aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
             || aRemoveAllOtherShapedsWithSameOutput
             || aRemoveAllOtherNativeRecipes)
-            tThereWasARecipe = GT_ModHandler.removeRecipeByOutput(
+            tThereWasARecipe = GTModHandler.removeRecipeByOutput(
                 aResult,
                 !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
                 aRemoveAllOtherShapedsWithSameOutput,
@@ -742,11 +742,11 @@ public class BWUtil {
             int tList_sS = tList.size();
             for (int i = 0; i < tList_sS && !tThereWasARecipe; i++) {
                 IRecipe tRecipe = tList.get(i);
-                if (GT_ModHandler.sSpecialRecipeClasses.contains(
+                if (GTModHandler.sSpecialRecipeClasses.contains(
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
                     tList.remove(i);
                     i--;
                     tList_sS = tList.size();
@@ -758,10 +758,10 @@ public class BWUtil {
         if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
-        GT_Utility.updateItemStack(aResult);
+        GTUtility.updateItemStack(aResult);
 
-        return new GT_Shaped_Recipe(
-            GT_Utility.copy(aResult),
+        return new GTShapedRecipe(
+            GTUtility.copy(aResult),
             aDismantleable,
             aRemovable,
             aKeepNBT,

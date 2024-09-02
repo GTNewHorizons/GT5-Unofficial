@@ -5,11 +5,11 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.Particle;
 
 public class BeamlineRecipeAdder2 {
@@ -21,7 +21,7 @@ public class BeamlineRecipeAdder2 {
         .maxIO(1, 2, 0, 0)
         .amperage(1)
         .frontend(SourceChamberFrontend::new)
-        .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
+        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .neiSpecialInfoFormatter((recipeInfo) -> {
 
             RecipeSC recipe = (RecipeSC) recipeInfo.recipe;
@@ -38,12 +38,12 @@ public class BeamlineRecipeAdder2 {
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
 
                 StatCollector.translateToLocal("beamline.energy") + ": <="
-                    + GT_Utility.formatNumbers(Math.min(maxEnergy, particle.maxSourceEnergy()))
+                    + GTUtility.formatNumbers(Math.min(maxEnergy, particle.maxSourceEnergy()))
                     + " keV",
 
-                StatCollector.translateToLocal("beamline.focus") + ": " + GT_Utility.formatNumbers(focus),
+                StatCollector.translateToLocal("beamline.focus") + ": " + GTUtility.formatNumbers(focus),
 
-                StatCollector.translateToLocal("beamline.rate") + ": " + GT_Utility.formatNumbers(amount)
+                StatCollector.translateToLocal("beamline.rate") + ": " + GTUtility.formatNumbers(amount)
 
         );
         })
@@ -73,19 +73,19 @@ public class BeamlineRecipeAdder2 {
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
 
                 StatCollector.translateToLocal("beamline.energy") + ": "
-                    + GT_Utility.formatNumbers(minEnergy * 1000)
+                    + GTUtility.formatNumbers(minEnergy * 1000)
                     + "-"
-                    + GT_Utility.formatNumbers(maxEnergy * 1000)
+                    + GTUtility.formatNumbers(maxEnergy * 1000)
                     + " eV", // Note the eV unit
 
-                StatCollector.translateToLocal("beamline.focus") + ": >=" + GT_Utility.formatNumbers(minFocus),
+                StatCollector.translateToLocal("beamline.focus") + ": >=" + GTUtility.formatNumbers(minFocus),
 
-                StatCollector.translateToLocal("beamline.amount") + ": " + GT_Utility.formatNumbers(amount)
+                StatCollector.translateToLocal("beamline.amount") + ": " + GTUtility.formatNumbers(amount)
 
         );
         }))
         // .slotOverlays(null)
-        .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
+        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)
         .build();

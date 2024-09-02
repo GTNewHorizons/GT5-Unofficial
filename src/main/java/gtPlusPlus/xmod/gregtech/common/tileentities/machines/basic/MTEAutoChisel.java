@@ -13,19 +13,19 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.BasicUIProperties;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
-public class MTEAutoChisel extends GT_MetaTileEntity_BasicMachine {
+public class MTEAutoChisel extends MTEBasicMachine {
 
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
@@ -40,14 +40,14 @@ public class MTEAutoChisel extends GT_MetaTileEntity_BasicMachine {
             "Chisels things, Gregtech style",
             1,
             1,
-            new ITexture[] { new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
-                new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
-                new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
+            new ITexture[] { new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
+                new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
+                new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
+                new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+                new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+                new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
     }
 
     public MTEAutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -70,8 +70,7 @@ public class MTEAutoChisel extends GT_MetaTileEntity_BasicMachine {
 
     private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {
         if (mInputCache != null && mOutputCache != null) {
-            if (GT_Utility.areStacksEqual(aStack, mInputCache)
-                && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
+            if (GTUtility.areStacksEqual(aStack, mInputCache) && GTUtility.areStacksEqual(aSpecialSlot, mOutputCache)) {
                 return true;
             }
         }
@@ -161,8 +160,8 @@ public class MTEAutoChisel extends GT_MetaTileEntity_BasicMachine {
         return DID_NOT_FIND_RECIPE;
     }
 
-    private static final FallbackableUITexture progressBarTexture = GT_UITextures
-        .fallbackableProgressbar("auto_chisel", GT_UITextures.PROGRESSBAR_COMPRESS);
+    private static final FallbackableUITexture progressBarTexture = GTUITextures
+        .fallbackableProgressbar("auto_chisel", GTUITextures.PROGRESSBAR_COMPRESS);
 
     @Override
     protected BasicUIProperties getUIProperties() {
@@ -174,7 +173,7 @@ public class MTEAutoChisel extends GT_MetaTileEntity_BasicMachine {
     @Override
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos)
-            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COMPRESSOR);
+            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_COMPRESSOR);
     }
 
     @Override

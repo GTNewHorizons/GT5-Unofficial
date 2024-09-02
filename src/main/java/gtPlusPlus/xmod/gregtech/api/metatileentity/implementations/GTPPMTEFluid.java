@@ -8,11 +8,11 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
+import gregtech.api.metatileentity.implementations.MTEFluid;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
-public class GTPPMTEFluid extends GT_MetaPipeEntity_Fluid {
+public class GTPPMTEFluid extends MTEFluid {
 
     public final GT_Materials mMaterial;
 

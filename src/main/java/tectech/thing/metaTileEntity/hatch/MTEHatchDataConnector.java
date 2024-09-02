@@ -20,8 +20,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
@@ -30,8 +30,7 @@ import tectech.util.TTUtility;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class MTEHatchDataConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
-    implements IConnectsToDataPipe {
+public abstract class MTEHatchDataConnector<T extends DataPacket> extends MTEHatch implements IConnectsToDataPipe {
 
     public static Textures.BlockIcons.CustomIcon EM_D_SIDES;
     public static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
@@ -64,19 +63,19 @@ public abstract class MTEHatchDataConnector<T extends DataPacket> extends GT_Met
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 EM_D_ACTIVE,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(EM_D_CONN) };
+            new GTRenderedTexture(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 EM_D_SIDES,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(EM_D_CONN) };
+            new GTRenderedTexture(EM_D_CONN) };
     }
 
     @Override

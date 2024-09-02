@@ -20,9 +20,9 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
@@ -112,7 +112,7 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
 
     @Override
     public final double getTransferLimit(final ItemStack itemStack) {
-        return GT_Values.V[mTier];
+        return GTValues.V[mTier];
     }
 
     @Override
@@ -141,13 +141,13 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
             EnumChatFormatting.GRAY + aTier
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getTier(stack))
+                + GTUtility.formatNumbers(this.getTier(stack))
                 + EnumChatFormatting.GRAY
                 + "] "
                 + aInputLimit
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getTransferLimit(stack))
+                + GTUtility.formatNumbers(this.getTransferLimit(stack))
                 + EnumChatFormatting.GRAY
                 + aEUT
                 + "]");
@@ -155,12 +155,12 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
             EnumChatFormatting.GRAY + aCurrentPower
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getCharge(stack))
+                + GTUtility.formatNumbers(this.getCharge(stack))
                 + EnumChatFormatting.GRAY
                 + aEU
                 + "] ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
+                + GTUtility.formatNumbers(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
                 + EnumChatFormatting.GRAY
                 + "%]");
         super.addInformation(stack, aPlayer, list, bool);

@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -54,21 +54,21 @@ public class MetaGTProxy {
                 .addStringLocalization("fluidHotWater", aNewHeatedWaterName);
             LanguageRegistry.instance()
                 .addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
-            GT_LanguageManager.addStringLocalization("fluidHotWater", aNewHeatedWaterName);
-            GT_LanguageManager.addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
+            GTLanguageManager.addStringLocalization("fluidHotWater", aNewHeatedWaterName);
+            GTLanguageManager.addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
 
             Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
             if (b != null) {
                 LanguageRegistry.addName(ItemUtils.getSimpleStack(b), aNewHeatedWaterName);
                 LanguageRegistry.instance()
                     .addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
-                GT_LanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
+                GTLanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
             }
             Fluid f = BlocksItems.getFluid(InternalName.fluidHotWater);
             if (f != null) {
                 LanguageRegistry.instance()
                     .addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
-                GT_LanguageManager.addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
+                GTLanguageManager.addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
                 int aDam = FluidRegistry.getFluidID(f);
                 ItemStack s = ItemList.Display_Fluid.getWithDamage(1, aDam);
                 if (s != null) {

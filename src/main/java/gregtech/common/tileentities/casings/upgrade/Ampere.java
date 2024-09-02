@@ -5,10 +5,10 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class Ampere extends UpgradeCasing {
 
@@ -22,7 +22,7 @@ public class Ampere extends UpgradeCasing {
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
-        amperage = aNBT.getInteger(GT_Values.NBT.UPGRADE_AMPERAGE);
+        amperage = aNBT.getInteger(GTValues.NBT.UPGRADE_AMPERAGE);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class Ampere extends UpgradeCasing {
     @Override
     public void addToolTips(List<String> list, ItemStack stack, boolean f3_h) {
         super.addToolTips(list, stack, f3_h);
-        list.add("Increases allowed amperage to " + GT_Utility.formatNumbers(amperage));
+        list.add("Increases allowed amperage to " + GTUtility.formatNumbers(amperage));
     }
 }

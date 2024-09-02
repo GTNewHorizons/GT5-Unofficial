@@ -10,8 +10,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -71,7 +71,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         storedFluid = 0;
         FluidStack tSCSteam = FluidRegistry.getFluidStack("supercriticalsteam", 1);
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
-            if (GT_Utility.areFluidsEqual(aFluids.get(i), tSCSteam, true)) {
+            if (GTUtility.areFluidsEqual(aFluids.get(i), tSCSteam, true)) {
                 flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
                 this.storedFluid += aFluids.get(i).amount;
@@ -81,7 +81,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow * 100));
+        addOutput(GTModHandler.getSteam(totalFlow * 100));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}

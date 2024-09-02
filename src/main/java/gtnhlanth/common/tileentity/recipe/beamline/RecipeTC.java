@@ -6,11 +6,11 @@ import java.util.Arrays;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.LanthItemList;
 
-public class RecipeTC extends GT_Recipe {
+public class RecipeTC extends GTRecipe {
 
     public int particleId;
     public int amount;
@@ -65,7 +65,7 @@ public class RecipeTC extends GT_Recipe {
         ItemStack[] mInputsWithParticleArray = mInputsWithParticle.toArray(new ItemStack[0]);
 
         if (aIndex < 0 || aIndex >= mInputsWithParticleArray.length) return null;
-        return GT_Utility.copyOrNull(mInputsWithParticleArray[aIndex]);
+        return GTUtility.copyOrNull(mInputsWithParticleArray[aIndex]);
     }
 
 }

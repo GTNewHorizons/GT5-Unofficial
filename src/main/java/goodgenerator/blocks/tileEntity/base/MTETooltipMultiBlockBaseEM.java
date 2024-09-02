@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 import gregtech.api.interfaces.ISecondaryDescribable;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implements ISecondaryDescribable {
 
-    private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltips = new ConcurrentHashMap<>();
+    private static final Map<Integer, MultiblockTooltipBuilder> tooltips = new ConcurrentHashMap<>();
 
     protected MTETooltipMultiBlockBaseEM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -23,9 +23,9 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         super(aName);
     }
 
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+    protected MultiblockTooltipBuilder getTooltip() {
         int tId = getBaseMetaTileEntity().getMetaTileID();
-        GT_Multiblock_Tooltip_Builder tooltip = tooltips.get(tId);
+        MultiblockTooltipBuilder tooltip = tooltips.get(tId);
         if (tooltip == null) {
             tooltip = createTooltip();
             tooltips.put(tId, tooltip);
@@ -33,7 +33,7 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
         return tooltip;
     }
 
-    protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
+    protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override
     public String[] getDescription() {

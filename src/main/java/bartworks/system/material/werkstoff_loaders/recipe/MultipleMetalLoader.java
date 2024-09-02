@@ -18,18 +18,18 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
 
@@ -37,9 +37,9 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
             RecipeMaps.benderRecipes.add(
-                new GT_Recipe(
+                new GTRecipe(
                     true,
-                    new ItemStack[] { werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2) },
+                    new ItemStack[] { werkstoff.get(ingot, 2), GTUtility.getIntegratedCircuit(2) },
                     new ItemStack[] { werkstoff.get(plateDouble) },
                     null,
                     null,
@@ -51,12 +51,12 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                         1L),
                     60,
                     0));
-            GregTech_API.registerCover(
+            GregTechAPI.registerCover(
                 werkstoff.get(plateDouble),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
                 null);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plateDouble))
                 .itemOutputs(werkstoff.get(dust, 2))
                 .duration(2 * TICKS)

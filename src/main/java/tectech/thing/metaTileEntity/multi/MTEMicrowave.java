@@ -2,8 +2,8 @@ package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.GregTech_API.sBlockCasings4;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.GregTechAPI.sBlockCasings4;
+import static gregtech.api.util.StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -33,9 +33,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import tectech.Reference;
 import tectech.loader.MainLoader;
@@ -173,7 +173,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                 if (entity instanceof Entity) {
                     if (tickedStuff.add((Entity) entity)) {
                         if (inside && entity instanceof EntityItem) {
-                            GT_Recipe tRecipe = RecipeMaps.microwaveRecipes.findRecipe(
+                            GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipe(
                                 mte,
                                 null,
                                 true,
@@ -192,7 +192,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                             ((EntityItem) entity).delayBeforeCanPickup = 2;
                             ((EntityItem) entity).setDead();
                         } else if (entity instanceof EntityLivingBase) {
-                            if (!GT_Utility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
+                            if (!GTUtility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
                                 ((EntityLivingBase) entity).attackEntityFrom(MainLoader.microwaving, damagingFactor);
                             }
                         }
@@ -215,8 +215,8 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name")) // Machine Type:
                                                                                                // Microwave Grinder
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0")) // Controller block of

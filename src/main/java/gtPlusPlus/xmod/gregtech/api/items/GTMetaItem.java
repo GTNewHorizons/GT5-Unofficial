@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
@@ -20,17 +20,17 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IItemBehaviour;
 
@@ -94,8 +94,8 @@ public abstract class GTMetaItem extends GTMetaItemBase {
             final ItemStack rStack = new ItemStack(this, 1, this.mOffset + aID);
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
+            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {
@@ -105,7 +105,7 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                         continue;
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GT_OreDictUnificator.addToBlacklist(rStack);
+                        GTOreDictUnificator.addToBlacklist(rStack);
                         continue;
                     }
                 }
@@ -131,21 +131,21 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                         continue;
                     }
                     if (tRandomData instanceof ItemData) {
-                        if (GT_Utility.isStringValid(tRandomData)) {
-                            GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                        if (GTUtility.isStringValid(tRandomData)) {
+                            GTOreDictUnificator.registerOre(tRandomData, rStack);
                         } else {
-                            GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }
                     if (tUseOreDict) {
-                        GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                        GTOreDictUnificator.registerOre(tRandomData, rStack);
                         continue;
                     }
                 }
             }
-            if (GregTech_API.sThaumcraftCompat != null) {
-                GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
+            if (GregTechAPI.sThaumcraftCompat != null) {
+                GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
             }
             return rStack;
         }

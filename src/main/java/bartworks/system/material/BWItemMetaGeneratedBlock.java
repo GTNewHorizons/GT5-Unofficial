@@ -24,8 +24,8 @@ import net.minecraft.world.World;
 import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 
 public class BWItemMetaGeneratedBlock extends BWItemBlocks {
 
@@ -53,13 +53,13 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
             return metaBlock.blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
         }
-        return GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
+        return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        if (!GT_Utility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
+        if (!GTUtility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
             return;
         }
         if (aList == null) {

@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.forestry.bees.custom;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -15,8 +15,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
@@ -91,7 +91,7 @@ public class GTPPBees {
     }
 
     private void addExtractorRecipe(ItemStack input, FluidStack output) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(input)
             .fluidOutputs(output)
             .duration(1 * SECONDS + 10 * TICKS)
@@ -101,9 +101,9 @@ public class GTPPBees {
 
     private static boolean tryGetBeesBoolean() {
         try {
-            Class<?> mProxy = Class.forName("gregtech.GT_Mod.gregtechproxy");
+            Class<?> mProxy = Class.forName("gregtech.GTMod.gregtechproxy");
             Field mNerf = FieldUtils.getDeclaredField(mProxy, "mGTBees", true);
-            boolean returnValue = (boolean) mNerf.get(GT_Mod.gregtechproxy);
+            boolean returnValue = (boolean) mNerf.get(GTMod.gregtechproxy);
             return returnValue;
         } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException e) {
             return false;
@@ -113,7 +113,7 @@ public class GTPPBees {
     private void setMaterials() {
         try {
 
-            Class<?> gtBees = Class.forName("gregtech.loaders.misc.GT_Bees");
+            Class<?> gtBees = Class.forName("gregtech.loaders.misc.GTBees");
             Class<?> gtCombItemClass = Class.forName("gregtech.common.items.ItemComb");
             Class gtCombEnumClass = Class.forName("gregtech.common.items.CombType");
             Field gtCombs = FieldUtils.getDeclaredField(gtBees, "combs", true);

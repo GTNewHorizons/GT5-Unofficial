@@ -13,7 +13,7 @@
 
 package bwcrossmod.tectech;
 
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -25,7 +25,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import tectech.recipe.TTRecipeAdder;
 
 public class TecTechResearchLoader {
@@ -42,10 +42,10 @@ public class TecTechResearchLoader {
             (int) TierEU.RECIPE_ZPM,
             24,
             new Object[] { ItemRegistry.voidminer[0].copy(),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
                 Materials.BlackPlutonium.getPlates(3), ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L),
                 ItemList.Field_Generator_ZPM.get(9L),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L) },
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L) },
             new FluidStack[] { new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Krypton.getFluidOrGas(20000) },
             ItemRegistry.voidminer[1].copy(),
             5 * MINUTES,
@@ -58,10 +58,10 @@ public class TecTechResearchLoader {
             (int) TierEU.RECIPE_UV,
             64,
             new Object[] { ItemRegistry.voidminer[1].copy(),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
                 Materials.Neutronium.getPlates(3), ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L),
                 ItemList.Field_Generator_UV.get(9L),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L) },
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L) },
             new FluidStack[] { new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Oganesson.getFluidOrGas(20000) },
             ItemRegistry.voidminer[2].copy(),
             5 * MINUTES,
@@ -74,9 +74,9 @@ public class TecTechResearchLoader {
             (int) TierEU.RECIPE_UV,
             8,
             new Object[] { ItemList.Machine_Multi_ImplosionCompressor.get(1L), Materials.Neutronium.getBlocks(5),
-                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { new FluidStack(solderIndalloy, 1440), Materials.Osmium.getMolten(1440),
                 Materials.Neutronium.getMolten(1440) },

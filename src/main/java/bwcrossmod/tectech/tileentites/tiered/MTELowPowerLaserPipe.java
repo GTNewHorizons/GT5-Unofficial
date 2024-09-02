@@ -27,13 +27,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.common.GT_Client;
+import gregtech.api.util.CoverBehavior;
+import gregtech.common.GTClient;
 import ic2.core.Ic2Items;
 
-public class MTELowPowerLaserPipe extends GT_MetaPipeEntity_Cable implements LowPowerLaser {
+public class MTELowPowerLaserPipe extends MTECable implements LowPowerLaser {
 
     public MTELowPowerLaserPipe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0.25f, Materials.BorosilicateGlass, 0, 0, 0, false, false);
@@ -59,7 +59,7 @@ public class MTELowPowerLaserPipe extends GT_MetaPipeEntity_Cable implements Low
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % 20 == 13 && aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+        if (aTick % 20 == 13 && aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
@@ -149,13 +149,13 @@ public class MTELowPowerLaserPipe extends GT_MetaPipeEntity_Cable implements Low
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }

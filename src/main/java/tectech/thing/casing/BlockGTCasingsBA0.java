@@ -12,17 +12,17 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 import tectech.thing.CustomItemList;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
 // Mostly tesla coils, also 2 eye of harmony casings.
-public class BlockGTCasingsBA0 extends GT_Block_Casings_Abstract {
+public class BlockGTCasingsBA0 extends BlockCasingsAbstract {
 
     private static final IIcon[] tM0 = new IIcon[2];
     private static final IIcon[] tM1 = new IIcon[2];
@@ -42,37 +42,37 @@ public class BlockGTCasingsBA0 extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 16;
 
     public BlockGTCasingsBA0() {
-        super(ItemCasingsBA0.class, "gt.blockcasingsBA0", GT_Material_Casings.INSTANCE);
+        super(ItemCasingsBA0.class, "gt.blockcasingsBA0", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][b
-                + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
+                + START_INDEX] = new GTCopiedBlockTexture(this, 6, b);
             /* IMPORTANT for block recoloring **/
         }
 
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".0.name", "Redstone Alloy Primary Tesla Windings");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".1.name", "MV Superconductor Primary Tesla Windings");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".2.name", "HV Superconductor Primary Tesla Windings");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".3.name", "EV Superconductor Primary Tesla Windings");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".4.name", "IV Superconductor Primary Tesla Windings");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".5.name", "LuV Superconductor Primary Tesla Windings");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".9.name", "ZPM Superconductor Primary Tesla Windings");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tesla Base Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Secondary Windings");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tesla Base Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Secondary Windings");
 
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".10.name", "Reinforced Temporal Structure Casing");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".11.name", "Reinforced Spatial Structure Casing");
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".12.name", "Infinite Spacetime Energy Boundary Casing");
 
         CustomItemList.tM_TeslaPrimary_0.set(new ItemStack(this, 1, 0));

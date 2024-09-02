@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.PluginBase;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.GT5UndergroundFluidHelper;
@@ -44,12 +44,12 @@ public class PluginGT5UndergroundFluid extends PluginBase {
     @Override
     public void loadCraftingRecipes(ItemStack result) {
         Fluid fluid = null;
-        FluidStack containerFluid = GT_Utility.getFluidForFilledItem(result, true);
+        FluidStack containerFluid = GTUtility.getFluidForFilledItem(result, true);
         if (containerFluid != null) {
             fluid = containerFluid.getFluid();
         }
         if (fluid == null) {
-            FluidStack displayFluid = GT_Utility.getFluidFromDisplayStack(result);
+            FluidStack displayFluid = GTUtility.getFluidFromDisplayStack(result);
             if (displayFluid != null) {
                 fluid = displayFluid.getFluid();
             }
@@ -135,7 +135,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
 
         private CachedUndergroundFluidRecipe(Fluid fluid, List<UndergroundFluidWrapper> wrappers) {
             targetFluidDisplay = new PositionedStack(
-                GT_Utility.getFluidDisplayStack(fluid),
+                GTUtility.getFluidDisplayStack(fluid),
                 getGuiWidth() / 2 - halfItemLength,
                 3);
             int y = 50 - halfItemLength;

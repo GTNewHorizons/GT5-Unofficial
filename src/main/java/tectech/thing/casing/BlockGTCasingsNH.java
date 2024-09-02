@@ -5,34 +5,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
-public class BlockGTCasingsNH extends GT_Block_Casings_Abstract {
+public class BlockGTCasingsNH extends BlockCasingsAbstract {
 
     public static boolean mConnectedMachineTextures = true;
 
     public BlockGTCasingsNH() {
-        super(ItemCasingsNH.class, "gt.blockcasingsNH", GT_Material_Casings.INSTANCE);
+        super(ItemCasingsNH.class, "gt.blockcasingsNH", MaterialCasings.INSTANCE);
         setCreativeTab(TecTech.creativeTabTecTech);
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[8][b + 64] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[8][b + 64] = new GTCopiedBlockTexture(this, 6, b);
             /* IMPORTANT for block recoloring */
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UEV Machine Casing"); // adding
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "UIV Machine Casing"); // adding
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UMV Machine Casing"); // adding
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "UXV Machine Casing"); // adding
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "MAX Machine Casing"); // adding
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UEV Machine Casing"); // adding
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "UIV Machine Casing"); // adding
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UMV Machine Casing"); // adding
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "UXV Machine Casing"); // adding
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "MAX Machine Casing"); // adding
 
         CustomItemList.Casing_UEV.set(new ItemStack(this, 1, 10));
         CustomItemList.Casing_UIV.set(new ItemStack(this, 1, 11));

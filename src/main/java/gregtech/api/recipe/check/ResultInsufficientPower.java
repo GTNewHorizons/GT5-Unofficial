@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class ResultInsufficientPower implements CheckRecipeResult {
 
@@ -37,8 +37,8 @@ public class ResultInsufficientPower implements CheckRecipeResult {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_power",
-                GT_Utility.formatNumbers(required),
-                GT_Utility.getColoredTierNameFromVoltage(required)));
+                GTUtility.formatNumbers(required),
+                GTUtility.getColoredTierNameFromVoltage(required)));
     }
 
     @Override

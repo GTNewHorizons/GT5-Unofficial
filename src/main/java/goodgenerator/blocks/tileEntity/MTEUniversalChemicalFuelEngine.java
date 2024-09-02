@@ -25,26 +25,25 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
@@ -78,9 +77,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+            if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
             }
         }
         return false;
@@ -91,9 +90,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+            if (aMetaTileEntity instanceof MTEHatchMuffler) {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
             }
         }
         return false;
@@ -104,9 +103,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+            if (aMetaTileEntity instanceof MTEHatchInput) {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
             }
         }
         return false;
@@ -117,11 +116,11 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+            if (aMetaTileEntity instanceof MTEHatchDynamo) {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
             } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
             }
         }
@@ -140,15 +139,15 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                             { "TTTTT", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "TTTTT" },
                             { "TT~TT", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "TTETT" },
                             { "TTWTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT" } }))
-                .addElement('T', ofBlock(GregTech_API.sBlockCasings4, 2))
-                .addElement('W', GT_HatchElement.Maintenance.newAny(50, 1))
-                .addElement('M', GT_HatchElement.Muffler.newAny(50, 2))
-                .addElement('S', GT_HatchElement.InputHatch.newAny(50, 3))
-                .addElement('E', GT_HatchElement.Dynamo.newAny(50, 4))
-                .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
+                .addElement('T', ofBlock(GregTechAPI.sBlockCasings4, 2))
+                .addElement('W', gregtech.api.enums.HatchElement.Maintenance.newAny(50, 1))
+                .addElement('M', gregtech.api.enums.HatchElement.Muffler.newAny(50, 2))
+                .addElement('S', gregtech.api.enums.HatchElement.InputHatch.newAny(50, 3))
+                .addElement('E', gregtech.api.enums.HatchElement.Dynamo.newAny(50, 4))
+                .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 14))
                 .addElement('C', ofBlock(Loaders.titaniumPlatedCylinder, 0))
-                .addElement('G', ofBlock(GregTech_API.sBlockCasings2, 4))
-                .addElement('I', ofBlock(GregTech_API.sBlockCasings4, 13))
+                .addElement('G', ofBlock(GregTechAPI.sBlockCasings2, 4))
+                .addElement('I', ofBlock(GregTechAPI.sBlockCasings4, 13))
                 .build();
         }
         return multiDefinition;
@@ -180,8 +179,8 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine")
             .addInfo("Controller block for the Chemical Engine")
             .addInfo("BURNING BURNING BURNING")
@@ -237,7 +236,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
 
     protected CheckRecipeResult processFuel(ArrayList<FluidStack> tFluids, RecipeMap<FuelBackend> recipeMap,
         long PromoterAmount, double efficiencyCoefficient, double FuelsValueBonus) {
-        for (GT_Recipe recipe : recipeMap.getAllRecipes()) {
+        for (GTRecipe recipe : recipeMap.getAllRecipes()) {
             FluidStack tFuel = findFuel(recipe);
             if (tFuel == null) continue;
             long FuelAmount = findLiquidAmount(tFuel, tFluids);
@@ -282,15 +281,15 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
-            + GT_Utility.formatNumbers(this.getPowerFlow())
+            + GTUtility.formatNumbers(this.getPowerFlow())
             + EnumChatFormatting.RESET
             + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED
-            + GT_Utility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
+            + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
             + " Efficiency: "
             + EnumChatFormatting.YELLOW
-            + GT_Utility.formatNumbers(tEff / 100D)
+            + GTUtility.formatNumbers(tEff / 100D)
             + EnumChatFormatting.RESET
             + " %";
         return info;
@@ -299,7 +298,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     void addAutoEnergy() {
         long exEU = this.getPowerFlow() * tEff / 10000;
         if (!mDynamoHatches.isEmpty()) {
-            GT_MetaTileEntity_Hatch_Dynamo tHatch = mDynamoHatches.get(0);
+            MTEHatchDynamo tHatch = mDynamoHatches.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(
                     Math.min(
@@ -328,9 +327,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         return FluidRegistry.getFluidStack("combustionpromotor", 1);
     }
 
-    public FluidStack findFuel(GT_Recipe aFuel) {
+    public FluidStack findFuel(GTRecipe aFuel) {
         if (aFuel.mInputs != null && aFuel.mInputs.length > 0)
-            return GT_Utility.getFluidForFilledItem(aFuel.mInputs[0], true);
+            return GTUtility.getFluidForFilledItem(aFuel.mInputs[0], true);
         else return aFuel.mFluidInputs[0];
     }
 

@@ -14,7 +14,7 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GTValues.VN;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -27,19 +27,19 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import bartworks.common.configs.ConfigHandler;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 
-public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
+public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     private static float nulearHeatMod = 2f;
     private byte mMode;
@@ -90,13 +90,13 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String casings = this.getCasingBlockItem()
             .get(0)
             .getDisplayName();
         tt.addMachineType("Geothermal Heat Pump")
-            .addInfo("Consumes " + GT_Values.V[this.mTier + 2] + "EU/t")
+            .addInfo("Consumes " + GTValues.V[this.mTier + 2] + "EU/t")
             .addInfo("Has 4 Modes, use the Screwdriver to change them:");
         if (ConfigHandler.DEHPDirectSteam) {
             tt.addInfo("0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract")
@@ -159,7 +159,7 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
 
     private long getFluidFromHatches(Fluid f) {
         long ret = 0;
-        for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+        for (MTEHatchInput ih : this.mInputHatches) {
             if (ih.getFluid()
                 .getFluid()
                 .equals(f)) ret += ih.getFluidAmount();
@@ -169,11 +169,11 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
 
     private long getWaterFromHatches(boolean onlyDistilled) {
         Fluid toConsume1 = FluidRegistry.WATER;
-        Fluid toConsume2 = GT_ModHandler.getDistilledWater(1L)
+        Fluid toConsume2 = GTModHandler.getDistilledWater(1L)
             .getFluid();
         if (onlyDistilled) toConsume1 = toConsume2;
         long ret = 0;
-        for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+        for (MTEHatchInput ih : this.mInputHatches) {
             if (ih.getFluid()
                 .getFluid()
                 .equals(toConsume1)
@@ -206,7 +206,7 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
             .getWorld().isRemote) return;
         ++this.mMode;
         if (this.mMode >= 4) this.mMode = 0;
-        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
+        GTUtility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
 
@@ -240,7 +240,7 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
 
                 if (this.getWaterFromHatches(false) - waterConsume > 0) {
                     this.consumeFluid(FluidRegistry.WATER, waterConsume);
-                    this.addOutput(GT_ModHandler.getSteam(steamProduced));
+                    this.addOutput(GTModHandler.getSteam(steamProduced));
                 } else {
                     this.explodeMultiblock();
                     return false;
@@ -251,7 +251,7 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
 
                 if (this.getWaterFromHatches(true) - waterConsume > 0) {
                     this.consumeFluid(
-                        GT_ModHandler.getDistilledWater(1)
+                        GTModHandler.getDistilledWater(1)
                             .getFluid(),
                         waterConsume);
                     this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
@@ -281,14 +281,14 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
             int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
-                for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+                for (MTEHatchInput ih : this.mInputHatches) {
                     if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
                         .getFluid()
                         .equals(fluid)
                         || ih.getFluid()
                             .getFluid()
                             .equals(
-                                GT_ModHandler.getDistilledWater(1)
+                                GTModHandler.getDistilledWater(1)
                                     .getFluid())
                         : ih.getFluid()
                             .getFluid()
@@ -302,14 +302,14 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
         }
 
         long tmp = ammount;
-        for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
+        for (MTEHatchInput ih : this.mInputHatches) {
             if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
                 .getFluid()
                 .equals(fluid)
                 || ih.getFluid()
                     .getFluid()
                     .equals(
-                        GT_ModHandler.getDistilledWater(1)
+                        GTModHandler.getDistilledWater(1)
                             .getFluid())
                 : ih.getFluid()
                     .getFluid()
@@ -323,7 +323,7 @@ public class MTEDeepEarthHeatingPump extends GT_MetaTileEntity_DrillerBase {
     @Override
     protected void setElectricityStats() {
         try {
-            this.mEUt = this.isPickingPipes ? 60 : Math.toIntExact(GT_Values.V[this.getMinTier()]);
+            this.mEUt = this.isPickingPipes ? 60 : Math.toIntExact(GTValues.V[this.getMinTier()]);
         } catch (ArithmeticException e) {
             e.printStackTrace();
             this.mEUt = Integer.MAX_VALUE - 7;

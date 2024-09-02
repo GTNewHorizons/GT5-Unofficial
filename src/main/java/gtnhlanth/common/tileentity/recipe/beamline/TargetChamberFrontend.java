@@ -1,6 +1,6 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
-import static gregtech.api.util.GT_Utility.trans;
+import static gregtech.api.util.GTUtility.trans;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gtnhlanth.util.Util;
 
@@ -35,7 +35,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected void drawNEIOverlayForInput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+    protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         if (stack.isNotConsumed()) { // The stack actually takes damage, but is technically still not considered to be
                                      // consumed by the code
             drawNEIOverlayText("PC", stack);
@@ -44,7 +44,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) { // See above
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtnhlanth.tt.pc")); // Partially
                                                                                                          // consumed:
@@ -85,25 +85,25 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         return posList;
     }
 
-    private String getEUtDisplay(GT_OverclockCalculator calculator) {
+    private String getEUtDisplay(OverclockCalculator calculator) {
         return getEUtWithoutTier(calculator);
     }
 
-    private String getEUtWithoutTier(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(calculator.getConsumption()) + " EU/t";
+    private String getEUtWithoutTier(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(calculator.getConsumption()) + " EU/t";
     }
 
-    private String getVoltageString(GT_OverclockCalculator calculator) {
+    private String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
-        return GT_Utility.formatNumbers(voltage) + " EU/t" + GT_Utility.getTierNameWithParentheses(voltage);
+        return GTUtility.formatNumbers(voltage) + " EU/t" + GTUtility.getTierNameWithParentheses(voltage);
     }
 
     private long computeVoltageForEURate(long euPerTick) {
         return euPerTick;
     }
 
-    private String getAmperageString(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(1);
+    private String getAmperageString(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(1);
     }
 
 }

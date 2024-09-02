@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.forestry.bees.custom;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomComb extends Item {
@@ -101,19 +101,19 @@ public class ItemCustomComb extends Item {
         ItemStack tComb;
 
         tComb = getStackForType(CustomCombs.SILICON);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silicon, 1), 30);
+        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silicon, 1), 30);
         // addProcess(tComb, Materials.Silver, 100);
         // addProcess(tComb, Materials.Galena, 100);
 
         // Rubbers
         tComb = getStackForType(CustomCombs.RUBBER);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rubber, 1), 30);
+        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rubber, 1), 30);
         tComb = getStackForType(CustomCombs.PLASTIC);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plastic, 1), 20);
+        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plastic, 1), 20);
         tComb = getStackForType(CustomCombs.PTFE);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PTFE, 1), 10);
+        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PTFE, 1), 10);
         tComb = getStackForType(CustomCombs.PBS);
-        addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PBS, 1), 5);
+        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PBS, 1), 5);
 
         // Fuels
         tComb = getStackForType(CustomCombs.BIOMASS);
@@ -131,7 +131,7 @@ public class ItemCustomComb extends Item {
     }
 
     public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(tComb)
             .itemOutputs(aOutput, ItemList.FR_Wax.get(1))
             .outputChances(chance * 100, 3000)

@@ -1,18 +1,18 @@
 package ggfab;
 
 import static gregtech.api.enums.ToolDictNames.*;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 
 class SingleUseToolRecipeLoader implements Runnable {
 
@@ -39,7 +39,7 @@ class SingleUseToolRecipeLoader implements Runnable {
             ToolDictNames type = ToolDictNames.valueOf(
                 value.name()
                     .substring(prefix.length()));
-            GT_ModHandler
+            GTModHandler
                 .addCraftingRecipe(value.get(1L), new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', type });
         }
     }
@@ -66,7 +66,7 @@ class SingleUseToolRecipeLoader implements Runnable {
             if (stats == null || cost == null) {
                 throw new IllegalArgumentException(type + " not registered");
             }
-            long fluids = cost * GT_Values.L / GT_Values.M, duration = 6 * SECONDS;
+            long fluids = cost * GTValues.L / GTValues.M, duration = 6 * SECONDS;
             long count = (long) (material.mDurability * stats.getMaxDurabilityMultiplier()
                 * outputModifier
                 * 100
@@ -85,12 +85,12 @@ class SingleUseToolRecipeLoader implements Runnable {
                     count /= niceFactor;
                 }
             } else if (count < 128) {
-                long mod = GT_Utility.ceilDiv(128, count);
+                long mod = GTUtility.ceilDiv(128, count);
                 fluids *= mod;
                 duration *= mod;
                 count *= mod;
             }
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .fluidInputs(material.getMolten(fluids)) //
                 .metadata(GGFabRecipeMaps.OUTPUT_TYPE, type) //
                 .metadata(GGFabRecipeMaps.OUTPUT_COUNT, (int) count) //

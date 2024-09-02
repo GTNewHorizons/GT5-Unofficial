@@ -11,9 +11,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 
-public class MTEHatchChiselBus extends GT_MetaTileEntity_Hatch_InputBus implements IAddUIWidgets {
+public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
 
     public MTEHatchChiselBus(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier);

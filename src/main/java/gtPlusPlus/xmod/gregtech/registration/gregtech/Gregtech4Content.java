@@ -21,7 +21,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT4_Tesseract_Generator;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Tesseract_Terminal;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Thermal_Boiler;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -37,7 +37,7 @@ public class Gregtech4Content {
     // ID Range 828, 829, 833 - 850
 
     public static void run() {
-        Logger.INFO("Max MTE: " + GregTech_API.METATILEENTITIES.length + " | " + GregTech_API.MAXIMUM_METATILE_IDS);
+        Logger.INFO("Max MTE: " + GregTechAPI.METATILEENTITIES.length + " | " + GregTechAPI.MAXIMUM_METATILE_IDS);
         thermalBoiler();
         multiCrafter();
         tesseracts();

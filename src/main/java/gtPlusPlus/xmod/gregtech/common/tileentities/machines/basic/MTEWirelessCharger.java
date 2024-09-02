@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -46,7 +46,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
     public String[] getDescription() {
         return new String[] { this.mDescription, "Can be locked to the owner by sneaking with a screwdriver",
             "Can also be locked with a lock upgrade", "", "3 Modes, Long-Range, Local and Mixed.",
-            "Long-Range: Can supply 2A of power to a single player up to " + (GT_Values.V[this.mTier] * 4) + "m away.",
+            "Long-Range: Can supply 2A of power to a single player up to " + (GTValues.V[this.mTier] * 4) + "m away.",
             "Local: Can supply several Amps to each player within " + this.mTier * 20 + "m.",
             "Mixed: Provides both 2A of long range and 1A per player locally.",
             "Mixed mode is more conservative of power and as a result only",
@@ -101,52 +101,52 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
@@ -250,17 +250,17 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
 
     @Override
     public long maxEUStore() {
-        return GT_Values.V[this.mTier] * 128;
+        return GTValues.V[this.mTier] * 128;
     }
 
     @Override
     public int getCapacity() {
-        return (int) (GT_Values.V[this.mTier] * 32);
+        return (int) (GTValues.V[this.mTier] * 32);
     }
 
     @Override
     public long maxEUInput() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
@@ -508,8 +508,8 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
                                 }
                             }
                             if (this.mMode == 0 || this.mMode == 2) {
-                                int tempRange = (int) (this.mMode == 0 ? 4 * GT_Values.V[this.mTier]
-                                    : 2 * GT_Values.V[this.mTier]);
+                                int tempRange = (int) (this.mMode == 0 ? 4 * GTValues.V[this.mTier]
+                                    : 2 * GTValues.V[this.mTier]);
                                 if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp))
                                     <= tempRange) {
                                     if (!mWirelessChargingMap.containsKey(mTemp.getDisplayName())) {
@@ -614,7 +614,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         int tempRange;
 
         if (this.mMode == 0 || this.mMode == 2) {
-            tempRange = (int) (this.mMode == 0 ? 4 * GT_Values.V[this.mTier] : 2 * GT_Values.V[this.mTier]);
+            tempRange = (int) (this.mMode == 0 ? 4 * GTValues.V[this.mTier] : 2 * GTValues.V[this.mTier]);
         } else {
             tempRange = this.mMode == 1 ? this.mTier * 20 : this.mTier * 10;
         }

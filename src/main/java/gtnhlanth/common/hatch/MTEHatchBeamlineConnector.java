@@ -13,13 +13,12 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.util.TTUtility;
 
-public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch
-    implements IConnectsToBeamline {
+public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends MTEHatch implements IConnectsToBeamline {
 
     private String clientLocale = "en_US";
 

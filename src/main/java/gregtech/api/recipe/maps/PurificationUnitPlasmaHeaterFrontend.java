@@ -11,12 +11,12 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -27,7 +27,7 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
         super(
             120,
             uiPropertiesBuilder.logoPos(new Pos2d(152, 90))
-                .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_PLASMA_HEATER)),
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_PLASMA_HEATER)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
@@ -46,12 +46,12 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
     }
 
     @Override
-    public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         neiCachedRecipe.mInputs.add(
-            new PositionedStack(GT_Utility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true), 26, 53, false));
+            new PositionedStack(GTUtility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true), 26, 53, false));
         neiCachedRecipe.mInputs.add(
             new PositionedStack(
-                GT_Utility.getFluidDisplayStack(Materials.SuperCoolant.getFluid(100L), true),
+                GTUtility.getFluidDisplayStack(Materials.SuperCoolant.getFluid(100L), true),
                 107,
                 52,
                 false));

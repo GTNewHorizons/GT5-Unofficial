@@ -21,7 +21,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -189,8 +189,8 @@ public class CapeRenderer extends RenderPlayer {
             }
 
             // If player is invisible, don't render.
-            if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
-                || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id))) {
+            if (GTUtility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
+                || GTUtility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id))) {
                 aEvent.setCanceled(true);
                 return false;
             }

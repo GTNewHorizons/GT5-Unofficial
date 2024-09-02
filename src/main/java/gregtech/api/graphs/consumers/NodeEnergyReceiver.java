@@ -8,13 +8,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GT_Pollution;
+import gregtech.common.Pollution;
 
 // consumer for RF machines
 public class NodeEnergyReceiver extends ConsumerNode {
@@ -29,7 +29,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
     @Override
     public int injectEnergy(long aVoltage, long aMaxAmps) {
         ForgeDirection tDirection = mSide;
-        int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
+        int rfOut = GTUtility.safeInt(aVoltage * GregTechAPI.mEUtoRF / 100);
         int ampsUsed = 0;
         if (mRestRF < rfOut) {
             mRestRF += rfOut;
@@ -40,7 +40,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
             mRestRF -= consumed;
             return ampsUsed;
         }
-        if (GregTech_API.mRFExplosions && GregTech_API.sMachineExplosions
+        if (GregTechAPI.mRFExplosions && GregTechAPI.sMachineExplosions
             && ((IEnergyReceiver) mTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600L) {
             explode(rfOut);
         }
@@ -49,14 +49,14 @@ public class NodeEnergyReceiver extends ConsumerNode {
 
     // copied from IEnergyConnected
     private void explode(int aRfOut) {
-        if (aRfOut > 32L * GregTech_API.mEUtoRF / 100L) {
-            float tStrength = GT_Values.getExplosionPowerForVoltage(aRfOut);
+        if (aRfOut > 32L * GregTechAPI.mEUtoRF / 100L) {
+            float tStrength = GTValues.getExplosionPowerForVoltage(aRfOut);
             int tX = mTileEntity.xCoord, tY = mTileEntity.yCoord, tZ = mTileEntity.zCoord;
             World tWorld = mTileEntity.getWorldObj();
-            GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+            GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
             tWorld.setBlock(tX, tY, tZ, Blocks.air);
-            if (GregTech_API.sMachineExplosions) if (GT_Mod.gregtechproxy.mPollution) GT_Pollution
-                .addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GT_Mod.gregtechproxy.mPollutionOnExplosion);
+            if (GregTechAPI.sMachineExplosions) if (GTMod.gregtechproxy.mPollution) Pollution
+                .addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GTMod.gregtechproxy.mPollutionOnExplosion);
 
             new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
                 .setSmoking(true)

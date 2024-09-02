@@ -25,13 +25,13 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
-import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IToolStats;
 import mods.railcraft.api.core.items.IToolCrowbar;
@@ -46,7 +46,7 @@ import mods.railcraft.api.core.items.IToolCrowbar;
     @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
     @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
     @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O) })
-public abstract class GTMetaTool extends GT_MetaGenerated_Tool implements IDamagableItem, IToolCrowbar, IToolWrench {
+public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagableItem, IToolCrowbar, IToolWrench {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -67,7 +67,7 @@ public abstract class GTMetaTool extends GT_MetaGenerated_Tool implements IDamag
      */
     public GTMetaTool(final String aUnlocalized) {
         super(aUnlocalized);
-        GT_ModHandler.registerBoxableItemToToolBox(new ItemStack(this));
+        GTModHandler.registerBoxableItemToToolBox(new ItemStack(this));
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setMaxStackSize(1);
         sInstances.put(this.getUnlocalizedName(), this);
@@ -105,7 +105,7 @@ public abstract class GTMetaTool extends GT_MetaGenerated_Tool implements IDamag
         if ((tStats == null) || !this.isItemStackUsable(aStack)) {
             return true;
         }
-        GT_Utility.doSoundAtClient(tStats.getEntityHitSound(), 1, 1.0F);
+        GTUtility.doSoundAtClient(tStats.getEntityHitSound(), 1, 1.0F);
         if (super.onLeftClickEntity(aStack, aPlayer, aEntity)) {
             return true;
         }
@@ -456,7 +456,7 @@ public abstract class GTMetaTool extends GT_MetaGenerated_Tool implements IDamag
         if (tStats == null) {
             return false;
         }
-        GT_Utility.doSoundAtClient(tStats.getMiningSound(), 1, 1.0F);
+        GTUtility.doSoundAtClient(tStats.getMiningSound(), 1, 1.0F);
         this.doDamage(
             aStack,
             (int) Math.max(1, aBlock.getBlockHardness(aWorld, aX, aY, aZ) * tStats.getToolDamagePerBlockBreak()));
@@ -467,7 +467,7 @@ public abstract class GTMetaTool extends GT_MetaGenerated_Tool implements IDamag
         if (!this.isItemStackUsable(aStack)) {
             return null;
         }
-        aStack = GT_Utility.copyAmount(1, aStack);
+        aStack = GTUtility.copyAmount(1, aStack);
         final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
         if (tStats == null) {
             return null;
@@ -620,7 +620,7 @@ public abstract class GTMetaTool extends GT_MetaGenerated_Tool implements IDamag
         }
         for (final Entry<Integer, Integer> tEntry : tMap.entrySet()) {
             if ((tEntry.getKey() == 33) || ((tEntry.getKey() == 20) && (tEntry.getValue() > 2))
-                || (tEntry.getKey() == Enchantment_Radioactivity.INSTANCE.effectId)) {
+                || (tEntry.getKey() == EnchantmentRadioactivity.INSTANCE.effectId)) {
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             } else {
                 switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {

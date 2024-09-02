@@ -34,10 +34,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEBasicHull;
+import gregtech.api.util.GTUtility;
 
-public class MTEDiode extends GT_MetaTileEntity_BasicHull {
+public class MTEDiode extends MTEBasicHull {
 
     private long maxAmps;
     private long aAmps;
@@ -77,7 +77,7 @@ public class MTEDiode extends GT_MetaTileEntity_BasicHull {
             ++this.aAmps;
             if (this.aAmps > this.maxAmps) this.aAmps = 0;
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
+        GTUtility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
     }
 
     @Override

@@ -21,13 +21,13 @@ import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public class GGItemBlocks extends ItemBlock {
 
-    private final String mNoMobsToolTip = GT_LanguageManager
+    private final String mNoMobsToolTip = GTLanguageManager
         .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    private final String mNoTileEntityToolTip = GT_LanguageManager
+    private final String mNoTileEntityToolTip = GTLanguageManager
         .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GGItemBlocks(Block block) {

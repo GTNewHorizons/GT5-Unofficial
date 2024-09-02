@@ -1,6 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
-import static gregtech.api.util.GT_Utility.trans;
+import static gregtech.api.util.GTUtility.trans;
 
 import java.util.ArrayList;
 
@@ -21,9 +21,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
@@ -59,8 +59,8 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.
-                                                                           // Variable required outside of loop for
+        int remainingFlow = GTUtility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.
+                                                                          // Variable required outside of loop for
         // multi-hatch scenarios.
         this.realOptFlow = aOptFlow;
 
@@ -74,23 +74,23 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
                 this.storedFluid += aFluidStack.amount;
                 remainingFlow -= flow;
                 totalFlow += flow;
-            } else if (GT_ModHandler.isAnySteam(aFluidStack)) {
+            } else if (GTModHandler.isAnySteam(aFluidStack)) {
                 depleteInput(new FluidStack(aFluidStack, aFluidStack.amount));
             }
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow * 100));
+        addOutput(GTModHandler.getSteam(totalFlow * 100));
         if (totalFlow == aOptFlow) {
-            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+            tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
         } else {
             float efficiency = 1.0f - Math.abs((totalFlow - aOptFlow) / (float) aOptFlow);
             tEU *= efficiency;
-            tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L));
+            tEU = Math.max(1, GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L));
         }
 
         if (tEU > maxPower) {
-            tEU = GT_Utility.safeInt(maxPower);
+            tEU = GTUtility.safeInt(maxPower);
         }
 
         return tEU * 100;
@@ -100,7 +100,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? trans("500", "Fitting: Loose - More Flow")
                     : trans("501", "Fitting: Tight - More Efficiency"));
@@ -147,8 +147,8 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Supercritical Steam Turbine")
             .addInfo("Controller block for Supercritical Fluid Turbine")
             .addInfo("Needs a Turbine, place inside controller")

@@ -17,11 +17,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_Item_Ores;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.ItemOres;
+import gregtech.common.blocks.TileEntityOres;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -216,7 +216,7 @@ public class EIGIC2Bucket extends EIGBucket {
         boolean cheating = false;
         FakeTileEntityCrop crop;
         try {
-            if (world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != GregTech_API.sBlockCasings4
+            if (world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != GregTechAPI.sBlockCasings4
                 || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2]) != 1) {
                 // no
                 cheating = true;
@@ -376,7 +376,7 @@ public class EIGIC2Bucket extends EIGBucket {
             e.printStackTrace(System.err);
         } finally {
             // always reset the world to it's original state
-            if (!cheating) world.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTech_API.sBlockCasings4, 1, 0);
+            if (!cheating) world.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTechAPI.sBlockCasings4, 1, 0);
             // world.setBlockToAir(xyz[0], xyz[1], xyz[2]);
         }
     }
@@ -396,19 +396,18 @@ public class EIGIC2Bucket extends EIGBucket {
         Block b = Block.getBlockFromItem(item);
         if (b == Blocks.air || !(item instanceof ItemBlock)) return false;
         short tDamage = (short) item.getDamage(stack);
-        if (item instanceof GT_Item_Ores && tDamage > 0) {
+        if (item instanceof ItemOres && tDamage > 0) {
             if (!world.setBlock(
                 x,
                 y,
                 z,
                 b,
-                GT_TileEntity_Ores.getHarvestData(
-                    tDamage,
-                    ((GT_Block_Ores_Abstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
+                TileEntityOres
+                    .getHarvestData(tDamage, ((BlockOresAbstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
                 0)) {
                 return false;
             }
-            GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) world.getTileEntity(x, y, z);
+            TileEntityOres tTileEntity = (TileEntityOres) world.getTileEntity(x, y, z);
             tTileEntity.mMetaData = tDamage;
             tTileEntity.mNatural = false;
         } else world.setBlock(x, y, z, b, tDamage, 0);

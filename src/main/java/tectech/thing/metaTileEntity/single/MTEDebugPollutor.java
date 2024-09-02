@@ -22,16 +22,16 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.GT_Pollution;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.common.Pollution;
 import tectech.TecTech;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -39,9 +39,9 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 23.03.2017.
  */
-public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
+public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
-    private static GT_RenderedTexture POLLUTOR;
+    private static GTRenderedTexture POLLUTOR;
     public int pollution = 0;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
@@ -72,7 +72,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        POLLUTOR = new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/POLLUTOR"));
+        POLLUTOR = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/POLLUTOR"));
     }
 
     @Override
@@ -118,7 +118,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (pollution > 0) {
-                GT_Pollution.addPollution(aBaseMetaTileEntity, pollution);
+                Pollution.addPollution(aBaseMetaTileEntity, pollution);
             }
         } else if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -132,7 +132,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -154,7 +154,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
                 .setSize(17, 17)
                 .setPos(113, 56));
     }
@@ -162,7 +162,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
@@ -170,46 +170,25 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8));
 
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> pollution -= val, 512, 64, 7, 4);
         addChangeNumberButton(
             builder,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
-            val -> pollution -= val,
-            512,
-            64,
-            7,
-            4);
-        addChangeNumberButton(
-            builder,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
+            GTUITextures.OVERLAY_BUTTON_MINUS_LARGE,
             val -> pollution /= val,
             512,
             64,
             7,
             22);
 
-        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution -= val, 16, 1, 25, 4);
-        addChangeNumberButton(
-            builder,
-            GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
-            val -> pollution /= val,
-            16,
-            2,
-            25,
-            22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution -= val, 16, 1, 25, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution /= val, 16, 2, 25, 22);
 
-        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution += val, 16, 1, 133, 4);
-        addChangeNumberButton(
-            builder,
-            GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
-            val -> pollution *= val,
-            16,
-            2,
-            133,
-            22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution += val, 16, 1, 133, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution *= val, 16, 2, 133, 22);
 
         addChangeNumberButton(
             builder,
-            GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
+            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
             val -> pollution += val,
             512,
             64,
@@ -217,7 +196,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
             4);
         addChangeNumberButton(
             builder,
-            GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
+            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
             val -> pollution *= val,
             512,
             64,
@@ -231,7 +210,7 @@ public class MTEDebugPollutor extends GT_MetaTileEntity_TieredMachineBlock imple
         builder.widget(
             new ButtonWidget()
                 .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
-                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));
     }

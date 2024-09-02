@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
@@ -330,7 +330,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         if (this.getInventory()
             .getInventory()[0] == null) {
             return true;
-        } else if (GT_Utility.areStacksEqual(
+        } else if (GTUtility.areStacksEqual(
             aStack,
             this.getInventory()
                 .getInventory()[0])) {
@@ -495,7 +495,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     public boolean addFluid(ArrayList<ItemStack> inputs, ItemStack aInput, FluidStack aFluidForInput) {
         for (ItemStack a : inputs) {
-            if (GT_Utility.areStacksEqual(a, aInput)) {
+            if (GTUtility.areStacksEqual(a, aInput)) {
                 if (mTank.getFluid() == null || mTank.getFluid()
                     .isFluidEqual(aFluidForInput)) {
                     boolean didFill = fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;

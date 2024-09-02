@@ -22,9 +22,9 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
+import gregtech.common.tileentities.machines.basic.MTEScanner;
 
-public class MTECreativeScanner extends GT_MetaTileEntity_Scanner {
+public class MTECreativeScanner extends MTEScanner {
 
     public MTECreativeScanner(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

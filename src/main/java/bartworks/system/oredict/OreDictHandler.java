@@ -27,7 +27,7 @@ import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class OreDictHandler {
 
@@ -78,7 +78,7 @@ public class OreDictHandler {
         }
         if (!OreDictionary.getOres(prefixes + elementName.replace(" ", ""))
             .isEmpty()) {
-            ItemStack tmp = GT_OreDictUnificator.get(
+            ItemStack tmp = GTOreDictUnificator.get(
                 OreDictionary.getOres(prefixes + elementName.replace(" ", ""))
                     .get(0)
                     .copy())

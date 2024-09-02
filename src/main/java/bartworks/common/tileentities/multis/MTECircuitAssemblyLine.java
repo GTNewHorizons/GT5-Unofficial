@@ -16,20 +16,20 @@ package bartworks.common.tileentities.multis;
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
-import static gregtech.api.util.GT_Utility.getColoredTierNameFromTier;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,32 +65,32 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.util.BWTooltipReference;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTECircuitAssemblyLine>
+public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuitAssemblyLine>
     implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 16;
@@ -129,16 +129,16 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
-                .buildAndChain(GregTech_API.sBlockCasings3, 10))
+                .buildAndChain(GregTechAPI.sBlockCasings3, 10))
         .addElement('g', ofGlassTieredMixed((byte) 4, (byte) 127, 5))
-        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casings
+        .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casings
         .addElement(
             'b',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(2)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
-                .buildAndChain(GregTech_API.sBlockCasings2, 0))
+                .buildAndChain(GregTechAPI.sBlockCasings2, 0))
         .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
         .addElement(
             'I',
@@ -146,7 +146,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
                 .casingIndex(CASING_INDEX)
                 .dot(2)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
-                .buildAndChain(GregTech_API.sBlockCasings2, 0))
+                .buildAndChain(GregTechAPI.sBlockCasings2, 0))
         .addElement('o', OutputBus.newAny(CASING_INDEX, 2, ForgeDirection.DOWN))
         .build();
 
@@ -156,8 +156,8 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Assembler/Circuit Assembly Line")
             .addInfo("Controller block for the Circuit Assembly Line")
             .addInfo("Change Mode with Screwdriver")
@@ -212,8 +212,8 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
     public String getTypeForDisplay() {
 
         if (!isImprinted()) return "";
-        return GT_LanguageManager.getTranslation(
-            GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
+        return GTLanguageManager.getTranslation(
+            GTLanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
     }
 
     private NBTTagCompound type = new NBTTagCompound();
@@ -232,7 +232,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
 
     private boolean imprintMachine(ItemStack itemStack) {
         if (isImprinted()) return true;
-        if (!GT_Utility.isStackValid(itemStack)) return false;
+        if (!GTUtility.isStackValid(itemStack)) return false;
         if (itemStack.getItem() instanceof BWMetaItems.BW_GT_MetaGenCircuits && itemStack.getItemDamage() == 0
             && itemStack.getTagCompound() != null) {
             this.type = itemStack.getTagCompound();
@@ -256,7 +256,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 20) {
-            GT_Utility.doSoundAtClient(IC2_MACHINES_MAGNETIZER_LOOP, 10, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(IC2_MACHINES_MAGNETIZER_LOOP, 10, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -264,7 +264,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
     public void loadNBTData(NBTTagCompound aNBT) {
         this.type = aNBT.getCompoundTag(IMPRINT_KEY);
         this.imprintedItemName = this.type == null ? ""
-            : GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
+            : GTLanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
         mode = aNBT.getInteger(RUNNING_MODE_KEY);
         if (aNBT.hasKey(LENGTH_KEY)) {
             length = aNBT.getInteger(LENGTH_KEY);
@@ -305,7 +305,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mode = (this.mode + 1) % 2;
-            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + this.mode));
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + this.mode));
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
@@ -328,7 +328,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
 
             @Override
             @Nonnull
-            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // limit CA mode recipes to hatch tier - 1
                 if (MTECircuitAssemblyLine.this.mode == 1
                     && recipe.mEUt > MTECircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
@@ -348,7 +348,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
             if (this.imprintedItemName == null || this.imprintedStack == null) {
                 this.imprintedStack = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
                 this.imprintedStack.setTagCompound(this.type);
-                this.imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(this.imprintedStack);
+                this.imprintedItemName = GTLanguageManager.getTranslateableItemStackName(this.imprintedStack);
             }
         } else if (length < MINIMUM_CIRCUIT_ASSEMBLER_LENGTH) {
             return SimpleCheckRecipeResult.ofFailure("not_enough_length");
@@ -372,7 +372,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
     public ArrayList<ItemStack> getStoredInputs() {
         if (mode == 0) {
             ArrayList<ItemStack> rList = new ArrayList<>();
-            for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
+            for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
                 tHatch.mRecipeMap = this.getRecipeMap();
                 for (int i = 0; i < tHatch.getBaseMetaTileEntity()
                     .getSizeInventory(); i++) {
@@ -397,14 +397,14 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-            return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-            return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
+            return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
+        } else if (aMetaTileEntity instanceof MTEHatchInputBus) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
+            return this.mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
         } else {
             return false;
         }
@@ -416,12 +416,12 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null || !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)) {
+        if (aMetaTileEntity == null || !(aMetaTileEntity instanceof MTEHatchInput)) {
             return false;
         } else {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-            return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
+            return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
         }
     }
 
@@ -565,7 +565,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
                 StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
                     + EnumChatFormatting.YELLOW
                     + StatCollector.translateToLocal(
-                        GT_LanguageManager.getTranslateableItemStackName(
+                        GTLanguageManager.getTranslateableItemStackName(
                             ItemStack.loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Type")))));
         }
     }
@@ -580,7 +580,7 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
                 .setTextureGetter(
                     state -> state == 1 ? BWUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
                         : BWUITextures.OVERLAY_BUTTON_LINE_MODE)
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(80, 91)
                 .setSize(16, 16)
                 .dynamicTooltip(
@@ -610,16 +610,16 @@ public class MTECircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlock
         if (!aPlayer.isSneaking()) {
             if (mode == 0) return false;
             inputSeparation = !inputSeparation;
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
             return true;
         } else {
             batchMode = !batchMode;
             if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
             return true;
         }

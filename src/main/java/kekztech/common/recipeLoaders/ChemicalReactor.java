@@ -1,12 +1,12 @@
 package kekztech.common.recipeLoaders;
 
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import kekztech.Items;
 import kekztech.common.items.MetaItemCraftingComponent;
 
@@ -17,8 +17,8 @@ public class ChemicalReactor implements Runnable {
         final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // Ceria Dust
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Cerium.getDust(1), GT_Utility.getIntegratedCircuit(6))
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Cerium.getDust(1), GTUtility.getIntegratedCircuit(6))
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 3))
             .fluidInputs(Materials.Oxygen.getGas(2000))
             .duration(20 * SECONDS)

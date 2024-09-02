@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
 
 public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
@@ -46,7 +46,7 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
     static {
         // technically, this page is owned by me, glee8e, however, I'm kind enough to spare 1 for kekztech since
         // this is basically abandon ware by now.
-        GT_Utility.addTexturePage((byte) 42);
+        GTUtility.addTexturePage((byte) 42);
         Textures.BlockIcons.setCasingTexture((byte) 42, (byte) 127, TextureFactory.of(IconBaseSide.INSTANCE));
     }
 

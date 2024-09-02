@@ -3,9 +3,9 @@ package gtneioreplugin.plugin.gregtech5;
 import net.minecraft.client.resources.I18n;
 
 import codechicken.lib.gui.GuiDraw;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
@@ -20,7 +20,7 @@ public abstract class PluginGT5Base extends PluginBase {
 
     protected static String getLocalizedNameForItem(String aFormat, int aMaterialID) {
         if (aMaterialID >= 0 && aMaterialID < 1000) {
-            Materials aMaterial = GregTech_API.sGeneratedMaterials[aMaterialID];
+            Materials aMaterial = GregTechAPI.sGeneratedMaterials[aMaterialID];
             if (aMaterial != null) {
                 return getLocalizedNameForItem(aMaterial, aFormat);
             }
@@ -30,10 +30,10 @@ public abstract class PluginGT5Base extends PluginBase {
 
     public static String getGTOreLocalizedName(short index) {
 
-        if (!getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000)
+        if (!getLocalizedNameForItem(GTLanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000)
             .contains("Awakened"))
             return getLocalizedNameForItem(
-                GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)),
+                GTLanguageManager.getTranslation(getGTOreUnlocalizedName(index)),
                 index % 1000);
         else return "Aw. Draconium Ore";
     }

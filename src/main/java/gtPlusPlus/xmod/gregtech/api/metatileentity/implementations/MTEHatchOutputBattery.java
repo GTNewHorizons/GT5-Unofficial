@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,19 +11,19 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchOutputBattery extends GT_MetaTileEntity_Hatch {
+public class MTEHatchOutputBattery extends MTEHatch {
 
     public MTEHatchOutputBattery(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Dischargeable Item Bus for Multiblocks");
@@ -73,12 +73,12 @@ public class MTEHatchOutputBattery extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Discharger) };
     }
 
     @Override
@@ -108,7 +108,7 @@ public class MTEHatchOutputBattery extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -133,8 +133,8 @@ public class MTEHatchOutputBattery extends GT_MetaTileEntity_Hatch {
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
             for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
+                && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                    GTUtility.moveStackFromSlotAToSlotB(
                         getBaseMetaTileEntity(),
                         getBaseMetaTileEntity(),
                         j,
@@ -181,7 +181,7 @@ public class MTEHatchOutputBattery extends GT_MetaTileEntity_Hatch {
                         if (mMetaTileEntity.mInventory[i] != null
                             && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
                             aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                GT_ModHandler.dischargeElectricItem(
+                                GTModHandler.dischargeElectricItem(
                                     mMetaTileEntity.mInventory[i],
                                     (int) Math.min(
                                         V[mTier] * 15,

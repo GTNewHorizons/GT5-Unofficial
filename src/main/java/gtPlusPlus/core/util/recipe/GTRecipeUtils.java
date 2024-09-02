@@ -11,18 +11,18 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.set.hash.TCustomHashSet;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gtPlusPlus.api.objects.Logger;
 
 public class GTRecipeUtils {
 
-    public static List<GT_Recipe> removeDuplicates(List<GT_Recipe> inputRecipes, String recipeMapName) {
-        TCustomHashSet<GT_Recipe> recipesHashSet = new TCustomHashSet<>(RecipeHashStrat.RecipeHashingStrategy);
-        ArrayList<GT_Recipe> recipeOutput = new ArrayList<>();
-        TCustomHashMap<GT_Recipe, ItemStack> circuitMap = new TCustomHashMap<>(RecipeHashStrat.RecipeHashingStrategy);
+    public static List<GTRecipe> removeDuplicates(List<GTRecipe> inputRecipes, String recipeMapName) {
+        TCustomHashSet<GTRecipe> recipesHashSet = new TCustomHashSet<>(RecipeHashStrat.RecipeHashingStrategy);
+        ArrayList<GTRecipe> recipeOutput = new ArrayList<>();
+        TCustomHashMap<GTRecipe, ItemStack> circuitMap = new TCustomHashMap<>(RecipeHashStrat.RecipeHashingStrategy);
         int removedRecipeCount = 0;
 
-        for (GT_Recipe recipeInput : inputRecipes) {
+        for (GTRecipe recipeInput : inputRecipes) {
             ItemStack savedCircuit = null;
             // create a new input ItemStack array that does not contain programmable circuits if they were in the recipe
             ArrayList<ItemStack> itemInputsWithoutProgrammableCircuit = new ArrayList<>();
@@ -37,7 +37,7 @@ public class GTRecipeUtils {
                     savedCircuit = itemStack;
                 }
             }
-            GT_Recipe newRecipe = new GT_Recipe(
+            GTRecipe newRecipe = new GTRecipe(
                 false,
                 itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
                 recipeInput.mOutputs,
@@ -72,7 +72,7 @@ public class GTRecipeUtils {
         }
         // iterate over all recipes without duplicates and add them to the output. If the recipe had a programmable
         // circuit in it then add it back with its damage value coming from the circuit map.
-        for (GT_Recipe filteredRecipe : recipesHashSet) {
+        for (GTRecipe filteredRecipe : recipesHashSet) {
             // check to see if the recipe is in the circuit map
             if (circuitMap.contains(filteredRecipe)) {
                 // add the circuit back

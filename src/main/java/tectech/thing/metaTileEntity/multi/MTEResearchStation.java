@@ -2,13 +2,13 @@ package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -52,16 +52,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_AssemblyLineUtils;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.AssemblyLineUtils;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -84,7 +84,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public static final String crafter = "EM Crafting";
     // region variables
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
-    private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
+    private GTRecipe.GT_Recipe_AssemblyLine tRecipe;
     private static final String assembly = "Assembly line";
     private static final String scanner = "Scanner";
     private String machineType = assembly;
@@ -151,12 +151,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                     + ' '
                     + machineType
                     + " Recipe Generator");
-        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
     }
 
     private boolean iterateRecipes() {
-        for (GT_Recipe ttRecipe : TecTechRecipeMaps.researchStationFakeRecipes.getAllRecipes()) {
-            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
+        for (GTRecipe ttRecipe : TecTechRecipeMaps.researchStationFakeRecipes.getAllRecipes()) {
+            if (GTUtility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
                 computationRequired = computationRemaining = ttRecipe.mDuration * 20L;
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
@@ -206,11 +206,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
                 switch (machineType) {
                     case scanner -> {
-                        for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-                            if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                        for (GTRecipe.GT_Recipe_AssemblyLine assRecipe : GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                            if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                 boolean failScanner = true;
-                                for (GT_Recipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
-                                    if (GT_Utility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
+                                for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
+                                    if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
                                         failScanner = false;
                                         break;
                                     }
@@ -234,8 +234,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                         }
                     }
                     case assembly -> {
-                        for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
-                            if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                        for (GTRecipe.GT_Recipe_AssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                            if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                 tRecipe = assRecipe;
                                 // if found
                                 if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
@@ -273,8 +273,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type")) // Machine Type: Research
                                                                                               // Station, Scanner
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
@@ -322,7 +322,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -336,23 +336,23 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         }
 
         return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy)
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
                 : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(Math.abs(mEUt))
+                + GTUtility.formatNumbers(Math.abs(mEUt))
                 + EnumChatFormatting.RESET
                 + " EU/t "
                 + translateToLocalFormatted("tt.keyword.at", clientLocale)
                 + " "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(eAmpereFlow)
+                + GTUtility.formatNumbers(eAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
@@ -367,7 +367,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
                 + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(eMaxAmpereFlow)
+                + GTUtility.formatNumbers(eMaxAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
@@ -392,18 +392,18 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + eSafeVoid,
             translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(eAvailableData)
+                + GTUtility.formatNumbers(eAvailableData)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(eRequiredData)
+                + GTUtility.formatNumbers(eRequiredData)
                 + EnumChatFormatting.RESET,
             translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(computationRemaining / 20L)
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(computationRemaining / 20L)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(getComputationRequired()) };
+                + GTUtility.formatNumbers(getComputationRequired()) };
     }
 
     @Override
@@ -483,8 +483,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 tRecipe = null;
                 if (holdItem != null) {
                     if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
-                            if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
+                        for (GTRecipe.GT_Recipe_AssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                            if (GTUtility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
                                 break;
                             }
@@ -527,7 +527,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchObjectHolder) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eHolders.add((MTEHatchObjectHolder) aMetaTileEntity);
         }
         return false;
@@ -579,7 +579,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             "GT5U.gui.text.research_progress",
                             getComputationConsumed(),
                             getComputationRequired(),
-                            GT_Utility.formatNumbers(getComputationProgress())))
+                            GTUtility.formatNumbers(getComputationProgress())))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
                         widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
@@ -675,7 +675,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         }
 
         @Override
-        public IGT_HatchAdder<? super MTEResearchStation> adder() {
+        public IGTHatchAdder<? super MTEResearchStation> adder() {
             return MTEResearchStation::addHolderToMachineList;
         }
 

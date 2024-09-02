@@ -24,7 +24,7 @@ import bartworks.util.Pair;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TCAspects;
 
 public class AspectLoader implements IWerkstoffRunnable {
 
@@ -50,7 +50,7 @@ public class AspectLoader implements IWerkstoffRunnable {
                 } else if (enabledOrePrefixes.mMaterialAmount >= 0L
                     && Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                     ThaumcraftHandler.AspectAdder
-                        .addAspectViaBW(werkstoff.get(enabledOrePrefixes), new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
+                        .addAspectViaBW(werkstoff.get(enabledOrePrefixes), new Pair<>(TCAspects.PERDITIO.mAspect, 1));
             }
         }
     }

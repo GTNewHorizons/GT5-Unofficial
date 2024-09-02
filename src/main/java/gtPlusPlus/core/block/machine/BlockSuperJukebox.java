@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -341,13 +341,13 @@ public class BlockSuperJukebox extends BlockJukebox {
                 .getInventory()) {
                 if (g != null && aSlotCounter <= 17) {
                     Logger.INFO("b3 - " + g.getDisplayName());
-                    if (GT_Utility.areStacksEqual(g, aRecordToPlay, true)) {
+                    if (GTUtility.areStacksEqual(g, aRecordToPlay, true)) {
                         IInventory aThisInv = this.getInventory();
                         if (aThisInv.getStackInSlot(20) != null) {
                             openDiscDrive();
                         }
 
-                        GT_Utility.moveStackFromSlotAToSlotB(
+                        GTUtility.moveStackFromSlotAToSlotB(
                             aThisInv,
                             aThisInv,
                             aSlotCounter,
@@ -417,7 +417,7 @@ public class BlockSuperJukebox extends BlockJukebox {
                     .getInventory()[i];
                 if (g == null && aSlotCounter >= 0) {
                     IInventory aThisInv = this.getInventory();
-                    GT_Utility
+                    GTUtility
                         .moveStackFromSlotAToSlotB(aThisInv, aThisInv, 20, i, (byte) 1, (byte) 1, (byte) 1, (byte) 1);
                     vanillaStopJukebox();
                     Logger.INFO("b++");

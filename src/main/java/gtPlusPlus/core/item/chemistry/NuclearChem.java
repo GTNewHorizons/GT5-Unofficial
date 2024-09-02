@@ -1,17 +1,17 @@
 package gtPlusPlus.core.item.chemistry;
 
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
@@ -92,10 +92,10 @@ public class NuclearChem extends ItemPackage {
     }
 
     private static void chemReactor_CreateMutagen() {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
-                GT_Utility.getIntegratedCircuit(20))
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
+                GTUtility.getIntegratedCircuit(20))
             .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5000))
             .fluidOutputs(FluidUtils.getFluidStack(GeneticMutagen, 8000))
             .duration(30 * SECONDS)

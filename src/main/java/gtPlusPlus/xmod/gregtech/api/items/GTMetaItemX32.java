@@ -10,14 +10,14 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -55,27 +55,27 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             if (tPrefix == null) {
                 continue;
             }
-            final Materials tMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
+            final Materials tMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
             if (tMaterial == null) {
                 continue;
             }
             if (this.doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
-                GT_LanguageManager.addStringLocalization(
+                GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".name",
                     this.getDefaultLocalization(tPrefix, tMaterial, i));
-                GT_LanguageManager.addStringLocalization(
+                GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / GT_Values.M));
+                    tMaterial.getToolTip(tPrefix.mMaterialAmount / GTValues.M));
                 if (tPrefix.mIsUnificatable) {
-                    GT_OreDictUnificator.set(tPrefix, tMaterial, tStack);
+                    GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
-                    GT_OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
+                    GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
                 if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
                     && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
                         || (tMaterial == Materials.SolderingAlloy))) {
-                    GregTech_API.sSolderingMetalList.add(tStack);
+                    GregTechAPI.sSolderingMetalList.add(tStack);
                 }
             }
         }
@@ -88,7 +88,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     @Override
     public short[] getRGBa(final ItemStack aStack) {
-        final Materials tMaterial = GregTech_API.sGeneratedMaterials[this.getDamage(aStack) % 1000];
+        final Materials tMaterial = GregTechAPI.sGeneratedMaterials[this.getDamage(aStack) % 1000];
         return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
     }
 
@@ -146,11 +146,11 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     public ItemStack getContainerItem(final ItemStack aStack) {
         final int aDamage = aStack.getItemDamage();
         if ((aDamage < 32000) && (aDamage >= 0)) {
-            final Materials aMaterial = GregTech_API.sGeneratedMaterials[aDamage % 1000];
+            final Materials aMaterial = GregTechAPI.sGeneratedMaterials[aDamage % 1000];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
                 if (aPrefix != null) {
-                    return GT_Utility.copyAmount(1, aPrefix.mContainerItem);
+                    return GTUtility.copyAmount(1, aPrefix.mContainerItem);
                 }
             }
         }
@@ -159,8 +159,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     public final IIconContainer getIconContainer(final int aMetaData) {
-        return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null
-            : this.getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
+        return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
+            : this.getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
     }
 
     @Override
@@ -169,11 +169,11 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         for (int i = 0; i < 32000; i++) {
             if (this.doesMaterialAllowGeneration(
                 this.mGeneratedPrefixList[i / 1000],
-                GregTech_API.sGeneratedMaterials[i % 1000])
+                GregTechAPI.sGeneratedMaterials[i % 1000])
                 && this.doesShowInCreative(
                     this.mGeneratedPrefixList[i / 1000],
-                    GregTech_API.sGeneratedMaterials[i % 1000],
-                    GregTech_API.sDoShowAllItemsInCreative)) {
+                    GregTechAPI.sGeneratedMaterials[i % 1000],
+                    GregTechAPI.sDoShowAllItemsInCreative)) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 this.isItemStackUsable(tStack);
                 aList.add(tStack);
@@ -188,7 +188,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             return null;
         }
         if (aMetaData < 32000) {
-            final Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData % 1000];
+            final Materials tMaterial = GregTechAPI.sGeneratedMaterials[aMetaData % 1000];
             if (tMaterial == null) {
                 return null;
             }

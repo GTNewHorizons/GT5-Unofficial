@@ -27,16 +27,16 @@ import gregtech.api.interfaces.tileentity.IDigitalChest;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
-public class MTETesseractGenerator extends GT_MetaTileEntity_BasicTank {
+public class MTETesseractGenerator extends MTEBasicTank {
 
     public static int TESSERACT_ENERGY_COST_DIMENSIONAL = 512;
     public static int TESSERACT_ENERGY_COST = 128;
@@ -214,7 +214,7 @@ public class MTETesseractGenerator extends GT_MetaTileEntity_BasicTank {
             .getFrontFacing()) {
             if (aPlayer.getUniqueID()
                 .compareTo(this.mOwner) == 0) {
-                final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
+                final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0:
                         Logger.WARNING("Freq. -1 | " + this.mFrequency);
@@ -237,15 +237,15 @@ public class MTETesseractGenerator extends GT_MetaTileEntity_BasicTank {
                         break;
                 }
                 if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this) {
-                    GT_Utility.sendChatToPlayer(
+                    GTUtility.sendChatToPlayer(
                         aPlayer,
                         "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
+                    GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
                 }
             } else if (aPlayer.getUniqueID()
                 .compareTo(this.mOwner) != 0) {
-                    GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+                    GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
                 }
         }
 
@@ -259,7 +259,7 @@ public class MTETesseractGenerator extends GT_MetaTileEntity_BasicTank {
             .compareTo(this.mOwner) == 0) {
             if (side == this.getBaseMetaTileEntity()
                 .getFrontFacing()) {
-                final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
+                final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0 -> {
                         try {
@@ -291,15 +291,15 @@ public class MTETesseractGenerator extends GT_MetaTileEntity_BasicTank {
                     }
                 }
                 if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this) {
-                    GT_Utility.sendChatToPlayer(
+                    GTUtility.sendChatToPlayer(
                         aPlayer,
                         "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
+                    GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
                 }
             }
         } else {
-            GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+            GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
         }
     }
 
@@ -751,10 +751,10 @@ public class MTETesseractGenerator extends GT_MetaTileEntity_BasicTank {
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == facing
-            ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-            : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GT_RenderedTexture(Textures.BlockIcons.VOID) };
+            ? new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+            : new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                new GTRenderedTexture(Textures.BlockIcons.VOID) };
     }
 
     // To-Do?

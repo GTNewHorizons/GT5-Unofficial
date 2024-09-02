@@ -11,21 +11,21 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTETieredTank extends GT_MetaTileEntity_BasicTank {
+public class MTETieredTank extends MTEBasicTank {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(
@@ -34,7 +34,7 @@ public class MTETieredTank extends GT_MetaTileEntity_BasicTank {
             aNameRegional,
             aTier,
             3,
-            "Stores " + GT_Utility.formatNumbers(((int) (Math.pow(2, aTier) * 32000))) + "L of fluid");
+            "Stores " + GTUtility.formatNumbers(((int) (Math.pow(2, aTier) * 32000))) + "L of fluid");
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
@@ -63,9 +63,9 @@ public class MTETieredTank extends GT_MetaTileEntity_BasicTank {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == ForgeDirection.UP
             ? new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
+                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
             : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
+                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
     }
 
     @Override
@@ -75,18 +75,18 @@ public class MTETieredTank extends GT_MetaTileEntity_BasicTank {
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GT_LanguageManager.addStringLocalization(
+                    GTLanguageManager.addStringLocalization(
                         "TileEntity_TANK_INFO",
                         "Contains Fluid: ",
-                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.YELLOW
                         + tContents.getLocalizedName()
                         + EnumChatFormatting.GRAY);
                 tooltip.add(
-                    GT_LanguageManager.addStringLocalization(
+                    GTLanguageManager.addStringLocalization(
                         "TileEntity_TANK_AMOUNT",
                         "Fluid Amount: ",
-                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(tContents.amount)
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(tContents.amount)
                         + " L"
                         + EnumChatFormatting.GRAY);
             }
@@ -137,10 +137,10 @@ public class MTETieredTank extends GT_MetaTileEntity_BasicTank {
     public String[] getInfoData() {
 
         if (this.mFluid == null) {
-            return new String[] { GT_Values.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:", "No Fluid",
+            return new String[] { GTValues.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:", "No Fluid",
                 0 + "L", this.getCapacity() + "L" };
         }
-        return new String[] { GT_Values.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:",
+        return new String[] { GTValues.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:",
             this.mFluid.getLocalizedName(), this.mFluid.amount + "L", this.getCapacity() + "L" };
     }
 
@@ -161,7 +161,7 @@ public class MTETieredTank extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

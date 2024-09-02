@@ -2,14 +2,14 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.ID_MetaTool_01;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.items.IDMetaTool01;
+import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
@@ -64,7 +64,7 @@ public class ProcessingElectricSnips implements IOreRecipeRegistrator, Runnable 
                     Logger.MATERIALS("Generating Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
-                    final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
+                    final ItemStack plate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
 
                     if ((null != plate)) {
                         addRecipe(aMaterial, 1600000L, 3, ItemList.Battery_RE_HV_Lithium.get(1));
@@ -110,10 +110,10 @@ public class ProcessingElectricSnips implements IOreRecipeRegistrator, Runnable 
             1,
             aMaterial,
             Materials.Titanium,
-            new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
+            new long[] { aBatteryStorage, GTValues.V[aVoltageTier], 3L, -1L });
 
-        ItemStack aInputCutter = GT_MetaGenerated_Tool_01.INSTANCE
-            .getToolWithStats(ID_MetaTool_01.WIRECUTTER.ID, 1, aMaterial, aMaterial, null);
+        ItemStack aInputCutter = MetaGeneratedTool01.INSTANCE
+            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, aMaterial, aMaterial, null);
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {

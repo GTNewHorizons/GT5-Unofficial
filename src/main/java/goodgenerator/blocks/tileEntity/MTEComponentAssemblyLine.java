@@ -2,7 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.stream.Collectors;
@@ -27,26 +27,26 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_StructureUtility;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.StructureUtility;
 
-public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
+public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
 
     private int casingTier;
@@ -131,12 +131,12 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
                 ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 14),
                 ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 15),
                 ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0)))
-        .addElement('H', ofBlock(GregTech_API.sBlockCasings8, 7))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 5))
-        .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 9))
-        .addElement('G', ofBlock(GregTech_API.sBlockCasings9, 0))
-        .addElement('E', ofBlock(GregTech_API.sBlockCasings9, 1))
-        .addElement('F', ofBlock(GregTech_API.sBlockCasings4, 1))
+        .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 9))
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings9, 0))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings9, 1))
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'B',
             ofBlocksTiered(
@@ -149,47 +149,47 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
                 t -> t.casingTier))
         .addElement(
             'J',
-            GT_StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
                 .dot(1)
                 .casingIndex(183)
-                .buildAndChain(GregTech_API.sBlockCasings8, 7))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'N',
-            GT_StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
                 .dot(1)
                 .casingIndex(183)
-                .buildAndChain(GT_StructureUtility.ofFrame(Materials.TungstenSteel)))
+                .buildAndChain(StructureUtility.ofFrame(Materials.TungstenSteel)))
         .addElement(
             'K',
-            GT_StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(OutputBus)
                 .dot(2)
                 .casingIndex(183)
-                .buildAndChain(GregTech_API.sBlockCasings8, 7))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'L',
-            GT_StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Energy, ExoticEnergy)
                 .dot(3)
                 .casingIndex(183)
-                .buildAndChain(GregTech_API.sBlockCasings8, 7))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
-            GT_StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Maintenance)
                 .dot(4)
                 .casingIndex(183)
-                .buildAndChain(GregTech_API.sBlockCasings8, 7))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'M',
-            GT_StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputHatch)
                 .dot(5)
                 .casingIndex(183)
-                .buildAndChain(GregTech_API.sBlockCasings8, 7))
-        .addElement('n', GT_StructureUtility.ofFrame(Materials.TungstenSteel))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
+        .addElement('n', StructureUtility.ofFrame(Materials.TungstenSteel))
         .build();
 
     public MTEComponentAssemblyLine(int aID, String aName, String aNameRegional) {
@@ -211,8 +211,8 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High-Capacity Component Assembler")
             .addInfo("Controller block for the Component Assembly Line.")
             .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
@@ -269,7 +269,7 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GT_Values.VN[casingTier + 1] : "None!");
+            + (casingTier >= 0 ? GTValues.VN[casingTier + 1] : "None!");
         return ret;
     }
 
@@ -311,7 +311,7 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (recipe.mSpecialValue > casingTier + 1) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
@@ -320,7 +320,7 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 speedBonus = (float) (1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue));
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus);
             }
@@ -349,7 +349,7 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
-        GT_Utility.sendChatToPlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
@@ -360,9 +360,9 @@ public class MTEComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMul
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, "Batch recipes.");
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes.");
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, "Don't batch recipes.");
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes.");
             }
         }
 

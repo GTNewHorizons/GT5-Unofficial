@@ -26,9 +26,9 @@ import galacticgreg.api.StructureInformation;
 import galacticgreg.auxiliary.GTOreGroup;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
 import galacticgreg.registry.GalacticGregRegistry;
-import gregtech.api.util.GT_Log;
-import gregtech.api.world.GT_Worldgen;
-import gregtech.common.GT_Worldgenerator;
+import gregtech.api.util.GTLog;
+import gregtech.api.world.GTWorldgen;
+import gregtech.common.GTWorldgenerator;
 
 public class WorldGeneratorSpace implements IWorldGenerator {
 
@@ -450,7 +450,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 // First find a small ore...
                 for (int i = 0; (i < 256) && (continueSearch); i++) {
                     tRandomWeight = pRandom.nextInt(WorldgenOreLayerSpace.sWeight);
-                    for (GT_Worldgen tWorldGen : GalacticGreg.smallOreWorldgenList) {
+                    for (GTWorldgen tWorldGen : GalacticGreg.smallOreWorldgenList) {
 
                         if (!(tWorldGen instanceof WorldgenOreSmallSpace)) {
                             continue;
@@ -501,14 +501,14 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         String pBiome, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider) {
         GalacticGreg.Logger.trace("Running orevein-gen in Dim %s", pDimensionDef.getDimIdentifier());
 
-        if (GT_Worldgenerator.isOreChunk(pX / 16, pZ / 16)) {
+        if (GTWorldgenerator.isOreChunk(pX / 16, pZ / 16)) {
             if ((WorldgenOreLayerSpace.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
 
                 boolean temp = true;
                 int tRandomWeight;
                 for (int i = 0; (i < 256) && (temp); i++) {
                     tRandomWeight = pRandom.nextInt(WorldgenOreLayerSpace.sWeight);
-                    for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) {
+                    for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) {
                         if (tWorldGen instanceof WorldgenOreLayerSpace)
                             tRandomWeight -= ((WorldgenOreLayerSpace) tWorldGen).mWeight;
 
@@ -526,7 +526,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                     temp = false;
                                 }
                             } catch (Throwable e) {
-                                e.printStackTrace(GT_Log.err);
+                                e.printStackTrace(GTLog.err);
                             }
                             break;
                         }
@@ -539,7 +539,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             for (int tX = pX - 16; i < 3; tX += 16) {
                 int j = 0;
                 for (int tZ = pZ - 16; j < 3; tZ += 16) {
-                    for (GT_Worldgen tWorldGen : GalacticGreg.smallOreWorldgenList) {
+                    for (GTWorldgen tWorldGen : GalacticGreg.smallOreWorldgenList) {
                         try {
                             tWorldGen.executeWorldgen(
                                 pWorld,
@@ -551,7 +551,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 pChunkGenerator,
                                 pChunkProvider);
                         } catch (Throwable e) {
-                            e.printStackTrace(GT_Log.err);
+                            e.printStackTrace(GTLog.err);
                         }
                     }
                     j++;

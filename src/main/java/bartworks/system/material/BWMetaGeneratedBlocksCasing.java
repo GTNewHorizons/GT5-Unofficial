@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 
 public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
@@ -66,19 +66,19 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetaData);
     }
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
-        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
     }
 
     @Override
     protected void doRegistrationStuff(Werkstoff tMaterial) {
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     @Override

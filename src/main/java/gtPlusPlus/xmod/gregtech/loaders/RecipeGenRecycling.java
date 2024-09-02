@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GTValues.M;
+import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -16,11 +16,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -142,7 +142,7 @@ public class RecipeGenRecycling implements Runnable {
                 int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
                 if (fluidOutput != null) {
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(tempStack)
                         .fluidOutputs(fluidOutput)
                         .duration(aDuration)
@@ -262,13 +262,13 @@ public class RecipeGenRecycling implements Runnable {
         if (!mNameMap.containsKey(aName.toString()) && aMentionPossibleTypos) {
             Logger.WARNING("Unknown Key for Unification, Typo? " + aName);
         }
-        return GT_Utility.copyAmount(
+        return GTUtility.copyAmount(
             aAmount,
             new Object[] { mNameMap.get(aName.toString()), getFirstOre(aName, aAmount), aReplacement });
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {
-        if (GT_Utility.isStringInvalid(aName)) {
+        if (GTUtility.isStringInvalid(aName)) {
             Logger.WARNING("Returning Null. Method: " + ReflectionUtils.getMethodName(0));
             Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(1));
             Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(2));
@@ -277,17 +277,17 @@ public class RecipeGenRecycling implements Runnable {
             return null;
         }
         final ItemStack tStack = mNameMap.get(aName.toString());
-        if (GT_Utility.isStackValid(tStack)) {
+        if (GTUtility.isStackValid(tStack)) {
             Logger.WARNING("Found valid stack.");
-            return GT_Utility.copyAmount(aAmount, new Object[] { tStack });
+            return GTUtility.copyAmount(aAmount, new Object[] { tStack });
         }
-        return GT_Utility.copyAmount(aAmount, getOres(aName).toArray());
+        return GTUtility.copyAmount(aAmount, getOres(aName).toArray());
     }
 
     public static ArrayList<ItemStack> getOres(final Object aOreName) {
         final String aName = (aOreName == null) ? "" : aOreName.toString();
         final ArrayList<ItemStack> rList = new ArrayList<>();
-        if (GT_Utility.isStringValid(aName)) {
+        if (GTUtility.isStringValid(aName)) {
             Logger.WARNING("Making a list of all OreDict entries for " + aOreName + ".");
             if (rList.addAll(OreDictionary.getOres(aName))) {
                 Logger.WARNING("Added " + rList.size() + " elements to list.");
@@ -304,7 +304,7 @@ public class RecipeGenRecycling implements Runnable {
         Map<String, ItemStack> tempMap;
         try {
             tempMap = (Map<String, ItemStack>) FieldUtils
-                .readStaticField(GT_OreDictUnificator.class, "sName2StackMap", true);
+                .readStaticField(GTOreDictUnificator.class, "sName2StackMap", true);
             if (tempMap != null) {
                 Logger.WARNING("Found 'sName2StackMap' in GT_OreDictUnificator.class.");
                 return tempMap;

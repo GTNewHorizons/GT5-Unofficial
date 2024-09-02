@@ -5,10 +5,10 @@ import java.util.HashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -51,7 +51,7 @@ public class RecipeGenFluidCanning implements Runnable {
 
     protected boolean disableOptional;
 
-    private final GT_Recipe recipe;
+    private final GTRecipe recipe;
     private final boolean isValid;
 
     public boolean valid() {
@@ -85,18 +85,18 @@ public class RecipeGenFluidCanning implements Runnable {
         if (aExtracting) {
             aInput = aFull;
             aOutput = aEmpty;
-            aFluidInput = GT_Values.NF;
+            aFluidInput = GTValues.NF;
             aFluidOutput = aFluidIn;
         } else {
             aInput = aEmpty;
             aOutput = aFull;
             aFluidInput = aFluidIn;
-            aFluidOutput = aFluidOut != null ? aFluidOut : GT_Values.NF;
+            aFluidOutput = aFluidOut != null ? aFluidOut : GTValues.NF;
         }
 
         // Check validity
 
-        GT_Recipe aRecipe = new GT_Recipe(
+        GTRecipe aRecipe = new GTRecipe(
             true,
             new ItemStack[] { aInput },
             new ItemStack[] { aOutput },
@@ -157,7 +157,7 @@ public class RecipeGenFluidCanning implements Runnable {
         }
     }
 
-    private void addFluidExtractionRecipe(GT_Recipe aRecipe) {
+    private void addFluidExtractionRecipe(GTRecipe aRecipe) {
         GTPPCore.crash();
         Logger.INFO(
             "[FE-Debug] " + aRecipe.mFluidOutputs[0].amount
@@ -186,7 +186,7 @@ public class RecipeGenFluidCanning implements Runnable {
         }
     }
 
-    private void addFluidCannerRecipe(GT_Recipe aRecipe) {
+    private void addFluidCannerRecipe(GTRecipe aRecipe) {
         boolean result;
         int aCount1 = getMapSize(RecipeMaps.fluidCannerRecipes);
         int aCount2 = aCount1;

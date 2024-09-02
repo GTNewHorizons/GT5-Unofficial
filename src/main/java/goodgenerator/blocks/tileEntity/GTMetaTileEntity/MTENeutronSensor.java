@@ -18,18 +18,18 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import crazypants.enderio.Log;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
-public class MTENeutronSensor extends GT_MetaTileEntity_Hatch {
+public class MTENeutronSensor extends MTEHatch {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = new Textures.BlockIcons.CustomIcon(
@@ -172,7 +172,7 @@ public class MTENeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -236,14 +236,14 @@ public class MTENeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-        final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
+        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
 
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
                 .setTextureGetter(
-                    (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
-                        : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
                 .addTooltip(0, NORMAL)
                 .addTooltip(1, INVERTED)
                 .setPos(10, 8))
@@ -260,7 +260,7 @@ public class MTENeutronSensor extends GT_MetaTileEntity_Hatch {
                     .setTextColor(Color.WHITE.dark(1))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                     .setPos(10, 28)
                     .setSize(77, 12))
             .widget(

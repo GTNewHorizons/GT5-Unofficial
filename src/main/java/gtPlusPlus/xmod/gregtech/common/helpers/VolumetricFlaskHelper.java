@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
-import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.ItemVolumetricFlask;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class VolumetricFlaskHelper {
@@ -42,8 +42,8 @@ public class VolumetricFlaskHelper {
     public static int getMaxFlaskCapacity(ItemStack aStack) {
         if (aStack != null) {
             Item aItem = aStack.getItem();
-            if (aItem instanceof GT_VolumetricFlask) {
-                return ((GT_VolumetricFlask) aItem).getMaxCapacity();
+            if (aItem instanceof ItemVolumetricFlask) {
+                return ((ItemVolumetricFlask) aItem).getMaxCapacity();
             }
         }
         return 0;
@@ -120,6 +120,6 @@ public class VolumetricFlaskHelper {
     }
 
     public static Item generateNewFlask(String unlocalized, String english, int maxCapacity) {
-        return new GT_VolumetricFlask(unlocalized, english, maxCapacity);
+        return new ItemVolumetricFlask(unlocalized, english, maxCapacity);
     }
 }

@@ -19,7 +19,7 @@ import baubles.api.BaubleType;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
@@ -29,7 +29,7 @@ import ic2.api.item.IElectricItem;
 public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
     public BatteryPackBaseBauble(int tier) {
-        super(BaubleType.BELT, tier, GT_Values.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
+        super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
         String aUnlocalName = "GTPP.BattPack.0" + tier + ".name";
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {

@@ -7,7 +7,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEQuantumForceTransformer;
 
 @ParametersAreNonnullByDefault
@@ -20,17 +20,17 @@ public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
     }
 
     public String getChanceFormat(int chance) {
-        return GT_NEI_DefaultHandler.FixedPositionedStack.chanceFormat.format((float) chance / 10000);
+        return GTNEIDefaultHandler.FixedPositionedStack.chanceFormat.format((float) chance / 10000);
     }
 
     @Override
-    public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         // Replicates the default behaviour, but since we cannot actually modify the mChance variable we need to
         // essentially re-implement it.
         int chance = MTEQuantumForceTransformer.getBaseOutputChance(neiCachedRecipe.mRecipe);
         String chanceFormat = getChanceFormat(chance);
         for (PositionedStack stack : neiCachedRecipe.mOutputs) {
-            if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                 super.drawNEIOverlayText(chanceFormat, stack);
             }
         }

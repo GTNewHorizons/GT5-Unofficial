@@ -20,7 +20,7 @@
 
 package kubatech.test;
 
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -48,9 +48,9 @@ import net.minecraftforge.common.DimensionManager;
 
 import org.junit.jupiter.api.Test;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.blocks.ItemMachines;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -208,7 +208,7 @@ public class EIGTests {
         TileEntityCrop cropTile = (TileEntityCrop) myWorld.getTileEntity(10, 81, 0);
         ItemStack ccStack = ItemCropSeed.generateItemStackFromValues(cc, (byte) 10, (byte) 10, (byte) 10, (byte) 1);
 
-        GT_Item_Machines itemMachines = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
+        ItemMachines itemMachines = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
         itemMachines.placeBlockAt(
             new ItemStack(itemMachines, 1, EIG_CONTROLLER_METADATA),
             null,
@@ -237,7 +237,7 @@ public class EIGTests {
         xyz[1] += te.getYCoord();
         xyz[2] += te.getZCoord();
 
-        myWorld.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTech_API.sBlockCasings4, 1, 0);
+        myWorld.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTechAPI.sBlockCasings4, 1, 0);
         myWorld.setBlock(xyz[0], xyz[1] - 1, xyz[2], Blocks.farmland, 0, 0);
 
         ItemStack stackToTest = null;

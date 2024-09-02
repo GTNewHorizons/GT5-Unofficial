@@ -34,15 +34,15 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
@@ -51,7 +51,7 @@ import tectech.util.TTUtility;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class MTEHatchUncertainty extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -82,12 +82,12 @@ public class MTEHatchUncertainty extends GT_MetaTileEntity_Hatch implements IAdd
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(ScreenON) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(ScreenON) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(ScreenOFF) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(ScreenOFF) };
     }
 
     @Override
@@ -198,7 +198,7 @@ public class MTEHatchUncertainty extends GT_MetaTileEntity_Hatch implements IAdd
         } catch (Exception e) {
             clientLocale = "en_US";
         }
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -376,7 +376,7 @@ public class MTEHatchUncertainty extends GT_MetaTileEntity_Hatch implements IAdd
                     compute();
                 })
                     .setPlayClickSound(false)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
+                    .setBackground(GTUITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
                     .setPos(xPositions[i], 4 + j * 18)
                     .setSize(18, 18))
                     .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));

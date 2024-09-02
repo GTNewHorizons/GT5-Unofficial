@@ -15,8 +15,8 @@ package bartworks.system.material.gtenhancement;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,12 +29,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import codechicken.nei.api.API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class GTMetaItemEnhancer {
 
@@ -58,23 +58,23 @@ public class GTMetaItemEnhancer {
         Materials[] values = Materials.values();
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
             Materials m = values[i];
-            if (m.mStandardMoltenFluid != null && GT_OreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
+            if (m.mStandardMoltenFluid != null && GTOreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
                 final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
                     m.getMolten(144),
                     new ItemStack(moltenCapsuls, 1, i),
-                    GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
+                    GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
                 FluidContainerRegistry.registerFluidContainer(emptyData);
-                GT_Utility.addFluidContainerData(emptyData);
+                GTUtility.addFluidContainerData(emptyData);
 
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1))
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1))
                     .itemOutputs(new ItemStack(moltenCapsuls, 1, i))
                     .fluidInputs(m.getMolten(144))
                     .duration(2 * TICKS)
                     .eut(2)
                     .addTo(fluidCannerRecipes);
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(moltenCapsuls, 1, i))
                     .fluidOutputs(m.getMolten(144))
                     .duration(2 * TICKS)
@@ -84,14 +84,14 @@ public class GTMetaItemEnhancer {
             }
             if (m.getFluid(1) == null && m.getGas(1) == null || OreDictionary.doesOreNameExist("capsule" + m.mName))
                 continue;
-            addFluidData(m, GT_ModHandler.getModItem(Forestry.ID, "waxCapsule", 1), capsuls, 1000, i, true);
+            addFluidData(m, GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1), capsuls, 1000, i, true);
             // addFluidData(m, new ItemStack(Items.glass_bottle), bottles, 250, i, false);
         }
         for (int i = 0, valuesLength = NoMetaValue.size(); i < valuesLength; i++) {
             Materials m = NoMetaValue.get(i);
             if (m.getFluid(1) == null && m.getGas(1) == null || OreDictionary.doesOreNameExist("capsule" + m.mName))
                 continue;
-            addFluidData(m, GT_ModHandler.getModItem(Forestry.ID, "waxCapsule", 1), capsuls, 1000, i + 1001, true);
+            addFluidData(m, GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1), capsuls, 1000, i + 1001, true);
             // addFluidData(m, new ItemStack(Items.glass_bottle), bottles, 250, i + 1001, false);
         }
 
@@ -109,9 +109,9 @@ public class GTMetaItemEnhancer {
             new ItemStack(filled, 1, it),
             container);
         FluidContainerRegistry.registerFluidContainer(emptyData);
-        GT_Utility.addFluidContainerData(emptyData);
+        GTUtility.addFluidContainerData(emptyData);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(container)
             .itemOutputs(new ItemStack(filled, 1, it))
             .fluidInputs(new FluidStack(f, amount))
@@ -119,7 +119,7 @@ public class GTMetaItemEnhancer {
             .eut(2)
             .addTo(fluidCannerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(filled, 1, it))
             .fluidOutputs(new FluidStack(f, amount))
             .duration(amount / 62)
@@ -145,6 +145,6 @@ public class GTMetaItemEnhancer {
     }
 
     private static ItemStack getForestryItem(String itemName) {
-        return GT_ModHandler.getModItem(Forestry.ID, itemName, 1);
+        return GTModHandler.getModItem(Forestry.ID, itemName, 1);
     }
 }

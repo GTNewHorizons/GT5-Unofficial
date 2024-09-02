@@ -51,17 +51,17 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
-public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
+public class MTELESU extends MTEMultiBlockBase {
 
     private static final byte TEXID_SIDE = 0;
     private static final byte TEXID_CHARGING = 1;
@@ -112,7 +112,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
         int ret = 0;
         for (int i = 0; i < 5; ++i) if (this.circuits[i] != null && this.circuits[i].getItem()
             .equals(
-                GT_Utility.getIntegratedCircuit(0)
+                GTUtility.getIntegratedCircuit(0)
                     .getItem()))
             ret += this.circuits[i].getItemDamage();
         return ret > 0 ? ret : 1;
@@ -126,9 +126,9 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public long maxEUInput() {
 
-        for (int i = 1; i < GT_Values.V.length; i++) {
-            if (this.maxEUOutput() <= GT_Values.V[i] && this.maxEUOutput() > GT_Values.V[i - 1])
-                return Math.min(GT_Values.V[i], 32768L);
+        for (int i = 1; i < GTValues.V.length; i++) {
+            if (this.maxEUOutput() <= GTValues.V[i] && this.maxEUOutput() > GTValues.V[i - 1])
+                return Math.min(GTValues.V[i], 32768L);
         }
 
         return 8;
@@ -177,7 +177,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
         Collections.addAll(e, dsc);
         e.add(
             StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                + GT_Utility.formatNumbers(ConfigHandler.energyPerCell)
+                + GTUtility.formatNumbers(ConfigHandler.energyPerCell)
                 + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name")
             .split(";");
@@ -300,7 +300,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
             case 0, 1 -> true;
             default -> stack != null && stack.getItem()
                 .equals(
-                    GT_Utility.getIntegratedCircuit(0)
+                    GTUtility.getIntegratedCircuit(0)
                         .getItem());
         };
     }
@@ -354,7 +354,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setIntArray("customCircuitInv", GT_Utility.stacksToIntArray(this.circuits));
+        aNBT.setIntArray("customCircuitInv", GTUtility.stacksToIntArray(this.circuits));
         super.saveNBTData(aNBT);
     }
 
@@ -362,7 +362,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
     public void loadNBTData(NBTTagCompound aNBT) {
         int[] stacks = aNBT.getIntArray("customCircuitInv");
         for (int i = 0; i < stacks.length; i++) {
-            this.circuits[i] = GT_Utility.intToStack(stacks[i]);
+            this.circuits[i] = GTUtility.intToStack(stacks[i]);
         }
         super.loadNBTData(aNBT);
     }
@@ -459,7 +459,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
                 .setSize(17, 17)
                 .setPos(105, 51));
     }
@@ -467,7 +467,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 4)
                 .setSize(118, 67))
             .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 1) {
@@ -479,7 +479,7 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
             }).setBackground(
                 this.getGUITextureSet()
                     .getItemSlot(),
-                GT_UITextures.OVERLAY_SLOT_IN)
+                GTUITextures.OVERLAY_SLOT_IN)
                 .setPos(127, 13))
             .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 0) {
 
@@ -490,14 +490,14 @@ public class MTELESU extends GT_MetaTileEntity_MultiBlockBase {
             }).setBackground(
                 this.getGUITextureSet()
                     .getItemSlot(),
-                GT_UITextures.OVERLAY_SLOT_CHARGER)
+                GTUITextures.OVERLAY_SLOT_CHARGER)
                 .setPos(127, 49));
         for (int i = 0; i < 4; i++) {
             builder.widget(
                 new SlotWidget(this.circuitsInventoryHandler, i).setBackground(
                     this.getGUITextureSet()
                         .getItemSlot(),
-                    GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                    GTUITextures.OVERLAY_SLOT_INT_CIRCUIT)
                     .setPos(151, 4 + i * 18));
         }
 

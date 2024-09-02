@@ -19,9 +19,9 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -89,7 +89,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     @Override
     public double getTransferLimit(final ItemStack itemStack) {
-        return GT_Values.V[7];
+        return GTValues.V[7];
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
         list.add(
             EnumChatFormatting.GREEN + aString2
-                + GT_Utility.formatNumbers(EUPerOperation)
+                + GTUtility.formatNumbers(EUPerOperation)
                 + aString3
                 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
@@ -151,13 +151,13 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             EnumChatFormatting.GRAY + aTier
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getTier(stack))
+                + GTUtility.formatNumbers(this.getTier(stack))
                 + EnumChatFormatting.GRAY
                 + "] "
                 + aInputLimit
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getTransferLimit(stack))
+                + GTUtility.formatNumbers(this.getTransferLimit(stack))
                 + EnumChatFormatting.GRAY
                 + aEUT
                 + "]");
@@ -165,12 +165,12 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             EnumChatFormatting.GRAY + aCurrentPower
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getCharge(stack))
+                + GTUtility.formatNumbers(this.getCharge(stack))
                 + EnumChatFormatting.GRAY
                 + aEU
                 + "] ["
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
+                + GTUtility.formatNumbers(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
                 + EnumChatFormatting.GRAY
                 + "%]");
         list.add(EnumChatFormatting.GOLD + aString6 + EnumChatFormatting.GRAY);
@@ -332,18 +332,18 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                         .messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
 
                     if (hp > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Healed " + GT_Utility.formatNumbers(hp) + " hp.");
+                        .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
 
                     if (hunger > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Healed " + GT_Utility.formatNumbers(hunger) + " hunger.");
+                        .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
 
                     if (saturation > 0) PlayerUtils.messagePlayer(
                         (EntityPlayer) arg1,
-                        "Satured Hunger by " + GT_Utility.formatNumbers(saturation) + ".");
+                        "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
 
                     if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
                         (EntityPlayer) arg1,
-                        "You check it's remaining uses, it has " + GT_Utility.formatNumbers(secondsLeft(baubleStack))
+                        "You check it's remaining uses, it has " + GTUtility.formatNumbers(secondsLeft(baubleStack))
                             + " seconds left.");
                 }
             }

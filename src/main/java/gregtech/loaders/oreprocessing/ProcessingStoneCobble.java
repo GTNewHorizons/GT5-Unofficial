@@ -1,15 +1,15 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class ProcessingStoneCobble implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -20,8 +20,8 @@ public class ProcessingStoneCobble implements gregtech.api.interfaces.IOreRecipe
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(8, aStack), GT_Utility.getIntegratedCircuit(8))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(new ItemStack(Blocks.furnace, 1))
             .duration(20 * SECONDS)
             .eut(4)

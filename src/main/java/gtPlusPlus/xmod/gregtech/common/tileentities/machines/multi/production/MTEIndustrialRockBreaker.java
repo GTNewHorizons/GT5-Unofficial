@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
@@ -37,13 +37,13 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -74,14 +74,14 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         return "Rock Breaker";
     }
 
-    private static final String casingBaseName = GT_LanguageManager.getTranslation("gtplusplus.blockcasings.2.0.name");
-    private static final String casingMiddleName = GT_LanguageManager
+    private static final String casingBaseName = GTLanguageManager.getTranslation("gtplusplus.blockcasings.2.0.name");
+    private static final String casingMiddleName = GTLanguageManager
         .getTranslation("gtplusplus.blockcasings.2.11.name");
     private static final String anyBaseCasing = "Any " + casingBaseName;
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Industrial Rock Breaker")
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
@@ -182,14 +182,14 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         return true;
     }
 
-    private static GT_Recipe sRecipe_Cobblestone;
-    private static GT_Recipe sRecipe_SmoothStone;
-    private static GT_Recipe sRecipe_Redstone;
+    private static GTRecipe sRecipe_Cobblestone;
+    private static GTRecipe sRecipe_SmoothStone;
+    private static GTRecipe sRecipe_Redstone;
 
     private static void generateRecipes() {
-        sRecipe_Cobblestone = new GT_Recipe(
+        sRecipe_Cobblestone = new GTRecipe(
             false,
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
+            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cobblestone) },
             null,
             new int[] { 10000 },
@@ -198,9 +198,9 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             16,
             32,
             0);
-        sRecipe_SmoothStone = new GT_Recipe(
+        sRecipe_SmoothStone = new GTRecipe(
             false,
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
+            new ItemStack[] { GTUtility.getIntegratedCircuit(2) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.stone) },
             null,
             new int[] { 10000 },
@@ -209,10 +209,10 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             16,
             32,
             0);
-        sRecipe_Redstone = new GT_Recipe(
+        sRecipe_Redstone = new GTRecipe(
             false,
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
+            new ItemStack[] { GTUtility.getIntegratedCircuit(3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
             null,
             new int[] { 10000 },
@@ -243,8 +243,8 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         boolean aHasRedstone = false;
         if (!aItems.isEmpty()) {
             for (ItemStack aItem : aItems) {
-                if (GT_Utility
-                    .areStacksEqual(aItem, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                if (GTUtility
+                    .areStacksEqual(aItem, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                     aHasRedstone = true;
                     break;
                 }
@@ -268,7 +268,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
         int aCircuit = aGuiCircuit.getItemDamage();
 
-        GT_Recipe tRecipe = null;
+        GTRecipe tRecipe = null;
         switch (aCircuit) {
             case 1 -> tRecipe = sRecipe_Cobblestone;
             case 2 -> tRecipe = sRecipe_SmoothStone;
@@ -290,7 +290,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
 
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(tRecipe)
             .setItemInputs(aItemInputs)
             .setFluidInputs(aFluidInputs)
             .setAvailableEUt(tEnergy)
@@ -313,7 +313,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
             .setEUt(tEnergy)
             .setDuration(tRecipe.mDuration)
             .setEUtDiscount(0.75F)
@@ -332,7 +332,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

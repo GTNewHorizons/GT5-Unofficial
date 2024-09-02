@@ -4,20 +4,20 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
-import static gregtech.api.util.GT_ParallelHelper.addFluidsLong;
-import static gregtech.api.util.GT_ParallelHelper.addItemsLong;
-import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
-import static gregtech.api.util.GT_RecipeBuilder.BUCKETS;
-import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTOreDictUnificator.getAssociation;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.ParallelHelper.addFluidsLong;
+import static gregtech.api.util.ParallelHelper.addItemsLong;
+import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +51,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -60,19 +60,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -81,8 +81,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEQuantumForceTransformer extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTEQuantumForceTransformer> implements ISurvivalConstructable {
+public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
+    implements ISurvivalConstructable {
 
     private int mCasing;
     protected int mCraftingTier = 0;
@@ -92,8 +92,8 @@ public class MTEQuantumForceTransformer extends
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
-    private GT_MetaTileEntity_Hatch_Input mNeptuniumHatch;
-    private GT_MetaTileEntity_Hatch_Input mFermiumHatch;
+    private MTEHatchInput mNeptuniumHatch;
+    private MTEHatchInput mFermiumHatch;
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuantumForceTransformer>builder()
         .addShape(
@@ -212,14 +212,14 @@ public class MTEQuantumForceTransformer extends
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'Z',
-            buildHatchAdder(MTEQuantumForceTransformer.class).hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+            buildHatchAdder(MTEQuantumForceTransformer.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEQuantumForceTransformer::addNeptuniumHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
                 .dot(5)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'X',
-            buildHatchAdder(MTEQuantumForceTransformer.class).hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+            buildHatchAdder(MTEQuantumForceTransformer.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEQuantumForceTransformer::addFermiumHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
                 .dot(5)
@@ -240,8 +240,8 @@ public class MTEQuantumForceTransformer extends
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Quantum Force Transformer")
             .addInfo("Controller Block for the Quantum Force Transformer")
             .addInfo("Allows Complex chemical lines to be performed instantly in one step")
@@ -287,7 +287,7 @@ public class MTEQuantumForceTransformer extends
                     + EnumChatFormatting.GRAY
                     + " side of Controller")
             .toolTipFinisher(
-                GT_Values.AuthorBlueWeabo + EnumChatFormatting.RESET
+                GTValues.AuthorBlueWeabo + EnumChatFormatting.RESET
                     + EnumChatFormatting.GREEN
                     + " + Steelux"
                     + EnumChatFormatting.RESET
@@ -452,7 +452,7 @@ public class MTEQuantumForceTransformer extends
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (recipe.mSpecialValue > getCraftingTier()) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
@@ -514,7 +514,7 @@ public class MTEQuantumForceTransformer extends
 
             @NotNull
             @Override
-            public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+            public ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
                     ArrayList<ItemStack> items = new ArrayList<>();
 
@@ -562,15 +562,14 @@ public class MTEQuantumForceTransformer extends
             private int findProgrammedCircuitNumber() {
                 if (isInputSeparationEnabled()) {
                     for (ItemStack stack : inputItems) {
-                        if (GT_Utility.isAnyIntegratedCircuit(stack)) {
+                        if (GTUtility.isAnyIntegratedCircuit(stack)) {
                             return stack.getItemDamage() - 1;
                         }
                     }
                     return -1;
                 } else {
                     final ItemStack controllerStack = getControllerSlot();
-                    return GT_Utility.isAnyIntegratedCircuit(controllerStack) ? controllerStack.getItemDamage() - 1
-                        : -1;
+                    return GTUtility.isAnyIntegratedCircuit(controllerStack) ? controllerStack.getItemDamage() - 1 : -1;
                 }
             }
         };
@@ -649,12 +648,12 @@ public class MTEQuantumForceTransformer extends
         return false;
     }
 
-    public static int getBaseOutputChance(GT_Recipe tRecipe) {
+    public static int getBaseOutputChance(GTRecipe tRecipe) {
         int aOutputsAmount = tRecipe.mOutputs.length + tRecipe.mFluidOutputs.length;
         return 10000 / aOutputsAmount;
     }
 
-    private int[] getOutputChances(GT_Recipe tRecipe, int aChanceIncreased) {
+    private int[] getOutputChances(GTRecipe tRecipe, int aChanceIncreased) {
         int difference = getFocusingTier() - tRecipe.mSpecialValue;
         int aOutputsAmount = tRecipe.mOutputs.length + tRecipe.mFluidOutputs.length;
         int aChancePerOutput = 10000 / aOutputsAmount;
@@ -714,7 +713,7 @@ public class MTEQuantumForceTransformer extends
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mFluidMode = !mFluidMode;
-        GT_Utility.sendChatToPlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
     }
@@ -723,10 +722,10 @@ public class MTEQuantumForceTransformer extends
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            mNeptuniumHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
+            mNeptuniumHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
         }
         return false;
@@ -736,10 +735,10 @@ public class MTEQuantumForceTransformer extends
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
-            mFermiumHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
+            mFermiumHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
         }
         return false;

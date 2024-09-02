@@ -7,19 +7,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 
-public class MTEDieselGenerator extends GT_MetaTileEntity_BasicGenerator {
+public class MTEDieselGenerator extends MTEBasicGenerator {
 
     public int mEfficiency;
 
@@ -30,7 +30,7 @@ public class MTEDieselGenerator extends GT_MetaTileEntity_BasicGenerator {
             aNameRegional,
             aTier,
             new String[] { "Requires liquid Fuel",
-                "Causes " + (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - aTier * 0.1))
+                "Causes " + (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - aTier * 0.1))
                     + " Pollution per second" });
         mEfficiency = 100 - aTier * 10;
     }
@@ -67,7 +67,7 @@ public class MTEDieselGenerator extends GT_MetaTileEntity_BasicGenerator {
 
     @Override
     public int getFuelValue(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
+        if (GTUtility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
         long rValue = super.getFuelValue(aStack);
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3L);
@@ -81,7 +81,7 @@ public class MTEDieselGenerator extends GT_MetaTileEntity_BasicGenerator {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 100 == 0 && mFluid != null && mFluid.amount > this.getCapacity()) {
-            GT_Log.err.println(
+            GTLog.err.println(
                 "Dupe Abuse: " + aBaseMetaTileEntity.getOwnerName()
                     + " Coords: "
                     + aBaseMetaTileEntity.getXCoord()
@@ -208,6 +208,6 @@ public class MTEDieselGenerator extends GT_MetaTileEntity_BasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - mTier * 0.1));
+        return (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - mTier * 0.1));
     }
 }

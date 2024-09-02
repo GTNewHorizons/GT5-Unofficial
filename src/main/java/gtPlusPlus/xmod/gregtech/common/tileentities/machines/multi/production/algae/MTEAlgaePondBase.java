@@ -4,10 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.stream.Stream;
 
@@ -27,22 +27,22 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_StreamUtil;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -88,8 +88,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Grows Algae!")
             .addInfo("Controller Block for the Algae Farm")
@@ -143,7 +143,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                         onElementPass(
                             x -> ++x.mCasing,
                             addTieredBlock(
-                                GregTech_API.sBlockCasings1,
+                                GregTechAPI.sBlockCasings1,
                                 MTEAlgaePondBase::setMeta,
                                 MTEAlgaePondBase::getMeta,
                                 10)),
@@ -183,7 +183,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             && mInputHatches.size() >= 1
             && mOutputBusses.size() >= 1) {
             mLevel = checkMeta - 1;
-            for (GT_MetaTileEntity_Hatch_Input inputHatch : mInputHatches) {
+            for (MTEHatchInput inputHatch : mInputHatches) {
                 if (inputHatch.mTier < mLevel) {
                     return false;
                 }
@@ -332,14 +332,14 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
             @Nonnull
             @Override
-            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GT_StreamUtil
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return GTStreamUtil
                     .ofNullable(RecipeLoaderAlgaeFarm.getTieredRecipeFromCache(mLevel, isUsingCompost(inputItems)));
             }
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!checkForWater()) {
                     return SimpleCheckRecipeResult.ofFailure("no_water");
                 }
@@ -352,7 +352,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     private boolean isUsingCompost(ItemStack[] aItemInputs) {
         ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
         for (ItemStack i : aItemInputs) {
-            if (GT_Utility.areStacksEqual(aCompost, i)) {
+            if (GTUtility.areStacksEqual(aCompost, i)) {
                 if (i.stackSize >= RecipeLoaderAlgaeFarm.compostForTier(mLevel)) {
                     return true;
                 }
@@ -374,7 +374,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
-            if (aInitStructureCheck == GregTech_API.sBlockCasings1
+            if (aInitStructureCheck == GregTechAPI.sBlockCasings1
                 || aInitStructureCheck == TTCasingsContainer.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }

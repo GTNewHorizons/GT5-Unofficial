@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
@@ -53,7 +53,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
             try {
                 final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
                 final Item mHandItem = mHandStack.getItem();
-                if (((mHandItem instanceof GT_MetaGenerated_Tool_01)
+                if (((mHandItem instanceof MetaGeneratedTool01)
                     && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
                     final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
                     if (tile != null) {

@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
@@ -23,9 +23,9 @@ public class SemiFluidFuelHandler {
         final FluidStack aHeavyOil = FluidUtils.getFluidStack("liquid_heavy_oil", 1000);
         final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<>();
         // Find Fluids From items
-        for (final GT_Recipe r : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
+        for (final GTRecipe r : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
 
-            GT_Recipe g = r.copy();
+            GTRecipe g = r.copy();
 
             if (g != null && g.mEnabled && g.mInputs.length > 0 && g.mInputs[0] != null) {
                 for (ItemStack i : g.mInputs) {
@@ -71,7 +71,7 @@ public class SemiFluidFuelHandler {
 
             if (aFuelValue <= (128 * 3)) {
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .fluidInputs(p.getKey())
                     .duration(0)
                     .eut(0)

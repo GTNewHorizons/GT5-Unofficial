@@ -19,16 +19,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.util.BWTooltipReference;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 
-public class MTEAcidGenerator extends GT_MetaTileEntity_BasicGenerator {
+public class MTEAcidGenerator extends MTEBasicGenerator {
 
     public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, new String[] {}, aTextures);
@@ -143,7 +143,7 @@ public class MTEAcidGenerator extends GT_MetaTileEntity_BasicGenerator {
             StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
                 + EnumChatFormatting.YELLOW
-                + GT_Values.V[this.mTier],
+                + GTValues.V[this.mTier],
             StatCollector.translateToLocal("tooltip.rotor.2.name") + " "
                 + EnumChatFormatting.YELLOW
                 + this.getEfficiency(),

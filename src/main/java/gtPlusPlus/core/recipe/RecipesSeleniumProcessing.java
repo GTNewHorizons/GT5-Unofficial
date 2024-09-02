@@ -1,16 +1,16 @@
 package gtPlusPlus.core.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
@@ -29,8 +29,8 @@ public class RecipesSeleniumProcessing {
         processCopperRecipes();
 
         // Liquify the Dried Dioxide
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(13), MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(13), MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .fluidInputs(FluidUtils.getSteam(500))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1000))
             .duration(24 * SECONDS)
@@ -38,8 +38,8 @@ public class RecipesSeleniumProcessing {
             .addTo(pyrolyseRecipes);
 
         // Produce Selenious Acid
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(14), MaterialMisc.SELENIUM_DIOXIDE.getCell(1))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(14), MaterialMisc.SELENIUM_DIOXIDE.getCell(1))
             .itemOutputs(CI.emptyCells(1))
             .fluidInputs(FluidUtils.getHotWater(4000))
             .fluidOutputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(1000))
@@ -48,8 +48,8 @@ public class RecipesSeleniumProcessing {
             .addTo(pyrolyseRecipes);
 
         // Make Selenium
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(14), MaterialsElements.getInstance().CARBON.getDust(16))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(14), MaterialsElements.getInstance().CARBON.getDust(16))
             .itemOutputs(
                 MaterialsElements.getInstance().SELENIUM.getIngot(1),
                 MaterialsElements.getInstance().SELENIUM.getIngot(1))
@@ -64,7 +64,7 @@ public class RecipesSeleniumProcessing {
     public static void processCopperRecipes() {
 
         // Copper
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1))
@@ -86,7 +86,7 @@ public class RecipesSeleniumProcessing {
             .addTo(chemicalDehydratorRecipes);
 
         // Tetra
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1))
@@ -108,7 +108,7 @@ public class RecipesSeleniumProcessing {
             .addTo(chemicalDehydratorRecipes);
 
         // Chalco
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1))
@@ -130,7 +130,7 @@ public class RecipesSeleniumProcessing {
             .addTo(chemicalDehydratorRecipes);
 
         // Malachite
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1))

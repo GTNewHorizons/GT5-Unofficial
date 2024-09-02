@@ -32,8 +32,8 @@ import bartworks.API.SideReference;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.behaviors.BehaviourDataOrb;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -83,26 +83,26 @@ public class TileEntityGTDataServer extends TileEntity
         if (this.TickTimer++ % 20 != 0) return;
 
         if (this.isServerSide()) {
-            if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataOrb.get(1))
+            if (GTUtility.areStacksEqual(this.mItems[0], ItemList.Tool_DataOrb.get(1))
                 && this.mItems[0].hasTagCompound()) {
                 if (GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
                     this.OrbDataBase.put(
                         GTNBTDataBase.getMaxID(),
                         new GTNBTDataBase(
-                            Behaviour_DataOrb.getDataName(this.mItems[0]),
-                            Behaviour_DataOrb.getDataTitle(this.mItems[0]),
+                            BehaviourDataOrb.getDataName(this.mItems[0]),
+                            BehaviourDataOrb.getDataTitle(this.mItems[0]),
                             this.mItems[0].getTagCompound()));
                 } else {
                     long id = GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound());
                     this.OrbDataBase.put(id, GTNBTDataBase.getGTTagFromId(id));
                 }
             }
-            if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataStick.get(1))
+            if (GTUtility.areStacksEqual(this.mItems[0], ItemList.Tool_DataStick.get(1))
                 && this.mItems[0].hasTagCompound()) {
 
-                String bookTitle = GT_Utility.ItemNBT.getBookTitle(this.mItems[0]);
-                String punchcardData = GT_Utility.ItemNBT.getPunchCardData(this.mItems[0]);
-                short mapID = GT_Utility.ItemNBT.getMapID(this.mItems[0]);
+                String bookTitle = GTUtility.ItemNBT.getBookTitle(this.mItems[0]);
+                String punchcardData = GTUtility.ItemNBT.getPunchCardData(this.mItems[0]);
+                short mapID = GTUtility.ItemNBT.getMapID(this.mItems[0]);
                 byte data = (byte) (bookTitle.isEmpty() ? punchcardData.isEmpty() ? mapID != -1 ? 3 : -1 : 2 : 1);
 
                 String title = data == 1 ? bookTitle

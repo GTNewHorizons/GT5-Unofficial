@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,9 +12,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -42,7 +42,7 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
         if (side != this.getBaseMetaTileEntity()
             .getFrontFacing()) {
             return true;
@@ -87,22 +87,22 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -112,22 +112,22 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     @Override
@@ -289,8 +289,8 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
         final double roundOff = Math.round(c * 100.00) / 100.00;
         PlayerUtils.messagePlayer(
             playerIn,
-            "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
-        PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesOut()) + "A");
+            "Energy: " + GTUtility.formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
+        PlayerUtils.messagePlayer(playerIn, "Amperage: " + GTUtility.formatNumbers(maxAmperesOut()) + "A");
     }
     // Utils.LOG_WARNING("Begin Show Energy");
     /*
@@ -321,10 +321,10 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     @Override
     public String[] getInfoData() {
-        String cur = GT_Utility.formatNumbers(
+        String cur = GTUtility.formatNumbers(
             this.getBaseMetaTileEntity()
                 .getStoredEU());
-        String max = GT_Utility.formatNumbers(
+        String max = GTUtility.formatNumbers(
             this.getBaseMetaTileEntity()
                 .getEUCapacity());
 

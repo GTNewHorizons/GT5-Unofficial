@@ -11,13 +11,13 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import ggfab.GGItemList;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 public class GGFabRecipeMaps {
 
@@ -28,9 +28,9 @@ public class GGFabRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> toolCastRecipes = RecipeMapBuilder.of("ggfab.recipe.toolcast")
         .maxIO(1, 4, 1, 0)
         .minInputs(1, 1)
-        .progressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
         .recipeEmitter(b -> {
-            Optional<GT_Recipe> rr = b.noOptimize()
+            Optional<GTRecipe> rr = b.noOptimize()
                 .validateNoInput()
                 .validateInputFluidCount(0, 1)
                 .validateNoOutput()
@@ -38,7 +38,7 @@ public class GGFabRecipeMaps {
                 .build();
             if (!rr.isPresent()) return Collections.emptyList();
             ToolDictNames outputType = b.getMetadata(OUTPUT_TYPE);
-            GT_Recipe r = rr.get();
+            GTRecipe r = rr.get();
             int outputSize = b.getMetadataOrDefault(OUTPUT_COUNT, 0);
             if (outputSize > 64 * 4 || outputSize <= 0) return Collections.emptyList();
             ItemStack shape, output;

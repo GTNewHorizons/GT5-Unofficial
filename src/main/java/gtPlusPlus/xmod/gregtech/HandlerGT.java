@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Config;
+import gregtech.api.GregTechAPI;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTConfig;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
@@ -30,10 +30,10 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HandlerGT {
 
-    public static GT_Config mMaterialProperties = null;
+    public static GTConfig mMaterialProperties = null;
     public static GTPPConfig sCustomWorldgenFile = null;
     public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
-    public static GT_MetaGenerated_Tool sMetaGeneratedToolInstance;
+    public static MetaGeneratedTool sMetaGeneratedToolInstance;
 
     public static void preInit() {
 
@@ -75,13 +75,13 @@ public class HandlerGT {
 
         if (GregtechItemList.Circuit_BioRecipeSelector.hasBeenSet()) {
             for (int i = 1; i <= 24; i++) {
-                GregTech_API.registerConfigurationCircuit(CI.getNumberedBioCircuit(i), 0);
+                GregTechAPI.registerConfigurationCircuit(CI.getNumberedBioCircuit(i), 0);
             }
         }
 
         if (GregtechItemList.Circuit_T3RecipeSelector.hasBeenSet()) {
             for (int i = 1; i <= 24; i++) {
-                GregTech_API.registerConfigurationCircuit(CI.getNumberedAdvancedCircuit(i), 3);
+                GregTechAPI.registerConfigurationCircuit(CI.getNumberedAdvancedCircuit(i), 3);
             }
         }
     }

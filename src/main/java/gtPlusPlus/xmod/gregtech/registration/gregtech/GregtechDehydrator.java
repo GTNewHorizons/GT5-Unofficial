@@ -7,22 +7,22 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_Dehydrator_ZPM;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM;
+import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.X.CIRCUIT;
+import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.X.HULL;
+import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.X.ROBOT_ARM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.ModItems;
@@ -47,34 +47,34 @@ public class GregtechDehydrator {
         ItemStack coilT4 = new ItemStack(ModItems.itemDehydratorCoil, 1, 3);
 
         // Make some coils by wrapping wire around a spool.
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemDehydratorCoilWire, 4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1))
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1))
             .itemOutputs(coilT1)
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemDehydratorCoilWire, 4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1))
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1))
             .itemOutputs(coilT2)
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemDehydratorCoilWire, 4, 2),
-                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1))
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1))
             .itemOutputs(coilT3)
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemDehydratorCoilWire, 4, 3),
-                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1))
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1))
             .itemOutputs(coilT4)
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
@@ -82,7 +82,7 @@ public class GregtechDehydrator {
 
         // Basic
         GregtechItemList.GT_Dehydrator_MV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 GT_Dehydrator_MV.ID,
                 "machine.dehydrator.tier.00",
                 "Basic Dehydrator I",
@@ -102,7 +102,7 @@ public class GregtechDehydrator {
                         .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_HV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 GT_Dehydrator_HV.ID,
                 "machine.dehydrator.tier.01",
                 "Basic Dehydrator II",
@@ -123,7 +123,7 @@ public class GregtechDehydrator {
 
         // Chemical
         GregtechItemList.GT_Dehydrator_EV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 GT_Dehydrator_EV.ID,
                 "advancedmachine.dehydrator.tier.01",
                 "Chemical Dehydrator I",
@@ -142,7 +142,7 @@ public class GregtechDehydrator {
                         .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_IV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 GT_Dehydrator_IV.ID,
                 "advancedmachine.dehydrator.tier.02",
                 "Chemical Dehydrator II",
@@ -161,7 +161,7 @@ public class GregtechDehydrator {
                         .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_LuV.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 GT_Dehydrator_LuV.ID,
                 "advancedmachine.dehydrator.tier.03",
                 "Chemical Dehydrator III",
@@ -180,7 +180,7 @@ public class GregtechDehydrator {
                         .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_ZPM.set(
-            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+            new MTEBasicMachineWithRecipe(
                 GT_Dehydrator_ZPM.ID,
                 "advancedmachine.dehydrator.tier.04",
                 "Chemical Dehydrator IV",

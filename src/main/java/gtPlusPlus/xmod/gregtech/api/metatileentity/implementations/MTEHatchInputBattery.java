@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,21 +11,21 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchInputBattery extends GT_MetaTileEntity_Hatch {
+public class MTEHatchInputBattery extends MTEHatch {
 
     public final RecipeMap<?> mRecipeMap = null;
 
@@ -82,12 +82,12 @@ public class MTEHatchInputBattery extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Charger) };
     }
 
     @Override
@@ -117,7 +117,7 @@ public class MTEHatchInputBattery extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -134,10 +134,10 @@ public class MTEHatchInputBattery extends GT_MetaTileEntity_Hatch {
                         if (aBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                             for (int u = 0; u < 10; u++) {
                                 aBaseMetaTileEntity.decreaseStoredEnergyUnits(
-                                    GT_ModHandler.chargeElectricItem(
+                                    GTModHandler.chargeElectricItem(
                                         mMetaTileEntity.mInventory[i],
                                         (int) Math.min(V[this.mTier] * 15, aBaseMetaTileEntity.getStoredEU()),
-                                        (int) Math.min(Integer.MAX_VALUE, GT_Values.V[u]),
+                                        (int) Math.min(Integer.MAX_VALUE, GTValues.V[u]),
                                         false,
                                         false),
                                     true);
@@ -162,8 +162,8 @@ public class MTEHatchInputBattery extends GT_MetaTileEntity_Hatch {
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
             for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
+                && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                    GTUtility.moveStackFromSlotAToSlotB(
                         getBaseMetaTileEntity(),
                         getBaseMetaTileEntity(),
                         j,

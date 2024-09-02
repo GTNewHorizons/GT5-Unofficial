@@ -1,8 +1,8 @@
 package gtPlusPlus.core.item.tool.misc;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -35,21 +35,21 @@ import net.minecraftforge.fluids.IFluidTank;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -157,7 +157,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             localizedName,
             EnumChatFormatting.GRAY + "Can be used to remove fluids from GT machine input & output slots");
         if (euStorage > 0 && tier > 0)
-            this.setElectricStats(this.mOffset + id, euStorage, GT_Values.V[tier], tier, -3L, true);
+            this.setElectricStats(this.mOffset + id, euStorage, GTValues.V[tier], tier, -3L, true);
         this.rarity.put(id, regRarity);
         this.itemName.put(id, localizedName);
         this.hasEffect.put(id, Effect);
@@ -188,7 +188,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         // aList.add("Meta: "+(aStack.getItemDamage()-mOffset));
         int aOffsetMeta = getCorrectMetaForItemstack(aStack);
         aList.add(
-            GT_LanguageManager
+            GTLanguageManager
                 .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
 
         if (aOffsetMeta <= 3) {
@@ -367,7 +367,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         for (int i = 1; i < 5; i++) {
             final ItemStack tArmor = aPlayer.getEquipmentInSlot(i);
-            if (GT_ModHandler.isElectricItem(tArmor)) {
+            if (GTModHandler.isElectricItem(tArmor)) {
                 final IElectricItem tArmorItem = (IElectricItem) tArmor.getItem();
                 if (tArmorItem.canProvideEnergy(tArmor) && (tArmorItem.getTier(tArmor) >= this.getTier(aStack))) {
                     final double tCharge = ElectricItem.manager.discharge(
@@ -511,7 +511,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
         for (int i = 0, j = this.mEnabledItems.length(); i < j; i++) {
-            if (this.mVisibleItems.get(i) || (GT_Values.D1 && this.mEnabledItems.get(i))) {
+            if (this.mVisibleItems.get(i) || (GTValues.D1 && this.mEnabledItems.get(i))) {
                 final Long[] tStats = this.mElectricStats.get((short) (this.mOffset + i));
                 if ((tStats != null) && (tStats[3] < 0)) {
                     final ItemStack tStack = new ItemStack(this, 1, this.mOffset + i);
@@ -631,12 +631,12 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         if ((aID >= 0) && (aID < this.mItemAmount)) {
             final ItemStack rStack = new ItemStack(this, 1, this.mOffset + aID);
-            GT_ModHandler.registerBoxableItemToToolBox(rStack);
+            GTModHandler.registerBoxableItemToToolBox(rStack);
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
-            GT_LanguageManager
+            GTLanguageManager
                 .addStringLocalization("gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".name", aEnglish);
-            GT_LanguageManager.addStringLocalization(
+            GTLanguageManager.addStringLocalization(
                 "gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".tooltip",
                 aToolTip);
             final List<TC_AspectStack> tAspects = new ArrayList<>();
@@ -648,7 +648,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         continue;
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GT_OreDictUnificator.addToBlacklist(rStack);
+                        GTOreDictUnificator.addToBlacklist(rStack);
                         continue;
                     }
                 }
@@ -673,21 +673,21 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         continue;
                     }
                     if (tRandomData instanceof ItemData) {
-                        if (GT_Utility.isStringValid(tRandomData)) {
-                            GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                        if (GTUtility.isStringValid(tRandomData)) {
+                            GTOreDictUnificator.registerOre(tRandomData, rStack);
                         } else {
-                            GT_OreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }
                     if (tUseOreDict) {
-                        GT_OreDictUnificator.registerOre(tRandomData, rStack);
+                        GTOreDictUnificator.registerOre(tRandomData, rStack);
                         continue;
                     }
                 }
             }
-            if (GregTech_API.sThaumcraftCompat != null) {
-                GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
+            if (GregTechAPI.sThaumcraftCompat != null) {
+                GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
             }
             return rStack;
         }
@@ -700,7 +700,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (keyValue < 0 || keyValue > 3) {
             keyValue = 0;
         }
-        return GT_LanguageManager
+        return GTLanguageManager
             .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
     }
 
@@ -1239,19 +1239,19 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return null;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
-        if (aMetaTileEntity == null || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+        if (aMetaTileEntity == null || aMetaTileEntity instanceof MTEHatchMultiInput) {
             // blacklist multiinput hatch as it's too complex
             return null;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
+        if (aMetaTileEntity instanceof MTEBasicTank) {
             Logger.INFO("Tile Was Instanceof BasicTank.");
-            return getStoredFluidOfGTMachine((GT_MetaTileEntity_BasicTank) aMetaTileEntity);
+            return getStoredFluidOfGTMachine((MTEBasicTank) aMetaTileEntity);
         } else {
             return null;
         }
     }
 
-    public FluidStack getStoredFluidOfGTMachine(GT_MetaTileEntity_BasicTank aTileEntity) {
+    public FluidStack getStoredFluidOfGTMachine(MTEBasicTank aTileEntity) {
         FluidStack f = aTileEntity.mFluid;
 
         // Let's see if this machine has output fluid too
@@ -1281,15 +1281,15 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
+        if (aMetaTileEntity instanceof MTEBasicTank) {
             Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [2]");
-            return setStoredFluidOfGTMachine((GT_MetaTileEntity_BasicTank) aMetaTileEntity, aSetFluid);
+            return setStoredFluidOfGTMachine((MTEBasicTank) aMetaTileEntity, aSetFluid);
         } else {
             return false;
         }
     }
 
-    public boolean setStoredFluidOfGTMachine(GT_MetaTileEntity_BasicTank aTileEntity, FluidStack aSetFluid) {
+    public boolean setStoredFluidOfGTMachine(MTEBasicTank aTileEntity, FluidStack aSetFluid) {
         try {
 
             // Try Handle Outputs First

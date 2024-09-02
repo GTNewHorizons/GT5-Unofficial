@@ -23,8 +23,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -151,7 +151,7 @@ public class MTEHatchParamText extends MTEHatchParam {
         } catch (Exception e) {
             clientLocale = "en_US";
         }
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -177,10 +177,10 @@ public class MTEHatchParamText extends MTEHatchParam {
                 .setPos(7, 4)
                 .setSize(162, 72));
 
-        addChangeNumberButton(builder, -16, -4, 7, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE);
-        addChangeNumberButton(builder, -2, -1, 25, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL);
-        addChangeNumberButton(builder, 2, 1, 133, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL);
-        addChangeNumberButton(builder, 16, 4, 151, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE);
+        addChangeNumberButton(builder, -16, -4, 7, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE);
+        addChangeNumberButton(builder, -2, -1, 25, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL);
+        addChangeNumberButton(builder, 2, 1, 133, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL);
+        addChangeNumberButton(builder, 16, 4, 151, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE);
 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> param, val -> param = val))
             .widget(new FakeSyncWidget.DoubleSyncer(() -> value0D, val -> value0D = val))
@@ -232,7 +232,7 @@ public class MTEHatchParamText extends MTEHatchParam {
             }
         })
             .setPlayClickSound(false)
-            .setBackground(GT_UITextures.BUTTON_STANDARD, overlay, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID)
+            .setBackground(GTUITextures.BUTTON_STANDARD, overlay, TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID)
             .setSize(18, 18)
             .setPos(xPos, 4));
     }
@@ -270,7 +270,7 @@ public class MTEHatchParamText extends MTEHatchParam {
                 })
                 .setTextColor(Color.WHITE.dark(1))
                 .setTextAlignment(Alignment.CenterLeft)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                 .setPos(26, isIndex0 ? 26 : 41)
                 .setSize(138, 12));
     }

@@ -15,11 +15,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Log;
-import gregtech.common.blocks.GT_Block_Ores;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.api.util.GTLog;
+import gregtech.common.blocks.BlockOres;
+import gregtech.common.blocks.TileEntityOres;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -92,7 +92,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         this.mMinY = 5;
         short mMaxY = 14;
         if (mMaxY < (this.mMinY + 7)) {
-            GT_Log.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
+            GTLog.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
             mMaxY = (short) (this.mMinY + 7);
         }
         this.mMaxY = mMaxY;
@@ -136,7 +136,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
 
         if (mWorldGenName.equals("vein0")) {
-            if (debugWorldGen) GT_Log.out.println(" NoOresInVein-vein0");
+            if (debugWorldGen) GTLog.out.println(" NoOresInVein-vein0");
             // This is a special empty orevein
             Logger.WORLD("[World Generation Debug] Special Empty Vein placed.");
             return ORE_PLACED;
@@ -175,8 +175,8 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
                     DimensionEverglades.blockSecondaryFiller)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -195,8 +195,8 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.stone)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -207,7 +207,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
         if (debugWorldGen) {
             String tDimensionName = aWorld.provider.getDimensionName();
-            GT_Log.out.print(
+            GTLog.out.print(
                 "Trying Orevein:" + this.mWorldGenName
                     + " Dimension="
                     + tDimensionName
@@ -359,7 +359,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
         if (debugWorldGen) {
             String tDimensionName = aWorld.provider.getDimensionName();
-            GT_Log.out.println(
+            GTLog.out.println(
                 "Generated Orevein:" + this.mWorldGenName
                     + " Dimension="
                     + tDimensionName
@@ -408,7 +408,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
 
         // Set GT ORE
-        if (aMetaData instanceof GT_Block_Ores) {
+        if (aMetaData instanceof BlockOres) {
             if (ore1String.equals("unset")) {
                 ore1String = Utils.sanitizeString(
                     this.mPrimary.getLocalizedName()
@@ -527,8 +527,8 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockGranites)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockStones)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondLayer)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockMainFiller)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondaryFiller)
@@ -550,7 +550,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         Method setOres = null;
 
         try {
-            setOres = GT_TileEntity_Ores.class.getDeclaredMethod(
+            setOres = TileEntityOres.class.getDeclaredMethod(
                 "setOreBlock",
                 World.class,
                 int.class,

@@ -1,14 +1,14 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchDynamoBuffer extends GT_MetaTileEntity_Hatch_Dynamo {
+public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     public MTEHatchDynamoBuffer(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -36,7 +36,7 @@ public class MTEHatchDynamoBuffer extends GT_MetaTileEntity_Hatch_Dynamo {
 
     @Override
     public long maxEUStore() {
-        return 512L + GT_Values.V[this.mTier + 1] * 2048L;
+        return 512L + GTValues.V[this.mTier + 1] * 2048L;
     }
 
     @Override

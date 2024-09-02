@@ -12,11 +12,11 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 // TODO: Render effects outside inventory.
 
-public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
+public class InfinityRenderer extends GeneratedMaterialRenderer {
 
     public Random rand = new Random();
 
@@ -33,7 +33,7 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         for (int pass = 0; pass < passes; pass++) {
             IIcon tIcon = aItem.getIcon(aMetaData, pass);
             IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
-            FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
+            FluidStack aFluid = GTUtility.getFluidForFilledItem(aStack, true);
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

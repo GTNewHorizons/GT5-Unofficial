@@ -1,6 +1,6 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 /**
  * Experimental Class for later

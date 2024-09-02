@@ -1,7 +1,7 @@
 package tectech.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_STATION_DATA;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_STATION_DATA;
 import static tectech.recipe.TecTechRecipeMaps.researchStationFakeRecipes;
 
 import java.util.ArrayList;
@@ -14,18 +14,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_AssemblyLineUtils;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_RecipeAdder;
+import gregtech.api.util.AssemblyLineUtils;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GTUtility;
+import gregtech.common.RecipeAdder;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
 
-public class TTRecipeAdder extends GT_RecipeAdder {
+public class TTRecipeAdder extends RecipeAdder {
 
     public static final ItemStack[] nullItem = new ItemStack[0];
     public static final FluidStack[] nullFluid = new FluidStack[0];
@@ -52,10 +52,10 @@ public class TTRecipeAdder extends GT_RecipeAdder {
                         + " there is some null item in that recipe");
             }
         }
-        researchAmperage = GT_Utility.clamp(researchAmperage, 1, Short.MAX_VALUE);
-        computationRequiredPerSec = GT_Utility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
+        researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
+        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
 
-        GT_Recipe_AssemblyLine recipeGT = new GT_Recipe.GT_Recipe_AssemblyLine(
+        GT_Recipe_AssemblyLine recipeGT = new GTRecipe.GT_Recipe_AssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
             aInputs,
@@ -63,7 +63,7 @@ public class TTRecipeAdder extends GT_RecipeAdder {
             aOutput,
             assDuration,
             assEUt);
-        GT_Recipe_AssemblyLine recipeTT = new GT_Recipe.GT_Recipe_AssemblyLine(
+        GT_Recipe_AssemblyLine recipeTT = new GTRecipe.GT_Recipe_AssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             aInputs,
@@ -71,12 +71,12 @@ public class TTRecipeAdder extends GT_RecipeAdder {
             aOutput,
             assDuration,
             assEUt);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
+        GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
         ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
-        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, recipeTT, false);
-        GT_Values.RA.stdBuilder()
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, recipeTT, false);
+        GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
             .special(writesDataStick)
@@ -89,8 +89,8 @@ public class TTRecipeAdder extends GT_RecipeAdder {
             .addTo(researchStationFakeRecipes);
 
         ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
-        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, recipeTT, false);
-        GT_Values.RA.stdBuilder()
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, recipeTT, false);
+        GTValues.RA.stdBuilder()
             .itemInputs(aInputs)
             .itemOutputs(aOutput)
             .fluidInputs(aFluidInputs)
@@ -130,21 +130,21 @@ public class TTRecipeAdder extends GT_RecipeAdder {
             if (obj instanceof ItemStack) {
                 tInputs[i] = (ItemStack) obj;
                 tAlts[i] = null;
-                tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tInputs[i], true, false);
+                tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tInputs[i], true, false);
                 continue;
             } else if (obj instanceof ItemStack[]aStacks) {
                 if (aStacks.length > 0) {
                     tInputs[i] = aStacks[0];
                     tAlts[i] = Arrays.copyOf(aStacks, aStacks.length);
                     for (ItemStack tAlt : tAlts[i]) {
-                        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tAlt, true, false);
+                        tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tAlt, true, false);
                     }
                     tPersistentHash *= 31;
                     continue;
                 }
             } else if (obj instanceof Object[]objs) {
                 List<ItemStack> tList;
-                if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
+                if (objs.length >= 2 && !(tList = GTOreDictUnificator.getOres(objs[0])).isEmpty()) {
                     try {
                         // sort the output, so the hash code is stable across launches
                         tList.sort(
@@ -157,8 +157,8 @@ public class TTRecipeAdder extends GT_RecipeAdder {
                         int tAmount = ((Number) objs[1]).intValue();
                         List<ItemStack> uList = new ArrayList<>();
                         for (ItemStack tStack : tList) {
-                            ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack);
-                            if (GT_Utility.isStackValid(uStack)) {
+                            ItemStack uStack = GTUtility.copyAmount(tAmount, tStack);
+                            if (GTUtility.isStackValid(uStack)) {
                                 uList.add(uStack);
                                 if (tInputs[i] == null) tInputs[i] = uStack;
                             }
@@ -180,14 +180,14 @@ public class TTRecipeAdder extends GT_RecipeAdder {
                     + aOutput.getUnlocalizedName()
                     + " there is some null item in that recipe");
         }
-        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
-        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
+        tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aResearchItem, true, false);
+        tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aOutput, true, false);
         for (FluidStack tFluidInput : aFluidInputs) {
             if (tFluidInput == null) continue;
-            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tFluidInput, true, false);
+            tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
         }
-        researchAmperage = GT_Utility.clamp(researchAmperage, 1, Short.MAX_VALUE);
-        computationRequiredPerSec = GT_Utility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
+        researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
+        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
         tPersistentHash = tPersistentHash * 31 + totalComputationRequired;
         tPersistentHash = tPersistentHash * 31 + computationRequiredPerSec;
         tPersistentHash = tPersistentHash * 31 + researchAmperage;
@@ -205,7 +205,7 @@ public class TTRecipeAdder extends GT_RecipeAdder {
             assEUt,
             tAlts);
         recipeGT.setPersistentHash(tPersistentHash);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
+        GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
         GT_Recipe_AssemblyLine recipeTT = new GT_Recipe_AssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
@@ -219,8 +219,8 @@ public class TTRecipeAdder extends GT_RecipeAdder {
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
         ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
-        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, recipeTT, false);
-        GT_Values.RA.stdBuilder()
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, recipeTT, false);
+        GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
             .special(writesDataStick)
@@ -233,7 +233,7 @@ public class TTRecipeAdder extends GT_RecipeAdder {
             .addTo(researchStationFakeRecipes);
 
         ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
-        GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, recipeTT, false);
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, recipeTT, false);
         assemblylineVisualRecipes.addFakeRecipe(
             false,
             tInputs,

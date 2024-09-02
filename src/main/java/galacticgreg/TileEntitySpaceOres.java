@@ -7,10 +7,10 @@ import net.minecraft.world.World;
 
 import galacticgreg.api.Enums;
 import galacticgreg.api.ModDimensionDef;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Log;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTLog;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.TileEntityOres;
 
 public class TileEntitySpaceOres {
 
@@ -47,7 +47,7 @@ public class TileEntitySpaceOres {
 
             return tFlag;
         } catch (Exception e) {
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
             GalacticGreg.Logger.error("Error while processing CheckForReplaceableBlock(), defaulting to UNKNOWN");
             return Enums.ReplaceState.Unknown;
         }
@@ -105,16 +105,16 @@ public class TileEntitySpaceOres {
                         pX,
                         pY,
                         pZ,
-                        GregTech_API.sBlockOres1,
-                        GT_TileEntity_Ores.getHarvestData(
+                        GregTechAPI.sBlockOres1,
+                        TileEntityOres.getHarvestData(
                             (short) pMetaData,
-                            ((GT_Block_Ores_Abstract) GregTech_API.sBlockOres1)
+                            ((BlockOresAbstract) GregTechAPI.sBlockOres1)
                                 .getBaseBlockHarvestLevel(pMetaData % 16000 / 1000)),
                         0);
                     TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
-                    if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                        ((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
-                        ((GT_TileEntity_Ores) tTileEntity).mNatural = true;
+                    if ((tTileEntity instanceof TileEntityOres)) {
+                        ((TileEntityOres) tTileEntity).mMetaData = ((short) pMetaData);
+                        ((TileEntityOres) tTileEntity).mNatural = true;
                     } else {
                         // This is somehow triggered randomly, and most times the target block is air, which should
                         // never happen as we check for air...

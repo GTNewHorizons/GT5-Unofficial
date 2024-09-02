@@ -1,7 +1,7 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.SIDE_TOP;
+import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.enums.GTValues.SIDE_TOP;
 
 import java.util.List;
 

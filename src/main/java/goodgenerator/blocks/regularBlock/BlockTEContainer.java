@@ -24,8 +24,8 @@ import goodgenerator.blocks.tileEntity.MTEEssentiaHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.main.GoodGenerator;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTUtility;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 
@@ -46,7 +46,7 @@ public class BlockTEContainer extends BlockContainer {
         this.textureNames = texture;
         this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockTEContainer(String name, String[] texture, int index) {
@@ -58,7 +58,7 @@ public class BlockTEContainer extends BlockContainer {
         this.setHarvestLevel("wrench", 2);
         this.index = index;
         this.setCreativeTab(GoodGenerator.GG);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockTEContainer(String name, String[] texture, Material material) {
@@ -69,7 +69,7 @@ public class BlockTEContainer extends BlockContainer {
         this.textureNames = texture;
         this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public int getIndex() {
@@ -107,15 +107,15 @@ public class BlockTEContainer extends BlockContainer {
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aMetaData)) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aMetaData)) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
         aWorld.removeTileEntity(aX, aY, aZ);
     }
@@ -173,7 +173,7 @@ public class BlockTEContainer extends BlockContainer {
                             Aspect tLocked = ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem())
                                 .getAspects()[0];
                             ((MTEEssentiaHatch) tile).setLockedAspect(tLocked);
-                            GT_Utility.sendChatToPlayer(
+                            GTUtility.sendChatToPlayer(
                                 player,
                                 String.format(
                                     StatCollector.translateToLocal("essentiahatch.chat.0"),
@@ -181,7 +181,7 @@ public class BlockTEContainer extends BlockContainer {
                         }
                     } else {
                         ((MTEEssentiaHatch) tile).setLockedAspect(null);
-                        GT_Utility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiahatch.chat.1"));
+                        GTUtility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiahatch.chat.1"));
                     }
                     world.markBlockForUpdate(x, y, z);
                     return true;
@@ -191,7 +191,7 @@ public class BlockTEContainer extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
-                        GT_Utility
+                        GTUtility
                             .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
                     }
                     return true;

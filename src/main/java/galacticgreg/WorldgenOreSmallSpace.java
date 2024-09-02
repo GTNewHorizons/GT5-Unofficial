@@ -10,10 +10,10 @@ import net.minecraft.world.chunk.IChunkProvider;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.registry.GalacticGregRegistry;
-import gregtech.api.world.GT_Worldgen;
+import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
 
-public class WorldgenOreSmallSpace extends GT_Worldgen {
+public class WorldgenOreSmallSpace extends GTWorldgen {
 
     public final short mMinY;
     public final short mMaxY;

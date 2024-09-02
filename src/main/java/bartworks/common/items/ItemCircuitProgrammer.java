@@ -40,20 +40,20 @@ import bartworks.MainMod;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.items.GTGenericItem;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
-public class ItemCircuitProgrammer extends GT_Generic_Item implements IElectricItem, IItemWithModularUI {
+public class ItemCircuitProgrammer extends GTGenericItem implements IElectricItem, IItemWithModularUI {
 
     private static final int COST_PER_USE = 100;
 
@@ -63,7 +63,7 @@ public class ItemCircuitProgrammer extends GT_Generic_Item implements IElectricI
         this.setNoRepair();
         this.setHasSubtypes(false);
         this.setCreativeTab(MainMod.BWT);
-        GregTech_API.registerCircuitProgrammer(
+        GregTechAPI.registerCircuitProgrammer(
             s -> s.getItem() instanceof ItemCircuitProgrammer && ElectricItem.manager.canUse(s, COST_PER_USE),
             (s, p) -> {
                 ElectricItem.manager.use(s, COST_PER_USE, p);
@@ -84,7 +84,7 @@ public class ItemCircuitProgrammer extends GT_Generic_Item implements IElectricI
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (ElectricItem.manager.use(aStack, COST_PER_USE, aPlayer)) {
-            GT_UIInfos.openPlayerHeldItemUI(aPlayer);
+            GTUIInfos.openPlayerHeldItemUI(aPlayer);
         }
         return aStack;
     }
@@ -136,7 +136,7 @@ public class ItemCircuitProgrammer extends GT_Generic_Item implements IElectricI
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return GT_Values.V[1];
+        return GTValues.V[1];
     }
 
     private static final String NBT_KEY_HAS_CHIP = "HasChip";
@@ -195,7 +195,7 @@ public class ItemCircuitProgrammer extends GT_Generic_Item implements IElectricI
             heldItem.setTagCompound(tag2);
         })
             .setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
-            .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+            .setBackground(ModularUITextures.ITEM_SLOT, GTUITextures.OVERLAY_SLOT_INT_CIRCUIT)
             .setPos(122, 60));
 
         for (int i = 0; i < 24; i++) {
@@ -224,13 +224,13 @@ public class ItemCircuitProgrammer extends GT_Generic_Item implements IElectricI
     private boolean isProgrammedCircuit(ItemStack stack) {
         return stack.getItem()
             .equals(
-                GT_Utility.getIntegratedCircuit(0)
+                GTUtility.getIntegratedCircuit(0)
                     .getItem());
     }
 
     private boolean isLVCircuit(ItemStack stack) {
         return BWUtil.checkStackAndPrefix(stack)
-            && OrePrefixes.circuit.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-            && GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.LV);
+            && OrePrefixes.circuit.equals(GTOreDictUnificator.getAssociation(stack).mPrefix)
+            && GTOreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.LV);
     }
 }

@@ -40,11 +40,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
-public class MTEYOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyable, IActionHost, ICellContainer,
+public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
     IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
@@ -109,7 +109,7 @@ public class MTEYOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxy
         ItemStack toolStack) {
         if (aPlayer.isSneaking()) this.priority -= 10;
         else this.priority += 10;
-        GT_Utility
+        GTUtility
             .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
     }
 
@@ -117,7 +117,7 @@ public class MTEYOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxy
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GT_Utility
+        GTUtility
             .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.1"), this.readMode));
         return true;
     }

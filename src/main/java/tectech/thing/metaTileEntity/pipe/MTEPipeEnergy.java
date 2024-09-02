@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -25,8 +25,8 @@ import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.GT_Client;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.common.GTClient;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IActivePipe;
@@ -67,8 +67,8 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { new GT_RenderedTexture(EMpipe),
-            new GT_RenderedTexture(
+        return new ITexture[] { new GTRenderedTexture(EMpipe),
+            new GTRenderedTexture(
                 getActive() ? EMCandyActive : EMcandy,
                 Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
@@ -183,7 +183,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
                 }
             }
 
-        } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
@@ -272,7 +272,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
 
     @Override
     public float getThickNess() {
-        if (GT_Mod.instance.isClientSide() && GT_Client.hideValue == 1) {
+        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
             return 0.0625F;
         }
         return 0.5f;

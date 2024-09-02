@@ -8,15 +8,15 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.tools.GT_Tool_WireCutter;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.common.tools.ToolWireCutter;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
-public class ToolElectricSnips extends GT_Tool_WireCutter {
+public class ToolElectricSnips extends ToolWireCutter {
 
     @Override
     public int getToolDamagePerBlockBreak() {
@@ -70,7 +70,7 @@ public class ToolElectricSnips extends GT_Tool_WireCutter {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
     }
 
     @Override
@@ -78,8 +78,8 @@ public class ToolElectricSnips extends GT_Tool_WireCutter {
         super.onToolCrafted(aStack, aPlayer);
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
-            GT_Mod.achievements.issueAchievement(aPlayer, "tools");
-            GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
+            GTMod.achievements.issueAchievement(aPlayer, "tools");
+            GTMod.achievements.issueAchievement(aPlayer, "unitool");
         } catch (final Exception e) {}
     }
 

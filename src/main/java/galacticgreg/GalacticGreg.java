@@ -19,7 +19,7 @@ import galacticgreg.command.ProfilingCommand;
 import galacticgreg.registry.GalacticGregRegistry;
 import galacticgreg.schematics.SpaceSchematicHandler;
 import gregtech.GT_Version;
-import gregtech.api.world.GT_Worldgen;
+import gregtech.api.world.GTWorldgen;
 
 @Mod(
     modid = GalacticGreg.MODID,
@@ -29,8 +29,8 @@ import gregtech.api.world.GT_Worldgen;
     acceptableRemoteVersions = "*")
 public class GalacticGreg {
 
-    public static final List<GT_Worldgen> smallOreWorldgenList = new ArrayList<>();
-    public static final List<GT_Worldgen> oreVeinWorldgenList = new ArrayList<>();
+    public static final List<GTWorldgen> smallOreWorldgenList = new ArrayList<>();
+    public static final List<GTWorldgen> oreVeinWorldgenList = new ArrayList<>();
 
     public static final String NICE_MODID = "GalacticGreg";
     public static final String MODID = "galacticgreg";

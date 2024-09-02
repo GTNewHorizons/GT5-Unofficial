@@ -46,19 +46,19 @@ import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class StaticRecipeChangeLoaders {
 
@@ -66,7 +66,7 @@ public class StaticRecipeChangeLoaders {
     private static TObjectDoubleHashMap<Materials> gtEbfGasRecipeConsumptionMultipliers = null;
 
     public static final List<ItemStack> whitelistForEBFNoGasRecipeDontCheckItemData = Arrays
-        .asList(GT_ModHandler.getModItem(TinkerConstruct.ID, "materials", 1L, 12) // Raw Aluminum -> Aluminium Ingot
+        .asList(GTModHandler.getModItem(TinkerConstruct.ID, "materials", 1L, 12) // Raw Aluminum -> Aluminium Ingot
         // (coremod)
         );
 
@@ -96,14 +96,14 @@ public class StaticRecipeChangeLoaders {
             gtEbfGasRecipeConsumptionMultipliers.put(Materials.Argon, 0.85D);
             gtEbfGasRecipeConsumptionMultipliers.put(Materials.Radon, 0.7D);
         }
-        ArrayListMultimap<SubTag, GT_Recipe> toChange = getRecipesToChange(
+        ArrayListMultimap<SubTag, GTRecipe> toChange = getRecipesToChange(
             WerkstoffLoader.NOBLE_GAS,
             WerkstoffLoader.ANAEROBE_GAS);
         editRecipes(toChange, getNoGasItems(toChange));
     }
 
     public static void unificationRecipeEnforcer() {
-        List<GT_Recipe> toRemove = new ArrayList<>();
+        List<GTRecipe> toRemove = new ArrayList<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
@@ -119,38 +119,38 @@ public class StaticRecipeChangeLoaders {
                         continue;
                     for (ItemStack toReplace : ores) {
                         ItemStack replacement = werkstoff.get(prefixes);
-                        if (toReplace == null || GT_Utility.areStacksEqual(toReplace, replacement)
+                        if (toReplace == null || GTUtility.areStacksEqual(toReplace, replacement)
                             || replacement == null
                             || replacement.getItem() == null) continue;
                         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
                             toRemove.clear();
-                            nextRecipe: for (GT_Recipe recipe : map.getAllRecipes()) {
+                            nextRecipe: for (GTRecipe recipe : map.getAllRecipes()) {
                                 boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
                                     || map.equals(RecipeMaps.fluidSolidifierRecipes);
                                 for (int i = 0; i < recipe.mInputs.length; i++) {
-                                    if (!GT_Utility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
+                                    if (!GTUtility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
                                     if (removal) {
                                         toRemove.add(recipe);
                                         continue nextRecipe;
                                     }
-                                    recipe.mInputs[i] = GT_Utility.copyAmount(recipe.mInputs[i].stackSize, replacement);
+                                    recipe.mInputs[i] = GTUtility.copyAmount(recipe.mInputs[i].stackSize, replacement);
                                 }
                                 for (int i = 0; i < recipe.mOutputs.length; i++) {
-                                    if (!GT_Utility.areStacksEqual(recipe.mOutputs[i], toReplace)) continue;
+                                    if (!GTUtility.areStacksEqual(recipe.mOutputs[i], toReplace)) continue;
                                     if (removal) {
                                         toRemove.add(recipe);
                                         continue nextRecipe;
                                     }
-                                    recipe.mOutputs[i] = GT_Utility
+                                    recipe.mOutputs[i] = GTUtility
                                         .copyAmount(recipe.mOutputs[i].stackSize, replacement);
                                 }
                                 if (recipe.mSpecialItems instanceof ItemStack specialItemStack) {
-                                    if (!GT_Utility.areStacksEqual(specialItemStack, toReplace)) continue;
+                                    if (!GTUtility.areStacksEqual(specialItemStack, toReplace)) continue;
                                     if (removal) {
                                         toRemove.add(recipe);
                                         continue nextRecipe;
                                     }
-                                    recipe.mSpecialItems = GT_Utility
+                                    recipe.mSpecialItems = GTUtility
                                         .copyAmount(specialItemStack.stackSize, replacement);
                                 }
                             }
@@ -170,14 +170,14 @@ public class StaticRecipeChangeLoaders {
                     new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144),
                     werkstoff.get(OrePrefixes.cellMolten),
                     Materials.Empty.getCells(1));
-                Field f = GT_Utility.class.getDeclaredField("sFilledContainerToData");
+                Field f = GTUtility.class.getDeclaredField("sFilledContainerToData");
                 f.setAccessible(true);
                 @SuppressWarnings("unchecked")
-                Map<GT_ItemStack, FluidContainerRegistry.FluidContainerData> sFilledContainerToData = (Map<GT_ItemStack, FluidContainerRegistry.FluidContainerData>) f
+                Map<GTItemStack, FluidContainerRegistry.FluidContainerData> sFilledContainerToData = (Map<GTItemStack, FluidContainerRegistry.FluidContainerData>) f
                     .get(null);
-                Set<Map.Entry<GT_ItemStack, FluidContainerRegistry.FluidContainerData>> toremFilledContainerToData = new HashSet<>();
+                Set<Map.Entry<GTItemStack, FluidContainerRegistry.FluidContainerData>> toremFilledContainerToData = new HashSet<>();
                 ItemStack toReplace = null;
-                for (Map.Entry<GT_ItemStack, FluidContainerRegistry.FluidContainerData> entry : sFilledContainerToData
+                for (Map.Entry<GTItemStack, FluidContainerRegistry.FluidContainerData> entry : sFilledContainerToData
                     .entrySet()) {
                     final String MODID = GameRegistry.findUniqueIdentifierFor(data.filledContainer.getItem()).modId;
                     if (MainMod.MOD_ID.equals(MODID) || BartWorksCrossmod.MOD_ID.equals(MODID)) continue;
@@ -189,23 +189,23 @@ public class StaticRecipeChangeLoaders {
                 }
                 sFilledContainerToData.entrySet()
                     .removeAll(toremFilledContainerToData);
-                Set<GT_Recipe> toremRecipeList = new HashSet<>();
+                Set<GTRecipe> toremRecipeList = new HashSet<>();
                 if (toReplace != null) {
                     for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
                         toremRecipeList.clear();
-                        for (GT_Recipe recipe : map.getAllRecipes()) {
+                        for (GTRecipe recipe : map.getAllRecipes()) {
                             for (ItemStack mInput : recipe.mInputs) {
-                                if (GT_Utility.areStacksEqual(mInput, toReplace)) {
+                                if (GTUtility.areStacksEqual(mInput, toReplace)) {
                                     toremRecipeList.add(recipe);
                                     // recipe.mInputs[i] = data.filledContainer;
                                 }
                             }
                             for (ItemStack mOutput : recipe.mOutputs) {
-                                if (GT_Utility.areStacksEqual(mOutput, toReplace)) {
+                                if (GTUtility.areStacksEqual(mOutput, toReplace)) {
                                     toremRecipeList.add(recipe);
                                     // recipe.mOutputs[i] = data.filledContainer;
                                     if (map == RecipeMaps.fluidCannerRecipes
-                                        && GT_Utility.areStacksEqual(mOutput, data.filledContainer)
+                                        && GTUtility.areStacksEqual(mOutput, data.filledContainer)
                                         && !recipe.mFluidInputs[0].equals(data.fluid)) {
                                         toremRecipeList.add(recipe);
                                         // recipe.mOutputs[i] = data.filledContainer;
@@ -213,7 +213,7 @@ public class StaticRecipeChangeLoaders {
                                 }
                             }
                             if (recipe.mSpecialItems instanceof ItemStack
-                                && GT_Utility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
+                                && GTUtility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
                                 toremRecipeList.add(recipe);
                                 // recipe.mSpecialItems = data.filledContainer;
                             }
@@ -222,7 +222,7 @@ public class StaticRecipeChangeLoaders {
                             .removeRecipes(toremRecipeList);
                     }
                 }
-                GT_Utility.addFluidContainerData(data);
+                GTUtility.addFluidContainerData(data);
             } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
                 e.printStackTrace();
             }
@@ -238,10 +238,10 @@ public class StaticRecipeChangeLoaders {
         }
 
         for (OrePrefixes prefixes : OrePrefixes.values()) if (werkstoff.hasItemType(prefixes)) {
-            GT_OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+            GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
-                GT_OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
+                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                GTOreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
             }
         }
     }
@@ -256,9 +256,9 @@ public class StaticRecipeChangeLoaders {
 
         for (OrePrefixes prefixes : OrePrefixes.values())
             if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
-                GT_OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+                GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
                 }
             }
     }
@@ -269,9 +269,9 @@ public class StaticRecipeChangeLoaders {
      * @param GasTags list of gas tags to look out for in EBF recipes
      * @return A multimap from the gas tag (noble and/or anaerobic) to all the recipes containing a gas with that tag
      */
-    private static ArrayListMultimap<SubTag, GT_Recipe> getRecipesToChange(SubTag... GasTags) {
-        ArrayListMultimap<SubTag, GT_Recipe> toAdd = ArrayListMultimap.create();
-        for (GT_Recipe recipe : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
+    private static ArrayListMultimap<SubTag, GTRecipe> getRecipesToChange(SubTag... GasTags) {
+        ArrayListMultimap<SubTag, GTRecipe> toAdd = ArrayListMultimap.create();
+        for (GTRecipe recipe : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
             if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
                 Materials mat = getMaterialFromInputFluid(recipe);
                 if (mat != Materials._NULL) {
@@ -295,23 +295,22 @@ public class StaticRecipeChangeLoaders {
      * @param base The recipe multimap to scan and modify
      * @return Set of item outputs (recipe.mOutputs[0]) of the no-gas recipes
      */
-    private static HashSet<ItemStack> getNoGasItems(ArrayListMultimap<SubTag, GT_Recipe> base) {
+    private static HashSet<ItemStack> getNoGasItems(ArrayListMultimap<SubTag, GTRecipe> base) {
         HashSet<ItemStack> toAdd = new HashSet<>();
-        ArrayListMultimap<SubTag, GT_Recipe> repToAdd = ArrayListMultimap.create();
-        for (GT_Recipe recipe : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
-            for (SubTag tag : base.keySet()) recipeLoop: for (GT_Recipe baseRe : base.get(tag)) {
+        ArrayListMultimap<SubTag, GTRecipe> repToAdd = ArrayListMultimap.create();
+        for (GTRecipe recipe : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
+            for (SubTag tag : base.keySet()) recipeLoop: for (GTRecipe baseRe : base.get(tag)) {
                 if (recipe.mInputs.length == baseRe.mInputs.length && recipe.mOutputs.length == baseRe.mOutputs.length)
                     for (int i = 0; i < recipe.mInputs.length; i++) {
                         ItemStack tmpInput = recipe.mInputs[i];
                         if ((recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0)
                             && (whitelistForEBFNoGasRecipeDontCheckItemData.stream()
-                                .anyMatch(s -> GT_Utility.areStacksEqual(s, tmpInput))
+                                .anyMatch(s -> GTUtility.areStacksEqual(s, tmpInput))
                                 || BWUtil.checkStackAndPrefix(recipe.mInputs[i])
                                     && BWUtil.checkStackAndPrefix(baseRe.mInputs[i])
-                                    && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial
-                                        .equals(
-                                            GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
-                                    && GT_Utility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0]))) {
+                                    && GTOreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial.equals(
+                                        GTOreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
+                                    && GTUtility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0]))) {
                             toAdd.add(recipe.mOutputs[0]);
                             repToAdd.put(tag, recipe);
                             continue recipeLoop;
@@ -328,7 +327,7 @@ public class StaticRecipeChangeLoaders {
         return Math.max(1, (int) (originalDuration / 200D * Math.max(200D + protonTerm, 1D)));
     }
 
-    private static int transformEBFGasRecipeTime(GT_Recipe recipe, Materials originalGas, Materials newGas) {
+    private static int transformEBFGasRecipeTime(GTRecipe recipe, Materials originalGas, Materials newGas) {
         double newEbfMul = gtEbfGasRecipeTimeMultipliers.get(newGas);
         double originalEbfMul = gtEbfGasRecipeTimeMultipliers.get(originalGas);
         if (newEbfMul < 0.0D || originalEbfMul < 0.0D) {
@@ -337,7 +336,7 @@ public class StaticRecipeChangeLoaders {
         return Math.max(1, (int) (recipe.mDuration * newEbfMul / originalEbfMul));
     }
 
-    private static int transformEBFGasRecipeTime(GT_Recipe recipe, Materials originalGas, Werkstoff newGas) {
+    private static int transformEBFGasRecipeTime(GTRecipe recipe, Materials originalGas, Werkstoff newGas) {
         double newEbfMul = newGas.getStats()
             .getEbfGasRecipeTimeMultiplier();
         double originalEbfMul = gtEbfGasRecipeTimeMultipliers.get(originalGas);
@@ -351,12 +350,12 @@ public class StaticRecipeChangeLoaders {
         return Math.max(1, (int) (recipe.mDuration * newEbfMul / originalEbfMul));
     }
 
-    private static int transformEBFNoGasRecipeTime(GT_Recipe recipe, Materials originalGas) {
+    private static int transformEBFNoGasRecipeTime(GTRecipe recipe, Materials originalGas) {
         return transformEBFGasRecipeTime(recipe.mDuration, originalGas.getProtons(), 0);
     }
 
-    private static void editEBFMaterialRecipes(SubTag GasTag, GT_Recipe recipe, Materials originalGas,
-        HashSet<GT_Recipe> toAdd) {
+    private static void editEBFMaterialRecipes(SubTag GasTag, GTRecipe recipe, Materials originalGas,
+        HashSet<GTRecipe> toAdd) {
         for (Materials newGas : Materials.values()) {
             if (newGas.contains(GasTag)) {
                 int time = transformEBFGasRecipeTime(recipe, originalGas, newGas);
@@ -382,7 +381,7 @@ public class StaticRecipeChangeLoaders {
                 } else {
                     // new recipe
                     toAdd.add(
-                        new GT_Recipe(
+                        new GTRecipe(
                             false,
                             recipe.mInputs,
                             recipe.mOutputs,
@@ -398,8 +397,8 @@ public class StaticRecipeChangeLoaders {
         }
     }
 
-    private static void editEBFWerkstoffRecipes(SubTag GasTag, GT_Recipe recipe, Materials originalGas,
-        HashSet<GT_Recipe> toAdd) {
+    private static void editEBFWerkstoffRecipes(SubTag GasTag, GTRecipe recipe, Materials originalGas,
+        HashSet<GTRecipe> toAdd) {
         for (Werkstoff newGas : Werkstoff.werkstoffHashMap.values()) {
             if (newGas.contains(GasTag)) {
                 int time = transformEBFGasRecipeTime(recipe, originalGas, newGas);
@@ -429,7 +428,7 @@ public class StaticRecipeChangeLoaders {
                 } else {
                     // new recipe
                     toAdd.add(
-                        new GT_Recipe(
+                        new GTRecipe(
                             false,
                             recipe.mInputs,
                             recipe.mOutputs,
@@ -446,25 +445,23 @@ public class StaticRecipeChangeLoaders {
         }
     }
 
-    private static void editEBFNoGasRecipes(GT_Recipe recipe, Materials originalGas, HashSet<GT_Recipe> toAdd,
+    private static void editEBFNoGasRecipes(GTRecipe recipe, Materials originalGas, HashSet<GTRecipe> toAdd,
         HashSet<ItemStack> noGas) {
         for (ItemStack is : noGas) {
             byte circuitConfiguration = 1;
-            if (GT_Utility.areStacksEqual(is, recipe.mOutputs[0])) {
+            if (GTUtility.areStacksEqual(is, recipe.mOutputs[0])) {
                 ArrayList<ItemStack> inputs = new ArrayList<>(recipe.mInputs.length);
                 for (ItemStack stack : recipe.mInputs)
-                    if (!GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(11), stack)
-                        && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(14), stack)
-                        && !GT_Utility.areStacksEqual(GT_Utility.getIntegratedCircuit(19), stack)) {
+                    if (!GTUtility.areStacksEqual(GTUtility.getIntegratedCircuit(11), stack)
+                        && !GTUtility.areStacksEqual(GTUtility.getIntegratedCircuit(14), stack)
+                        && !GTUtility.areStacksEqual(GTUtility.getIntegratedCircuit(19), stack)) {
                             if (BWUtil.checkStackAndPrefix(stack)) circuitConfiguration = (byte) (OrePrefixes.dustSmall
-                                .equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-                                    ? 4
-                                    : OrePrefixes.dustTiny.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-                                        ? 9
+                                .equals(GTOreDictUnificator.getAssociation(stack).mPrefix) ? 4
+                                    : OrePrefixes.dustTiny.equals(GTOreDictUnificator.getAssociation(stack).mPrefix) ? 9
                                         : 1);
                             inputs.add(stack);
                         }
-                inputs.add(GT_Utility.getIntegratedCircuit(circuitConfiguration));
+                inputs.add(GTUtility.getIntegratedCircuit(circuitConfiguration));
                 toAdd.add(
                     new DynamicGTRecipe(
                         false,
@@ -483,10 +480,10 @@ public class StaticRecipeChangeLoaders {
         }
     }
 
-    private static void removeDuplicateGasRecipes(HashSet<GT_Recipe> toAdd) {
-        HashSet<GT_Recipe> duplicates = new HashSet<>();
-        for (GT_Recipe recipe : toAdd) {
-            for (GT_Recipe recipe2 : toAdd) {
+    private static void removeDuplicateGasRecipes(HashSet<GTRecipe> toAdd) {
+        HashSet<GTRecipe> duplicates = new HashSet<>();
+        for (GTRecipe recipe : toAdd) {
+            for (GTRecipe recipe2 : toAdd) {
                 if (recipe.mEUt != recipe2.mEUt || recipe.mDuration != recipe2.mDuration
                     || recipe.mSpecialValue != recipe2.mSpecialValue
                     || recipe == recipe2
@@ -494,10 +491,10 @@ public class StaticRecipeChangeLoaders {
                     || recipe.mFluidInputs.length != recipe2.mFluidInputs.length) continue;
                 boolean isSame = true;
                 for (int i = 0; i < recipe.mInputs.length; i++) {
-                    if (!GT_Utility.areStacksEqual(recipe.mInputs[i], recipe2.mInputs[i])) isSame = false;
+                    if (!GTUtility.areStacksEqual(recipe.mInputs[i], recipe2.mInputs[i])) isSame = false;
                 }
                 for (int i = 0; i < recipe.mFluidInputs.length; i++) {
-                    if (!GT_Utility.areFluidsEqual(recipe.mFluidInputs[i], recipe2.mFluidInputs[i])) isSame = false;
+                    if (!GTUtility.areFluidsEqual(recipe.mFluidInputs[i], recipe2.mFluidInputs[i])) isSame = false;
                 }
                 if (isSame) duplicates.add(recipe2);
             }
@@ -505,7 +502,7 @@ public class StaticRecipeChangeLoaders {
         toAdd.removeAll(duplicates);
     }
 
-    private static Materials getMaterialFromInputFluid(GT_Recipe recipe) {
+    private static Materials getMaterialFromInputFluid(GTRecipe recipe) {
         String materialString = recipe.mFluidInputs[0].getFluid()
             .getName();
         materialString = StringUtils.removeStart(materialString, "molten");
@@ -514,11 +511,11 @@ public class StaticRecipeChangeLoaders {
         return Materials.get(materialString);
     }
 
-    private static void editRecipes(ArrayListMultimap<SubTag, GT_Recipe> base, HashSet<ItemStack> noGas) {
-        HashSet<GT_Recipe> toAdd = new HashSet<>();
+    private static void editRecipes(ArrayListMultimap<SubTag, GTRecipe> base, HashSet<ItemStack> noGas) {
+        HashSet<GTRecipe> toAdd = new HashSet<>();
 
         for (SubTag gasTag : base.keySet()) {
-            for (GT_Recipe recipe : base.get(gasTag)) {
+            for (GTRecipe recipe : base.get(gasTag)) {
                 if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
                     Materials originalGas = getMaterialFromInputFluid(recipe);
                     if (originalGas != Materials._NULL) {
@@ -541,7 +538,7 @@ public class StaticRecipeChangeLoaders {
             .stream()
             .filter(e -> e.mInputs != null)
             .forEach(
-                recipe -> GT_Values.RA.stdBuilder()
+                recipe -> GTValues.RA.stdBuilder()
                     .itemInputs(
                         Arrays.stream(recipe.mInputs)
                             .filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e))
@@ -557,9 +554,9 @@ public class StaticRecipeChangeLoaders {
     }
 
     private static boolean checkForExplosives(ItemStack input) {
-        return GT_Utility.areStacksEqual(input, new ItemStack(Blocks.tnt))
-            || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L))
-            || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L))
-            || GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L));
+        return GTUtility.areStacksEqual(input, new ItemStack(Blocks.tnt))
+            || GTUtility.areStacksEqual(input, GTModHandler.getIC2Item("industrialTnt", 1L))
+            || GTUtility.areStacksEqual(input, GTModHandler.getIC2Item("dynamite", 1L))
+            || GTUtility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L));
     }
 }

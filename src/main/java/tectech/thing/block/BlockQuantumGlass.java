@@ -11,7 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.blocks.BlockBase;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import tectech.Reference;
 import tectech.TecTech;
 
@@ -91,20 +91,20 @@ public final class BlockQuantumGlass extends BlockBase {
     public static void run() {
         INSTANCE = new BlockQuantumGlass();
         GameRegistry.registerBlock(INSTANCE, ItemQuantumGlass.class, INSTANCE.getUnlocalizedName());
-        GregTech_API.registerMachineBlock(INSTANCE, -1);
+        GregTechAPI.registerMachineBlock(INSTANCE, -1);
     }
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMeta) {
-        if (GregTech_API.isMachineBlock(this, aMeta)) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aMeta)) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 }

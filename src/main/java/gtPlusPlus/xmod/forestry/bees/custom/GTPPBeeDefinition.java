@@ -27,7 +27,7 @@ import forestry.apiculture.genetics.BeeDefinition;
 import forestry.apiculture.genetics.BeeVariation;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.core.genetics.alleles.AlleleHelper;
-import gregtech.loaders.misc.GT_BeeDefinition;
+import gregtech.loaders.misc.GTBeeDefinition;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -590,8 +590,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
 
     public static IAlleleBeeSpecies getGregtechBeeType(String name) {
         try {
-            Enum<GT_BeeDefinition> gtBeeEnumObject = Enum.valueOf(GT_BeeDefinition.class, name);
-            Field gtBeesField = FieldUtils.getDeclaredField(GT_BeeDefinition.class, "species", true);
+            Enum<GTBeeDefinition> gtBeeEnumObject = Enum.valueOf(GTBeeDefinition.class, name);
+            Field gtBeesField = FieldUtils.getDeclaredField(GTBeeDefinition.class, "species", true);
             gtBeesField.setAccessible(true);
             ReflectionUtils.makeFieldAccessible(gtBeesField);
             Object beeType = gtBeesField.get(gtBeeEnumObject);

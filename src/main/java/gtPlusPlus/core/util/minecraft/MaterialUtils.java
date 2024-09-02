@@ -13,7 +13,7 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.TypeCounter;
@@ -73,7 +73,7 @@ public class MaterialUtils {
             int radioactivity = 0;
             if (material.isRadioactive()) {
                 ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
-                radioactivity = aDustStack != null ? GT_Utility.getRadioactivityLevel(aDustStack) : 0;
+                radioactivity = aDustStack != null ? GTUtility.getRadioactivityLevel(aDustStack) : 0;
                 if (radioactivity == 0) {
                     long aProtons = material.getProtons();
                     radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);

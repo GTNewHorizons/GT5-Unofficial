@@ -2,10 +2,10 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
 import java.util.HashMap;
@@ -14,11 +14,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -358,8 +358,8 @@ public class MilledOreProcessing extends ItemPackage {
     private void addVacuumFurnaceRecipes() {
         int aCircuitID = 1;
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(SphaleriteFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(SphaleriteFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -367,8 +367,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(ChalcopyriteFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -376,8 +376,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(NickelFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(NickelFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -385,8 +385,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(PlatinumFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(PlatinumFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -394,8 +394,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(PentlanditeFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(PentlanditeFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -403,8 +403,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(RedstoneFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(RedstoneFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -412,8 +412,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(SpessartineFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(SpessartineFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -421,8 +421,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(GrossularFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(GrossularFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -430,8 +430,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(AlmandineFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(AlmandineFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -439,8 +439,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(PyropeFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(PyropeFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -448,8 +448,8 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(COIL_HEAT, 3500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(getOutputsFromMap(MonaziteFlotationFroth))
             .fluidInputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
@@ -466,7 +466,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Sphalerite
         Material aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Sphalerite);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -482,7 +482,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Chalcopyrite
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -498,7 +498,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Nickel
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Nickel);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -514,7 +514,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Platinum
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Platinum);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -530,7 +530,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Pentlandite
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Pentlandite);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -546,7 +546,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Redstone
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Redstone);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -562,7 +562,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Spessartine
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Spessartine);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -578,7 +578,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Grossular
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Grossular);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -594,7 +594,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Almandine
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Almandine);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -610,7 +610,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Pyrope
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Pyrope);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -626,7 +626,7 @@ public class MilledOreProcessing extends ItemPackage {
         // Monazite
         aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Monazite);
         FlotationRecipeHandler.registerOreType(aMat);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
                 aMat.getMilled(64),
@@ -690,7 +690,7 @@ public class MilledOreProcessing extends ItemPackage {
             addRecipe(aCone, ItemUtils.getSimpleStack(aCrushedPine, 1), new int[] { 7500, 7500, 5000, 2500 }, 10, 60);
         }
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
@@ -703,7 +703,7 @@ public class MilledOreProcessing extends ItemPackage {
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
@@ -720,18 +720,18 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     public boolean addRecipe(ItemStack aInput, ItemStack aOutput1, int[] aChances, int aTime, int aEU) {
-        aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
+        aOutput1 = GTOreDictUnificator.get(true, aOutput1);
         ItemStack aOutputs[] = new ItemStack[4];
         for (int i = 0; i < aChances.length; i++) {
             aOutputs[i] = aOutput1;
         }
         aOutputs = cleanArray(aOutputs);
-        if ((GT_Utility.isStackInvalid(aInput))
-            || (GT_Utility.isStackInvalid(aOutput1) || (GT_Utility.getContainerItem(aInput, false) != null))) {
+        if ((GTUtility.isStackInvalid(aInput))
+            || (GTUtility.isStackInvalid(aOutput1) || (GTUtility.getContainerItem(aInput, false) != null))) {
             return false;
         }
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(14), aInput)
             .itemOutputs(aOutputs)
             .duration(aTime * 20)

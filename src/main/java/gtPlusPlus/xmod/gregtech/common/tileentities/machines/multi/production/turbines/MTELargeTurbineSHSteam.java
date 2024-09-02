@@ -8,13 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -103,7 +103,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
                 totalFlow += flow; // track total input used
                 if (!achievement) {
                     try {
-                        GT_Mod.achievements.issueAchievement(
+                        GTMod.achievements.issueAchievement(
                             this.getBaseMetaTileEntity()
                                 .getWorld()
                                 .getPlayerEntityByName(
@@ -120,7 +120,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow));
+        addOutput(GTModHandler.getSteam(totalFlow));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
@@ -141,7 +141,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         // (Tight/Loose changes on every action, Slow/Fast changes every other action, all pairs are cycled this way)
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? "Fitting is Loose (Higher Flow)" : "Fitting is Tight (Higher Efficiency)");
         }
@@ -194,11 +194,11 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
+        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }

@@ -18,11 +18,11 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
-import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.GregTechAPI;
+import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 
 /**
  * Created by wital_000 on 19.03.2016. modified by bartimaeusnek on 05.06.2018
@@ -68,7 +68,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
-        return GT_DamageSources.getCombatDamage(
+        return GTDamageSources.getCombatDamage(
             (aPlayer instanceof EntityPlayer) ? "player" : "mob",
             aPlayer,
             (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
@@ -83,7 +83,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
+        return (String) GregTechAPI.sSoundList.get(0);
     }
 
     @Override
@@ -168,11 +168,11 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new BehaviourDetravToolElectricProspector(getToolDamagePerBlockBreak()));
     }
 

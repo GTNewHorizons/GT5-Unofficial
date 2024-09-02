@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -54,7 +54,7 @@ public class BaseOreComponent extends Item {
         this.componentColour = material.getRgbAsHex();
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
     }
 

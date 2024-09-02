@@ -15,13 +15,13 @@ package bartworks.common.tileentities.tiered;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.MTETransformer;
 
-public class MTEEnergyDistributor extends GT_MetaTileEntity_Transformer {
+public class MTEEnergyDistributor extends MTETransformer {
 
     public MTEEnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, null);
@@ -42,12 +42,12 @@ public class MTEEnergyDistributor extends GT_MetaTileEntity_Transformer {
 
     @Override
     public long maxEUInput() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
     public long maxEUOutput() {
-        return GT_Values.V[this.mTier];
+        return GTValues.V[this.mTier];
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MTEEnergyDistributor extends GT_MetaTileEntity_Transformer {
 
     @Override
     public long maxEUStore() {
-        return 512L + GT_Values.V[this.mTier] * 320L;
+        return 512L + GTValues.V[this.mTier] * 320L;
     }
 
     @Override

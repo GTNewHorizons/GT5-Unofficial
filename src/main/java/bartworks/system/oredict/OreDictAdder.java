@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.item.ItemStack;
 
 import bartworks.util.Pair;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class OreDictAdder {
 
@@ -36,7 +36,7 @@ public class OreDictAdder {
 
     public static void addToOreDict() {
         for (Map.Entry<String, ItemStack> entry : OreDictAdder.toAddMap.entrySet()) {
-            GT_OreDictUnificator.registerOre(entry.getKey(), entry.getValue());
+            GTOreDictUnificator.registerOre(entry.getKey(), entry.getValue());
         }
     }
 }

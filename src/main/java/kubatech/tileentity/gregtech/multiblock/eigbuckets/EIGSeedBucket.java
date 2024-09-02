@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_DummyWorld;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTDummyWorld;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
@@ -164,7 +164,7 @@ public class EIGSeedBucket extends EIGBucket {
         IRecipe[] validRecipes = CraftingManager.getInstance()
             .getRecipeList()
             .parallelStream()
-            .filter(recipe -> GT_Utility.areStacksEqual(recipe.getRecipeOutput(), seed))
+            .filter(recipe -> GTUtility.areStacksEqual(recipe.getRecipeOutput(), seed))
             .toArray(IRecipe[]::new);
 
         // if no recipes outputs the input seed, abort.
@@ -233,7 +233,7 @@ public class EIGSeedBucket extends EIGBucket {
         public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {}
     }
 
-    private static class GreenHouseWorld extends GT_DummyWorld {
+    private static class GreenHouseWorld extends GTDummyWorld {
 
         public int x, y, z, meta = 0;
         public Block block;

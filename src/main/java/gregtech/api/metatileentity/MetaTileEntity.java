@@ -38,27 +38,27 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_TooltipDataCache;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Client;
+import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTTooltipDataCache;
+import gregtech.api.util.GTUtil;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -90,8 +90,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
      */
     public final ItemStackHandler inventoryHandler;
 
-    protected GT_GUIColorOverride colorOverride;
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GUIColorOverride colorOverride;
+    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     @Override
     public ItemStackHandler getInventoryHandler() {
@@ -128,18 +128,18 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
      * @param aID the machine ID
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-        if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted)
+        if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
-        if (GregTech_API.METATILEENTITIES[aID] == null) {
-            GregTech_API.METATILEENTITIES[aID] = this;
+        if (GregTechAPI.METATILEENTITIES[aID] == null) {
+            GregTechAPI.METATILEENTITIES[aID] = this;
         } else {
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
         mName = aBasicName.replace(" ", "_")
             .toLowerCase(Locale.ENGLISH);
-        setBaseMetaTileEntity(GregTech_API.constructBaseMetaTileEntity());
+        setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
-        GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
         mInventory = new ItemStack[aInvSlotCount];
         inventoryHandler = new ItemStackHandler(mInventory);
     }
@@ -151,7 +151,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
         inventoryHandler = new ItemStackHandler(mInventory);
-        colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
+        colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
     @Override
@@ -179,12 +179,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public ItemStack getStackForm(long aAmount) {
-        return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
+        return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
     @Override
     public String getLocalName() {
-        return GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+        return GTLanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
     }
 
     @Override
@@ -219,7 +219,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return true;
     }
 
@@ -254,8 +254,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity gtTE)
-            && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+        if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
 
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
@@ -276,8 +275,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity gtTE)
-            && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+        if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
 
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
@@ -311,7 +309,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public void onExplosion() {
-        GT_Log.exp.println(
+        GTLog.exp.println(
             "Machine at " + this.getBaseMetaTileEntity()
                 .getXCoord()
                 + " | "
@@ -338,7 +336,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+        if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             /*
              * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
              * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
@@ -633,14 +631,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
      * Determines the Tier of the Machine, used for de-charging Tools.
      */
     public long getInputTier() {
-        return GT_Utility.getTier(getBaseMetaTileEntity().getInputVoltage());
+        return GTUtility.getTier(getBaseMetaTileEntity().getInputVoltage());
     }
 
     /**
      * Determines the Tier of the Machine, used for charging Tools.
      */
     public long getOutputTier() {
-        return GT_Utility.getTier(getBaseMetaTileEntity().getOutputVoltage());
+        return GTUtility.getTier(getBaseMetaTileEntity().getOutputVoltage());
     }
 
     /**
@@ -888,7 +886,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         markDirty();
         if (this instanceof IConfigurationCircuitSupport ccs) {
             if (ccs.allowSelectCircuit() && aIndex == ccs.getCircuitSlot() && aStack != null) {
-                mInventory[aIndex] = GT_Utility.copyAmount(0, aStack);
+                mInventory[aIndex] = GTUtility.copyAmount(0, aStack);
                 return;
             }
         }
@@ -897,8 +895,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public String getInventoryName() {
-        if (GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
-            return GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+        if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
         return "";
     }
 
@@ -914,7 +912,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public ItemStack decrStackSize(int aIndex, int aAmount) {
-        ItemStack tStack = getStackInSlot(aIndex), rStack = GT_Utility.copyOrNull(tStack);
+        ItemStack tStack = getStackInSlot(aIndex), rStack = GTUtility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
                 if (setStackToZeroInsteadOfNull(aIndex)) {
@@ -949,7 +947,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return isValidSlot(aIndex) && aStack != null
             && aIndex < mInventory.length
-            && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
+            && (mInventory[aIndex] == null || GTUtility.areStacksEqual(aStack, mInventory[aIndex]))
             && allowPutStack(getBaseMetaTileEntity(), aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
@@ -986,7 +984,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
                 Integer.MAX_VALUE,
                 Math.min(
@@ -1114,15 +1112,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength = GT_Values.getExplosionPowerForVoltage(aExplosionPower);
+        float tStrength = GTValues.getExplosionPowerForVoltage(aExplosionPower);
         final int tX = getBaseMetaTileEntity().getXCoord();
         final int tY = getBaseMetaTileEntity().getYCoord();
         final int tZ = getBaseMetaTileEntity().getZCoord();
         final World tWorld = getBaseMetaTileEntity().getWorld();
-        GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+        GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
-        if (GregTech_API.sMachineExplosions)
-            tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
+        if (GregTechAPI.sMachineExplosions) tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }
 
     @Override
@@ -1266,16 +1263,16 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
                 dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-                return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, GTUtil.getRGBInt(dye.getRGBA()));
             }
-        } else if (GregTech_API.sColoredGUI) {
-            if (GregTech_API.sMachineMetalGUI) {
+        } else if (GregTechAPI.sColoredGUI) {
+            if (GregTechAPI.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
                 dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
             }
         }
-        return GT_Util.getRGBInt(dye.getRGBA());
+        return GTUtil.getRGBInt(dye.getRGBA());
     }
 
     @Override

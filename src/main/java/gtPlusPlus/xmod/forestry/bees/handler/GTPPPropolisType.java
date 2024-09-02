@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -40,7 +40,7 @@ public enum GTPPPropolisType {
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GT_LanguageManager.addStringLocalization("gtplusplus.propolis." + this.mNameUnlocal, this.mName + " Propolis");
+        GTLanguageManager.addStringLocalization("gtplusplus.propolis." + this.mNameUnlocal, this.mName + " Propolis");
     }
 
     public void setHidden() {
@@ -48,7 +48,7 @@ public enum GTPPPropolisType {
     }
 
     public String getName() {
-        return GT_LanguageManager.getTranslation("gtplusplus.propolis." + this.mNameUnlocal);
+        return GTLanguageManager.getTranslation("gtplusplus.propolis." + this.mNameUnlocal);
     }
 
     public int getColours() {

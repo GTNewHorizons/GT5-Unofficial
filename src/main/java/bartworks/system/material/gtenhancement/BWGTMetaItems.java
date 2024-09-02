@@ -39,8 +39,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
 
 public class BWGTMetaItems extends BWMetaGeneratedItems {
 
@@ -62,7 +62,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                 this.hiddenThings.add(i);
                 continue;
             }
-            GT_OreDictUnificator
+            GTOreDictUnificator
                 .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
@@ -81,8 +81,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                     this.hiddenThings.add(i);
                     continue;
                 }
-                GT_OreDictUnificator
-                    .registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
+                GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
             }
         }
     }
@@ -142,7 +141,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     }
 
     @Override
-    public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
+    public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
         return this.getMaterialFromMeta(aMetaData).renderer;
     }
 

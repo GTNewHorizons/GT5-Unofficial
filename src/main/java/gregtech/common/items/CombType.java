@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.text.WordUtils;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
 
@@ -243,7 +243,7 @@ public enum CombType {
         this.chance = chance;
         this.showInList = show;
         this.color = new int[] { color1, color2 };
-        this.localizedName = GT_LanguageManager
+        this.localizedName = GTLanguageManager
             .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replaceAll("_", " ")) + " Comb");
     }
 

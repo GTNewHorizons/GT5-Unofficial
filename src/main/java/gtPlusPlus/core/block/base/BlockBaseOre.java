@@ -18,12 +18,12 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
@@ -60,7 +60,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 this,
                 ItemBlockOre.class,
                 Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GT_OreDictUnificator.registerOre(
+            GTOreDictUnificator.registerOre(
                 "ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()),
                 ItemUtils.getSimpleStack(this));
         } catch (Throwable t) {
@@ -167,7 +167,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         if (shouldSilkTouch) {
             drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
         } else {
-            switch (GT_Mod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.gregtechproxy.oreDropSystem) {
                 case Item -> {
                     drops.add(
                         ItemUtils.getItemStackOfAmountFromOreDictNoBroken(

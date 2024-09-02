@@ -16,11 +16,11 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.math.LongMath;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
@@ -111,7 +111,7 @@ public class EyeOfHarmonyRecipeStorage {
                 .copy();
             planetItem.stackSize = 0;
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(planetItem)
                 .itemOutputs(outputItems.toArray(new ItemStack[0]))
                 .fluidInputs(
@@ -134,13 +134,13 @@ public class EyeOfHarmonyRecipeStorage {
 
         for (Materials material : Materials.values()) {
 
-            ItemStack normalOre = GT_OreDictUnificator.get(OrePrefixes.ore, material, 1);
+            ItemStack normalOre = GTOreDictUnificator.get(OrePrefixes.ore, material, 1);
 
             if ((normalOre != null)) {
                 validMaterialSet.add(material);
             }
 
-            ItemStack smallOre = GT_OreDictUnificator.get(OrePrefixes.oreSmall, material, 1);
+            ItemStack smallOre = GTOreDictUnificator.get(OrePrefixes.oreSmall, material, 1);
 
             if ((smallOre != null)) {
                 validMaterialSet.add(material);
