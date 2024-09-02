@@ -2537,6 +2537,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
         MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
+        MaterialsUEVplus.ProtoHalkonite.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
