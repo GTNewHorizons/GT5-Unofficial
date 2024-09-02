@@ -2,7 +2,6 @@ package com.github.technus.tectech.loader.thing;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
@@ -65,14 +64,12 @@ public class ThingsLoader implements Runnable {
 
         TT_Container_Casings.StabilisationFieldGenerators = new StabilisationFieldCasing();
 
-        if (!NewHorizonsCoreMod.isModLoaded()) {
-
+        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
             TT_Container_Casings.GodforgeCasings = new GodforgeCasings();
             TecTech.LOGGER.info("Godforge blocks registered.");
 
             GodforgeGlassBlock.run();
             TecTech.LOGGER.info("Godforge Glass registered");
-
         }
 
         QuantumGlassBlock.run();

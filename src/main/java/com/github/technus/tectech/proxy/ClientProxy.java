@@ -39,16 +39,19 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderInfo() {
         QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
-        GodforgeGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(GodforgeGlassBlock.renderID, new GodforgeGlassRender());
 
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOH_ItemRenderer());
-        MinecraftForgeClient
-            .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new RenderForgeOfGodsItem());
-
         ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new EOH_TESR());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileForgeOfGods.class, new RenderForgeOfGods());
+
+        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
+            GodforgeGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
+            RenderingRegistry.registerBlockHandler(GodforgeGlassBlock.renderID, new GodforgeGlassRender());
+
+            MinecraftForgeClient
+                .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new RenderForgeOfGodsItem());
+            ClientRegistry.bindTileEntitySpecialRenderer(TileForgeOfGods.class, new RenderForgeOfGods());
+        }
     }
 
     @Override
