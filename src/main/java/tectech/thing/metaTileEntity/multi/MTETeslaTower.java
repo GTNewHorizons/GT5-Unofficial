@@ -9,9 +9,9 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.StructureUtility.buildHatchAdder;
-import static gregtech.api.util.StructureUtility.ofFrame;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 

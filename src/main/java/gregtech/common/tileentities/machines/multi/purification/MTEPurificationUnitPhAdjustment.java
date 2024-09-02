@@ -12,7 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,10 +50,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTEPurificationUnitPhAdjustment>
@@ -151,7 +151,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             'I',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .dot(1)
                         .casingIndex(CASING_INDEX_MIDDLE)
@@ -162,7 +162,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             'R',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
                         .dot(2)
                         .cacheHint(() -> "pH Sensor Hatch")
@@ -174,7 +174,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         .addElement(
             'X',
             lazy(
-                t -> StructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
+                t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputBus)
                     .dot(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
@@ -185,7 +185,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         .addElement(
             'Y',
             lazy(
-                t -> StructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
+                t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputHatch)
                     .dot(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)

@@ -10,8 +10,8 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
-import static gregtech.api.util.StructureUtility.buildHatchAdder;
-import static gregtech.api.util.StructureUtility.filterByMTETier;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

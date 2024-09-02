@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,9 +51,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 
 public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTEPurificationUnitPlasmaHeater>
     implements ISurvivalConstructable {
@@ -147,7 +147,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             'B',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .dot(1)
                         .casingIndex(CASING_INDEX_HEATER)
@@ -172,7 +172,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         .addElement(
             'K',
             lazy(
-                t -> StructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
+                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .atLeast(InputHatch)
                     .dot(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
@@ -183,7 +183,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         .addElement(
             'P',
             lazy(
-                t -> StructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
+                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .atLeast(InputHatch)
                     .dot(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)

@@ -49,10 +49,10 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 
-public class StructureUtility {
+public class GTStructureUtility {
 
     // private static final Map<Class<?>, String> customNames = new HashMap<>();
-    private StructureUtility() {
+    private GTStructureUtility() {
         throw new AssertionError("Not instantiable");
     }
 

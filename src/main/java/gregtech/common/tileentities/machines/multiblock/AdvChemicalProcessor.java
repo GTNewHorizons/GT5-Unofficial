@@ -49,9 +49,9 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 import gregtech.common.tileentities.machines.multiblock.logic.AdvChemicalProcessorProcessingLogic;
 
 public class AdvChemicalProcessor
@@ -352,10 +352,10 @@ public class AdvChemicalProcessor
                 .addElement('T', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'W',
-                    StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
+                    GTStructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
                 .addElement('G', Glasses.chainAllGlasses())
                 .addElement('B', ofBlock(GregTechAPI.sBlockCasings4, 1))
-                .addElement('F', StructureUtility.ofFrame(Materials.Steel))
+                .addElement('F', GTStructureUtility.ofFrame(Materials.Steel))
                 .addElement(
                     'U',
                     ofMuTECasings(

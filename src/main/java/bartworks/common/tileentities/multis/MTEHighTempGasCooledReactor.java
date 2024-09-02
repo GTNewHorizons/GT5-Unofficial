@@ -17,8 +17,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.HashMap;

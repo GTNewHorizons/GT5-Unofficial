@@ -19,8 +19,8 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 import gregtech.common.tileentities.machines.multiblock.logic.DistillationTowerProcessingLogic;
 
 public class DistillationTower extends StackableController<DistillationTower, DistillationTowerProcessingLogic> {
@@ -113,11 +113,11 @@ public class DistillationTower extends StackableController<DistillationTower, Di
                     ofMuTECasings(
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.Distillation.getCasing()))
-                .addElement('E', StructureUtility.ofFrame(Materials.StainlessSteel))
+                .addElement('E', GTStructureUtility.ofFrame(Materials.StainlessSteel))
                 .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 0))
                 .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 13))
                 .addElement('X', ofMuTECasings(NOTHING, MOTOR_CASINGS))
-                .addElement('D', StructureUtility.ofCoil((tile, meta) -> {}, (tile) -> HeatingCoilLevel.None))
+                .addElement('D', GTStructureUtility.ofCoil((tile, meta) -> {}, (tile) -> HeatingCoilLevel.None))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;

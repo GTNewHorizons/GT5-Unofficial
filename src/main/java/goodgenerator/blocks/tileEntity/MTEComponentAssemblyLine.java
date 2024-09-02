@@ -41,10 +41,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.StructureUtility;
 
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
@@ -149,47 +149,47 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                 t -> t.casingTier))
         .addElement(
             'J',
-            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
                 .dot(1)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'N',
-            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
                 .dot(1)
                 .casingIndex(183)
-                .buildAndChain(StructureUtility.ofFrame(Materials.TungstenSteel)))
+                .buildAndChain(GTStructureUtility.ofFrame(Materials.TungstenSteel)))
         .addElement(
             'K',
-            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(OutputBus)
                 .dot(2)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'L',
-            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Energy, ExoticEnergy)
                 .dot(3)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
-            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Maintenance)
                 .dot(4)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'M',
-            StructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
+            GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputHatch)
                 .dot(5)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement('n', StructureUtility.ofFrame(Materials.TungstenSteel))
+        .addElement('n', GTStructureUtility.ofFrame(Materials.TungstenSteel))
         .build();
 
     public MTEComponentAssemblyLine(int aID, String aName, String aNameRegional) {

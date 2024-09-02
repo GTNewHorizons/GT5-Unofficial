@@ -14,8 +14,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.api.util.StructureUtility;
 
 public interface IHatchElement<T> {
 
@@ -60,7 +60,7 @@ public interface IHatchElement<T> {
 
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
-        return StructureUtility.<T2>buildHatchAdder()
+        return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
@@ -72,7 +72,7 @@ public interface IHatchElement<T> {
     default <T2 extends T> IStructureElement<T2> newAnyOrCasing(int aCasingIndex, int aDot, Block casingBlock,
         int casingMeta) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
-        return StructureUtility.<T2>buildHatchAdder()
+        return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
@@ -82,7 +82,7 @@ public interface IHatchElement<T> {
 
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot, ForgeDirection... allowedFacings) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
-        return StructureUtility.<T2>buildHatchAdder()
+        return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
@@ -95,7 +95,7 @@ public interface IHatchElement<T> {
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot,
         BiPredicate<? super T2, ? super IGregTechTileEntity> aShouldSkip) {
         if (aCasingIndex < 0 || aDot < 0 || aShouldSkip == null) throw new IllegalArgumentException();
-        return StructureUtility.<T2>buildHatchAdder()
+        return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)

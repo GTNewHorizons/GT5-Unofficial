@@ -138,7 +138,7 @@ public class HatchElementBuilder<T> {
                 .reduce(IGTHatchAdder::orElse)
                 .orElseThrow(AssertionError::new))
                     .hatchItemFilter(
-                        obj -> StructureUtility.filterByMTEClass(
+                        obj -> GTStructureUtility.filterByMTEClass(
                             elements.entrySet()
                                 .stream()
                                 .filter(
@@ -334,7 +334,7 @@ public class HatchElementBuilder<T> {
 
     public final HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
-        return hatchItemFilter(obj -> StructureUtility.filterByMTEClass(list)).cacheHint(
+        return hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
                 .map(Class::getSimpleName)
                 .sorted()

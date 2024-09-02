@@ -15,7 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,9 +48,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTEPurificationUnitFlocculation>
@@ -132,7 +132,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             'B',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitFlocculation>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitFlocculation>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(MAIN_CASING_INDEX)
                         .dot(1)

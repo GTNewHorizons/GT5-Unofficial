@@ -52,7 +52,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.StructureUtility;
+import gregtech.api.util.GTStructureUtility;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -434,7 +434,7 @@ public class MTEBaseModule extends TTMultiblockBase {
             .addElement('A', ofBlock(coilBlock, meta))
             .addElement(
                 'B',
-                StructureUtility
+                GTStructureUtility
                     .ofHatchAdderOptional(MTEBaseModule::addClassicToMachineList, TEXTURE_INDEX, 1, GodforgeCasings, 0))
             .addElement('C', ofBlock(GodforgeCasings, 0))
             .addElement('D', ofBlock(GodforgeCasings, 1))

@@ -3,7 +3,7 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings4;
-import static gregtech.api.util.StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
 

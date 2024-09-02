@@ -72,10 +72,10 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ProcessingArrayManager;
-import gregtech.api.util.StructureUtility;
 import gregtech.common.blocks.ItemMachines;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -94,7 +94,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             'h',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEProcessingArray>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEProcessingArray>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(48)
                         .dot(1)

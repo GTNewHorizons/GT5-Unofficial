@@ -14,10 +14,10 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTOreDictUnificator.getAssociation;
 import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.ParallelHelper.addFluidsLong;
 import static gregtech.api.util.ParallelHelper.addItemsLong;
 import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
-import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;

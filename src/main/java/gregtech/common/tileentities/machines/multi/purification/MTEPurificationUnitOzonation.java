@@ -13,7 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -41,9 +41,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 
 public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPurificationUnitOzonation>
     implements ISurvivalConstructable {
@@ -82,7 +82,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             'A',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
                         .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
                         .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 10))
                         .dot(1)
@@ -99,7 +99,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         .addElement(
             'O',
             lazy(
-                t -> StructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
+                t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
                     .atLeast(InputHatch)
                     .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 9))
                     .dot(2)

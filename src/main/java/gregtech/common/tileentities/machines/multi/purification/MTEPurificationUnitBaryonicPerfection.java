@@ -13,7 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
-import static gregtech.api.util.StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,9 +43,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
@@ -92,7 +92,7 @@ public class MTEPurificationUnitBaryonicPerfection
             'A',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
                         .dot(1)
                         .casingIndex(CASING_INDEX_MAIN)

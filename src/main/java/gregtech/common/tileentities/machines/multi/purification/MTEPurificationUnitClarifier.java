@@ -12,7 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.util.StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,9 +47,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureUtility;
 
 public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPurificationUnitClarifier>
     implements ISurvivalConstructable {
@@ -99,7 +99,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             'H',
             ofChain(
                 lazy(
-                    t -> StructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
+                    t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(CASING_TEXTURE_INDEX)
                         .dot(1)

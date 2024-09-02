@@ -44,10 +44,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.StructureUtility;
 
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
@@ -65,11 +65,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-        .addElement('C', StructureUtility.ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))
+        .addElement('C', GTStructureUtility.ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))
         .addElement(
             'b',
             ofChain(
-                StructureUtility.<MTEMultiFurnace>buildHatchAdder()
+                GTStructureUtility.<MTEMultiFurnace>buildHatchAdder()
                     .atLeast(Maintenance, InputBus, OutputBus, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
