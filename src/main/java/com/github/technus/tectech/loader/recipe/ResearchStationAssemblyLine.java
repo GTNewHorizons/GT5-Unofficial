@@ -5,23 +5,7 @@ import static com.google.common.math.LongMath.pow;
 import static common.Blocks.lscLapotronicEnergyUnit;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
-import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.BloodMagic;
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
-import static gregtech.api.enums.Mods.GalacticraftAmunRa;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GraviSuite;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.SGCraft;
-import static gregtech.api.enums.Mods.SuperSolarPanels;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.TinkersGregworks;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -2981,6 +2965,8 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     private void addGodforgeRecipes() {
+        if (!com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) return;
+
         if (EternalSingularity.isModLoaded()) {
             // Controller
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3675,7 +3661,7 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     public void runLateRecipes() {
-        if (EternalSingularity.isModLoaded()) {
+        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE && EternalSingularity.isModLoaded()) {
             // Shielding Casing
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.TranscendentMetal, 1),

@@ -609,7 +609,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPM64AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM65536AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM65536AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPMVoltageBuckConverter;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -2478,7 +2477,8 @@ public class MachineLoader implements Runnable {
         Machine_Multi_EyeOfHarmony.set(
             new GT_MetaTileEntity_EM_EyeOfHarmony(EyeofHarmony.ID, "multimachine.em.eye_of_harmony", "Eye of Harmony")
                 .getStackForm(1L));
-        if (!NewHorizonsCoreMod.isModLoaded()) {
+
+        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
             Machine_Multi_ForgeOfGods.set(
                 new GT_MetaTileEntity_EM_ForgeOfGods(
                     ForgeoftheGods.ID,
