@@ -486,7 +486,7 @@ public class GTRecipeConstants {
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
-        GTRecipe.GTRecipe_AssemblyLine tRecipe = new GTRecipe.GTRecipe_AssemblyLine(
+        GTRecipe.RecipeAssemblyLine tRecipe = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             aResearchTime,
             r.mInputs,
@@ -496,7 +496,7 @@ public class GTRecipeConstants {
             r.mEUt,
             r.mOreDictAlt);
         tRecipe.setPersistentHash(tPersistentHash);
-        GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
+        GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
         AssemblyLineUtils.addRecipeToCache(tRecipe);
 
         ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");

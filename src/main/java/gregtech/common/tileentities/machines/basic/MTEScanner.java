@@ -347,7 +347,7 @@ public class MTEScanner extends MTEBasicMachine {
                 }
             }
             if (ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true)) {
-                for (GTRecipe.GTRecipe_AssemblyLine tRecipe : GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes) {
+                for (GTRecipe.RecipeAssemblyLine tRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
                     if (GTUtility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
                         boolean failScanner = true;
                         for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {

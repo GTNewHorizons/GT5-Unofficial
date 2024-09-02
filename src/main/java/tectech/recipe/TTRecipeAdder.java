@@ -19,7 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.GTRecipe_AssemblyLine;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.common.RecipeAdder;
 import tectech.TecTech;
@@ -55,7 +55,7 @@ public class TTRecipeAdder extends RecipeAdder {
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
         computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
 
-        GTRecipe_AssemblyLine recipeGT = new GTRecipe.GTRecipe_AssemblyLine(
+        GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
             aInputs,
@@ -63,7 +63,7 @@ public class TTRecipeAdder extends RecipeAdder {
             aOutput,
             assDuration,
             assEUt);
-        GTRecipe_AssemblyLine recipeTT = new GTRecipe.GTRecipe_AssemblyLine(
+        RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             aInputs,
@@ -71,7 +71,7 @@ public class TTRecipeAdder extends RecipeAdder {
             aOutput,
             assDuration,
             assEUt);
-        GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
+        GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
         ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
@@ -195,7 +195,7 @@ public class TTRecipeAdder extends RecipeAdder {
         tPersistentHash = tPersistentHash * 31 + assDuration;
         tPersistentHash = tPersistentHash * 31 + assEUt;
 
-        GTRecipe_AssemblyLine recipeGT = new GTRecipe_AssemblyLine(
+        GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
             tInputs,
@@ -205,8 +205,8 @@ public class TTRecipeAdder extends RecipeAdder {
             assEUt,
             tAlts);
         recipeGT.setPersistentHash(tPersistentHash);
-        GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes.add(recipeGT);
-        GTRecipe_AssemblyLine recipeTT = new GTRecipe_AssemblyLine(
+        GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
+        GTRecipe.RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             tInputs,

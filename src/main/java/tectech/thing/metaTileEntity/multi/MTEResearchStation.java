@@ -84,7 +84,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public static final String crafter = "EM Crafting";
     // region variables
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
-    private GTRecipe.GTRecipe_AssemblyLine tRecipe;
+    private GTRecipe.RecipeAssemblyLine tRecipe;
     private static final String assembly = "Assembly line";
     private static final String scanner = "Scanner";
     private String machineType = assembly;
@@ -206,7 +206,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
                 switch (machineType) {
                     case scanner -> {
-                        for (GTRecipe.GTRecipe_AssemblyLine assRecipe : GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes) {
+                        for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
                             if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                 boolean failScanner = true;
                                 for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
@@ -234,7 +234,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                         }
                     }
                     case assembly -> {
-                        for (GTRecipe.GTRecipe_AssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                        for (GTRecipe.RecipeAssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
                             if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                 tRecipe = assRecipe;
                                 // if found
@@ -483,7 +483,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 tRecipe = null;
                 if (holdItem != null) {
                     if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        for (GTRecipe.GTRecipe_AssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                        for (GTRecipe.RecipeAssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
                             if (GTUtility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
                                 break;

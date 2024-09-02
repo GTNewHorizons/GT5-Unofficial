@@ -33,7 +33,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.GTRecipe_AssemblyLine;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
@@ -83,7 +83,7 @@ public class ZPMRubberChanges implements Runnable {
     private static void replaceAllRecipes(Collection<ItemStack> ZPMPlusComponents, OrePrefixes[] RubberGenerated,
         List<IRecipe> bufferedRecipeList) {
 
-        for (GTRecipe_AssemblyLine sAssemblylineRecipe : GTRecipe_AssemblyLine.sAssemblylineRecipes) {
+        for (RecipeAssemblyLine sAssemblylineRecipe : RecipeAssemblyLine.sAssemblylineRecipes) {
             for (ItemStack stack : ZPMPlusComponents) {
                 rewriteAsslineRecipes(stack, RubberGenerated, sAssemblylineRecipe);
             }
@@ -270,7 +270,7 @@ public class ZPMRubberChanges implements Runnable {
     }
 
     private static void rewriteAsslineRecipes(ItemStack stack, OrePrefixes[] RubberGenerated,
-        GTRecipe.GTRecipe_AssemblyLine recipe) {
+        RecipeAssemblyLine recipe) {
         for (OrePrefixes prefixes : RubberGenerated) {
             if (ZPMRubberChanges.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
 
