@@ -200,7 +200,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         .addElement(
             'D',
             BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
-                ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:hopperBlock"), 10))
+                ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:blockHopper"), 10))
                 : ofChain(ofBlock(Blocks.hopper, 0)))
         .build();
 
