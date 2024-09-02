@@ -2104,6 +2104,7 @@ public enum ItemList implements IItemContainer {
     BlockQuarkPipe,
     BlockQuarkReleaseChamber,
     BlockQuarkContainmentCasing,
+    TechTreeAccessor,
     LargeFluidExtractor,
     AcceleratorLV,
     AcceleratorMV,
