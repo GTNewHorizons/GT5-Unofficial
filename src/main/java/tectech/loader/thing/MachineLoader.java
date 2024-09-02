@@ -301,7 +301,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPM64AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM65536AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM65536AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPMVoltageBuckConverter;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static tectech.thing.CustomItemList.DATApipe;
 import static tectech.thing.CustomItemList.DATApipeBlock;
 import static tectech.thing.CustomItemList.LASERpipe;

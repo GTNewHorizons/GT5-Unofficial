@@ -1,7 +1,5 @@
 package tectech.loader.thing;
 
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
