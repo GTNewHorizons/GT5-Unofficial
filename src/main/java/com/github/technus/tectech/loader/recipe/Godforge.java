@@ -51,7 +51,7 @@ public class Godforge implements Runnable {
 
     @Override
     public void run() {
-
+        if (!com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) return;
         // Solid to plasma recipes
         {
             // Fusion tier 1-3

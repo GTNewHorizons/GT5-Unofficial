@@ -64,11 +64,13 @@ public class ThingsLoader implements Runnable {
 
         TT_Container_Casings.StabilisationFieldGenerators = new StabilisationFieldCasing();
 
-        TT_Container_Casings.GodforgeCasings = new GodforgeCasings();
-        TecTech.LOGGER.info("Godforge blocks registered.");
+        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
+            TT_Container_Casings.GodforgeCasings = new GodforgeCasings();
+            TecTech.LOGGER.info("Godforge blocks registered.");
 
-        GodforgeGlassBlock.run();
-        TecTech.LOGGER.info("Godforge Glass registered");
+            GodforgeGlassBlock.run();
+            TecTech.LOGGER.info("Godforge Glass registered");
+        }
 
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");
