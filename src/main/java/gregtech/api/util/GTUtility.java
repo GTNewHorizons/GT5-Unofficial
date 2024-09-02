@@ -4364,8 +4364,8 @@ public class GTUtility {
     }
 
     public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-        "bartworks.system.material.BW_MetaGenerated_Ores",
-        "bartworks.system.material.BW_MetaGenerated_SmallOres",
+        "bartworks.system.material.BWMetaGeneratedOres",
+        "bartworks.system.material.BWMetaGeneratedSmallOres",
         "gtPlusPlus.core.block.base.BlockBaseOre");
 
     public static boolean isOre(Block aBlock, int aMeta) {
