@@ -41,8 +41,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GT_TooltipDataCache;
 
 public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIWidgets {
 
@@ -477,7 +477,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 this::getEmitEnergyButtonTooltip));
     }
 
-    private GTTooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
+    private GT_TooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
         return mTooltipCache.getData(
             EMIT_ENERGY_TOOLTIP,
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(V[mTier])
@@ -498,7 +498,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 this::getEmitRedstoneIfFullButtonTooltip).setUpdateTooltipEveryTick(true));
     }
 
-    private GTTooltipDataCache.TooltipData getEmitRedstoneIfFullButtonTooltip() {
+    private GT_TooltipDataCache.TooltipData getEmitRedstoneIfFullButtonTooltip() {
         return mTooltipCache.getUncachedTooltipData(
             EMIT_REDSTONE_IF_FULL_TOOLTIP,
             StatCollector.translateToLocal(hasEmptySlots() ? "gui.yes" : "gui.no"),
@@ -539,7 +539,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     protected Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
+        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier) {
         return new CycleButtonWidget().setToggle(getter, setter)
             .setStaticTexture(picture)
             .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)

@@ -34,8 +34,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport, IAddUIWidgets {
@@ -303,7 +303,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
+        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier) {
         return new CycleButtonWidget().setToggle(getter, setter)
             .setStaticTexture(picture)
             .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)

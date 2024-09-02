@@ -81,9 +81,9 @@ import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
+import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.UIHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -1527,16 +1527,16 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     protected List<String> getErrorDescriptions() {
-        final GTTooltipDataCache.TooltipData tooltip = getErrorTooltip();
+        final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
         return tooltip != null ? tooltip.text : Collections.emptyList();
     }
 
     protected List<String> getErrorDescriptionsShift() {
-        final GTTooltipDataCache.TooltipData tooltip = getErrorTooltip();
+        final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
         return tooltip != null ? tooltip.shiftText : Collections.emptyList();
     }
 
-    protected GTTooltipDataCache.TooltipData getErrorTooltip() {
+    protected GT_TooltipDataCache.TooltipData getErrorTooltip() {
         if (isSteampowered()) {
             if ((getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0) {
                 return mTooltipCache.getData(STALLED_VENT_TOOLTIP);

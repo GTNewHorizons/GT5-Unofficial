@@ -7,7 +7,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GTTooltipDataCache;
+import gregtech.api.util.GT_TooltipDataCache;
 
 public abstract class MTEFilterBase extends MTEBuffer {
 
@@ -88,7 +88,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
                 this::getEmitRedstoneGraduallyButtonTooltip).setUpdateTooltipEveryTick(true));
     }
 
-    private GTTooltipDataCache.TooltipData getEmitRedstoneGraduallyButtonTooltip() {
+    private GT_TooltipDataCache.TooltipData getEmitRedstoneGraduallyButtonTooltip() {
         return mTooltipCache
             .getUncachedTooltipData(EMIT_REDSTONE_GRADUALLY_TOOLTIP, getEmptySlots(), getRedstoneOutput());
     }
