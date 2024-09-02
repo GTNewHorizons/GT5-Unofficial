@@ -821,8 +821,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     }
 
     public void onPreLoad() {
-        GTLog.out.println("GT_Mod: Preload-Phase started!");
-        GTLog.ore.println("GT_Mod: Preload-Phase started!");
+        GTLog.out.println("GTMod: Preload-Phase started!");
+        GTLog.ore.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = ConfigGeneral.ignoreTinkerConstruct;
@@ -834,7 +834,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 break;
             }
         }
-        GTLog.out.println("GT_Mod: Getting required Items of other Mods.");
+        GTLog.out.println("GTMod: Getting required Items of other Mods.");
 
         ItemList.RC_ShuntingWire.set(GTModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
         ItemList.RC_ShuntingWireFrame.set(GTModHandler.getModItem(Railcraft.ID, "frame", 1L, 0));
@@ -994,7 +994,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("orangePainter", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("whitePainter", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("cfPack", 1L, 32767));
-        // GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("jetpack", 1L, 32767));
+        // GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("jetpack", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("treetap", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("weedEx", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("staticBoots", 1L, 32767));
@@ -1052,8 +1052,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     }
 
     public void onLoad() {
-        GTLog.out.println("GT_Mod: Beginning Load-Phase.");
-        GTLog.ore.println("GT_Mod: Beginning Load-Phase.");
+        GTLog.out.println("GTMod: Beginning Load-Phase.");
+        GTLog.ore.println("GTMod: Beginning Load-Phase.");
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
@@ -1225,8 +1225,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         | GTModHandler.RecipeBits.NOT_REMOVABLE;
 
     public void onPostLoad() {
-        GTLog.out.println("GT_Mod: Beginning PostLoad-Phase.");
-        GTLog.ore.println("GT_Mod: Beginning PostLoad-Phase.");
+        GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
+        GTLog.ore.println("GTMod: Beginning PostLoad-Phase.");
         if (GTLog.pal != null) {
             final Thread playerActivityLogger = new Thread(new GTPlayerActivityLogger());
             playerActivityLogger.setDaemon(true);
@@ -1249,7 +1249,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 break;
             }
         }
-        GTLog.out.println("GT_Mod: Adding Configs specific for MetaTileEntities");
+        GTLog.out.println("GTMod: Adding Configs specific for MetaTileEntities");
         try {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -1259,7 +1259,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         } catch (Throwable e) {
             e.printStackTrace(GTLog.err);
         }
-        GTLog.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
+        GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GTModHandler.addCraftingRecipe(
@@ -1330,8 +1330,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     }
 
     public void onServerStarting() {
-        GTLog.out.println("GT_Mod: ServerStarting-Phase started!");
-        GTLog.ore.println("GT_Mod: ServerStarting-Phase started!");
+        GTLog.out.println("GTMod: ServerStarting-Phase started!");
+        GTLog.ore.println("GTMod: ServerStarting-Phase started!");
 
         GTMusicSystem.ServerSystem.reset();
 
@@ -1360,7 +1360,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         MTEDroneCentre.getCentreMap()
             .clear();
         GTLog.out.println(
-            "GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
+            "GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance()
             .getRecipeList();
         for (int i = 0; i < tList.size(); i++) {
@@ -2034,7 +2034,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                                 // !!!Unknown Material detected!!! Please report to GregTech Intergalactical for
                                 // additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just
                                 // an Information, which you should pass to me.");
-                                // GT_Log.ore.println(tModToName + " uses an unknown
+                                // GTLog.ore.println(tModToName + " uses an unknown
                                 // Material. Report this to GregTech.");
                                 return;
                             }

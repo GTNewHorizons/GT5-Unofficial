@@ -349,7 +349,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         }
     }
 
-    // Dummy GT_Recipe maker...
+    // Dummy GTRecipe maker...
     public GTRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         this(
@@ -369,7 +369,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Re-unificates all the items present in recipes.
      */
     public static void reInit() {
-        GTLog.out.println("GT_Mod: Re-Unificating Recipes.");
+        GTLog.out.println("GTMod: Re-Unificating Recipes.");
         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             map.getBackend()
                 .reInit();
@@ -388,7 +388,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     /**
      * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
-     * Override to make shown items differ from a GT_Recipe's item output array
+     * Override to make shown items differ from a GTRecipe's item output array
      *
      * @see GTNEIDefaultHandler
      * @param i Slot index
@@ -822,11 +822,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
         "gregtech.api.recipe.RecipeMap",
         "gregtech.api.recipe.RecipeMapBackend",
         "gregtech.api.recipe.RecipeMapBackendPropertiesBuilder",
-        "gregtech.api.util.GT_Recipe",
-        "gregtech.api.util.GT_RecipeBuilder",
-        "gregtech.api.util.GT_RecipeConstants",
-        "gregtech.api.util.GT_RecipeMapUtil",
-        "gregtech.common.GT_RecipeAdder");
+        "gregtech.api.util.GTRecipe",
+        "gregtech.api.util.GTRecipeBuilder",
+        "gregtech.api.util.GTRecipeConstants",
+        "gregtech.api.util.GTRecipeMapUtil",
+        "gregtech.common.GTRecipeAdder");
 
     public void reloadOwner() {
         setOwner(
@@ -912,20 +912,20 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return this;
     }
 
-    public static class GT_Recipe_AssemblyLine {
+    public static class GTRecipe_AssemblyLine {
 
-        public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();
+        public static final ArrayList<GTRecipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();
 
         static {
             if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))
-                GregTechAPI.sFirstWorldTick.add(GT_Recipe_AssemblyLine::checkInvalidRecipes);
+                GregTechAPI.sFirstWorldTick.add(GTRecipe_AssemblyLine::checkInvalidRecipes);
             else GTLog.out.println("NOT CHECKING INVALID ASSLINE RECIPE.");
         }
 
         private static void checkInvalidRecipes() {
             int invalidCount = 0;
             GTLog.out.println("Started assline validation");
-            for (GT_Recipe_AssemblyLine recipe : sAssemblylineRecipes) {
+            for (GTRecipe_AssemblyLine recipe : sAssemblylineRecipes) {
                 if (recipe.getPersistentHash() == 0) {
                     invalidCount++;
                     GTLog.err.printf("Invalid recipe: %s%n", recipe);
@@ -950,7 +950,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * <p>
          * if you set one yourself, it will give you one of the RunetimeExceptions!
          */
-        public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+        public GTRecipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
             FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
             this(
                 aResearchItem,
@@ -979,7 +979,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * <p>
          * if you don't set one yourself, it will break a lot of stuff!
          */
-        public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+        public GTRecipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
             FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt, ItemStack[][] aAlt) {
             mResearchItem = aResearchItem;
             mResearchTime = aResearchTime;
@@ -1018,7 +1018,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             if (this == obj) {
                 return true;
             }
-            if (!(obj instanceof GT_Recipe_AssemblyLine other)) {
+            if (!(obj instanceof GTRecipe_AssemblyLine other)) {
                 return false;
             }
             if (this.mInputs.length != other.mInputs.length) {
@@ -1070,7 +1070,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         @Override
         public String toString() {
-            return "GT_Recipe_AssemblyLine{" + "mResearchItem="
+            return "GTRecipe_AssemblyLine{" + "mResearchItem="
                 + mResearchItem
                 + ", mResearchTime="
                 + mResearchTime
@@ -1107,7 +1107,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
          *         {@code null} if at least one item fails to match the recipe ingredient.
          */
         public static int[] getItemConsumptionAmountArray(ArrayList<MTEHatchInputBus> inputBusses,
-            GT_Recipe_AssemblyLine recipe) {
+            GTRecipe_AssemblyLine recipe) {
             int itemCount = recipe.mInputs.length;
             if (itemCount == 0) return null;
             int[] tStacks = new int[itemCount];
@@ -1147,7 +1147,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         /**
          * @param inputBusses      Input bus list to check. Usually the input bus list of multi.
-         * @param itemConsumptions Should be generated by {@link GT_Recipe_AssemblyLine#getItemConsumptionAmountArray}.
+         * @param itemConsumptions Should be generated by {@link GTRecipe_AssemblyLine#getItemConsumptionAmountArray}.
          * @Return The number of parallel recipes, or 0 if recipe is not satisfied at all. 0 < number < 1 means that
          *         inputs are found but not enough.
          */
@@ -1249,10 +1249,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         /**
          * WARNING: Ensure that item inputs are enough to be consumed with
-         * {@link GT_Recipe_AssemblyLine#maxParallelCalculatedByInputItems} before calling this method!
+         * {@link GTRecipe_AssemblyLine#maxParallelCalculatedByInputItems} before calling this method!
          *
          * @param inputBusses      Input bus list to check. Usually the input bus list of multi.
-         * @param itemConsumptions Should be generated by {@link GT_Recipe_AssemblyLine#getItemConsumptionAmountArray}.
+         * @param itemConsumptions Should be generated by {@link GTRecipe_AssemblyLine#getItemConsumptionAmountArray}.
          */
         public static void consumeInputItems(ArrayList<MTEHatchInputBus> inputBusses, int amountMultiplier,
             int[] itemConsumptions, Map<GTUtility.ItemId, ItemStack> inputsFromME) {
@@ -1271,7 +1271,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         /**
          * WARNING: Ensure that fluid inputs are enough to be consumed with
-         * {@link GT_Recipe_AssemblyLine#maxParallelCalculatedByInputFluids} before calling this method!
+         * {@link GTRecipe_AssemblyLine#maxParallelCalculatedByInputFluids} before calling this method!
          *
          * @param inputHatches      Input hatch list to check. Usually the input hatch list of multi.
          * @param fluidConsumptions Fluid inputs of the recipe.
@@ -1296,14 +1296,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
         }
     }
 
-    public static class GT_Recipe_WithAlt extends GTRecipe {
+    public static class GTRecipe_WithAlt extends GTRecipe {
 
         public ItemStack[][] mOreDictAlt;
 
         /**
          * Only for {@link GTRecipeBuilder}.
          */
-        GT_Recipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
+        GTRecipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
             FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,
             int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
             boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
@@ -1331,7 +1331,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             this.mOreDictAlt = mOreDictAlt;
         }
 
-        public GT_Recipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
+        public GTRecipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
             int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
             int aSpecialValue, ItemStack[][] aAlt) {
             super(

@@ -64,7 +64,7 @@ public class GTPreLoad {
 
     public static void sortToTheEnd() {
         try {
-            GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
+            GT_FML_LOGGER.info("GTMod: Sorting GregTech to the end of the Mod List for further processing.");
             LoadController tLoadController = (LoadController) GTUtility
                 .getFieldContent(Loader.instance(), "modController", true, true);
             assert tLoadController != null;
@@ -92,7 +92,7 @@ public class GTPreLoad {
     }
 
     public static void initLocalization(File languageDir) {
-        GT_FML_LOGGER.info("GT_Mod: Generating Lang-File");
+        GT_FML_LOGGER.info("GTMod: Generating Lang-File");
 
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
@@ -351,7 +351,7 @@ public class GTPreLoad {
     }
 
     public static void adjustScrap() {
-        GT_FML_LOGGER.info("GT_Mod: Removing all original Scrapbox Drops.");
+        GT_FML_LOGGER.info("GTMod: Removing all original Scrapbox Drops.");
         try {
             Objects.requireNonNull(GTUtility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true))
                 .set(null, 0);
@@ -366,7 +366,7 @@ public class GTPreLoad {
                 e.printStackTrace(GTLog.err);
             }
         }
-        GTLog.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GTModHandler.addScrapboxDrop(200.0F, GTModHandler.getIC2Item("scrap", 1L));
     }
 
@@ -428,7 +428,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.costlyCableConnection = ConfigGeneral.costlyCableConnection;
         GTMod.gregtechproxy.crashOnNullRecipeInput = ConfigGeneral.crashOnNullRecipeInput;
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-            GTMod.gregtechproxy.crashOnNullRecipeInput = false; // Use flags in GT_RecipeBuilder instead!
+            GTMod.gregtechproxy.crashOnNullRecipeInput = false; // Use flags in GTRecipeBuilder instead!
         }
         GTLanguageManager.i18nPlaceholder = ConfigGeneral.i18nPlaceholder;
         MTELongDistancePipelineBase.minimalDistancePoints = ConfigGeneral.minimalDistancePoints;

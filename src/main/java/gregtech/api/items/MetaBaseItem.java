@@ -403,7 +403,7 @@ public abstract class MetaBaseItem extends GTGenericItem
      * false); chargeFromArmor(aStack, aPlayer); return false; }
      * @Override public final void chargeFromArmor(ItemStack aStack, EntityLivingBase aPlayer) { if (aPlayer == null ||
      * aPlayer.worldObj.isRemote) return; for (int i = 1; i < 5; i++) { ItemStack tArmor =
-     * aPlayer.getEquipmentInSlot(i); if (GT_ModHandler.isElectricItem(tArmor)) { IElectricItem tArmorItem =
+     * aPlayer.getEquipmentInSlot(i); if (GTModHandler.isElectricItem(tArmor)) { IElectricItem tArmorItem =
      * (IElectricItem)tArmor.getItem(); if (tArmorItem.canProvideEnergy(tArmor) && tArmorItem.getTier(tArmor) >=
      * getTier(aStack)) { int tCharge = ElectricItem.manager.discharge(tArmor, charge(aStack, Integer.MAX_VALUE-1,
      * Integer.MAX_VALUE, true, true), Integer.MAX_VALUE, true, false); if (tCharge > 0) { charge(aStack, tCharge,

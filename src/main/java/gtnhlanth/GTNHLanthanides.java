@@ -45,7 +45,7 @@ public class GTNHLanthanides {
         LanthItemList.registerTypical();
         LanthItemList.registerGTMTE();
 
-        // GregTech_API.sAfterGTPostload.add(new ZPMRubberChanges());
+        // GregTechAPI.sAfterGTPostload.add(new ZPMRubberChanges());
         proxy.preInit(e);
     }
 

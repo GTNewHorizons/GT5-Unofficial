@@ -164,7 +164,7 @@ public class GTplusplus implements ActionListener {
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         proxy.preInit(event);
-        Logger.INFO("Setting up our own GT_Proxy.");
+        Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
         CoreManager.preInit();
     }

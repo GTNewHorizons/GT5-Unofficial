@@ -77,7 +77,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
     private static Collection<GTRecipe> replicatorRecipeEmitter(GTRecipeBuilder builder) {
         Materials material = builder.getMetadata(GTRecipeConstants.MATERIAL);
         if (material == null) {
-            throw new IllegalStateException("GT_RecipeConstants.MATERIAL must be set for replicator recipe");
+            throw new IllegalStateException("GTRecipeConstants.MATERIAL must be set for replicator recipe");
         }
         return Optional.of(material)
             .map(material1 -> material1.mElement)

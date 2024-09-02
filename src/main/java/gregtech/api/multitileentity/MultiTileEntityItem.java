@@ -132,7 +132,7 @@ public class MultiTileEntityItem extends ItemBlock {
              *    Add back if needed
              */
             // try {
-            //     GregTech_API.causeMachineUpdate(world, x, y, z);
+            //     GregTechAPI.causeMachineUpdate(world, x, y, z);
             // } catch (Throwable e) {
             //     GT_FML_LOGGER.error("causeMachineUpdate", e);
             // }

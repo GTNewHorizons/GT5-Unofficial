@@ -33,7 +33,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GTRecipe.GTRecipe_AssemblyLine;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
@@ -83,7 +83,7 @@ public class ZPMRubberChanges implements Runnable {
     private static void replaceAllRecipes(Collection<ItemStack> ZPMPlusComponents, OrePrefixes[] RubberGenerated,
         List<IRecipe> bufferedRecipeList) {
 
-        for (GT_Recipe_AssemblyLine sAssemblylineRecipe : GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+        for (GTRecipe_AssemblyLine sAssemblylineRecipe : GTRecipe_AssemblyLine.sAssemblylineRecipes) {
             for (ItemStack stack : ZPMPlusComponents) {
                 rewriteAsslineRecipes(stack, RubberGenerated, sAssemblylineRecipe);
             }
@@ -151,7 +151,7 @@ public class ZPMRubberChanges implements Runnable {
 
             /*
              * || ZPMRubberChanges.doStacksCointainAndReplace(((GT_Shaped_Recipe) obj).getInput(),
-             * GT_OreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1), true,
+             * GTOreDictUnificator.get(prefixes, Materials.StyreneButadieneRubber, 1), true,
              * WerkstoffMaterialPool.PTMEGElastomer.get(prefixes));
              */
 
@@ -270,7 +270,7 @@ public class ZPMRubberChanges implements Runnable {
     }
 
     private static void rewriteAsslineRecipes(ItemStack stack, OrePrefixes[] RubberGenerated,
-        GTRecipe.GT_Recipe_AssemblyLine recipe) {
+        GTRecipe.GTRecipe_AssemblyLine recipe) {
         for (OrePrefixes prefixes : RubberGenerated) {
             if (ZPMRubberChanges.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
 
@@ -379,7 +379,7 @@ public class ZPMRubberChanges implements Runnable {
 
     private static boolean doStacksCointainAndReplace(Object[] stacks, ItemStack stack, boolean replace,
         ItemStack... replacement) {
-        // GT_Log.out.print("In doStacksCointainAndReplace!\n");
+        // GTLog.out.print("In doStacksCointainAndReplace!\n");
         boolean replaced = false;
         for (int i = 0; i < stacks.length; i++) {
             if (!GTUtility.isStackValid(stacks[i])) {

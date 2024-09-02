@@ -164,7 +164,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
 
-        // GT_Log.out.print("In checkRecipe");
+        // GTLog.out.print("In checkRecipe");
 
         // No input particle, so no input quantities
 
@@ -175,7 +175,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         ItemStack[] tItems = this.getStoredInputs()
             .toArray(new ItemStack[0]);
-        // GT_Log.out.print(Arrays.toString(tItems));
+        // GTLog.out.print(Arrays.toString(tItems));
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 

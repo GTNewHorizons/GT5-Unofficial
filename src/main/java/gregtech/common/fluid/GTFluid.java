@@ -91,7 +91,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
             | Math.max(0, Math.min(255, colorRGBA[2]));
     }
 
-    // ----- IGT_Fluid interface implementations -----
+    // ----- IGTFluid interface implementations -----
 
     public IGTRegisteredFluid addFluid() {
         if (FluidRegistry.registerFluid(GTFluid.this)) {
@@ -188,7 +188,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public void run() {
         if (iconsFrom instanceof GTFluid) {
-            // Needs the GT_Fluid to have registered its icons
+            // Needs the GTFluid to have registered its icons
             ((GTFluid) iconsFrom).run();
             stillIcon = iconsFrom.getStillIcon();
             flowingIcon = iconsFrom.getFlowingIcon();
@@ -204,6 +204,6 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
 
     @Override
     public String toString() {
-        return "GT_Fluid{" + "fluidName='" + fluidName + '\'' + '}';
+        return "GTFluid{" + "fluidName='" + fluidName + '\'' + '}';
     }
 }

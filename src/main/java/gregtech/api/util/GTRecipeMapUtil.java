@@ -51,12 +51,12 @@ public class GTRecipeMapUtil {
         return newArr;
     }
 
-    public static GT_RecipeTemplate asTemplate(GTRecipe r) {
+    public static GTRecipeTemplate asTemplate(GTRecipe r) {
         return asTemplate(r, false);
     }
 
-    public static GT_RecipeTemplate asTemplate(GTRecipe r, boolean includeTemplate) {
-        return new GT_RecipeTemplate(r, includeTemplate);
+    public static GTRecipeTemplate asTemplate(GTRecipe r, boolean includeTemplate) {
+        return new GTRecipeTemplate(r, includeTemplate);
     }
 
     public static List<GTRecipe> buildRecipeForMultiblock(GTRecipeBuilder b) {
@@ -148,12 +148,12 @@ public class GTRecipeMapUtil {
         else registerAction.accept(map);
     }
 
-    public static final class GT_RecipeTemplate {
+    public static final class GTRecipeTemplate {
 
         private final GTRecipe template;
         private final List<GTRecipe> derivatives = new ArrayList<>();
 
-        private GT_RecipeTemplate(GTRecipe template, boolean includeTemplate) {
+        private GTRecipeTemplate(GTRecipe template, boolean includeTemplate) {
             this.template = template;
             if (includeTemplate) derivatives.add(template);
         }

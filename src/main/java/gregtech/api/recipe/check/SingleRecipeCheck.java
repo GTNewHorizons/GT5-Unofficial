@@ -188,7 +188,7 @@ public class SingleRecipeCheck {
         // At load time we do a recipe check again, so in case the recipe is gone, we can stop tracking.
         // Of course the next step would be auto migrating to new recipe (if any), but given
         // we don't yet have a mean to uniquely name a recipe, this will have to make do.
-        // Consider move serialization code to GT_Recipe once this has been proven to work
+        // Consider move serialization code to GTRecipe once this has been proven to work
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("recipemap", recipeMap.unlocalizedName);
         if (recipe.mInputs != null) {

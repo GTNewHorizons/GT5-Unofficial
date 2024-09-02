@@ -16,7 +16,7 @@ public class BookAndLootLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Adding worldgenerated Chest Content.");
+        GTLog.out.println("GTMod: Adding worldgenerated Chest Content.");
         if (GTMod.gregtechproxy.mIncreaseDungeonLoot) {
             ChestGenHooks tChest = ChestGenHooks.getInfo("bonusChest");
             tChest.setMax(tChest.getMax() + 8);

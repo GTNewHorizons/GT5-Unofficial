@@ -26,7 +26,7 @@ public class LoaderGTOreDictionary implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Register OreDict Entries of Non-GT-Items.");
+        GTLog.out.println("GTMod: Register OreDict Entries of Non-GT-Items.");
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GTModHandler.getIC2Item("lavaCell", 1L));
@@ -44,7 +44,7 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Lava, new ItemStack(Items.lava_bucket, 1, 0));
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Milk, new ItemStack(Items.milk_bucket, 1, 0));
-        // Clay buckets handled in gregtech.common.GT_Proxy.onLoad() as they aren't registered until Iguana Tweaks
+        // Clay buckets handled in gregtech.common.GTProxy.onLoad() as they aren't registered until Iguana Tweaks
         // pre-init.
 
         GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Empty, new ItemStack(Items.glass_bottle, 1, 0));

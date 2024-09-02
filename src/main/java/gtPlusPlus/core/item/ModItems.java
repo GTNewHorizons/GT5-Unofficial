@@ -625,9 +625,9 @@ public final class ModItems {
 
         // Zirconium Tetrafluoride
         /*
-         * GT_OreDictUnificator.registerOre("cellZrF4",
+         * GTOreDictUnificator.registerOre("cellZrF4",
          * ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
-         * GT_OreDictUnificator.registerOre("dustZrF4",
+         * GTOreDictUnificator.registerOre("dustZrF4",
          * ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
          */
         fluidZrF4 = FluidUtils.generateFluidNoPrefix(

@@ -184,7 +184,7 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
         }
 
         if (!aPlayer.worldObj.isRemote && (mSpecials & (16 | 32)) != 0) {
-            // if (GregTech_API.sWorldTickCounter%20==0) {
+            // if (GregTechAPI.sWorldTickCounter%20==0) {
             ItemStack tTargetChargeItem = aStack, tTargetDechargeItem = aStack;
 
             if (GTModHandler.chargeElectricItem(tTargetChargeItem, 1, Integer.MAX_VALUE, true, true) < 1) {
@@ -208,10 +208,10 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
             } else {
                 /*
                  * TODO: if ((mSpecials & 16) != 0 && tTargetDechargeItem != null &&
-                 * GT_ModHandler.canUseElectricItem(tTargetDechargeItem, 10)) { if (aPlayer.worldObj.getBlock
+                 * GTModHandler.canUseElectricItem(tTargetDechargeItem, 10)) { if (aPlayer.worldObj.getBlock
                  * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ) == Blocks.air) aPlayer.worldObj.setBlock
-                 * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ, GregTech_API.sBlockList[3]);
-                 * GT_ModHandler.useElectricItem(tTargetDechargeItem, 10, aPlayer); }
+                 * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ, GregTechAPI.sBlockList[3]);
+                 * GTModHandler.useElectricItem(tTargetDechargeItem, 10, aPlayer); }
                  */
                 // }
             }

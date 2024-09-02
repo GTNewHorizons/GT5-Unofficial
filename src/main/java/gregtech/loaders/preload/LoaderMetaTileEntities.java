@@ -12789,7 +12789,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Registering MetaTileEntities.");
+        GTLog.out.println("GTMod: Registering MetaTileEntities.");
         registerMachineHull();
         registerTransformer();
         registerDynamoHatch();

@@ -97,7 +97,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                 ofHatchAdder(MTEThoriumHighTempReactor::addInputToMachineList, BASECASINGINDEX, 2),
                 onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
         // ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2,
-        // GregTech_API.sBlockCasings3, 12))
+        // GregTechAPI.sBlockCasings3, 12))
         .build();
 
     private static final int HELIUM_NEEDED = 730000;

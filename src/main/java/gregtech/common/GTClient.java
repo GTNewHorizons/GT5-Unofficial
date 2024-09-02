@@ -112,7 +112,7 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 
 // Referenced classes of package gregtech.common:
-// GT_Proxy
+// GTProxy
 
 public class GTClient extends GTProxy implements Runnable {
 
@@ -691,7 +691,7 @@ public class GTClient extends GTProxy implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Downloading Cape List.");
+        GTLog.out.println("GTMod: Downloading Cape List.");
         try (final Scanner tScanner = new Scanner(new URL(GT_CAPE_LIST_URL).openStream())) {
             while (tScanner.hasNextLine()) {
                 this.mCapeList.add(

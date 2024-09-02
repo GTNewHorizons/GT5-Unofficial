@@ -55,7 +55,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GTRecipe.GTRecipe_AssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -223,7 +223,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 continue;
             }
 
-            GT_Recipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
+            GTRecipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
             // Check if the recipe on the data stick is the current recipe for it's given output, if not we update it
             // and continue to next.
             if (tLookupResult.getType() != AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
@@ -259,12 +259,12 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             }
 
             // Check Inputs allign
-            int[] itemConsumptions = GT_Recipe_AssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+            int[] itemConsumptions = GTRecipe_AssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
             if (itemConsumptions == null || itemConsumptions.length == 0) {
                 result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
-            maxParallel = (int) GT_Recipe_AssemblyLine
+            maxParallel = (int) GTRecipe_AssemblyLine
                 .maxParallelCalculatedByInputItems(mInputBusses, maxParallel, itemConsumptions, inputsFromME);
             if (maxParallel <= 0) {
                 result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -278,7 +278,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
             // Check Fluid Inputs allign
             if (tRecipe.mFluidInputs.length > 0) {
-                maxParallel = (int) GT_Recipe_AssemblyLine
+                maxParallel = (int) GTRecipe_AssemblyLine
                     .maxParallelCalculatedByInputFluids(mInputHatches, maxParallel, tRecipe.mFluidInputs, fluidsFromME);
                 if (maxParallel <= 0) {
                     result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -346,8 +346,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             GT_FML_LOGGER.info("All checked start consuming inputs");
         }
 
-        GT_Recipe_AssemblyLine.consumeInputItems(mInputBusses, maxParallel, tStacks, inputsFromME);
-        GT_Recipe_AssemblyLine.consumeInputFluids(mInputHatches, maxParallel, tFluids, fluidsFromME);
+        GTRecipe_AssemblyLine.consumeInputItems(mInputBusses, maxParallel, tStacks, inputsFromME);
+        GTRecipe_AssemblyLine.consumeInputFluids(mInputHatches, maxParallel, tFluids, fluidsFromME);
 
         if (this.lEUt > 0) {
             this.lEUt = -this.lEUt;

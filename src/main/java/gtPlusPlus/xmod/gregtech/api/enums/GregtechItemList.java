@@ -777,16 +777,16 @@ public enum GregtechItemList implements IGregtechItemContainer {
     GT_Dehydrator_ZPM,
 
     // Fluid Storage Tanks
-    GT_FluidTank_ULV,
-    GT_FluidTank_LV,
-    GT_FluidTank_MV,
-    GT_FluidTank_HV,
-    GT_FluidTank_EV,
-    GT_FluidTank_IV,
-    GT_FluidTank_LuV,
-    GT_FluidTank_ZPM,
-    GT_FluidTank_UV,
-    GT_FluidTank_MAX,
+    GTFluidTank_ULV,
+    GTFluidTank_LV,
+    GTFluidTank_MV,
+    GTFluidTank_HV,
+    GTFluidTank_EV,
+    GTFluidTank_IV,
+    GTFluidTank_LuV,
+    GTFluidTank_ZPM,
+    GTFluidTank_UV,
+    GTFluidTank_MAX,
 
     // GT RTG
     RTG,

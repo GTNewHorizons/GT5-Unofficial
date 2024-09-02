@@ -225,7 +225,7 @@ public class GTPacketMultiTileEntity extends GTPacketNew {
          * }
          * } catch (Exception e) {
          * e.printStackTrace();
-         * GT_Mod.GT_FML_LOGGER.error(
+         * GTMod.GT_FML_LOGGER.error(
          * "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
          * tTileEntity,
          * mX,

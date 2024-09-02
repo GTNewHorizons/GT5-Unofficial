@@ -423,7 +423,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         if (aPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
             // horizontally allowing an extra round of flip make it hard to draw meaningful flip markers in
-            // GT_Proxy#drawGrid
+            // GTProxy#drawGrid
             toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
         } else {
             toolSetRotation(null);

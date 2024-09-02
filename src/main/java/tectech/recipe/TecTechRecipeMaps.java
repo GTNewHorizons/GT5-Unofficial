@@ -17,7 +17,7 @@ public class TecTechRecipeMaps {
 
     public static void init() {}
 
-    public static final List<GTRecipe.GT_Recipe_AssemblyLine> researchableALRecipeList = new ArrayList<>();
+    public static final List<GTRecipe.GTRecipe_AssemblyLine> researchableALRecipeList = new ArrayList<>();
 
     public static final RecipeMap<RecipeMapBackend> eyeOfHarmonyRecipes = RecipeMapBuilder.of("gt.recipe.eyeofharmony")
         .maxIO(

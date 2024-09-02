@@ -2195,7 +2195,7 @@ public class GTUtility {
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
         GTLog.out.println(
-            "GT_Mod: Added Book to Book List  -  Mapping: '" + aMapping
+            "GTMod: Added Book to Book List  -  Mapping: '" + aMapping
                 + "'  -  Name: '"
                 + aTitle
                 + "'  -  Author: '"

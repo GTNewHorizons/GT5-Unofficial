@@ -355,7 +355,7 @@ public class GTValues {
         { 0, 1, 2, 3, 4, 5, 6 } };
 
     /**
-     * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
+     * The Mod Object itself. That is the GTMod-Object. It's needed to open GUI's and similar.
      */
     public static IGTMod GT;
     /**

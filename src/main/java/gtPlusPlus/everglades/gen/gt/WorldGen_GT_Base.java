@@ -542,7 +542,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
             try {
                 for (WorldGen_GT tWorldGen : HandlerGT.sWorldgenListEverglades) {
                     /*
-                     * if (debugWorldGen) GT_Log.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
+                     * if (debugWorldGen) GTLog.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
                      */
                     tWorldGen.executeWorldgen(
                         this.mWorld,

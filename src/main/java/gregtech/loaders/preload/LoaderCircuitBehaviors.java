@@ -15,7 +15,7 @@ public class LoaderCircuitBehaviors implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Register Redstone Circuit behaviours.");
+        GTLog.out.println("GTMod: Register Redstone Circuit behaviours.");
         new CircuitTimer(0);
         new CircuitBasicLogic(1);
         new CircuitRepeater(2);

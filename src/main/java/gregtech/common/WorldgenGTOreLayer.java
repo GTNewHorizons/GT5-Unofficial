@@ -106,7 +106,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
         if (!isGenerationAllowed(aWorld, mAllowedProviders)) {
             // The following code can be used for debugging, but it spams in logs
-            // if (debugOrevein) { GT_Log.out.println( "Wrong dimension" ); }
+            // if (debugOrevein) { GTLog.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
         }
 

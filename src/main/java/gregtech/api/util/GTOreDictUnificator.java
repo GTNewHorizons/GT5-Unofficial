@@ -34,7 +34,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
  * <p/>
  * This is the Core of my OreDict Unification Code
  * <p/>
- * If you just want to use this to unificate your Items, then use the Function in the GregTech_API File
+ * If you just want to use this to unificate your Items, then use the Function in the GregTechAPI File
  * <p/>
  * P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
  */

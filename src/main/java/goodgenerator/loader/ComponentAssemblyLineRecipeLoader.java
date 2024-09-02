@@ -43,7 +43,7 @@ public class ComponentAssemblyLineRecipeLoader {
     private static final String moltenMHDCSM = "molten.magnetohydrodynamicallyconstrainedstarmatter";
 
     private static LinkedHashMap<List<GTRecipe>, Pair<ItemList, Integer>> allAssemblerRecipes;
-    private static LinkedHashMap<List<GTRecipe.GT_Recipe_AssemblyLine>, Pair<ItemList, Integer>> allAsslineRecipes;
+    private static LinkedHashMap<List<GTRecipe.GTRecipe_AssemblyLine>, Pair<ItemList, Integer>> allAsslineRecipes;
 
     private static final HashMap<OrePrefixes, Double> magnetoConversionMultipliers = new HashMap<>();
     private static final HashMap<OrePrefixes, OrePrefixes> conversion = new HashMap<>();
@@ -127,7 +127,7 @@ public class ComponentAssemblyLineRecipeLoader {
     /** Assembly Line Recipes (LuV+) **/
     private static void generateAsslineRecipes() {
         allAsslineRecipes.forEach((recipeList, info) -> {
-            for (GTRecipe.GT_Recipe_AssemblyLine recipe : recipeList) {
+            for (GTRecipe.GTRecipe_AssemblyLine recipe : recipeList) {
                 if (recipe != null) {
                     int componentCircuit = -1;
                     for (int i = 0; i < compPrefixes.length; i++) if (info.getLeft()
@@ -414,8 +414,8 @@ public class ComponentAssemblyLineRecipeLoader {
                         }
                         allAssemblerRecipes.put(foundRecipes, Pair.of(currentComponent, t));
                     } else {
-                        ArrayList<GTRecipe.GT_Recipe_AssemblyLine> foundRecipes = new ArrayList<>();
-                        for (GTRecipe.GT_Recipe_AssemblyLine recipe : GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                        ArrayList<GTRecipe.GTRecipe_AssemblyLine> foundRecipes = new ArrayList<>();
+                        for (GTRecipe.GTRecipe_AssemblyLine recipe : GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes) {
                             if (GTUtility.areStacksEqual(currentComponent.get(1), recipe.mOutput)) {
                                 foundRecipes.add(recipe);
                             }

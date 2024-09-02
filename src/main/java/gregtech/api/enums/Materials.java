@@ -2556,7 +2556,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addToolValues(Materials aMaterial) {
-        // Moved from GT_Proxy? (Not sure)
+        // Moved from GTProxy? (Not sure)
         aMaterial.mHandleMaterial = (aMaterial == Desh ? aMaterial.mHandleMaterial
             : aMaterial == Diamond || aMaterial == Thaumium ? Wood
                 : aMaterial.contains(SubTag.BURNING) ? Blaze
@@ -2610,7 +2610,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHarvestLevelNerfs(Materials aMaterial) {
-        /* Moved the harvest level changes from GT_Mod to have fewer things iterating over MATERIALS_ARRAY */
+        /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
         if (GTMod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
             && aMaterial.mMetaItemSubID < GTMod.gregtechproxy.mHarvestLevel.length
             && aMaterial.mMetaItemSubID >= 0) {

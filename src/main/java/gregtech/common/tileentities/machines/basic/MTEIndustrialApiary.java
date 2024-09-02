@@ -1424,11 +1424,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     }
 
     private static final UIInfo<?, ?> IndustrialApiaryUI = GTUIInfos.GTTileEntityUIFactory
-        .apply(GT_ModularUIContainer_IndustrialApiary::new);
+        .apply(GTModularUIContainer_IndustrialApiary::new);
 
-    private static class GT_ModularUIContainer_IndustrialApiary extends ModularUIContainer {
+    private static class GTModularUIContainer_IndustrialApiary extends ModularUIContainer {
 
-        public GT_ModularUIContainer_IndustrialApiary(ModularUIContext context, ModularWindow mainWindow) {
+        public GTModularUIContainer_IndustrialApiary(ModularUIContext context, ModularWindow mainWindow) {
             super(context, mainWindow);
         }
 

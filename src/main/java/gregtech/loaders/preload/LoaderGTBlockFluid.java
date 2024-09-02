@@ -102,7 +102,7 @@ public class LoaderGTBlockFluid implements Runnable {
         Materials.Lava.mFluid = GTModHandler.getLava(1000L)
             .getFluid();
 
-        GTLog.out.println("GT_Mod: Register Books.");
+        GTLog.out.println("GTMod: Register Books.");
 
         GTUtility.getWrittenBook(
             "Manual_Printer",
@@ -148,13 +148,13 @@ public class LoaderGTBlockFluid implements Runnable {
             "Do not insert inflammable Objects. The Oven will catch on Fire.",
             "Do not insert Explosives such as Eggs. Just don't.");
 
-        GTLog.out.println("GT_Mod: Register Items.");
+        GTLog.out.println("GTMod: Register Items.");
 
         new ItemIntegratedCircuit();
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
-        // GT_MetaGenerated_Item_98 is initialized in GT_Proxy.onPostLoad() because we need to wait for fluids to be
+        // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostLoad() because we need to wait for fluids to be
         // registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point
         // between load and post-load.
@@ -164,7 +164,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
 
-        // Tiered recipe materials actually appear to be set in GT_MetaTileEntity_BasicMachine_GT_Recipe, making these
+        // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
         ItemList.Rotor_LV.set(GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Tin, 1L));
         ItemList.Rotor_MV.set(GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Bronze, 1L));
@@ -535,7 +535,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTModHandler.getIC2Item("reactorDepletedMOXQuad", 1),
                 true));
 
-        GTLog.out.println("GT_Mod: Adding Blocks.");
+        GTLog.out.println("GTMod: Adding Blocks.");
         GregTechAPI.sBlockMachines = new BlockMachines();
         GregTechAPI.sBlockCasings1 = new BlockCasings1();
         GregTechAPI.sBlockCasings2 = new BlockCasings2();
@@ -670,11 +670,11 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
-        GTLog.out.println("GT_Mod: Register TileEntities.");
+        GTLog.out.println("GTMod: Register TileEntities.");
 
         BaseMetaTileEntity tBaseMetaTileEntity = GregTechAPI.constructBaseMetaTileEntity();
 
-        GTLog.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
+        GTLog.out.println("GTMod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage(
             AppliedEnergistics2.ID,
@@ -682,24 +682,24 @@ public class LoaderGTBlockFluid implements Runnable {
             tBaseMetaTileEntity.getClass()
                 .getName());
 
-        GTLog.out.println("GT_Mod: Registering the DroneRender.");
+        GTLog.out.println("GTMod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileEntityDrone.class, "DroneRender");
 
-        GTLog.out.println("GT_Mod: Registering the LaserRender.");
+        GTLog.out.println("GTMod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(TileEntityLaser.class, "LaserRenderer");
 
-        GTLog.out.println("GT_Mod: Registering the WormholeRender.");
+        GTLog.out.println("GTMod: Registering the WormholeRender.");
         GameRegistry.registerTileEntity(TileEntityWormhole.class, "WormholeRender");
 
-        GTLog.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
+        GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
-        GTLog.out.println("GT_Mod: Registering the Ore TileEntity.");
+        GTLog.out.println("GTMod: Registering the Ore TileEntity.");
         GameRegistry.registerTileEntity(TileEntityOres.class, "GT_TileEntity_Ores");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", TileEntityOres.class.getName());
 
-        GTLog.out.println("GT_Mod: Registering Fluids.");
+        GTLog.out.println("GTMod: Registering Fluids.");
         Materials.ConstructionFoam.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
             .getFluid();
         Materials.UUMatter.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
@@ -1989,7 +1989,7 @@ public class LoaderGTBlockFluid implements Runnable {
         if (!GTValues.D1) {
             try {
                 Class.forName("codechicken.nei.api.API");
-                GTLog.out.println("GT_Mod: Hiding certain Items from NEI.");
+                GTLog.out.println("GTMod: Hiding certain Items from NEI.");
                 API.hideItem(ItemList.Display_Fluid.getWildcard(1L));
             } catch (Throwable e) {
                 if (GTValues.D1) {

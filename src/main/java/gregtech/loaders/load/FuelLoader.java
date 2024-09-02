@@ -31,7 +31,7 @@ public class FuelLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Initializing various Fuels.");
+        GTLog.out.println("GTMod: Initializing various Fuels.");
         ItemList.sBlueVitriol = GTFluidFactory
             .of("solution.bluevitriol", "Blue Vitriol water solution", null, FluidState.LIQUID, 295);
         ItemList.sNickelSulfate = GTFluidFactory

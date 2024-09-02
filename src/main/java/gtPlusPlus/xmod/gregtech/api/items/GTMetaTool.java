@@ -74,7 +74,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     }
 
     /**
-     * Called by the Block Harvesting Event within the GT_Proxy
+     * Called by the Block Harvesting Event within the GTProxy
      */
     @Override
     public void onHarvestBlockEvent(final ArrayList<ItemStack> aDrops, final ItemStack aStack,

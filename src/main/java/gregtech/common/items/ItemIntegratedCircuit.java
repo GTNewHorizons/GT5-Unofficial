@@ -219,8 +219,8 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
         if (GregTechAPI.sPostloadFinished) {
-            GTLog.out.println("GT_Mod: Starting Item Icon Load Phase");
-            GT_FML_LOGGER.info("GT_Mod: Starting Item Icon Load Phase");
+            GTLog.out.println("GTMod: Starting Item Icon Load Phase");
+            GT_FML_LOGGER.info("GTMod: Starting Item Icon Load Phase");
             GregTechAPI.sItemIcons = aIconRegister;
             try {
                 for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
@@ -229,8 +229,8 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             } catch (Throwable e) {
                 e.printStackTrace(GTLog.err);
             }
-            GTLog.out.println("GT_Mod: Finished Item Icon Load Phase");
-            GT_FML_LOGGER.info("GT_Mod: Finished Item Icon Load Phase");
+            GTLog.out.println("GTMod: Finished Item Icon Load Phase");
+            GT_FML_LOGGER.info("GTMod: Finished Item Icon Load Phase");
         }
     }
 

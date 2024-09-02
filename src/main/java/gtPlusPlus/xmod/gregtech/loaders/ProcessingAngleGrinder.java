@@ -80,9 +80,9 @@ public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
                                 + (longrod == null)
                                 + " |");
                     }
-                    // GT_ModHandler.addCraftingRecipe(,
-                    // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
-                    // GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"P H", "PIP", " I ",
+                    // GTModHandler.addCraftingRecipe(,
+                    // GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
+                    // GTModHandler.RecipeBits.BUFFERED, new Object[]{"P H", "PIP", " I ",
                     // Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial),
                     // Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
                     // Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});

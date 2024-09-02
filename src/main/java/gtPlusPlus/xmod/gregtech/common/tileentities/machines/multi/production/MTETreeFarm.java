@@ -804,7 +804,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
-            new GTRecipe.GT_Recipe_WithAlt(
+            new GTRecipe.GTRecipe_WithAlt(
                 false,
                 null, // All inputs are taken from aAtl argument.
                 outputStacks,

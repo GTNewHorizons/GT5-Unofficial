@@ -545,7 +545,7 @@ public class RecipeLoader {
          * GT_Values.RA.stdBuilder()
          * .fluidInputs(Materials.Nitrogen.getPlasma(4000), Materials.Silane.getFluid(2000))
          * .fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
-         * .duration(20 * GT_RecipeBuilder.SECONDS)
+         * .duration(20 * GTRecipeBuilder.SECONDS)
          * .eut(7680)
          * .addTo(mixerNonCellRecipes);
          */
@@ -623,11 +623,11 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         /*
-         * GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicon, 1))
+         * GT_Values.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicon, 1))
          * .fluidInputs(Materials.SiliconTetrachloride.getFluid(3000), Materials.Ammonia.getFluid(4000))
          * .fluidOutputs(Materials.HydrochloricAcid.getFluid(12000))
-         * .itemOutputs(WerkstoffMaterialPool.SiliconNitride.get(OrePrefixes.plate)) .duration(GT_RecipeBuilder.SECONDS
-         * * 30) .eut(TierEU.EV) .addTo(GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes);
+         * .itemOutputs(WerkstoffMaterialPool.SiliconNitride.get(OrePrefixes.plate)) .duration(GTRecipeBuilder.SECONDS
+         * * 30) .eut(TierEU.EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
          */
 
         for (ItemStack lens : OreDictionary.getOres("craftingLensYellow")) {

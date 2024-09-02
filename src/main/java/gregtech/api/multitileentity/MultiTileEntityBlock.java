@@ -141,7 +141,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
         // spotless:off
         // if (aTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData
         //     && ((IMTE_HasMultiBlockMachineRelevantData) aTileEntity).hasMultiBlockMachineRelevantData())
-        //     GregTech_API.causeMachineUpdate(world, x, y, z);
+        //     GregTechAPI.causeMachineUpdate(world, x, y, z);
         // spotless:on
 
         world.removeTileEntity(x, y, z);

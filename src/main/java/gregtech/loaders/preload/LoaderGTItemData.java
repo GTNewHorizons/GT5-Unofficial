@@ -26,7 +26,7 @@ public class LoaderGTItemData implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Loading Item Data Tags");
+        GTLog.out.println("GTMod: Loading Item Data Tags");
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(TwilightForest.ID, "item.giantPick", 1L, 0),
             new ItemData(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));

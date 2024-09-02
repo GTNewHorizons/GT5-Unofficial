@@ -333,7 +333,7 @@ public class GTModHandler {
      */
     public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
         if (GTUtility.isStringInvalid(aItem) || !GregTechAPI.sPreloadStarted) return null;
-        // if (D1) GT_Log.out.println("Requested the Item '" + aItem + "' from the IC2-API");
+        // if (D1) GTLog.out.println("Requested the Item '" + aItem + "' from the IC2-API");
         if (!sIC2ItemMap.containsKey(aItem)) try {
             ItemStack tStack = IC2Items.getItem(aItem);
             sIC2ItemMap.put(aItem, tStack);
@@ -1806,7 +1806,7 @@ public class GTModHandler {
                 }
             }
             GTLog.out.println(
-                "GT_Mod: Created a List of Tool Recipes containing " + sSingleNonBlockDamagableRecipeList.size()
+                "GTMod: Created a List of Tool Recipes containing " + sSingleNonBlockDamagableRecipeList.size()
                     + " Recipes for recycling."
                     + (sSingleNonBlockDamagableRecipeList.size() > 1024
                         ? " Scanning all these Recipes is the reason for the startup Lag you receive right now."

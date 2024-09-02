@@ -812,7 +812,7 @@ public class GTRecipeBuilder {
         return itemInputs((Object[]) inputsBasic);
     }
 
-    public Optional<GTRecipe.GT_Recipe_WithAlt> buildWithAlt() {
+    public Optional<GTRecipe.GTRecipe_WithAlt> buildWithAlt() {
         if (skip) {
             return Optional.empty();
         }
@@ -827,7 +827,7 @@ public class GTRecipeBuilder {
         // no optimize.
         return Optional.of(
             decorate(
-                new GTRecipe.GT_Recipe_WithAlt(
+                new GTRecipe.GTRecipe_WithAlt(
                     inputsBasic,
                     outputs,
                     fluidInputs,

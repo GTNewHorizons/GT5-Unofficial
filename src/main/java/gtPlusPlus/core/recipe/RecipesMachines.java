@@ -1126,7 +1126,7 @@ public class RecipesMachines {
             "pipeMediumBronze",
             "plateBronze",
             "plateBronze",
-            GregtechItemList.GT_FluidTank_ULV.get(1),
+            GregtechItemList.GTFluidTank_ULV.get(1),
             "plateBronze",
             "plateBronze",
             "pipeMediumBronze",
@@ -1488,8 +1488,8 @@ public class RecipesMachines {
             ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
 
             // Allows clearing stored fluids.
-            GregtechItemList[] aTanks = new GregtechItemList[] { GregtechItemList.GT_FluidTank_ULV,
-                GregtechItemList.GT_FluidTank_LV, GregtechItemList.GT_FluidTank_MV, GregtechItemList.GT_FluidTank_HV };
+            GregtechItemList[] aTanks = new GregtechItemList[] { GregtechItemList.GTFluidTank_ULV,
+                GregtechItemList.GTFluidTank_LV, GregtechItemList.GTFluidTank_MV, GregtechItemList.GTFluidTank_HV };
             for (GregtechItemList aTank : aTanks) {
                 RecipeUtils.addShapelessGregtechRecipe(new Object[] { aTank.get(1) }, aTank.get(1));
             }
@@ -1504,7 +1504,7 @@ public class RecipesMachines {
                 CI.component_Plate[4],
                 waterBucket,
                 CI.component_Plate[4],
-                GregtechItemList.GT_FluidTank_ULV.get(1));
+                GregtechItemList.GTFluidTank_ULV.get(1));
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[5],
                 CI.component_Plate[4],
@@ -1515,7 +1515,7 @@ public class RecipesMachines {
                 CI.component_Plate[3],
                 CI.electricPump_LV,
                 CI.component_Plate[3],
-                GregtechItemList.GT_FluidTank_LV.get(1));
+                GregtechItemList.GTFluidTank_LV.get(1));
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[8],
                 CI.component_Plate[3],
@@ -1526,7 +1526,7 @@ public class RecipesMachines {
                 CI.component_Plate[5],
                 CI.electricPump_LV,
                 CI.component_Plate[5],
-                GregtechItemList.GT_FluidTank_MV.get(1));
+                GregtechItemList.GTFluidTank_MV.get(1));
             RecipeUtils.addShapedGregtechRecipe(
                 CI.circuitTier1,
                 CI.component_Plate[7],
@@ -1537,7 +1537,7 @@ public class RecipesMachines {
                 CI.circuitTier1,
                 CI.electricPump_MV,
                 CI.circuitTier1,
-                GregtechItemList.GT_FluidTank_HV.get(1));
+                GregtechItemList.GTFluidTank_HV.get(1));
         }
 
         if (GTPPCore.ConfigSwitches.enableMultiblock_MultiTank) {

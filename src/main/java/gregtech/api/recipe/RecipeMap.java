@@ -143,7 +143,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         boolean hidden) {
         return addFakeRecipe(
             aCheckForCollisions,
-            new GTRecipe.GT_Recipe_WithAlt(
+            new GTRecipe.GTRecipe_WithAlt(
                 false,
                 aInputs,
                 aOutputs,

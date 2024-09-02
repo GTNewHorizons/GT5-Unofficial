@@ -143,7 +143,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
         if (aDimensionType != DimensionEverglades.DIMID) {
             /*
-             * // Debug code, but spams log if (debugWorldGen) { GT_Log.out.println( "Wrong dimension" ); }
+             * // Debug code, but spams log if (debugWorldGen) { GTLog.out.println( "Wrong dimension" ); }
              */
             Logger.WORLD("[World Generation Debug] Wrong dimension.");
             return WRONG_DIMENSION;
@@ -254,7 +254,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             }
         }
         /*
-         * if ((placeCount[1]+placeCount[3])==0) { if (debugWorldGen) GT_Log.out.println( " No ore in bottom layer" );
+         * if ((placeCount[1]+placeCount[3])==0) { if (debugWorldGen) GTLog.out.println( " No ore in bottom layer" );
          * return NO_ORE_IN_BOTTOM_LAYER; // Exit early, didn't place anything in the bottom layer }
          */
         Logger.WORLD("[World Generation Debug] Trying to set Ores?");

@@ -13,7 +13,7 @@ public class ItemMaxStacksizeLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Changing maximum Stacksizes if configured.");
+        GTLog.out.println("GTMod: Changing maximum Stacksizes if configured.");
 
         ItemList.Upgrade_Overclocker.getItem()
             .setMaxStackSize(GTMod.gregtechproxy.mUpgradeCount);

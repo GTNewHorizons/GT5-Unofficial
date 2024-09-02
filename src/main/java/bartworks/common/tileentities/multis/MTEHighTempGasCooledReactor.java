@@ -107,7 +107,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                 ofHatchAdder(MTEHighTempGasCooledReactor::addInputToMachineList, BASECASINGINDEX, 2),
                 onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
         // ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2,
-        // GregTech_API.sBlockCasings8, 5))
+        // GregTechAPI.sBlockCasings8, 5))
         .build();
 
     private static final int HELIUM_NEEDED = 730000;

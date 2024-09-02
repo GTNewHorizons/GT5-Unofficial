@@ -289,7 +289,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     /*
      * CLAY(GTPP_Branch_Definition.ORGANIC, "Clay", true, 0x19d0ec, 0xffdc16) {
      * @Override protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-     * beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
+     * beeSpecies.addProduct(GTModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
      * beeSpecies.addProduct(new ItemStack(Items.clay_ball, 1), 0.15f); beeSpecies.setHumidity(EnumHumidity.DAMP);
      * beeSpecies.setTemperature(EnumTemperature.NORMAL); }
      * @Override protected void setAlleles(IAllele[] template) { template = BeeDefinition.MEADOWS.getTemplate(); }
@@ -297,7 +297,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
      * registerMutation(getSpecies("Industrious"), getSpecies("Diligent"), 20); } },
      * SLIMEBALL(GTPP_Branch_Definition.ORGANIC, "SlimeBall", true, 0x4E9E55, 0x00FF15) {
      * @Override protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-     * beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 15), 0.30f);
+     * beeSpecies.addProduct(GTModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 15), 0.30f);
      * beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.STICKY), 0.30f);
      * beeSpecies.setHumidity(EnumHumidity.DAMP); beeSpecies.setTemperature(EnumTemperature.NORMAL); }
      * @Override protected void setAlleles(IAllele[] template) { template = BeeDefinition.MARSHY.getTemplate(); }
@@ -306,14 +306,14 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
      * 0x906237, 0x58300B) {
      * @Override protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
      * beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.LIGNIE), 0.30f);
-     * beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.15f);
+     * beeSpecies.addProduct(GTModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.15f);
      * beeSpecies.setHumidity(EnumHumidity.NORMAL); beeSpecies.setTemperature(EnumTemperature.NORMAL); }
      * @Override protected void setAlleles(IAllele[] template) { template = BeeDefinition.RURAL.getTemplate(); }
      * @Override protected void registerMutations() { IBeeMutationCustom tMutation =
      * registerMutation(getSpecies("Rural"), CLAY.species, 20); } }, STICKYRESIN(GTPP_Branch_Definition.ORGANIC,
      * "StickyResin", true, 0x2E8F5B, 0xDCC289) {
      * @Override protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-     * beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
+     * beeSpecies.addProduct(GTModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
      * beeSpecies.addProduct(ItemList.IC2_Resin.get(1, new Object[0]), 0.15f);
      * beeSpecies.setHumidity(EnumHumidity.NORMAL); beeSpecies.setTemperature(EnumTemperature.NORMAL); }
      * @Override protected void setAlleles(IAllele[] template) { template = BeeDefinition.MEADOWS.getTemplate(); }
@@ -328,7 +328,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
      * registerMutation(getSpecies("Industrious"), PEAT.species, 18); } }, OIL(GTPP_Branch_Definition.ORGANIC, "Oil",
      * true, 0x4C4C4C, 0x333333) {
      * @Override protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-     * beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
+     * beeSpecies.addProduct(GTModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
      * beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.OIL), 0.15f);
      * beeSpecies.setHumidity(EnumHumidity.DAMP); beeSpecies.setTemperature(EnumTemperature.NORMAL);
      * beeSpecies.setNocturnal(); }

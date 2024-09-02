@@ -300,7 +300,7 @@ public class GTMod implements IGTMod {
 
         gregtechproxy.onPreLoad();
 
-        GTLog.out.println("GT_Mod: Setting Configs");
+        GTLog.out.println("GTMod: Setting Configs");
 
         GTPreLoad.loadConfig();
 
@@ -336,13 +336,13 @@ public class GTMod implements IGTMod {
         new SonictronLoader().run();
         new GTSpawnEventHandler();
 
-        // populate itemstack instance for NBT check in GT_Recipe
+        // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();
 
         GTPreLoad.sortToTheEnd();
         GregTechAPI.sPreloadFinished = true;
-        GTLog.out.println("GT_Mod: Preload-Phase finished!");
-        GTLog.ore.println("GT_Mod: Preload-Phase finished!");
+        GTLog.out.println("GTMod: Preload-Phase finished!");
+        GTLog.ore.println("GTMod: Preload-Phase finished!");
 
         GTUIInfos.init();
 
@@ -374,7 +374,7 @@ public class GTMod implements IGTMod {
         }
 
         if (Forestry.isModLoaded())
-            // noinspection InstantiationOfUtilityClass//TODO: Refactor GT_Bees with proper state handling
+            // noinspection InstantiationOfUtilityClass//TODO: Refactor GTBees with proper state handling
             new GTBees();
 
         // Disable Low Grav regardless of config if Cleanroom is disabled.
@@ -414,8 +414,8 @@ public class GTMod implements IGTMod {
         SpaceDimRegisterer.register();
 
         GregTechAPI.sLoadFinished = true;
-        GTLog.out.println("GT_Mod: Load-Phase finished!");
-        GTLog.ore.println("GT_Mod: Load-Phase finished!");
+        GTLog.out.println("GTMod: Load-Phase finished!");
+        GTLog.ore.println("GTMod: Load-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTLoad) {
             try {
@@ -510,7 +510,7 @@ public class GTMod implements IGTMod {
         Map<IRecipeInput, RecipeOutput> aThermalCentrifugeRecipeList = GTModHandler.getThermalCentrifugeRecipeList();
 
         GTLog.out.println(
-            "GT_Mod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
+            "GTMod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
         GT_FML_LOGGER.info(
             "If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
 
@@ -577,17 +577,17 @@ public class GTMod implements IGTMod {
 
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTLog.out.println("GT_Mod: Adding buffered Recipes.");
+        GTLog.out.println("GTMod: Adding buffered Recipes.");
         GTModHandler.stopBufferingCraftingRecipes();
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
 
-        GTLog.out.println("GT_Mod: Saving Lang File.");
+        GTLog.out.println("GTMod: Saving Lang File.");
         new MachineTooltipsLoader().run();
         GTLanguageManager.sEnglishFile.save();
         GregTechAPI.sPostloadFinished = true;
-        GTLog.out.println("GT_Mod: PostLoad-Phase finished!");
-        GTLog.ore.println("GT_Mod: PostLoad-Phase finished!");
+        GTLog.out.println("GTMod: PostLoad-Phase finished!");
+        GTLog.ore.println("GTMod: PostLoad-Phase finished!");
         for (Runnable tRunnable : GregTechAPI.sAfterGTPostload) {
             try {
                 tRunnable.run();
@@ -611,7 +611,7 @@ public class GTMod implements IGTMod {
         achievements = new GTAchievements();
 
         GTRecipe.GTppRecipeHelper = true;
-        GTLog.out.println("GT_Mod: Loading finished, de-allocating temporary Init Variables.");
+        GTLog.out.println("GTMod: Loading finished, de-allocating temporary Init Variables.");
         GregTechAPI.sBeforeGTPreload = null;
         GregTechAPI.sAfterGTPreload = null;
         GregTechAPI.sBeforeGTLoad = null;
@@ -659,9 +659,9 @@ public class GTMod implements IGTMod {
 
         gregtechproxy.onServerStarting();
         GTModHandler.removeAllIC2Recipes();
-        GTLog.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
+        GTLog.out.println("GTMod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
-        GTLog.out.println("GT_Mod: IC2 Machines");
+        GTLog.out.println("GTMod: IC2 Machines");
 
         ic2.api.recipe.Recipes.cannerBottle.getRecipes()
             .values()
@@ -714,7 +714,7 @@ public class GTMod implements IGTMod {
             .map(t -> t.items)
             .forEach(tStacks::addAll);
 
-        GTLog.out.println("GT_Mod: Dungeon Loot");
+        GTLog.out.println("GTMod: Dungeon Loot");
         for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest")
             .getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
@@ -755,7 +755,7 @@ public class GTMod implements IGTMod {
             .getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        GTLog.out.println("GT_Mod: Smelting");
+        GTLog.out.println("GTMod: Smelting");
 
         // Deal with legacy Minecraft raw types
         tStacks.addAll(
@@ -764,7 +764,7 @@ public class GTMod implements IGTMod {
                 .values());
 
         if (gregtechproxy.mCraftingUnification) {
-            GTLog.out.println("GT_Mod: Crafting Recipes");
+            GTLog.out.println("GTMod: Crafting Recipes");
             for (IRecipe tRecipe : CraftingManager.getInstance()
                 .getRecipeList()) {
                 if ((tRecipe instanceof IRecipe)) {
@@ -781,8 +781,8 @@ public class GTMod implements IGTMod {
             }
         }
         GregTechAPI.mServerStarted = true;
-        GTLog.out.println("GT_Mod: ServerStarting-Phase finished!");
-        GTLog.ore.println("GT_Mod: ServerStarting-Phase finished!");
+        GTLog.out.println("GTMod: ServerStarting-Phase finished!");
+        GTLog.ore.println("GTMod: ServerStarting-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstart) {
             try {

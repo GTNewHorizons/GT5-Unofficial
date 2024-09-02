@@ -180,7 +180,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
         .build();
     private ItemStack currentStick;
-    private GTRecipe.GT_Recipe_AssemblyLine currentRecipe;
+    private GTRecipe.GTRecipe_AssemblyLine currentRecipe;
     private final Slice[] slices = IntStream.range(0, 16)
         .mapToObj(Slice::new)
         .toArray(Slice[]::new);
@@ -332,7 +332,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return tt;
     }
 
-    private void setCurrentRecipe(ItemStack stick, GTRecipe.GT_Recipe_AssemblyLine recipe) {
+    private void setCurrentRecipe(ItemStack stick, GTRecipe.GTRecipe_AssemblyLine recipe) {
         currentRecipe = recipe;
         currentStick = stick;
         currentInputLength = recipe.mInputs.length;
@@ -381,7 +381,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         super.loadNBTData(aNBT);
         lastStopReason = aNBT.getString("lastStop");
         ItemStack loadedStack = null;
-        GTRecipe.GT_Recipe_AssemblyLine recipe = null;
+        GTRecipe.GTRecipe_AssemblyLine recipe = null;
         if (aNBT.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT_ARRAY)) {
             int[] arr = aNBT.getIntArray(TAG_KEY_PROGRESS_TIMES);
             for (int i = 0; i < slices.length; i++) {
@@ -637,13 +637,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return inputHatch.getFillableStack();
     }
 
-    private GTRecipe.GT_Recipe_AssemblyLine findRecipe(ItemStack tDataStick) {
+    private GTRecipe.GTRecipe_AssemblyLine findRecipe(ItemStack tDataStick) {
         AssemblyLineUtils.LookupResult tLookupResult = AssemblyLineUtils
             .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
         if (tLookupResult.getType() == AssemblyLineUtils.LookupResultType.INVALID_STICK) return null;
 
-        GTRecipe.GT_Recipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
+        GTRecipe.GTRecipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
         // Check if the recipe on the data stick is the current recipe for it's given output, if not we update it
         // and continue to next.
         if (tLookupResult.getType() != AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
@@ -673,22 +673,22 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return tRecipe;
     }
 
-    private boolean hasAllItems(GTRecipe.GT_Recipe_AssemblyLine tRecipe, int parallel) {
+    private boolean hasAllItems(GTRecipe.GTRecipe_AssemblyLine tRecipe, int parallel) {
         int aItemCount = tRecipe.mInputs.length;
         if (mInputBusses.size() < aItemCount) return false;
-        int[] itemConsumptions = GTRecipe.GT_Recipe_AssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+        int[] itemConsumptions = GTRecipe.GTRecipe_AssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
         if (itemConsumptions == null || itemConsumptions.length == 0) {
             return false;
         }
-        int maxParallel = (int) GTRecipe.GT_Recipe_AssemblyLine
+        int maxParallel = (int) GTRecipe.GTRecipe_AssemblyLine
             .maxParallelCalculatedByInputItems(mInputBusses, parallel, itemConsumptions, curBatchItemsFromME);
         return maxParallel >= parallel;
     }
 
-    private boolean hasAllFluids(GTRecipe.GT_Recipe_AssemblyLine tRecipe, int parallel) {
+    private boolean hasAllFluids(GTRecipe.GTRecipe_AssemblyLine tRecipe, int parallel) {
         int aFluidCount = tRecipe.mFluidInputs.length;
         if (mInputHatches.size() < aFluidCount) return false;
-        int maxParallel = (int) GTRecipe.GT_Recipe_AssemblyLine
+        int maxParallel = (int) GTRecipe.GTRecipe_AssemblyLine
             .maxParallelCalculatedByInputFluids(mInputHatches, parallel, tRecipe.mFluidInputs, curBatchFluidsFromME);
         return maxParallel >= parallel;
     }
@@ -747,7 +747,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             GT_FML_LOGGER.info("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
         }
 
-        GTRecipe.GT_Recipe_AssemblyLine recipe = null;
+        GTRecipe.GTRecipe_AssemblyLine recipe = null;
 
         for (ItemStack stack : tDataStickList) {
             recipe = findRecipe(stack);
@@ -945,8 +945,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
      * Caller is responsible to check and ensure the hatches are there and has all the fluid needed. You will usually
      * want to ensure hasAllFluid was called right before calling this, otherwise very bad things can happen.
      */
-    private void drainAllFluids(GTRecipe.GT_Recipe_AssemblyLine recipe, int parallel) {
-        GTRecipe.GT_Recipe_AssemblyLine
+    private void drainAllFluids(GTRecipe.GTRecipe_AssemblyLine recipe, int parallel) {
+        GTRecipe.GTRecipe_AssemblyLine
             .consumeInputFluids(mInputHatches, parallel, recipe.mFluidInputs, curBatchFluidsFromME);
         for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) tHatch.updateSlots();
     }
@@ -1068,7 +1068,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             startRecipeProcessing();
             ItemStack stack = getInputBusContent(id);
             if (stack == null) return false;
-            int size = GTRecipe.GT_Recipe_AssemblyLine
+            int size = GTRecipe.GTRecipe_AssemblyLine
                 .getMatchedIngredientAmount(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]);
             if (size < 0 || stack.stackSize < size * currentRecipeParallel) return false;
             progress = mMaxProgresstime / currentInputLength;

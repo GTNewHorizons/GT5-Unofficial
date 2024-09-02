@@ -56,7 +56,7 @@ public class LoaderOreProcessing implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Register Ore processing.");
+        GTLog.out.println("GTMod: Register Ore processing.");
         new ProcessingAll();
         new ProcessingBeans();
         new ProcessingBlock();

@@ -333,8 +333,8 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     // Used for outputting orevein weights and bins
                     /*
-                     * if( test==0 ) { test = 1; GT_Log.out.println( "sWeight = " + GT_Worldgen_GT_Ore_Layer.sWeight );
-                     * for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) { GT_Log.out.println( (
+                     * if( test==0 ) { test = 1; GTLog.out.println( "sWeight = " + GT_Worldgen_GT_Ore_Layer.sWeight );
+                     * for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) { GTLog.out.println( (
                      * tWorldGen).mWorldGenName + " mWeight = " + ( tWorldGen).mWeight + " mSize = " + (tWorldGen).mSize
                      * ); } }
                      */
@@ -506,7 +506,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             try {
                 for (GTWorldgen tWorldGen : GregTechAPI.sWorldgenList) {
                     /*
-                     * if (debugWorldGen) GT_Log.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
+                     * if (debugWorldGen) GTLog.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
                      */
                     tWorldGen.executeWorldgen(
                         this.mWorld,

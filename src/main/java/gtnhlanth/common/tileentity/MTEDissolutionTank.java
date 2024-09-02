@@ -160,7 +160,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
                 majorAmount = fluidInputOne.amount;
                 // minorInput = fluidInputTwo;
                 minorAmount = fluidInputTwo.amount;
-                // GT_Log.out.print("in first IF");
+                // GTLog.out.print("in first IF");
             } else return false; // No valid other input
 
         } else if (fluidInputTwo.getUnlocalizedName()
@@ -171,7 +171,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
                     majorAmount = fluidInputTwo.amount;
                     // minorInput = fluidInputOne;
                     minorAmount = fluidInputOne.amount;
-                    // GT_Log.out.print("in second if");
+                    // GTLog.out.print("in second if");
                 } else return false;
 
             } else return false;

@@ -397,7 +397,7 @@ public class VoidProtectionHelper {
         int tSlotsFree = 0;
         int index = 0;
         for (ItemStack tItem : itemOutputs) {
-            // GT_RecipeBuilder doesn't handle null item output
+            // GTRecipeBuilder doesn't handle null item output
             if (tItem == null) continue;
             int itemStackSize = (int) (tItem.stackSize * outputMultiplier
                 * Math.ceil(chanceMultiplier * chanceGetter.apply(index++) / 10000));

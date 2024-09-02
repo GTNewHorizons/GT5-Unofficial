@@ -150,7 +150,7 @@ public class BeamlineRecipeLoader {
 
             /*
              * if (!Arrays.asList(MaskList.PPIC.getForbiddenWafers()).contains(wafer)) {
-             * GT_Log.out.print("Adding recipe for PPIC with " + wafer.get(1).getUnlocalizedName() + " amount: " + 40 *
+             * GTLog.out.print("Adding recipe for PPIC with " + wafer.get(1).getUnlocalizedName() + " amount: " + 40 *
              * (int) Math.pow(2, index - 1)); BeamlineRecipeAdder.instance.addTargetChamberRecipe( wafer.get(1),
              * ItemList.Circuit_Wafer_PPIC.get((int) Math.pow(2, index + 2)), //Varies new
              * ItemStack(LanthItemList.maskMap.get(MaskList.PPIC), 0), // Varies 0, 40 * (int) Math.pow(2, index - 1),

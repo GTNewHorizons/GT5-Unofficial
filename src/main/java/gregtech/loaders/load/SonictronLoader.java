@@ -12,7 +12,7 @@ public class SonictronLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GT_Mod: Loading Sonictron Sounds");
+        GTLog.out.println("GTMod: Loading Sonictron Sounds");
         GTMod.gregtechproxy.mSoundItems.add(new ItemStack(Blocks.iron_block, 1));
         GTMod.gregtechproxy.mSoundNames.add(SoundResource.NOTE_HARP.toString());
         GTMod.gregtechproxy.mSoundCounts.add(25);

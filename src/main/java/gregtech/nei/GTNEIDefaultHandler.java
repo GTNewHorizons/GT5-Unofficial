@@ -574,8 +574,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                         .getItemHandler() == itemInputsInventory) {
                         int i = widget.getMcSlot()
                             .getSlotIndex();
-                        Object input = aRecipe instanceof GTRecipe.GT_Recipe_WithAlt
-                            ? ((GTRecipe.GT_Recipe_WithAlt) aRecipe).getAltRepresentativeInput(i)
+                        Object input = aRecipe instanceof GTRecipe.GTRecipe_WithAlt
+                            ? ((GTRecipe.GTRecipe_WithAlt) aRecipe).getAltRepresentativeInput(i)
                             : aRecipe.getRepresentativeInput(i);
                         if (input != null) {
                             mInputs.add(

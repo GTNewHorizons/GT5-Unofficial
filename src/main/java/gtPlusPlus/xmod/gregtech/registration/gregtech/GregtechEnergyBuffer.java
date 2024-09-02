@@ -180,9 +180,9 @@ public class GregtechEnergyBuffer {
             new Object[] { "WTW", "WMW", 'M', ItemList.Hull_MAX, 'W',
                 OrePrefixes.wireGt08.get(Materials.SuperconductorUHV), 'T', GregtechOreDictNames.buffer_core });
         /*
-         * GT_ModHandler.addCraftingRecipe( GregtechItemList.Energy_Buffer_1by1_MAX.get(1L, new Object[0]),
-         * GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
-         * GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW",
+         * GTModHandler.addCraftingRecipe( GregtechItemList.Energy_Buffer_1by1_MAX.get(1L, new Object[0]),
+         * GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE |
+         * GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW",
          * Character.valueOf('M'), ItemList.Hull_MAX, Character.valueOf('W'),
          * OrePrefixes.wireGt08.get(Materials.Superconductor), Character.valueOf('T'), GregtechOreDictNames.buffer_core
          * });

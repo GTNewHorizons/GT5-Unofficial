@@ -421,7 +421,7 @@ public class GTRecipeConstants {
      * in ticks.
      */
     public static final IRecipeMap AssemblyLine = IRecipeMap.newRecipeMap(builder -> {
-        Optional<GTRecipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput()
+        Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
             .validateInputCount(4, 16)
             .validateOutputCount(1, 1)
             .validateOutputFluidCount(-1, 0)
@@ -429,7 +429,7 @@ public class GTRecipeConstants {
             .buildWithAlt();
         // noinspection SimplifyOptionalCallChains
         if (!rr.isPresent()) return Collections.emptyList();
-        GTRecipe.GT_Recipe_WithAlt r = rr.get();
+        GTRecipe.GTRecipe_WithAlt r = rr.get();
         ItemStack[][] mOreDictAlt = r.mOreDictAlt;
         Object[] inputs = builder.getItemInputsOreDict();
         ItemStack aResearchItem = builder.getMetadata(RESEARCH_ITEM);
@@ -486,7 +486,7 @@ public class GTRecipeConstants {
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
-        GTRecipe.GT_Recipe_AssemblyLine tRecipe = new GTRecipe.GT_Recipe_AssemblyLine(
+        GTRecipe.GTRecipe_AssemblyLine tRecipe = new GTRecipe.GTRecipe_AssemblyLine(
             aResearchItem,
             aResearchTime,
             r.mInputs,
@@ -496,7 +496,7 @@ public class GTRecipeConstants {
             r.mEUt,
             r.mOreDictAlt);
         tRecipe.setPersistentHash(tPersistentHash);
-        GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
+        GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         AssemblyLineUtils.addRecipeToCache(tRecipe);
 
         ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");

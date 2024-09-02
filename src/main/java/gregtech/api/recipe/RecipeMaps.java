@@ -7,7 +7,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GTRecipeMapUtil.GT_RecipeTemplate;
+import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GTUtility.clamp;
@@ -629,7 +629,7 @@ public final class RecipeMaps {
                 return Collections.emptyList();
             int aCoalAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 0);
             if (aCoalAmount <= 0) return Collections.emptyList();
-            GT_RecipeTemplate coll = asTemplate(rr.get());
+            GTRecipeTemplate coll = asTemplate(rr.get());
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
@@ -720,7 +720,7 @@ public final class RecipeMaps {
                 .build();
             if (!t.isPresent()) return Collections.emptyList();
             ItemStack input = b.getItemInputBasic(0);
-            GT_RecipeTemplate coll = asTemplate(t.get());
+            GTRecipeTemplate coll = asTemplate(t.get());
             int tExplosives = Math.min(b.getMetadataOrDefault(ADDITIVE_AMOUNT, 0), 64);
             int tGunpowder = tExplosives << 1; // Worst
             int tDynamite = Math.max(1, tExplosives >> 1); // good

@@ -468,14 +468,14 @@ public class GTRecipeRegistrator {
                             tCrafted,
                             new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tRecipe.amount1));
                         //
-                        // GT_Log.out.println("###################################################################################");
-                        // GT_Log.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
-                        // GT_Log.out.println("registerUsagesForMaterials used aPlate:
+                        // GTLog.out.println("###################################################################################");
+                        // GTLog.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
+                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
                         // "+aMat.getUnlocalizedName());
-                        // GT_Log.out.println("registerUsagesForMaterials used aPlate:
+                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
                         // "+aMat.getDisplayName());
                         //
-                        // GT_Log.out.println("###################################################################################");
+                        // GTLog.out.println("###################################################################################");
                     }
                 }
             }

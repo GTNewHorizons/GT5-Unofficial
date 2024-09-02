@@ -21,18 +21,18 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.GTRecipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GTRecipe.GTRecipe_AssemblyLine;
 
 public class AssemblyLineUtils {
 
     /**
      * A cache of Recipes using the Output as Key.
      */
-    private static final HashMap<GTItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
+    private static final HashMap<GTItemStack, GTRecipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
     /**
      * A cache of Recipes using the Recipe Hash String as Key.
      */
-    private static final HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
+    private static final HashMap<String, GTRecipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
 
     /**
      * Checks the DataStick for deprecated/invalid recipes, updating them as required.
@@ -40,14 +40,14 @@ public class AssemblyLineUtils {
      * @param aDataStick - The DataStick to process
      * @return Is this DataStick now valid with a current recipe?
      */
-    public static GT_Recipe_AssemblyLine processDataStick(ItemStack aDataStick) {
+    public static GTRecipe_AssemblyLine processDataStick(ItemStack aDataStick) {
         if (!isItemDataStick(aDataStick)) {
             return null;
         }
         if (doesDataStickNeedUpdate(aDataStick)) {
             ItemStack aStickOutput = getDataStickOutput(aDataStick);
             if (aStickOutput != null) {
-                GT_Recipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
+                GTRecipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
                 if (aIntendedRecipe != null && setAssemblyLineRecipeOnDataStick(aDataStick, aIntendedRecipe))
                     return aIntendedRecipe;
             }
@@ -59,9 +59,9 @@ public class AssemblyLineUtils {
      * Finds an Assembly Line recipe from a DataStick.
      *
      * @param aDataStick - The DataStick to check.
-     * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
+     * @return The GTRecipe_AssemblyLine recipe contained on the DataStick, if any.
      */
-    public static GT_Recipe_AssemblyLine findAssemblyLineRecipeFromDataStick(ItemStack aDataStick) {
+    public static GTRecipe_AssemblyLine findAssemblyLineRecipeFromDataStick(ItemStack aDataStick) {
         return findAssemblyLineRecipeFromDataStick(aDataStick, false).getRecipe();
     }
 
@@ -69,9 +69,9 @@ public class AssemblyLineUtils {
      * Finds an Assembly Line recipe from a DataStick.
      *
      * @param aDataStick         - The DataStick to check.
-     * @param aReturnBuiltRecipe - Do we return a GT_Recipe_AssemblyLine built from the data on the Data Stick instead
+     * @param aReturnBuiltRecipe - Do we return a GTRecipe_AssemblyLine built from the data on the Data Stick instead
      *                           of searching the Recipe Map?
-     * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
+     * @return The GTRecipe_AssemblyLine recipe contained on the DataStick, if any.
      */
     @Nonnull
     public static LookupResult findAssemblyLineRecipeFromDataStick(ItemStack aDataStick, boolean aReturnBuiltRecipe) {
@@ -90,7 +90,7 @@ public class AssemblyLineUtils {
 
         // Get From Cache
         if (doesDataStickHaveRecipeHash(aDataStick)) {
-            GT_Recipe_AssemblyLine aRecipeFromCache = sRecipeCacheByRecipeHash.get(getHashFromDataStack(aDataStick));
+            GTRecipe_AssemblyLine aRecipeFromCache = sRecipeCacheByRecipeHash.get(getHashFromDataStack(aDataStick));
             if (aRecipeFromCache != null && GTUtility.areStacksEqual(aOutput, aRecipeFromCache.mOutput)) {
                 return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(aRecipeFromCache);
             } // else: no cache, or the old recipe run into a hash collision with a different new recipe
@@ -152,7 +152,7 @@ public class AssemblyLineUtils {
         // Try build a recipe instance
         if (aReturnBuiltRecipe) {
             return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(
-                new GT_Recipe_AssemblyLine(
+                new GTRecipe_AssemblyLine(
                     null,
                     0,
                     aInputs.toArray(new ItemStack[0]),
@@ -162,7 +162,7 @@ public class AssemblyLineUtils {
                     aEU));
         }
 
-        for (GT_Recipe_AssemblyLine aRecipe : GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+        for (GTRecipe_AssemblyLine aRecipe : GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes) {
             if (aRecipe.mEUt != aEU || aRecipe.mDuration != aTime) continue;
             if (!GTUtility.areStacksEqual(aOutput, aRecipe.mOutput, true)) continue;
             if (!GTUtility.areStackListsEqual(Arrays.asList(aRecipe.mInputs), aInputs, false, true)) continue;
@@ -196,25 +196,25 @@ public class AssemblyLineUtils {
     }
 
     /**
-     * Finds a GT_Recipe_AssemblyLine based on the expected output ItemStack.
+     * Finds a GTRecipe_AssemblyLine based on the expected output ItemStack.
      *
-     * @param aOutput - The Output of a GT_Recipe_AssemblyLine.
-     * @return First found GT_Recipe_AssemblyLine with matching output.
+     * @param aOutput - The Output of a GTRecipe_AssemblyLine.
+     * @return First found GTRecipe_AssemblyLine with matching output.
      */
-    public static GT_Recipe_AssemblyLine findAssemblyLineRecipeByOutput(ItemStack aOutput) {
+    public static GTRecipe_AssemblyLine findAssemblyLineRecipeByOutput(ItemStack aOutput) {
         if (aOutput == null) {
             return null;
         }
 
         // Check the cache
         GTItemStack aCacheStack = new GTItemStack(aOutput);
-        GT_Recipe_AssemblyLine aRecipeFromCache = sRecipeCacheByOutput.get(aCacheStack);
+        GTRecipe_AssemblyLine aRecipeFromCache = sRecipeCacheByOutput.get(aCacheStack);
         if (aRecipeFromCache != null) {
             return aRecipeFromCache;
         }
 
         // Iterate all recipes and return the first matching based on Output.
-        for (GT_Recipe_AssemblyLine aRecipe : GTRecipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+        for (GTRecipe_AssemblyLine aRecipe : GTRecipe.GTRecipe_AssemblyLine.sAssemblylineRecipes) {
             ItemStack aRecipeOutput = aRecipe.mOutput;
             if (GTUtility.areStacksEqual(aRecipeOutput, aOutput)) {
                 // Cache it to prevent future iterations of all recipes
@@ -230,7 +230,7 @@ public class AssemblyLineUtils {
      * @param aRecipe - The recipe to generate a Recipe Hash String from.
      * @return The Recipe Hash String.
      */
-    public static String generateRecipeHash(GT_Recipe_AssemblyLine aRecipe) {
+    public static String generateRecipeHash(GTRecipe_AssemblyLine aRecipe) {
         String aHash = "Invalid.Recipe.Hash";
         if (aRecipe != null) {
             aHash = "Hash." + aRecipe.getPersistentHash();
@@ -242,10 +242,10 @@ public class AssemblyLineUtils {
      * @param aRecipe - The recipe to add to internal caches
      * @throws IllegalArgumentException if given recipe collide with any existing recipe in the cache
      */
-    public static void addRecipeToCache(GT_Recipe_AssemblyLine aRecipe) {
+    public static void addRecipeToCache(GTRecipe_AssemblyLine aRecipe) {
         if (aRecipe != null) {
             String aHash = "Hash." + aRecipe.getPersistentHash();
-            GT_Recipe_AssemblyLine existing = sRecipeCacheByOutput.put(new GTItemStack(aRecipe.mOutput), aRecipe);
+            GTRecipe_AssemblyLine existing = sRecipeCacheByOutput.put(new GTItemStack(aRecipe.mOutput), aRecipe);
             if (existing != null) throw new IllegalArgumentException("Duplicate assline recipe for " + aRecipe.mOutput);
             existing = sRecipeCacheByRecipeHash.put(aHash, aRecipe);
             if (existing != null && !existing.equals(aRecipe))
@@ -292,7 +292,7 @@ public class AssemblyLineUtils {
             String aStickHash = getHashFromDataStack(aDataStick);
             if (isValidHash(aStickHash) && doesDataStickHaveOutput(aDataStick)) {
                 ItemStack aStickOutput = getDataStickOutput(aDataStick);
-                GT_Recipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
+                GTRecipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
                 return !aStickHash.equals(generateRecipeHash(aIntendedRecipe));
             }
         }
@@ -363,14 +363,14 @@ public class AssemblyLineUtils {
     /**
      *
      * @param aDataStick - The Data Stick to update.
-     * @param aNewRecipe - The New GT_Recipe_AssemblyLine recipe to update it with.
+     * @param aNewRecipe - The New GTRecipe_AssemblyLine recipe to update it with.
      * @return Did we set the new recipe data & Recipe Hash String on the Data Stick?
      */
-    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GT_Recipe_AssemblyLine aNewRecipe) {
+    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GTRecipe_AssemblyLine aNewRecipe) {
         return setAssemblyLineRecipeOnDataStick(aDataStick, aNewRecipe, true);
     }
 
-    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GT_Recipe_AssemblyLine aNewRecipe,
+    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GTRecipe_AssemblyLine aNewRecipe,
         boolean setUpdateTime) {
         if (isItemDataStick(aDataStick) && aNewRecipe.mOutput != null) {
             String s = aNewRecipe.mOutput.getDisplayName();
@@ -385,7 +385,7 @@ public class AssemblyLineUtils {
 
             String aHash = generateRecipeHash(aNewRecipe);
             if (GTValues.D1) {
-                GT_Recipe_AssemblyLine aOldRecipe = findAssemblyLineRecipeFromDataStick(aDataStick, true).recipe;
+                GTRecipe_AssemblyLine aOldRecipe = findAssemblyLineRecipeFromDataStick(aDataStick, true).recipe;
                 GT_FML_LOGGER.info(
                     "Updating data stick: " + aDataStick.getDisplayName()
                         + " | Old Recipe Hash: "
@@ -531,7 +531,7 @@ public class AssemblyLineUtils {
             return singletonResult;
         }
 
-        public LookupResult getResult(GT_Recipe_AssemblyLine recipe) {
+        public LookupResult getResult(GTRecipe_AssemblyLine recipe) {
             if ((recipe == null) != recipeNull)
                 throw new IllegalArgumentException("This result type does not allow given input");
             return new LookupResult(recipe, this);
@@ -540,15 +540,15 @@ public class AssemblyLineUtils {
 
     public static class LookupResult {
 
-        private final GT_Recipe_AssemblyLine recipe;
+        private final GTRecipe_AssemblyLine recipe;
         private final LookupResultType type;
 
-        LookupResult(GT_Recipe_AssemblyLine recipe, LookupResultType type) {
+        LookupResult(GTRecipe_AssemblyLine recipe, LookupResultType type) {
             this.recipe = recipe;
             this.type = type;
         }
 
-        public GT_Recipe_AssemblyLine getRecipe() {
+        public GTRecipe_AssemblyLine getRecipe() {
             return recipe;
         }
 

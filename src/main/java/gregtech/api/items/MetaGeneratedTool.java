@@ -61,7 +61,7 @@ import mrtjp.projectred.api.IScrewdriver;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
- * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(GT_MetaGenerated_Tool_01.WRENCH, 1,
+ * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(MetaGeneratedTool01.WRENCH, 1,
  * Materials.Bismuth, Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
@@ -252,7 +252,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     /**
-     * Called by the Block Harvesting Event within the GT_Proxy
+     * Called by the Block Harvesting Event within the GTProxy
      */
     @Mod.EventHandler
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock,

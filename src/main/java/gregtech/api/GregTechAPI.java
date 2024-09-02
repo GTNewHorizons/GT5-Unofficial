@@ -333,7 +333,7 @@ public class GregTechAPI {
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
         if (!GregTechAPI.sPreloadFinished) GTLog.err.println(
-            "GregTech_API ERROR: " + aOreStack.getItem()
+            "GregTechAPI ERROR: " + aOreStack.getItem()
                 + "."
                 + aOreStack.getItemDamage()
                 + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
@@ -701,7 +701,7 @@ public class GregTechAPI {
             return sBaseMetaTileEntityClass.getDeclaredConstructor()
                 .newInstance();
         } catch (Throwable e) {
-            GTLog.err.println("GT_Mod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
+            GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GTLog.err);
             throw new RuntimeException(e);
         }

@@ -306,13 +306,13 @@ public class RecipeGenRecycling implements Runnable {
             tempMap = (Map<String, ItemStack>) FieldUtils
                 .readStaticField(GTOreDictUnificator.class, "sName2StackMap", true);
             if (tempMap != null) {
-                Logger.WARNING("Found 'sName2StackMap' in GT_OreDictUnificator.class.");
+                Logger.WARNING("Found 'sName2StackMap' in GTOreDictUnificator.class.");
                 return tempMap;
             }
         } catch (final IllegalAccessException e) {
             e.printStackTrace();
         }
-        Logger.WARNING("Invalid map stored in GT_OreDictUnificator.class, unable to find sName2StackMap field.");
+        Logger.WARNING("Invalid map stored in GTOreDictUnificator.class, unable to find sName2StackMap field.");
         return null;
     }
 

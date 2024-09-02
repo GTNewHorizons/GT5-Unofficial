@@ -25,9 +25,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         if (DetravScannerMod.DEBUG_ENABLED) return;
         try {
             // ULV disabled
-            // GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, aMaterial,
-            // Materials.Lead, null), GT_ModHandler.RecipeBits.DISMANTLEABLE |
-            // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new
+            // GTModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, aMaterial,
+            // Materials.Lead, null), GTModHandler.RecipeBits.DISMANTLEABLE |
+            // GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED, new
             // Object[]{"SHE","CPC","PXP",'E',OreDictionary.getOres("cellSulfuricAcid").get(0),'S',OreDictionary.getOres("cellHydroxide").get(0),'H',OrePrefixes.toolHeadDrill.get(aMaterial),'P',OrePrefixes.plate.get(aMaterial),'C',OrePrefixes.circuit.get(Materials.Primitive),'X',gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Sensor_ULV});
             GTModHandler.addCraftingRecipe(
                 DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(2, 1, material, Materials.Steel, null),

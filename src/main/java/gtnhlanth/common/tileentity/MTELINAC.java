@@ -408,7 +408,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @Override
     public void stopMachine() {
 
-        // GT_Log.out.print("Machine stopped");
+        // GTLog.out.print("Machine stopped");
         outputFocus = 0;
         outputEnergy = 0;
         outputParticle = 0;
@@ -638,7 +638,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
 
-            // GT_Log.out.print("Building inner piece! i = " + i);
+            // GTLog.out.print("Building inner piece! i = " + i);
 
             buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 3, 6, i);
         }

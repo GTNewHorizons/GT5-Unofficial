@@ -153,7 +153,7 @@ public class RecipeMapBackend {
             if (item == null) continue;
             itemIndex.put(new GTItemStack(item), recipe);
         }
-        if (recipe instanceof GTRecipe.GT_Recipe_WithAlt recipeWithAlt) {
+        if (recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
             for (ItemStack[] itemStacks : recipeWithAlt.mOreDictAlt) {
                 if (itemStacks == null) continue;
                 for (ItemStack item : itemStacks) {

@@ -123,7 +123,7 @@ public enum GregtechOrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<GregtechOrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GregTech_API.MATERIAL_UNIT to
+     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GregTechAPI.MATERIAL_UNIT to
      * get the Amounts in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
     public final long mMaterialAmount;

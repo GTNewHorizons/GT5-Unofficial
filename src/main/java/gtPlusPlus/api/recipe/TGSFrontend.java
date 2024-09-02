@@ -86,9 +86,9 @@ public class TGSFrontend extends RecipeMapFrontend {
          * This gets a little complicated, because we want to assign tooltips to inputs/outputs based on which mode
          * (saw, shears, etc.) they correspond to. But CachedDefaultRecipe does not retain this information for us. This
          * is because some recipes don't output any items for some modes. For example, if a recipe only yields logs and
-         * leaves, then the outputs of GT_Recipe will be {log, null, leaves}. However, in CachedDefaultRecipe this gets
+         * leaves, then the outputs of GTRecipe will be {log, null, leaves}. However, in CachedDefaultRecipe this gets
          * condensed to just {log, leaves}, with null values omitted. So to figure out which item came from which mode,
-         * we need to step through both of these arrays simultaneously and match non-null inputs/outputs in GT_Recipe to
+         * we need to step through both of these arrays simultaneously and match non-null inputs/outputs in GTRecipe to
          * inputs/outputs in CachedDefaultRecipe.
          */
 
@@ -99,7 +99,7 @@ public class TGSFrontend extends RecipeMapFrontend {
             return currentTip;
         }
 
-        GTRecipe.GT_Recipe_WithAlt recipe = (GTRecipe.GT_Recipe_WithAlt) neiCachedRecipe.mRecipe;
+        GTRecipe.GTRecipe_WithAlt recipe = (GTRecipe.GTRecipe_WithAlt) neiCachedRecipe.mRecipe;
 
         // Inputs
         int slot = 0;

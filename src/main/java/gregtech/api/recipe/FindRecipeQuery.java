@@ -20,7 +20,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
  *
  * <pre>
  * {@code
- *     GT_Recipe recipe = recipeMap.findRecipeQuery()
+ *     GTRecipe recipe = recipeMap.findRecipeQuery()
  *         .items(inputItems)
  *         .fluids(inputFluids)
  *         .find();
