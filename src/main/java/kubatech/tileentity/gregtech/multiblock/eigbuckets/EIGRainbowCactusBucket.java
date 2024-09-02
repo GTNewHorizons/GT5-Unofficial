@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 import tb.common.block.BlockRainbowCactus;
 import tb.init.TBBlocks;
 
@@ -30,7 +30,7 @@ public class EIGRainbowCactusBucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
+        public EIGBucket tryCreateBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
             // check if input is rainbow cacti;
             if (!(Block.getBlockFromItem(input.getItem()) instanceof BlockRainbowCactus)) return null;
             return new EIGRainbowCactusBucket(input, 1);
@@ -54,7 +54,7 @@ public class EIGRainbowCactusBucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public boolean revalidate(MTEExtremeIndustrialGreenhouse greenhouse) {
         return this.isValid();
     }
 

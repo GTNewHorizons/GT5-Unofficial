@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GT_Values.GT;
+import static gregtech.api.enums.GTValues.GT;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,9 +30,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -40,15 +40,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.CoverBehaviorBase;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GT_Client;
+import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 
 /**
@@ -107,10 +107,10 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount, boolean aAddInfo) {
-        if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted)
+        if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
-        if (GregTech_API.METATILEENTITIES[aID] == null) {
-            GregTech_API.METATILEENTITIES[aID] = this;
+        if (GregTechAPI.METATILEENTITIES[aID] == null) {
+            GregTechAPI.METATILEENTITIES[aID] = this;
         } else {
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
@@ -118,7 +118,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
             .toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
-        GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
         mInventory = new ItemStack[aInvSlotCount];
 
         if (aAddInfo && GT.isClientSide()) {
@@ -129,7 +129,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     protected final void addInfo(int aID) {
         if (!GT.isClientSide()) return;
 
-        ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
+        ItemStack tStack = new ItemStack(GregTechAPI.sBlockMachines, 1, aID);
         Objects.requireNonNull(tStack.getItem())
             .addInformation(tStack, null, new ArrayList<>(), true);
     }
@@ -187,7 +187,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public ItemStack getStackForm(long aAmount) {
-        return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
+        return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
@@ -254,7 +254,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         return true;
     }
 
@@ -322,7 +322,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+        if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             /*
              * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
              * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
@@ -598,8 +598,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public String getInventoryName() {
-        if (GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
-            return GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+        if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
         return "";
     }
 
@@ -615,7 +615,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public ItemStack decrStackSize(int aIndex, int aAmount) {
-        ItemStack tStack = getStackInSlot(aIndex), rStack = GT_Utility.copyOrNull(tStack);
+        ItemStack tStack = getStackInSlot(aIndex), rStack = GTUtility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
                 if (setStackToZeroInsteadOfNull(aIndex)) tStack.stackSize = 0;
@@ -647,7 +647,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     public boolean canInsertItem(int slotIndex, ItemStack itemStack, int ordinalSide) {
         return isValidSlot(slotIndex) && itemStack != null
             && slotIndex < mInventory.length
-            && (mInventory[slotIndex] == null || GT_Utility.areStacksEqual(itemStack, mInventory[slotIndex]))
+            && (mInventory[slotIndex] == null || GTUtility.areStacksEqual(itemStack, mInventory[slotIndex]))
             && allowPutStack(getBaseMetaTileEntity(), slotIndex, ForgeDirection.getOrientation(ordinalSide), itemStack);
     }
 
@@ -796,12 +796,12 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength = GT_Values.getExplosionPowerForVoltage(aExplosionPower);
+        float tStrength = GTValues.getExplosionPowerForVoltage(aExplosionPower);
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(),
             tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
-        if (GregTech_API.sMachineExplosions) {
+        if (GregTechAPI.sMachineExplosions) {
             new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
                 .setSmoking(true)
                 .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
@@ -949,7 +949,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return (mConnections & sideDirection.flag) != 0;
     }
 
-    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return false;
     }
@@ -958,7 +958,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return false;
     }
 
-    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return false;
     }
@@ -967,12 +967,12 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return false;
     }
 
-    public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
+    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
-    public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
+    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
@@ -1000,13 +1000,13 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public int getGUIColorization() {
         Dyes dye = Dyes.dyeWhite;
-        if (GregTech_API.sColoredGUI) {
-            if (GregTech_API.sMachineMetalGUI) {
+        if (GregTechAPI.sColoredGUI) {
+            if (GregTechAPI.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
                 dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
             }
         }
-        return GT_Util.getRGBInt(dye.getRGBA());
+        return GTUtil.getRGBInt(dye.getRGBA());
     }
 }

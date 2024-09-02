@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
-import static gregtech.api.GregTech_API.mEUtoRF;
+import static gregtech.api.GregTechAPI.mEUtoRF;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.COFHCore;
 
@@ -20,26 +20,26 @@ import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTModHandler;
+import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.items.MetaGeneratedItem02;
+import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEWirelessCharger;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
 public class ChargingHelper {
 
-    private static final Map<String, Pair<GregtechMetaWirelessCharger, Byte>> mValidPlayers = new HashMap<>();
-    protected static Map<BlockPos, GregtechMetaWirelessCharger> mChargerMap = new HashMap<>();
+    private static final Map<String, Pair<MTEWirelessCharger, Byte>> mValidPlayers = new HashMap<>();
+    protected static Map<BlockPos, MTEWirelessCharger> mChargerMap = new HashMap<>();
     private int mTickTimer = 0;
     private static final int mTickMultiplier = 20;
 
@@ -75,7 +75,7 @@ public class ChargingHelper {
                     }
                 }
 
-                for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()) {
+                for (MTEWirelessCharger mEntityTemp : mChargerMap.values()) {
                     if (mEntityTemp != null) {
                         if (mEntityTemp.getBaseMetaTileEntity() == null || !mEntityTemp.getBaseMetaTileEntity()
                             .isAllowedToWork()) continue;
@@ -96,11 +96,11 @@ public class ChargingHelper {
                                 if (mStartingEu - mEntityTemp.getEUVar() <= 0) {
                                     long mMaxDistance;
                                     if (mEntityTemp.getMode() == 0) {
-                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()]);
+                                        mMaxDistance = (4 * GTValues.V[mEntityTemp.getTier()]);
                                     } else if (mEntityTemp.getMode() == 1) {
                                         mMaxDistance = (mEntityTemp.getTier() * 10L);
                                     } else {
-                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()] / 2);
+                                        mMaxDistance = (4 * GTValues.V[mEntityTemp.getTier()] / 2);
                                     }
                                     double mDistance = calculateDistance(mEntityTemp, mPlayerMan);
                                     long mVoltageCost = MathUtils.findPercentageOfInt(mMaxDistance, (float) mDistance);
@@ -121,7 +121,7 @@ public class ChargingHelper {
         } catch (Throwable t) {
             if (!mChargerMap.isEmpty()) {
                 for (BlockPos aPos : mChargerMap.keySet()) {
-                    GregtechMetaWirelessCharger r = mChargerMap.get(aPos);
+                    MTEWirelessCharger r = mChargerMap.get(aPos);
                     if (r == null || r.getBaseMetaTileEntity()
                         .isInvalidTileEntity()) {
                         mChargerMap.remove(aPos);
@@ -131,11 +131,11 @@ public class ChargingHelper {
         }
     }
 
-    public static GregtechMetaWirelessCharger getEntry(BlockPos mPos) {
+    public static MTEWirelessCharger getEntry(BlockPos mPos) {
         return mChargerMap.get(mPos);
     }
 
-    public static boolean addEntry(BlockPos mPos, GregtechMetaWirelessCharger mEntity) {
+    public static boolean addEntry(BlockPos mPos, MTEWirelessCharger mEntity) {
         if (mEntity == null) {
             return false;
         }
@@ -143,7 +143,7 @@ public class ChargingHelper {
         return true;
     }
 
-    public static boolean removeEntry(BlockPos mPos, GregtechMetaWirelessCharger mEntity) {
+    public static boolean removeEntry(BlockPos mPos, MTEWirelessCharger mEntity) {
         if (mEntity == null) {
             return false;
         }
@@ -154,31 +154,31 @@ public class ChargingHelper {
         }
     }
 
-    public static boolean addValidPlayer(EntityPlayer mPlayer, GregtechMetaWirelessCharger mEntity) {
+    public static boolean addValidPlayer(EntityPlayer mPlayer, MTEWirelessCharger mEntity) {
         if (mEntity == null) {
             return false;
         }
         if (mValidPlayers.containsKey(mPlayer.getDisplayName())) {
             return false;
         } else {
-            Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<>(mEntity, (byte) mEntity.getMode());
+            Pair<MTEWirelessCharger, Byte> mEntry = new Pair<>(mEntity, (byte) mEntity.getMode());
             return mValidPlayers.put(mPlayer.getDisplayName(), mEntry) == null;
         }
     }
 
-    public static boolean removeValidPlayer(EntityPlayer mPlayer, GregtechMetaWirelessCharger mEntity) {
+    public static boolean removeValidPlayer(EntityPlayer mPlayer, MTEWirelessCharger mEntity) {
         if (mEntity == null) {
             return false;
         }
         if (mValidPlayers.containsKey(mPlayer.getDisplayName())) {
-            Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<>(mEntity, (byte) mEntity.getMode());
+            Pair<MTEWirelessCharger, Byte> mEntry = new Pair<>(mEntity, (byte) mEntity.getMode());
             return mValidPlayers.remove(mPlayer.getDisplayName(), mEntry);
         } else {
             return false;
         }
     }
 
-    private boolean canCharge(GregtechMetaWirelessCharger charger, EntityPlayer chargeablePlayer,
+    private boolean canCharge(MTEWirelessCharger charger, EntityPlayer chargeablePlayer,
         Map<String, UUID> longRangeChargers, Map<String, UUID> shortRangeChargers) {
         if (charger.getMode() == 0) {
             return !longRangeChargers.isEmpty() && longRangeChargers.containsKey(chargeablePlayer.getDisplayName());
@@ -192,7 +192,7 @@ public class ChargingHelper {
         }
     }
 
-    private double calculateDistance(GregtechMetaWirelessCharger mEntityTemp, EntityPlayer mPlayerMan) {
+    private double calculateDistance(MTEWirelessCharger mEntityTemp, EntityPlayer mPlayerMan) {
         if (mEntityTemp == null || mPlayerMan == null) {
             return 0;
         }
@@ -201,14 +201,14 @@ public class ChargingHelper {
             mEntityTemp.getPositionOfEntity(mPlayerMan));
     }
 
-    private void chargeItems(@Nonnull GregtechMetaWirelessCharger mEntity, ItemStack[] mItems) {
+    private void chargeItems(@Nonnull MTEWirelessCharger mEntity, ItemStack[] mItems) {
         if (mItems == null || mItems.length == 0) {
             return;
         }
         chargeItemsEx(mEntity, mItems);
     }
 
-    private void chargeItemsEx(@Nonnull GregtechMetaWirelessCharger mEntity, ItemStack[] mItems) {
+    private void chargeItemsEx(@Nonnull MTEWirelessCharger mEntity, ItemStack[] mItems) {
         // Bad Inventory
         if (mItems == null || mItems.length == 0) {
             return;
@@ -234,19 +234,18 @@ public class ChargingHelper {
                     }
 
                     // Try to get charge direct from NBT for GT and IC2 stacks
-                    if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01
-                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_01
-                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_02
-                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_03
+                    if (mTemp.getItem() instanceof MetaGeneratedTool01 || mTemp.getItem() instanceof MetaGeneratedItem01
+                        || mTemp.getItem() instanceof MetaGeneratedItem02
+                        || mTemp.getItem() instanceof MetaGeneratedItem03
                         || mTemp.getItem()
                             .getClass()
                             .getName()
-                            .equalsIgnoreCase(GT_MetaGenerated_Tool_01.class.getName())) {
+                            .equalsIgnoreCase(MetaGeneratedTool01.class.getName())) {
                         if (!NBTUtils.hasKey(mTemp, "GT.ItemCharge")) {
                             if (!mTemp.getDisplayName()
                                 .toLowerCase()
                                 .contains("battery")) {
-                                if (!GT_ModHandler.isElectricItem(mTemp)) {
+                                if (!GTModHandler.isElectricItem(mTemp)) {
                                     continue;
                                 }
                             } else {
@@ -284,8 +283,7 @@ public class ChargingHelper {
                     int mMultiVoltage = (int) (mMulti * mVoltageIncrease);
 
                     if ((mitemCurrentCharge + mMultiVoltage) <= mItemMaxCharge) {
-                        if (GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, Integer.MAX_VALUE, true, false)
-                            > 0) {
+                        if (GTModHandler.chargeElectricItem(mTemp, mMultiVoltage, Integer.MAX_VALUE, true, false) > 0) {
                             for (int i = 0; i < mMulti; i++) {
                                 ElectricItem.manager.charge(mTemp, mVoltageIncrease, Integer.MAX_VALUE, false, false);
                             }
@@ -300,7 +298,7 @@ public class ChargingHelper {
                     mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
                     if (mitemCurrentCharge < mItemMaxCharge && mitemCurrentCharge >= (mItemMaxCharge - mVoltage)) {
                         int xDif = (int) (mItemMaxCharge - mitemCurrentCharge);
-                        if (GT_ModHandler.chargeElectricItem(mTemp, xDif, Integer.MAX_VALUE, true, false) >= 0) {
+                        if (GTModHandler.chargeElectricItem(mTemp, xDif, Integer.MAX_VALUE, true, false) >= 0) {
                             if (ElectricItem.manager.getCharge(mTemp) >= mItemMaxCharge) {
                                 mEntity.setEUVar(mEntity.getEUVar() - (xDif));
                                 mEuStored = mEntity.getEUVar();
@@ -334,7 +332,7 @@ public class ChargingHelper {
         if (itemstack == null) {
             return false;
         }
-        if (GT_ModHandler.isElectricItem(itemstack)) {
+        if (GTModHandler.isElectricItem(itemstack)) {
             return true;
         }
         return itemstack.getItem() instanceof IElectricItem;

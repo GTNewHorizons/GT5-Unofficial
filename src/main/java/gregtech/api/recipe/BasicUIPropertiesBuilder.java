@@ -20,7 +20,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
@@ -59,7 +59,7 @@ public final class BasicUIPropertiesBuilder {
     private final ImmutableList.Builder<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam = ImmutableList
         .builder();
 
-    private IDrawable logo = GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
+    private IDrawable logo = GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
     private Size logoSize = new Size(17, 17);
     private Pos2d logoPos = new Pos2d(152, 63);
 

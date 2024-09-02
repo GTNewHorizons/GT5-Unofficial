@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
+import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
 import gtPlusPlus.xmod.bop.world.features.trees.WorldGenRainForestTree_Ex;
 
@@ -43,8 +43,8 @@ public class SaplingRainforestTree extends SaplingBase {
             world.setBlock(x, y, z, block, 0, 4);
         }
         Object o = new WorldGenRainForestTree_Ex(
-            BOP_Block_Registrator.log_Rainforest,
-            BOP_Block_Registrator.leaves_Rainforest,
+            BOPBlockRegistrator.log_Rainforest,
+            BOPBlockRegistrator.leaves_Rainforest,
             0,
             0,
             true,

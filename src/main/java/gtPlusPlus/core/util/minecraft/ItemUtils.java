@@ -5,7 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,15 +25,15 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -41,16 +41,16 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
+import gtPlusPlus.preloader.PreloaderCore;
+import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
@@ -94,7 +94,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getIC2Cell(final int meta) {
-        return GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
+        return GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
     }
 
     public static ItemStack getEmptyCell() {
@@ -105,7 +105,7 @@ public class ItemUtils {
         if (ItemList.Cell_Empty.hasBeenSet()) {
             return ItemList.Cell_Empty.get(i);
         }
-        final ItemStack temp = GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
+        final ItemStack temp = GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
         return temp != null ? temp : null;
     }
 
@@ -122,7 +122,7 @@ public class ItemUtils {
             if (em != null) {
 
                 final ItemStack metaStack = new ItemStack(em, 1, meta);
-                GT_OreDictUnificator.registerOre(oreDictName, metaStack);
+                GTOreDictUnificator.registerOre(oreDictName, metaStack);
 
             }
         } catch (final NullPointerException e) {
@@ -308,7 +308,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-        if (CORE_Preloader.DEBUG_MODE) {
+        if (PreloaderCore.DEBUG_MODE) {
             Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(1));
             Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(2));
             Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(3));
@@ -353,7 +353,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getGregtechDust(final Materials material, final int amount) {
-        final ItemStack returnValue = GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L);
+        final ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, material, 1L);
         if (returnValue != null) {
             if (ItemUtils.checkForInvalidItems(returnValue)) {
                 return returnValue.copy();
@@ -371,7 +371,7 @@ public class ItemUtils {
 
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
         String mChemForm, final int Colour) {
-        GT_LanguageManager.addStringLocalization("gtplusplus.material." + materialName, materialName);
+        GTLanguageManager.addStringLocalization("gtplusplus.material." + materialName, materialName);
         final Item[] output = {
             new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
             new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
@@ -383,15 +383,15 @@ public class ItemUtils {
         final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
         final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(4, smallDust), ItemList.Schematic_Dust.get(0))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(4, smallDust), ItemList.Schematic_Dust.get(0))
             .itemOutputs(normalDust)
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(9, tinyDust), ItemList.Schematic_Dust.get(0))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(9, tinyDust), ItemList.Schematic_Dust.get(0))
             .itemOutputs(normalDust)
             .duration(5 * SECONDS)
             .eut(4)
@@ -503,7 +503,7 @@ public class ItemUtils {
             output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
         }
 
-        new RecipeGen_DustGeneration(material, disableExtraRecipes);
+        new RecipeGenDustGeneration(material, disableExtraRecipes);
 
         return output;
     }
@@ -657,7 +657,7 @@ public class ItemUtils {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
         }
-        ItemStack aGtStack = GT_OreDictUnificator.get(mPrefix, mMat, mAmount);
+        ItemStack aGtStack = GTOreDictUnificator.get(mPrefix, mMat, mAmount);
         if (aGtStack == null) {
             Logger
                 .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
@@ -695,7 +695,7 @@ public class ItemUtils {
     }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
-        return CORE.burnables.add(new Pair<>(burn, aBurnable));
+        return GTPPCore.burnables.add(new Pair<>(burn, aBurnable));
     }
 
     public static boolean checkForInvalidItems(ItemStack mInput) {
@@ -772,8 +772,8 @@ public class ItemUtils {
         IInventory aTemp = aInputInventory;
         for (int i = 0; i < p.length; ++i) {
             for (int j = i + 1; j < p.length; ++j) {
-                if (p[j] != null && (p[i] == null || GT_Utility.areStacksEqual(p[i], p[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(aTemp, aTemp, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+                if (p[j] != null && (p[i] == null || GTUtility.areStacksEqual(p[i], p[j]))) {
+                    GTUtility.moveStackFromSlotAToSlotB(aTemp, aTemp, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
                 }
             }
         }
@@ -840,9 +840,9 @@ public class ItemUtils {
         final Item mItem = aStack.getItem();
         final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
         final Class aSkookClass = aSkookum.getClass();
-        if (aSkookClass.isInstance(mItem) || mItem instanceof GT_MetaGenerated_Tool_01
+        if (aSkookClass.isInstance(mItem) || mItem instanceof MetaGeneratedTool01
             || mItem instanceof MetaGeneratedGregtechTools
-            || mItem instanceof Gregtech_MetaTool
+            || mItem instanceof GTMetaTool
             || mItem == aSkookum) {
             return true;
         }
@@ -884,7 +884,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getNullStack() {
-        return GT_Values.NI;
+        return GTValues.NI;
     }
 
     public static ItemStack depleteStack(ItemStack aStack) {
@@ -908,7 +908,7 @@ public class ItemUtils {
             Item aItem = aStack.getItem();
             if (aItem == CI.getNumberedBioCircuit(0)
                 .getItem() || aItem
-                    == GT_Utility.getIntegratedCircuit(0)
+                    == GTUtility.getIntegratedCircuit(0)
                         .getItem()
                 || aItem == CI.getNumberedAdvancedCircuit(0)
                     .getItem()) {
@@ -919,91 +919,91 @@ public class ItemUtils {
     }
 
     public static boolean isCatalyst(ItemStack aStack) {
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mBlueCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mBlueCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mBrownCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mBrownCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mOrangeCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mOrangeCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mPurpleCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mPurpleCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRedCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mRedCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mYellowCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mYellowCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mPinkCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mPinkCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mFormaldehydeCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mFormaldehydeCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mSolidAcidCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mSolidAcidCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mInfiniteMutationCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mInfiniteMutationCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mPlatinumGroupCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mPlatinumGroupCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mPlasticPolymerCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mPlasticPolymerCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRubberPolymerCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mRubberPolymerCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mAdhesionPromoterCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mAdhesionPromoterCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mTitaTungstenIndiumCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mTitaTungstenIndiumCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRadioactivityCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mRadioactivityCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRareEarthGroupCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mRareEarthGroupCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mSimpleNaquadahCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mSimpleNaquadahCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mAdvancedNaquadahCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mAdvancedNaquadahCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRawIntelligenceCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mRawIntelligenceCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mUltimatePlasticCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mUltimatePlasticCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mBiologicalIntelligenceCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mBiologicalIntelligenceCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.TemporalHarmonyCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.TemporalHarmonyCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mLimpidWaterCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mLimpidWaterCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mFlawlessWaterCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mFlawlessWaterCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mParticleAccelerationCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mParticleAccelerationCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mSynchrotronCapableCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mSynchrotronCapableCatalyst, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mAlgagenicGrowthPromoterCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mAlgagenicGrowthPromoterCatalyst, true)) {
             return true;
         }
 
@@ -1011,10 +1011,10 @@ public class ItemUtils {
     }
 
     public static boolean isMillingBall(ItemStack aStack) {
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
             return true;
         }
-        if (GT_Utility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true)) {
+        if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true)) {
             return true;
         }
         return false;

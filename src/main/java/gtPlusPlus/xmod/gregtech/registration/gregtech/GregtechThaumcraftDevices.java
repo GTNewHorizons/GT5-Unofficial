@@ -5,7 +5,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionCreator;
 
 public class GregtechThaumcraftDevices {
 
@@ -19,7 +19,7 @@ public class GregtechThaumcraftDevices {
     private static void run1() {
         // 956-960
         GregtechItemList.Thaumcraft_Researcher.set(
-            new GregtechMetaPollutionCreator(
+            new MTEPollutionCreator(
                 Thaumcraft_Researcher.ID,
                 "thaumcraft.gtpp.machine.01",
                 "Arcane Researcher",

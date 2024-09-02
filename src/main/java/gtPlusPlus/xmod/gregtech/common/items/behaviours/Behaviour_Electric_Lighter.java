@@ -13,37 +13,37 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import codechicken.lib.math.MathHelper;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_None;
+import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.behaviors.BehaviourNone;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import ic2.api.item.IElectricItemManager;
 
-public class Behaviour_Electric_Lighter extends Behaviour_None {
+public class Behaviour_Electric_Lighter extends BehaviourNone {
 
-    private final String mTooltip = GT_LanguageManager
+    private final String mTooltip = GTLanguageManager
         .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
-    private final String mTooltipUses = GT_LanguageManager
+    private final String mTooltipUses = GTLanguageManager
         .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable = GT_LanguageManager
+    private final String mTooltipUnstackable = GTLanguageManager
         .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public Behaviour_Electric_Lighter() {}
 
     @Override
-    public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
+    public boolean onLeftClickEntity(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
         if (!aPlayer.worldObj.isRemote && aStack != null && aStack.stackSize == 1) {
             boolean rOutput = false;
             if (aEntity instanceof EntityCreeper) {
                 if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
-                    GT_Utility.sendSoundToPlayers(
+                    GTUtility.sendSoundToPlayers(
                         aPlayer.worldObj,
                         SoundResource.FIRE_IGNITE,
                         1.0F,
@@ -62,8 +62,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
+        int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -81,8 +81,11 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
-                    aWorld
-                        .playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                    aWorld.playSoundAtEntity(
+                        aPlayer,
+                        "random.bow",
+                        0.5F,
+                        0.4F / (GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -94,12 +97,12 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                     aX += tDirection.offsetX;
                     aY += tDirection.offsetY;
                     aZ += tDirection.offsetZ;
-                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
+                    if (GTUtility.isBlockAir(aWorld, aX, aY, aZ)
                         && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
                         Logger.WARNING("Preparing Lighter b");
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
-                            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
+                            GTUtility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
                             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
                             rOutput = true;
                             // ItemNBT.setLighterFuel(aStack, tFuelAmount);
@@ -113,7 +116,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
         return false;
     }
 
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
+    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
@@ -132,8 +135,11 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
-                    aWorld
-                        .playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                    aWorld.playSoundAtEntity(
+                        aPlayer,
+                        "random.bow",
+                        0.5F,
+                        0.4F / (GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -145,12 +151,12 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                     aX += tDirection.offsetX;
                     aY += tDirection.offsetY;
                     aZ += tDirection.offsetZ;
-                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
+                    if (GTUtility.isBlockAir(aWorld, aX, aY, aZ)
                         && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
                         Logger.WARNING("Preparing Lighter b");
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
-                            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
+                            GTUtility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
                             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
                             rOutput = true;
                             // ItemNBT.setLighterFuel(aStack, tFuelAmount);
@@ -191,7 +197,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     private void useUp(ItemStack aStack) {}
 
     @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         int aUses = 0;
         if (aStack != null) {

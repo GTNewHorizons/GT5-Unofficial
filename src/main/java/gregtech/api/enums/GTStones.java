@@ -1,14 +1,14 @@
 package gregtech.api.enums;
 
-import gregtech.api.GregTech_API;
-import gregtech.common.GT_Worldgen_Stone;
+import gregtech.api.GregTechAPI;
 import gregtech.common.StoneBuilder;
+import gregtech.common.WorldgenStone;
 
 public enum GTStones {
 
     NetherBlackgraniteTiny(new StoneBuilder().name("nether.stone.blackgranite.tiny")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(-1)
         .size(50)
@@ -18,7 +18,7 @@ public enum GTStones {
 
     NetherBlackgraniteSmall(new StoneBuilder().name("nether.stone.blackgranite.small")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(-1)
         .size(100)
@@ -28,7 +28,7 @@ public enum GTStones {
 
     NetherBlackgraniteMedium(new StoneBuilder().name("nether.stone.blackgranite.medium")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(-1)
         .size(200)
@@ -38,7 +38,7 @@ public enum GTStones {
 
     NetherBlackgraniteLarge(new StoneBuilder().name("nether.stone.blackgranite.large")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(-1)
         .size(300)
@@ -48,7 +48,7 @@ public enum GTStones {
 
     NetherBlackgraniteHuge(new StoneBuilder().name("nether.stone.blackgranite.huge")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(-1)
         .size(400)
@@ -58,7 +58,7 @@ public enum GTStones {
 
     NetherRedgraniteTiny(new StoneBuilder().name("nether.stone.redgranite.tiny")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(-1)
         .size(50)
@@ -68,7 +68,7 @@ public enum GTStones {
 
     NetherRedgraniteSmall(new StoneBuilder().name("nether.stone.redgranite.small")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(-1)
         .size(100)
@@ -78,7 +78,7 @@ public enum GTStones {
 
     NetherRedgraniteMedium(new StoneBuilder().name("nether.stone.redgranite.medium")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(-1)
         .size(200)
@@ -88,7 +88,7 @@ public enum GTStones {
 
     NetherRedgraniteLarge(new StoneBuilder().name("nether.stone.redgranite.large")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(-1)
         .size(300)
@@ -98,7 +98,7 @@ public enum GTStones {
 
     NetherRedgraniteHuge(new StoneBuilder().name("nether.stone.redgranite.huge")
         .disabledByDefault()
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(-1)
         .size(400)
@@ -108,7 +108,7 @@ public enum GTStones {
 
     NetherMarbleTiny(new StoneBuilder().name("nether.stone.marble.tiny")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(-1)
         .size(50)
@@ -118,7 +118,7 @@ public enum GTStones {
 
     NetherMarbleSmall(new StoneBuilder().name("nether.stone.marble.small")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(-1)
         .size(100)
@@ -128,7 +128,7 @@ public enum GTStones {
 
     NetherMarbleMedium(new StoneBuilder().name("nether.stone.marble.medium")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(-1)
         .size(200)
@@ -138,7 +138,7 @@ public enum GTStones {
 
     NetherMarbleLarge(new StoneBuilder().name("nether.stone.marble.large")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(-1)
         .size(300)
@@ -148,7 +148,7 @@ public enum GTStones {
 
     NetherMarbleHuge(new StoneBuilder().name("nether.stone.marble.huge")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(-1)
         .size(400)
@@ -158,7 +158,7 @@ public enum GTStones {
 
     NetherBasaltTiny(new StoneBuilder().name("nether.stone.basalt.tiny")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(-1)
         .size(50)
@@ -168,7 +168,7 @@ public enum GTStones {
 
     NetherBasaltSmall(new StoneBuilder().name("nether.stone.basalt.small")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(-1)
         .size(100)
@@ -178,7 +178,7 @@ public enum GTStones {
 
     NetherBasaltMedium(new StoneBuilder().name("nether.stone.basalt.medium")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(-1)
         .size(200)
@@ -188,7 +188,7 @@ public enum GTStones {
 
     NetherBasaltLarge(new StoneBuilder().name("nether.stone.basalt.large")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(-1)
         .size(300)
@@ -198,7 +198,7 @@ public enum GTStones {
 
     NetherBasaltHuge(new StoneBuilder().name("nether.stone.basalt.huge")
         .disabledByDefault()
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(-1)
         .size(400)
@@ -206,7 +206,7 @@ public enum GTStones {
         .heightRange(0, 120)
         .generationInVoidEnabled(false)),
     OverworldBlackgraniteTiny(new StoneBuilder().name("overworld.stone.blackgranite.tiny")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(0)
         .size(75)
@@ -215,7 +215,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBlackgraniteSmall(new StoneBuilder().name("overworld.stone.blackgranite.small")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(0)
         .size(100)
@@ -224,7 +224,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBlackgraniteMedium(new StoneBuilder().name("overworld.stone.blackgranite.medium")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(0)
         .size(200)
@@ -233,7 +233,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBlackgraniteLarge(new StoneBuilder().name("overworld.stone.blackgranite.large")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(0)
         .size(300)
@@ -242,7 +242,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBlackgraniteHuge(new StoneBuilder().name("overworld.stone.blackgranite.huge")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(0)
         .dimension(0)
         .size(400)
@@ -251,7 +251,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldRedgraniteTiny(new StoneBuilder().name("overworld.stone.redgranite.tiny")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(0)
         .size(75)
@@ -260,7 +260,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldRedgraniteSmall(new StoneBuilder().name("overworld.stone.redgranite.small")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(0)
         .size(100)
@@ -269,7 +269,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldRedgraniteMedium(new StoneBuilder().name("overworld.stone.redgranite.medium")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(0)
         .size(200)
@@ -278,7 +278,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldRedgraniteLarge(new StoneBuilder().name("overworld.stone.redgranite.large")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(0)
         .size(300)
@@ -287,7 +287,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldRedgraniteHuge(new StoneBuilder().name("overworld.stone.redgranite.huge")
-        .block(GregTech_API.sBlockGranites)
+        .block(GregTechAPI.sBlockGranites)
         .blockMeta(8)
         .dimension(0)
         .size(400)
@@ -296,7 +296,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldMarbleTiny(new StoneBuilder().name("overworld.stone.marble.tiny")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(0)
         .size(75)
@@ -305,7 +305,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldMarbleSmall(new StoneBuilder().name("overworld.stone.marble.small")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(0)
         .size(100)
@@ -314,7 +314,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldMarbleMedium(new StoneBuilder().name("overworld.stone.marble.medium")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(0)
         .size(200)
@@ -323,7 +323,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldMarbleLarge(new StoneBuilder().name("overworld.stone.marble.large")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(0)
         .size(300)
@@ -332,7 +332,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldMarbleHuge(new StoneBuilder().name("overworld.stone.marble.huge")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(0)
         .dimension(0)
         .size(400)
@@ -341,7 +341,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBasaltTiny(new StoneBuilder().name("overworld.stone.basalt.tiny")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(0)
         .size(75)
@@ -350,7 +350,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBasaltSmall(new StoneBuilder().name("overworld.stone.basalt.small")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(0)
         .size(100)
@@ -359,7 +359,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBasaltMedium(new StoneBuilder().name("overworld.stone.basalt.medium")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(0)
         .size(200)
@@ -368,7 +368,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBasaltLarge(new StoneBuilder().name("overworld.stone.basalt.large")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(0)
         .size(300)
@@ -377,7 +377,7 @@ public enum GTStones {
         .generationInVoidEnabled(false)),
 
     OverworldBasaltHuge(new StoneBuilder().name("overworld.stone.basalt.huge")
-        .block(GregTech_API.sBlockStones)
+        .block(GregTechAPI.sBlockStones)
         .blockMeta(8)
         .dimension(0)
         .size(400)
@@ -391,8 +391,8 @@ public enum GTStones {
         this.stone = stone;
     }
 
-    public GT_Worldgen_Stone addGTStone() {
-        return new GT_Worldgen_Stone(this.stone);
+    public WorldgenStone addGTStone() {
+        return new WorldgenStone(this.stone);
     }
 
 }

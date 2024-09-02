@@ -4,7 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemBurnable extends CoreItem {
@@ -23,7 +23,7 @@ public class BaseItemBurnable extends CoreItem {
     }
 
     public void registerFuel(int burn) {
-        CORE.burnables.add(new Pair<>(burn, ItemUtils.getSimpleStack(this, 1)));
+        GTPPCore.burnables.add(new Pair<>(burn, ItemUtils.getSimpleStack(this, 1)));
     }
 
     public final void registerOrdictionary(String name) {

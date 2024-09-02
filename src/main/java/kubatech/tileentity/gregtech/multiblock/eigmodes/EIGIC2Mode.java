@@ -1,11 +1,11 @@
 package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
 import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
-import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
+import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public class EIGIC2Mode extends EIGMode {
 
@@ -23,12 +23,12 @@ public class EIGIC2Mode extends EIGMode {
 
     @Override
     public int getMinVoltageTier() {
-        return GT_MetaTileEntity_ExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_MODE_MIN_TIER;
+        return MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_MODE_MIN_TIER;
     }
 
     @Override
     public int getMinGlassTier() {
-        return GT_MetaTileEntity_ExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_MODE_MIN_TIER;
+        return MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_MODE_MIN_TIER;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EIGIC2Mode extends EIGMode {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder addTooltipInfo(GT_Multiblock_Tooltip_Builder builder) {
+    public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
         String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
         String minGlassTier = voltageTooltipFormatted(this.getMinGlassTier());
 

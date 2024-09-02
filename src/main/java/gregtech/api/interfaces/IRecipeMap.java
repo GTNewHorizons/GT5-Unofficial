@@ -7,9 +7,9 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 
 /**
  * Represents the target of a recipe adding action, usually, but not necessarily, is a recipe map itself.
@@ -33,7 +33,7 @@ public interface IRecipeMap {
      * Actually add the recipe represented by the builder. CAN modify the builder's internal states!!!
      */
     @Nonnull
-    Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder);
+    Collection<GTRecipe> doAdd(GTRecipeBuilder builder);
 
     /**
      * Return a variant of this recipe map that will perform a deep copy on input recipe builder before doing anything
@@ -45,7 +45,7 @@ public interface IRecipeMap {
         return newRecipeMap(b -> doAdd(b.copy()));
     }
 
-    static IRecipeMap newRecipeMap(Function<? super GT_RecipeBuilder, Collection<GT_Recipe>> func) {
+    static IRecipeMap newRecipeMap(Function<? super GTRecipeBuilder, Collection<GTRecipe>> func) {
         return new IRecipeMap() {
 
             private final Collection<IRecipeMap> downstreams = new ArrayList<>();
@@ -57,9 +57,9 @@ public interface IRecipeMap {
 
             @Nonnull
             @Override
-            public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
-                List<Collection<GT_Recipe>> ret = new ArrayList<>();
-                Collection<GT_Recipe> out = func.apply(builder);
+            public Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
+                List<Collection<GTRecipe>> ret = new ArrayList<>();
+                Collection<GTRecipe> out = func.apply(builder);
                 ret.add(out);
                 builder.clearInvalid();
                 if (!out.isEmpty()) {
@@ -67,7 +67,7 @@ public interface IRecipeMap {
                         ret.add(downstream.doAdd(builder));
                     }
                 }
-                return GT_Utility.concat(ret);
+                return GTUtility.concat(ret);
             }
         };
     }

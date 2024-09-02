@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.xmod.gregtech.HandlerGT;
 
 public abstract class WorldGen_GT {
 
@@ -18,7 +18,7 @@ public abstract class WorldGen_GT {
 
     public WorldGen_GT(String aName, List aList, boolean aDefault) {
         this.mWorldGenName = aName;
-        this.mEnabled = HANDLER_GT.sCustomWorldgenFile.get("worldgen", this.mWorldGenName, aDefault);
+        this.mEnabled = HandlerGT.sCustomWorldgenFile.get("worldgen", this.mWorldGenName, aDefault);
         if (this.mEnabled) {
             aList.add(this);
         }
@@ -38,7 +38,7 @@ public abstract class WorldGen_GT {
         String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = (Boolean) this.mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = HANDLER_GT.sCustomWorldgenFile
+            boolean tValue = HandlerGT.sCustomWorldgenFile
                 .get("worldgen.dimensions." + this.mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
             this.mDimensionMap.put(aDimName, Boolean.valueOf(tValue));
             return tValue;

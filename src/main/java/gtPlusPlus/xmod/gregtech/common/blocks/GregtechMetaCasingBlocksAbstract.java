@@ -19,20 +19,20 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
-public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_Abstract {
+public abstract class GregtechMetaCasingBlocksAbstract extends BlockCasingsAbstract {
 
     public GregtechMetaCasingBlocksAbstract(final Class<? extends ItemBlock> aItemClass, final String aName,
         final Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         this.setStepSound(soundTypeMetal);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        GregTech_API.registerMachineBlock(this, -1);
-        GT_LanguageManager
+        GregTechAPI.registerMachineBlock(this, -1);
+        GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
@@ -63,8 +63,8 @@ public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_
 
     @Override
     public void onBlockAdded(final World aWorld, final int aX, final int aY, final int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 
@@ -106,8 +106,8 @@ public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_
     @Override
     public void breakBlock(final World aWorld, final int aX, final int aY, final int aZ, final Block aBlock,
         final int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aMetaData)) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        if (GregTechAPI.isMachineBlock(this, aMetaData)) {
+            GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
 

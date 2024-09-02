@@ -2,90 +2,90 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class CannerRecipes implements Runnable {
 
     @Override
     public void run() {
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
                 ItemList.Battery_Hull_LV.get(1L))
             .itemOutputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
                 ItemList.Battery_Hull_LV.get(1L))
             .itemOutputs(ItemList.Battery_RE_LV_Lithium.get(1L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
                 ItemList.Battery_Hull_LV.get(1L))
             .itemOutputs(ItemList.Battery_RE_LV_Sodium.get(1L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
                 ItemList.Battery_Hull_MV.get(1L))
             .itemOutputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
                 ItemList.Battery_Hull_MV.get(1L))
             .itemOutputs(ItemList.Battery_RE_MV_Lithium.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
                 ItemList.Battery_Hull_MV.get(1L))
             .itemOutputs(ItemList.Battery_RE_MV_Sodium.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
                 ItemList.Battery_Hull_HV.get(1L))
             .itemOutputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
                 ItemList.Battery_Hull_HV.get(1L))
             .itemOutputs(ItemList.Battery_RE_HV_Lithium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
                 ItemList.Battery_Hull_HV.get(1L))
             .itemOutputs(ItemList.Battery_RE_HV_Sodium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
@@ -94,9 +94,9 @@ public class CannerRecipes implements Runnable {
         // Recipes to actually fill the empty hulls with content
         // IV 2048
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 4L),
                 ItemList.BatteryHull_EV.get(1L))
             .itemOutputs(ItemList.BatteryHull_EV_Full.get(1L))
             .duration(5 * SECONDS)
@@ -104,9 +104,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // EV 8192
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 16L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 16L),
                 ItemList.BatteryHull_IV.get(1L))
             .itemOutputs(ItemList.BatteryHull_IV_Full.get(1L))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -114,9 +114,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // LuV 32768
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32L),
                 ItemList.BatteryHull_LuV.get(1L))
             .itemOutputs(ItemList.BatteryHull_LuV_Full.get(1L))
             .duration(10 * SECONDS)
@@ -124,9 +124,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // ZPM 131072
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 16L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 16L),
                 ItemList.BatteryHull_ZPM.get(1L))
             .itemOutputs(ItemList.BatteryHull_ZPM_Full.get(1L))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -134,9 +134,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // UV 524288
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 32L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 32L),
                 ItemList.BatteryHull_UV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UV_Full.get(1L))
             .duration(15 * SECONDS)
@@ -144,9 +144,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // UHV 2097152
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 16L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 16L),
                 ItemList.BatteryHull_UHV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UHV_Full.get(1L))
             .duration(17 * SECONDS + 10 * TICKS)
@@ -154,9 +154,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // UEV 8388608
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 32L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 32L),
                 ItemList.BatteryHull_UEV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UEV_Full.get(1L))
             .duration(20 * SECONDS)
@@ -164,9 +164,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // UIV 33554432
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64L),
                 ItemList.BatteryHull_UIV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UIV_Full.get(1L))
             .duration(22 * SECONDS + 10 * TICKS)
@@ -174,9 +174,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // UMV 134217728
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 4L),
                 ItemList.BatteryHull_UMV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UMV_Full.get(1L))
             .duration(25 * SECONDS)
@@ -184,9 +184,9 @@ public class CannerRecipes implements Runnable {
             .addTo(cannerRecipes);
         // UxV 536870912
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8L),
                 ItemList.BatteryHull_UxV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UxV_Full.get(1L))
             .duration(30 * SECONDS)
@@ -197,52 +197,52 @@ public class CannerRecipes implements Runnable {
 
         if (IndustrialCraft2.isModLoaded()) {
             // todo: remove tiny dust in this recipe
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GT_ModHandler.getIC2Item("fuelRod", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
-                .itemOutputs(GT_ModHandler.getIC2Item("reactorLithiumCell", 1, 1))
+                    GTModHandler.getIC2Item("fuelRod", 1),
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
+                .itemOutputs(GTModHandler.getIC2Item("reactorLithiumCell", 1, 1))
                 .duration(16 * TICKS)
                 .eut(64)
                 .addTo(cannerRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GT_ModHandler.getIC2Item("fuelRod", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
+                    GTModHandler.getIC2Item("fuelRod", 1),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
                 .itemOutputs(ItemList.ThoriumCell_1.get(1L))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(cannerRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("UranFuel", 1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getIC2Item("fuelRod", 1), GTModHandler.getIC2Item("UranFuel", 1))
                 .itemOutputs(ItemList.Uraniumcell_1.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(cannerRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("MOXFuel", 1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getIC2Item("fuelRod", 1), GTModHandler.getIC2Item("MOXFuel", 1))
                 .itemOutputs(ItemList.Moxcell_1.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(cannerRecipes);
         }
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 3))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 3))
             .itemOutputs(ItemList.NaquadahCell_1.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(cannerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 3))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 3))
             .itemOutputs(ItemList.MNqCell_1.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)

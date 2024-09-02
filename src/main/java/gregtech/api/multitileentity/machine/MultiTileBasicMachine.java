@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity.machine;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GTValues.*;
 import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.io.IOException;
@@ -30,8 +30,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTValues.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -55,8 +55,8 @@ import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.task.tasks.ProcessingTask;
-import gregtech.api.util.GT_Utility;
-import gregtech.client.GT_SoundLoop;
+import gregtech.api.util.GTUtility;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.MachineGUIProvider;
 
 public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
@@ -106,7 +106,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected GUIProvider<?> guiProvider = createGUIProvider();
 
     @SideOnly(Side.CLIENT)
-    protected GT_SoundLoop activitySoundLoop;
+    protected GTSoundLoop activitySoundLoop;
 
     public MultiTileBasicMachine() {
         new ProcessingTask<>(this);
@@ -388,16 +388,16 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         switch (aIndex) {
             case PROCESS_START_SOUND_INDEX -> {
                 if (getProcessStartSound() != null)
-                    GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+                    GTUtility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
             }
-            case INTERRUPT_SOUND_INDEX -> GT_Utility
+            case INTERRUPT_SOUND_INDEX -> GTUtility
                 .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == PROCESS_START_SOUND_INDEX && getProcessStartSound() != null) {
-            GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
         }
     }
 
@@ -412,7 +412,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
         if (isActive() && activitySound != null && activitySoundLoop == null) {
-            activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
+            activitySoundLoop = new GTSoundLoop(activitySound, this, false, true);
             Minecraft.getMinecraft()
                 .getSoundHandler()
                 .playSound(activitySoundLoop);
@@ -549,7 +549,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Override
     protected void addDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list) {
         list.add(
-            GT_Utility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
+            GTUtility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
                 + getOwnerName()
                 + EnumChatFormatting.RESET
                 + " ("
@@ -567,30 +567,30 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
             list.add(
                 StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                     + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(logic.getStoredEnergy())
+                    + GTUtility.formatNumbers(logic.getStoredEnergy())
                     + EnumChatFormatting.RESET
                     + " EU / "
                     + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(logic.getCapacity())
+                    + GTUtility.formatNumbers(logic.getCapacity())
                     + EnumChatFormatting.RESET
                     + " EU");
             list.add(
                 StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                     + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(getProcessingLogic().getCalculatedEut())
+                    + GTUtility.formatNumbers(getProcessingLogic().getCalculatedEut())
                     + EnumChatFormatting.RESET
                     + " EU/t");
             list.add(
                 StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(logic.getVoltage())
+                    + GTUtility.formatNumbers(logic.getVoltage())
                     + EnumChatFormatting.RESET
                     // TODO: Put ampere getter here, once that's variable
                     + " EU/t(*2A) "
                     + StatCollector.translateToLocal("GT5U.machines.tier")
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + VN[GT_Utility.getTier(logic.getVoltage())]
+                    + VN[GTUtility.getTier(logic.getVoltage())]
                     + EnumChatFormatting.RESET);
         }
 
@@ -598,11 +598,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
         // TODO: Add CPU load calculator
         list.add(
-            "Average CPU load of ~" + GT_Utility.formatNumbers(0)
+            "Average CPU load of ~" + GTUtility.formatNumbers(0)
                 + "ns over "
-                + GT_Utility.formatNumbers(0)
+                + GTUtility.formatNumbers(0)
                 + " ticks with worst time of "
-                + GT_Utility.formatNumbers(0)
+                + GTUtility.formatNumbers(0)
                 + "ns.");
     }
 
@@ -613,11 +613,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                + GTUtility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
                 + EnumChatFormatting.RESET
                 + (progressTime > 20 ? " s / " : " ticks / ")
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxProgressTime > 20 ? maxProgressTime / 20 : maxProgressTime)
+                + GTUtility.formatNumbers(maxProgressTime > 20 ? maxProgressTime / 20 : maxProgressTime)
                 + EnumChatFormatting.RESET
                 + (maxProgressTime > 20 ? " s" : " ticks"));
     }
@@ -678,7 +678,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
         switch (soundEventValue) {
             case PROCESS_START_SOUND_INDEX -> {
-                if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
+                if (getProcessStartSound() != null) GTUtility.doSoundAtClient(
                     getProcessStartSound(),
                     getTimeBetweenProcessSounds(),
                     1.0F,
@@ -686,7 +686,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
                     getYCoord(),
                     getZCoord());
             }
-            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+            case INTERRUPT_SOUND_INDEX -> GTUtility.doSoundAtClient(
                 SoundResource.IC2_MACHINES_INTERRUPT_ONE,
                 100,
                 1.0F,
@@ -765,8 +765,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     protected void updatePowerLogic() {
-        power.setEnergyCapacity(GT_Values.V[tier] * power.getMaxAmperage() * 2 * MINUTE);
-        power.setMaxVoltage(GT_Values.V[tier]);
+        power.setEnergyCapacity(GTValues.V[tier] * power.getMaxAmperage() * 2 * MINUTE);
+        power.setMaxVoltage(GTValues.V[tier]);
         power.setMaxAmperage(1);
     }
 

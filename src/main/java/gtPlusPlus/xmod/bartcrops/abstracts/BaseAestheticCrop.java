@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.bartcrops.abstracts;
 
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 import ic2.api.crops.ICropTile;
 
 public abstract class BaseAestheticCrop extends BaseHarvestableCrop {
@@ -24,7 +24,7 @@ public abstract class BaseAestheticCrop extends BaseHarvestableCrop {
 
     @Override
     public int growthDuration(ICropTile crop) {
-        return CORE_Preloader.DEBUG_MODE ? 1 : 225;
+        return PreloaderCore.DEBUG_MODE ? 1 : 225;
     }
 
     @Override

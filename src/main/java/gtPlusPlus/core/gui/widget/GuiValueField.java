@@ -5,19 +5,19 @@ import java.lang.reflect.Field;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 
-import gtPlusPlus.core.gui.machine.GUI_VolumetricFlaskSetter;
+import gtPlusPlus.core.gui.machine.GUIVolumetricFlaskSetter;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 
 public class GuiValueField extends GuiTextField {
 
     private final FontRenderer mFontRenderer;
     private final int mScreenLocationX;
     private final int mScreenLocationY;
-    private final GUI_VolumetricFlaskSetter mGUI;
+    private final GUIVolumetricFlaskSetter mGUI;
 
     public GuiValueField(FontRenderer aFontRenderer, int aX, int aY, int aScreenLocationX, int aScreenLocationY,
-        int aWidth, int aHeight, GUI_VolumetricFlaskSetter aGUI) {
+        int aWidth, int aHeight, GUIVolumetricFlaskSetter aGUI) {
         super(aFontRenderer, aX, aY, aWidth, aHeight);
         mFontRenderer = aFontRenderer;
         mScreenLocationX = aScreenLocationX;
@@ -33,7 +33,7 @@ public class GuiValueField extends GuiTextField {
     public boolean isBackgroundDrawingEnabled() {
         Field enableBackgroundDrawing = ReflectionUtils.getField(
             GuiTextField.class,
-            !CORE_Preloader.DEV_ENVIRONMENT ? "field_146215_m" : "enableBackgroundDrawing");
+            !PreloaderCore.DEV_ENVIRONMENT ? "field_146215_m" : "enableBackgroundDrawing");
         if (enableBackgroundDrawing != null) {
             return ReflectionUtils.getFieldValue(enableBackgroundDrawing, this);
         }
@@ -42,7 +42,7 @@ public class GuiValueField extends GuiTextField {
 
     public int getLineScrollOffset() {
         Field lineScrollOffset = ReflectionUtils
-            .getField(GuiTextField.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
+            .getField(GuiTextField.class, !PreloaderCore.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
         if (lineScrollOffset != null) {
             return (int) ReflectionUtils.getFieldValue(lineScrollOffset, this);
         }

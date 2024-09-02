@@ -6,12 +6,12 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gtPlusPlus.core.util.Utils;
 
 /**
  * A Server Side safe object that can hold {@link IIcon}s.
- * 
+ *
  * @author Alkalus
  *
  */
@@ -50,7 +50,7 @@ public class SafeTexture implements Runnable {
     private SafeTexture(String aTexturePath) {
         mTextureName = aTexturePath;
         mHash = getKey(aTexturePath).hashCode();
-        GregTech_API.sGTBlockIconload.add(this);
+        GregTechAPI.sGTBlockIconload.add(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -60,6 +60,6 @@ public class SafeTexture implements Runnable {
 
     @Override
     public void run() {
-        mHashToIconCache.put(getKey(mTextureName).hashCode(), GregTech_API.sBlockIcons.registerIcon(mTextureName));
+        mHashToIconCache.put(getKey(mTextureName).hashCode(), GregTechAPI.sBlockIcons.registerIcon(mTextureName));
     }
 }

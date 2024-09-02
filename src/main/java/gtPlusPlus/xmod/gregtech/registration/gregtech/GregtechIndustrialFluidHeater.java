@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_IndustrialFluidHea
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialFluidHeater;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialFluidHeater;
 
 public class GregtechIndustrialFluidHeater {
 
@@ -15,7 +15,7 @@ public class GregtechIndustrialFluidHeater {
 
     private static void run1() {
         GregtechItemList.Controller_IndustrialFluidHeater.set(
-            new GregtechMetaTileEntity_IndustrialFluidHeater(
+            new MTEIndustrialFluidHeater(
                 Controller_IndustrialFluidHeater.ID,
                 "industrialfluidheater.controller.tier.single",
                 "Thermic Heating Device").getStackForm(1L));

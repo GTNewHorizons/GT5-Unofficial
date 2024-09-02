@@ -16,17 +16,17 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
 
@@ -64,11 +64,11 @@ public class RecipeUtils {
         Object[] o = new Object[] { slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9 };
 
         try {
-            int size = COMPAT_HANDLER.mRecipesToGenerate.size();
-            COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject(o, resultItem, false));
+            int size = CompatHandler.mRecipesToGenerate.size();
+            CompatHandler.mRecipesToGenerate.put(new InternalRecipeObject(o, resultItem, false));
             // Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
-            if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
-                if (!COMPAT_HANDLER.areInitItemsLoaded) {
+            if (CompatHandler.mRecipesToGenerate.size() > size) {
+                if (!CompatHandler.areInitItemsLoaded) {
                     RegistrationHandler.recipesSuccess++;
                 } else {
                     LateRegistrationHandler.recipesSuccess++;
@@ -78,7 +78,7 @@ public class RecipeUtils {
             Logger.RECIPE(
                 "[Fix] Invalid Recipe detected for: " + resultItem != null ? resultItem.getUnlocalizedName()
                     : "INVALID OUTPUT ITEM");
-            if (!COMPAT_HANDLER.areInitItemsLoaded) {
+            if (!CompatHandler.areInitItemsLoaded) {
                 RegistrationHandler.recipesFailed++;
             } else {
                 LateRegistrationHandler.recipesFailed++;
@@ -163,18 +163,18 @@ public class RecipeUtils {
             InputItem9 };
 
         if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-            CORE.crash(
+            GTPPCore.crash(
                 "Load Phase " + gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE
                     + " should be "
                     + GTplusplus.INIT_PHASE.POST_INIT
                     + ". Unable to register recipe.");
         }
 
-        int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
-        COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));
+        int size = CompatHandler.mGtRecipesToGenerate.size();
+        CompatHandler.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));
 
-        if (COMPAT_HANDLER.mGtRecipesToGenerate.size() > size) {
-            if (!COMPAT_HANDLER.areInitItemsLoaded) {
+        if (CompatHandler.mGtRecipesToGenerate.size() > size) {
+            if (!CompatHandler.areInitItemsLoaded) {
                 RegistrationHandler.recipesSuccess++;
             } else {
                 LateRegistrationHandler.recipesSuccess++;
@@ -195,7 +195,7 @@ public class RecipeUtils {
             return false;
         }
         // let gregtech handle shapeless recipes.
-        if (GT_ModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)) {
+        if (GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)) {
             return true;
         }
         return false;
@@ -294,7 +294,7 @@ public class RecipeUtils {
             boolean rReturn = false;
             ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance()
                 .getRecipeList();
-            aOutput = GT_OreDictUnificator.get(aOutput);
+            aOutput = GTOreDictUnificator.get(aOutput);
             int tList_sS = tList.size();
 
             for (int i = 0; i < tList_sS; ++i) {
@@ -302,19 +302,19 @@ public class RecipeUtils {
                 if (!aNotRemoveShapelessRecipes
                     || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {
-                        if (!gregtech.api.util.GT_ModHandler.sNativeRecipeClasses.contains(
+                        if (!GTModHandler.sNativeRecipeClasses.contains(
                             tRecipe.getClass()
                                 .getName())) {
                             continue;
                         }
-                    } else if (gregtech.api.util.GT_ModHandler.sSpecialRecipeClasses.contains(
+                    } else if (GTModHandler.sSpecialRecipeClasses.contains(
                         tRecipe.getClass()
                             .getName())) {
                                 continue;
                             }
 
                     ItemStack tStack = tRecipe.getRecipeOutput();
-                    if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
+                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
                         tList.remove(i--);
                         tList_sS = tList.size();
                         rReturn = true;
@@ -372,7 +372,7 @@ public class RecipeUtils {
                     "Cleaned a " + o.getClass()
                         .getSimpleName() + " from recipe input.");
                 Logger.INFO("ERROR");
-                CORE.crash("Bad Shaped Recipe.");
+                GTPPCore.crash("Bad Shaped Recipe.");
             }
         }
         Logger.RECIPE("Using String: " + aFullString);
@@ -414,10 +414,10 @@ public class RecipeUtils {
 
         ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 
-        int size = COMPAT_HANDLER.mRecipesToGenerate.size();
-        COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject2(aRecipe));
-        if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
-            if (!COMPAT_HANDLER.areInitItemsLoaded) {
+        int size = CompatHandler.mRecipesToGenerate.size();
+        CompatHandler.mRecipesToGenerate.put(new InternalRecipeObject2(aRecipe));
+        if (CompatHandler.mRecipesToGenerate.size() > size) {
+            if (!CompatHandler.areInitItemsLoaded) {
                 RegistrationHandler.recipesSuccess++;
             } else {
                 LateRegistrationHandler.recipesSuccess++;

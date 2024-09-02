@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SubTag;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.MetaBaseItem;
 
 public interface IItemBehaviour<E extends Item> {
 
@@ -37,7 +37,7 @@ public interface IItemBehaviour<E extends Item> {
 
     ItemStack onDispense(E aItem, IBlockSource aSource, ItemStack aStack);
 
-    boolean hasProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack);
+    boolean hasProjectile(MetaBaseItem aItem, SubTag aProjectileType, ItemStack aStack);
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
         double aZ);

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 
 public class GT_TooltipDataCache {
 
@@ -50,7 +50,7 @@ public class GT_TooltipDataCache {
     public TooltipData getUncachedTooltipData(String key, Object... args) {
         List<String> lines = getAllLines(key, args);
         int normalLines = lines.size();
-        if (Math.max(GT_Mod.gregtechproxy.mTooltipVerbosity, GT_Mod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {
+        if (Math.max(GTMod.gregtechproxy.mTooltipVerbosity, GTMod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {
             lines.addAll(getAllLines(key + ".extended", args)); // Are extended lines enabled? If so add them to the
                                                                 // lines
         }
@@ -58,9 +58,8 @@ public class GT_TooltipDataCache {
             lines.add(key); // Fallback in case no lines could be found at all
         }
         return new TooltipData(
-            lines.subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
-            lines
-                .subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
+            lines.subList(0, getVerbosityIndex(GTMod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
+            lines.subList(0, getVerbosityIndex(GTMod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
     }
 
     /**

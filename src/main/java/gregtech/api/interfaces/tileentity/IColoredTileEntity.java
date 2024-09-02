@@ -1,7 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTUtil;
 
 public interface IColoredTileEntity {
 
@@ -21,7 +21,6 @@ public interface IColoredTileEntity {
      * @return Actual color shown on GUI
      */
     default int getGUIColorization() {
-        return GT_Util
-            .getRGBInt((getColorization() != -1 ? Dyes.get(getColorization()) : Dyes.MACHINE_METAL).getRGBA());
+        return GTUtil.getRGBInt((getColorization() != -1 ? Dyes.get(getColorization()) : Dyes.MACHINE_METAL).getRGBA());
     }
 }

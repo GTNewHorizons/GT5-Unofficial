@@ -1,10 +1,11 @@
 package gregtech.common.tileentities.machines;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 
 /**
- * Implement this interface for {@link gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch}
+ * Implement this interface for {@link MTEHatch}
  * if it does special stuff while multiblock controller is processing recipe.
  */
 public interface IRecipeProcessingAwareHatch {
@@ -22,5 +23,5 @@ public interface IRecipeProcessingAwareHatch {
      * @return Result of the process of this method. {@code !wasSuccessful()} means the returned result should
      *         overwrite the result calculated on multiblock whatever the reason is.
      */
-    CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller);
+    CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller);
 }

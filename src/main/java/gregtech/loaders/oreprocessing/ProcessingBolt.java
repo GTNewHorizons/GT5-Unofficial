@@ -6,9 +6,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Proxy;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTProxy;
 
 public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -35,9 +35,9 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             return;
         }
 
-        GT_ModHandler.addCraftingRecipe(
-            GT_Utility.copyAmount(2, aStack),
-            GT_Proxy.tBits,
+        GTModHandler.addCraftingRecipe(
+            GTUtility.copyAmount(2, aStack),
+            GTProxy.tBits,
             new Object[] { "s ", " X", 'X', OrePrefixes.stick.get(aMaterial) });
 
     }

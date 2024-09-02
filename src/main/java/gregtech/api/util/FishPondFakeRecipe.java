@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fishPondRecipes;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.FishingHooks;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -50,8 +50,8 @@ public class FishPondFakeRecipe {
                         ItemStack t = (ItemStack) ReflectionUtils
                             .getField(WeightedRandomFishable.class, "field_150711_b")
                             .get(u);
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.getIntegratedCircuit(mType))
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(GTUtility.getIntegratedCircuit(mType))
                             .itemOutputs(t)
                             .duration(5 * SECONDS)
                             .eut(0)

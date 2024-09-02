@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -54,7 +54,7 @@ public class BaseItemPlate_OLD extends Item {
             .contains("itemplate")) {
             temp = this.unlocalName.replace("itemP", "p");
             if ((temp != null) && !temp.equals("")) {
-                GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+                GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
             }
         }
     }
@@ -81,7 +81,7 @@ public class BaseItemPlate_OLD extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.sRadiation > 0) {
-            list.add(CORE.GT_Tooltip_Radioactive.get());
+            list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
         if (StringUtils.containsSuperOrSubScript(this.chemicalNotation)) {
             list.add(this.chemicalNotation);

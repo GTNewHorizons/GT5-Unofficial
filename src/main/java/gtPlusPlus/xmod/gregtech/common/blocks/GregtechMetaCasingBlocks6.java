@@ -13,10 +13,10 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler6;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -45,13 +45,13 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
     }
 
     public GregtechMetaCasingBlocks6() {
-        super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.6", GT_Material_Casings.INSTANCE);
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Fusion Machine Casing MK IV");
-        TAE.registerTexture(3, 4, new GTPP_CopiedBlockTexture(this, 6, 0));
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Advanced Fusion Coil II");
-        TAE.registerTexture(3, 5, new GTPP_CopiedBlockTexture(this, 6, 1));
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Unnamed");
-        TAE.registerTexture(3, 6, new GTPP_CopiedBlockTexture(this, 6, 2));
+        super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.6", MaterialCasings.INSTANCE);
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Fusion Machine Casing MK IV");
+        TAE.registerTexture(3, 4, new GTPPCopiedBlockTexture(this, 6, 0));
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Advanced Fusion Coil II");
+        TAE.registerTexture(3, 5, new GTPPCopiedBlockTexture(this, 6, 1));
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Unnamed");
+        TAE.registerTexture(3, 6, new GTPPCopiedBlockTexture(this, 6, 2));
         GregtechItemList.Casing_Fusion_External2.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Fusion_Internal2.set(new ItemStack(this, 1, 1));
     }

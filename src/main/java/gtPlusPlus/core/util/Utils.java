@@ -26,15 +26,15 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.EnumUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -56,7 +56,7 @@ public class Utils {
             .isClient();
     }
 
-    public static TC_AspectStack getTcAspectStack(final TC_Aspects aspect, final long size) {
+    public static TC_AspectStack getTcAspectStack(final TCAspects aspect, final long size) {
         return getTcAspectStack(aspect.name(), (int) size);
     }
 
@@ -64,7 +64,7 @@ public class Utils {
         return getTcAspectStack(aspect, (int) size);
     }
 
-    public static TC_AspectStack getTcAspectStack(final TC_Aspects aspect, final int size) {
+    public static TC_AspectStack getTcAspectStack(final TCAspects aspect, final int size) {
         return getTcAspectStack(aspect.name(), size);
     }
 
@@ -75,14 +75,14 @@ public class Utils {
         if (aspect.equalsIgnoreCase("COGNITIO")) {
             // Adds in Compat for older GT Versions which Misspell aspects.
             try {
-                if (EnumUtils.isValidEnum(TC_Aspects.class, "COGNITIO")) {
+                if (EnumUtils.isValidEnum(TCAspects.class, "COGNITIO")) {
                     Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
+                    returnValue = new TC_AspectStack(TCAspects.valueOf("COGNITIO"), size);
                 } else {
                     Logger.INFO(
                         "Fallback TC Aspect found - " + aspect
                             + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
+                    returnValue = new TC_AspectStack(TCAspects.valueOf("COGNITO"), size);
                 }
             } catch (final NoSuchFieldError r) {
                 Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
@@ -90,14 +90,14 @@ public class Utils {
         } else if (aspect.equalsIgnoreCase("EXANIMUS")) {
             // Adds in Compat for older GT Versions which Misspell aspects.
             try {
-                if (EnumUtils.isValidEnum(TC_Aspects.class, "EXANIMUS")) {
+                if (EnumUtils.isValidEnum(TCAspects.class, "EXANIMUS")) {
                     Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
+                    returnValue = new TC_AspectStack(TCAspects.valueOf("EXANIMUS"), size);
                 } else {
                     Logger.INFO(
                         "Fallback TC Aspect found - " + aspect
                             + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
+                    returnValue = new TC_AspectStack(TCAspects.valueOf("EXAMINIS"), size);
                 }
             } catch (final NoSuchFieldError r) {
                 Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
@@ -106,21 +106,21 @@ public class Utils {
         } else if (aspect.equalsIgnoreCase("PRAECANTATIO")) {
             // Adds in Compat for older GT Versions which Misspell aspects.
             try {
-                if (EnumUtils.isValidEnum(TC_Aspects.class, "PRAECANTATIO")) {
+                if (EnumUtils.isValidEnum(TCAspects.class, "PRAECANTATIO")) {
                     Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
+                    returnValue = new TC_AspectStack(TCAspects.valueOf("PRAECANTATIO"), size);
                 } else {
                     Logger.INFO(
                         "Fallback TC Aspect found - " + aspect
                             + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
+                    returnValue = new TC_AspectStack(TCAspects.valueOf("PRAECANTIO"), size);
                 }
             } catch (final NoSuchFieldError r) {
                 Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
             }
         } else {
             Logger.WARNING("TC Aspect found - " + aspect);
-            returnValue = new TC_AspectStack(TC_Aspects.valueOf(aspect), size);
+            returnValue = new TC_AspectStack(TCAspects.valueOf(aspect), size);
         }
 
         return returnValue;
@@ -352,17 +352,17 @@ public class Utils {
     }
 
     public static String addBookTitleLocalization(final String aTitle) {
-        return GT_LanguageManager
-            .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTech_API.sPostloadFinished);
+        return GTLanguageManager
+            .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTechAPI.sPostloadFinished);
     }
 
     public static String[] addBookPagesLocalization(final String aTitle, final String[] aPages) {
         String[] aLocalizationPages = new String[aPages.length];
         for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
-            aLocalizationPages[i] = GT_LanguageManager.addStringLocalization(
+            aLocalizationPages[i] = GTLanguageManager.addStringLocalization(
                 "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
                 aPages[i],
-                !GregTech_API.sPostloadFinished);
+                !GregTechAPI.sPostloadFinished);
         }
         return aLocalizationPages;
     }
@@ -370,16 +370,16 @@ public class Utils {
     public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String title, String author,
         String[] pages) {
 
-        if (GT_Utility.isStringInvalid(mapping)) {
+        if (GTUtility.isStringInvalid(mapping)) {
             return null;
         }
 
-        ItemStack stack = CORE.sBookList.get(mapping);
+        ItemStack stack = GTPPCore.sBookList.get(mapping);
         if (stack != null) {
-            return GT_Utility.copyAmount(1L, stack);
+            return GTUtility.copyAmount(1L, stack);
         }
 
-        if (GT_Utility.isStringInvalid(title) || GT_Utility.isStringInvalid(author) || pages.length <= 0) {
+        if (GTUtility.isStringInvalid(title) || GTUtility.isStringInvalid(author) || pages.length <= 0) {
             return null;
         }
 
@@ -400,11 +400,11 @@ public class Utils {
                     NBTList.appendTag(new NBTTagString(pages[i]));
                 } else {
                     Logger.INFO("WARNING: String for written Book too long! -> " + pages[i]);
-                    GT_Log.err.println("WARNING: String for written Book too long! -> " + pages[i]);
+                    GTLog.err.println("WARNING: String for written Book too long! -> " + pages[i]);
                 }
             } else {
                 Logger.INFO("WARNING: Too much Pages for written Book! -> " + title);
-                GT_Log.err.println("WARNING: Too much Pages for written Book! -> " + title);
+                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + title);
                 break;
             }
         }
@@ -423,14 +423,14 @@ public class Utils {
             mapping,
             title,
             author);
-        GT_Log.out.println(logMessage);
+        GTLog.out.println(logMessage);
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);
-        CORE.sBookList.put(mapping, stack);
+        GTPPCore.sBookList.put(mapping, stack);
 
         Logger.INFO(String.format("Creating book: %s by %s. Using Meta %d.", title, author, ID));
 
-        return GT_Utility.copy(stack);
+        return GTUtility.copy(stack);
     }
 
 }

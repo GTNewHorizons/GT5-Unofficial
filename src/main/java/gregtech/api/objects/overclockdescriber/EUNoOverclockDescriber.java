@@ -1,13 +1,13 @@
 package gregtech.api.objects.overclockdescriber;
 
-import static gregtech.api.util.GT_Utility.trans;
+import static gregtech.api.util.GTUtility.trans;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
@@ -28,13 +28,13 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     @Override
-    public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
-        return GT_OverclockCalculator.ofNoOverclock(recipe);
+    public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
+        return OverclockCalculator.ofNoOverclock(recipe);
     }
 
     @Override
     public String getTierString() {
-        return GT_Utility.getColoredTierNameFromTier(tier);
+        return GTUtility.getColoredTierNameFromTier(tier);
     }
 
     @Override
@@ -60,48 +60,48 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
         }
     }
 
-    protected String getTotalPowerString(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(calculator.getConsumption() * calculator.getDuration()) + " EU";
+    protected String getTotalPowerString(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()) + " EU";
     }
 
     /**
      * @return If amperage should be shown on NEI.
      */
-    protected boolean shouldShowAmperage(GT_OverclockCalculator calculator) {
+    protected boolean shouldShowAmperage(OverclockCalculator calculator) {
         return amperage != 1;
     }
 
     /**
      * @return Whole EU/t usage, without tier display.
      */
-    protected String getEUtWithoutTier(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(calculator.getConsumption()) + " EU/t";
+    protected String getEUtWithoutTier(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(calculator.getConsumption()) + " EU/t";
     }
 
     /**
      * @return Whole EU/t usage, with tier display.
      */
-    protected String getEUtWithTier(GT_OverclockCalculator calculator) {
-        return getEUtWithoutTier(calculator) + GT_Utility.getTierNameWithParentheses(calculator.getConsumption());
+    protected String getEUtWithTier(OverclockCalculator calculator) {
+        return getEUtWithoutTier(calculator) + GTUtility.getTierNameWithParentheses(calculator.getConsumption());
     }
 
     /**
      * @return Whole EU/t usage. Also displays voltage tier if it should be shown.
      */
-    protected String getEUtDisplay(GT_OverclockCalculator calculator) {
+    protected String getEUtDisplay(OverclockCalculator calculator) {
         return shouldShowAmperage(calculator) ? getEUtWithoutTier(calculator) : getEUtWithTier(calculator);
     }
 
     /**
      * @return EU/t usage, divided by amperage. With tier display.
      */
-    protected String getVoltageString(GT_OverclockCalculator calculator) {
+    protected String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
-        return GT_Utility.formatNumbers(voltage) + " EU/t" + GT_Utility.getTierNameWithParentheses(voltage);
+        return GTUtility.formatNumbers(voltage) + " EU/t" + GTUtility.getTierNameWithParentheses(voltage);
     }
 
-    protected String getAmperageString(GT_OverclockCalculator calculator) {
-        return GT_Utility.formatNumbers(amperage);
+    protected String getAmperageString(OverclockCalculator calculator) {
+        return GTUtility.formatNumbers(amperage);
     }
 
     protected long computeVoltageForEURate(long euPerTick) {

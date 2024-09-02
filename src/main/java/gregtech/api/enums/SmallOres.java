@@ -1,43 +1,43 @@
 package gregtech.api.enums;
 
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Anubis;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Asteroids;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.BarnardE;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.BarnardF;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Callisto;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Ceres;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Deimos;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Enceladus;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.EndAsteroids;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Ganymede;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Haumea;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Horus;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Io;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.KuiperBelt;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.MakeMake;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Mars;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.MehenBelt;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Mercury;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Miranda;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Moon;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Oberon;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Phobos;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Pluto;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Proteus;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Seth;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.TcetiE;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Titan;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Triton;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.VegaB;
-import static bloodasp.galacticgreg.api.enums.DimensionDef.Venus;
+import static galacticgreg.api.enums.DimensionDef.Anubis;
+import static galacticgreg.api.enums.DimensionDef.Asteroids;
+import static galacticgreg.api.enums.DimensionDef.BarnardE;
+import static galacticgreg.api.enums.DimensionDef.BarnardF;
+import static galacticgreg.api.enums.DimensionDef.Callisto;
+import static galacticgreg.api.enums.DimensionDef.Ceres;
+import static galacticgreg.api.enums.DimensionDef.Deimos;
+import static galacticgreg.api.enums.DimensionDef.Enceladus;
+import static galacticgreg.api.enums.DimensionDef.EndAsteroids;
+import static galacticgreg.api.enums.DimensionDef.Ganymede;
+import static galacticgreg.api.enums.DimensionDef.Haumea;
+import static galacticgreg.api.enums.DimensionDef.Horus;
+import static galacticgreg.api.enums.DimensionDef.Io;
+import static galacticgreg.api.enums.DimensionDef.KuiperBelt;
+import static galacticgreg.api.enums.DimensionDef.MakeMake;
+import static galacticgreg.api.enums.DimensionDef.Mars;
+import static galacticgreg.api.enums.DimensionDef.MehenBelt;
+import static galacticgreg.api.enums.DimensionDef.Mercury;
+import static galacticgreg.api.enums.DimensionDef.Miranda;
+import static galacticgreg.api.enums.DimensionDef.Moon;
+import static galacticgreg.api.enums.DimensionDef.Oberon;
+import static galacticgreg.api.enums.DimensionDef.Phobos;
+import static galacticgreg.api.enums.DimensionDef.Pluto;
+import static galacticgreg.api.enums.DimensionDef.Proteus;
+import static galacticgreg.api.enums.DimensionDef.Seth;
+import static galacticgreg.api.enums.DimensionDef.TcetiE;
+import static galacticgreg.api.enums.DimensionDef.Titan;
+import static galacticgreg.api.enums.DimensionDef.Triton;
+import static galacticgreg.api.enums.DimensionDef.VegaB;
+import static galacticgreg.api.enums.DimensionDef.Venus;
 import static gregtech.common.SmallOreBuilder.NETHER;
 import static gregtech.common.SmallOreBuilder.OW;
 import static gregtech.common.SmallOreBuilder.THE_END;
 import static gregtech.common.SmallOreBuilder.TWILIGHT_FOREST;
 
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
-import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
+import galacticgreg.WorldgenOreSmallSpace;
 import gregtech.common.SmallOreBuilder;
+import gregtech.common.WorldgenGTOreSmallPieces;
 
 public enum SmallOres {
 
@@ -545,11 +545,11 @@ public enum SmallOres {
         this.smallOreBuilder = smallOreBuilder;
     }
 
-    public GT_Worldgen_GT_Ore_SmallPieces addGTSmallOre() {
-        return new GT_Worldgen_GT_Ore_SmallPieces(this.smallOreBuilder);
+    public WorldgenGTOreSmallPieces addGTSmallOre() {
+        return new WorldgenGTOreSmallPieces(this.smallOreBuilder);
     }
 
-    public GT_Worldgen_GT_Ore_SmallPieces_Space addGaGregSmallOre() {
-        return new GT_Worldgen_GT_Ore_SmallPieces_Space(this.smallOreBuilder);
+    public WorldgenOreSmallSpace addGaGregSmallOre() {
+        return new WorldgenOreSmallSpace(this.smallOreBuilder);
     }
 }

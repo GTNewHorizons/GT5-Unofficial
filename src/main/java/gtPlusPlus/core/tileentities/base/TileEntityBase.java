@@ -15,16 +15,16 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.net.GTPacketBlockEvent;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.api.interfaces.ILazyCoverable;
@@ -297,9 +297,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return this.canAccessData() ? this.mInventory.isValidSlot(aIndex) : false;
     }
 
-    private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[] { GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior };
+    private final CoverBehavior[] mCoverBehaviors = new CoverBehavior[] { GregTechAPI.sNoBehavior,
+        GregTechAPI.sNoBehavior, GregTechAPI.sNoBehavior, GregTechAPI.sNoBehavior, GregTechAPI.sNoBehavior,
+        GregTechAPI.sNoBehavior };
     protected TileEntityBase mMetaTileEntity;
     protected long mStoredEnergy = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
@@ -309,7 +309,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
     private byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
     private int[] mCoverSides = new int[] { 0, 0, 0, 0, 0, 0 }, mCoverData = new int[] { 0, 0, 0, 0, 0, 0 },
-        mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
+        mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
     private boolean mHasEnoughEnergy = true;
     protected boolean mRunningThroughTick = false;
     protected boolean mInputDisabled = false;
@@ -763,14 +763,14 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public final boolean getOpacity(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
             ? false
-            : GT_Utility.isOpaqueBlock(this.worldObj, aX, aY, aZ);
+            : GTUtility.isOpaqueBlock(this.worldObj, aX, aY, aZ);
     }
 
     @Override
     public final boolean getAir(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
             ? true
-            : GT_Utility.isBlockAir(this.worldObj, aX, aY, aZ);
+            : GTUtility.isBlockAir(this.worldObj, aX, aY, aZ);
     }
 
     @Override
@@ -846,9 +846,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        GT_Values.NW.sendPacketToAllPlayersInRange(
+        GTValues.NW.sendPacketToAllPlayersInRange(
             this.worldObj,
-            new GT_Packet_Block_Event(this.xCoord, (short) this.yCoord, this.zCoord, aID, aValue),
+            new GTPacketBlockEvent(this.xCoord, (short) this.yCoord, this.zCoord, aID, aValue),
             this.xCoord,
             this.zCoord);
     }
@@ -858,7 +858,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public final void setOnFire() {
-        GT_Utility.setCoordsOnFire(this.worldObj, this.xCoord, this.yCoord, this.zCoord, false);
+        GTUtility.setCoordsOnFire(this.worldObj, this.xCoord, this.yCoord, this.zCoord, false);
     }
 
     public final void setToFire() {
@@ -926,8 +926,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public GT_CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
-        return side != ForgeDirection.UNKNOWN ? mCoverBehaviors[side.ordinal()] : GregTech_API.sNoBehavior;
+    public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
+        return side != ForgeDirection.UNKNOWN ? mCoverBehaviors[side.ordinal()] : GregTechAPI.sNoBehavior;
     }
 
     @Override
@@ -944,7 +944,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             final int ordinalSide = side.ordinal();
             mCoverSides[ordinalSide] = aID;
             mCoverData[ordinalSide] = 0;
-            mCoverBehaviors[ordinalSide] = (GT_CoverBehavior) GregTech_API.getCoverBehaviorNew(aID);
+            mCoverBehaviors[ordinalSide] = (CoverBehavior) GregTechAPI.getCoverBehaviorNew(aID);
             return true;
         }
         return false;
@@ -958,7 +958,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        GregTech_API.getCoverBehaviorNew(aCover)
+        GregTechAPI.getCoverBehaviorNew(aCover)
             .placeCover(side, aCover, this);
     }
 
@@ -970,7 +970,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public ItemStack getCoverItemAtSide(ForgeDirection side) {
-        return GT_Utility.intToStack(getCoverIDAtSide(side));
+        return GTUtility.intToStack(getCoverIDAtSide(side));
     }
 
     @Override
@@ -1056,12 +1056,12 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public String getOwnerName() {
-        if (GT_Utility.isStringInvalid(mOwnerName)) return "Player";
+        if (GTUtility.isStringInvalid(mOwnerName)) return "Player";
         return mOwnerName;
     }
 
     public String setOwnerName(String aName) {
-        if (GT_Utility.isStringInvalid(aName)) return mOwnerName = "Player";
+        if (GTUtility.isStringInvalid(aName)) return mOwnerName = "Player";
         return mOwnerName = aName;
     }
 
@@ -1222,15 +1222,15 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return true;
+        if (GTUtility.isStackInvalid(aStack)) return true;
         if (aIndex < 0 || aIndex >= getSizeInventory()) return false;
         ItemStack tStack = getStackInSlot(aIndex);
-        if (GT_Utility.isStackInvalid(tStack)) {
+        if (GTUtility.isStackInvalid(tStack)) {
             setInventorySlotContents(aIndex, aStack);
             return true;
         }
-        aStack = GT_OreDictUnificator.get(aStack);
-        if (GT_Utility.areStacksEqual(tStack, aStack)
+        aStack = GTOreDictUnificator.get(aStack);
+        if (GTUtility.areStacksEqual(tStack, aStack)
             && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             tStack.stackSize += aStack.stackSize;
             return true;
@@ -1240,7 +1240,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        return addStackToSlot(aIndex, GT_Utility.copyAmount(aAmount, aStack));
+        return addStackToSlot(aIndex, GTUtility.copyAmount(aAmount, aStack));
     }
 
     @Override
@@ -1290,8 +1290,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             this.doExplosion(
                 this.oOutput * (long) (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() ? 4
                     : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L ? 2 : 1)));
-            GT_Mod arg9999 = GT_Mod.instance;
-            GT_Mod.achievements.issueAchievement(
+            GTMod arg9999 = GTMod.instance;
+            GTMod.achievements.issueAchievement(
                 this.getWorldObj()
                     .getPlayerEntityByName(this.mOwnerName),
                 "electricproblems");
@@ -1300,10 +1300,10 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     public void doExplosion(long aAmount) {
         if (this.canAccessData()) {
-            if (GregTech_API.sMachineWireFire && this.mMetaTileEntity.isElectric()) {
+            if (GregTechAPI.sMachineWireFire && this.mMetaTileEntity.isElectric()) {
                 try {
                     this.mReleaseEnergy = true;
-                    Util.emitEnergyToNetwork(GT_Values.V[5], Math.max(1L, this.getStoredEU() / GT_Values.V[5]), this);
+                    Util.emitEnergyToNetwork(GTValues.V[5], Math.max(1L, this.getStoredEU() / GTValues.V[5]), this);
                 } catch (Exception arg4) {}
             }
             this.mReleaseEnergy = false;

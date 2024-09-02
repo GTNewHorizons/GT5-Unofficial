@@ -14,9 +14,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -119,10 +119,10 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe()).checkRecipeResult;
         }
-        Stream<GT_Recipe> matchedRecipes = findRecipeMatches(recipeMap);
-        Iterable<GT_Recipe> recipeIterable = matchedRecipes::iterator;
+        Stream<GTRecipe> matchedRecipes = findRecipeMatches(recipeMap);
+        Iterable<GTRecipe> recipeIterable = matchedRecipes::iterator;
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
-        for (GT_Recipe matchedRecipe : recipeIterable) {
+        for (GTRecipe matchedRecipe : recipeIterable) {
             CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
             if (foundResult.successfullyConsumedInputs) {
                 // Successfully found and set recipe, so return it
@@ -143,14 +143,14 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    private CalculationResult validateAndCalculateRecipe(@Nonnull GT_Recipe recipe) {
+    private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return CalculationResult.ofFailure(result);
         }
 
-        GT_ParallelHelper helper = createParallelHelper(recipe);
-        GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+        ParallelHelper helper = createParallelHelper(recipe);
+        OverclockCalculator calculator = createOverclockCalculator(recipe);
         helper.setCalculator(calculator);
         helper.build();
 
@@ -170,7 +170,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      * Override this method if it doesn't work with normal recipemaps.
      */
     @Nonnull
-    protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+    protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
         if (map == null) {
             return Stream.empty();
         }
@@ -186,8 +186,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      * Override to tweak parallel logic if needed.
      */
     @Nonnull
-    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-        return new GT_ParallelHelper().setRecipe(recipe)
+    protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+        return new ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)

@@ -8,8 +8,8 @@ import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -34,7 +34,7 @@ public class PosteaTransformers implements Runnable {
             int indexInMaterialList = id - 4096;
             // The offset from 4096 is the index in the material list, so if this is outside the valid range then this
             // is not a valid frame box, and we don't want to modify it
-            if (indexInMaterialList < 0 || indexInMaterialList >= GregTech_API.sGeneratedMaterials.length) {
+            if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
                 // Do not modify this TE, so return null
                 return null;
             }
@@ -44,12 +44,12 @@ public class PosteaTransformers implements Runnable {
             // is the new frame block. We can make sure to keep the TE using a pass-through transformer.
             // This works because between the old and new frame systems, the TileEntity used for covered frames
             // is still the same
-            if (tag.hasKey(GT_Values.NBT.COVERS)) {
-                return new BlockInfo(GregTech_API.sBlockFrames, indexInMaterialList, PosteaTransformers::passthrough);
+            if (tag.hasKey(GTValues.NBT.COVERS)) {
+                return new BlockInfo(GregTechAPI.sBlockFrames, indexInMaterialList, PosteaTransformers::passthrough);
             }
 
             // If this frame has no covers, simply return a block and delete the TileEntity
-            return new BlockInfo(GregTech_API.sBlockFrames, indexInMaterialList);
+            return new BlockInfo(GregTechAPI.sBlockFrames, indexInMaterialList);
         });
 
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockmachines", (tag) -> {
@@ -57,12 +57,12 @@ public class PosteaTransformers implements Runnable {
             int id = tag.getInteger("Damage");
             int indexInMaterialList = id - 4096;
             // Not a frame box
-            if (indexInMaterialList < 0 || indexInMaterialList >= GregTech_API.sGeneratedMaterials.length) {
+            if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
                 return tag;
             }
             // Not a frame box if the material for this id does not have a frame box associated with it.
             // Apparently the DEFC ID overlaps with the material ID for a Bastnasite frame box for example
-            if ((GregTech_API.sGeneratedMaterials[indexInMaterialList].mTypes & 0x2) == 0) {
+            if ((GregTechAPI.sGeneratedMaterials[indexInMaterialList].mTypes & 0x2) == 0) {
                 return tag;
             }
             Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");

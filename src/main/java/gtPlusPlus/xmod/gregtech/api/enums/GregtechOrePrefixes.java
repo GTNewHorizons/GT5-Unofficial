@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.D2;
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GTValues.B;
+import static gregtech.api.enums.GTValues.D2;
+import static gregtech.api.enums.GTValues.M;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
 import java.util.ArrayList;
@@ -21,18 +21,18 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
+import gregtech.api.util.GTConfig;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
 
@@ -123,15 +123,15 @@ public enum GregtechOrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<GregtechOrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GregTech_API.MATERIAL_UNIT to
+     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GregTechAPI.MATERIAL_UNIT to
      * get the Amounts in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
     public final long mMaterialAmount;
 
     private final Collection<Materials> mNotGeneratedItems = new HashSet<>(), mIgnoredMaterials = new HashSet<>(),
         mGeneratedItems = new HashSet<>();
-    private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<>();
-    private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
+    private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
+    private final ArrayList<IOreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
     public final ItemStack mContainerItem = null;
     public final ICondition<ISubTagContainer> mCondition = null;
     public byte mDefaultStackSize = 64;
@@ -170,64 +170,64 @@ public enum GregtechOrePrefixes {
         // TODO - Utilise some form of way to check if it's gt 5.9 if so, use string switch.
         if (this.name()
             .startsWith("ore")) {
-            getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.TERRA.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("wire")
             || this.name()
                 .startsWith("cable")) {
-            getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("dust")) {
-            getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.PERDITIO.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("crushed")) {
-            getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.PERFODIO.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("ingot")
             || this.name()
                 .startsWith("nugget")) {
-            getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.METALLUM.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("armor")) {
-            getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.TUTAMEN.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("stone")) {
-            getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.TERRA.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("pipe")) {
-            getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.ITER.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("gear")) {
-            getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(this.mAspects);
-            getTcAspectStack(TC_Aspects.MACHINA.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.MOTUS.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.MACHINA.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("frame")
             || this.name()
                 .startsWith("plate")) {
-            getTcAspectStack(TC_Aspects.FABRICO.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.FABRICO.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
             .startsWith("tool")) {
-            getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.INSTRUMENTUM.name(), 2).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
@@ -236,7 +236,7 @@ public enum GregtechOrePrefixes {
                 .startsWith("crystal")
             || this.name()
                 .startsWith("lens")) {
-            getTcAspectStack(TC_Aspects.VITREUS.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.VITREUS.name(), 1).addToAspectList(this.mAspects);
             return;
         }
         if (this.name()
@@ -246,7 +246,7 @@ public enum GregtechOrePrefixes {
         }
         if (this.name()
             .startsWith("battery")) {
-            getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
+            getTcAspectStack(TCAspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
         }
     }
 
@@ -282,7 +282,7 @@ public enum GregtechOrePrefixes {
     }
 
     public static GregtechOrePrefixes getPrefix(final String aPrefixName, final GregtechOrePrefixes aReplacement) {
-        final Object tObject = GT_Utility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
+        final Object tObject = GTUtility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
         if ((tObject != null) && (tObject instanceof GregtechOrePrefixes)) {
             return (GregtechOrePrefixes) tObject;
         }
@@ -323,7 +323,7 @@ public enum GregtechOrePrefixes {
             return false;
         }
         for (final ItemStack tStack : this.mPrefixedItems) {
-            if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
+            if (GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
                 return true;
             }
         }
@@ -353,7 +353,7 @@ public enum GregtechOrePrefixes {
         return this.mFamiliarPrefixes.add(aPrefix);
     }
 
-    public boolean add(final Interface_OreRecipeRegistrator aRegistrator) {
+    public boolean add(final IOreRecipeRegistrator aRegistrator) {
         if (aRegistrator == null) {
             return false;
         }
@@ -364,19 +364,19 @@ public enum GregtechOrePrefixes {
         final ItemStack aStack) {
         if ((aMaterial != null)
             && ((aMaterial != GT_Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
-            && GT_Utility.isStackValid(aStack)) {
-            for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessing) {
+            && GTUtility.isStackValid(aStack)) {
+            for (final IOreRecipeRegistrator tRegistrator : this.mOreProcessing) {
                 if (D2) {
-                    GT_Log.ore.println(
+                    GTLog.ore.println(
                         "Processing '" + aOreDictName
                             + "' with the Prefix '"
                             + this.name()
                             + "' and the Material '"
                             + aMaterial.name()
                             + "' at "
-                            + GT_Utility.getClassName(tRegistrator));
+                            + GTUtility.getClassName(tRegistrator));
                 }
-                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
             }
         }
     }
@@ -385,19 +385,19 @@ public enum GregtechOrePrefixes {
     public void processOre(final Materials aMaterial, final String aOreDictName, final String aModName,
         final ItemStack aStack) {
         if ((aMaterial != null) && ((aMaterial != Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
-            && GT_Utility.isStackValid(aStack)) {
-            for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
+            && GTUtility.isStackValid(aStack)) {
+            for (final IOreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
                 if (D2) {
-                    GT_Log.ore.println(
+                    GTLog.ore.println(
                         "Processing '" + aOreDictName
                             + "' with the Prefix '"
                             + this.name()
                             + "' and the Material '"
                             + aMaterial.mName
                             + "' at "
-                            + GT_Utility.getClassName(tRegistrator));
+                            + GTUtility.getClassName(tRegistrator));
                 }
-                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
             }
         }
     }
@@ -432,7 +432,7 @@ public enum GregtechOrePrefixes {
          *
          */
         _NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1,
-            Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS.name(), 1))),
+            Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TCAspects.VACUOS.name(), 1))),
 
         // Lapis(526, TextureSet.SET_LAPIS, 1.0F, 0, 1, 1 | 4 | 8, 70, 70, 220, 0, "Lapis", 0, 0, -1, 0, false, false,
         // 3, 1, 1, Dyes.dyeBlue, 2, Arrays.asList(new MaterialStack(Materials.Lazurite, 12), new
@@ -445,7 +445,7 @@ public enum GregtechOrePrefixes {
                 new MaterialStack(Materials.Redstone, 1),
                 new MaterialStack(Materials.Blaze, 1),
                 new MaterialStack(Materials.Sulfur, 1)),
-            Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.IGNIS, 1))),
+            Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TCAspects.IGNIS, 1))),
         Cryotheum(21, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 102, 178, 255, 0, "Cryotheum", 0, 0, -1, 0, false,
             false, 2, 3, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
@@ -453,7 +453,7 @@ public enum GregtechOrePrefixes {
                 new MaterialStack(Materials.Redstone, 1),
                 new MaterialStack(Materials.Snow, 1),
                 new MaterialStack(Materials.Niter, 1)),
-            Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.GELUM, 1))),
+            Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TCAspects.GELUM, 1))),
         Ender(22, TextureSet.SET_FLUID, 1.0F, 0, 2, 1, 255, 255, 255, 0, "Ender", 0, 0, -1, 0, false, false, 3, 1, 1,
             Dyes.dyeGreen),
 
@@ -462,57 +462,57 @@ public enum GregtechOrePrefixes {
          */
         Symbiotic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "IV Tier", 0, 0, -1, 0, false, false, 1, 1,
             1, Dyes.dyeLightGray,
-            Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 4), getTcAspectStack(TC_Aspects.MACHINA, 4))),
+            Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 4), getTcAspectStack(TCAspects.MACHINA, 4))),
         Neutronic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LuV Tier", 0, 0, -1, 0, false, false, 1, 1,
             1, Dyes.dyeLightGray,
-            Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 6), getTcAspectStack(TC_Aspects.MACHINA, 6))),
+            Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 6), getTcAspectStack(TCAspects.MACHINA, 6))),
         Quantum(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM Tier", 0, 0, -1, 0, false, false, 1, 1,
             1, Dyes.dyeLightGray,
-            Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8), getTcAspectStack(TC_Aspects.MACHINA, 8))),
+            Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 8), getTcAspectStack(TCAspects.MACHINA, 8))),
 
         Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 190, 240, 190, 0, "Superconductor", 0, 0, -1, 0, false,
-            false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8))),
+            false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 8))),
 
         Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 66, 0, "Staballoy", 0,
             0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2,
             Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         Bedrockium(31, TextureSet.SET_FINE, 8.0F, 8196, 3, 1 | 2 | 16 | 32 | 64 | 128, 39, 39, 39, 0, "Bedrockium", 0,
             0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2,
             Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS, 8), getTcAspectStack(TC_Aspects.TUTAMEN, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.VACUOS, 8), getTcAspectStack(TCAspects.TUTAMEN, 3))),
         BloodSteel(32, TextureSet.SET_METALLIC, 11.0F, 768, 4, 1 | 2 | 16 | 32 | 64 | 128, 142, 28, 0, 0, "Blood Steel",
             0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Steel, 3)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.VICTUS, 8), getTcAspectStack(TC_Aspects.IGNIS, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.VICTUS, 8), getTcAspectStack(TCAspects.IGNIS, 3))),
         Void(33, TextureSet.SET_METALLIC, 6.0F, 1280, 3, 1 | 2 | 16 | 32 | 64 | 128, 82, 17, 82, 0, "Void Metal", 0, 0,
             -1, 0, false, false, 3, 1, 1, Dyes.dyeBlack,
-            Arrays.asList(getTcAspectStack("PRAECANTATIO", 5), getTcAspectStack(TC_Aspects.VACUOS, 7))),
+            Arrays.asList(getTcAspectStack("PRAECANTATIO", 5), getTcAspectStack(TCAspects.VACUOS, 7))),
         ConductiveIron(34, TextureSet.SET_METALLIC, 5.0F, 256, 2, 1 | 2, 164, 109, 100, 0, "Conductive Iron", 0, 0, -1,
             0, false, false, 3, 1, 1, Dyes.dyeRed, 2,
             Arrays.asList(new MaterialStack(Materials.Iron, 6), new MaterialStack(Materials.Redstone, 2)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 2), getTcAspectStack(TC_Aspects.METALLUM, 2))),
+            Arrays.asList(getTcAspectStack(TCAspects.POTENTIA, 2), getTcAspectStack(TCAspects.METALLUM, 2))),
         ElectricalSteel(35, TextureSet.SET_METALLIC, 7.0F, 768, 3, 1 | 2 | 64 | 128, 194, 194, 194, 0,
             "Electrical Steel", 0, 0, 1811, 1000, true, false, 3, 1, 1, Dyes.dyeLightGray, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Iron, 3),
                 new MaterialStack(Materials.Coal, 2),
                 new MaterialStack(Materials.Silicon, 2)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.MAGNETO, 2), getTcAspectStack(TC_Aspects.ELECTRUM, 5))),
+            Arrays.asList(getTcAspectStack(TCAspects.MAGNETO, 2), getTcAspectStack(TCAspects.ELECTRUM, 5))),
         EnergeticAlloy(36, TextureSet.SET_SHINY, 5.0F, 512, 3, 1 | 2 | 64 | 128, 252, 152, 45, 0, "Energetic Alloy", 0,
             0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Gold, 3),
                 new MaterialStack(Materials.Glowstone, 2),
                 new MaterialStack(Materials.Redstone, 2)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 4), getTcAspectStack(TC_Aspects.LUX, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.POTENTIA, 4), getTcAspectStack(TCAspects.LUX, 3))),
         VibrantAlloy(37, TextureSet.SET_SHINY, 7.0F, 1280, 4, 1 | 2 | 64 | 128, 204, 242, 142, 0, "Vibrant Alloy", 0, 0,
             -1, 0, false, false, 3, 1, 1, Dyes.dyeLime, 2,
             Arrays.asList(new MaterialStack(Materials.EnergeticAlloy, 1), new MaterialStack(Materials.EnderPearl, 3)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.MACHINA, 5), getTcAspectStack(TC_Aspects.TELUM, 4))),
+            Arrays.asList(getTcAspectStack(TCAspects.MACHINA, 5), getTcAspectStack(TCAspects.TELUM, 4))),
         PulsatingIron(38, TextureSet.SET_SHINY, 5.0F, 256, 2, 1 | 2 | 64 | 128, 50, 91, 21, 0, "Pulsating Iron", 0, 0,
             -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen, 2,
             Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.EnderPearl, 2)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.ALIENIS, 3), getTcAspectStack(TC_Aspects.METALLUM, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.ALIENIS, 3), getTcAspectStack(TCAspects.METALLUM, 3))),
         /* TODO */ RedstoneAlloy(39, TextureSet.SET_METALLIC, 1.0F, 256, 2, 1 | 2 | 16 | 32 | 64, 178, 34, 34, 0,
             "Redstone Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2,
             Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.Redstone, 4))),
@@ -521,14 +521,14 @@ public enum GregtechOrePrefixes {
         Tantalloy60(40, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 166, 0, "Tantalloy-60",
             0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         Tantalloy61(41, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 122, 135, 196, 0,
             "Tantalloy-61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
 
         Potin(42, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 201, 151, 129, 0, "Potin", 0, 0,
             3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
@@ -536,42 +536,42 @@ public enum GregtechOrePrefixes {
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         Inconel792(43, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 108, 240, 118, 0,
             "Inconel-792", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         Inconel690(44, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 118, 220, 138, 0, "Inconel-690",
             0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         MaragingSteel300(45, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 150, 150, 150, 0,
             "Maraging Steel 300", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         MaragingSteel350(46, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 160, 160, 160, 0,
             "Maraging Steel 350", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
         HastelloyX(47, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 193, 37, 0, "Hastelloy-X",
             0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
             Arrays.asList(
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
 
         TriniumNaquadahCarbonite(48, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 233, 0, 0,
             "Trinium Naquadah Carbonite", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
@@ -579,7 +579,7 @@ public enum GregtechOrePrefixes {
                 new MaterialStack(Materials.Tungsten, 1),
                 new MaterialStack(Materials.Tantalum, 9),
                 new MaterialStack(Materials.Titanium, 1)),
-            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
 
         // Radioactive Materials
         HydrofluoricAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 200, 200, 200, 0, "Hydrofluoric Acid", 0, 0,
@@ -727,8 +727,8 @@ public enum GregtechOrePrefixes {
             this.mToolSpeed = aToolSpeed;
             this.mIconSet = aIconSet;
             if (aMetaItemSubID >= 0) {
-                if (CORE.sMU_GeneratedMaterials[aMetaItemSubID] == null) {
-                    CORE.sMU_GeneratedMaterials[aMetaItemSubID] = this;
+                if (GTPPCore.sMU_GeneratedMaterials[aMetaItemSubID] == null) {
+                    GTPPCore.sMU_GeneratedMaterials[aMetaItemSubID] = this;
                 } else {
                     throw new IllegalArgumentException("The Index " + aMetaItemSubID + " is already used!");
                 }
@@ -971,7 +971,7 @@ public enum GregtechOrePrefixes {
         }
 
         public static GT_Materials get(final String aMaterialName) {
-            final Object tObject = GT_Utility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
+            final Object tObject = GTUtility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
             if ((tObject != null) && (tObject instanceof GT_Materials)) {
                 return (GT_Materials) tObject;
             }
@@ -987,7 +987,7 @@ public enum GregtechOrePrefixes {
          *
          * @param aConfiguration
          */
-        public static void init(final GT_Config aConfiguration) {
+        public static void init(final GTConfig aConfiguration) {
             for (final GT_Materials tMaterial : VALUES) {
                 final String tString = tMaterial.toString()
                     .toLowerCase();
@@ -1110,7 +1110,7 @@ public enum GregtechOrePrefixes {
             }
             for (final ItemStack tStack : this.mMaterialItems) {
                 for (final ItemStack aStack : aStacks) {
-                    if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
+                    if (GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
                         return true;
                     }
                 }
@@ -1127,7 +1127,7 @@ public enum GregtechOrePrefixes {
             }
             boolean temp = false;
             for (int i = 0; i < this.mMaterialItems.size(); i++) {
-                if (GT_Utility.areStacksEqual(aStack, this.mMaterialItems.get(i))) {
+                if (GTUtility.areStacksEqual(aStack, this.mMaterialItems.get(i))) {
                     this.mMaterialItems.remove(i--);
                     temp = true;
                 }

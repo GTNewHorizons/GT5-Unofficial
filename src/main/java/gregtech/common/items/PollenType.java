@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public enum PollenType {
 
@@ -23,7 +23,7 @@ public enum PollenType {
     }
 
     public String getName() {
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             "pollen." + this.name,
             this.name.substring(0, 1)
                 .toUpperCase() + this.name.substring(1) + " Pollen");

@@ -15,16 +15,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Log;
-import gregtech.common.blocks.GT_Block_Ores;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.api.util.GTLog;
+import gregtech.common.blocks.BlockOres;
+import gregtech.common.blocks.TileEntityOres;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
+import gtPlusPlus.xmod.gregtech.HandlerGT;
 
 public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
@@ -85,23 +85,23 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
         Logger.WORLD("Creating Ore Layer Object");
-        this.mOverworld = HANDLER_GT.sCustomWorldgenFile
+        this.mOverworld = HandlerGT.sCustomWorldgenFile
             .get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
+        this.mNether = HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
+        this.mEnd = HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
         this.mMinY = 5;
         short mMaxY = 14;
         if (mMaxY < (this.mMinY + 7)) {
-            GT_Log.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
+            GTLog.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
             mMaxY = (short) (this.mMinY + 7);
         }
         this.mMaxY = mMaxY;
-        this.mWeight = ((short) HANDLER_GT.sCustomWorldgenFile
+        this.mWeight = ((short) HandlerGT.sCustomWorldgenFile
             .get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) HANDLER_GT.sCustomWorldgenFile
+        this.mDensity = ((short) HandlerGT.sCustomWorldgenFile
             .get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
         this.mSize = ((short) Math
-            .max(1, HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+            .max(1, HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
         this.mPrimary = aPrimary;
         this.mSecondary = aSecondary;
         this.mBetween = aBetween;
@@ -136,14 +136,14 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
 
         if (mWorldGenName.equals("vein0")) {
-            if (debugWorldGen) GT_Log.out.println(" NoOresInVein-vein0");
+            if (debugWorldGen) GTLog.out.println(" NoOresInVein-vein0");
             // This is a special empty orevein
             Logger.WORLD("[World Generation Debug] Special Empty Vein placed.");
             return ORE_PLACED;
         }
-        if (aDimensionType != Dimension_Everglades.DIMID) {
+        if (aDimensionType != DimensionEverglades.DIMID) {
             /*
-             * // Debug code, but spams log if (debugWorldGen) { GT_Log.out.println( "Wrong dimension" ); }
+             * // Debug code, but spams log if (debugWorldGen) { GTLog.out.println( "Wrong dimension" ); }
              */
             Logger.WORLD("[World Generation Debug] Wrong dimension.");
             return WRONG_DIMENSION;
@@ -164,19 +164,19 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             Block tBlock = aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8);
             if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.stone)
                 || tBlock
-                    .isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Dimension_Everglades.blockSecondLayer)
+                    .isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, DimensionEverglades.blockSecondLayer)
                 || tBlock
-                    .isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Dimension_Everglades.blockMainFiller)
+                    .isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, DimensionEverglades.blockMainFiller)
                 || tBlock.isReplaceableOreGen(
                     aWorld,
                     aChunkX + 8,
                     tMinY,
                     aChunkZ + 8,
-                    Dimension_Everglades.blockSecondaryFiller)
+                    DimensionEverglades.blockSecondaryFiller)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -195,8 +195,8 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.stone)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
                 || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites)
-                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -207,7 +207,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
         if (debugWorldGen) {
             String tDimensionName = aWorld.provider.getDimensionName();
-            GT_Log.out.print(
+            GTLog.out.print(
                 "Trying Orevein:" + this.mWorldGenName
                     + " Dimension="
                     + tDimensionName
@@ -254,7 +254,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             }
         }
         /*
-         * if ((placeCount[1]+placeCount[3])==0) { if (debugWorldGen) GT_Log.out.println( " No ore in bottom layer" );
+         * if ((placeCount[1]+placeCount[3])==0) { if (debugWorldGen) GTLog.out.println( " No ore in bottom layer" );
          * return NO_ORE_IN_BOTTOM_LAYER; // Exit early, didn't place anything in the bottom layer }
          */
         Logger.WORLD("[World Generation Debug] Trying to set Ores?");
@@ -359,7 +359,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
         if (debugWorldGen) {
             String tDimensionName = aWorld.provider.getDimensionName();
-            GT_Log.out.println(
+            GTLog.out.println(
                 "Generated Orevein:" + this.mWorldGenName
                     + " Dimension="
                     + tDimensionName
@@ -408,7 +408,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
 
         // Set GT ORE
-        if (aMetaData instanceof GT_Block_Ores) {
+        if (aMetaData instanceof BlockOres) {
             if (ore1String.equals("unset")) {
                 ore1String = Utils.sanitizeString(
                     this.mPrimary.getLocalizedName()
@@ -527,11 +527,11 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_Everglades.blockSecondLayer)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_Everglades.blockMainFiller)
-            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_Everglades.blockSecondaryFiller)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockGranites)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockStones)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondLayer)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockMainFiller)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondaryFiller)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
 
             if (aWorld.setBlock(aX, aY, aZ, tOreBlock, 0, 3)) {
@@ -550,7 +550,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         Method setOres = null;
 
         try {
-            setOres = GT_TileEntity_Ores.class.getDeclaredMethod(
+            setOres = TileEntityOres.class.getDeclaredMethod(
                 "setOreBlock",
                 World.class,
                 int.class,

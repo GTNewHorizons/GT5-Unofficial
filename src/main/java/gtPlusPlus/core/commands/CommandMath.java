@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.MiningUtils;
 
 public class CommandMath implements ICommand {
@@ -72,7 +72,7 @@ public class CommandMath implements ICommand {
             || P.getCommandSenderName()
                 .toLowerCase()
                 .equals("draknyte1")
-            || CORE.DEVENV) {
+            || GTPPCore.DEVENV) {
             return true;
         }
         return false;

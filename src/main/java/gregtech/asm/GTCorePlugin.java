@@ -7,21 +7,20 @@ import java.util.Set;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
+import bartworks.common.configs.ConfigHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import gtPlusPlus.preloader.asm.Preloader_DummyContainer;
+import gtPlusPlus.preloader.asm.PreloaderDummyContainer;
 import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 
 @IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE) // Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
-@IFMLLoadingPlugin.TransformerExclusions({ "com.github.bartimaeusnek.bartworks.ASM", "gtPlusPlus.preloader",
-    "gregtech.asm" })
+@IFMLLoadingPlugin.TransformerExclusions({ "bartworks.ASM", "gtPlusPlus.preloader", "gregtech.asm" })
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
 @SuppressWarnings("unused") // loaded by FML
 public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
@@ -44,7 +43,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String getModContainerClass() {
-        return Preloader_DummyContainer.class.getName();
+        return PreloaderDummyContainer.class.getName();
     }
 
     @Override
@@ -55,12 +54,12 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     @Override
     public void injectData(Map<String, Object> data) {
         // GT++
-        CORE_Preloader.DEV_ENVIRONMENT = !(boolean) data.get("runtimeDeobfuscationEnabled");
+        PreloaderCore.DEV_ENVIRONMENT = !(boolean) data.get("runtimeDeobfuscationEnabled");
         File mcDir = (File) data.get("mcLocation");
         if (mcDir != null && mcDir.exists()) {
-            CORE_Preloader.setMinecraftDirectory(mcDir);
+            PreloaderCore.setMinecraftDirectory(mcDir);
         }
-        CORE_Preloader.DEBUG_MODE = AsmConfig.debugMode;
+        PreloaderCore.DEBUG_MODE = AsmConfig.debugMode;
     }
 
     @Override

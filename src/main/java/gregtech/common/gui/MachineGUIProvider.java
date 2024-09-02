@@ -35,7 +35,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.logic.PowerLogic;
@@ -74,7 +74,7 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
     @Override
     protected void addWidgets(@Nonnull Builder builder, @Nonnull UIBuildContext uiContext) {
         int page = 0;
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         MultiChildWidget mainTab = new MultiChildWidget();
         mainTab.setSize(host.getWidth(), host.getHeight());
         createMainTab(mainTab, builder, uiContext);
@@ -103,12 +103,12 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                     .setBackground(
                         false,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .addTooltip("Item Input Inventory")
                     .setPos(20 * (page - 1), -20))
@@ -124,12 +124,12 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                     .setBackground(
                         false,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .addTooltip("Item Output Inventory")
                     .setPos(20 * (page - 1), -20))
@@ -145,12 +145,12 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                     .setBackground(
                         false,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .addTooltip("Fluid Input Tanks")
                     .setPos(20 * (page - 1), -20))
@@ -166,12 +166,12 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                     .setBackground(
                         false,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+                        GTUITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .addTooltip("Fluid Output Tanks")
                     .setPos(20 * (page - 1), -20))
@@ -185,12 +185,12 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                 .setBackground(
                     false,
                     ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                    GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+                    GTUITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                         .withOffset(2, 4))
                 .setBackground(
                     true,
                     ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                    GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+                    GTUITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                         .withOffset(2, 4))
                 .addTooltip("Power Information")
                 .setPos(20 * (page - 1), -20))
@@ -209,7 +209,7 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
             .addChild(createBatchModeButton(builder))
             .addChild(createLockToSingleRecipeButton(builder));
         tab.addChild(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 4)
                 .setSize(160, 75))
             .addChild(buttons);
@@ -300,11 +300,11 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                     : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
             .setBackground(() -> {
                 if (host.isAllowedToWork()) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
                 }
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(host::isAllowedToWork, host::setAllowedToWork), builder)
@@ -343,7 +343,7 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
                 ret.add(host.getVoidingMode().buttonTexture);
                 ret.add(host.getVoidingMode().buttonOverlay);
                 if (!host.supportsVoidProtection()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -384,22 +384,22 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (host.isInputSeparated()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
                     if (host.supportsInputSeparation()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.BUTTON_STANDARD);
                     if (host.supportsInputSeparation()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
                     }
                 }
                 if (!host.supportsInputSeparation()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -430,22 +430,22 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (host.isBatchModeEnabled()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
                     if (host.supportsBatchMode()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.BUTTON_STANDARD);
                     if (host.supportsBatchMode()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
                     }
                 }
                 if (!host.supportsBatchMode()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
@@ -476,22 +476,22 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (host.isRecipeLockingEnabled()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
                     if (host.supportsSingleRecipeLocking()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
                     }
                 } else {
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.BUTTON_STANDARD);
                     if (host.supportsSingleRecipeLocking()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
                     }
                 }
                 if (!host.supportsSingleRecipeLocking()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
             })

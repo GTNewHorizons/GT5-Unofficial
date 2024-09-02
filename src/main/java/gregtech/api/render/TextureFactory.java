@@ -6,7 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
-import gregtech.common.render.GT_TextureBuilder;
+import gregtech.common.render.GTTextureBuilder;
 
 /**
  * <p>
@@ -152,6 +152,6 @@ public final class TextureFactory {
      * @return An instance of the {@link ITextureBuilder} implementation
      */
     public static ITextureBuilder builder() {
-        return new GT_TextureBuilder();
+        return new GTTextureBuilder();
     }
 }

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
-import static gregtech.GT_Mod.gregtechproxy;
+import static gregtech.GTMod.gregtechproxy;
 
 import java.util.Optional;
 
@@ -13,23 +13,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtil;
+import gregtech.api.util.GTUtility;
 
 public class DroneConnection {
 
     String customName;
     String unlocalizedName;
-    GT_MetaTileEntity_MultiBlockBase machine;
+    MTEMultiBlockBase machine;
     ItemStack machineItem;
     ChunkCoordinates machineCoord;
-    GT_MetaTileEntity_DroneCentre centre;
+    MTEDroneCentre centre;
     ChunkCoordinates centreCoord;
     World world;
 
-    public DroneConnection(GT_MetaTileEntity_MultiBlockBase machine, GT_MetaTileEntity_DroneCentre centre) {
+    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
         this.machine = machine;
         this.machineItem = machine.getStackForm(1);
         machineCoord = machine.getBaseMetaTileEntity()
@@ -62,19 +62,18 @@ public class DroneConnection {
             centreTag.getInteger("x"),
             centreTag.getInteger("y"),
             centreTag.getInteger("z"));
-        this.centre = (GT_MetaTileEntity_DroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
+        this.centre = (MTEDroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         this.customName = aNBT.getString("name");
         this.unlocalizedName = aNBT.getString("unlocalizedName");
     }
 
-    public GT_MetaTileEntity_MultiBlockBase getMachine() {
+    public MTEMultiBlockBase getMachine() {
         return machine;
     }
 
     public boolean reCheckConnection() {
         if (machine == null) this.machine = getLoadedGT_BaseMachineAt(machineCoord, world, true);
-        if (centre == null)
-            this.centre = (GT_MetaTileEntity_DroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
+        if (centre == null) this.centre = (MTEDroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         if (machine != null && centre != null
             && !centre.getConnectionList()
                 .contains(this))
@@ -84,7 +83,7 @@ public class DroneConnection {
     }
 
     public String getCustomName(boolean localized) {
-        if (localized) return GT_LanguageManager.getTranslation("gt.blockmachines." + unlocalizedName + ".name");
+        if (localized) return GTLanguageManager.getTranslation("gt.blockmachines." + unlocalizedName + ".name");
         return customName;
     }
 
@@ -100,7 +99,7 @@ public class DroneConnection {
         return machine != null && machine.shouldDisplayShutDownReason()
             && !machine.getBaseMetaTileEntity()
                 .isActive()
-            && GT_Utility.isStringValid(
+            && GTUtility.isStringValid(
                 machine.getBaseMetaTileEntity()
                     .getLastShutDownReason()
                     .getDisplayString())
@@ -122,11 +121,10 @@ public class DroneConnection {
         return aNBT;
     }
 
-    public GT_MetaTileEntity_MultiBlockBase getLoadedGT_BaseMachineAt(ChunkCoordinates coords, World world,
-        boolean isLoaded) {
-        TileEntity te = GT_Util.getTileEntity(world, coords, isLoaded);
+    public MTEMultiBlockBase getLoadedGT_BaseMachineAt(ChunkCoordinates coords, World world, boolean isLoaded) {
+        TileEntity te = GTUtil.getTileEntity(world, coords, isLoaded);
         if (te == null) return null;
-        return (GT_MetaTileEntity_MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
+        return (MTEMultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
     private NBTTagCompound transCoordsToNBT(ChunkCoordinates coord) {

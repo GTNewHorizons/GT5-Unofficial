@@ -25,11 +25,11 @@ import net.minecraft.item.ItemBlock;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.api.enums.ItemList;
-import kubatech.loaders.block.defc.DEFCCasingBlock;
+import kubatech.loaders.block.defc.BlockDEFCCasing;
 import kubatech.loaders.block.kubablock.KubaBlock;
 import kubatech.loaders.block.kubablock.KubaItemBlock;
-import kubatech.loaders.block.kubablock.blocks.TeaAcceptor;
-import kubatech.loaders.block.kubablock.blocks.TeaStorage;
+import kubatech.loaders.block.kubablock.blocks.BlockTeaAcceptor;
+import kubatech.loaders.block.kubablock.blocks.BlockTeaStorage;
 import kubatech.tileentity.TeaAcceptorTile;
 import kubatech.tileentity.TeaStorageTile;
 
@@ -37,7 +37,7 @@ public class BlockLoader {
 
     public static final KubaBlock kubaBlock = new KubaBlock(Material.anvil);
     public static final ItemBlock kubaItemBlock = new KubaItemBlock(kubaBlock);
-    public static final DEFCCasingBlock defcCasingBlock = new DEFCCasingBlock();
+    public static final BlockDEFCCasing defcCasingBlock = new BlockDEFCCasing();
 
     public static void registerBlocks() {
         GameRegistry.registerTileEntity(TeaAcceptorTile.class, "KT_TeaAcceptor");
@@ -45,7 +45,7 @@ public class BlockLoader {
         GameRegistry.registerBlock(kubaBlock, null, "kubablocks");
         GameRegistry.registerItem(kubaItemBlock, "kubablocks");
 
-        ItemList.TeaAcceptor.set(kubaBlock.registerProxyBlock(new TeaAcceptor()));
-        ItemList.TeaStorage.set(kubaBlock.registerProxyBlock(new TeaStorage()));
+        ItemList.TeaAcceptor.set(kubaBlock.registerProxyBlock(new BlockTeaAcceptor()));
+        ItemList.TeaStorage.set(kubaBlock.registerProxyBlock(new BlockTeaStorage()));
     }
 }

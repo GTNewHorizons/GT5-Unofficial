@@ -6,22 +6,24 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.common.render.items.GeneratedItemRenderer;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
+import gregtech.common.render.items.MetaGeneratedItemRenderer;
 
 public interface IGT_ItemWithMaterialRenderer {
 
     /**
-     * @return If allow using {@link gregtech.common.render.items.GT_MetaGenerated_Item_Renderer} to render item
+     * @return If allow using {@link MetaGeneratedItemRenderer} to render item
      */
     boolean shouldUseCustomRenderer(int aMetaData);
 
     /**
      * @return Custom renderer of the Material with offset < 32000
      */
-    GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData);
+    GeneratedMaterialRenderer getMaterialRenderer(int aMetaData);
 
     /**
-     * If this returns false, renderer falls back to {@link gregtech.common.render.items.GT_GeneratedItem_Renderer}
+     * If this returns false, renderer falls back to {@link GeneratedItemRenderer}
      */
     boolean allowMaterialRenderer(int aMetaData);
 

@@ -4,15 +4,15 @@ import java.text.NumberFormat;
 import java.util.Map;
 import java.util.Random;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 
 public class MathUtils {
 
-    static final Random rand = CORE.RANDOM;
+    static final Random rand = GTPPCore.RANDOM;
 
     /** Formats a number with group separator and at most 2 fraction digits. */
     private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
@@ -273,7 +273,7 @@ public class MathUtils {
     }
 
     public static int safeInt(long number) {
-        return number > GT_Values.V[GT_Values.V.length - 1] ? safeInt(GT_Values.V[GT_Values.V.length - 1], 1)
+        return number > GTValues.V[GTValues.V.length - 1] ? safeInt(GTValues.V[GTValues.V.length - 1], 1)
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 
@@ -391,7 +391,7 @@ public class MathUtils {
 
     /**
      * Inverts the value, making Positives into Negatives and vice versa.
-     * 
+     *
      * @param aPositive - An int value, either positive or negative.
      * @return - Inverted int Value.
      */
@@ -484,7 +484,7 @@ public class MathUtils {
 
     /**
      * Balances a number within a range.
-     * 
+     *
      * @param aInput - The number to balance
      * @param aMin   - The minimum bounds
      * @param aMax   - The maximum bounds

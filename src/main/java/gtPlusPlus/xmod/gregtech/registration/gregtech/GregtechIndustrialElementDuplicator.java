@@ -5,8 +5,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Elemental_Duplica
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ElementalDataOrbHolder;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_ElementalDuplicator;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEElementalDuplicator;
 
 public class GregtechIndustrialElementDuplicator {
 
@@ -15,12 +15,12 @@ public class GregtechIndustrialElementDuplicator {
         Logger.INFO("Gregtech5u Content | Registering Elemental Duplicator Multiblock.");
 
         GregtechItemList.Controller_ElementalDuplicator.set(
-            new GregtechMTE_ElementalDuplicator(
+            new MTEElementalDuplicator(
                 Controller_ElementalDuplicator.ID,
                 "gtpp.multimachine.replicator",
                 "Elemental Duplicator").getStackForm(1L));
         GregtechItemList.Hatch_Input_Elemental_Duplicator.set(
-            new GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(
+            new MTEHatchElementalDataOrbHolder(
                 Hatch_Input_Elemental_Duplicator.ID,
                 "hatch.input_bus.elementalorbholder",
                 "Data Orb Repository",

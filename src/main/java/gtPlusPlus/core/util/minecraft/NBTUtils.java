@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class NBTUtils {
 
@@ -18,7 +18,7 @@ public class NBTUtils {
     public static void setBookTitle(ItemStack aStack, String aTitle) {
         NBTTagCompound tNBT = getNBT(aStack);
         tNBT.setString("title", aTitle);
-        GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+        GTUtility.ItemNBT.setNBT(aStack, tNBT);
     }
 
     public static ItemStack[] readItemsFromNBT(ItemStack itemstack) {
@@ -82,7 +82,7 @@ public class NBTUtils {
     public static void setBoolean(ItemStack aStack, String aTag, boolean aBoolean) {
         NBTTagCompound tNBT = getNBT(aStack);
         tNBT.setBoolean(aTag, aBoolean);
-        GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+        GTUtility.ItemNBT.setNBT(aStack, tNBT);
     }
 
     public static boolean getBoolean(ItemStack aStack, String aTag) {
@@ -93,7 +93,7 @@ public class NBTUtils {
     public static void setInteger(ItemStack aStack, String aTag, int aInt) {
         NBTTagCompound tNBT = getNBT(aStack);
         tNBT.setInteger(aTag, aInt);
-        GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+        GTUtility.ItemNBT.setNBT(aStack, tNBT);
     }
 
     public static int getInteger(ItemStack aStack, String aTag) {
@@ -104,7 +104,7 @@ public class NBTUtils {
     public static void setLong(ItemStack aStack, String aTag, long aInt) {
         NBTTagCompound tNBT = getNBT(aStack);
         tNBT.setLong(aTag, aInt);
-        GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+        GTUtility.ItemNBT.setNBT(aStack, tNBT);
     }
 
     public static long getLong(ItemStack aStack, String aTag) {
@@ -115,7 +115,7 @@ public class NBTUtils {
     public static void setString(ItemStack aStack, String aTag, String aString) {
         NBTTagCompound tNBT = getNBT(aStack);
         tNBT.setString(aTag, aString);
-        GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+        GTUtility.ItemNBT.setNBT(aStack, tNBT);
     }
 
     public static String getString(ItemStack aStack, String aTag) {

@@ -8,7 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -44,6 +44,6 @@ public class SimpleSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 translationKey,
-                GT_Utility.formatNumbers((long) recipeInfo.recipe.mSpecialValue * multiplier)));
+                GTUtility.formatNumbers((long) recipeInfo.recipe.mSpecialValue * multiplier)));
     }
 }

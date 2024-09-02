@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableSet;
-import common.CommonProxy;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -17,6 +16,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
+import kekztech.common.CommonProxy;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -47,7 +47,7 @@ public class KekzCore {
     @Mod.Instance(Mods.Names.KEKZ_TECH)
     public static KekzCore instance;
 
-    @SidedProxy(clientSide = "client.ClientProxy", serverSide = "kekztech.ServerProxy")
+    @SidedProxy(clientSide = "kekztech.client.ClientProxy", serverSide = "kekztech.ServerProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler

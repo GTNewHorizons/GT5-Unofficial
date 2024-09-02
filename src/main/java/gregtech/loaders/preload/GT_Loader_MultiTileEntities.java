@@ -1,6 +1,6 @@
 package gregtech.loaders.preload;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
@@ -85,7 +85,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
     @Override
     public void run() {
-        GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
+        GT_FML_LOGGER.info("GTMod: Registering MultiTileEntities");
         registerMachines();
         registerCasings();
         registerComponentCasings();

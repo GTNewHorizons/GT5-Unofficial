@@ -9,10 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -35,24 +35,24 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int aMeta = aStack.getItemDamage();
             if (aMeta < 10) {
-                aList.add("Tier: " + GT_Values.VN[aMeta]);
+                aList.add("Tier: " + GTValues.VN[aMeta]);
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
     }
 
     public GregtechMetaTieredCasingBlocks1() {
-        super(TieredCasingItemBlock.class, "gtplusplus.blocktieredcasings.1", GT_Material_Casings.INSTANCE);
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Integral Encasement I");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Integral Encasement II");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Integral Encasement III");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Integral Encasement IV");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Integral Encasement V");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Integral Framework I");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Integral Framework II");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Integral Framework III");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Integral Framework IV");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Integral Framework V");
+        super(TieredCasingItemBlock.class, "gtplusplus.blocktieredcasings.1", MaterialCasings.INSTANCE);
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Integral Encasement I");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Integral Encasement II");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Integral Encasement III");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Integral Encasement IV");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Integral Encasement V");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Integral Framework I");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Integral Framework II");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Integral Framework III");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Integral Framework IV");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Integral Framework V");
 
         GregtechItemList.GTPP_Casing_ULV.set(new ItemStack(this, 1, 0));
         GregtechItemList.GTPP_Casing_LV.set(new ItemStack(this, 1, 1));

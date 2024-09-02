@@ -15,7 +15,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
 
 public class TeleporterDimensionMod extends Teleporter {
 
@@ -66,7 +66,7 @@ public class TeleporterDimensionMod extends Teleporter {
                         int i2 = k + i1 * b1 - l * b0;
                         boolean flag = j1 < 0;
                         this.worldServerInstance
-                            .setBlock(k1, l1, i2, flag ? Dimension_Everglades.blockPortalFrame : Blocks.air);
+                            .setBlock(k1, l1, i2, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
                     }
                 }
             }
@@ -110,9 +110,9 @@ public class TeleporterDimensionMod extends Teleporter {
                     double d5 = l1 + 0.5D - par1Entity.posZ;
 
                     for (int i2 = this.worldServerInstance.getActualHeight() - 1; i2 >= 0; --i2) {
-                        if (this.worldServerInstance.getBlock(l3, i2, l1) == Dimension_Everglades.portalBlock) {
+                        if (this.worldServerInstance.getBlock(l3, i2, l1) == DimensionEverglades.portalBlock) {
                             while (this.worldServerInstance.getBlock(l3, i2 - 1, l1)
-                                == Dimension_Everglades.portalBlock) {
+                                == DimensionEverglades.portalBlock) {
                                 --i2;
                             }
 
@@ -143,19 +143,19 @@ public class TeleporterDimensionMod extends Teleporter {
             d7 = k + 0.5D;
             int i4 = -1;
 
-            if (this.worldServerInstance.getBlock(i - 1, j, k) == Dimension_Everglades.portalBlock) {
+            if (this.worldServerInstance.getBlock(i - 1, j, k) == DimensionEverglades.portalBlock) {
                 i4 = 2;
             }
 
-            if (this.worldServerInstance.getBlock(i + 1, j, k) == Dimension_Everglades.portalBlock) {
+            if (this.worldServerInstance.getBlock(i + 1, j, k) == DimensionEverglades.portalBlock) {
                 i4 = 0;
             }
 
-            if (this.worldServerInstance.getBlock(i, j, k - 1) == Dimension_Everglades.portalBlock) {
+            if (this.worldServerInstance.getBlock(i, j, k - 1) == DimensionEverglades.portalBlock) {
                 i4 = 3;
             }
 
-            if (this.worldServerInstance.getBlock(i, j, k + 1) == Dimension_Everglades.portalBlock) {
+            if (this.worldServerInstance.getBlock(i, j, k + 1) == DimensionEverglades.portalBlock) {
                 i4 = 1;
             }
 
@@ -396,7 +396,7 @@ public class TeleporterDimensionMod extends Teleporter {
                         j4 = k2 + (j3 - 1) * l2 - i3 * l5;
                         flag = k3 < 0;
                         this.worldServerInstance
-                            .setBlock(l3, i4, j4, flag ? Dimension_Everglades.blockPortalFrame : Blocks.air);
+                            .setBlock(l3, i4, j4, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
                     }
                 }
             }
@@ -413,7 +413,7 @@ public class TeleporterDimensionMod extends Teleporter {
                         l3,
                         i4,
                         j4,
-                        flag ? Dimension_Everglades.blockPortalFrame : Dimension_Everglades.portalBlock,
+                        flag ? DimensionEverglades.blockPortalFrame : DimensionEverglades.portalBlock,
                         0,
                         2);
                 }

@@ -21,8 +21,8 @@
 package kubatech.loaders;
 
 import static gregtech.api.enums.Mods.InfernalMobs;
-import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
-import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
+import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
+import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -50,10 +50,10 @@ import com.kuba6000.mobsinfo.api.event.PreMobsRegistrationEvent;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import kubatech.Tags;
 import kubatech.config.Config;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 
 public class MobHandlerLoader {
 
@@ -90,7 +90,7 @@ public class MobHandlerLoader {
             mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
         }
 
-        public ItemStack[] generateOutputs(Random rnd, GT_MetaTileEntity_ExtremeEntityCrusher MTE, double attackDamage,
+        public ItemStack[] generateOutputs(Random rnd, MTEExtremeEntityCrusher MTE, double attackDamage,
             int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
@@ -235,8 +235,8 @@ public class MobHandlerLoader {
         if (recipe != null) {
             event.additionalInformation.addAll(
                 Arrays.asList(
-                    GT_Utility.trans("153", "Usage: ") + GT_Utility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GT_Utility.trans("158", "Time: ") + GT_Utility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
+                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
         }
     }
 }

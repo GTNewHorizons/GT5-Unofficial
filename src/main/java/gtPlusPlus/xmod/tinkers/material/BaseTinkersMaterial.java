@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.tinkers.HANDLER_Tinkers;
+import gtPlusPlus.xmod.tinkers.HandlerTinkers;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 
 public class BaseTinkersMaterial {
@@ -40,7 +40,7 @@ public class BaseTinkersMaterial {
         mID = aNextFreeID++;
         Logger.INFO("[TiCon] Assigning ID " + mID + " to " + mLocalName + ".");
         aInternalMaterialIdMap.put(mUnlocalName, mID);
-        HANDLER_Tinkers.mTinkerMaterials.put(this);
+        HandlerTinkers.mTinkerMaterials.put(this);
     }
 
     public String getUnlocalName() {

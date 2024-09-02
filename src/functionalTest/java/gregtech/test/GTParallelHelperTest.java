@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.ParallelHelper;
 import gregtech.test.mock.MockIVoidableMachine;
 
 public class GTParallelHelperTest {
 
-    static GT_Recipe rubberRecipe;
+    static GTRecipe rubberRecipe;
     static ItemStack[] inputItems;
     static MockIVoidableMachine machine;
 
@@ -27,7 +27,7 @@ public class GTParallelHelperTest {
         machine = new MockIVoidableMachine();
         ItemStack rubberDust = Materials.RawRubber.getDust(1);
         ItemStack sulfurDust = Materials.Sulfur.getDust(1);
-        rubberRecipe = new GT_Recipe(
+        rubberRecipe = new GTRecipe(
             new ItemStack[] { rubberDust.copy(), sulfurDust.copy() },
             new ItemStack[] { Materials.Rubber.getDust(1), Materials.Rubber.getDustTiny(1) },
             null,
@@ -38,15 +38,15 @@ public class GTParallelHelperTest {
             1,
             0);
 
-        inputItems = new ItemStack[] { GT_Utility.copyAmountUnsafe(Integer.MAX_VALUE, rubberDust),
-            GT_Utility.copyAmountUnsafe(Integer.MAX_VALUE, rubberDust),
-            GT_Utility.copyAmountUnsafe(Integer.MAX_VALUE, sulfurDust),
-            GT_Utility.copyAmountUnsafe(Integer.MAX_VALUE, sulfurDust) };
+        inputItems = new ItemStack[] { GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, rubberDust),
+            GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, rubberDust),
+            GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, sulfurDust),
+            GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, sulfurDust) };
     }
 
     @Test
     void OutputsIntegerOverflow() {
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(4_000_000)
@@ -64,7 +64,7 @@ public class GTParallelHelperTest {
     @Test
     void parallelIntegerOverflow() {
         // Without batch mode
-        GT_ParallelHelper helperWithoutBatchMode = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helperWithoutBatchMode = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(Integer.MAX_VALUE)
@@ -74,7 +74,7 @@ public class GTParallelHelperTest {
         assertEquals(Integer.MAX_VALUE, helperWithoutBatchMode.getCurrentParallel());
 
         // With batch mode
-        GT_ParallelHelper helperWithBatchMode = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helperWithBatchMode = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(Integer.MAX_VALUE / 50)
@@ -87,7 +87,7 @@ public class GTParallelHelperTest {
 
     @Test
     void chanceMultiplier() {
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(10)
@@ -106,7 +106,7 @@ public class GTParallelHelperTest {
 
     @Test
     void outputMultiplier() {
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(rubberRecipe)
+        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(1)

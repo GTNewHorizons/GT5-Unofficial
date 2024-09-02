@@ -3,7 +3,7 @@ package goodgenerator.loader;
 import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
-import static gregtech.api.util.GT_RecipeConstants.COAL_CASING_TIER;
+import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,17 +22,17 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemIntegratedCircuit;
 
 public class ComponentAssemblyLineRecipeLoader {
 
@@ -42,8 +42,8 @@ public class ComponentAssemblyLineRecipeLoader {
     private static final String[] softBlacklistedDictPrefixes = { "Any", "crafting", "nanite" };
     private static final String moltenMHDCSM = "molten.magnetohydrodynamicallyconstrainedstarmatter";
 
-    private static LinkedHashMap<List<GT_Recipe>, Pair<ItemList, Integer>> allAssemblerRecipes;
-    private static LinkedHashMap<List<GT_Recipe.GT_Recipe_AssemblyLine>, Pair<ItemList, Integer>> allAsslineRecipes;
+    private static LinkedHashMap<List<GTRecipe>, Pair<ItemList, Integer>> allAssemblerRecipes;
+    private static LinkedHashMap<List<GTRecipe.RecipeAssemblyLine>, Pair<ItemList, Integer>> allAsslineRecipes;
 
     private static final HashMap<OrePrefixes, Double> magnetoConversionMultipliers = new HashMap<>();
     private static final HashMap<OrePrefixes, OrePrefixes> conversion = new HashMap<>();
@@ -88,14 +88,14 @@ public class ComponentAssemblyLineRecipeLoader {
     /** Normal assembler recipes (LV-IV) */
     private static void generateAssemblerRecipes() {
         allAssemblerRecipes.forEach((recipeList, info) -> {
-            for (GT_Recipe recipe : recipeList) {
+            for (GTRecipe recipe : recipeList) {
                 if (recipe != null) {
                     ArrayList<ItemStack> fixedInputs = new ArrayList<>();
                     ArrayList<FluidStack> fixedFluids = new ArrayList<>();
 
                     for (int j = 0; j < recipe.mInputs.length; j++) {
                         ItemStack input = recipe.mInputs[j];
-                        if (GT_Utility.isStackValid(input) && !(input.getItem() instanceof GT_IntegratedCircuit_Item))
+                        if (GTUtility.isStackValid(input) && !(input.getItem() instanceof ItemIntegratedCircuit))
                             fixedInputs.addAll(multiplyAndSplitIntoStacks(input, INPUT_MULTIPLIER));
                     }
                     for (int j = 0; j < recipe.mFluidInputs.length; j++) {
@@ -107,8 +107,8 @@ public class ComponentAssemblyLineRecipeLoader {
                     fixedInputs = compactItems(fixedInputs, info.getRight());
                     replaceIntoFluids(fixedInputs, fixedFluids, 64);
                     int tier = info.getRight();
-                    int energy = (int) Math.min(Integer.MAX_VALUE - 7, GT_Values.VP[tier - 1]);
-                    GT_Values.RA.stdBuilder()
+                    int energy = (int) Math.min(Integer.MAX_VALUE - 7, GTValues.VP[tier - 1]);
+                    GTValues.RA.stdBuilder()
                         .itemInputs(fixedInputs.toArray(new ItemStack[0]))
                         .itemOutputs(
                             info.getLeft()
@@ -127,7 +127,7 @@ public class ComponentAssemblyLineRecipeLoader {
     /** Assembly Line Recipes (LuV+) **/
     private static void generateAsslineRecipes() {
         allAsslineRecipes.forEach((recipeList, info) -> {
-            for (GT_Recipe.GT_Recipe_AssemblyLine recipe : recipeList) {
+            for (GTRecipe.RecipeAssemblyLine recipe : recipeList) {
                 if (recipe != null) {
                     int componentCircuit = -1;
                     for (int i = 0; i < compPrefixes.length; i++) if (info.getLeft()
@@ -153,17 +153,17 @@ public class ComponentAssemblyLineRecipeLoader {
 
                     // First pass.
                     for (ItemStack input : recipe.mInputs) {
-                        if (GT_Utility.isStackValid(input)) {
+                        if (GTUtility.isStackValid(input)) {
                             int count = input.stackSize;
                             // Mulitplies the input by its multiplier, and adjusts the stacks accordingly
-                            if (!(input.getItem() instanceof GT_IntegratedCircuit_Item)) {
+                            if (!(input.getItem() instanceof ItemIntegratedCircuit)) {
 
-                                ItemData data = GT_OreDictUnificator.getAssociation(input);
+                                ItemData data = GTOreDictUnificator.getAssociation(input);
                                 // trying to fix some circuit oredicting issues
 
                                 if (data != null && data.mPrefix == OrePrefixes.circuit) fixedInputs.addAll(
                                     multiplyAndSplitIntoStacks(
-                                        GT_OreDictUnificator.get(data.mPrefix, data.mMaterial.mMaterial, count),
+                                        GTOreDictUnificator.get(data.mPrefix, data.mMaterial.mMaterial, count),
                                         INPUT_MULTIPLIER));
                                 else fixedInputs.addAll(multiplyAndSplitIntoStacks(input, INPUT_MULTIPLIER));
                             }
@@ -174,10 +174,10 @@ public class ComponentAssemblyLineRecipeLoader {
                     // If it overflows then it tries REALLY HARD to cram as much stuff into there.
                     if (fixedInputs.size() > (addProgrammedCircuit ? 8 : 9))
                         replaceIntoFluids(fixedInputs, fixedFluids, FLUID_CONVERSION_STACKSIZE_THRESHOLD / 2);
-                    if (addProgrammedCircuit) fixedInputs.add(GT_Utility.getIntegratedCircuit(componentCircuit));
+                    if (addProgrammedCircuit) fixedInputs.add(GTUtility.getIntegratedCircuit(componentCircuit));
 
                     addEternityForMHDCSM(fixedFluids);
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(fixedInputs.toArray(new ItemStack[0]))
                         .itemOutputs(
                             info.getLeft()
@@ -195,7 +195,7 @@ public class ComponentAssemblyLineRecipeLoader {
                     // @allSyntheticRubber so it's quite fragile, but
                     // it's also the least invasive change.
                     if (swapSiliconeForStyreneButadiene(fixedFluids)) {
-                        GT_Values.RA.stdBuilder()
+                        GTValues.RA.stdBuilder()
                             .itemInputs(fixedInputs.toArray(new ItemStack[0]))
                             .itemOutputs(
                                 info.getLeft()
@@ -225,15 +225,15 @@ public class ComponentAssemblyLineRecipeLoader {
             if (OreDictionary.getOreIDs(input).length > 0 && count > threshold) {
                 FluidStack foundFluidStack = tryConvertItemStackToFluidMaterial(input);
 
-                ItemData data = GT_OreDictUnificator.getAssociation(input);
+                ItemData data = GTOreDictUnificator.getAssociation(input);
 
                 // Prevents the uncraftable molten magnetic samarium from being converted into fluid during auto
                 // generation
                 if (data != null && data.mMaterial.mMaterial == Materials.SamariumMagnetic) {
-                    input = GT_OreDictUnificator.get(data.mPrefix, Materials.Samarium, 1);
+                    input = GTOreDictUnificator.get(data.mPrefix, Materials.Samarium, 1);
                     foundFluidStack = tryConvertItemStackToFluidMaterial(input);
                 } else if (data != null && data.mMaterial.mMaterial == Materials.TengamAttuned) {
-                    input = GT_OreDictUnificator.get(data.mPrefix, Materials.TengamPurified, 1);
+                    input = GTOreDictUnificator.get(data.mPrefix, Materials.TengamPurified, 1);
                     foundFluidStack = tryConvertItemStackToFluidMaterial(input);
                 }
 
@@ -255,7 +255,7 @@ public class ComponentAssemblyLineRecipeLoader {
                 }
             }
             if (!isConverted) {
-                newInputs.add(GT_Utility.copyAmountUnsafe(count, input));
+                newInputs.add(GTUtility.copyAmountUnsafe(count, input));
             }
         }
         inputs.clear();
@@ -299,10 +299,10 @@ public class ComponentAssemblyLineRecipeLoader {
             if (strippedOreDict.contains("Any")) continue;
             if (strippedOreDict.contains("PTMEG")) return FluidRegistry.getFluidStack(
                 "molten.silicone",
-                (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
+                (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
             return FluidRegistry.getFluidStack(
                 "molten." + strippedOreDict.toLowerCase(),
-                (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
+                (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
         }
         return null;
     }
@@ -341,7 +341,7 @@ public class ComponentAssemblyLineRecipeLoader {
         HashMap<ItemStack, Integer> totals = getTotalItems(items);
         for (ItemStack itemstack : totals.keySet()) {
             int totalItems = totals.get(itemstack);
-            ItemData data = GT_OreDictUnificator.getAssociation(itemstack);
+            ItemData data = GTOreDictUnificator.getAssociation(itemstack);
             boolean isCompacted = false;
 
             for (String dict : Arrays.stream(OreDictionary.getOreIDs(itemstack))
@@ -361,20 +361,20 @@ public class ComponentAssemblyLineRecipeLoader {
 
             if (data != null && !isCompacted) {
                 OrePrefixes goInto = conversion.get(data.mPrefix);
-                if (goInto != null && GT_OreDictUnificator.get(goInto, data.mMaterial.mMaterial, 1) != null) {
+                if (goInto != null && GTOreDictUnificator.get(goInto, data.mMaterial.mMaterial, 1) != null) {
                     compactorHelper(data, goInto, stacks, totalItems);
                     isCompacted = true;
                 }
             }
-            if (GT_Utility.areStacksEqual(itemstack, ItemList.Gravistar.get(1)) && tier >= 9) {
+            if (GTUtility.areStacksEqual(itemstack, ItemList.Gravistar.get(1)) && tier >= 9) {
                 stacks.addAll(multiplyAndSplitIntoStacks(ItemList.NuclearStar.get(1), totalItems / 16));
                 isCompacted = true;
             }
-            if (GT_Utility
-                .areStacksEqual(itemstack, GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))) {
+            if (GTUtility
+                .areStacksEqual(itemstack, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))) {
                 stacks.addAll(
                     multiplyAndSplitIntoStacks(
-                        GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
+                        GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
                         totalItems / 16));
                 isCompacted = true;
             }
@@ -390,7 +390,7 @@ public class ComponentAssemblyLineRecipeLoader {
         int materialRatio = (int) ((double) compactInto.mMaterialAmount / data.mPrefix.mMaterialAmount);
         output.addAll(
             multiplyAndSplitIntoStacks(
-                GT_OreDictUnificator.get(compactInto, data.mMaterial.mMaterial, 1),
+                GTOreDictUnificator.get(compactInto, data.mMaterial.mMaterial, 1),
                 total / materialRatio));
     }
 
@@ -402,21 +402,21 @@ public class ComponentAssemblyLineRecipeLoader {
         allAsslineRecipes = new LinkedHashMap<>();
         for (String compPrefix : compPrefixes) {
             for (int t = 1; t <= 13; t++) {
-                String vName = GT_Values.VN[t];
+                String vName = GTValues.VN[t];
                 ItemList currentComponent = ItemList.valueOf(compPrefix + vName);
                 if (currentComponent.hasBeenSet()) {
                     if (t < 6) {
-                        ArrayList<GT_Recipe> foundRecipes = new ArrayList<>();
-                        for (GT_Recipe recipe : RecipeMaps.assemblerRecipes.getAllRecipes()) {
-                            if (GT_Utility.areStacksEqual(currentComponent.get(1), recipe.mOutputs[0])) {
+                        ArrayList<GTRecipe> foundRecipes = new ArrayList<>();
+                        for (GTRecipe recipe : RecipeMaps.assemblerRecipes.getAllRecipes()) {
+                            if (GTUtility.areStacksEqual(currentComponent.get(1), recipe.mOutputs[0])) {
                                 foundRecipes.add(recipe);
                             }
                         }
                         allAssemblerRecipes.put(foundRecipes, Pair.of(currentComponent, t));
                     } else {
-                        ArrayList<GT_Recipe.GT_Recipe_AssemblyLine> foundRecipes = new ArrayList<>();
-                        for (GT_Recipe.GT_Recipe_AssemblyLine recipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-                            if (GT_Utility.areStacksEqual(currentComponent.get(1), recipe.mOutput)) {
+                        ArrayList<GTRecipe.RecipeAssemblyLine> foundRecipes = new ArrayList<>();
+                        for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+                            if (GTUtility.areStacksEqual(currentComponent.get(1), recipe.mOutput)) {
                                 foundRecipes.add(recipe);
                             }
                         }
@@ -440,7 +440,7 @@ public class ComponentAssemblyLineRecipeLoader {
 
     private static List<ItemStack> getMagnetoConversion(ItemStack item, int total) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
-        ItemData data = GT_OreDictUnificator.getAssociation(item);
+        ItemData data = GTOreDictUnificator.getAssociation(item);
         if (data == null) {
             return stacks;
         }
@@ -448,7 +448,7 @@ public class ComponentAssemblyLineRecipeLoader {
             double multiplier = magnetoConversionMultipliers.get(data.mPrefix);
             stacks.addAll(
                 getWrappedCircuits(
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
                     (int) (total * multiplier),
                     "circuitInfinite"));
         }

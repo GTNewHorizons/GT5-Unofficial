@@ -22,10 +22,10 @@ import codechicken.lib.render.TextureUtils;
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.common.render.GT_RenderUtil;
+import gregtech.common.render.GTRenderUtil;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
-public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
+public class UniversiumRenderer extends GeneratedMaterialRenderer {
 
     private static final float cosmicOpacity = 2.5f;
 
@@ -112,7 +112,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 mc.getTextureManager()
                     .bindTexture(resourcelocation);
             } else {
-                GT_RenderUtil.renderItem(type, tIcon);
+                GTRenderUtil.renderItem(type, tIcon);
             }
 
             GL11.glEnable(GL11.GL_BLEND);
@@ -133,7 +133,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glColor4d(1, 1, 1, 1);
 
             // Draw cosmic overlay
-            GT_RenderUtil.renderItem(type, tIcon);
+            GTRenderUtil.renderItem(type, tIcon);
 
             CosmicRenderShenanigans.releaseShader();
             CosmicRenderShenanigans.inventoryRender = false;
@@ -141,7 +141,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         } else {
             // RENDER ITEM
-            GT_RenderUtil.renderItem(type, tIcon);
+            GTRenderUtil.renderItem(type, tIcon);
 
             int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
 
@@ -151,7 +151,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             CosmicRenderShenanigans.useShader();
 
             // RENDER COSMIC OVERLAY
-            GT_RenderUtil.renderItem(type, tIcon);
+            GTRenderUtil.renderItem(type, tIcon);
             CosmicRenderShenanigans.releaseShader();
             GL11.glDepthFunc(GL11.GL_LEQUAL);
 

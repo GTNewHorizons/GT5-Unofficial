@@ -9,7 +9,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 /**
  * Watches specific ItemStack and pulls changes from it. Player cannot interact with slot, other than viewing NEI recipe
@@ -33,7 +33,7 @@ public class ItemWatcherSlotWidget extends SlotWidget {
     @Override
     public void detectAndSendChanges(boolean init) {
         ItemStack target = getter.get();
-        if (init || !GT_Utility.areStacksEqual(lastItem, target)) {
+        if (init || !GTUtility.areStacksEqual(lastItem, target)) {
             ItemStack toPut;
             if (target != null) {
                 toPut = target.copy();

@@ -36,13 +36,13 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static kubatech.api.enums.ItemList.BlackTea;
 import static kubatech.api.enums.ItemList.BlackTeaLeaf;
@@ -82,29 +82,29 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.plugins.PluginCore;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
+import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary;
 
 public class RecipeLoader {
 
-    protected static final long bitsd = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
-        | GT_ModHandler.RecipeBits.BUFFERED
-        | GT_ModHandler.RecipeBits.DISMANTLEABLE;
+    protected static final long bitsd = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
+        | GTModHandler.RecipeBits.BUFFERED
+        | GTModHandler.RecipeBits.DISMANTLEABLE;
 
     public static void registerMTEs() {
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             ExtremeEntityCrusher.set(
-                new GT_MetaTileEntity_ExtremeEntityCrusher(
+                new MTEExtremeEntityCrusher(
                     ExtremeEntityCrusherController.ID,
                     "multimachine.entitycrusher",
                     "Extreme Entity Crusher").getStackForm(1));
@@ -112,21 +112,21 @@ public class RecipeLoader {
 
         if (Forestry.isModLoaded()) {
             ExtremeIndustrialApiary.set(
-                new GT_MetaTileEntity_MegaIndustrialApiary(
+                new MTEMegaIndustrialApiary(
                     ExtremeIndustrialApiaryController.ID,
                     "multimachine.extremeapiary",
                     "Industrial Apicultural Acclimatiser and Drone Domestication Station").getStackForm(1));
         }
 
         ExtremeIndustrialGreenhouse.set(
-            new GT_MetaTileEntity_ExtremeIndustrialGreenhouse(
+            new MTEExtremeIndustrialGreenhouse(
                 ExtremeIndustrialGreenhouseController.ID,
                 "multimachine.extremegreenhouse",
                 "Extreme Industrial Greenhouse").getStackForm(1));
 
         if (DraconicEvolution.isModLoaded()) {
             DraconicEvolutionFusionCrafter.set(
-                new GT_MetaTileEntity_DEFusionCrafter(
+                new MTEDEFusionCrafter(
                     DraconicEvolutionFusionCrafterController.ID,
                     "multimachine.defusioncrafter",
                     "Draconic Evolution Fusion Crafter").getStackForm(1));
@@ -136,16 +136,16 @@ public class RecipeLoader {
     public static void addRecipes() {
 
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
-            GT_ModHandler.addCraftingRecipe(
+            GTModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
                     OrePrefixes.circuit.get(Materials.EV), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
-                    GT_ModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
+                    GTModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
         }
 
         if (Forestry.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
                 .itemInputs(
@@ -165,21 +165,20 @@ public class RecipeLoader {
                 .duration(5 * MINUTES)
                 .addTo(AssemblyLine);
 
-            GT_MetaTileEntity_ExtremeIndustrialGreenhouse
-                .addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            MTEExtremeIndustrialGreenhouse.addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
         }
 
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             ExtremeIndustrialGreenhouse.get(1),
             bitsd,
             new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
-                GT_ModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
+                GTModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
                 gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', OrePrefixes.circuit.get(Materials.ZPM) });
 
         // Vanilla should always be loaded
-        GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
+        MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
         // IC2 should always be loaded
-        GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
+        MTEExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
 
         if (DraconicEvolution.isModLoaded()) {
             // Controller recipe added in TecTech
@@ -199,21 +198,21 @@ public class RecipeLoader {
     private static void RegisterTeaLine() {
         // TEA LINE //
         if (PamsHarvestCraft.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1))
                 .itemOutputs(TeaLeafDehydrated.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(WhiteTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("water", 50))
@@ -221,70 +220,70 @@ public class RecipeLoader {
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(SteamedTeaLeaf.get(1))
                 .itemOutputs(YellowTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(TeaLeafDehydrated.get(1), GT_Utility.getIntegratedCircuit(1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(TeaLeafDehydrated.get(1), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(RolledTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(benderRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1))
                 .itemOutputs(GreenTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(RolledTeaLeaf.get(1), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(OxidizedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(OxidizedTeaLeaf.get(1))
                 .itemOutputs(BlackTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(2))
+            GTValues.RA.stdBuilder()
+                .itemInputs(RolledTeaLeaf.get(1), GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(FermentedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(10 * SECONDS)
                 .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(FermentedTeaLeaf.get(1))
                 .itemOutputs(PuerhTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(BruisedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(cutterRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(BruisedTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
+            GTValues.RA.stdBuilder()
+                .itemInputs(BruisedTeaLeaf.get(1), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(2 * SECONDS + 10 * TICKS)
                 .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(PartiallyOxidizedTeaLeaf.get(1))
                 .itemOutputs(OolongTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
@@ -294,7 +293,7 @@ public class RecipeLoader {
             // Tea Assembly
             GameRegistry.addSmelting(BlackTeaLeaf.get(1), BlackTea.get(1), 10);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1), GameRegistry.findItemStack("harvestcraft", "limejuiceItem", 1))
                 .itemOutputs(EarlGrayTea.get(1))
                 .eut(TierEU.RECIPE_LV)
@@ -303,7 +302,7 @@ public class RecipeLoader {
 
             GameRegistry.addSmelting(GreenTeaLeaf.get(1), GreenTea.get(1), 10);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(LemonTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
@@ -311,7 +310,7 @@ public class RecipeLoader {
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
@@ -321,7 +320,7 @@ public class RecipeLoader {
 
             GameRegistry.addSmelting(OolongTeaLeaf.get(1), OolongTea.get(1), 10);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("water", 1000))
@@ -334,7 +333,7 @@ public class RecipeLoader {
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
         }
         if (Avaritia.isModLoaded() && NewHorizonsCoreMod.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, TeaAcceptorResearchNote.get(1))
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
                 .itemInputs(

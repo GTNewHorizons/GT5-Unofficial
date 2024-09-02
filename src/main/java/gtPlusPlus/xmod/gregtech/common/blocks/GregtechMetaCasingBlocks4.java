@@ -9,30 +9,30 @@ import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract {
 
     public GregtechMetaCasingBlocks4() {
-        super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.4", GT_Material_Casings.INSTANCE);
+        super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.4", MaterialCasings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) {
                 continue;
             }
-            TAE.registerTexture(3, i, new GTPP_CopiedBlockTexture(this, 6, i));
+            TAE.registerTexture(3, i, new GTPPCopiedBlockTexture(this, 6, i));
         }
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
-        GT_LanguageManager
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
+        GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
 
         GregtechItemList.Casing_Naq_Reactor_A.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));

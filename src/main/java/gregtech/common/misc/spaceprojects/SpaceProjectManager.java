@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -187,7 +187,7 @@ public class SpaceProjectManager {
 
     // #region Project Helper methods
 
-    public static class FakeSpaceProjectRecipe extends GT_Recipe {
+    public static class FakeSpaceProjectRecipe extends GTRecipe {
 
         public final String projectName;
 

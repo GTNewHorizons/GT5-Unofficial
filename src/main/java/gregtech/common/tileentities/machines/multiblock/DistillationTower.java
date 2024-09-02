@@ -13,14 +13,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.DistillationTowerProcessingLogic;
 
 public class DistillationTower extends StackableController<DistillationTower, DistillationTowerProcessingLogic> {
@@ -45,12 +45,12 @@ public class DistillationTower extends StackableController<DistillationTower, Di
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillation Tower")
             .addInfo("Controller block for the Distillation Tower")
             .addInfo("Can be specialised to be a mega structure")
-            .addInfo(GT_Values.Authorminecraft7771)
+            .addInfo(GTValues.Authorminecraft7771)
             .addSeparator()
             .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
@@ -113,11 +113,11 @@ public class DistillationTower extends StackableController<DistillationTower, Di
                     ofMuTECasings(
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.Distillation.getCasing()))
-                .addElement('E', GT_StructureUtility.ofFrame(Materials.StainlessSteel))
-                .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
-                .addElement('B', ofBlock(GregTech_API.sBlockCasings2, 13))
+                .addElement('E', GTStructureUtility.ofFrame(Materials.StainlessSteel))
+                .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 0))
+                .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 13))
                 .addElement('X', ofMuTECasings(NOTHING, MOTOR_CASINGS))
-                .addElement('D', GT_StructureUtility.ofCoil((tile, meta) -> {}, (tile) -> HeatingCoilLevel.None))
+                .addElement('D', GTStructureUtility.ofCoil((tile, meta) -> {}, (tile) -> HeatingCoilLevel.None))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;

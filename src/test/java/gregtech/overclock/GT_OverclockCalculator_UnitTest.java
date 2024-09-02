@@ -1,7 +1,7 @@
 package gregtech.overclock;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VP;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.function.Function;
@@ -9,7 +9,7 @@ import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.OverclockCalculator;
 
 class GT_OverclockCalculator_UnitTest {
 
@@ -20,7 +20,7 @@ class GT_OverclockCalculator_UnitTest {
     void fullPerfectOverclockEBF_Test() {
         int heatDiscounts = (1800 * 4) / 900;
         long correctConsumption = (long) Math.ceil(VP[5] * Math.pow(0.95, heatDiscounts));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
@@ -36,7 +36,7 @@ class GT_OverclockCalculator_UnitTest {
     void imperfectOverclockEBFWithOneHeatDiscount_Test() {
         int heatDiscounts = 1;
         long correctConsumption = (long) Math.ceil(VP[5] * Math.pow(0.95, heatDiscounts));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
@@ -50,7 +50,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void imperfectOverclockEBFWithoutHeatDiscounts_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
@@ -66,7 +66,7 @@ class GT_OverclockCalculator_UnitTest {
     void perfectAndImperfectOverclockEBFWithTwoHeatDiscounts_Test() {
         int heatDiscounts = 2;
         long correctConsumption = (long) Math.ceil(VP[5] * Math.pow(0.95, heatDiscounts));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
@@ -80,7 +80,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void generalImperfectOverclock_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1024)
             .calculate();
@@ -90,7 +90,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void generalPerfectOverclock_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(2048)
             .enablePerfectOC()
@@ -103,7 +103,7 @@ class GT_OverclockCalculator_UnitTest {
     void weirdHeatEBF_Test() {
         int heatDiscounts = 3;
         long correctConsumption = (long) Math.ceil(VP[6] * Math.pow(0.95, heatDiscounts));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(2048)
             .setHeatOC(true)
@@ -117,7 +117,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void doubleEnergyHatchOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setAmperage(4)
             .setDuration(1024)
@@ -129,7 +129,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void doubleEnergyHatchOCForULV_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[6])
             .setAmperage(4)
             .setDuration(1024)
@@ -141,7 +141,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void multiAmpHatchOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setAmperage(256)
             .setDuration(1024)
@@ -153,7 +153,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void weirdAmpHatchOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setAmperage(320)
             .setDuration(1024)
@@ -165,7 +165,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void parallelImperfectOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])
             .setAmperage(4)
             .setDuration(1024)
@@ -178,7 +178,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void parallelPerfectOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])
             .setAmperage(4)
             .setDuration(4096)
@@ -192,7 +192,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void parallelMultiAmpOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setAmperage(320)
             .setDuration(1024)
@@ -205,7 +205,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void weirdParallelOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])
             .setDuration(1024)
             .setParallel(8)
@@ -216,7 +216,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void weirdParallelAndAmpsOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])
             .setAmperage(320)
             .setDuration(1024)
@@ -229,7 +229,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void weirdTimeOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(77)
             .calculate();
@@ -239,7 +239,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void stopsCorrectlyWhenOneTicking_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1)
             .calculate();
@@ -250,7 +250,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void imperfectOCWithEUtDiscount_Test() {
         long correctConsumption = (long) Math.ceil(VP[1] * 0.9f) << 10;
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setEUtDiscount(0.9f)
             .setDuration(1024)
@@ -262,7 +262,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void perfectOCWithEUtDiscount_Test() {
         long correctConsumption = (long) Math.ceil(VP[1] * 0.9f) << 10;
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setEUtDiscount(0.9f)
             .setDuration(1024)
@@ -274,7 +274,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void imperfectOCWithSpeedBoost_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setSpeedBoost(0.9f)
             .setDuration(1024)
@@ -285,7 +285,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void perfectOCWithSpeedBoost_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setSpeedBoost(0.9f)
             .setDuration(2048)
@@ -297,7 +297,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void perfectOC3TicksTo1Tick_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[4])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[4])
             .setEUt(V[5])
             .setDuration(3)
             .enablePerfectOC()
@@ -308,7 +308,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void oneTickDiscountTurnsToOne_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1)
             .setOneTickDiscount(true)
@@ -319,7 +319,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void oneTickDiscountImperfectOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setSpeedBoost(1.1f)
             .setDuration(4)
@@ -345,7 +345,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void oneTickDiscountPerfectOC_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setSpeedBoost(1.1f)
             .setDuration(16)
@@ -373,7 +373,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void ulvRecipeWithDiscount_Test() {
         long correctConsumption = (long) Math.ceil((VP[0] << 10) * 0.9f);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[6])
             .setEUtDiscount(0.9f)
             .setDuration(1024)
@@ -385,7 +385,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void ulvRecipeWithDiscountWithParallel_Test() {
         long correctConsumption = (long) Math.ceil((VP[0] << 6) * 14 * 0.9f);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[5])
             .setEUtDiscount(0.9f)
             .setParallel(14)
@@ -397,7 +397,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeStopsWhenOneTicked_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[6])
             .setDuration(1)
             .calculate();
@@ -407,7 +407,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void testNotPowerOverflowing_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(16)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(16)
             .setParallel(64)
             .setAmperage(64)
             .setAmperageOC(true)
@@ -420,7 +420,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void testCorrectEUtWhenOverclockingUnderOneTick_Test() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(24)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(24)
             .setParallel(56)
             .setAmperage(1)
             .setAmperageOC(true)
@@ -435,7 +435,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void testCorrectEUtWhenOverclockingUnderOneTickWithHeat_Test() {
         double heatDiscount = Math.pow(0.95, (15500 - 2000) / 900);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(1920)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(1920)
             .setParallel(256)
             .setAmperage(1)
             .setAmperageOC(true)
@@ -452,7 +452,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void testCorrectOverclockWhenCurrentParallelLessThanOriginalParallel() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(24)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(24)
             .setParallel(64)
             .setAmperage(1)
             .setAmperageOC(true)
@@ -466,7 +466,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void stopsCorrectlyWhenOverclockingUnderOneTick() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[2])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[2])
             .setEUt(V[9])
             .setParallel(4)
             .setDuration(10)
@@ -479,14 +479,14 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void testNoOverclockCorrectWithUnderOneTickLogic_Test() {
-        GT_OverclockCalculator calculator = GT_OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
+        OverclockCalculator calculator = OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
             .setParallel(24 * 64);
         assertEquals(100, calculator.calculateDurationUnderOneTick());
     }
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOC() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
             .setEUt(V[3])
             .setParallel(16)
             .setDuration(20)
@@ -498,7 +498,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion2() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
             .setEUt(V[3])
             .setParallel(64)
             .setDuration(20)
@@ -510,7 +510,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion3() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
             .setEUt(V[3])
             .setParallel(16)
             .setDuration(20)
@@ -522,7 +522,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion4() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(8)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(8)
             .setEUt(V[3])
             .setParallel(16)
             .setDuration(20)
@@ -534,7 +534,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion5() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(8)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(8)
             .setEUt(V[3])
             .setParallel(16)
             .setDuration(20)
@@ -545,7 +545,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion6() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(7)
             .setEUt(V[3])
             .setParallel(64)
             .setDuration(160)
@@ -557,7 +557,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion7() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(7)
             .setEUt(V[3])
             .setParallel(19)
             .setDuration(160)
@@ -569,7 +569,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion8() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(7)
             .setEUt(V[3])
             .setParallel(29)
             .setDuration(160)
@@ -581,7 +581,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeWorkCorrectlyWithCalculatingEutUnderOneTick() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
             .setEUt(TierEU.UV)
             .setParallel(64)
             .setDuration(300)
@@ -594,7 +594,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void overclockWithAbnormalEnergyIncrease_Test() {
         long expectedEUt = (long) Math.floor(VP[1] * Math.pow(4.1, 5));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1024)
             .setEUtIncreasePerOC(4.1)
@@ -606,7 +606,7 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void overclockWithAbnormalDurationDecrease_Test() {
         int expectedDuration = (int) Math.floor(1024 / Math.pow(2.1, 5));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1024)
             .setDurationDecreasePerOC(2.1)
@@ -619,7 +619,7 @@ class GT_OverclockCalculator_UnitTest {
     void overclockWithCustomEutIncreasePerOCSupplier() {
         Function<Integer, Double> laserOC = overclockCount -> overclockCount <= 5 ? 4
             : (4 + 0.3 * (overclockCount - 5));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setAmperageOC(true)
             .setAmperage(1024)
@@ -635,7 +635,7 @@ class GT_OverclockCalculator_UnitTest {
     void overclockUnderOneTickWithCustomEutIncreasePerOCSupplier() {
         Function<Integer, Double> laserOC = overclockCount -> overclockCount <= 5 ? 4
             : (4 + 0.3 * (overclockCount - 5));
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setAmperageOC(true)
             .setAmperage(4000)
@@ -652,7 +652,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void slightlyOverOneAmpRecipeWorksWithSingleEnergyHatch() {
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(614400)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(614400)
             .setEUt(TierEU.UV)
             .setDuration(600)
             .setAmperage(2)

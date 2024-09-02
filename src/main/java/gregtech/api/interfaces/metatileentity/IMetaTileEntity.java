@@ -34,8 +34,8 @@ import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Util;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.GTUtil;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -127,7 +127,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * If a Cover of that Type can be placed on this Side. Also Called when the Facing of the Block Changes and a Cover
      * is on said Side.
      */
-    boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack);
+    boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack);
 
     /**
      * When a Player right-clicks the Facing with a Screwdriver.
@@ -400,7 +400,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+            return GTUtil.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
         }
     }
 

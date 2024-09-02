@@ -12,9 +12,9 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
-public class GlitchEffectRenderer extends GT_GeneratedMaterial_Renderer {
+public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
 
     public Random rand = new Random();
     int[] red = new int[] { 255, 50, 50, 192 };
@@ -73,7 +73,7 @@ public class GlitchEffectRenderer extends GT_GeneratedMaterial_Renderer {
 
         IIcon itemIcon = itemRenderer.getIcon(metaData, pass);
         IIcon overlay = itemRenderer.getOverlayIcon(metaData, pass);
-        FluidStack aFluid = GT_Utility.getFluidForFilledItem(item, true);
+        FluidStack aFluid = GTUtility.getFluidForFilledItem(item, true);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
