@@ -3,6 +3,7 @@ package tectech.loader.recipe;
 import static com.google.common.math.LongMath.pow;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BloodMagic;
@@ -22,11 +23,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.enums.Mods.*;
-import static gregtech.api.util.GTModHandler..getModItem;
-import static gregtech.api.util.GTRecipeBuilder..INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MaterialsAlloy.ABYSSAL;
@@ -2988,7 +2984,7 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     private void addGodforgeRecipes() {
-        if (!com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) return;
+        if (!tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) return;
 
         if (EternalSingularity.isModLoaded()) {
             // Controller
@@ -3684,7 +3680,7 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     public void runLateRecipes() {
-        if (com.github.technus.tectech.TecTech.configTecTech.ENABLE_GOD_FORGE && EternalSingularity.isModLoaded()) {
+        if (tectech.TecTech.configTecTech.ENABLE_GOD_FORGE && EternalSingularity.isModLoaded()) {
             // Shielding Casing
             TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GTOreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.TranscendentMetal, 1),
