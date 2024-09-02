@@ -7,7 +7,6 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -243,12 +242,6 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
-        // Do nothing, we don't want to lock hatches to recipe maps since this can cause
-        // them to reject our catalyst fluids
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
             STRUCTURE_PIECE_MAIN,
@@ -330,7 +323,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Controller block for the pH Neutralization Purification Unit.")
-            .addInfo("Must be linked to a Purification Plant to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
                 "Initial pH value every cycle varies from " + EnumChatFormatting.RED
@@ -492,13 +485,13 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             } else {
                 // Little easier egg: Fluoroantimonic acid has a pH value of -31, it's an acid so strong it will
                 // instantly shatter the glass in the structure.
-                if (GoodGenerator.isModLoaded()) {
-                    Fluid acid = FluidRegistry.getFluid("fluoroantimonic acid");
-                    if (stack != null && stack.getFluid()
-                        .equals(acid)) {
-                        // TODO: Actually break the glass and trigger achievement lol
-                    }
+
+                Fluid acid = FluidRegistry.getFluid("fluoroantimonic acid");
+                if (stack != null && stack.getFluid()
+                    .equals(acid)) {
+                    // TODO: Actually break the glass and trigger achievement lol
                 }
+
             }
 
             // Adjust pH with to new value

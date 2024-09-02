@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Infinite_Item_Chest;
+import static gregtech.api.enums.MetaTileEntityIDs.Infinite_Item_Chest;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.creative.GT_MetaTileEntity_InfiniteItemHolder;

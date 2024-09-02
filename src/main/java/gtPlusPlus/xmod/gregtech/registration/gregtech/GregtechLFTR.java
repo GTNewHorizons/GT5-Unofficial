@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Sparge_Tower;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ThoriumReactor;
+import static gregtech.api.enums.MetaTileEntityIDs.ColdTrap_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.ColdTrap_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_Sparge_Tower;
+import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.ThoriumReactor;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;

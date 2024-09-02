@@ -853,7 +853,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
                                 workState == STATE_ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
                                     : "GT5U.gui.button.drill_retract_pipes")))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setPos(new Pos2d(174, 130))
+                    .setPos(new Pos2d(174, 112))
                     .setSize(16, 16));
 
         int left = 98;

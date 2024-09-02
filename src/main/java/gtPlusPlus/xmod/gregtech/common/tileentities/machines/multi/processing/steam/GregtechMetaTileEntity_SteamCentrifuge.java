@@ -262,7 +262,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             && tierFireBoxCasing == 1
             && tierMachineCasing == 1
             && tCountCasing > 60
-            && checkHatch()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;

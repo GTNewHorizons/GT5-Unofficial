@@ -104,6 +104,18 @@ public class GT_Item_Casings_Godforge extends GT_Item_Casings_Abstract {
                     AQUA.toString() + BOLD
                         + GT_LanguageManager.addStringLocalization("godforge.casings.7.Tooltip.1", "Gravity Central"));
                 break;
+            case 8:
+                aList.add(
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.8.Tooltip.0",
+                        "Transfers and stores extreme amounts of heat without any loss"));
+                aList.add(
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager.addStringLocalization("godforge.casings.8.Tooltip.1", "<<<Thermal<<<"));
+                aList.add(
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager.addStringLocalization("godforge.casings.8.Tooltip.2", ">>>Wave>>>"));
+                break;
             default:
                 aList.add(
                     EnumChatFormatting.RED.toString() + BOLD

@@ -1,14 +1,14 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_UHV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Charger_ZPM;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;

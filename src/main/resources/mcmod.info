@@ -1,7 +1,7 @@
 {
-  "modListVersion": 2,
-  "modList": [
-    {
+	"modListVersion": 2,
+	"modList": [
+  {
       "modid": "gregtech",
       "name": "GregTech",
       "description": "This Mod adds the awesome Technology of GregTech-Intergalactical to your World!",
@@ -302,6 +302,32 @@
       "logoFile": "",
       "screenshots": [],
       "dependencies": []
+    },
+    {
+      "modid": "gtneioreplugin",
+      "name": "GT NEI Ore Plugin GT:NH Mod",
+      "description": "A forge mod which adds NEI plugins for GregTech5's ores. Modded for GTNH",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": ["GWYOG", "bartimaeusnek"],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": []
+    },
+    {
+      "modid": "detravscannermod",
+      "name": "GT Scanner Mod", "description": "To locate ores deep underground.",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/GTNewHorizons/GTScannerMod",
+      "updateUrl": "",
+      "authorList": ["Ethryan, GTNewHorizons Team, bartimaeusnek, richardhendricks, mitchej123"],
+      "credits": "Detrav",
+      "logoFile": "",
+      "screenshots": [],
+      "dependencies": []
     }
-  ]
+    ]
 }

@@ -40,7 +40,6 @@ public class ConfigHandler {
 
     public static long energyPerCell = 1000000L;
 
-    public static boolean BioLab = true;
     public static boolean Ross128Enabled = true;
 
     public static boolean disableExtraGassesForEBF;
@@ -135,12 +134,7 @@ public class ConfigHandler {
                 false,
                 "Enables the Teslastaff, an Item used to destroy Electric Armors")
             .getBoolean(false);
-        ConfigHandler.BioLab = !ConfigHandler.c.get(
-            "System",
-            "Disable BioLab",
-            false,
-            "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!")
-            .getBoolean(false);
+
         ConfigHandler.cutoffTier = ConfigHandler.c
             .get(
                 "System",

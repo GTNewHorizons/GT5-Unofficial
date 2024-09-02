@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_LuV;
 
 import net.minecraft.item.ItemStack;
 

@@ -31,7 +31,6 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -670,7 +669,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
                 MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
-                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter },
+                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1278,6 +1277,24 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .configureMaterials(MaterialsUEVplus.QuarkGluonPlasma)
             .registerBContainers(
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GT_FluidFactory.builder("PhononMedium")
+            .withLocalizedName(MaterialsUEVplus.PhononMedium.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 500)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PhononMedium)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononMedium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GT_FluidFactory.builder("PhononCrystalSolution")
+            .withLocalizedName(MaterialsUEVplus.PhononCrystalSolution.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 500)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PhononCrystalSolution)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("fieryblood")
@@ -2064,59 +2081,33 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Iron, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Iron,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Iron,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateSteel", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Steel, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Steel,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Steel,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateTinAlloy", true)) {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.TinAlloy,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.TinAlloy,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.TinAlloy,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
+            false,
+            false);
 
-        if (GregTech_API.sUnification
-            .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)) {
-            GT_OreDictUnificator
-                .set(OrePrefixes.plate, Materials.Copper, GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3));
-        } else {
-            GT_OreDictUnificator.set(
-                OrePrefixes.plate,
-                Materials.Copper,
-                GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
-                false,
-                false);
-        }
+        GT_OreDictUnificator.set(
+            OrePrefixes.plate,
+            Materials.Copper,
+            GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
+            false,
+            false);
 
         GT_OreDictUnificator.set(
             OrePrefixes.dust,

@@ -385,6 +385,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();

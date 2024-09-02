@@ -1,16 +1,16 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_ULV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 
 import java.util.List;
 

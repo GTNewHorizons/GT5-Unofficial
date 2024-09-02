@@ -155,9 +155,9 @@ public class GT_PurifiedWaterRecipes {
         // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
         // correct I believe.
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(1000L))
-            .itemOutputs(Materials.Aluminium.getDust(2))
-            .fluidOutputs(Materials.Oxygen.getGas(3000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
+            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(10000L))
+            .itemOutputs(Materials.Aluminium.getDust(11))
+            .fluidOutputs(Materials.Oxygen.getGas(29000L), Materials.DilutedHydrochloricAcid.getFluid(58000L))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -299,7 +299,8 @@ public class GT_PurifiedWaterRecipes {
             .fluidOutputs(
                 Materials.Grade8PurifiedWater.getFluid(900L),
                 Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
-            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L))
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
+            .outputChances(10000, 100)
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UEV)
@@ -310,10 +311,9 @@ public class GT_PurifiedWaterRecipes {
         // real recipe
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
-            .fluidOutputs(
-                Materials.Grade8PurifiedWater.getFluid(900L),
-                Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
-            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L))
+            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900L))
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
+            .outputChances(10000, 100)
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UEV)

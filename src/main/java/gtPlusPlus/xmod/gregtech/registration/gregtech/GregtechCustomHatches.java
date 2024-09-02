@@ -1,21 +1,21 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Air_Intake;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Cryotheum;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Naquadah;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Steam;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_LuV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_MAX;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Reservoir;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Naquadah;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Steam;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Reservoir;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
@@ -52,29 +52,23 @@ public class GregtechCustomHatches {
         GregtechItemList.Hatch_Input_Cryotheum.set(
             new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 FluidUtils.getFluidStack("cryotheum", 1)
-                    .getFluid(), // Fluid
-                // to
-                // resitrct
-                // hatch
-                // to
+                    .getFluid(), // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Cryotheum.ID, // ID
                 "hatch.cryotheum.input.tier.00", // unlocal name
-                "Cryotheum Cooling Hatch" // Local name
+                "Cryotheum Cooling Hatch", // Local name
+                5 // Casing Texture
             ).getStackForm(1L));
 
         GregtechItemList.Hatch_Input_Pyrotheum.set(
             new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 FluidUtils.getFluidStack("pyrotheum", 1)
-                    .getFluid(), // Fluid
-                // to
-                // resitrct
-                // hatch
-                // to
+                    .getFluid(), // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name
-                "Pyrotheum Heating Vent" // Local name
+                "Pyrotheum Heating Vent", // Local name
+                5 // Casing texture
             ).getStackForm(1L));
 
         GregtechItemList.Hatch_Input_Naquadah.set(
@@ -117,15 +111,12 @@ public class GregtechCustomHatches {
         GregtechItemList.Hatch_Input_Steam.set(
             new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 FluidUtils.getSteam(1)
-                    .getFluid(), // Fluid
-                // to
-                // resitrct
-                // hatch
-                // to
+                    .getFluid(), // Fluid to restrict hatch to
                 64000, // Capacity
                 Hatch_Input_Steam.ID, // ID
                 "hatch.steam.input.tier.00", // unlocal name
-                "Steam Hatch" // Local name
+                "Steam Hatch", // Local name
+                0 // Casing texture
             ).getStackForm(1L));
     }
 

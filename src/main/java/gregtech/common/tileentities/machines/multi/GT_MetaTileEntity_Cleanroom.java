@@ -242,6 +242,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                     }
                                     return false;
                                 }
+                                mPlascreteCount++;
                             } else if (dX != 0 || dZ != 0) { // Top Inner exclude center
                                 if (tBlock != GregTech_API.sBlockCasings3 || tMeta != 11) {
                                     if (debugCleanroom) {
@@ -324,9 +325,14 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             }
             return false;
         }
-        final float ratio = (((float) mPlascreteCount) / 100f);
+        int otherBlockCount = 0;
+        for (int v : otherBlocks.values()) {
+            otherBlockCount += v;
+        }
+        int maxAllowedRatio = 0;
         for (Map.Entry<String, Integer> e : otherBlocks.entrySet()) {
             final ConfigEntry ce = config.get(e.getKey());
+            maxAllowedRatio += Math.max(maxAllowedRatio, ce.percentage);
             if (ce.allowedCount > 0) { // count has priority
                 if (e.getValue() > ce.allowedCount) {
                     if (debugCleanroom) {
@@ -334,12 +340,18 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                     }
                     return false;
                 }
-            } else if (e.getValue() > ratio * ce.percentage) {
+            } else if ((e.getValue() * 100) / (mPlascreteCount + otherBlockCount) > ce.percentage) {
                 if (debugCleanroom) {
                     GT_Log.out.println("Cleanroom: Relative count too high for a block.");
                 }
                 return false;
             }
+        }
+        if ((otherBlockCount * 100) / (mPlascreteCount + otherBlockCount) > maxAllowedRatio) {
+            if (debugCleanroom) {
+                GT_Log.out.println("Cleanroom: Relative count of all non-plascrete blocks too high.");
+            }
+            return false;
         }
 
         setCleanroomReceivers(x, y, z, aBaseMetaTileEntity);
@@ -470,6 +482,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         cfg.get("cleanroom_allowed_blocks.warded_glass", "Name", "tile.blockCosmeticOpaque");
         cfg.get("cleanroom_allowed_blocks.warded_glass", "Meta", 2);
         cfg.get("cleanroom_allowed_blocks.warded_glass", "Percentage", 50);
+        cfg.save();
     }
 
     public static void loadConfig(Configuration cfg) {

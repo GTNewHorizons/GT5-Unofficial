@@ -29,6 +29,7 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.MobsInfo;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -101,7 +102,7 @@ public class RecipeLoader {
         | GT_ModHandler.RecipeBits.DISMANTLEABLE;
 
     public static void registerMTEs() {
-        if (EnderIO.isModLoaded()) {
+        if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             ExtremeEntityCrusher.set(
                 new GT_MetaTileEntity_ExtremeEntityCrusher(
                     ExtremeEntityCrusherController.ID,
@@ -134,7 +135,7 @@ public class RecipeLoader {
 
     public static void addRecipes() {
 
-        if (EnderIO.isModLoaded()) {
+        if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
