@@ -37,7 +37,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -315,9 +314,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
         GT_Log.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
         try {
-            for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
-                if (tMetaTileEntity != null) {
-                    tMetaTileEntity.registerIcons(aIconRegister);
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+                if (GregTech_API.METATILEENTITIES[i] != null) {
+                    GregTech_API.METATILEENTITIES[i].registerIcons(aIconRegister);
                 }
             }
         } catch (Exception e) {
