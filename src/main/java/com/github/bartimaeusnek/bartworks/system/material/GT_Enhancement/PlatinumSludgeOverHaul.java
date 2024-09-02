@@ -946,7 +946,7 @@ public class PlatinumSludgeOverHaul {
                 Materials.Redstone.getDust(1),
                 Materials.Electrum.getDust(1),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(Materials.Nikolite.getDust(8))
+            .itemOutputs(Materials.Electrotine.getDust(8))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

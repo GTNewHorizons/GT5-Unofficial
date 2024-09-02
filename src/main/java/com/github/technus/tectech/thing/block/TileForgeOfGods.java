@@ -17,6 +17,11 @@ public class TileForgeOfGods extends TileEntity {
         return INFINITE_EXTENT_AABB;
     }
 
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return 25600;
+    }
+
     public void setRenderSize(float size) {
         this.size = size;
     }

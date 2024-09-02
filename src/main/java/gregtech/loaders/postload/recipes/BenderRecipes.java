@@ -7,6 +7,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -313,6 +314,13 @@ public class BenderRecipes implements Runnable {
             .itemOutputs(GT_ModHandler.getIC2Item("fuelRod", 1L))
             .duration(5 * SECONDS)
             .eut(8)
+            .addTo(benderRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(MyMaterial.tairitsu.get(OrePrefixes.ingot, 9), GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(MyMaterial.tairitsu.get(OrePrefixes.plateDense, 1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(benderRecipes);
 
         if (GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L) != null) {

@@ -1091,6 +1091,8 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_LuV,
     Hatch_DataAccess_UV,
 
+    Hatch_HeatSensor,
+
     Battery_Buffer_1by1_ULV,
     Battery_Buffer_1by1_LV,
     Battery_Buffer_1by1_MV,
@@ -1474,6 +1476,24 @@ public enum ItemList implements IItemContainer {
     Electromagnet_Tengam,
 
     Machine_Multi_Canner,
+
+    Machine_Multi_IndustrialCompressor,
+    Machine_Multi_HIPCompressor,
+    Machine_Multi_NeutroniumCompressor,
+    Machine_Multi_BlackHoleCompressor,
+    Compressor_Casing,
+    Compressor_Pipe_Casing,
+    Heating_Duct_Casing,
+    Coolant_Duct_Casing,
+    Neutronium_Casing,
+    Neutronium_Active_Casing,
+    Neutronium_Stable_Casing,
+    Background_Radiation_Casing,
+    Extreme_Density_Casing,
+    Hawking_Glass,
+    Black_Hole_Opener,
+    Black_Hole_Closer,
+
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,
@@ -2047,6 +2067,7 @@ public enum ItemList implements IItemContainer {
     TierdDrone1,
     TierdDrone2,
     Hatch_DroneDownLink,
+    ElectronicsLump,
     Casing_Shielded_Accelerator,
     WormholeGenerator,
     Hatch_pHSensor,
@@ -2083,6 +2104,7 @@ public enum ItemList implements IItemContainer {
     BlockQuarkPipe,
     BlockQuarkReleaseChamber,
     BlockQuarkContainmentCasing,
+    LargeFluidExtractor,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2532,6 +2554,11 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_EV,
     BetterJukebox_IV,
     WirelessHeadphones,
+    Thermal_Superconductor,
+    Relativistic_Heat_Capacitor,
+    Phononic_Seed_Crystal,
+    ResearchCompleter, // Populated in EMT
+    SpaceElevatorController, // Populated in GTNH-Intergalactic
     // semicolon after the comment to reduce merge conflicts
     ;
 

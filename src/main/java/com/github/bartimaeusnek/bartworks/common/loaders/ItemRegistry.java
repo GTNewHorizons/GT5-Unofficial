@@ -174,7 +174,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ThoriumHighTemperatureReactor
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerI;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
-import static gregtech.api.enums.Mods.GalactiGreg;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -183,6 +182,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
@@ -395,6 +395,8 @@ public class ItemRegistry {
     public static void run() {
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
+        BorosilicateGlass.registerBorosilicateGlass();
+
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
@@ -576,18 +578,13 @@ public class ItemRegistry {
             "MegaOilCracker",
             "Mega Oil Cracker").getStackForm(1L);
 
-        if (GalactiGreg.isModLoaded()) {
-            ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
-                VoidMinerIII.ID,
-                "VoidMiner3",
-                "Void Miner III").getStackForm(1L);
-            ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
-                VoidMinerII.ID,
-                "VoidMiner2",
-                "Void Miner II").getStackForm(1L);
-            ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
-                .getStackForm(1L);
-        }
+        ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
+            .getStackForm(1L);
+        ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(VoidMinerII.ID, "VoidMiner2", "Void Miner II")
+            .getStackForm(1L);
+        ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
+            .getStackForm(1L);
+
         TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(
             LowPowerLaserPipe.ID,
             "pipe.lowpowerlaser",
