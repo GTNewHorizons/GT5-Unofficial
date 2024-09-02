@@ -16,6 +16,7 @@ import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -26,6 +27,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
@@ -43,7 +45,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 .noOptimize()
                 .addTo(electricImplosionCompressorRecipes);
 
-            if (UniversalSingularities.isModLoaded())
+            if (UniversalSingularities.isModLoaded()) {
                 // Raw Exposed Optical Chip
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -55,6 +57,29 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .noOptimize()
                     .addTo(electricImplosionCompressorRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        // fluxed electrum singularity
+                        getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
+                    .fluidInputs(MaterialsUEVplus.Mellion.getMolten(4 * 144L))
+                    // spaghettic singularity
+                    .itemOutputs(getModItem(EternalSingularity.ID, "combined_singularity", 1L, 2))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(electricImplosionCompressorRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        // iron singularity
+                        getModItem(Avaritia.ID, "Singularity", 1L, 0))
+                    .fluidInputs(MaterialsUEVplus.Creon.getMolten(4 * 144L))
+                    // cryptic singularity
+                    .itemOutputs(getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(electricImplosionCompressorRecipes);
+            }
         }
 
         GT_Values.RA.stdBuilder()
@@ -123,6 +148,24 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 .duration(1)
                 .eut(TierEU.RECIPE_UIV)
                 .noOptimize()
+                .addTo(electricImplosionCompressorRecipes);
+
+            // Copper Singularity
+            GT_Values.RA.stdBuilder()
+                .fluidInputs(Materials.Copper.getMolten(3648 * 9 * 144L))
+                .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 5))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(electricImplosionCompressorRecipes);
+
+            ItemStack diamondBlocks = GT_Utility
+                .copyAmountUnsafe(729, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Diamond, 1L));
+            // Diamond Singularity
+            GT_Values.RA.stdBuilder()
+                .itemInputs(diamondBlocks)
+                .itemOutputs(getModItem(UniversalSingularities.ID, "universal.vanilla.singularity", 1L, 2))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
                 .addTo(electricImplosionCompressorRecipes);
         }
         // MHDCSM V2

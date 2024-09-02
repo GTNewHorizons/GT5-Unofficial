@@ -22,7 +22,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public abstract class EOH_RenderingUtils {
 
-    public static void renderStar(IItemRenderer.ItemRenderType type, Color color) {
+    public static void renderStar(IItemRenderer.ItemRenderType type, Color color, int size) {
         GL11.glPushMatrix();
 
         if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
@@ -33,18 +33,18 @@ public abstract class EOH_RenderingUtils {
             }
 
         // Render star stuff.
-        renderStarLayer(0, STAR_LAYER_0, color, 1.0f);
-        renderStarLayer(1, STAR_LAYER_1, color, 0.4f);
-        renderStarLayer(2, STAR_LAYER_2, color, 0.2f);
+        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, size);
+        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, size);
+        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, size);
 
         GL11.glPopMatrix();
     }
 
-    public static void renderStar(IItemRenderer.ItemRenderType type) {
-        renderStar(type, new Color(1.0f, 0.4f, 0.05f, 1.0f));
+    public static void renderStar(IItemRenderer.ItemRenderType type, int size) {
+        renderStar(type, new Color(1.0f, 0.4f, 0.05f, 1.0f), size);
     }
 
-    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha) {
+    public static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha, int size) {
 
         // Begin animation.
         GL11.glPushMatrix();
@@ -72,7 +72,7 @@ public abstract class EOH_RenderingUtils {
 
         // 0.01f magic number to shrink sphere obj down.
         // Size obtained from the multis current recipe.
-        float scale = 0.01f;
+        float scale = 0.01f * size;
 
         // Put each subsequent layer further out.
         scale *= pow(1.04f, layer);

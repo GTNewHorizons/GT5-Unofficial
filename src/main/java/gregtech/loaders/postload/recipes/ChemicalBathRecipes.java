@@ -10,6 +10,10 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
@@ -309,6 +313,14 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalBathRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 1))
+            .itemOutputs(Materials.Firestone.getGems(1))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 250))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(chemicalBathRecipes);
 
         // Na + H2O = NaOH + H

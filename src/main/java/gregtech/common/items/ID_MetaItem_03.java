@@ -229,7 +229,10 @@ public enum ID_MetaItem_03 {
     White_Dwarf_Shape_Extruder_Turbine_Blade(755),
     White_Dwarf_Shape_Extruder_ToolHeadDrill(756),
     Timepiece(757),
-    Transdimensional_Alignment_Matrix(758);
+    Transdimensional_Alignment_Matrix(758),
+    Thermal_Superconductor(759),
+    Relativistic_Heat_Capacitor(760),
+    Phononic_Seed_Crystal(761);
 
     public final int ID;
 

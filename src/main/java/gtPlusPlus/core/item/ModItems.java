@@ -341,7 +341,7 @@ public final class ModItems {
             MaterialGenerator.generate(ELEMENT.STANDALONE.WHITE_METAL);
             MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.GRANITE);
             MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.RUNITE);
-            MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
+            MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL);
 
             MISC_MATERIALS.run();
 
@@ -940,6 +940,9 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.LAFIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.TRINIUM_REINFORCED_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
+
+        // Gear
+        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.GEAR, ELEMENT.STANDALONE.RHUGNOR);
 
         // Special Sillyness
         if (true) {

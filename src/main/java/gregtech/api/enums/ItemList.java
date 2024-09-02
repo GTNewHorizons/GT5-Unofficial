@@ -2067,6 +2067,7 @@ public enum ItemList implements IItemContainer {
     TierdDrone1,
     TierdDrone2,
     Hatch_DroneDownLink,
+    ElectronicsLump,
     Casing_Shielded_Accelerator,
     WormholeGenerator,
     Hatch_pHSensor,
@@ -2553,6 +2554,9 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_EV,
     BetterJukebox_IV,
     WirelessHeadphones,
+    Thermal_Superconductor,
+    Relativistic_Heat_Capacitor,
+    Phononic_Seed_Crystal,
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     // semicolon after the comment to reduce merge conflicts

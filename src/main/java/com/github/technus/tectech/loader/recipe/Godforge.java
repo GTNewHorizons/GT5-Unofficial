@@ -3,7 +3,11 @@ package com.github.technus.tectech.loader.recipe;
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
 import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FOG_EXOTIC_TIER;
 import static gregtech.api.util.GT_RecipeConstants.FOG_PLASMA_TIER;
 
@@ -15,12 +19,21 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.technus.tectech.thing.CustomItemList;
+
+import goodgenerator.items.MyMaterial;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class Godforge implements Runnable {
 
@@ -29,6 +42,7 @@ public class Godforge implements Runnable {
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
     public static final HashMap<ItemStack, Integer> exoticModuleMagmatterItemMap = new HashMap<>();
+    public static final HashMap<Integer, ItemStack[]> godforgeUpgradeMats = new HashMap<>();
     public static final List<ItemStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
@@ -112,7 +126,7 @@ public class Godforge implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(solids_t0_1step[i])
                         .fluidOutputs(solid_plasmas_t0_1step[i])
-                        .duration(1 * SECONDS)
+                        .duration(10 * TICKS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -145,7 +159,7 @@ public class Godforge implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(solids_t0_xstep[i])
                         .fluidOutputs(solid_plasmas_t0_xstep[i])
-                        .duration(3 * SECONDS)
+                        .duration(2 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -249,16 +263,16 @@ public class Godforge implements Runnable {
             // Fusion tier 1-3
             {
                 // Single step
-                FluidStack[] fluids_t0_1step = { Materials.Helium.getGas(1000), Materials.Nitrogen.getGas(1000),
-                    Materials.Argon.getGas(1000), Materials.Chlorine.getGas(1000), Materials.Deuterium.getGas(1000),
-                    Materials.Fluorine.getGas(1000), Materials.Hydrogen.getGas(1000), Materials.Radon.getGas(1000),
-                    Materials.Tritium.getGas(1000), Materials.Mercury.getFluid(1000) };
-                FluidStack[] fluid_plasmas_t0_1step = { Materials.Helium.getPlasma(1000),
-                    Materials.Nitrogen.getPlasma(1000), Materials.Argon.getPlasma(1000),
-                    Materials.Chlorine.getPlasma(1000), Materials.Deuterium.getPlasma(1000),
-                    Materials.Fluorine.getPlasma(1000), Materials.Hydrogen.getPlasma(1000),
-                    Materials.Radon.getPlasma(1000), Materials.Tritium.getPlasma(1000),
-                    Materials.Mercury.getPlasma(1000) };
+                FluidStack[] fluids_t0_1step = { Materials.Helium.getGas(500), Materials.Nitrogen.getGas(500),
+                    Materials.Argon.getGas(500), Materials.Chlorine.getGas(500), Materials.Deuterium.getGas(500),
+                    Materials.Fluorine.getGas(500), Materials.Hydrogen.getGas(500), Materials.Radon.getGas(500),
+                    Materials.Tritium.getGas(500), Materials.Mercury.getFluid(500) };
+                FluidStack[] fluid_plasmas_t0_1step = { Materials.Helium.getPlasma(500),
+                    Materials.Nitrogen.getPlasma(500), Materials.Argon.getPlasma(500),
+                    Materials.Chlorine.getPlasma(500), Materials.Deuterium.getPlasma(500),
+                    Materials.Fluorine.getPlasma(500), Materials.Hydrogen.getPlasma(500),
+                    Materials.Radon.getPlasma(500), Materials.Tritium.getPlasma(500),
+                    Materials.Mercury.getPlasma(500) };
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
                     boolean multistep = false;
@@ -274,12 +288,12 @@ public class Godforge implements Runnable {
                 }
 
                 // Multi-step
-                FluidStack[] fluids_t0_xstep = { ELEMENT.getInstance().NEON.getFluidStack(1000),
-                    Materials.Oxygen.getGas(1000), ELEMENT.getInstance().KRYPTON.getFluidStack(1000),
-                    ELEMENT.getInstance().XENON.getFluidStack(1000) };
-                FluidStack[] fluid_plasmas_t0_xstep = { new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 1000),
-                    Materials.Oxygen.getPlasma(1000), new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 1000),
-                    new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 1000) };
+                FluidStack[] fluids_t0_xstep = { ELEMENT.getInstance().NEON.getFluidStack(500),
+                    Materials.Oxygen.getGas(500), ELEMENT.getInstance().KRYPTON.getFluidStack(500),
+                    ELEMENT.getInstance().XENON.getFluidStack(500) };
+                FluidStack[] fluid_plasmas_t0_xstep = { new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 500),
+                    Materials.Oxygen.getPlasma(500), new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 500),
+                    new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 500) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
                     boolean multistep = true;
@@ -577,5 +591,72 @@ public class Godforge implements Runnable {
                 GT_Utility.getFluidDisplayStack(MaterialsUEVplus.Space.getMolten(getRandomIntInRange(51, 100)), true));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
+
+        // Godforge upgrade materials
+        if (EternalSingularity.isModLoaded() && GalaxySpace.isModLoaded()) {
+            godforgeUpgradeMats.put(
+                0,
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
+                    ItemList.SuperconductorComposite.get(32),
+                    MyMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 8L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
+
+            godforgeUpgradeMats.put(
+                5,
+                new ItemStack[] { GregtechItemList.Mega_AlloyBlastSmelter.get(16L),
+                    ItemList.Casing_Coil_Hypogen.get(64L),
+                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
+                    ItemRefer.Field_Restriction_Coil_T3.get(48), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
+
+            godforgeUpgradeMats.put(
+                7,
+                new ItemStack[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
+                    GregtechItemList.FusionComputer_UV3.get(8), GregtechItemList.Casing_Fusion_Internal2.get(64),
+                    getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3), ALLOY.QUANTUM.getPlateDense(48),
+                    ELEMENT.STANDALONE.RHUGNOR.getGear(32),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
+
+            godforgeUpgradeMats.put(
+                11,
+                new ItemStack[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(16),
+                    ItemRefer.Compact_Fusion_MK5.get(2), ItemRefer.Compact_Fusion_Coil_T4.get(64),
+                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
+                    ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4), ELEMENT.STANDALONE.RHUGNOR.getGear(64),
+                    GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
+
+            godforgeUpgradeMats.put(
+                26,
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
+                    ELEMENT.STANDALONE.HYPOGEN.getFrameBox(64), ELEMENT.STANDALONE.DRAGON_METAL.getFrameBox(64),
+                    CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
+                    CustomItemList.EOH_Infinite_Energy_Casing.get(8), ItemList.ZPM6.get(4),
+                    ItemList.Field_Generator_UMV.get(32) });
+
+            godforgeUpgradeMats.put(
+                29,
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 4),
+                    CustomItemList.EOH_Infinite_Energy_Casing.get(64),
+                    CustomItemList.StabilisationFieldGeneratorTier5.get(16), ItemList.ZPM6.get(16),
+                    ItemList.Field_Generator_UMV.get(64) });
+
+            godforgeUpgradeMats.put(
+                30,
+                new ItemStack[] { CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(32),
+                    CustomItemList.Godforge_StellarEnergySiphonCasing.get(64),
+                    CustomItemList.StabilisationFieldGeneratorTier6.get(48),
+                    ItemList.Transdimensional_Alignment_Matrix.get(8), ItemList.ZPM6.get(16),
+                    ItemList.Robot_Arm_UMV.get(64), ItemList.Conveyor_Module_UMV.get(64) });
+        }
+
     }
 }

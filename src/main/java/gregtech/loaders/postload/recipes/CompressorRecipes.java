@@ -11,6 +11,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -245,6 +247,13 @@ public class CompressorRecipes implements Runnable {
             .itemOutputs(ItemList.CompressedFireclay.get(1))
             .duration(4 * SECONDS)
             .eut(4)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.gem, 9))
+            .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
             .addTo(compressorRecipes);
 
         if (Railcraft.isModLoaded()) {

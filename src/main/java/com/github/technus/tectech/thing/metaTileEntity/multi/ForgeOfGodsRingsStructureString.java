@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import static com.github.technus.tectech.util.TT_Utility.replaceLetters;
+
 public abstract class ForgeOfGodsRingsStructureString {
 
     public static final String[][] SECOND_RING = { {
@@ -5097,5 +5099,7 @@ public abstract class ForgeOfGodsRingsStructureString {
             "                                                                                               ",
             "                                                                                               ",
             "                                                                                               " } };
+    public static final String[][] SECOND_RING_AIR = replaceLetters(SECOND_RING, "L");
+    public static final String[][] THIRD_RING_AIR = replaceLetters(THIRD_RING, "L");
 
 }
