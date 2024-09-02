@@ -156,6 +156,7 @@ public class RECIPES_Machines {
     public static ItemStack IV_MACHINE_AlloySmelter;
     public static ItemStack IV_MACHINE_Mixer;
     public static ItemStack EV_MACHINE_ChemicalBath;
+    public static ItemStack IV_MACHINE_Distillery;
 
     // Plates
     public static String plateBronze = "plateBronze";
@@ -842,15 +843,15 @@ public class RECIPES_Machines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(19),
                 ItemList.Distillation_Tower.get(2),
-                GregtechItemList.GTPP_Casing_IV.get(16),
+                GregtechItemList.GTPP_Casing_IV.get(1),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
                 ALLOY.AQUATIC_STEEL.getFluidStack(144 * 32),
                 ALLOY.BABBIT_ALLOY.getFluidStack(144 * 16),
-                ALLOY.BRONZE.getFluidStack(144 * 64),
-                ALLOY.KANTHAL.getFluidStack(144 * 16))
-            .duration(10 * MINUTES)
+                ALLOY.NITINOL_60.getFluidStack(144 * 64),
+                ALLOY.NICHROME.getFluidStack(144 * 16))
+            .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
@@ -928,6 +929,7 @@ public class RECIPES_Machines {
         IV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
         IV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
         EV_MACHINE_ChemicalBath = ItemList.Machine_EV_ChemicalBath.get(1);
+        IV_MACHINE_Distillery = ItemList.Machine_IV_Distillery.get(1);
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
             if (Railcraft.isModLoaded()) {
                 // Misc
@@ -1426,6 +1428,21 @@ public class RECIPES_Machines {
                 IV_MACHINE_Macerator,
                 "plateTungstenCarbide",
                 GregtechItemList.Maceration_Upgrade_Chip.get(1));
+        }
+
+        if (CORE.ConfigSwitches.enableMultiblock_AdvDistillationTower) {
+            // Distillus Upgrade Chip
+            RecipeUtils.addShapedGregtechRecipe(
+                "plateHSSS",
+                CI.circuitTier7,
+                "plateHSSS",
+                CI.circuitTier7,
+                IV_MACHINE_Distillery,
+                CI.circuitTier7,
+                "plateHSSS",
+                CI.circuitTier7,
+                "plateHSSS",
+                GregtechItemList.Distillus_Upgrade_Chip.get(1));
         }
 
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
