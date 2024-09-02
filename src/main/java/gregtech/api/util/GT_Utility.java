@@ -2349,6 +2349,10 @@ public class GT_Utility {
         return Item.getIdFromItem(aItem) | (aMeta << 16);
     }
 
+    public static int stackHashCode(Item item, int meta) {
+        return item.hashCode() * 38197 + meta;
+    }
+
     public static int stackToWildcard(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
         return Item.getIdFromItem(aStack.getItem()) | (W << 16);
@@ -4622,8 +4626,11 @@ public class GT_Utility {
 
     public static boolean isAnyIntegratedCircuit(ItemStack itemStack) {
         if (itemStack == null) return false;
-        return itemStack.getItem() == ItemList.Circuit_Integrated.getItem() && 0 <= itemStack.getItemDamage()
-            && itemStack.getItemDamage() < 25;
+        return isAnyIntegratedCircuit(itemStack.getItem(), itemStack.getItemDamage());
+    }
+
+    public static boolean isAnyIntegratedCircuit(Item item, int meta) {
+        return item != null && item == ItemList.Circuit_Integrated.getItem() && 0 <= meta && meta < 25;
     }
 
     public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {

@@ -207,6 +207,18 @@ public class GT_PreLoad {
                 GT_Log.pal = new PrintStream(GT_Log.mPlayerActivityLogFile);
             } catch (Throwable ignored) {}
         }
+
+        if (ConfigGeneral.loggingRecipes) {
+            GT_Log.mRecipeLog = new File(parentFile, "logs/GTRecipes.log");
+            if (!GT_Log.mRecipeLog.exists()) {
+                try {
+                    GT_Log.mRecipeLog.createNewFile();
+                } catch (Throwable ignored) {}
+            }
+            try {
+                GT_Log.recipe = new PrintStream(GT_Log.mRecipeLog);
+            } catch (Throwable ignored) {}
+        }
     }
 
     public static void runMineTweakerCompat() {

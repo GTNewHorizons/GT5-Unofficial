@@ -912,6 +912,55 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "GT_Recipe{" + "inputs="
+            + Arrays.toString(mInputs)
+            + ", outputs="
+            + Arrays.toString(mOutputs)
+            + ", fluidInputs="
+            + Arrays.toString(
+                Arrays.stream(mFluidInputs)
+                    .map(
+                        fluidStack -> fluidStack.amount + "x"
+                            + fluidStack.getUnlocalizedName()
+                            + (fluidStack.tag != null ? "{" + fluidStack.tag + "}" : ""))
+                    .toArray())
+            + ", fluidOutputs="
+            + Arrays.toString(
+                Arrays.stream(mFluidOutputs)
+                    .map(
+                        fluidStack -> fluidStack.amount + "x"
+                            + fluidStack.getUnlocalizedName()
+                            + (fluidStack.tag != null ? "{" + fluidStack.tag + "}" : ""))
+                    .toArray())
+            + ", chances="
+            + Arrays.toString(mChances)
+            + ", specialItems="
+            + mSpecialItems
+            + ", duration="
+            + mDuration
+            + ", EUt="
+            + mEUt
+            + ", specialValue="
+            + mSpecialValue
+            + ", enabled="
+            + mEnabled
+            + ", hidden="
+            + mHidden
+            + ", isNBTSensitive="
+            + isNBTSensitive
+            + ", metadataStorage="
+            + metadataStorage
+            + ", recipeCategory="
+            + recipeCategory
+            + ", owners="
+            + owners
+            + ", fakeRecipe="
+            + mFakeRecipe
+            + '}';
+    }
+
     public static class GT_Recipe_AssemblyLine {
 
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();

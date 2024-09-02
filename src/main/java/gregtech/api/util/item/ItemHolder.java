@@ -47,14 +47,12 @@ public class ItemHolder {
     public boolean equals(Object other) {
         if (other == this) return true;
         if (!(other instanceof ItemHolder otherIH)) return false;
-        if (Arrays.stream(oreIDs)
-            .anyMatch(id -> {
-                for (int i = 0; i < otherIH.getOreDictTagIDs().length; i++) {
-                    if (id == otherIH.getOreDictTagIDs()[i]) return true;
+        for (int id : oreIDs) {
+            for (int i = 0; i < otherIH.getOreDictTagIDs().length; i++) {
+                if (id == otherIH.getOreDictTagIDs()[i]) {
+                    return true;
                 }
-                return false;
-            })) {
-            return true;
+            }
         }
 
         if (item != otherIH.getItem() || meta != otherIH.getMeta()) {
@@ -62,12 +60,12 @@ public class ItemHolder {
         }
         if (this.tag == null && otherIH.getNBT() == null) return true;
         if (this.tag == null || otherIH.getNBT() == null) return false;
-        return this.tag.equals(otherIH);
+        return this.tag.equals(otherIH.tag);
     }
 
     @Override
     public int hashCode() {
-        return GT_Utility.stackToInt(toStack());
+        return GT_Utility.itemToInt(item, meta);
     }
 
     @Nonnull
@@ -75,5 +73,18 @@ public class ItemHolder {
         ItemStack item = new ItemStack(this.item, 1, meta);
         item.stackTagCompound = tag;
         return item;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemHolder{" + "item="
+            + item
+            + ", meta="
+            + meta
+            + ", tag="
+            + tag
+            + ", oreIDs="
+            + Arrays.toString(oreIDs)
+            + '}';
     }
 }

@@ -251,4 +251,14 @@ public class ConfigGeneral {
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean loggingPlayerActicity;
+
+    @Config.Comment("if true, log all the recipes in logs/GTRecipes.log.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean loggingRecipes;
+
+    @Config.Comment("if true, log all the recipe stacktraces in logs/GTRecipes.log.")
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean loggingRecipesStackTrace;
 }
