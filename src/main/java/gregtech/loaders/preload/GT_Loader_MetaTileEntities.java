@@ -348,6 +348,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.HATCH_DEGASIFIER_CONTROL;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_INDICATOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_VACUUM_CONVEYOR_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_VACUUM_CONVEYOR_OUTPUT;
 import static gregtech.api.enums.MetaTileEntityIDs.HEAT_DETECTOR_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_AMP_TRANSFORMER_MAX_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_AMP_TRANSFORMER_UEV_UHV;
@@ -562,6 +564,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIV_CONTROLLE
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_CANNER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_ASSEMBLY_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_MODULE_ASSEMBLY_MATRIX;
+import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_MODULE_SMD_PROCESSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
@@ -807,6 +812,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.VACUUM_CONVEYOR_PIPE;
 import static gregtech.api.enums.MetaTileEntityIDs.VACUUM_FREEZER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_HV;
@@ -973,6 +979,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.client.GT_TooltipHandler;
 import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
@@ -1083,6 +1090,17 @@ import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_NeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_VacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
@@ -1632,6 +1650,45 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_LATHE_CONTROLLER.ID,
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
+
+        ItemList.Machine_Multi_NanochipAssemblyComplex.set(
+            new GT_MetaTileEntity_NanochipAssemblyComplex(
+                NANOCHIP_ASSEMBLY_CONTROLLER.ID,
+                "multimachine.nanochipassemblycomplex",
+                "Nanochip Assembly Complex").getStackForm(1));
+        ItemList.NanoChipModule_AssemblyMatrix.set(
+            new AssemblyMatrix(
+                NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
+                "multimachine.nanochipmodule.assemblymatrix",
+                "Nanochip Assembly Matrix").getStackForm(1));
+        ItemList.NanoChipModule_SMDProcessor.set(
+            new SMDProcessor(
+                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.smdprocessor",
+                "Part Preparation Apparatus").getStackForm(1));
+        ItemList.NanoChipModule_BoardProcessor.set(
+            new BoardProcessor(
+                NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.boadprocessor",
+                "Full-Board Immersion Device").getStackForm(1));
+        ItemList.NanoChipModule_EtchingArray.set(
+            new EtchingArray(
+                NANOCHIP_MODULE_ETCHING_ARRAY.ID,
+                "multimachine.nanochipmodule.etchingarray",
+                "Ultra-high Energy Etching Array").getStackForm(1));
+        ItemList.NanoChipModule_CuttingChamber.set(
+            new CuttingChamber(
+                NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
+                "multimachine.nanochipmodule.cuttingchamber",
+                "Nanoprecision Cutting Chamber").getStackForm(1));
+        ItemList.NanoChipModule_WireTracer.set(
+            new WireTracer(
+                NANOCHIP_MODULE_WIRE_TRACER.ID,
+                "multimachine.nanochipmodule.wiretracer",
+                "Nanoprecision Wire Tracer").getStackForm(1));
+        ItemList.NanoChipModule_Splitter.set(
+            new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
+                .getStackForm(1));
 
         ItemList.Machine_Multi_IndustrialCompressor.set(
             new GT_MetaTileEntity_IndustrialCompressor(
@@ -13513,6 +13570,24 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.lensindicator",
                 "Lens Indicator Hatch",
                 8).getStackForm(1L));
+        ItemList.Hatch_VacuumConveyor_Input.set(
+            new GT_MetaTileEntity_Hatch_VacuumConveyor_Input(
+                HATCH_VACUUM_CONVEYOR_INPUT.ID,
+                "hatch.vacuumconveyor.input",
+                "Vacuum Conveyor Input Hatch",
+                GT_TooltipHandler.Tier.UEV.ordinal()).getStackForm(1));
+        ItemList.Hatch_VacuumConveyor_Output.set(
+            new GT_MetaTileEntity_Hatch_VacuumConveyor_Output(
+                HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
+                "hatch.vacuumconveyor.output",
+                "Vacuum Conveyor Output Hatch",
+                GT_TooltipHandler.Tier.UEV.ordinal()).getStackForm(1));
+        ItemList.VacuumConveyorPipe.set(
+            new GT_MetaTileEntity_VacuumConveyorPipe(
+                VACUUM_CONVEYOR_PIPE.ID,
+                "pipe.vacuumconveyor",
+                "Vacuum Conveyor Pipe").getStackForm(1));
+
         generateWiresAndPipes();
     }
 

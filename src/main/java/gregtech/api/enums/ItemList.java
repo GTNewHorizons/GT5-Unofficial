@@ -1501,6 +1501,17 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_IndustrialExtractor,
 
     Machine_Multi_Lathe,
+    Machine_Multi_NanochipAssemblyComplex,
+    Hatch_VacuumConveyor_Input,
+    Hatch_VacuumConveyor_Output,
+    VacuumConveyorPipe,
+    NanoChipModule_AssemblyMatrix,
+    NanoChipModule_SMDProcessor,
+    NanoChipModule_BoardProcessor,
+    NanoChipModule_EtchingArray,
+    NanoChipModule_CuttingChamber,
+    NanoChipModule_WireTracer,
+    NanoChipModule_Splitter,
     Machine_Multi_Autoclave,
     Casing_Autoclave,
 

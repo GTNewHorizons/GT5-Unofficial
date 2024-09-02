@@ -105,6 +105,7 @@ import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
 import gregtech.common.misc.spaceprojects.commands.SpaceProject_Command;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
+import gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
@@ -410,6 +411,10 @@ public class GT_Mod implements IGT_Mod {
 
         LHECoolantRegistry.registerBaseCoolants();
 
+        // This needs to run BEFORE creating any circuit assembler recipes, since the downstream
+        // recipe map for the assembly matrix relies on doing recipe lookups here.
+        // I really hope I can put this here without breaking something
+        RecipeHandlers.populateCircuitComponentRecipeMaps();
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
 
