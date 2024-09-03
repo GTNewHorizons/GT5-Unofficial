@@ -139,7 +139,7 @@ public class GalacticGregRegistry {
                     // Register default generator if dimension is asteroid and no generator was added
                     if (md.getDimensionType() == DimensionType.Asteroid) {
                         if (md.getSpaceObjectGenerators()
-                            .size() == 0) {
+                            .isEmpty()) {
                             GalacticGreg.Logger.debug("No generators found, adding build-in ellipsoid generator");
                             md.registerSpaceObjectGenerator(new GenEllipsoid());
                         }

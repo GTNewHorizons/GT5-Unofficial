@@ -34,6 +34,7 @@ public enum Mods {
     BiblioWoodsNaturaEdition(Names.BIBLIO_WOODS_NATURA_EDITION),
     BinnieCore(Names.BINNIE_CORE),
     BiomesOPlenty(Names.BIOMES_O_PLENTY),
+    BlockRenderer6343(Names.BLOCK_RENDERER_6343),
     BloodArsenal(Names.BLOOD_ARSENAL),
     BloodMagic(Names.BLOOD_MAGIC),
     Botania(Names.BOTANIA),
@@ -213,6 +214,7 @@ public enum Mods {
         public static final String BIBLIO_WOODS_NATURA_EDITION = "BiblioWoodsNatura";
         public static final String BINNIE_CORE = "BinnieCore";
         public static final String BIOMES_O_PLENTY = "BiomesOPlenty";
+        public static final String BLOCK_RENDERER_6343 = "blockrenderer6343";
         public static final String BLOOD_ARSENAL = "BloodArsenal";
         public static final String BLOOD_MAGIC = "AWWayofTime";
         public static final String BOTANIA = "Botania";

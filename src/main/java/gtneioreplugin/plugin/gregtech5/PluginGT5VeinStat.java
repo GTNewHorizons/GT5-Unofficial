@@ -10,7 +10,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
-import cpw.mods.fml.common.Loader;
+import gregtech.api.enums.Mods;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -92,7 +92,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private static void drawVeinName(OreLayerWrapper oreLayer) {
-        if (Loader.isModLoaded("visualprospecting")) {
+        if (Mods.VisualProspecting.isModLoaded()) {
             drawVeinNameLine(I18n.format(oreLayer.veinName) + " ");
         } else {
             String veinName = getGTOreLocalizedName(oreLayer.Meta[OreVeinLayer.VEIN_PRIMARY]);
