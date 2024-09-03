@@ -408,7 +408,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     // region UI stuff
 
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
     protected GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 
