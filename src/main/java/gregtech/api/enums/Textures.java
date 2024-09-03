@@ -544,6 +544,7 @@ public class Textures {
         OVERLAY_INPUT_HATCH_2x2,
         FLUID_OUT_SIGN,
         FLUID_IN_SIGN,
+        FLUID_STEAM_IN_SIGN,
         ITEM_IN_SIGN,
         ITEM_OUT_SIGN,
         OVERLAY_MUFFLER,
