@@ -181,6 +181,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             .addInfo("Accelerates charged particles to higher energies")
             .addInfo("Increasing length increases output energy, but decreases focus")
             .addInfo("Use a lower temperature coolant to improve focus")
+            .addInfo("Output energy does not scale for input energies higher than 7500 keV")
             // .addInfo("Extendable, with a minimum length of 18 blocks")
             .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
@@ -347,6 +348,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
+        
+        inputEnergy = Math.min(inputEnergy, 7500); // Does not scale past 7500 keV, prevents double LINAC issue
         /*
          * outputEnergy = Math.min(
          * (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
