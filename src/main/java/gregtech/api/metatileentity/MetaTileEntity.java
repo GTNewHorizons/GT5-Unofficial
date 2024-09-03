@@ -55,9 +55,9 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -91,7 +91,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     public final ItemStackHandler inventoryHandler;
 
     protected GUIColorOverride colorOverride;
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     @Override
     public ItemStackHandler getInventoryHandler() {

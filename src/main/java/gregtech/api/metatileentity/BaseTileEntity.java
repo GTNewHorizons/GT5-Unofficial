@@ -62,9 +62,9 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
 import gregtech.api.net.GTPacketBlockEvent;
 import gregtech.api.net.GTPacketSetConfigurationCircuit;
+import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -631,7 +631,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return null;
     }
 
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     // Tooltip localization keys
     public static final String BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
