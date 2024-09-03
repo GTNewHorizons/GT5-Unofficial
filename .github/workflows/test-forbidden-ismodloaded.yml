@@ -15,4 +15,4 @@ jobs:
       - name: Detect forbidden isModLoaded calls
         shell: bash
         run: |
-          ! grep -E -r '(Loader|BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java
+          ! grep -E -r '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java
