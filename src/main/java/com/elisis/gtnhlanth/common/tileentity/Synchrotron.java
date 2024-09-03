@@ -494,10 +494,13 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Particle Accelerator")
             .addInfo("Controller block for the Synchrotron")
-            .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation")
-            .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve photon rate and energy scaling")
+            .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,").addInfo("in the form of photons")
+            .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")
+            .addInfo("Minimum input focus: " + MIN_INPUT_FOCUS)
             .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+            
+            .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Valid Coolants:");
 
         // Valid coolant list
