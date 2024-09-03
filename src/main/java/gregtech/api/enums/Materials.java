@@ -2003,6 +2003,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
+        MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+        MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+
+
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
             BrownLimonite,
@@ -2257,7 +2263,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             MaterialsUEVplus.Eternity,
             MaterialsUEVplus.MagMatter,
             MaterialsUEVplus.HotProtoHalkonite,
-            MaterialsUEVplus.ProtoHalkonite);
+            MaterialsUEVplus.ProtoHalkonite,
+            MaterialsUEVplus.HotExoHalkonite,
+            MaterialsUEVplus.ExoHalkonite);
 
         SubTag.FOOD.addTo(
             MeatRaw,
