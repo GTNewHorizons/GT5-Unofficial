@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -99,11 +100,11 @@ public class PlasmaForgeRecipes implements Runnable {
         // This recipe takes UMV power but processes 4x input and output as the original recipe, making it a free POC
         // over
         // the original recipe
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs()
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(1000),
-                MyMaterial.metastableOganesson.getMolten(144 * 4),
+                GGMaterial.metastableOganesson.getMolten(144 * 4),
                 Materials.Grade8PurifiedWater.getFluid(1600),
                 new FluidStack(celestialTungstenPlasma, 64 * 144),
                 Materials.RadoxHeavy.getFluid(8000),

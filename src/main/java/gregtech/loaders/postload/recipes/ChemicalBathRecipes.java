@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -439,9 +439,9 @@ public class ChemicalBathRecipes implements Runnable {
 
         final int partFraction = (int) (144 * prefix.mMaterialAmount / M);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(prefix, Materials.Infinity, multiplier))
-            .itemOutputs(GT_OreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Infinity, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UEV)

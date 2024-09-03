@@ -3,8 +3,8 @@ package goodgenerator.loader;
 import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
-import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 import static gregtech.api.enums.GTValues.M;
+import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -383,9 +383,9 @@ public class ComponentAssemblyLineRecipeLoader {
             }
             // Proto-Halkonite cannot be molten into a fluid, so instead replace it with an equivalent amount of dense
             // plates
-            if (GT_Utility.areStacksEqual(
+            if (GTUtility.areStacksEqual(
                 itemstack,
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.ProtoHalkonite, 1))) {
+                GTOreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.ProtoHalkonite, 1))) {
                 // Superdense plate is 64 plates
                 int superDensePlateAmount = (int) (((totalItems * OrePrefixes.wireFine.mMaterialAmount) / M) / 64);
                 stacks.addAll(
