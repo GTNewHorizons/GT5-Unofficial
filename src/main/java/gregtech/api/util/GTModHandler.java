@@ -477,22 +477,7 @@ public class GTModHandler {
         aOutput.stackSize = 1;
         if (GTConfig.troll && !GTUtility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
         try {
-            GTUtility.callMethod(
-                GTUtility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
-                "addDrop",
-                true,
-                false,
-                true,
-                GTUtility.copyOrNull(aOutput),
-                aChance);
-            GTUtility.callMethod(
-                GTUtility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
-                "addRecipe",
-                true,
-                true,
-                false,
-                GTUtility.copyOrNull(aOutput),
-                aChance);
+            ic2.api.recipe.Recipes.scrapboxDrops.addDrop(GTUtility.copyOrNull(aOutput), aChance);
         } catch (Throwable e) {
             /* Do nothing */
         }
