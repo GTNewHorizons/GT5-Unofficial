@@ -30,6 +30,9 @@ public class SpacePumpingRecipes {
         // T2
         RECIPES.put(Pair.of(2, 1), Materials.Chlorobenzene.getFluid(896000));
 
+        // T3 (the end?)
+        RECIPES.put(Pair.of(3, 1), FluidRegistry.getFluidStack("endergoo", 32000));
+
         // T4
         RECIPES.put(Pair.of(4, 1), Materials.SulfuricAcid.getFluid(784000));
         RECIPES.put(Pair.of(4, 2), Materials.Iron.getMolten(896000));
