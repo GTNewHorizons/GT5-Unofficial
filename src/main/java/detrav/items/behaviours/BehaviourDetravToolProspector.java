@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import bartworks.system.material.Werkstoff;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
@@ -31,6 +30,7 @@ import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
@@ -82,7 +82,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
 
-                if (Loader.isModLoaded("visualprospecting")) {
+                if (Mods.VisualProspecting.isModLoaded()) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,
                         new ArrayList<>(),
@@ -213,7 +213,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             aPlayer.addChatMessage(msg);
         }
 
-        if (Loader.isModLoaded("visualprospecting")) {
+        if (Mods.VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -249,7 +249,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             addChatMassageByValue(aPlayer, value, key);
         }
 
-        if (Loader.isModLoaded("visualprospecting")) {
+        if (Mods.VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -311,10 +311,10 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                 addOreToHashMap(name, aPlayer);
                             }
                         }
-                    } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock)) {
+                    } else if (GTppHelper.isGTppBlock(tBlock)) {
                         String name = GTppHelper.getGTppVeinName(tBlock);
                         if (!name.isEmpty()) addOreToHashMap(name, aPlayer);
-                    } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)) {
+                    } else if (BartWorksHelper.isOre(tBlock)) {
                         if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(
                             (short) ((BartWorksHelper.getMetaFromBlock(aChunk, x, y, z, tBlock)) * -1),

@@ -40,7 +40,7 @@ public class DynamicDimensionConfig {
     public static boolean InitDynamicConfig() {
         try {
             for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
-                if (!mc.getEnabled()) continue;
+                if (!mc.isModLoaded()) continue;
 
                 for (ModDimensionDef mdd : mc.getDimensionList()) {
                     DimensionType dt = mdd.getDimensionType();
