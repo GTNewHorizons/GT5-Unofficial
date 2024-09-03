@@ -1,24 +1,24 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 
 /**
  * Available asteroids for space mining are defined here
@@ -39,8 +39,8 @@ public class SpaceMiningRecipes {
             MINING_DRONES[droneTier.ordinal()] = new ItemStack(IGItems.MiningDrones, 0, droneTier.ordinal());
         }
         for (ItemMiningDrones.DroneMaterials mat : ItemMiningDrones.DroneMaterials.values()) {
-            MINING_DRILLS[mat.ordinal()] = GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, mat.getMaterial(), 4);
-            MINING_RODS[mat.ordinal()] = GT_OreDictUnificator.get(OrePrefixes.stick, mat.getMaterial(), 4);
+            MINING_DRILLS[mat.ordinal()] = GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, mat.getMaterial(), 4);
+            MINING_RODS[mat.ordinal()] = GTOreDictUnificator.get(OrePrefixes.stick, mat.getMaterial(), 4);
         }
     }
 
@@ -682,11 +682,10 @@ public class SpaceMiningRecipes {
                     null,
                     null,
                     new int[] { 7400, 2000, 500, 98, 2 },
-                    new ItemStack[] {
-                            GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.MysteriousCrystal, 64),
-                            GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Mytryl, 64),
-                            GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Oriharukon, 64),
-                            GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.HeeEndium, 64),
+                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.MysteriousCrystal, 64),
+                            GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Mytryl, 64),
+                            GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Oriharukon, 64),
+                            GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.HeeEndium, 64),
                             new ItemStack(GameRegistry.findItem("HardcoreEnderExpansion", "end_powder_ore"), 64) },
                     30,
                     60,
@@ -790,7 +789,7 @@ public class SpaceMiningRecipes {
                     null,
                     null,
                     new int[] { 1500, 2000, 3000, 3500 },
-                    new Materials[] { Materials.Trinium, Materials.Lanthanum, MyMaterial.orundum.getBridgeMaterial(),
+                    new Materials[] { Materials.Trinium, Materials.Lanthanum, GGMaterial.orundum.getBridgeMaterial(),
                             Materials.Silver },
                     OrePrefixes.ore,
                     30,
@@ -810,7 +809,7 @@ public class SpaceMiningRecipes {
                     null,
                     null,
                     new int[] { 100, 1650, 3500, 2250, 2500 },
-                    new Materials[] { Materials.Dilithium, MyMaterial.orundum.getBridgeMaterial(), Materials.Vanadium,
+                    new Materials[] { Materials.Dilithium, GGMaterial.orundum.getBridgeMaterial(), Materials.Vanadium,
                             Materials.Ytterbium, Materials.TengamRaw },
                     OrePrefixes.ore,
                     5,
@@ -830,9 +829,9 @@ public class SpaceMiningRecipes {
                     null,
                     null,
                     new int[] { 4000, 3500, 2500 },
-                    new Materials[] { MyMaterial.naquadahEarth.getBridgeMaterial(),
-                            MyMaterial.enrichedNaquadahEarth.getBridgeMaterial(),
-                            MyMaterial.naquadriaEarth.getBridgeMaterial() },
+                    new Materials[] { GGMaterial.naquadahEarth.getBridgeMaterial(),
+                            GGMaterial.enrichedNaquadahEarth.getBridgeMaterial(),
+                            GGMaterial.naquadriaEarth.getBridgeMaterial() },
                     OrePrefixes.ore,
                     20,
                     80,
@@ -853,8 +852,8 @@ public class SpaceMiningRecipes {
                     null,
                     null,
                     new int[] { 100, 100, 9800 },
-                    new ItemStack[] { GT_ModHandler.getModItem("kubatech", "kubaitems", 1, 38),
-                            GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
+                    new ItemStack[] { GTModHandler.getModItem("kubatech", "kubaitems", 1, 38),
+                            GTModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
                             ItemList.ZPM.getWithCharge(1, Integer.MAX_VALUE - 1) },
                     1,
                     1,

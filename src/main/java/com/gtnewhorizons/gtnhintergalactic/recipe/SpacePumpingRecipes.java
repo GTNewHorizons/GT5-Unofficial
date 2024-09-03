@@ -8,8 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
 import galaxyspace.BarnardsSystem.BRFluids;
 import gregtech.api.enums.Materials;

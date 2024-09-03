@@ -4,12 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
@@ -27,10 +21,16 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_StructureUtility;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
  * Base class for modules of the Space Elevator
@@ -78,7 +78,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
                             new String[][] { { "H", "H" }, { "~", "H" }, { "H", "H" }, { "H", "H" }, { "H", "H" } }))
             .addElement(
                     'H',
-                    GT_StructureUtility.ofHatchAdderOptional(
+                    GTStructureUtility.ofHatchAdderOptional(
                             TileEntityModuleBase::addClassicToMachineList,
                             TileEntitySpaceElevator.CASING_INDEX_BASE,
                             1,
@@ -284,7 +284,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      */
     @Override
     public long getMaxInputVoltage() {
-        return gregtech.api.enums.GT_Values.V[tTier];
+        return gregtech.api.enums.GTValues.V[tTier];
     }
 
     /**
@@ -294,7 +294,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      * @return Structure definition
      */
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -364,9 +364,8 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
         if (side == facing) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                    new TTRenderedExtendedFacingTexture(
+                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
@@ -390,7 +389,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
 
         screenElements
                 .widget(
-                        new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        new TextWidget(GTUtility.trans("138", "Incomplete Structure."))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 

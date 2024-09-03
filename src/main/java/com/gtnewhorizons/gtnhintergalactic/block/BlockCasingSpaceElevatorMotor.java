@@ -16,17 +16,17 @@ import com.gtnewhorizons.gtnhintergalactic.item.ItemCasingSpaceElevatorMotor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 
 /**
  * Motors used to construct the Space Elevator
  *
  * @author minecraft7771
  */
-public class BlockCasingSpaceElevatorMotor extends GT_Block_Casings_Abstract {
+public class BlockCasingSpaceElevatorMotor extends BlockCasingsAbstract {
 
     /** Number of motors that exist */
     private static final int NUMBER_OF_MOTORS = 5;
@@ -39,17 +39,17 @@ public class BlockCasingSpaceElevatorMotor extends GT_Block_Casings_Abstract {
      * Create new Space Elevator motors
      */
     public BlockCasingSpaceElevatorMotor() {
-        super(ItemCasingSpaceElevatorMotor.class, "gt.blockcasingsSEMotor", GT_Material_Casings.INSTANCE);
+        super(ItemCasingSpaceElevatorMotor.class, "gt.blockcasingsSEMotor", MaterialCasings.INSTANCE);
 
         for (byte b = 0; b < NUMBER_OF_MOTORS; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[32][b + 16] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[32][b + 16] = new GTCopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Motor MK-I");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Motor MK-II");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Motor MK-III");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Space Elevator Motor MK-IV");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Space Elevator Motor MK-V");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Motor MK-I");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Motor MK-II");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Motor MK-III");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Space Elevator Motor MK-IV");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Space Elevator Motor MK-V");
 
         IGItems.SpaceElevatorMotorT1 = new ItemStack(this, 1, 0);
         IGItems.SpaceElevatorMotorT2 = new ItemStack(this, 1, 1);

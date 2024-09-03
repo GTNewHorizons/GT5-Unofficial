@@ -9,7 +9,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.common.blocks.ItemCasingsAbstract;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
@@ -17,7 +17,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
  *
  * @author minecraft7771
  */
-public class ItemCasingSpaceElevatorMotor extends GT_Item_Casings_Abstract {
+public class ItemCasingSpaceElevatorMotor extends ItemCasingsAbstract {
 
     /**
      * Create a new item for the motor blocks

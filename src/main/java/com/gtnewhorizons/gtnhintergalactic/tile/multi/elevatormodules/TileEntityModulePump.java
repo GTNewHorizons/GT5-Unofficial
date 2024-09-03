@@ -15,12 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpacePumpingRecipes;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
@@ -31,17 +25,23 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
  * Space Pump project module of the Space Elevator
@@ -51,7 +51,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Energy consumption of the module (1A UHV) */
-    public static final long ENERGY_CONSUMPTION = (int) GT_Values.VP[9];
+    public static final long ENERGY_CONSUMPTION = (int) GTValues.VP[9];
 
     /** Input parameters */
     Parameters.Group.ParameterIn[] parallelSettings;
@@ -139,9 +139,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
                 int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
-                GT_MetaTileEntity_Hatch_Output targetOutput = null;
+                MTEHatchOutput targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
-                    for (GT_MetaTileEntity_Hatch_Output output : mOutputHatches) {
+                    for (MTEHatchOutput output : mOutputHatches) {
                         if (output.mFluid != null && output.mFluid.getFluid() != null
                                 && output.getLockedFluidName() != null
                                 && output.getLockedFluidName().equals(fluid.getFluid().getName())
@@ -191,8 +191,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         boolean state = super.checkMachine_EM(aBaseMetaTileEntity, aStack);
         hasMeOutputHatch = false;
         if (state) {
-            for (GT_MetaTileEntity_Hatch_Output output : mOutputHatches) {
-                if (output instanceof GT_MetaTileEntity_Hatch_Output_ME) {
+            for (MTEHatchOutput output : mOutputHatches) {
+                if (output instanceof MTEHatchOutputME) {
                     hasMeOutputHatch = true;
                     break;
                 }
@@ -297,13 +297,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         if (side == facing) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                    new TTRenderedExtendedFacingTexture(
+                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         } else if (facing.getRotation(ForgeDirection.UP) == side || facing.getRotation(ForgeDirection.DOWN) == side) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TT_RenderedExtendedFacingTexture(engraving) };
+                    new TTRenderedExtendedFacingTexture(engraving) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
@@ -401,8 +400,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Tooltip builder
          */
         @Override
-        protected GT_Multiblock_Tooltip_Builder createTooltip() {
-            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0")) // Module that
                     // adds Space
@@ -498,8 +497,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Tooltip builder
          */
         @Override
-        protected GT_Multiblock_Tooltip_Builder createTooltip() {
-            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0")) // Module that
                     // adds Space
@@ -593,8 +592,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Tooltip builder
          */
         @Override
-        protected GT_Multiblock_Tooltip_Builder createTooltip() {
-            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
                     .addInfo(

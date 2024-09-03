@@ -23,8 +23,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.util.GTUtility;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
@@ -58,7 +58,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
      * Initialize the handler for gas siphons recipes
      */
     public GasSiphonRecipeHandler() {
-        modularWindow = ModularWindow.builder(170, 82).setBackground(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE)
+        modularWindow = ModularWindow.builder(170, 82).setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE)
                 .widget(
                         new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO).setSize(17, 17)
                                 .setPos(new Pos2d(147, 52)))
@@ -166,12 +166,12 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(ItemStack result) {
         Fluid fluid = null;
-        FluidStack containerFluid = GT_Utility.getFluidForFilledItem(result, true);
+        FluidStack containerFluid = GTUtility.getFluidForFilledItem(result, true);
         if (containerFluid != null) {
             fluid = containerFluid.getFluid();
         }
         if (fluid == null) {
-            FluidStack displayFluid = GT_Utility.getFluidFromDisplayStack(result);
+            FluidStack displayFluid = GTUtility.getFluidFromDisplayStack(result);
             if (displayFluid != null) {
                 fluid = displayFluid.getFluid();
             }
@@ -216,7 +216,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(GCCoreUtil.translate(recipe.planet), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(Integer.toString(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(GT_Utility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
                 EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
@@ -268,7 +268,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
          * @param outputAmount Output amount of the operation
          */
         private CachedSiphonRecipe(String planet, int depth, Fluid output, int outputAmount) {
-            targetFluidDisplay = new PositionedStack(GT_Utility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
+            targetFluidDisplay = new PositionedStack(GTUtility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
             this.planet = planet;
             this.depth = depth;
             amount = outputAmount;

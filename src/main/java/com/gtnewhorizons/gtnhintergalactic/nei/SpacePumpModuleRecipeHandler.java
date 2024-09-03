@@ -25,8 +25,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.util.GTUtility;
 
 /**
  * Recipe handler for the space pumping recipes
@@ -59,7 +59,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      * Initialize the handler for space pumping recipes
      */
     public SpacePumpModuleRecipeHandler() {
-        modularWindow = ModularWindow.builder(170, 82).setBackground(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE)
+        modularWindow = ModularWindow.builder(170, 82).setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE)
                 .widget(
                         new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO).setSize(17, 17)
                                 .setPos(new Pos2d(147, 52)))
@@ -165,12 +165,12 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(ItemStack result) {
         Fluid fluid = null;
-        FluidStack containerFluid = GT_Utility.getFluidForFilledItem(result, true);
+        FluidStack containerFluid = GTUtility.getFluidForFilledItem(result, true);
         if (containerFluid != null) {
             fluid = containerFluid.getFluid();
         }
         if (fluid == null) {
-            FluidStack displayFluid = GT_Utility.getFluidFromDisplayStack(result);
+            FluidStack displayFluid = GTUtility.getFluidFromDisplayStack(result);
             if (displayFluid != null) {
                 fluid = displayFluid.getFluid();
             }
@@ -218,7 +218,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(Integer.toString(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(Integer.toString(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(GT_Utility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
                 EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
@@ -270,7 +270,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
          * @param outputAmount Output amount of the operation
          */
         private CachedPumpRecipe(int planetType, int gasType, Fluid output, int outputAmount) {
-            targetFluidDisplay = new PositionedStack(GT_Utility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
+            targetFluidDisplay = new PositionedStack(GTUtility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
             this.planetType = planetType;
             this.gasType = gasType;
             amount = outputAmount;

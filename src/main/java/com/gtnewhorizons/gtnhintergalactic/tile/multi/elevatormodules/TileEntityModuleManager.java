@@ -1,6 +1,5 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
@@ -19,7 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
@@ -42,7 +40,8 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -50,13 +49,14 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import tectech.thing.gui.TecTechUITextures;
 
 /**
  * Module that allows the user to manage their space projects
@@ -120,8 +120,8 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.manager.desc0"))
                 .addInfo(
@@ -160,16 +160,16 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         if (projectWorkingOn == null) {
             return SimpleCheckRecipeResult.ofFailure("no_project_selected");
         }
-        if (V[tTier] > getEUVar()) {
-            return CheckRecipeResultRegistry.insufficientPower(V[tTier]);
+        if (GTValues.V[tTier] > getEUVar()) {
+            return CheckRecipeResultRegistry.insufficientPower(GTValues.V[tTier]);
         }
 
-        GT_Recipe recipe = null;
+        GTRecipe recipe = null;
 
         if (projectWorkingOn.isFinished() && projectWorkingOn.getUpgradeBeingBuilt() != null
                 && !projectWorkingOn.getUpgradeBeingBuilt().isFinished()) {
             ISpaceProject.ISP_Upgrade upgrade = projectWorkingOn.getUpgradeBeingBuilt();
-            recipe = new GT_Recipe(
+            recipe = new GTRecipe(
                     false,
                     upgrade.getItemsCostPerStage(),
                     null,
@@ -181,7 +181,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                     (int) upgrade.getVoltage(),
                     0);
         } else if (!projectWorkingOn.isFinished()) {
-            recipe = new GT_Recipe(
+            recipe = new GTRecipe(
                     false,
                     projectWorkingOn.getItemsCostPerStage(),
                     null,
@@ -286,11 +286,11 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
      * GUI Section
      */
 
-    private static final IDrawable buttonUp = GT_UITextures.BUTTON_STANDARD_TOGGLE.getSubArea(0f, 0f, 0.5f, 0.5f);
-    private static final IDrawable buttonUpDisabled = GT_UITextures.BUTTON_STANDARD_TOGGLE_DISABLED
+    private static final IDrawable buttonUp = GTUITextures.BUTTON_STANDARD_TOGGLE.getSubArea(0f, 0f, 0.5f, 0.5f);
+    private static final IDrawable buttonUpDisabled = GTUITextures.BUTTON_STANDARD_TOGGLE_DISABLED
             .getSubArea(0f, 0f, 0.5f, 0.5f);
-    private static final IDrawable buttonDown = GT_UITextures.BUTTON_STANDARD_TOGGLE.getSubArea(0.5f, 0.5f, 1f, 1f);
-    private static final IDrawable buttonDownDisabled = GT_UITextures.BUTTON_STANDARD_TOGGLE_DISABLED
+    private static final IDrawable buttonDown = GTUITextures.BUTTON_STANDARD_TOGGLE.getSubArea(0.5f, 0.5f, 1f, 1f);
+    private static final IDrawable buttonDownDisabled = GTUITextures.BUTTON_STANDARD_TOGGLE_DISABLED
             .getSubArea(0.5f, 0.5f, 1f, 1f);
 
     /**
@@ -309,7 +309,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
     private ModularWindow createPopUp() {
         ModularWindow.Builder builder = ModularWindow.builder(300, 150);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
                 // Text for displaying the popup message
                 TextWidget.dynamicString(() -> popupText).setTextAlignment(Alignment.Center).setSize(280, 130)
@@ -522,7 +522,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                         }),
                                 true).setDirection(DropDownWidget.Direction.UP).setTextUnselected(LOCATON_UNSELECTED)
                                 .setSelected(locationIndex).setPos(20, 259).setSize(128, 20)
-                                .setBackground(GT_UITextures.BUTTON_STANDARD))
+                                .setBackground(GTUITextures.BUTTON_STANDARD))
                 // Syncer for selected location
                 .widget(
                         new FakeSyncWidget.StringSyncer(
@@ -671,7 +671,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                     (screenSize, window, parent) -> new Size(
                                             parent.getSize().height / 16,
                                             parent.getSize().height / 16))
-                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                            .setBackground(GTUITextures.BUTTON_STANDARD).setEnabled(
                                     widget -> selectedProject != null
                                             && selectedProject.getItemCostPerStage(index) != null));
         }
@@ -691,7 +691,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                     (screenSize, window, parent) -> new Size(
                                             parent.getSize().height / 16,
                                             parent.getSize().height / 16))
-                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                            .setBackground(GTUITextures.BUTTON_STANDARD).setEnabled(
                                     widget -> selectedProject != null
                                             && selectedProject.getFluidCostPerStage(index) != null));
         }
@@ -843,7 +843,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                     (screenSize, window, parent) -> new Size(
                                             parent.getSize().height / 16,
                                             parent.getSize().height / 16))
-                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                            .setBackground(GTUITextures.BUTTON_STANDARD).setEnabled(
                                     widget -> selectedUpgrade != null
                                             && selectedUpgrade.getItemCostPerStage(index) != null));
         }
@@ -863,7 +863,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                     (screenSize, window, parent) -> new Size(
                                             parent.getSize().height / 16,
                                             parent.getSize().height / 16))
-                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                            .setBackground(GTUITextures.BUTTON_STANDARD).setEnabled(
                                     widget -> selectedUpgrade != null
                                             && selectedUpgrade.getFluidCostPerStage(index) != null));
         }

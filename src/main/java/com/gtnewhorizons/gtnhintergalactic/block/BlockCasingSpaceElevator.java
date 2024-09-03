@@ -16,17 +16,17 @@ import com.gtnewhorizons.gtnhintergalactic.item.ItemCasingSpaceElevator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 
 /**
  * Casings used to construct the Space Elevator
  *
  * @author minecraft7771
  */
-public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
+public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
 
     /** Number of casings that exist */
     private static final int NUMBER_OF_CASINGS = 3;
@@ -41,15 +41,15 @@ public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
      * Create new Space Elevator casings
      */
     public BlockCasingSpaceElevator() {
-        super(ItemCasingSpaceElevator.class, "gt.blockcasingsSE", GT_Material_Casings.INSTANCE);
+        super(ItemCasingSpaceElevator.class, "gt.blockcasingsSE", MaterialCasings.INSTANCE);
 
         for (byte b = 0; b < NUMBER_OF_CASINGS; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[32][b] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[32][b] = new GTCopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Base Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Support Structure");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Internal Structure");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Base Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Support Structure");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Internal Structure");
 
         IGItems.SpaceElevatorCasing0 = new ItemStack(this, 1, 0);
         IGItems.SpaceElevatorCasing1 = new ItemStack(this, 1, 1);

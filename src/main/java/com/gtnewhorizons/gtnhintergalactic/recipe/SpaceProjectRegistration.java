@@ -1,6 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
-import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GTModHandler.getModItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -9,21 +9,21 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.technus.tectech.thing.CustomItemList;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 
+import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.Loader;
 import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gregtech.common.misc.spaceprojects.base.SP_Requirements;
-import gregtech.common.misc.spaceprojects.base.SP_Upgrade;
+import gregtech.common.misc.spaceprojects.base.SPRequirements;
+import gregtech.common.misc.spaceprojects.base.SPUpgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import tectech.thing.CustomItemList;
 
 /**
  * All space projects of this mod
@@ -55,7 +55,7 @@ public class SpaceProjectRegistration implements Runnable {
      * Register the asteroid outpost
      */
     private void registerAsteroidOutpost() {
-        ISpaceProject.ISP_Upgrade reinforcedStructure = new SP_Upgrade().setUpgradeName("ReinforcedStructure")
+        ISpaceProject.ISP_Upgrade reinforcedStructure = new SPUpgrade().setUpgradeName("ReinforcedStructure")
                 .setUpgradeUnlocalizedName("ig.sp.upgrade.reinforcedstructure").setUpgradeTotalStages(40)
                 .setUpgradeVoltage(TierEU.RECIPE_UHV).setUpgradeBuildTime(500 * 20)
                 .setUpgradeItemsCost(
@@ -67,10 +67,10 @@ public class SpaceProjectRegistration implements Runnable {
                         ItemList.Sensor_UHV.get(1),
                         ItemList.Emitter_UHV.get(1))
                 .setUpgradeFluidsCost(new FluidStack(solderLuV, 144 * 30));
-        ISpaceProject.ISP_Upgrade improvedComputation = new SP_Upgrade().setUpgradeName("ImprovedComputation")
+        ISpaceProject.ISP_Upgrade improvedComputation = new SPUpgrade().setUpgradeName("ImprovedComputation")
                 .setUpgradeUnlocalizedName("ig.sp.upgrade.improvedcomputation").setUpgradeTotalStages(20)
                 .setUpgradeVoltage(TierEU.RECIPE_UEV).setUpgradeBuildTime(750 * 20)
-                .setUpgradeRequirements(new SP_Requirements().setUpgrades(reinforcedStructure))
+                .setUpgradeRequirements(new SPRequirements().setUpgrades(reinforcedStructure))
                 .setUpgradeItemsCost(
                         getModItem("supersolarpanel", "PhotonicSolarPanel", 1L, 0),
                         getModItem("OpenComputers", "item", 32, 103),
@@ -83,7 +83,7 @@ public class SpaceProjectRegistration implements Runnable {
         ISpaceProject asteroidOutpost = new ProjectAsteroidOutpost().setProjectName("AsteroidOutpost")
                 .setProjectUnlocalizedName("ig.spaceproject.asteroidoutpost")
                 .setProjectUpgrades(reinforcedStructure, improvedComputation)
-                .setProjectRequirements(new SP_Requirements().setSpaceBodyType(SolarSystem.KuiperBelt.getType()))
+                .setProjectRequirements(new SPRequirements().setSpaceBodyType(SolarSystem.KuiperBelt.getType()))
                 .setProjectBuildTime(250 * 20).setProjectStages(40).setProjectVoltage(TierEU.RECIPE_UV)
                 .setProjectTexture(IG_UITextures.PICTURE_SPACE_PROJECT_ASTEROID_OUTPOST).setProjectItemsCost(
                         // Osmium Borosilicate Glass

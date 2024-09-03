@@ -1,6 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
@@ -23,14 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.gui.TecTechUITextures;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
@@ -52,7 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -65,13 +57,21 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import tectech.TecTech;
+import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
@@ -347,8 +347,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
 
         // Check how many parallels we can actually do, return if none
-        GT_ParallelHelper helper = new GT_ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
-                .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GT_Values.V[tTier])
+        ParallelHelper helper = new ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
+                .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GTValues.V[tTier])
                 .setMachine(this, false, false).setConsumption(true).build();
         int parallels = helper.getCurrentParallel();
         if (parallels <= 0) {
@@ -356,7 +356,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
 
         // Randomly generate ore stacks with the given chances, ores and size
-        Map<GT_Utility.ItemId, Long> outputs = new HashMap<>();
+        Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
         int totalChance = Arrays.stream(tRecipe.mChances).sum();
         try {
             for (int i = 0; i < tRecipe.maxSize * parallels; i++) {
@@ -374,7 +374,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                             if (configuredOres == null || configuredOres.isEmpty()
                                     || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
                                 outputs.merge(
-                                        GT_Utility.ItemId.createNoCopy(generatedOre),
+                                        GTUtility.ItemId.createNoCopy(generatedOre),
                                         (long) generatedOre.stackSize,
                                         Long::sum);
                             }
@@ -393,8 +393,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         // Assign recipe parameters
         ArrayList<ItemStack> outputItems = new ArrayList<>();
-        for (Map.Entry<GT_Utility.ItemId, Long> entry : outputs.entrySet()) {
-            GT_ParallelHelper.addItemsLong(outputItems, entry.getKey().getItemStack(), entry.getValue());
+        for (Map.Entry<GTUtility.ItemId, Long> entry : outputs.entrySet()) {
+            ParallelHelper.addItemsLong(outputItems, entry.getKey().getItemStack(), entry.getValue());
         }
         mOutputItems = outputItems.toArray(new ItemStack[0]);
 
@@ -717,13 +717,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         if (side == facing) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                    new TTRenderedExtendedFacingTexture(
+                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         } else if (facing.getRotation(ForgeDirection.UP) == side || facing.getRotation(ForgeDirection.DOWN) == side) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TT_RenderedExtendedFacingTexture(engraving) };
+                    new TTRenderedExtendedFacingTexture(engraving) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
@@ -816,8 +815,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          * @return Tooltip builder
          */
         @Override
-        protected GT_Multiblock_Tooltip_Builder createTooltip() {
-            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
                                                                                                            // that
@@ -909,8 +908,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          * @return Tooltip builder
          */
         @Override
-        protected GT_Multiblock_Tooltip_Builder createTooltip() {
-            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
                                                                                                            // that
@@ -1002,8 +1001,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
          * @return Tooltip builder
          */
         @Override
-        protected GT_Multiblock_Tooltip_Builder createTooltip() {
-            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
                                                                                                            // that

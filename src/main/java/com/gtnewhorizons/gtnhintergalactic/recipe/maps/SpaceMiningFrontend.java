@@ -11,7 +11,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.RecipeDisplayInfo;
@@ -68,7 +68,7 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
                 result.add(
                         GCCoreUtil.translateWithFormat(
                                 "tt.nei.research.min_computation",
-                                GT_Utility.formatNumbers(miningRecipe.computation)));
+                                GTUtility.formatNumbers(miningRecipe.computation)));
                 result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + miningRecipe.recipeWeight);
             }
             return result;

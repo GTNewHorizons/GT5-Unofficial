@@ -27,7 +27,7 @@ import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntity
 
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -235,10 +235,10 @@ public class ElevatorUtil {
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGT_HatchAdder<TileEntitySpaceElevator> adder;
+        private final IGTHatchAdder<TileEntitySpaceElevator> adder;
 
         @SafeVarargs
-        ProjectModuleElement(IGT_HatchAdder<TileEntitySpaceElevator> adder,
+        ProjectModuleElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
                 Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
@@ -249,7 +249,7 @@ public class ElevatorUtil {
             return mteClasses;
         }
 
-        public IGT_HatchAdder<? super TileEntitySpaceElevator> adder() {
+        public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
             return adder;
         }
     }

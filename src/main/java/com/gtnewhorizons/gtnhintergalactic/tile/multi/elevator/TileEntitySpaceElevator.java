@@ -1,7 +1,12 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.ITALIC;
+import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.thing.gui.TecTechUITextures;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_infuser;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -61,18 +62,22 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_StructureUtility;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.MTEEnergyInfuser;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
  * Space Elevator multiblock used to start space projects for end game crafts
@@ -228,7 +233,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             .addElement(
                 'X',
                 classicHatches(CASING_INDEX_BASE, 1, IGBlocks.SpaceElevatorCasing, 0))
-            .addElement('H', GT_StructureUtility.ofFrame(Materials.Neutronium)) // Neutronium frame boxes
+            .addElement('H', GTStructureUtility.ofFrame(Materials.Neutronium)) // Neutronium frame boxes
             .addElement('F', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 2)) // Internal Structure
             .addElement(
                 'C',
@@ -242,7 +247,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             .addElement('D', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 0)) // Base Casing
             .addElement(
                 'I',
-                GT_HatchElementBuilder.<TileEntitySpaceElevator>builder()
+                HatchElementBuilder.<TileEntitySpaceElevator>builder()
                     .atLeast(ElevatorUtil.ProjectModuleElement.ProjectModule)
                     .casingIndex(CASING_INDEX_BASE)
                     .dot(2)
@@ -354,7 +359,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
      * @return Structure definition
      */
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -583,16 +588,16 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             }
             if (!aBaseMetaTileEntity.isAllowedToWork()) {
                 // if machine has stopped, stop chunkloading
-                GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
+                GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
                 isLoadedChunk = false;
             } else if (!isLoadedChunk) {
                 // load a 3x3 area when machine is running
-                GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
+                GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
                 int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
                 int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
-                        GT_ChunkManager.requestChunkLoad(
+                        GTChunkManager.requestChunkLoad(
                                 (TileEntity) aBaseMetaTileEntity,
                                 new ChunkCoordIntPair(getChunkX() + offX + i, getChunkZ() + offZ + j));
                     }
@@ -646,7 +651,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     @Override
     @SideOnly(Side.CLIENT)
     protected ResourceLocation getActivitySound() {
-        return GT_MetaTileEntity_EM_infuser.activitySound;
+        return MTEEnergyInfuser.activitySound;
     }
 
     // endregion
@@ -681,8 +686,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
      * @return Tooltip builder
      */
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.name"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc0"))
                 .addInfo(loreTooltip != null ? ITALIC + loreTooltip : "")
@@ -728,9 +733,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                    new TTRenderedExtendedFacingTexture(
+                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE) };
     }
@@ -791,7 +795,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
 
         screenElements
                 .widget(
-                        new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        new TextWidget(GTUtility.trans("138", "Incomplete Structure."))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 

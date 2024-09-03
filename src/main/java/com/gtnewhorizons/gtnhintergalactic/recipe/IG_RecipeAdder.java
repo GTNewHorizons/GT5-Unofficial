@@ -7,16 +7,16 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.GT_RecipeAdder;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.RecipeAdder;
 
 /**
  * GT recipe adder of GTNH-Intergalactic
  *
  * @author minecraft7771
  */
-public class IG_RecipeAdder extends GT_RecipeAdder {
+public class IG_RecipeAdder extends RecipeAdder {
 
     public static IG_RecipeAdder instance = new IG_RecipeAdder();
     public static final ItemStack[] nullItem = new ItemStack[0];
@@ -138,18 +138,18 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             return false;
         }
         if (recipeWeight <= 0) {
-            GT_Log.err.println("Weight of mining recipe for main material " + ores[0].toString() + " is 0");
+            GTLog.err.println("Weight of mining recipe for main material " + ores[0].toString() + " is 0");
         }
         if (aChances != null) {
             if (aChances.length < ores.length) {
                 return false;
             } else if (aChances.length > ores.length) {
-                GT_Log.err.println(
+                GTLog.err.println(
                         "Chances and outputs of mining recipe for main material " + ores[0].toString()
                                 + " have different length!");
             }
             if (Arrays.stream(aChances).sum() != 10000) {
-                GT_Log.err.println(
+                GTLog.err.println(
                         "Sum of chances in mining recipe for main material " + ores[0].toString()
                                 + " is not 100%! This will lead to no issue but might be unintentional");
             }
@@ -170,7 +170,7 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
         // Map ores to actual items with stack minSize 64
         ItemStack[] outputs = new ItemStack[ores.length];
         for (int i = 0; i < ores.length; i++) {
-            outputs[i] = GT_OreDictUnificator.get(orePrefixes, ores[i], 64);
+            outputs[i] = GTOreDictUnificator.get(orePrefixes, ores[i], 64);
         }
 
         IGRecipeMaps.spaceMiningRecipes.add(
@@ -202,19 +202,19 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             return false;
         }
         if (recipeWeight <= 0) {
-            GT_Log.err.println(
+            GTLog.err.println(
                     "Weight of mining recipe for main material " + aItemOutputs[0].getUnlocalizedName() + " is 0");
         }
         if (aChances != null) {
             if (aChances.length < aItemOutputs.length) {
                 return false;
             } else if (aChances.length > aItemOutputs.length) {
-                GT_Log.err.println(
+                GTLog.err.println(
                         "Chances and outputs of mining recipe for main material " + aItemOutputs[0].getUnlocalizedName()
                                 + " have different length!");
             }
             if (Arrays.stream(aChances).sum() != 10000) {
-                GT_Log.err.println(
+                GTLog.err.println(
                         "Sum of chances in mining recipe for main material " + aItemOutputs[0].getUnlocalizedName()
                                 + " is not 100%! This will lead to no issue but might be unintentional");
             }

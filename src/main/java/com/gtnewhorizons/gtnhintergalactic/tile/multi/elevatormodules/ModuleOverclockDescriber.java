@@ -5,9 +5,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -24,11 +24,11 @@ public class ModuleOverclockDescriber extends EUNoOverclockDescriber {
     @Nonnull
     @Override
     public String getTierString() {
-        return GT_Values.TIER_COLORS[tier] + "MK " + moduleTier + EnumChatFormatting.RESET;
+        return GTValues.TIER_COLORS[tier] + "MK " + moduleTier + EnumChatFormatting.RESET;
     }
 
     @Override
-    public boolean canHandle(GT_Recipe recipe) {
+    public boolean canHandle(GTRecipe recipe) {
         return super.canHandle(recipe) && this.moduleTier >= recipe.mSpecialValue;
     }
 }

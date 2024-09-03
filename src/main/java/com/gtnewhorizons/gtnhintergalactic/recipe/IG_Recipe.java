@@ -3,14 +3,14 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 /**
  * GT recipes of GTNH-Intergalactic. These include a needed space project optionally.
  *
  * @author minecraft7771
  */
-public class IG_Recipe extends GT_Recipe {
+public class IG_Recipe extends GTRecipe {
 
     /** Space project that is needed to be constructed to do this recipe */
     protected final String neededSpaceProject;

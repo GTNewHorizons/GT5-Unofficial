@@ -10,20 +10,20 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.interfaces.ISecondaryDescribable;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
+public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends TTMultiblockBase
         implements IConstructable, ISecondaryDescribable {
 
-    private static Map<Integer, GT_Multiblock_Tooltip_Builder> tooltips = new HashMap<>();
+    private static Map<Integer, MultiblockTooltipBuilder> tooltips = new HashMap<>();
 
     protected GT_MetaTileEntity_EnhancedMultiBlockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -49,7 +49,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
         return true;
     }
 
-    protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
+    protected abstract MultiblockTooltipBuilder createTooltip();
 
     @Override
     public String[] getDescription() {
@@ -69,9 +69,9 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
         return getTooltip().getStructureInformation();
     }
 
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+    protected MultiblockTooltipBuilder getTooltip() {
         int tId = getBaseMetaTileEntity().getMetaTileID();
-        GT_Multiblock_Tooltip_Builder tooltip = tooltips.get(tId);
+        MultiblockTooltipBuilder tooltip = tooltips.get(tId);
         if (tooltip == null) {
             tooltip = createTooltip();
             tooltips.put(tId, tooltip);
@@ -89,7 +89,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
     }
 
     @Override
-    public abstract IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM();
+    public abstract IStructureDefinition<? extends TTMultiblockBase> getStructure_EM();
 
     protected static String buildAddedBy(String... contributors) {
         StringBuilder addedByString = new StringBuilder(GCCoreUtil.translate("ig.structure.author") + " ");

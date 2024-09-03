@@ -1,6 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -19,8 +19,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
@@ -63,8 +63,8 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
      * @return Tooltip builder
      */
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc0"))
                 .addInfo(
@@ -121,7 +121,7 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (lastRecipe != recipe && recipe instanceof IG_Recipe igRecipe) {
                     String neededProject = igRecipe.getNeededSpaceProject();
                     String neededLocation = igRecipe.getNeededSpaceProjectLocation();
