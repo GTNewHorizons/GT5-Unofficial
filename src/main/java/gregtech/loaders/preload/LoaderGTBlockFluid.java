@@ -175,7 +175,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1000));
 
         Item tItem = (Item) GTUtility.callConstructor(
-            "gregtech.common.items.GT_SensorCard_Item",
+            "gregtech.common.items.ItemSensorCard",
             0,
             null,
             false,
@@ -185,7 +185,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 : tItem);
 
         Item advSensorCard = (Item) GTUtility
-            .callConstructor("gregtech.common.items.GT_AdvancedSensorCard_Item", 0, null, false);
+            .callConstructor("gregtech.common.items.ItemAdvancedSensorCard", 0, null, false);
         ItemList.NC_AdvancedSensorCard.set(
             advSensorCard == null
                 ? new GTGenericItem(
