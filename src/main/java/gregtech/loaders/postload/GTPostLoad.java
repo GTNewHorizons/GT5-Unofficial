@@ -108,7 +108,7 @@ public class GTPostLoad {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if (tData.fluid.amount <= 0) {
-                return;
+                continue;
             }
             // lava clay bucket is registered with empty container with 0 stack size
             ItemStack emptyContainer = tData.emptyContainer.copy();
