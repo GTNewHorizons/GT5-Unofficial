@@ -215,6 +215,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unalign
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.Superdense_ProtoHalkonite_Plate;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -1195,6 +1196,12 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
         ItemList.Phononic_Seed_Crystal
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
+
+        ItemList.Superdense_ProtoHalkonite_Plate.set(
+            addItem(
+                Superdense_ProtoHalkonite_Plate.ID,
+                "Superdense Proto-Halkonite Steel Plate",
+                "Proto-Halkonite Steel in its most dense form"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
