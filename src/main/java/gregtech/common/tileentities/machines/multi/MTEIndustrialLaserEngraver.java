@@ -255,7 +255,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
-            .addCasingInfoMin("Laser Containment Casing", 45, false)
+            .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addOtherStructurePart("Laser Resistant Plate", "x1")
             .addOtherStructurePart("Borosilicate Glass", "x3")
@@ -306,9 +306,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
-        if (mCasingAmount < 45) return false;
+        if (mCasingAmount < 35) return false;
         if (laserSource == null) return false;
-        if (renderer == null) return false;
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
         if (glassTier < VoltageIndex.UMV && laserSource.mTier > glassTier) return false;
 
