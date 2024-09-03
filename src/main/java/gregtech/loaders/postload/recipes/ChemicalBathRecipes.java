@@ -447,5 +447,23 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Creon, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
+            .eut(TierEU.RECIPE_UEV)
+            .noOptimize()
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Mellion, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
+            .eut(TierEU.RECIPE_UEV)
+            .noOptimize()
+            .addTo(chemicalBathRecipes);
     }
 }
