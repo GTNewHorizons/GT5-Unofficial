@@ -370,15 +370,12 @@ public class Godforge implements Runnable {
                 Materials.Arsenic,
                 Materials.Barium,
                 Materials.Beryllium,
-                Materials.Bismuth,
-                Materials.Boron,
                 Materials.Caesium,
                 Materials.Calcium,
                 Materials.Cadmium,
                 Materials.Carbon,
                 Materials.Cerium,
                 Materials.Chlorine,
-                Materials.Chrome,
                 Materials.Cobalt,
                 Materials.Copper,
                 Materials.Desh,
@@ -394,29 +391,22 @@ public class Godforge implements Runnable {
                 Materials.Holmium,
                 Materials.Hydrogen,
                 Materials.Indium,
-                Materials.Iridium,
                 Materials.Iron,
                 Materials.Lanthanum,
-                Materials.Lead,
                 Materials.Lithium,
                 Materials.Lutetium,
                 Materials.Magnesium,
                 Materials.Manganese,
                 Materials.MeteoricIron,
                 Materials.Molybdenum,
-                Materials.Naquadah,
                 Materials.Neodymium,
                 Materials.Nickel,
                 Materials.Niobium,
                 Materials.Nitrogen,
                 Materials.Oriharukon,
-                Materials.Osmium,
                 Materials.Oxygen,
                 Materials.Palladium,
                 Materials.Phosphorus,
-                Materials.Platinum,
-                Materials.Plutonium,
-                Materials.Plutonium241,
                 Materials.Potassium,
                 Materials.Praseodymium,
                 Materials.Promethium,
@@ -431,7 +421,6 @@ public class Godforge implements Runnable {
                 Materials.Tantalum,
                 Materials.Tellurium,
                 Materials.Terbium,
-                Materials.Thorium,
                 Materials.Thulium,
                 Materials.Tin,
                 Materials.Titanium,
@@ -454,15 +443,12 @@ public class Godforge implements Runnable {
                 6000 /* Arsenic */,
                 6000 /* Barium */,
                 6000 /* Beryllium */,
-                8000 /* Bismuth */,
-                8000 /* Boron */,
                 6000 /* Caesium */,
                 10000 /* Calcium */,
                 6000 /* Cadmium */,
                 6000 /* Carbon */,
                 6000 /* Cerium */,
                 6000 /* Chlorine */,
-                6000 /* Chrome */,
                 6000 /* Cobalt */,
                 6000 /* Copper */,
                 6000 /* Desh */,
@@ -478,29 +464,22 @@ public class Godforge implements Runnable {
                 6000 /* Holmium */,
                 10000 /* Hydrogen */,
                 6000 /* Indium */,
-                6000 /* Iridium */,
                 10000 /* Iron */,
                 6000 /* Lanthanum */,
-                500 /* Lead */,
                 6000 /* Lithium */,
                 6000 /* Lutetium */,
                 6000 /* Magnesium */,
                 6000 /* Manganese */,
                 6000 /* Meteoric Iron */,
                 6000 /* Molybdenum */,
-                6000 /* Naquadah */,
                 6000 /* Neodymium */,
                 10000 /* Nickel */,
                 10000 /* Niobium */,
                 10000 /* Nitrogen */,
                 6000 /* Oriharukon */,
-                6000 /* Osmium */,
                 8000 /* Oxygen */,
                 6000 /* Palladium */,
                 6000 /* Phosphorus */,
-                6000 /* Platinum */,
-                6000 /* Plutonium 239 */,
-                500 /* Plutonium 241 */,
                 6000 /* Potassium */,
                 6000 /* Praseodymium */,
                 2000 /* Promethium */,
@@ -515,7 +494,6 @@ public class Godforge implements Runnable {
                 6000 /* Tantalum */,
                 2000 /* Tellurium */,
                 1000 /* Terbium */,
-                500 /* Thorium */,
                 6000 /* Thulium */,
                 10000 /* Tin */,
                 10000 /* Titanium */,
@@ -537,20 +515,10 @@ public class Godforge implements Runnable {
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHENIUM.getTinyDust(1), 2000);
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHODIUM.getTinyDust(1), 6000);
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().IODINE.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getTinyDust(1), 8000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getTinyDust(1), 8000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.STANDALONE.FORCE.getTinyDust(1), 8000);
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().HAFNIUM.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().CALIFORNIUM.getTinyDust(1), 1000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.STANDALONE.RUNITE.getTinyDust(1), 8000);
 
-        exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().XENON.getFluid(), 1), 8000);
-        exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().KRYPTON.getFluid(), 1), 8000);
-        exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().NEON.getFluid(), 1), 8000);
-        // These are here because they cant be solidified
+        // This is here because it cant be solidified
         exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().CURIUM.getFluid(), 1), 10000);
-        exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getFluid(), 1), 800);
-        exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().FERMIUM.getFluid(), 1), 800);
         // Mercury is weird, it has neither dust nor gas, so it needs to be added separately
         exoticModulePlasmaFluidMap.put(Materials.Mercury.getFluid(1), 6000);
 
