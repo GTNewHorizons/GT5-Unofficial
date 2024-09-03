@@ -16,7 +16,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -55,7 +54,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LaserRenderingUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.render.TileEntityLaser;
@@ -88,10 +86,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             'g',
             BorosilicateGlass
                 .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement(
-            'r',
-            LaserRenderingUtil
-                .ofBlockAdder(MTEIndustrialLaserEngraver::laserRendererAdder, GregTechAPI.sLaserRender, 0))
+        .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
             buildHatchAdder(MTEIndustrialLaserEngraver.class).adder(MTEIndustrialLaserEngraver::addLaserSource)
@@ -132,19 +127,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 tierName = GTValues.VN[laserTier];
                 return true;
             }
-        }
-        return false;
-    }
-
-    private boolean laserRendererAdder(Block block, int meta, World world, int x, int y, int z) {
-        if (block != GregTechAPI.sLaserRender || world == null) {
-            return false;
-        }
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityLaser) {
-            renderer = (TileEntityLaser) te;
-            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
-            return true;
         }
         return false;
     }
@@ -305,15 +287,29 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         mCasingAmount++;
     }
 
+    private boolean findLaserRenderer(World w, int x, int y, int z) {
+        ForgeDirection opposite = getDirection().getOpposite();
+        x = x + opposite.offsetX;
+        y = y + opposite.offsetY;
+        z = z + opposite.offsetZ;
+        if (w.getTileEntity(x, y, z) instanceof TileEntityLaser laser) {
+            renderer = laser;
+            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mEnergyHatches.clear();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
         if (mCasingAmount < 45) return false;
         if (laserSource == null) return false;
         if (renderer == null) return false;
+        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
         if (glassTier < VoltageIndex.UMV && laserSource.mTier > glassTier) return false;
 
         return true;
