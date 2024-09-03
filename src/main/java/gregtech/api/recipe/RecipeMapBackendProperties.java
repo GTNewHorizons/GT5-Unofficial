@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.util.FieldsAreNonnullByDefault;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -44,18 +44,18 @@ public final class RecipeMapBackendProperties {
     /**
      * Changes how recipes are emitted by a particular recipe builder.
      */
-    public final Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter;
+    public final Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter;
 
     /**
      * Runs a custom hook on all recipes added <b>via builder</b>.
      */
     @Nullable
-    public final Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer;
+    public final Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer;
 
     RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive,
         boolean disableOptimize,
-        Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter,
-        @Nullable Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer) {
+        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter,
+        @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
         if (minItemInputs < 0 || minFluidInputs < 0) {
             throw new IllegalArgumentException("minItemInputs and minFluidInputs cannot be negative");
         }

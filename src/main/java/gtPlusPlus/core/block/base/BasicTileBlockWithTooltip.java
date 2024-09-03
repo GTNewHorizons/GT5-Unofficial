@@ -30,7 +30,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.api.objects.minecraft.SafeTexture;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -63,7 +63,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * Does this {@link Block} require special {@link ItemBlock} handling?
-     * 
+     *
      * @return The {@link Class} that will be used for this {@link Block}.
      */
     public Class<? extends ItemBlock> getItemBlockClass() {
@@ -72,28 +72,28 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * A lazy way to declare the unlocal name for the block, makes boilerplating easy.
-     * 
+     *
      * @return The internal name for this block.
      */
     public abstract String getUnlocalBlockName();
 
     /**
      * Lazy Boilerplating.
-     * 
+     *
      * @return Block Hardness.
      */
     protected abstract float initBlockHardness();
 
     /**
      * Lazy Boilerplating.
-     * 
+     *
      * @return Block Resistance.
      */
     protected abstract float initBlockResistance();
 
     /**
      * Lazy Boilerplating.
-     * 
+     *
      * @return The {@link CreativeTab} this Block is shown on.
      */
     protected abstract CreativeTabs initCreativeTab();
@@ -128,7 +128,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * The String used for texture pathing.
-     * 
+     *
      * @return Sanitized {@link String}, containing no spaces or illegal characters.
      */
     private String getTileEntityNameForTexturePathing() {
@@ -172,9 +172,9 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
         final String aPrefixTexPath = GTPlusPlus.ID + ":";
         // Default Path Name, this will make us look in the subdirectory for this Tile Entity.
-        final String aTexPathMid = "TileEntities" + CORE.SEPERATOR
+        final String aTexPathMid = "TileEntities" + GTPPCore.SEPERATOR
             + getTileEntityNameForTexturePathing()
-            + CORE.SEPERATOR;
+            + GTPPCore.SEPERATOR;
         // Construct a full path
         String aTexPathBuilt = aPrefixTexPath + aTexPathMid;
         // File Name Suffixes, without meta tags

@@ -3,9 +3,9 @@ package goodgenerator.api.recipe;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
-public class ExtremeHeatExchangerRecipe extends GT_Recipe {
+public class ExtremeHeatExchangerRecipe extends GTRecipe {
 
     public ExtremeHeatExchangerRecipe(FluidStack[] input, FluidStack[] output, int special) {
         super(false, null, null, null, null, input, output, 0, 0, special);

@@ -31,7 +31,7 @@ public class MaterialBuilder {
     private Dyes color = Dyes._NULL;
     private int extraData = 0;
     private List<MaterialStack> materialList = new ArrayList<>();
-    private List<TC_Aspects.TC_AspectStack> aspects = new ArrayList<>();
+    private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
     private boolean hasCorrespondingFluid = false;
     private boolean hasCorrespondingGas = false;
     private boolean canBeCracked = false;
@@ -242,7 +242,7 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setAspects(List<TC_Aspects.TC_AspectStack> aspects) {
+    public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
         this.aspects = aspects;
         return this;
     }

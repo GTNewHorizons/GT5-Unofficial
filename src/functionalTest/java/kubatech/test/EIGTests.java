@@ -20,7 +20,7 @@
 
 package kubatech.test;
 
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -48,16 +48,16 @@ import net.minecraftforge.common.DimensionManager;
 
 import org.junit.jupiter.api.Test;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.blocks.ItemMachines;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 import ic2.core.item.ItemCropSeed;
 import kubatech.api.eig.EIGDropTable;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 public class EIGTests {
@@ -190,7 +190,7 @@ public class EIGTests {
         return expected;
     }
 
-    EIGDropTable getEIGDrops(GT_MetaTileEntity_ExtremeIndustrialGreenhouse EIG, ItemStack stack) {
+    EIGDropTable getEIGDrops(MTEExtremeIndustrialGreenhouse EIG, ItemStack stack) {
         EIGDropTable generated = new EIGDropTable();
         EIGIC2Bucket bucket = new EIGIC2Bucket(stack, stack.stackSize, null, false);
         bucket.revalidate(EIG);
@@ -208,7 +208,7 @@ public class EIGTests {
         TileEntityCrop cropTile = (TileEntityCrop) myWorld.getTileEntity(10, 81, 0);
         ItemStack ccStack = ItemCropSeed.generateItemStackFromValues(cc, (byte) 10, (byte) 10, (byte) 10, (byte) 1);
 
-        GT_Item_Machines itemMachines = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
+        ItemMachines itemMachines = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
         itemMachines.placeBlockAt(
             new ItemStack(itemMachines, 1, EIG_CONTROLLER_METADATA),
             null,
@@ -222,8 +222,7 @@ public class EIGTests {
             0,
             EIG_CONTROLLER_METADATA);
         IGregTechTileEntity te = (IGregTechTileEntity) myWorld.getTileEntity(0, 81, 0);
-        GT_MetaTileEntity_ExtremeIndustrialGreenhouse EIG = (GT_MetaTileEntity_ExtremeIndustrialGreenhouse) te
-            .getMetaTileEntity();
+        MTEExtremeIndustrialGreenhouse EIG = (MTEExtremeIndustrialGreenhouse) te.getMetaTileEntity();
 
         // update stats of crop TE to those provided by the EIG
         cropTile.humidity = EIGIC2Bucket.getHumidity(EIG, false);
@@ -238,7 +237,7 @@ public class EIGTests {
         xyz[1] += te.getYCoord();
         xyz[2] += te.getZCoord();
 
-        myWorld.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTech_API.sBlockCasings4, 1, 0);
+        myWorld.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTechAPI.sBlockCasings4, 1, 0);
         myWorld.setBlock(xyz[0], xyz[1] - 1, xyz[2], Blocks.farmland, 0, 0);
 
         ItemStack stackToTest = null;

@@ -7,7 +7,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class SpecialBehaviourTooltipHandler {
 
@@ -22,7 +22,7 @@ public class SpecialBehaviourTooltipHandler {
         if (event != null) {
             if (event.itemStack != null) {
                 for (ItemStack aKey : mTooltipCache.keySet()) {
-                    if (GT_Utility.areStacksEqual(aKey, event.itemStack, false)) {
+                    if (GTUtility.areStacksEqual(aKey, event.itemStack, false)) {
                         String s = mTooltipCache.get(aKey);
                         if (s != null && s.length() > 0) {
                             event.toolTip.add(EnumChatFormatting.RED + s);

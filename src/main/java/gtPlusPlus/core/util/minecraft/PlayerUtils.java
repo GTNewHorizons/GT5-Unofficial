@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -41,7 +42,7 @@ public class PlayerUtils {
     }
 
     public static void messagePlayer(final EntityPlayer P, final String S) {
-        gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
+        GTUtility.sendChatToPlayer(P, S);
     }
 
     public static void messagePlayer(final EntityPlayer P, final IChatComponent S) {

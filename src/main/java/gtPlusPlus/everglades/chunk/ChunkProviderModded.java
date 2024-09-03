@@ -32,7 +32,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
 
 public class ChunkProviderModded implements IChunkProvider {
 
@@ -181,11 +181,11 @@ public class ChunkProviderModded implements IChunkProvider {
 
                             for (int k3 = 0; k3 < 4; ++k3) {
                                 if ((d15 += d16) > 0.0D) {
-                                    p_147424_3_[j3 += short1] = Dimension_Everglades.blockMainFiller;
+                                    p_147424_3_[j3 += short1] = DimensionEverglades.blockMainFiller;
                                 } else if (k2 * 8 + l2 < b0) {
                                     try {
-                                        p_147424_3_[j3 += short1] = Dimension_Everglades.blockFluidLakes; // River Fluid
-                                                                                                          // .
+                                        p_147424_3_[j3 += short1] = DimensionEverglades.blockFluidLakes; // River Fluid
+                                                                                                         // .
                                     } catch (Throwable t) {
                                         p_147424_3_[j3 += short1] = Blocks.water; // River Fluid Fallback
                                     }
@@ -446,8 +446,7 @@ public class ChunkProviderModded implements IChunkProvider {
             l1 = this.rand.nextInt(256);
             i2 = l + this.rand.nextInt(16) + 8;
             try {
-                (new WorldGenLakes(Dimension_Everglades.blockFluidLakes))
-                    .generate(this.worldObj, this.rand, k1, l1, i2);
+                (new WorldGenLakes(DimensionEverglades.blockFluidLakes)).generate(this.worldObj, this.rand, k1, l1, i2);
             } catch (NullPointerException n) {
                 n.getStackTrace();
                 (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);

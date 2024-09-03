@@ -15,4 +15,4 @@ jobs:
       - name: Detect forbidden getModItem calls
         shell: bash
         run: |
-          ! grep -E -r 'getModItem\(("(bartworks|galacticgreg|ggfab|GoodGenerator|gregtech|gtnhlanth|miscutils|kekztech|kubatech|tectech|gtneioreplugin)"|(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID)' src/main/java
+          ! grep -E -r 'getModItem\(("(bartworks|galacticgreg|ggfab|GoodGenerator|gregtech|gtnhlanth|miscutils|kekztech|kubatech|tectech|gtneioreplugin)"|.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID)' src/main/java

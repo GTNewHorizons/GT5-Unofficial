@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class ResultInsufficientStartupPower implements CheckRecipeResult {
 
@@ -37,7 +37,7 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_startup_power",
-                GT_Utility.formatNumbers(required)));
+                GTUtility.formatNumbers(required)));
     }
 
     @Override

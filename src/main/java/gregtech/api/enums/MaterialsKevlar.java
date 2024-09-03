@@ -21,8 +21,8 @@ public class MaterialsKevlar {
                 new MaterialStack(Materials.Oxygen, 2))
             .setAspects(
                 Arrays.asList(
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1)))
+                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
             .constructMaterial(); // C15H10N2O2
     public static Materials DiaminodiphenylmethanMixture = new MaterialBuilder(
         795,
@@ -39,8 +39,8 @@ public class MaterialsKevlar {
                 new MaterialStack(Materials.Nitrogen, 2))
             .setAspects(
                 Arrays.asList(
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1)))
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
             .constructMaterial(); // C13H14N2
     public static Materials DiphenylmethaneDiisocyanateMixture = new MaterialBuilder(
         794,
@@ -58,8 +58,8 @@ public class MaterialsKevlar {
                 new MaterialStack(Materials.Oxygen, 2))
             .setAspects(
                 Arrays.asList(
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1)))
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
             .constructMaterial(); // C15H10N2O2
     public static Materials Butyraldehyde = new MaterialBuilder(793, TextureSet.SET_FLUID, "Butyraldehyde")
         .setName("Butyraldehyde")
@@ -74,8 +74,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 1))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
         .constructMaterial(); // C4H8O
     public static Materials Isobutyraldehyde = new MaterialBuilder(792, TextureSet.SET_FLUID, "Isobutyraldehyde")
         .setName("Isobutyraldehyde")
@@ -91,8 +91,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 1))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
         .constructMaterial(); // C4H8O
     public static Materials NickelTetracarbonyl = new MaterialBuilder(791, TextureSet.SET_FLUID, "Nickel Tetracarbonyl")
         .setName("NickelTetracarbonyl")
@@ -107,8 +107,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 4))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1)))
         .constructMaterial(); // C4NiO4
     public static Materials KevlarCatalyst = new MaterialBuilder(790, TextureSet.SET_DULL, "Polyurethane Catalyst A")
         .setName("PolyurethaneCatalystADust")
@@ -118,8 +118,8 @@ public class MaterialsKevlar {
         .setMeltingPoint(300)
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)))
         .constructMaterial();
     public static Materials EthyleneOxide = new MaterialBuilder(789, TextureSet.SET_FLUID, "Ethylene Oxide")
         .setName("EthyleneOxide")
@@ -134,8 +134,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 1))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
         .constructMaterial(); // C2H4O
     public static Materials SiliconOil = new MaterialBuilder(788, TextureSet.SET_FLUID, "Silicon Oil")
         .setName("SiliconOil")
@@ -146,8 +146,8 @@ public class MaterialsKevlar {
         .setMeltingPoint(473)
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)))
         .constructMaterial();
     public static Materials Ethyleneglycol = new MaterialBuilder(787, TextureSet.SET_FLUID, "Ethylene Glycol")
         .setName("EthyleneGlycol")
@@ -162,8 +162,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 2))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
         .constructMaterial(); // C2H6O2
     public static Materials Acetaldehyde = new MaterialBuilder(786, TextureSet.SET_FLUID, "Acetaldehyde")
         .setName("Acetaldehyde")
@@ -178,8 +178,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 1))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
         .constructMaterial(); // C2H4O
     public static Materials Pentaerythritol = new MaterialBuilder(785, TextureSet.SET_DULL, "Pentaerythritol")
         .setName("Pentaerythritol")
@@ -193,8 +193,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 4))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)))
         .constructMaterial(); // C5H12O4
     public static Materials PolyurethaneResin = new MaterialBuilder(784, TextureSet.SET_FLUID, "Polyurethane Resin")
         .setName("PolyurethaneResin")
@@ -219,8 +219,8 @@ public class MaterialsKevlar {
                 new MaterialStack(Materials.Oxygen, 1))
             .setAspects(
                 Arrays.asList(
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1)))
+                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
             .constructMaterial(); // C5H9NO
     public static Materials TerephthaloylChloride = new MaterialBuilder(
         782,
@@ -237,8 +237,8 @@ public class MaterialsKevlar {
                 new MaterialStack(Materials.Oxygen, 2))
             .setAspects(
                 Arrays.asList(
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1)))
+                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
             .constructMaterial(); // C8H4Cl2O2
     public static Materials Acetylene = new MaterialBuilder(781, TextureSet.SET_FLUID, "Acetylene").setName("Acetylene")
         .addCell()
@@ -274,8 +274,8 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Oxygen, 2))
         .setAspects(
             Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1)))
+                new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
         .constructMaterial(); // C6H6N2O2
     public static Materials ParaPhenylenediamine = new MaterialBuilder(
         779,
@@ -291,8 +291,8 @@ public class MaterialsKevlar {
                 new MaterialStack(Materials.Nitrogen, 2))
             .setAspects(
                 Arrays.asList(
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1),
-                    new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1)))
+                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
             .constructMaterial(); // C6H6N2
     public static Materials Methylamine = new MaterialBuilder(778, TextureSet.SET_FLUID, "Methylamine")
         .setName("Methylamine")

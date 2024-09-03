@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import gregtech.api.net.GT_Packet_MultiTileEntity;
+import gregtech.api.net.GTPacketMultiTileEntity;
 
 public interface SyncedMultiTileEntity {
 
@@ -19,10 +19,10 @@ public interface SyncedMultiTileEntity {
     /**
      * Should always collect all the data that the controller or casing has and should send
      * Called by {@link #sendFullPacket()}
-     * 
+     *
      * @param packet The packet which will be sent
      */
-    void getFullPacketData(GT_Packet_MultiTileEntity packet);
+    void getFullPacketData(GTPacketMultiTileEntity packet);
 
     /**
      * Will send a packet at a certain period of time, defined by {@link #getTimedPacketPeriod()}, to all players around
@@ -35,10 +35,10 @@ public interface SyncedMultiTileEntity {
      * Collects all the data that should be sent out at a certain period of time defined by
      * {@link #getTimedPacketPeriod()}
      * Called by {@link #sendTimedPacket()}
-     * 
+     *
      * @param packet The packet which will be sent
      */
-    void getTimedPacketData(GT_Packet_MultiTileEntity packet);
+    void getTimedPacketData(GTPacketMultiTileEntity packet);
 
     /**
      * Defines the period of time at which a timed packet should be sent out. Default 20 ticks
@@ -56,8 +56,8 @@ public interface SyncedMultiTileEntity {
     /**
      * Collects all the data that is needed to be send every single tick
      * Called by {@link #sendGraphicPacket()}
-     * 
+     *
      * @param packet The packet which will be sent
      */
-    void getGraphicPacketData(GT_Packet_MultiTileEntity packet);
+    void getGraphicPacketData(GTPacketMultiTileEntity packet);
 }

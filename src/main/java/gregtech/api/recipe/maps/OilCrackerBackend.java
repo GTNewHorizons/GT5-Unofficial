@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -23,7 +23,7 @@ public class OilCrackerBackend extends RecipeMapBackend {
     }
 
     @Override
-    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+    public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
         if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 1 && recipe.mFluidInputs[1] != null) {
             validCatalystFluidNames.add(

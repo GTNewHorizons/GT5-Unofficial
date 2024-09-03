@@ -12,8 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
-import gtPlusPlus.core.inventories.Inventory_VolumetricFlaskSetter;
+import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
+import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
@@ -21,7 +21,7 @@ import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISidedInventory {
 
     private int tickCount = 0;
-    private final Inventory_VolumetricFlaskSetter inventoryContents;
+    private final InventoryVolumetricFlaskSetter inventoryContents;
     private String customName;
     public int locationX;
     public int locationY;
@@ -30,7 +30,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     private int aCustomValue = 1000;
 
     public TileEntityVolumetricFlaskSetter() {
-        this.inventoryContents = new Inventory_VolumetricFlaskSetter();
+        this.inventoryContents = new InventoryVolumetricFlaskSetter();
         this.setTileLocation();
     }
 
@@ -62,7 +62,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     public final boolean hasFlask() {
         for (int i = 0; i < this.getInventory()
             .getInventory().length - 1; i++) {
-            if (i == Container_VolumetricFlaskSetter.SLOT_OUTPUT) {
+            if (i == ContainerVolumetricFlaskSetter.SLOT_OUTPUT) {
                 continue;
             }
             if (this.getInventory()
@@ -73,7 +73,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         return false;
     }
 
-    public Inventory_VolumetricFlaskSetter getInventory() {
+    public InventoryVolumetricFlaskSetter getInventory() {
         return this.inventoryContents;
     }
 
@@ -124,9 +124,9 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
         // Check if there is output in slot.
         Boolean hasOutput = false;
-        if (aInputs[Container_VolumetricFlaskSetter.SLOT_OUTPUT] != null) {
+        if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT] != null) {
             hasOutput = true;
-            if (aInputs[Container_VolumetricFlaskSetter.SLOT_OUTPUT].stackSize >= 16) {
+            if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT].stackSize >= 16) {
                 return false;
             }
         }
@@ -145,7 +145,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 log("Skipping Custom slot as value <= 0");
                 continue;
             }
-            if (e == Container_VolumetricFlaskSetter.SLOT_OUTPUT) {
+            if (e == ContainerVolumetricFlaskSetter.SLOT_OUTPUT) {
                 continue;
             }
 
@@ -163,7 +163,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 }
                 // Existing Output
                 else {
-                    ItemStack f = aInputs[Container_VolumetricFlaskSetter.SLOT_OUTPUT];
+                    ItemStack f = aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT];
                     FluidStack aFluidInCheckedSlot = VolumetricFlaskHelper.getFlaskFluid(f);
                     int aTypeInCheckedSlot = getFlaskType(f);
                     // Check that the Circuit in the Output slot is not null and the same type as the circuit input.
@@ -214,7 +214,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                             VolumetricFlaskHelper.setFluid(aOutput, aOutputFluid);
                         }
                         this.setInventorySlotContents(e, aInputStack);
-                        this.setInventorySlotContents(Container_VolumetricFlaskSetter.SLOT_OUTPUT, aOutput);
+                        this.setInventorySlotContents(ContainerVolumetricFlaskSetter.SLOT_OUTPUT, aOutput);
                         return true;
                     }
                 }
@@ -359,7 +359,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     @Override
     public boolean canExtractItem(final int aSlot, final ItemStack p_102008_2_, final int p_102008_3_) {
-        return aSlot == Container_VolumetricFlaskSetter.SLOT_OUTPUT;
+        return aSlot == ContainerVolumetricFlaskSetter.SLOT_OUTPUT;
     }
 
     public String getCustomName() {

@@ -17,13 +17,13 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -41,7 +41,7 @@ public class AchievementHandler {
     public AchievementHandler() {
 
         Logger.INFO("Initializing GT++ achievements");
-        GT_Log.out.println("Initializing GT++ achievements");
+        GTLog.out.println("Initializing GT++ achievements");
 
         // register first
         this.registerAchievement(
@@ -74,11 +74,17 @@ public class AchievementHandler {
             true);
 
         // Material Advancement
-        this.registerAchievement("dust.potin", 0, 2, ALLOY.POTIN.getDust(1), aBaseAchievementName, false);
-        this.registerAchievement("dust.eglin", 0, 4, ALLOY.EGLIN_STEEL.getDust(1), "dust.potin", false);
-        this.registerAchievement("dust.staballoy", 0, 6, ALLOY.STABALLOY.getDust(1), "dust.eglin", false);
-        this.registerAchievement("dust.quantum", 0, 8, ALLOY.QUANTUM.getDust(1), "dust.staballoy", true);
-        this.registerAchievement("dust.hypogen", 0, 10, ELEMENT.STANDALONE.HYPOGEN.getDust(1), "dust.quantum", true);
+        this.registerAchievement("dust.potin", 0, 2, MaterialsAlloy.POTIN.getDust(1), aBaseAchievementName, false);
+        this.registerAchievement("dust.eglin", 0, 4, MaterialsAlloy.EGLIN_STEEL.getDust(1), "dust.potin", false);
+        this.registerAchievement("dust.staballoy", 0, 6, MaterialsAlloy.STABALLOY.getDust(1), "dust.eglin", false);
+        this.registerAchievement("dust.quantum", 0, 8, MaterialsAlloy.QUANTUM.getDust(1), "dust.staballoy", true);
+        this.registerAchievement(
+            "dust.hypogen",
+            0,
+            10,
+            MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
+            "dust.quantum",
+            true);
 
         // Blocks
         this.registerAchievement(
@@ -253,9 +259,9 @@ public class AchievementHandler {
         }
 
         achievement.registerStat();
-        if (CORE.DEVENV) {
-            GT_Log.out.println("achievement." + textId + "=");
-            GT_Log.out.println("achievement." + textId + ".desc=");
+        if (GTPPCore.DEVENV) {
+            GTLog.out.println("achievement." + textId + "=");
+            GTLog.out.println("achievement." + textId + ".desc=");
         }
 
         this.achievementList.put(textId, achievement);
@@ -275,7 +281,7 @@ public class AchievementHandler {
     /**
      * A generic handler that will give an achievement for an item. Useful to only write this once, then call it from
      * all handlers.
-     * 
+     *
      * @param aStack  - The Itemstack to check for achievements.
      * @param aPlayer - The player to unlock for.
      */

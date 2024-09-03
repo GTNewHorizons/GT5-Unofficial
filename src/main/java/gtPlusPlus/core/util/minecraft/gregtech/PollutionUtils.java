@@ -6,16 +6,16 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.common.GT_Pollution;
+import gregtech.common.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
-import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -24,19 +24,19 @@ public class PollutionUtils {
     public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<>();
 
     public static boolean isPollutionEnabled() {
-        return GT_Mod.gregtechproxy.mPollution;
+        return GTMod.gregtechproxy.mPollution;
     }
 
     public static boolean addPollution(IGregTechTileEntity te, int pollutionValue) {
-        if (GT_Mod.gregtechproxy.mPollution) {
-            GT_Pollution.addPollution(te, pollutionValue);
+        if (GTMod.gregtechproxy.mPollution) {
+            Pollution.addPollution(te, pollutionValue);
             return true;
         }
         return false;
     }
 
     public static void addPollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
-        if (GT_Mod.gregtechproxy.mPollution) {
+        if (GTMod.gregtechproxy.mPollution) {
             Chunk c = aTileOfSomeSort.getWorld()
                 .getChunkFromBlockCoords(aTileOfSomeSort.getXCoord(), aTileOfSomeSort.getZCoord());
             addPollution(c, pollutionValue);
@@ -44,8 +44,8 @@ public class PollutionUtils {
     }
 
     public static void addPollution(Chunk aChunk, int pollutionValue) {
-        if (GT_Mod.gregtechproxy.mPollution) {
-            GT_Pollution.addPollution(aChunk, pollutionValue);
+        if (GTMod.gregtechproxy.mPollution) {
+            Pollution.addPollution(aChunk, pollutionValue);
         }
     }
 
@@ -74,7 +74,7 @@ public class PollutionUtils {
     }
 
     public static void nullifyPollution(Chunk aChunk) {
-        if (GT_Mod.gregtechproxy.mPollution) {
+        if (GTMod.gregtechproxy.mPollution) {
             if (aChunk == null) {
                 return;
             }
@@ -86,11 +86,11 @@ public class PollutionUtils {
     }
 
     public static int getPollution(IGregTechTileEntity te) {
-        return GT_Pollution.getPollution(te);
+        return Pollution.getPollution(te);
     }
 
     public static int getPollution(Chunk te) {
-        return GT_Pollution.getPollution(te);
+        return Pollution.getPollution(te);
     }
 
     public static void setPollutionFluids() {
@@ -103,33 +103,33 @@ public class PollutionUtils {
                 if (CD != null) {
                     Logger.INFO("[PollutionCompat] Found carbon dioxide fluid, registering it.");
                     PollutionUtils.mPollutionFluidStacks.put(CD);
-                    MISC_MATERIALS.CARBON_DIOXIDE.registerComponentForMaterial(CD);
+                    MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(CD);
                     ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonDioxide", 1);
                     if (ItemUtils.checkForInvalidItems(cellCD)) {
                         Logger.INFO("[PollutionCompat] Found carbon dioxide cell, registering component.");
-                        MISC_MATERIALS.CARBON_DIOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
+                        MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
                     } else {
                         Logger.INFO("[PollutionCompat] Did not find carbon dioxide cell, registering new component.");
-                        new BaseItemCell(MISC_MATERIALS.CARBON_DIOXIDE);
+                        new BaseItemCell(MaterialMisc.CARBON_DIOXIDE);
                     }
                 } else {
-                    MaterialGenerator.generate(MISC_MATERIALS.CARBON_DIOXIDE, false, false);
+                    MaterialGenerator.generate(MaterialMisc.CARBON_DIOXIDE, false, false);
                 }
 
                 if (CM != null) {
                     Logger.INFO("[PollutionCompat] Found carbon monoxide fluid, registering it.");
                     PollutionUtils.mPollutionFluidStacks.put(CM);
-                    MISC_MATERIALS.CARBON_MONOXIDE.registerComponentForMaterial(CM);
+                    MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(CM);
                     ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonMonoxide", 1);
                     if (ItemUtils.checkForInvalidItems(cellCD)) {
                         Logger.INFO("[PollutionCompat] Found carbon monoxide cell, registering component.");
-                        MISC_MATERIALS.CARBON_MONOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
+                        MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
                     } else {
                         Logger.INFO("[PollutionCompat] Did not find carbon monoxide cell, registering new component.");
-                        new BaseItemCell(MISC_MATERIALS.CARBON_MONOXIDE);
+                        new BaseItemCell(MaterialMisc.CARBON_MONOXIDE);
                     }
                 } else {
-                    MaterialGenerator.generate(MISC_MATERIALS.CARBON_MONOXIDE, false, false);
+                    MaterialGenerator.generate(MaterialMisc.CARBON_MONOXIDE, false, false);
                 }
 
                 if (SD != null) {

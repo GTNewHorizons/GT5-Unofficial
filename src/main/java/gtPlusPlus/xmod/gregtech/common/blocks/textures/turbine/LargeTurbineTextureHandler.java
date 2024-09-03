@@ -98,7 +98,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings;
 
 public class LargeTurbineTextureHandler {
@@ -206,7 +206,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[0];
                     }
@@ -217,7 +217,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[3];
                     }
@@ -228,7 +228,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[6];
                     }
@@ -238,7 +238,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[1];
                     }
@@ -248,7 +248,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[7];
                     }
@@ -259,7 +259,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[8];
                     }
@@ -270,7 +270,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[5];
                     }
@@ -281,7 +281,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[2];
                     }
@@ -295,7 +295,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[0];
                     }
@@ -306,7 +306,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[3];
                     }
@@ -317,7 +317,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[6];
                     }
@@ -327,7 +327,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[1];
                     }
@@ -337,7 +337,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[7];
                     }
@@ -348,7 +348,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[8];
                     }
@@ -359,7 +359,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[5];
                     }
@@ -370,7 +370,7 @@ public class LargeTurbineTextureHandler {
                     && ((tTileEntity instanceof IGregTechTileEntity))
                     && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == side)
                     && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
-                    && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
+                    && ((tMetaTileEntity instanceof MTEHatchTurbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
                         return mGetCurrentTextureSet_ACTIVE[2];
                     }
@@ -388,8 +388,8 @@ public class LargeTurbineTextureHandler {
             aTile = (IGregTechTileEntity) tTileEntity;
             if (aTile != null) {
                 final IMetaTileEntity aMetaTileEntity = aTile.getMetaTileEntity();
-                if (aMetaTileEntity != null && aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine) {
-                    aVal = ((GT_MetaTileEntity_Hatch_Turbine) aMetaTileEntity).getBaseMetaTileEntity()
+                if (aMetaTileEntity != null && aMetaTileEntity instanceof MTEHatchTurbine) {
+                    aVal = ((MTEHatchTurbine) aMetaTileEntity).getBaseMetaTileEntity()
                         .isActive();
                     // Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
                 }
@@ -398,11 +398,11 @@ public class LargeTurbineTextureHandler {
         return aVal;
     }
 
-    public static GT_MetaTileEntity_Hatch_Turbine isTurbineHatch(final IGregTechTileEntity aTileEntity) {
+    public static MTEHatchTurbine isTurbineHatch(final IGregTechTileEntity aTileEntity) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity != null && aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine) {
-                return (GT_MetaTileEntity_Hatch_Turbine) aMetaTileEntity;
+            if (aMetaTileEntity != null && aMetaTileEntity instanceof MTEHatchTurbine) {
+                return (MTEHatchTurbine) aMetaTileEntity;
             }
         }
         return null;

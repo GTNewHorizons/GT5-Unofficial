@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
 import gtPlusPlus.xmod.bop.world.features.trees.WorldGenPineTree;
 
@@ -44,7 +44,7 @@ public class SaplingPineTree extends SaplingBase {
         Object obj = new WorldGenPineTree();
         if (obj != null) {
             world.setBlockToAir(x, y, z);
-            if (!((WorldGenerator) obj).generate(world, CORE.RANDOM, x, y, z)) {
+            if (!((WorldGenerator) obj).generate(world, GTPPCore.RANDOM, x, y, z)) {
                 world.setBlock(x, y, z, this, 0, 2);
             }
         }

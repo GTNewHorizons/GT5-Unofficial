@@ -25,13 +25,13 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.inventories.Inventory_DecayablesChest;
+import gtPlusPlus.core.inventories.InventoryDecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory, IGuiHolder {
 
-    private final Inventory_DecayablesChest inventoryContents;
+    private final InventoryDecayablesChest inventoryContents;
 
     /** Determines if the check for adjacent chests has taken place. */
     public boolean adjacentChestChecked;
@@ -57,10 +57,10 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     private int tickCount = 0;
 
     public TileEntityDecayablesChest() {
-        this.inventoryContents = new Inventory_DecayablesChest();
+        this.inventoryContents = new InventoryDecayablesChest();
     }
 
-    public Inventory_DecayablesChest getInventory() {
+    public InventoryDecayablesChest getInventory() {
         return this.inventoryContents;
     }
 

@@ -1,6 +1,6 @@
 package gregtech.nei;
 
-import static gregtech.api.util.GT_Utility.isStringInvalid;
+import static gregtech.api.util.GTUtility.isStringInvalid;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import net.minecraft.client.Minecraft;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.FieldsAreNonnullByDefault;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OverclockCalculator;
 
 /**
  * Holds info used for drawing descriptions on NEI.
@@ -27,7 +27,7 @@ public class RecipeDisplayInfo {
     /**
      * Recipe to show description.
      */
-    public final GT_Recipe recipe;
+    public final GTRecipe recipe;
 
     /**
      * RecipeMap the recipe belongs to.
@@ -43,7 +43,7 @@ public class RecipeDisplayInfo {
     /**
      * Pre-built overclock calculator, used for drawing OC information. Do not calculate it again.
      */
-    public final GT_OverclockCalculator calculator;
+    public final OverclockCalculator calculator;
 
     /**
      * Current Y position for drawing description.
@@ -52,8 +52,8 @@ public class RecipeDisplayInfo {
 
     private final int neiTextColorOverride;
 
-    RecipeDisplayInfo(GT_Recipe recipe, RecipeMap<?> recipeMap, OverclockDescriber overclockDescriber,
-        GT_OverclockCalculator calculator, int descriptionYOffset, int neiTextColorOverride) {
+    RecipeDisplayInfo(GTRecipe recipe, RecipeMap<?> recipeMap, OverclockDescriber overclockDescriber,
+        OverclockCalculator calculator, int descriptionYOffset, int neiTextColorOverride) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.overclockDescriber = overclockDescriber;

@@ -1,15 +1,15 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class AlloySmelterRecipes implements Runnable {
 
@@ -58,24 +58,22 @@ public class AlloySmelterRecipes implements Runnable {
     @Override
     public void run() {
         for (MaterialStack[] materials : mAlloySmelterList) {
-            ItemStack dust1 = GT_OreDictUnificator.get(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack dust2 = GT_OreDictUnificator.get(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack ingot1 = GT_OreDictUnificator
-                .get(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack ingot2 = GT_OreDictUnificator
-                .get(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack outputIngot = GT_OreDictUnificator
+            ItemStack dust1 = GTOreDictUnificator.get(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
+            ItemStack dust2 = GTOreDictUnificator.get(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
+            ItemStack ingot1 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
+            ItemStack ingot2 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
+            ItemStack outputIngot = GTOreDictUnificator
                 .get(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
-            if (outputIngot != GT_Values.NI) {
+            if (outputIngot != GTValues.NI) {
                 if (ingot1 != null) {
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(ingot1, dust2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
                         .eut(16)
                         .addTo(alloySmelterRecipes);
                     if (ingot2 != null) {
-                        GT_Values.RA.stdBuilder()
+                        GTValues.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
                             .duration((int) materials[2].mAmount * 50)
@@ -85,7 +83,7 @@ public class AlloySmelterRecipes implements Runnable {
                 }
 
                 if (ingot2 != null) {
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(dust1, ingot2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
@@ -93,7 +91,7 @@ public class AlloySmelterRecipes implements Runnable {
                         .addTo(alloySmelterRecipes);
                 }
 
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(dust1, dust2)
                     .itemOutputs(outputIngot)
                     .duration((int) materials[2].mAmount * 50)
@@ -104,11 +102,11 @@ public class AlloySmelterRecipes implements Runnable {
         }
 
         // We use rubber
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);

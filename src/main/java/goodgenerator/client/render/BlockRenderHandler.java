@@ -1,6 +1,6 @@
 package goodgenerator.client.render;
 
-import static gregtech.common.render.GT_Renderer_Block.*;
+import static gregtech.common.render.GTRendererBlock.*;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 
@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import goodgenerator.blocks.regularBlock.ITextureBlock;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 
 public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
 
@@ -59,7 +59,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
+        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
         if (aBlock instanceof ITextureBlock) {
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);

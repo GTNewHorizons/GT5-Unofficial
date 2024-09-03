@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.RTG;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTERTGenerator;
 
 public class GregtechRTG {
 
@@ -15,10 +15,7 @@ public class GregtechRTG {
 
     private static void run1() {
         GregtechItemList.RTG.set(
-            new GregtechMetaTileEntity_RTG(
-                RTG.ID,
-                "basicgenerator.rtg.tier.01",
-                "Radioisotope Thermoelectric Generator",
-                3).getStackForm(1L));
+            new MTERTGenerator(RTG.ID, "basicgenerator.rtg.tier.01", "Radioisotope Thermoelectric Generator", 3)
+                .getStackForm(1L));
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.item.wearable.armour.tinfoil.ArmourTinFoilHat;
+import gtPlusPlus.core.item.wearable.armour.tinfoil.ItemArmourTinFoilHat;
 
 public class ArmourLoader {
 
@@ -32,7 +32,7 @@ public class ArmourLoader {
     private static void glassArmour() {}
 
     private static void tinfoilArmour() {
-        TinFoilHat = new ArmourTinFoilHat().setUnlocalizedName("itemHatTinFoil");
+        TinFoilHat = new ItemArmourTinFoilHat().setUnlocalizedName("itemHatTinFoil");
         GameRegistry.registerItem(TinFoilHat, "itemHatTinFoil", GTPlusPlus.ID);
     }
 }

@@ -14,7 +14,7 @@ import net.minecraft.util.StatCollector;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.materials.DustDecayable;
@@ -65,7 +65,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             if (recipe.isValid()) {
                 final ItemStack input = recipe.mInput.copy();
                 final ItemStack output = recipe.mOutput.copy();
-                if (!GT_Utility.areStacksEqual(result, output, true)) {
+                if (!GTUtility.areStacksEqual(result, output, true)) {
                     continue;
                 }
                 // Logger.INFO("Showing Usage result for "+ItemUtils.getItemName(result));
@@ -104,7 +104,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             if (recipe.isValid()) {
                 final ItemStack input = recipe.mInput.copy();
                 final ItemStack output = recipe.mOutput.copy();
-                if (!GT_Utility.areStacksEqual(ingredient, input, true)) {
+                if (!GTUtility.areStacksEqual(ingredient, input, true)) {
                     continue;
                 }
                 // Logger.INFO("Showing up Usage results for "+ItemUtils.getItemName(ingredient));
@@ -251,8 +251,8 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
                         if (p.time == this.time) {
                             ItemStack aInput = p.input.item;
                             ItemStack aOutput = p.output.item;
-                            if (GT_Utility.areStacksEqual(aInput, this.input.item, true)) {
-                                if (GT_Utility.areStacksEqual(aOutput, this.output.item, true)) {
+                            if (GTUtility.areStacksEqual(aInput, this.input.item, true)) {
+                                if (GTUtility.areStacksEqual(aOutput, this.output.item, true)) {
                                     return true;
                                 }
                             }

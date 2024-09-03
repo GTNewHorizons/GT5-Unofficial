@@ -13,10 +13,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import appeng.api.AEApi;
 import appeng.api.storage.data.IAEFluidStack;
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class StackUtils {
 
@@ -32,11 +32,11 @@ public class StackUtils {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         if (totalItems >= 64) {
             for (int i = 0; i < totalItems / 64; i++) {
-                stacks.add(GT_Utility.copyAmount(64, stack));
+                stacks.add(GTUtility.copyAmount(64, stack));
             }
         }
         if (totalItems % 64 > 0) {
-            stacks.add(GT_Utility.copyAmount(totalItems % 64, stack));
+            stacks.add(GTUtility.copyAmount(totalItems % 64, stack));
         }
         return stacks;
     }
@@ -51,13 +51,13 @@ public class StackUtils {
             int newSize = i.stackSize;
             for (int j = index + 1; j < stacks.size(); j++) {
                 ItemStack is2 = stacks.get(j);
-                if (GT_Utility.areStacksEqual(i, is2)) {
+                if (GTUtility.areStacksEqual(i, is2)) {
                     newSize += is2.stackSize;
                     stacks.remove(j);
                     j--;
                 }
             }
-            output.add(GT_Utility.copyAmountUnsafe(newSize, i));
+            output.add(GTUtility.copyAmountUnsafe(newSize, i));
         }
         return output;
     }
@@ -70,11 +70,11 @@ public class StackUtils {
         HashMap<ItemStack, Integer> totals = new HashMap<>();
         itemLoop: for (ItemStack item : items) {
             int t = items.stream()
-                .filter(i2 -> GT_Utility.areStacksEqual(item, i2))
+                .filter(i2 -> GTUtility.areStacksEqual(item, i2))
                 .mapToInt(i -> i.stackSize)
                 .sum();
-            for (ItemStack i2 : totals.keySet()) if (GT_Utility.areStacksEqual(item, i2)) continue itemLoop;
-            totals.put(GT_Utility.copyAmount(1, item), t);
+            for (ItemStack i2 : totals.keySet()) if (GTUtility.areStacksEqual(item, i2)) continue itemLoop;
+            totals.put(GTUtility.copyAmount(1, item), t);
         }
         return totals;
     }
@@ -96,27 +96,27 @@ public class StackUtils {
             case 2: // MV
                 return Materials.RoseGold.getMolten(aAmount);
             case 3: // HV
-                return MyMaterial.zircaloy4.getMolten(aAmount);
+                return GGMaterial.zircaloy4.getMolten(aAmount);
             case 4: // EV
-                return MyMaterial.incoloy903.getMolten(aAmount);
+                return GGMaterial.incoloy903.getMolten(aAmount);
             case 5: // IV
-                return MyMaterial.titaniumBetaC.getMolten(aAmount);
+                return GGMaterial.titaniumBetaC.getMolten(aAmount);
             case 6: // LuV
-                return MyMaterial.artheriumSn.getMolten(aAmount);
+                return GGMaterial.artheriumSn.getMolten(aAmount);
             case 7: // ZPM
-                return MyMaterial.dalisenite.getMolten(aAmount);
+                return GGMaterial.dalisenite.getMolten(aAmount);
             case 8: // UV
-                return MyMaterial.tairitsu.getMolten(aAmount);
+                return GGMaterial.tairitsu.getMolten(aAmount);
             case 9: // UHV
-                return MyMaterial.preciousMetalAlloy.getMolten(aAmount);
+                return GGMaterial.preciousMetalAlloy.getMolten(aAmount);
             case 10: // UEV
-                return MyMaterial.enrichedNaquadahAlloy.getMolten(aAmount);
+                return GGMaterial.enrichedNaquadahAlloy.getMolten(aAmount);
             case 11: // UIV
-                return MyMaterial.metastableOganesson.getMolten(aAmount);
+                return GGMaterial.metastableOganesson.getMolten(aAmount);
             case 12: // UMV
                 return MaterialsUEVplus.SpaceTime.getMolten(aAmount);
             default:
-                return MyMaterial.shirabon.getMolten(aAmount);
+                return GGMaterial.shirabon.getMolten(aAmount);
         }
     }
 

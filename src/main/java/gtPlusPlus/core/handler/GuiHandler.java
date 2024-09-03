@@ -9,21 +9,21 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
-import gtPlusPlus.core.container.Container_CircuitProgrammer;
-import gtPlusPlus.core.container.Container_FishTrap;
-import gtPlusPlus.core.container.Container_PestKiller;
-import gtPlusPlus.core.container.Container_ProjectTable;
-import gtPlusPlus.core.container.Container_SuperJukebox;
-import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
-import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
-import gtPlusPlus.core.gui.beta.MU_GuiId;
-import gtPlusPlus.core.gui.machine.GUI_CircuitProgrammer;
-import gtPlusPlus.core.gui.machine.GUI_FishTrap;
-import gtPlusPlus.core.gui.machine.GUI_PestKiller;
-import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
-import gtPlusPlus.core.gui.machine.GUI_SuperJukebox;
-import gtPlusPlus.core.gui.machine.GUI_VolumetricFlaskSetter;
+import gtPlusPlus.core.block.machine.BlockSuperJukebox.TileEntitySuperJukebox;
+import gtPlusPlus.core.container.ContainerCircuitProgrammer;
+import gtPlusPlus.core.container.ContainerFishTrap;
+import gtPlusPlus.core.container.ContainerPestKiller;
+import gtPlusPlus.core.container.ContainerProjectTable;
+import gtPlusPlus.core.container.ContainerSuperJukebox;
+import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
+import gtPlusPlus.core.gui.beta.GUIIDRegistry;
+import gtPlusPlus.core.gui.beta.MUGuild;
+import gtPlusPlus.core.gui.machine.GUICircuitProgrammer;
+import gtPlusPlus.core.gui.machine.GUIFishTrap;
+import gtPlusPlus.core.gui.machine.GUIPestKiller;
+import gtPlusPlus.core.gui.machine.GUIProjectTable;
+import gtPlusPlus.core.gui.machine.GUISuperJukebox;
+import gtPlusPlus.core.gui.machine.GUIVolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
@@ -63,7 +63,7 @@ public class GuiHandler implements IGuiHandler {
 
         if (te != null) {
             if (ID == GUI1) {
-                return new Container_ProjectTable(player.inventory, (TileEntityProjectTable) te);
+                return new ContainerProjectTable(player.inventory, (TileEntityProjectTable) te);
             } else if (ID == GUI2) {}
         }
 
@@ -72,15 +72,15 @@ public class GuiHandler implements IGuiHandler {
                 Logger.INFO("sad");
                 // return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced) te);
             } else if (ID == GUI6) {
-                return new Container_FishTrap(player.inventory, (TileEntityFishTrap) te);
+                return new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
             } else if (ID == GUI8) {
-                return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+                return new ContainerCircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
             } else if (ID == GUI14) {
-                return new Container_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
+                return new ContainerSuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
             } else if (ID == GUI15) {
-                return new Container_PestKiller(player.inventory, (TileEntityPestKiller) te);
+                return new ContainerPestKiller(player.inventory, (TileEntityPestKiller) te);
             } else if (ID == GUI18) {
-                return new Container_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
+                return new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
             }
         }
 
@@ -104,22 +104,22 @@ public class GuiHandler implements IGuiHandler {
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te != null) {
             if (ID == GUI1) {
-                return new GUI_ProjectTable(player.inventory, (TileEntityProjectTable) te);
+                return new GUIProjectTable(player.inventory, (TileEntityProjectTable) te);
             }
         }
 
         if (te != null) {
             if (ID == GUI6) {
-                return new GUI_FishTrap(player.inventory, (TileEntityFishTrap) te);
+                return new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
             } else if (ID == GUI8) {
-                return new GUI_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+                return new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
             } else if (ID == GUI14) {
-                return new GUI_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
+                return new GUISuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
             } else if (ID == GUI15) {
-                return new GUI_PestKiller(player.inventory, (TileEntityPestKiller) te);
+                return new GUIPestKiller(player.inventory, (TileEntityPestKiller) te);
             } else if (ID == GUI18) {
-                return new GUI_VolumetricFlaskSetter(
-                    new Container_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
+                return new GUIVolumetricFlaskSetter(
+                    new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
             }
         }
 
@@ -144,7 +144,7 @@ public class GuiHandler implements IGuiHandler {
     }
 
     private static int encodeGuiData(final IGuiManager guiHandler, final short data) {
-        final MU_GuiId guiId = Gui_ID_Registry.getGuiIdForGuiHandler(guiHandler);
+        final MUGuild guiId = GUIIDRegistry.getGuiIdForGuiHandler(guiHandler);
         return (data << 16) | guiId.getId();
     }
 

@@ -3,7 +3,7 @@ package gtPlusPlus.core.tileentities;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
-import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
+import gtPlusPlus.core.block.machine.BlockSuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;

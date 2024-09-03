@@ -19,8 +19,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class StructureHelper {
 
@@ -35,8 +35,8 @@ public class StructureHelper {
                 if (tBlock instanceof BaseMetaPipeEntity) {
                     BaseMetaPipeEntity tFrame = (BaseMetaPipeEntity) tBlock;
                     if (tFrame.isInvalidTileEntity()) return false;
-                    if (tFrame.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame) {
-                        return ((GT_MetaPipeEntity_Frame) tFrame.getMetaTileEntity()).mMaterial == aMaterials;
+                    if (tFrame.getMetaTileEntity() instanceof MTEFrame) {
+                        return ((MTEFrame) tFrame.getMetaTileEntity()).mMaterial == aMaterials;
                     }
                 }
                 return false;
@@ -54,7 +54,7 @@ public class StructureHelper {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                ItemStack tFrame = GT_OreDictUnificator.get(OrePrefixes.frameGt, aMaterials, 1);
+                ItemStack tFrame = GTOreDictUnificator.get(OrePrefixes.frameGt, aMaterials, 1);
                 if (tFrame.getItem() instanceof ItemBlock) {
                     ItemBlock tFrameStackItem = (ItemBlock) tFrame.getItem();
                     return tFrameStackItem

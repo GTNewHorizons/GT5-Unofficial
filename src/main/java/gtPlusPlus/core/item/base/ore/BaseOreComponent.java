@@ -19,10 +19,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -54,7 +54,7 @@ public class BaseOreComponent extends Item {
         this.componentColour = material.getRgbAsHex();
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
-        GT_OreDictUnificator
+        GTOreDictUnificator
             .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
     }
 
@@ -127,7 +127,8 @@ public class BaseOreComponent extends Item {
                     list.add(temp);
                 }
                 if (this.componentMaterial.isRadioactive) {
-                    list.add(CORE.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
+                    list.add(
+                        GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
@@ -157,7 +158,7 @@ public class BaseOreComponent extends Item {
 
     /**
      * Rendering Related
-     * 
+     *
      * @author Alkalus
      *
      */
@@ -179,7 +180,7 @@ public class BaseOreComponent extends Item {
                 this.overlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
-        } else if (CORE.ConfigSwitches.useGregtechTextures) {
+        } else if (GTPPCore.ConfigSwitches.useGregtechTextures) {
             // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
             // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
             // layer 0 texture path.");
@@ -209,10 +210,10 @@ public class BaseOreComponent extends Item {
             }
             return this.componentColour;
         } else {
-            if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
                 return this.componentColour;
             }
-            if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
             return this.componentColour;

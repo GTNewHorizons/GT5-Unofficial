@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity.base;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +14,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtil;
 
 public abstract class TickableMultiTileEntity extends MultiTileEntity implements TaskHost {
 
@@ -57,7 +57,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
         try {
             if (timer++ == 0) {
                 markDirty();
-                GT_Util.markChunkDirty(this);
+                GTUtil.markChunkDirty(this);
                 onFirstTick(isServerSide);
             }
             if (isDead()) {
@@ -80,7 +80,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
 
         } catch (Throwable e) {
             GT_FML_LOGGER.error("UpdateEntity Failed", e);
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
             try {
                 onTickFailed(timer, isServerSide);
             } catch (Throwable e2) {
@@ -133,8 +133,8 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
 
     @Override
     protected final void readTasksNBT(NBTTagCompound nbt) {
-        if (nbt.hasKey(GT_Values.NBT.TASKS)) {
-            NBTTagCompound tasksTag = nbt.getCompoundTag(GT_Values.NBT.TASKS);
+        if (nbt.hasKey(GTValues.NBT.TASKS)) {
+            NBTTagCompound tasksTag = nbt.getCompoundTag(GTValues.NBT.TASKS);
             for (TickableTask<?> task : tasks.values()) {
                 if (tasksTag.hasKey(task.getName())) {
                     task.readFromNBT(tasksTag.getCompoundTag(task.getName()));
@@ -151,7 +151,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
             task.writeToNBT(tag);
             tasksTag.setTag(task.getName(), tag);
         }
-        aNBT.setTag(GT_Values.NBT.TASKS, tasksTag);
+        aNBT.setTag(GTValues.NBT.TASKS, tasksTag);
     }
 
     @Override

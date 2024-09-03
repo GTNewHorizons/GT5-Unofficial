@@ -1,11 +1,11 @@
 package gregtech.api.interfaces.modularui;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTUtil;
 
 public interface IGetTitleColor {
 
     default int getTitleColor() {
-        return GT_Util.getRGBaInt(Dyes.dyeWhite.getRGBA());
+        return GTUtil.getRGBaInt(Dyes.dyeWhite.getRGBA());
     }
 }

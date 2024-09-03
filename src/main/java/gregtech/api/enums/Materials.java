@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.FluidState.GAS;
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.ArrayList;
@@ -20,23 +20,25 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.fluid.GT_FluidFactory;
+import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.config.gregtech.ConfigHarvestLevel;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
-import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
+import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfinityRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
@@ -65,7 +67,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // Spotless breaks the table below into many, many lines
     // spotless:off
-    public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Collections.singletonList(new TC_AspectStack(TC_Aspects.VACUOS, 1)));
+    public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Collections.singletonList(new TC_AspectStack(TCAspects.VACUOS, 1)));
     /**
      * Direct Elements
      */
@@ -350,37 +352,37 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Vyroxeres;
     public static Materials Yellorium;
     public static Materials Zectium;
-    public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
-    public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
+    public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 8)));
+    public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 4)));
 
     /**
      * Tiered materials, primarily Circuitry, Batteries and other Technical things
      */
-    public static Materials ULV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Primitive"               ,   "Primitive"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 1)));
-    public static Materials LV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Basic"                   ,   "Basic"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 2)));
-    public static Materials MV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Good"                    ,   "Good"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 3)));
-    public static Materials HV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
-    public static Materials EV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Data"                    ,   "Data"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 5)));
-    public static Materials IV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Elite"                   ,   "Elite"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 6)));
-    public static Materials LuV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Master"                  ,   "Master"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 7)));
-    public static Materials ZPM                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
-    public static Materials UV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Superconductor"          ,   "Superconductor"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 9)));
-    public static Materials UHV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Infinite"                ,   "Infinite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
-    public static Materials UEV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Bio"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
-    public static Materials UIV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
-    public static Materials UMV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
-    public static Materials UXV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
-    public static Materials MAX                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendent"            ,   "Transcendent"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 15)));
+    public static Materials ULV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Primitive"               ,   "Primitive"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 1)));
+    public static Materials LV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Basic"                   ,   "Basic"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 2)));
+    public static Materials MV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Good"                    ,   "Good"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 3)));
+    public static Materials HV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 4)));
+    public static Materials EV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Data"                    ,   "Data"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 5)));
+    public static Materials IV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Elite"                   ,   "Elite"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 6)));
+    public static Materials LuV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Master"                  ,   "Master"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 7)));
+    public static Materials ZPM                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 8)));
+    public static Materials UV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Superconductor"          ,   "Superconductor"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 9)));
+    public static Materials UHV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Infinite"                ,   "Infinite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 10)));
+    public static Materials UEV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Bio"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
+    public static Materials UIV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
+    public static Materials UMV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 13)));
+    public static Materials UXV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 14)));
+    public static Materials MAX                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendent"            ,   "Transcendent"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 15)));
 
-    public static Materials Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
-    public static Materials Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
-    public static Materials Transistor              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transistor"              ,   "Transistor"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
-    public static Materials Capacitor               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Capacitor"               ,   "Capacitor"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
-    public static Materials Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
+    public static Materials Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
+    public static Materials Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
+    public static Materials Transistor              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transistor"              ,   "Transistor"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
+    public static Materials Capacitor               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Capacitor"               ,   "Capacitor"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
+    public static Materials Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
 
-    public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
-    public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
-    public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                 ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
+    public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
+    public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                 ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 13)));
 
 
     /**
@@ -1027,10 +1029,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
     public TextureSet mIconSet;
-    public GT_GeneratedMaterial_Renderer renderer;
+    public GeneratedMaterialRenderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
     public List<Materials> mOreByProducts = new ArrayList<>(), mOreReRegistrations = new ArrayList<>();
-    public List<TC_Aspects.TC_AspectStack> mAspects = new ArrayList<>();
+    public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
     public Collection<SubTag> mSubTags = new LinkedHashSet<>();
     public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
@@ -1254,7 +1256,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
         int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-        List<TC_Aspects.TC_AspectStack> aAspects) {
+        List<TCAspects.TC_AspectStack> aAspects) {
         this(
             aMetaItemSubID,
             aIconSet,
@@ -1285,7 +1287,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
         int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, Element aElement,
-        List<TC_Aspects.TC_AspectStack> aAspects) {
+        List<TCAspects.TC_AspectStack> aAspects) {
         this(
             aMetaItemSubID,
             aIconSet,
@@ -1357,7 +1359,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
         int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData,
-        List<MaterialStack> aMaterialList, List<TC_Aspects.TC_AspectStack> aAspects) {
+        List<MaterialStack> aMaterialList, List<TCAspects.TC_AspectStack> aAspects) {
         this(
             aMetaItemSubID,
             aIconSet,
@@ -1395,15 +1397,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             tAmountOfComponents += tMaterial.mAmount;
             if (tMaterial.mMaterial.mMeltingPoint > 0)
                 tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
-            if (aAspects == null) for (TC_Aspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects)
-                tAspect.addToAspectList(mAspects);
+            if (aAspects == null)
+                for (TCAspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
         }
 
         if (mMeltingPoint < 0) mMeltingPoint = (short) (tMeltingPoint / tAmountOfComponents);
 
         tAmountOfComponents *= aDensityMultiplier;
         tAmountOfComponents /= aDensityDivider;
-        if (aAspects == null) for (TC_Aspects.TC_AspectStack tAspect : mAspects)
+        if (aAspects == null) for (TCAspects.TC_AspectStack tAspect : mAspects)
             tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
         else mAspects.addAll(aAspects);
     }
@@ -1976,6 +1978,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
         PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
+        MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
+            + EnumChatFormatting.RESET
+            + EnumChatFormatting.GRAY
+            + "g"
+            + EnumChatFormatting.OBFUSCATED
+            + "X";
+        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081\u2080Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085\u2080C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
+        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
+        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
+        MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
     }
 
     private static void initSubTags() {
@@ -2465,7 +2478,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         new ProcessingConfig();
-        if (!GT_Mod.gregtechproxy.mEnableAllMaterials) new ProcessingModSupport();
+        if (!GTMod.gregtechproxy.mEnableAllMaterials) new ProcessingModSupport();
         mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
                                                                       // materials
         initMaterialProperties(); // No more material addition or manipulation should be done past this point!
@@ -2516,6 +2529,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
         MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
         MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
+        MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
+        MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2523,8 +2538,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             if (aMaterial.mMetaItemSubID >= 0) {
                 if (aMaterial.mMetaItemSubID < 1000) {
                     if (aMaterial.mHasParentMod) {
-                        if (GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
-                            GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
+                        if (GregTechAPI.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
+                            GregTechAPI.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
                         } else throw new IllegalArgumentException(
                             "The Material Index " + aMaterial.mMetaItemSubID
                                 + " for "
@@ -2541,7 +2556,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addToolValues(Materials aMaterial) {
-        // Moved from GT_Proxy? (Not sure)
+        // Moved from GTProxy? (Not sure)
         aMaterial.mHandleMaterial = (aMaterial == Desh ? aMaterial.mHandleMaterial
             : aMaterial == Diamond || aMaterial == Thaumium ? Wood
                 : aMaterial.contains(SubTag.BURNING) ? Blaze
@@ -2581,10 +2596,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
 
         if (aMaterial.mHasPlasma) {
-            GT_Mod.gregtechproxy.addAutogeneratedPlasmaFluid(aMaterial);
+            GTMod.gregtechproxy.addAutogeneratedPlasmaFluid(aMaterial);
         }
         if (aMaterial.mHasGas) {
-            GT_FluidFactory
+            GTFluidFactory
                 .of(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
         }
     }
@@ -2595,18 +2610,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHarvestLevelNerfs(Materials aMaterial) {
-        /* Moved the harvest level changes from GT_Mod to have fewer things iterating over MATERIALS_ARRAY */
-        if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
-            && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length
+        /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
+        if (GTMod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
+            && aMaterial.mMetaItemSubID < GTMod.gregtechproxy.mHarvestLevel.length
             && aMaterial.mMetaItemSubID >= 0) {
-            GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
+            GTMod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
         }
     }
 
     private static void addHarvestLevels() {
-        GT_Mod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
-        GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
-        GT_Mod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
+        GTMod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
+        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
+        GTMod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {
@@ -2675,7 +2690,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static String getLocalizedNameForItem(String aFormat, int aMaterialID) {
         if (aMaterialID >= 0 && aMaterialID < 1000) {
-            Materials aMaterial = GregTech_API.sGeneratedMaterials[aMaterialID];
+            Materials aMaterial = GregTechAPI.sGeneratedMaterials[aMaterialID];
             if (aMaterial != null) return aMaterial.getLocalizedNameForItem(aFormat);
         }
         return aFormat;
@@ -2799,7 +2814,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return mMaterialItems.stream()
             .anyMatch(
                 tStack -> Arrays.stream(aStacks)
-                    .anyMatch(aStack -> GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
+                    .anyMatch(aStack -> GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
     }
 
     /**
@@ -2809,7 +2824,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if (aStack == null) return false;
         boolean temp = false;
         int mMaterialItems_sS = mMaterialItems.size();
-        for (int i = 0; i < mMaterialItems_sS; i++) if (GT_Utility.areStacksEqual(aStack, mMaterialItems.get(i))) {
+        for (int i = 0; i < mMaterialItems_sS; i++) if (GTUtility.areStacksEqual(aStack, mMaterialItems.get(i))) {
             mMaterialItems.remove(i--);
             temp = true;
         }
@@ -3121,43 +3136,43 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public boolean isProperSolderingFluid() {
         return mStandardMoltenFluid != null && contains(SubTag.SOLDERING_MATERIAL)
-            && !(GregTech_API.mUseOnlyGoodSolderingMaterials && !contains(SubTag.SOLDERING_MATERIAL_GOOD));
+            && !(GregTechAPI.mUseOnlyGoodSolderingMaterials && !contains(SubTag.SOLDERING_MATERIAL_GOOD));
     }
 
     public ItemStack getCells(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.cell, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.cell, this, amount);
     }
 
     public ItemStack getDust(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.dust, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.dust, this, amount);
     }
 
     public ItemStack getDustSmall(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.dustSmall, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.dustSmall, this, amount);
     }
 
     public ItemStack getDustTiny(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.dustTiny, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.dustTiny, this, amount);
     }
 
     public ItemStack getGems(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.gem, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.gem, this, amount);
     }
 
     public ItemStack getIngots(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.ingot, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.ingot, this, amount);
     }
 
     public ItemStack getNuggets(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.nugget, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.nugget, this, amount);
     }
 
     public ItemStack getBlocks(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.block, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.block, this, amount);
     }
 
     public ItemStack getPlates(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.plate, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.plate, this, amount);
     }
 
     public static Materials getGtMaterialFromFluid(Fluid fluid) {
@@ -3165,6 +3180,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ItemStack getNanite(int amount) {
-        return GT_OreDictUnificator.get(OrePrefixes.nanite, this, amount);
+        return GTOreDictUnificator.get(OrePrefixes.nanite, this, amount);
     }
 }

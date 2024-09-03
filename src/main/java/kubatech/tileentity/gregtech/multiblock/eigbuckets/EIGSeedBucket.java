@@ -20,12 +20,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_DummyWorld;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTDummyWorld;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public class EIGSeedBucket extends EIGBucket {
 
@@ -44,7 +44,7 @@ public class EIGSeedBucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
+        public EIGBucket tryCreateBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
             return new EIGSeedBucket(greenhouse, input);
         }
 
@@ -58,7 +58,7 @@ public class EIGSeedBucket extends EIGBucket {
     private boolean isValid = false;
     private EIGDropTable drops = new EIGDropTable();
 
-    private EIGSeedBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack seed) {
+    private EIGSeedBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack seed) {
         super(seed, 1, null);
         this.recalculateDrops(greenhouse);
     }
@@ -94,12 +94,12 @@ public class EIGSeedBucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public boolean revalidate(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.recalculateDrops(greenhouse);
         return this.isValid();
     }
 
-    public void recalculateDrops(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public void recalculateDrops(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.isValid = false;
         int optimalGrowthMetadata = 7;
         // Get the relevant item and block for this item.
@@ -164,7 +164,7 @@ public class EIGSeedBucket extends EIGBucket {
         IRecipe[] validRecipes = CraftingManager.getInstance()
             .getRecipeList()
             .parallelStream()
-            .filter(recipe -> GT_Utility.areStacksEqual(recipe.getRecipeOutput(), seed))
+            .filter(recipe -> GTUtility.areStacksEqual(recipe.getRecipeOutput(), seed))
             .toArray(IRecipe[]::new);
 
         // if no recipes outputs the input seed, abort.
@@ -233,7 +233,7 @@ public class EIGSeedBucket extends EIGBucket {
         public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {}
     }
 
-    private static class GreenHouseWorld extends GT_DummyWorld {
+    private static class GreenHouseWorld extends GTDummyWorld {
 
         public int x, y, z, meta = 0;
         public Block block;

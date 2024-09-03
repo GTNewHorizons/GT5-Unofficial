@@ -2,15 +2,15 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -23,24 +23,24 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1, aStack))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(16)
             .addTo(hammerRecipes);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1, aStack))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(
-                GT_OreDictUnificator.get(
+                GTOreDictUnificator.get(
                     OrePrefixes.dustPure,
                     aMaterial.mMacerateInto,
-                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                     1L),
-                GT_OreDictUnificator.get(
+                GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                     1L))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)

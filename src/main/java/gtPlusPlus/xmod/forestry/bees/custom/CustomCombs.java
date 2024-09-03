@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.util.Utils;
 
 public enum CustomCombs {
@@ -11,8 +11,8 @@ public enum CustomCombs {
     SILICON("silicon", true, Materials.Silicon, 100),
     RUBBER("rubber", true, Materials.Rubber, 100),
     PLASTIC("polyethylene", true, Materials.Plastic, 75),
-    PTFE("polytetrafluoroethylene", true, GTPP_Bees.PTFE, 50),
-    PBS("styrene-butadiene", true, GTPP_Bees.PBS, 25),
+    PTFE("polytetrafluoroethylene", true, GTPPBees.PTFE, 50),
+    PBS("styrene-butadiene", true, GTPPBees.PBS, 25),
 
     // Fuels
     BIOMASS("biomass", true, Materials.Biomass, 100),
@@ -82,7 +82,7 @@ public enum CustomCombs {
 
     public String getName() {
         // return "gt.comb."+this.name;
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             "comb." + this.name,
             this.name.substring(0, 1)
                 .toUpperCase() + this.name.substring(1) + " Comb");

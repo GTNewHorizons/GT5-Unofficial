@@ -12,7 +12,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler;
 
 public class PurificationUnitParticleExtractorFrontend extends RecipeMapFrontend {
 
@@ -25,7 +25,7 @@ public class PurificationUnitParticleExtractorFrontend extends RecipeMapFrontend
     }
 
     @Override
-    public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         List<Pos2d> positions = UIHelper.getGridPositions(2, 30, 14, 2, 1);
         Pos2d pos1 = positions.get(0);
         Pos2d pos2 = positions.get(1);

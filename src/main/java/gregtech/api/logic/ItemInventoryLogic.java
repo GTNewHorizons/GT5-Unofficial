@@ -25,12 +25,12 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.item.ItemHolder;
 
 /**
  * Generic Item logic for MuTEs.
- * 
+ *
  * @author BlueWeabo
  */
 public class ItemInventoryLogic {
@@ -101,7 +101,7 @@ public class ItemInventoryLogic {
     }
 
     /**
-     * 
+     *
      * @return The Item Inventory Logic as an NBTTagCompound to be saved in another nbt as how one wants.
      */
     @Nonnull
@@ -150,7 +150,7 @@ public class ItemInventoryLogic {
             final NBTTagCompound tNBT = nbtList.getCompoundTagAt(i);
             final int tSlot = tNBT.getShort("s");
             if (tSlot >= 0 && tSlot < inventory.getSlots()) {
-                inventory.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
+                inventory.setStackInSlot(tSlot, GTUtility.loadItem(tNBT));
             }
         }
     }

@@ -79,14 +79,14 @@ public enum HeatingCoilLevel {
             if (heatLevel.getHeat() >= heat) {
                 String name = heatLevel.getName();
                 if (applyColor) {
-                    name = GT_Values.TIER_COLORS[heatLevel.getTier() + 1] + name;
+                    name = GTValues.TIER_COLORS[heatLevel.getTier() + 1] + name;
                 }
                 return name;
             }
         }
         String name = HeatingCoilLevel.MAX.getName() + "+";
         if (applyColor) {
-            name = GT_Values.TIER_COLORS[HeatingCoilLevel.MAX.getTier() + 1] + name;
+            name = GTValues.TIER_COLORS[HeatingCoilLevel.MAX.getTier() + 1] + name;
         }
         return name;
     }

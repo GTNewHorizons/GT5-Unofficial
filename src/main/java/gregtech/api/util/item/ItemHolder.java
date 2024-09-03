@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class ItemHolder {
 
@@ -67,7 +67,7 @@ public class ItemHolder {
 
     @Override
     public int hashCode() {
-        return GT_Utility.stackToInt(toStack());
+        return GTUtility.stackToInt(toStack());
     }
 
     @Nonnull

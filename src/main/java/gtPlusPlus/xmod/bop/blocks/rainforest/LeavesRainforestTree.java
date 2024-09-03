@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
+import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.bop.blocks.base.LeavesBase;
 
 public class LeavesRainforestTree extends LeavesBase {
@@ -20,6 +20,6 @@ public class LeavesRainforestTree extends LeavesBase {
 
     @Override
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-        return Item.getItemFromBlock(BOP_Block_Registrator.sapling_Rainforest);
+        return Item.getItemFromBlock(BOPBlockRegistrator.sapling_Rainforest);
     }
 }

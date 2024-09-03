@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public class EIGFlowerBucket extends EIGBucket {
 
@@ -27,7 +27,7 @@ public class EIGFlowerBucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
+        public EIGBucket tryCreateBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input) {
             // Check if input is a flower, reed or cacti. They all drop their source item multiplied by their seed count
             Item item = input.getItem();
             Block block = Block.getBlockFromItem(item);
@@ -67,7 +67,7 @@ public class EIGFlowerBucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse) {
+    public boolean revalidate(MTEExtremeIndustrialGreenhouse greenhouse) {
         return this.isValid();
     }
 }

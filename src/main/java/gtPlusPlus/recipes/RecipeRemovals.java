@@ -12,12 +12,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import advsolar.common.AdvancedSolarPanel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.api.util.GTRecipe;
+import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
@@ -36,12 +36,12 @@ public class RecipeRemovals {
     // Doesn't actually remove recipes, just hide them
     private static void removeCrudeTurbineRotors() {
         int aRemoved = 0;
-        int CUT = CORE.turbineCutoffBase;
+        int CUT = GTPPCore.turbineCutoffBase;
         Item aU;
-        Collection<GT_Recipe> aAssRecipes = RecipeMaps.assemblerRecipes.getAllRecipes();
+        Collection<GTRecipe> aAssRecipes = RecipeMaps.assemblerRecipes.getAllRecipes();
         // 170, 172, 174, 176
         if (aAssRecipes.size() > 0) {
-            for (GT_Recipe aG : aAssRecipes) {
+            for (GTRecipe aG : aAssRecipes) {
                 if (ArrayUtils.isNotEmpty(aG.mOutputs)) {
                     for (ItemStack aI : aG.mOutputs) {
                         if (aI == null) {
@@ -51,7 +51,7 @@ public class RecipeRemovals {
                         if (aU == null) {
                             continue;
                         }
-                        if (aU instanceof GT_MetaGenerated_Tool_01) {
+                        if (aU instanceof MetaGeneratedTool01) {
                             int aMeta = aI.getItemDamage();
                             // Found a Turbine
                             if (aMeta >= 170 && aMeta <= 176) {
@@ -75,9 +75,9 @@ public class RecipeRemovals {
                                         aType = "Huge ";
                                     }
                                 }
-                                Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
-                                Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);
-                                long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);
+                                Materials aMainMaterial = MetaGeneratedTool.getPrimaryMaterial(aI);
+                                Materials aSecondaryMaterial = MetaGeneratedTool.getSecondaryMaterial(aI);
+                                long rotorDurabilityMax = MetaGeneratedTool.getToolMaxDamage(aI);
                                 if (rotorDurabilityMax < aCutoff) {
                                     Logger.WARNING(
                                         "[Turbine Cleanup] " + getMaterialName(aMainMaterial)

@@ -10,8 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.util.GT_Utility;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import gregtech.api.util.GTUtility;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public abstract class EIGBucket {
 
@@ -119,14 +119,14 @@ public abstract class EIGBucket {
      * @return number of seeds consumed, 0 for wrong item, -1 if it missed the support items, -2 if you tried to consume
      *         0 or less items;
      */
-    public int tryAddSeed(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, ItemStack input, int maxConsume,
+    public int tryAddSeed(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input, int maxConsume,
         boolean simulate) {
         // Abort is input if empty
         if (input == null || input.stackSize <= 0) return -2;
         // Cap max to input count
         maxConsume = Math.min(maxConsume, input.stackSize);
         // Abort if item isn't an identical seed.
-        if (!GT_Utility.areStacksEqual(this.seed, input, false)) return 0;
+        if (!GTUtility.areStacksEqual(this.seed, input, false)) return 0;
 
         // no support items, consume and exit early.
         if (this.supportItems == null || this.supportItems.length <= 0) {
@@ -143,7 +143,7 @@ public abstract class EIGBucket {
             for (ItemStack otherInput : greenhouse.getStoredInputs()) {
                 // filter usable inputs
                 if (otherInput == null || otherInput.stackSize <= 0) continue;
-                if (!GT_Utility.areStacksEqual(supportItem, otherInput, false)) continue;
+                if (!GTUtility.areStacksEqual(supportItem, otherInput, false)) continue;
                 // update max consume again
                 maxConsume = Math.min(maxConsume, otherInput.stackSize);
                 toConsumeFrom.addLast(otherInput);
@@ -242,6 +242,6 @@ public abstract class EIGBucket {
      * @param greenhouse The greenhouse that contains the bucket.
      * @return True if the bucket was successfully validated. {@link EIGBucket#isValid()} should also return true.
      */
-    public abstract boolean revalidate(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse);
+    public abstract boolean revalidate(MTEExtremeIndustrialGreenhouse greenhouse);
 
 }

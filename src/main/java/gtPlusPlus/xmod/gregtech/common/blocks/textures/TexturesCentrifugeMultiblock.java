@@ -9,7 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialCentrifuge;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialCentrifuge;
 
 public class TexturesCentrifugeMultiblock {
 
@@ -67,8 +67,8 @@ public class TexturesCentrifugeMultiblock {
         ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
-        if (tTile.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialCentrifuge
-            && tTile.getFrontFacing() == side) return tTile.isActive() ? 1 : 2;
+        if (tTile.getMetaTileEntity() instanceof MTEIndustrialCentrifuge && tTile.getFrontFacing() == side)
+            return tTile.isActive() ? 1 : 2;
         return 0;
     }
 
@@ -133,8 +133,8 @@ public class TexturesCentrifugeMultiblock {
 
     public boolean isUsingAnimatedTexture(IMetaTileEntity aMetaTileEntity) {
         if (aMetaTileEntity != null) {
-            if (aMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge) {
-                return ((GregtechMetaTileEntity_IndustrialCentrifuge) aMetaTileEntity).usingAnimations();
+            if (aMetaTileEntity instanceof MTEIndustrialCentrifuge) {
+                return ((MTEIndustrialCentrifuge) aMetaTileEntity).usingAnimations();
             }
         }
         return false;

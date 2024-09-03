@@ -38,7 +38,6 @@ import net.minecraft.util.StatCollector;
 import kubatech.api.helpers.UUIDFinder;
 import kubatech.api.tea.TeaNetwork;
 
-@CommandHandler.ChildCommand
 public class CommandTea extends CommandBase {
 
     enum Translations {
@@ -48,7 +47,7 @@ public class CommandTea extends CommandBase {
         SUCCESS_GET,
         SUCCESS_SET,
         SUCCESS_ADD,
-        USAGE,;
+        USAGE;
 
         final String key;
 
@@ -81,58 +80,53 @@ public class CommandTea extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "tea " + USAGE.get();
     }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 4;
-    }
-
-    @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        if (p_71515_2_.length < 2) {
-            p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
+    public void processCommand(ICommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
             return;
         }
-        UUID player = UUIDFinder.getUUID(p_71515_2_[0]);
+        UUID player = UUIDFinder.getUUID(args[0]);
         if (player == null) {
-            p_71515_1_.addChatMessage(new ChatComponentText(PLAYER_NOT_FOUND.get()));
+            sender.addChatMessage(new ChatComponentText(PLAYER_NOT_FOUND.get()));
             return;
         }
         TeaNetwork teaNetwork = TeaNetwork.getNetwork(player);
-        if (!p_71515_2_[1].equalsIgnoreCase("get") && p_71515_2_.length < 3) {
-            p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
+        if (!args[1].equalsIgnoreCase("get") && args.length < 3) {
+            sender.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
             return;
         }
-        switch (p_71515_2_[1].toLowerCase()) {
+        switch (args[1].toLowerCase()) {
             case "get":
-                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_GET.get(p_71515_2_[0], teaNetwork.teaAmount)));
+                sender.addChatMessage(new ChatComponentText(SUCCESS_GET.get(args[0], teaNetwork.teaAmount)));
                 break;
             case "set": {
                 BigInteger tea;
                 try {
-                    tea = new BigInteger(p_71515_2_[2]);
+                    tea = new BigInteger(args[2]);
                 } catch (NumberFormatException ex) {
-                    p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
+                    sender.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
                     return;
                 }
                 teaNetwork.teaAmount = tea;
                 teaNetwork.markDirty();
-                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_SET.get(p_71515_2_[0], teaNetwork.teaAmount)));
+                sender.addChatMessage(new ChatComponentText(SUCCESS_SET.get(args[0], teaNetwork.teaAmount)));
                 break;
             }
             case "add": {
                 BigInteger tea;
                 try {
-                    tea = new BigInteger(p_71515_2_[2]);
+                    tea = new BigInteger(args[2]);
                 } catch (NumberFormatException ex) {
-                    p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
+                    sender.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
                     return;
                 }
                 teaNetwork.addTea(tea);
-                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_ADD.get(p_71515_2_[0], teaNetwork.teaAmount)));
+                sender.addChatMessage(new ChatComponentText(SUCCESS_ADD.get(args[0], teaNetwork.teaAmount)));
                 break;
             }
             default:

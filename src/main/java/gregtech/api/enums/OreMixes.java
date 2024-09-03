@@ -1,15 +1,15 @@
 package gregtech.api.enums;
 
-import static bloodasp.galacticgreg.api.enums.DimensionDef.*;
+import static galacticgreg.api.enums.DimensionDef.*;
 import static gregtech.common.OreMixBuilder.NETHER;
 import static gregtech.common.OreMixBuilder.OW;
 import static gregtech.common.OreMixBuilder.THE_END;
 import static gregtech.common.OreMixBuilder.TWILIGHT_FOREST;
 
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
-import bloodasp.galacticgreg.api.enums.DimensionDef;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import galacticgreg.WorldgenOreLayerSpace;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.common.OreMixBuilder;
+import gregtech.common.WorldgenGTOreLayer;
 
 public enum OreMixes {
 
@@ -972,11 +972,11 @@ public enum OreMixes {
         this.oreMixBuilder = oreMixBuilder;
     }
 
-    public GT_Worldgen_GT_Ore_Layer addGTOreLayer() {
-        return new GT_Worldgen_GT_Ore_Layer(this.oreMixBuilder);
+    public WorldgenGTOreLayer addGTOreLayer() {
+        return new WorldgenGTOreLayer(this.oreMixBuilder);
     }
 
-    public GT_Worldgen_GT_Ore_Layer_Space addGaGregOreLayer() {
-        return new GT_Worldgen_GT_Ore_Layer_Space(this.oreMixBuilder);
+    public WorldgenOreLayerSpace addGaGregOreLayer() {
+        return new WorldgenOreLayerSpace(this.oreMixBuilder);
     }
 }

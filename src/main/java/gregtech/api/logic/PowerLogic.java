@@ -8,12 +8,12 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.GTValues.NBT;
 
 /**
  * Power logic for machines. This is used to store all the important variables for a machine to have energy and use it
  * in any way.
- * 
+ *
  * @author BlueWeabo, Maxim
  */
 public class PowerLogic {
@@ -122,7 +122,7 @@ public class PowerLogic {
     /**
      * Injecting energy in the multiblock ampere per ampere until full or until we have added the maximum possible
      * amperes for this tick
-     * 
+     *
      * @param voltage           At what voltage are the amps?
      * @param availableAmperage How much amperage do we have available
      * @return Amount of amperes used
@@ -218,7 +218,7 @@ public class PowerLogic {
 
     /**
      * Saves the power logic to its own nbt tag before saving it to the given one.
-     * 
+     *
      * @param nbt Tag where you want to save the power logic tag to.
      */
     public void saveToNBT(NBTTagCompound nbt) {
@@ -233,7 +233,7 @@ public class PowerLogic {
 
     /**
      * Loads the power logic from its own nbt after getting it from the given one
-     * 
+     *
      * @param nbt Tag where the power logic tag was saved to
      */
     public void loadFromNBT(NBTTagCompound nbt) {

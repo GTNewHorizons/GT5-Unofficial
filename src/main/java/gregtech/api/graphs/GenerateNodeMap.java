@@ -1,6 +1,6 @@
 package gregtech.api.graphs;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -6,12 +6,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -23,16 +23,16 @@ public class UnpackagerBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+    protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length == 0 || !ItemList.IC2_Scrapbox.isStackEqual(items[0], false, true)) {
             return null;
         }
 
-        ItemStack output = GT_ModHandler.getRandomScrapboxDrop();
+        ItemStack output = GTModHandler.getRandomScrapboxDrop();
         if (output == null) {
             return null;
         }
-        return GT_Values.RA.stdBuilder()
+        return GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrapbox.get(1))
             .itemOutputs(output)
             .duration(16)

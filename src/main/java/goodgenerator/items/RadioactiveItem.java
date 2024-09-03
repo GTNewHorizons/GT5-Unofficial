@@ -8,10 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
-public class RadioactiveItem extends MyItems {
+public class RadioactiveItem extends GGItem {
 
     protected final int mRadio;
 
@@ -34,7 +34,7 @@ public class RadioactiveItem extends MyItems {
     public void onUpdate(ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {
         super.onUpdate(aStack, aWorld, aPlayer, aTimer, aIsInHand);
         EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
-        if (!GT_Utility.isWearingFullRadioHazmat(tPlayer))
+        if (!GTUtility.isWearingFullRadioHazmat(tPlayer))
             tPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, mRadio, 4));
     }
 }

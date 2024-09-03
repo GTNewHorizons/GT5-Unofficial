@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 
@@ -31,14 +31,14 @@ public class FlotationRecipeHandler {
     public static Material getMaterialOfMilledProduct(ItemStack aMilled) {
         for (String aKey : sMilledMap.keySet()) {
             ItemStack aTempMilledStack = sMilledMap.get(aKey);
-            if (GT_Utility.areStacksEqual(aTempMilledStack, aMilled, true)) {
+            if (GTUtility.areStacksEqual(aTempMilledStack, aMilled, true)) {
                 return sMaterialMap.get(aKey);
             }
         }
         return null;
     }
 
-    public static ItemStack findMilledStack(GT_Recipe aRecipe) {
+    public static ItemStack findMilledStack(GTRecipe aRecipe) {
         if (aRecipe == null || aRecipe.mInputs == null || aRecipe.mInputs.length <= 0) {
             return null;
         }

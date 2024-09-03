@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 
@@ -74,12 +74,12 @@ public class ItemGenericToken extends CoreItem {
         sizes[0][4] = mCustomNameColours.size();
         // sizes[0][5] = mIcons.size();
         mLocalNames.put(id, aLocalName);
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization("gtplusplus." + this.getUnlocalizedName() + "." + id + ".name", aLocalName);
         mMaxStackSizes.put(id, aMaxStack);
         mDescriptionArrays.put(id, aDescript);
         for (int i = 0; i < aDescript.length; i++) {
-            GT_LanguageManager.addStringLocalization(
+            GTLanguageManager.addStringLocalization(
                 "gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i,
                 aDescript[i]);
         }
@@ -113,7 +113,7 @@ public class ItemGenericToken extends CoreItem {
     public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
         super.addInformation(stack, aPlayer, list, bool);
         for (int i = 0;; i++) {
-            String tooltip = GT_LanguageManager.getTranslation(
+            String tooltip = GTLanguageManager.getTranslation(
                 "gtplusplus." + this
                     .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i);
             if (!("gtplusplus." + this
@@ -126,7 +126,7 @@ public class ItemGenericToken extends CoreItem {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        String ret = GT_LanguageManager.getTranslation(
+        String ret = GTLanguageManager.getTranslation(
             "gtplusplus." + this.getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
         EnumChatFormatting format = mCustomNameColours.get(tItem.getItemDamage());
         if (format != null) {

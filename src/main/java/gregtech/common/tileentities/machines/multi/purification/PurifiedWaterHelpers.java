@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 public class PurifiedWaterHelpers {
 
@@ -35,7 +35,7 @@ public class PurifiedWaterHelpers {
     }
 
     // Used to construct NEI comparator for water tier. Returns 0 if no water is used in this recipe
-    public static int getWaterTierFromRecipe(GT_Recipe recipe) {
+    public static int getWaterTierFromRecipe(GTRecipe recipe) {
         if (recipe.mFluidInputs.length == 0) return 0;
         else return getWaterTier(recipe.mFluidInputs[0]);
     }

@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gtPlusPlus.api.objects.Logger;
 
@@ -23,7 +23,7 @@ public final class TexturesGtTools {
         public CustomIcon(final String aIconName) {
             this.mIconName = aIconName;
             Logger.INFO("Constructing a Custom Texture. " + this.mIconName);
-            GregTech_API.sGTItemIconload.add(this);
+            GregTechAPI.sGTItemIconload.add(this);
         }
 
         @Override
@@ -38,9 +38,9 @@ public final class TexturesGtTools {
 
         @Override
         public void run() {
-            this.mIcon = GregTech_API.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName);
+            this.mIcon = GregTechAPI.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName);
             // Utils.LOG_INFO("Registering a Custom Texture. "+mIcon.g);
-            this.mOverlay = GregTech_API.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName + "_OVERLAY");
+            this.mOverlay = GregTechAPI.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName + "_OVERLAY");
         }
 
         @Override

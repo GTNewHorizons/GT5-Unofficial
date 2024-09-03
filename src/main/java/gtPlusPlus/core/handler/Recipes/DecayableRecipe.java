@@ -2,7 +2,7 @@ package gtPlusPlus.core.handler.Recipes;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -24,8 +24,8 @@ public class DecayableRecipe {
     @Override
     public boolean equals(Object o) {
         if (o instanceof DecayableRecipe i) {
-            if (i.mTime == this.mTime && GT_Utility.areStacksEqual(mInput, i.mInput)
-                && GT_Utility.areStacksEqual(mOutput, i.mOutput)) {
+            if (i.mTime == this.mTime && GTUtility.areStacksEqual(mInput, i.mInput)
+                && GTUtility.areStacksEqual(mOutput, i.mOutput)) {
                 return true;
             }
         }

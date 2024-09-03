@@ -1,11 +1,11 @@
 package gregtech.api.multitileentity.enums;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 
 public enum GT_MultiTileMachine {
 
     CokeOven(0),
-    NONE(GT_Values.W);
+    NONE(GTValues.W);
 
     private final int meta;
 
