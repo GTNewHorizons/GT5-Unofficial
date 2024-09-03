@@ -68,7 +68,7 @@ public class ToolPlunger extends GTTool {
         aItem.addItemBehavior(aID, new BehaviourPlungerFluid(getToolDamagePerDropConversion()));
         try {
             Object tObject = GTUtility.callConstructor(
-                "gregtech.common.items.behaviors.Behaviour_Plunger_Essentia",
+                "gregtech.common.items.behaviors.BehaviourPlungerEssentia",
                 0,
                 null,
                 false,
