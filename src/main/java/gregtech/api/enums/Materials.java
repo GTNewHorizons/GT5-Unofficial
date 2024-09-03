@@ -2008,7 +2008,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
-
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
             BrownLimonite,
