@@ -163,23 +163,6 @@ public class Assembler implements Runnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-
-                        new ItemStack(
-                            ItemRegistry.TecTechPipeEnergyLowPower.getItem(),
-                            ((j + 1) * 16),
-                            ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
-                        WerkstoffLoader.CubicZirconia.get(OrePrefixes.lens),
-                        GTOreDictUnificator.get(prefixes[j], cables[i + 4], 8),
-                        emitters[i].get(2 * (j + 1)),
-                        sensors[i].get(2 * (j + 1)),
-                        ItemList.TRANSFORMERS[4 + i].get(2 * (j + 1)))
-                    .itemOutputs(converter)
-                    .fluidInputs(Materials.SolderingAlloy.getMolten(solderingAmount))
-                    .duration((10 * (j + 1)) * SECONDS)
-                    .eut(recipeConsumption)
-                    .addTo(assemblerRecipes);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
                         new ItemStack(
                             ItemRegistry.TecTechPipeEnergyLowPower.getItem(),
                             ((j + 1) * 16),

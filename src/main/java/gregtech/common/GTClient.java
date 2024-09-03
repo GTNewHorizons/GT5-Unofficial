@@ -106,7 +106,7 @@ import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.nei.GTNEIConfig;
+import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
@@ -642,7 +642,7 @@ public class GTClient extends GTProxy implements Runnable {
         new MetaGeneratedToolRenderer();
         new FlaskRenderer();
         new FluidDisplayStackRenderer();
-        MinecraftForge.EVENT_BUS.register(new GTNEIConfig());
+        MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
     }
 
     @Override
