@@ -49,7 +49,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
-    private boolean debug = true;
+    private boolean debug = false;
     private int inputMaxParallel = 0;
 
     public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
