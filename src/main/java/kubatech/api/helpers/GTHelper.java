@@ -28,16 +28,15 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
-import com.kuba6000.mobsinfo.api.utils.ItemID;
-
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 
 public class GTHelper {
 
     public static long getMaxInputEU(MTEMultiBlockBase mte) {
-        if (mte instanceof KubaTechGTMultiBlockBase) return ((KubaTechGTMultiBlockBase<?>) mte).getMaxInputEu();
+        if (mte instanceof KubaTechGTMultiBlockBase) return mte.getMaxInputEu();
         long rEU = 0;
         for (MTEHatchEnergy tHatch : mte.mEnergyHatches)
             if (tHatch.isValid()) rEU += tHatch.maxEUInput() * tHatch.maxAmperesIn();
@@ -65,11 +64,14 @@ public class GTHelper {
         public StackableItemSlot(int count, ItemStack stack, ArrayList<Integer> realSlots) {
             this.count = count;
             this.stack = stack;
+            this.hashcode = ItemId.createNoCopyWithStackSize(stack)
+                .hashCode();
             this.realSlots = realSlots;
         }
 
         public final int count;
         public final ItemStack stack;
+        private final int hashcode;
         public final ArrayList<Integer> realSlots;
 
         public void write(PacketBuffer buffer) throws IOException {
@@ -87,13 +89,8 @@ public class GTHelper {
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
-            if (!(obj instanceof StackableItemSlot)) return false;
-            StackableItemSlot other = (StackableItemSlot) obj;
-            return count == other.count && ItemID.createNoCopy(stack, false)
-                .hashCode()
-                == ItemID.createNoCopy(other.stack, false)
-                    .hashCode()
-                && realSlots.equals(other.realSlots);
+            if (!(obj instanceof StackableItemSlot other)) return false;
+            return count == other.count && hashcode == other.hashcode && realSlots.equals(other.realSlots);
         }
     }
 }
