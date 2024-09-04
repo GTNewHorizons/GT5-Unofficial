@@ -17,8 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
-import cpw.mods.fml.common.Loader;
-import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.DetravNetwork;
 import detrav.net.ProspectingPacket;
@@ -50,29 +48,10 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             if (aPlayer.isSneaking()) {
                 data++;
                 if (data > 3) data = 0;
-                switch (data) {
-                    case 0:
-                        aPlayer.addChatMessage(
-                            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.0")));
-                        break;
-                    case 1:
-                        aPlayer.addChatMessage(
-                            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.1")));
-                        break;
-                    case 2:
-                        aPlayer.addChatMessage(
-                            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.2")));
-                        break;
-                    case 3:
-                        aPlayer.addChatMessage(
-                            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.3")));
-                        break;
-                    default:
-                        aPlayer.addChatMessage(
-                            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.error")));
-                        break;
-                }
-                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long) data);
+                aPlayer.addChatMessage(
+                        new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode."+data)));
+
+                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
             }
 
@@ -101,15 +80,14 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                     final int ySize = c.getHeightValue(x, z);
                     for (int y = 1; y < ySize; y++) {
                         switch (data) {
-                            case 0:
-                            case 1:
+                            case 0, 1 -> {
                                 final Block tBlock = c.getBlock(x, y, z);
                                 short tMetaID = (short) c.getBlockMetadata(x, y, z);
                                 if (tBlock instanceof BlockOresAbstract) {
                                     TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
                                     if ((tTileEntity instanceof TileEntityOres)
                                         && ((TileEntityOres) tTileEntity).mNatural) {
-                                        tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
+                                        tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                                         try {
                                             String name = GTLanguageManager
                                                 .getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
@@ -146,8 +124,8 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                             (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
                                     }
                                 }
-                                break;
-                            case 2:
+                            }
+                            case 2 -> {
                                 if ((x == 0) || (z == 0)) { // Skip doing the locations with the grid on them.
                                     break;
                                 }
@@ -163,9 +141,9 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     packet
                                         .addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
                                 }
-                                break;
-                            case 3:
-                                float polution = (float) getPolution(
+                            }
+                            case 3 -> {
+                                float polution = (float) getPollution(
                                     aWorld,
                                     c.xPosition * 16 + x,
                                     c.zPosition * 16 + z);
@@ -174,13 +152,13 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                 if (polution > 0xFF) polution = 0xFF;
                                 polution = 0xFF - polution;
                                 packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
-                                break;
+                            }
                         }
                         if (data > 1) break;
                     }
                 }
             }
-            packet.level = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack, "");
+            packet.level = aItem.getHarvestLevel(aStack, "");
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
 
@@ -231,13 +209,12 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                     if (!aPlayer.capabilities.isCreativeMode)
                         ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
                 }
-                return true;
             } else {
                 if (!aWorld.isRemote) {
-                    prospectSingleChunk((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ);
+                    prospectSingleChunk(aItem, aStack, aPlayer, aWorld, aX, aY, aZ);
                 }
-                return true;
             }
+            return true;
         }
         if (data < 3) if (!aWorld.isRemote) {
             FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
@@ -246,7 +223,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             return true;
         }
         if (!aWorld.isRemote) {
-            int polution = getPolution(aWorld, aX, aZ);
+            int polution = getPollution(aWorld, aX, aZ);
             addChatMassageByValue(aPlayer, polution, "Pollution");
         }
         return true;

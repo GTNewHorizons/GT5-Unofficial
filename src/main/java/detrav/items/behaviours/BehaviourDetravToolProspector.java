@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import bartworks.system.material.Werkstoff;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
@@ -66,7 +65,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
         SplittableRandom aRandom = new SplittableRandom();
-        int chance = ((1 + aStack.getItemDamage()) * 8) > 100 ? 100 : (1 + aStack.getItemDamage()) * 8;
+        int chance = Math.min(((1 + aStack.getItemDamage()) * 8), 100);
 
         if (aWorld.isRemote) return false;
 
@@ -268,8 +267,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                                                                                           // aTileEntity)
     {
         if (aTileEntity != null) {
-            if (aTileEntity instanceof TileEntityOres) {
-                TileEntityOres gt_entity = (TileEntityOres) aTileEntity;
+            if (aTileEntity instanceof TileEntityOres gt_entity) {
                 short meta = gt_entity.getMetaData();
                 String format = LanguageRegistry.instance()
                     .getStringLocalization("gt.blockores." + meta + ".name");
@@ -416,7 +414,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
     }
 
-    public static int getPolution(World aWorld, int aX, int aZ) {
+    public static int getPollution(World aWorld, int aX, int aZ) {
         return Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
     }
 }
