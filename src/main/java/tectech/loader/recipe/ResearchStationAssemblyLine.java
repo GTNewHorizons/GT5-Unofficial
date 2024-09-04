@@ -11,7 +11,6 @@ import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GraviSuite;
@@ -923,57 +922,55 @@ public class ResearchStationAssemblyLine implements Runnable {
                 250 * 20,
                 6_400_000);
 
-            if (GTPlusPlusEverglades.isModLoaded()) {
-                // Insanely Ultimate Battery
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.ZPM4.get(1),
-                    24_000_000,
-                    1_280,
-                    (int) TierEU.RECIPE_UIV,
-                    32,
-                    new Object[] { HYPOGEN.getPlateDouble(32), HYPOGEN.getPlateDouble(32),
-                        new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 }, ItemList.ZPM4.get(8L),
-                        ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
-                        ItemList.Circuit_Wafer_QPIC.get(64),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
-                        ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
-                    new FluidStack[] { new FluidStack(solderUEV, 18_432),
-                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(18_432),
-                        Materials.Quantium.getMolten(18_432), Materials.SuperCoolant.getFluid(128_000) },
-                    ItemList.ZPM5.get(1),
-                    300 * 20,
-                    (int) TierEU.RECIPE_UIV);
+            // Insanely Ultimate Battery
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.ZPM4.get(1),
+                24_000_000,
+                1_280,
+                (int) TierEU.RECIPE_UIV,
+                32,
+                new Object[] { HYPOGEN.getPlateDouble(32), HYPOGEN.getPlateDouble(32),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 }, ItemList.ZPM4.get(8L),
+                    ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                    ItemList.Circuit_Wafer_QPIC.get(64),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
+                new FluidStack[] { new FluidStack(solderUEV, 18_432),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(18_432),
+                    Materials.Quantium.getMolten(18_432), Materials.SuperCoolant.getFluid(128_000) },
+                ItemList.ZPM5.get(1),
+                300 * 20,
+                (int) TierEU.RECIPE_UIV);
 
-                // Mega Ultimate Battery
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.ZPM5.get(1L),
-                    480_000_000,
-                    12_288,
-                    (int) TierEU.RECIPE_UMV,
-                    64,
-                    new Object[] { MaterialsElements.STANDALONE.DRAGON_METAL.getPlateDouble(32),
-                        MaterialsElements.STANDALONE.DRAGON_METAL.getPlateDouble(32),
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 }, ItemList.ZPM5.get(8L),
-                        ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
-                        ItemList.Circuit_Wafer_QPIC.get(64),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
-                        ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
-                    new FluidStack[] { new FluidStack(solderUEV, 36_864),
-                        MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(36_864),
-                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(36_864),
-                        Materials.SuperCoolant.getFluid(256_000) },
-                    ItemList.ZPM6.get(1),
-                    350 * 20,
-                    (int) TierEU.RECIPE_UMV);
-            }
+            // Mega Ultimate Battery
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.ZPM5.get(1L),
+                480_000_000,
+                12_288,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { MaterialsElements.STANDALONE.DRAGON_METAL.getPlateDouble(32),
+                    MaterialsElements.STANDALONE.DRAGON_METAL.getPlateDouble(32),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 }, ItemList.ZPM5.get(8L),
+                    ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                    ItemList.Circuit_Wafer_QPIC.get(64),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+                new FluidStack[] { new FluidStack(solderUEV, 36_864),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(36_864),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(36_864),
+                    Materials.SuperCoolant.getFluid(256_000) },
+                ItemList.ZPM6.get(1),
+                350 * 20,
+                (int) TierEU.RECIPE_UMV);
         }
 
         // MK4 Computer

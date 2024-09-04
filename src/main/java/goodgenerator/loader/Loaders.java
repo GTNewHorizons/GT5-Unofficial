@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
 import goodgenerator.blocks.regularBlock.BlockCasing;
@@ -54,6 +53,7 @@ import goodgenerator.util.MaterialFix;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
@@ -410,41 +410,40 @@ public class Loaders {
     }
 
     public static void compactMod() {
-        if (Loader.isModLoaded("Thaumcraft")) {
-            LargeEssentiaEnergyData.processEssentiaData();
-            GameRegistry.registerItem(upgradeEssentia, "upgradeEssentia", GoodGenerator.MOD_ID);
-            GameRegistry.registerTileEntity(MTEEssentiaHatch.class, "EssentiaHatch");
-            GameRegistry.registerTileEntity(MTEEssentiaOutputHatch.class, "EssentiaOutputHatch");
-            GameRegistry.registerTileEntity(MTEEssentiaOutputHatchME.class, "EssentiaOutputHatch_ME");
-            Loaders.LEG = new MTELargeEssentiaGenerator(
-                MetaTileEntityIDs.LargeEssentiaGenerator.ID,
-                "LargeEssentiaGenerator",
-                "Large Essentia Generator - Marked for Deprecation").getStackForm(1L);
-            Loaders.LES = new MTELargeEssentiaSmeltery(
-                MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
-                "LargeEssentiaSmeltery",
-                "Large Essentia Smeltery").getStackForm(1L);
-            essentiaHatch = new BlockTEContainer(
-                "essentiaHatch",
-                new String[] { GoodGenerator.MOD_ID + ":essentiaHatch" },
-                1);
-            essentiaOutputHatch = new BlockTEContainer(
-                "essentiaOutputHatch",
-                new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
-                2);
-            essentiaOutputHatch_ME = new BlockTEContainer(
-                "essentiaOutputHatch_ME",
-                new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME" },
-                3);
-            GameRegistry.registerBlock(magicCasing, GGItemBlocks.class, "magicCasing");
-            GameRegistry.registerBlock(essentiaCell, GGItemBlocks.class, "essentiaCell");
-            GameRegistry.registerBlock(essentiaHatch, GGItemBlocks.class, "essentiaHatch");
-            GameRegistry.registerBlock(essentiaOutputHatch, GGItemBlocks.class, "essentiaOutputHatch");
-            GameRegistry.registerBlock(essentiaFilterCasing, GGItemBlocks.class, "essentiaFilterCasing");
-            GameRegistry.registerBlock(essentiaOutputHatch_ME, GGItemBlocks.class, "essentiaOutputHatch_ME");
+        if (!Mods.Thaumcraft.isModLoaded()) return;
+        LargeEssentiaEnergyData.processEssentiaData();
+        GameRegistry.registerItem(upgradeEssentia, "upgradeEssentia", GoodGenerator.MOD_ID);
+        GameRegistry.registerTileEntity(MTEEssentiaHatch.class, "EssentiaHatch");
+        GameRegistry.registerTileEntity(MTEEssentiaOutputHatch.class, "EssentiaOutputHatch");
+        GameRegistry.registerTileEntity(MTEEssentiaOutputHatchME.class, "EssentiaOutputHatch_ME");
+        Loaders.LEG = new MTELargeEssentiaGenerator(
+            MetaTileEntityIDs.LargeEssentiaGenerator.ID,
+            "LargeEssentiaGenerator",
+            "Large Essentia Generator - Marked for Deprecation").getStackForm(1L);
+        Loaders.LES = new MTELargeEssentiaSmeltery(
+            MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
+            "LargeEssentiaSmeltery",
+            "Large Essentia Smeltery").getStackForm(1L);
+        essentiaHatch = new BlockTEContainer(
+            "essentiaHatch",
+            new String[] { GoodGenerator.MOD_ID + ":essentiaHatch" },
+            1);
+        essentiaOutputHatch = new BlockTEContainer(
+            "essentiaOutputHatch",
+            new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
+            2);
+        essentiaOutputHatch_ME = new BlockTEContainer(
+            "essentiaOutputHatch_ME",
+            new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME" },
+            3);
+        GameRegistry.registerBlock(magicCasing, GGItemBlocks.class, "magicCasing");
+        GameRegistry.registerBlock(essentiaCell, GGItemBlocks.class, "essentiaCell");
+        GameRegistry.registerBlock(essentiaHatch, GGItemBlocks.class, "essentiaHatch");
+        GameRegistry.registerBlock(essentiaOutputHatch, GGItemBlocks.class, "essentiaOutputHatch");
+        GameRegistry.registerBlock(essentiaFilterCasing, GGItemBlocks.class, "essentiaFilterCasing");
+        GameRegistry.registerBlock(essentiaOutputHatch_ME, GGItemBlocks.class, "essentiaOutputHatch_ME");
 
-            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
-        }
+        Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
     }
 
     public static void addOreDic() {
