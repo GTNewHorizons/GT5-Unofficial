@@ -47,22 +47,19 @@ public class DetravScannerCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        int aX = 0;
-        int aZ = 0;
-        int aY = 0;
         String name = null;
 
         ArrayList<String> strs = new ArrayList<>();
         for (int i = 0; i < args.length; i++) {
             strs.add(args[i]);
-            if (args[i].startsWith("\"")) {
-                for (i++; i < args.length; i++) {
-                    String temp = (String) strs.get(strs.size() - 1);
-                    temp = temp + " " + args[i];
-                    temp = temp.replace("\"", "");
-                    strs.set(strs.size() - 1, temp);
-                    if (args[i].endsWith("\"")) break;
-                }
+            if (!args[i].startsWith("\"")) {continue;}
+
+            for (i++; i < args.length; i++) {
+                String temp = (String) strs.get(strs.size() - 1);
+                temp = temp + " " + args[i];
+                temp = temp.replace("\"", "");
+                strs.set(strs.size() - 1, temp);
+                if (args[i].endsWith("\"")) break;
             }
         }
         args = new String[strs.size()];
@@ -72,7 +69,7 @@ public class DetravScannerCommand implements ICommand {
             case 0:
                 break;
             case 1:
-                if (args[0].toLowerCase() == "help") {
+                if (args[0].equalsIgnoreCase("help")) {
                     sendHelpMessage(sender);
                     return;
                 }
@@ -96,23 +93,28 @@ public class DetravScannerCommand implements ICommand {
             int ySize = c.getHeightValue(x, z);
             for (int y = 1; y < ySize; y++) {
                 Block b = c.getBlock(x, y, z);
-                if (b == GregTechAPI.sBlockOres1) {
-                    TileEntity entity = c.getTileEntityUnsafe(x, y, z);
-                    if (entity != null) {
-                        TileEntityOres gt_entity = (TileEntityOres) entity;
-                        short meta = gt_entity.getMetaData();
-                        String name = Materials.getLocalizedNameForItem(
-                            GTLanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
-                            meta % 1000);
-                        if (name.startsWith("Small")) continue;
-                        if (fName == null || name.toLowerCase()
-                            .contains(fName)) {
-                            if (!ores.containsKey(name)) ores.put(name, 1);
-                            else {
-                                int val = ores.get(name);
-                                ores.put(name, val + 1);
-                            }
-                        }
+                if (b != GregTechAPI.sBlockOres1) {
+                    continue;
+                }
+
+                TileEntity entity = c.getTileEntityUnsafe(x, y, z);
+
+                if (entity == null) {
+                    continue;
+                }
+
+                TileEntityOres gt_entity = (TileEntityOres) entity;
+                short meta = gt_entity.getMetaData();
+                String name = Materials.getLocalizedNameForItem(
+                    GTLanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
+                    meta % 1000);
+                if (name.startsWith("Small")) continue;
+                if (fName == null || name.toLowerCase()
+                    .contains(fName)) {
+                    if (!ores.containsKey(name)) ores.put(name, 1);
+                    else {
+                        int val = ores.get(name);
+                        ores.put(name, val + 1);
                     }
                 }
             }
