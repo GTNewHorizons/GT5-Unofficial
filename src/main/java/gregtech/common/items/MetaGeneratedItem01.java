@@ -3203,14 +3203,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.Black_Hole_Opener.set(
             addItem(
                 Black_Hole_Opener.ID,
-                "Black Hole Activation Catalyst",
+                "Black Hole Seed",
                 "Opens a semi-stable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 64)));
         ItemList.Black_Hole_Closer.set(
             addItem(
                 Black_Hole_Closer.ID,
-                "Black Hole Deactivation Catalyst",
+                "Black Hole Collapser",
                 "Safely closes a semi-stable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
