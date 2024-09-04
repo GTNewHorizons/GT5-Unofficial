@@ -446,7 +446,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .duration(Math.max(aMaterialMass * 9L, 1L))
+                .duration(Math.max(aMaterialMass * 64L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .metadata(COMPRESSION_TIER, compression_tier)
                 .addTo(compressorRecipes);
