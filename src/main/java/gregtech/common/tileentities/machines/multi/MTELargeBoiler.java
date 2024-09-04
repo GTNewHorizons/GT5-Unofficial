@@ -331,8 +331,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         // those with very high fuel values that would cause an overflow error.
                         if (GTUtility.getFluidForFilledItem(tInput, true) == null
                             && (this.mMaxProgresstime = GTModHandler.getFuelValue(tInput) / 80) > 0
-                            && (GTModHandler.getFuelValue(tInput) * 2 / this.getEUt()) > 1
-                            && GTModHandler.getFuelValue(tInput) < 100000000) {
+                            && (GTModHandler.getFuelValue(tInput) * 2L / this.getEUt()) > 1) {
                             this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
@@ -366,11 +365,28 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
-            if (this.mSuperEfficencyIncrease > 0) mEfficiency = Math.max(
-                0,
-                Math.min(
-                    mEfficiency + mSuperEfficencyIncrease,
-                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+            int maxEff = getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000);
+            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff)
+            {
+                mEfficiency = Math.max(
+                    0,
+                    Math.min(
+                        mEfficiency + mSuperEfficencyIncrease,
+                        maxEff));
+                if (mEfficiency == maxEff)
+                {
+                    //Adjust the burntime dynamically to account for circuit program
+                    //This is to account for the dramatic issue where the machine outputs the throttled
+                    //amount but the burntime is not throttled.
+                    //This is very apparent when burning blocks with super high burntimes
+                    int oldProgressTime = mProgresstime;
+                    int oldMaxProgressTime = mMaxProgresstime;
+                    int maxProgressTime = adjustBurnTimeForConfig(oldMaxProgressTime);
+                    double progressRatio = (double) oldProgressTime / oldMaxProgressTime;
+                    int progressTime = (int) Math.ceil(maxProgressTime * progressRatio);
+                    mMaxProgresstime = maxProgressTime - (progressTime - oldProgressTime);
+                }
+            }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
@@ -483,7 +499,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             return rawBurnTime;
         }
         int adjustedEUt = Math.max(25, getEUt() - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
-        int adjustedBurnTime = rawBurnTime * getEUt() / adjustedEUt;
+        int adjustedBurnTime = (int) (rawBurnTime * (long) getEUt() / adjustedEUt);
         this.excessProjectedEU += getEUt() * rawBurnTime - adjustedEUt * adjustedBurnTime;
         adjustedBurnTime += this.excessProjectedEU / adjustedEUt;
         this.excessProjectedEU %= adjustedEUt;
