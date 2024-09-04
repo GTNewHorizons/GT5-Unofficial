@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -30,6 +34,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -333,6 +338,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private String customName = null;
     private boolean supportFluids;
     private boolean additionalConnection = false;
+    private boolean disablePatternOptimization = false;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
         super(
@@ -502,6 +508,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public boolean allowsPatternOptimization() {
+        return !disablePatternOptimization;
+    }
+
+    @Override
     public void gridChanged() {
         needPatternSync = true;
     }
@@ -534,6 +545,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         aNBT.setTag("internalInventory", internalInventoryNBT);
         if (customName != null) aNBT.setString("customName", customName);
         aNBT.setBoolean("additionalConnection", additionalConnection);
+        aNBT.setBoolean("disablePatternOptimization", disablePatternOptimization);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -584,6 +596,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
 
         getProxy().readFromNBT(aNBT);
     }
@@ -717,7 +730,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE)
                 .addTooltips(ImmutableList.of("Place manual items"))
                 .setSize(16, 16)
-                .setPos(170, 45))
+                .setPos(170, 46))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     refundAll();
@@ -727,7 +740,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
                 .setSize(16, 16)
-                .setPos(170, 28));
+                .setPos(170, 28))
+            .widget(new CycleButtonWidget()
+                .setToggle(() -> disablePatternOptimization, val -> disablePatternOptimization = val)
+                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
+                .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+                .addTooltip(0, "Pattern Optimization:\n§7Allowed")
+                .addTooltip(1, "Pattern Optimization:\n§7Disabled")
+                .setPos(170, 10)
+                .setSize(16, 16));
     }
 
     @Override
