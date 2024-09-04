@@ -268,7 +268,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + "halted"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " by inserting spacetime")
+                    + " by inserting 1 L/s of spacetime")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "30"
@@ -442,7 +442,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 // If recipe needs a black hole and one is not open, just wait
                 // If the recipe doesn't require black hole, incur a 0.5x speed penalty
                 // If recipe doesn't require black hole but one is open, give 5x speed bonus
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 1) > 0) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
                     if (!blackholeOn) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 } else {
                     if (blackHoleStability <= 0) setSpeedBonus(5F);
