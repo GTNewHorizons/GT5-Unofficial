@@ -21,20 +21,20 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerZPM;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
-import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerZPM;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 /**
