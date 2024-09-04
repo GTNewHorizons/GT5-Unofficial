@@ -35,10 +35,12 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
+import blockrenderer6343.client.world.TrackedDummyWorld;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
@@ -289,7 +291,10 @@ public class GregTechAPI {
         sItemStackMappings.add(sCoverBehaviors);
 
         dummyWorlds.add(GTDummyWorld.class);
-        tryAddDummyWorld("blockrenderer6343.client.world.DummyWorld");
+
+        if (Mods.BlockRenderer6343.isModLoaded()) {
+            dummyWorlds.add(TrackedDummyWorld.class);
+        }
     }
 
     private static void tryAddDummyWorld(String className) {
