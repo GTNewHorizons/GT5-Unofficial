@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.covers;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -14,9 +15,8 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluid;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
@@ -35,32 +35,28 @@ public class CoverOverflow extends CoverBehavior {
         this.mMaxTransferRate = aTransferRate * 1000;
     }
 
-    /**
-     * Void the fluid from tank if it possible
-     */
-    private void doOverflowThing(FluidStack mFluid, int aAmountLimit) {
+    private FluidStack doOverflowThing(FluidStack mFluid, int aAmountLimit) {
         if (mFluid != null)
             while (mFluid.amount > aAmountLimit) mFluid.amount -= Math.min(mFluid.amount - aAmountLimit, mTransferRate);
+        return mFluid;
     }
 
-    private void doOverflowThings(FluidStack[] mFluids, int aAmountLimit) {
+    private FluidStack[] doOverflowThings(FluidStack[] mFluids, int aAmountLimit) {
         for (FluidStack mFluid : mFluids) doOverflowThing(mFluid, aAmountLimit);
+        return mFluids;
     }
 
     public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int aAmountLimit,
         ICoverable aTileEntity, long aTimer) {
 
-        if (aAmountLimit == 0) {
-            return aAmountLimit;
-        }
+        if (aAmountLimit == 0) return aAmountLimit;
 
         if (aTileEntity instanceof BaseMetaTileEntity mBMTE) {
-            if (mBMTE.getMetaTileEntity() instanceof MTEHatchOutput mMTEHO)
-                doOverflowThing(mMTEHO.mFluid, aAmountLimit);
-            else if (mBMTE.getMetaTileEntity() instanceof MTEBasicMachine mMTEBM)
-                doOverflowThing(mMTEBM.mOutputFluid, aAmountLimit);
-        } else if (aTileEntity instanceof BaseMetaPipeEntity mBMPE) {
-            if (mBMPE.getMetaTileEntity() instanceof MTEFluid mMTEF) doOverflowThings(mMTEF.mFluids, aAmountLimit);
+            IMetaTileEntity mIMTE = mBMTE.getMetaTileEntity();
+            if (mIMTE instanceof MTEBasicTank mMTEBT)
+                mMTEBT.setDrainableStack(doOverflowThing(mMTEBT.getDrainableStack(), aAmountLimit));
+            else if (mIMTE instanceof MTEFluid mMTEF)
+                doOverflowThings(mMTEF.mFluids, aAmountLimit);
         }
 
         return aAmountLimit;
