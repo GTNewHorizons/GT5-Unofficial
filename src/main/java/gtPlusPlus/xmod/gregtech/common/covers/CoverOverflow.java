@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -21,6 +22,8 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 
 public class CoverOverflow extends CoverBehavior {
 
+    private static final ForgeDirection mInMachine = ForgeDirection.UNKNOWN;
+
     public final int mTransferRate;
     public final int mInitialTransferRate;
     public final int mMaxTransferRate;
@@ -31,35 +34,31 @@ public class CoverOverflow extends CoverBehavior {
         this.mMaxTransferRate = aTransferRate * 1000;
     }
 
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+    public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         if (aCoverVariable == 0) {
             return aCoverVariable;
         }
         if ((aTileEntity instanceof IFluidHandler)) {
-            // Logger.INFO("Trying to Void via Overflow.");
-            IFluidHandler tTank1;
-            ForgeDirection directionFrom;
-            directionFrom = ForgeDirection.UNKNOWN;
-            tTank1 = (IFluidHandler) aTileEntity;
-            if (tTank1 != null) {
-                FluidStack aTankStack = tTank1.getTankInfo(directionFrom)[0].fluid;
-                if (aTankStack != null) {
-                    // Logger.INFO("Found Fluid inside self - "+aTankStack.getLocalizedName()+", overflow point set at
-                    // "+aCoverVariable+"L and we have "+aTankStack.amount+"L inside.");
-                    if (aTankStack.amount > aCoverVariable) {
-                        int aAmountToDrain = aTankStack.amount - aCoverVariable;
-                        // Logger.INFO("There is "+aAmountToDrain+" more fluid in the tank than we would like.");
-                        if (aAmountToDrain > 0) {
-                            FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aAmountToDrain), true);
-                            if (tLiquid != null) {
-                                // Logger.INFO("Drained "+aAmountToDrain+"L.");
-                            }
-                        }
-                    }
-                } else {
-                    // Logger.INFO("Could not simulate drain on self.");
+            IFluidHandler tTank;
+            tTank = (IFluidHandler) aTileEntity;
+
+            if (tTank != null) {
+
+                // TODO: find each unique getTankInfo(...) function for situations ...
+                FluidTankInfo[] mInTankInfo = tTank.getTankInfo(mInMachine);
+                if (mInTankInfo.length == 0) {
+                    return aCoverVariable;
                 }
+
+                FluidStack mOutFluid = mInTankInfo[1].fluid;
+
+                int mDrainedAmount;
+                if (tTank.canDrain(mInMachine, mOutFluid.getFluid()))
+                    while (mOutFluid.amount > aCoverVariable) {
+                        mDrainedAmount = (mOutFluid.amount - aCoverVariable) % mTransferRate;
+                        tTank.drain(mInMachine, mDrainedAmount, true);
+                    }
             }
         }
         return aCoverVariable;
@@ -68,9 +67,9 @@ public class CoverOverflow extends CoverBehavior {
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            aCoverVariable += (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            aCoverVariable += (int) (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
-            aCoverVariable -= (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            aCoverVariable -= (int) (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         }
         if (aCoverVariable > mMaxTransferRate) {
             aCoverVariable = mInitialTransferRate;
@@ -106,46 +105,56 @@ public class CoverOverflow extends CoverBehavior {
         return true;
     }
 
+    @Override
     public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return false;
     }
 
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return true;
-    }
-
+    @Override
     public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
+    @Override
     public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
