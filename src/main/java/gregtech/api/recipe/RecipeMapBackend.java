@@ -277,8 +277,8 @@ public class RecipeMapBackend {
     public void reInit() {
         itemIndex.clear();
         for (GTRecipe recipe : allRecipes()) {
-            GTOreDictUnificator.setStackArray(true, recipe.mInputs);
-            GTOreDictUnificator.setStackArray(true, recipe.mOutputs);
+            GTOreDictUnificator.setStackArray(true, true, recipe.mInputs);
+            GTOreDictUnificator.setStackArray(true, true, recipe.mOutputs);
             addToItemMap(recipe);
         }
     }
