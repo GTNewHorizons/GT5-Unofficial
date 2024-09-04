@@ -38,7 +38,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -185,18 +184,14 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(wiremillRecipes);
 
             // smallGear
-            if (WerkstoffLoader.smallGearShape != null) {
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(ingot), WerkstoffLoader.smallGearShape.get(0L))
-                    .itemOutputs(werkstoff.get(gearGtSmall))
-                    .duration(
-                        (int) werkstoff.getStats()
-                            .getMass())
-                    .eut(8 * tVoltageMultiplier)
-                    .addTo(extruderRecipes);
-
-            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Small_Gear.get(0L))
+                .itemOutputs(werkstoff.get(gearGtSmall))
+                .duration(
+                    (int) werkstoff.getStats()
+                        .getMass())
+                .eut(8 * tVoltageMultiplier)
+                .addTo(extruderRecipes);
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gearGtSmall),
@@ -234,16 +229,12 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(24)
                 .addTo(assemblerRecipes);
 
-            if (WerkstoffLoader.rotorShape != null) {
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(ingot, 5), WerkstoffLoader.rotorShape.get(0L))
-                    .itemOutputs(werkstoff.get(rotor))
-                    .duration(10 * SECONDS)
-                    .eut(60)
-                    .addTo(extruderRecipes);
-
-            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
+                .itemOutputs(werkstoff.get(rotor))
+                .duration(10 * SECONDS)
+                .eut(60)
+                .addTo(extruderRecipes);
 
             // molten -> metal
             if (werkstoff.hasItemType(cellMolten)) {

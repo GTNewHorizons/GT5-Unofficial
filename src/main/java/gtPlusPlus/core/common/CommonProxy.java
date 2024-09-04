@@ -18,6 +18,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
+import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -42,7 +43,6 @@ import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
@@ -174,26 +174,27 @@ public class CommonProxy {
         }
 
         // GalaxySpace Support
-        if (ReflectionUtils.doesClassExist("galaxyspace.core.entity.mob.EntityEvolvedColdBlaze")) {
-            Class<?> aColdBlaze = ReflectionUtils.getClass("galaxyspace.core.entity.mob.EntityEvolvedColdBlaze");
-            ItemStack aSmallBlizz, aTinyBlizz, aSmallCryo, aTinyCryo;
-            aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
-            aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);
-            aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
-            aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);
-            EntityUtils
-                .registerDropsForMob(aColdBlaze, ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1), 2, 500);
+        if (Mods.GalaxySpace.isModLoaded()) {
+            ItemStack aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
+            ItemStack aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);
+            ItemStack aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
+            ItemStack aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);
+            EntityUtils.registerDropsForMob(
+                EntityEvolvedColdBlaze.class,
+                ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1),
+                2,
+                500);
             if (aSmallBlizz != null) {
-                EntityUtils.registerDropsForMob(aColdBlaze, aSmallBlizz, 2, 750);
+                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aSmallBlizz, 2, 750);
             }
             if (aTinyBlizz != null) {
-                EntityUtils.registerDropsForMob(aColdBlaze, aTinyBlizz, 4, 1500);
+                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aTinyBlizz, 4, 1500);
             }
             if (aSmallCryo != null) {
-                EntityUtils.registerDropsForMob(aColdBlaze, aSmallCryo, 1, 50);
+                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aSmallCryo, 1, 50);
             }
             if (aTinyCryo != null) {
-                EntityUtils.registerDropsForMob(aColdBlaze, aTinyCryo, 2, 100);
+                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aTinyCryo, 2, 100);
             }
         }
     }
