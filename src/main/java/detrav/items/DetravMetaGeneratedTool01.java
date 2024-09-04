@@ -1,5 +1,21 @@
 package detrav.items;
 
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerZPM;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,22 +36,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
-
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerZPM;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -207,11 +207,8 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
-                    + range
-                    + "x"
-                    + range
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocal("tooltip.detrav.scanner.range") + range + "x" + range + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 3,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0")
@@ -301,17 +298,31 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         ItemStack dStack;
         if (NewHorizonsCoreMod.isModLoaded()) {
             // Materials at tiers
-            list.add(getToolWithStats(ProspectorScannerULV.ID, 1, Materials.Polycaprolactam, Materials.Polycaprolactam, null));
+            list.add(
+                getToolWithStats(
+                    ProspectorScannerULV.ID,
+                    1,
+                    Materials.Polycaprolactam,
+                    Materials.Polycaprolactam,
+                    null));
             list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
             list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Bronze, Materials.Steel, null));
             list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Manyullyn, Materials.Aluminium, null));
-            list.add(getToolWithStats(ProspectorScannerHV.ID, 1, Materials.DamascusSteel, Materials.DamascusSteel, null));
+            list.add(
+                getToolWithStats(ProspectorScannerHV.ID, 1, Materials.DamascusSteel, Materials.DamascusSteel, null));
             list.add(getToolWithStats(ProspectorScannerEV.ID, 1, Materials.Titanium, Materials.Titanium, null));
-            list.add(getToolWithStats(ProspectorScannerIV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null));
+            list.add(
+                getToolWithStats(ProspectorScannerIV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null));
             list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Iridium, Materials.Iridium, null));
             list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Osmium, Materials.Osmium, null));
             list.add(getToolWithStats(ProspectorScannerZPM.ID, 1, Materials.Neutronium, Materials.Neutronium, null));
-            list.add(getToolWithStats(ProspectorScannerUV.ID, 1, Materials.InfinityCatalyst, Materials.InfinityCatalyst, null));
+            list.add(
+                getToolWithStats(
+                    ProspectorScannerUV.ID,
+                    1,
+                    Materials.InfinityCatalyst,
+                    Materials.InfinityCatalyst,
+                    null));
             list.add(getToolWithStats(ProspectorScannerUHV.ID, 1, Materials.Infinity, Materials.Infinity, null));
 
             // electric prospector scanners:

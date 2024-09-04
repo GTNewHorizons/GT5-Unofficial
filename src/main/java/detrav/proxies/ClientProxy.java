@@ -11,8 +11,7 @@ import detrav.gui.DetravScannerGUI;
  */
 public class ClientProxy extends CommonProxy {
 
-    public ClientProxy() {
-    }
+    public ClientProxy() {}
 
     @Override
     public void onPostLoad() {

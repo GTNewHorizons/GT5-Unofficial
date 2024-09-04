@@ -1,5 +1,7 @@
 package detrav.items.behaviours;
 
+import static gregtech.api.enums.Mods.VisualProspecting;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,8 +41,6 @@ import gregtech.common.UndergroundOil;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.items.behaviors.BehaviourNone;
-
-import static gregtech.api.enums.Mods.VisualProspecting;
 
 /**
  * Created by wital_000 on 19.03.2016.

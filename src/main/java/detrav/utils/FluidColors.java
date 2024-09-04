@@ -38,9 +38,7 @@ public class FluidColors {
             .values()
             .stream()
             .filter(Objects::nonNull)
-            .forEach(fluid -> {
-                fluidColors.putIfAbsent(fluid.getID(), convertColorInt(fluid.getColor()));
-            });
+            .forEach(fluid -> { fluidColors.putIfAbsent(fluid.getID(), convertColorInt(fluid.getColor())); });
     }
 
     private static void reFillFluidColors() {

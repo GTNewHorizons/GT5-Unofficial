@@ -1,5 +1,7 @@
 package detrav.items.behaviours;
 
+import static gregtech.api.enums.Mods.VisualProspecting;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,6 @@ import gregtech.common.UndergroundOil;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
 
-import static gregtech.api.enums.Mods.VisualProspecting;
-
 /**
  * Created by wital_000 on 19.03.2016.
  */
@@ -49,7 +49,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 data++;
                 if (data > 3) data = 0;
                 aPlayer.addChatMessage(
-                        new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode."+data)));
+                    new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode." + data)));
 
                 DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);

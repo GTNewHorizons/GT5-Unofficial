@@ -52,7 +52,9 @@ public class DetravScannerCommand implements ICommand {
         ArrayList<String> strs = new ArrayList<>();
         for (int i = 0; i < args.length; i++) {
             strs.add(args[i]);
-            if (!args[i].startsWith("\"")) {continue;}
+            if (!args[i].startsWith("\"")) {
+                continue;
+            }
 
             for (i++; i < args.length; i++) {
                 String temp = (String) strs.get(strs.size() - 1);

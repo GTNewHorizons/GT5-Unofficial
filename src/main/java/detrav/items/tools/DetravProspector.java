@@ -22,7 +22,7 @@ public class DetravProspector extends DetravToolElectricProspectorBase {
     @Override
     public float getMaxDurabilityMultiplier() {
         double x = tier + 1;
-        return (float) (0.00625D + (1.25D/6D) * Math.tanh(Math.pow(x, (x/8D))/25D));
+        return (float) (0.00625D + (1.25D / 6D) * Math.tanh(Math.pow(x, (x / 8D)) / 25D));
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {

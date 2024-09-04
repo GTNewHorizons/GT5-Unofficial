@@ -2,7 +2,6 @@ package detrav.items.tools;
 
 import java.util.List;
 
-import gregtech.api.enums.SoundResource;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -20,6 +19,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
