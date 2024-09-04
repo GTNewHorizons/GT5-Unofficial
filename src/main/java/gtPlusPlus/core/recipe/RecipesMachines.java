@@ -2777,7 +2777,7 @@ public class RecipesMachines {
                     GregtechItemList.Casing_Adv_BlastFurnace.get(1),
                     MaterialsAlloy.MARAGING250.getPlate(4),
                     MaterialsAlloy.MARAGING300.getGear(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2),
                     GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
                 .duration(2 * SECONDS + 10 * TICKS)
