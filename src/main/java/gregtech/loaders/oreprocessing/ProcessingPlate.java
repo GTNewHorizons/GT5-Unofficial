@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -437,12 +438,14 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
         if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UIV) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
+                .metadata(COMPRESSION_TIER, compression_tier)
                 .addTo(compressorRecipes);
         }
     }
