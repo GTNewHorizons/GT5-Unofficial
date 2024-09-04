@@ -30,7 +30,7 @@ public class BaseRecipeLoader {
 
     public static Materials getOrDefault(String name, Materials def) {
         Materials mat = Materials.get(name);
-        return mat == Materials._NULL || mat == null ? def : mat;
+        return mat == Materials._NULL ? def : mat;
     }
 
     public void run() {
