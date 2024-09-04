@@ -194,14 +194,18 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                     GT_MetaTileEntity_MultiSolidifier::getPipeCasingTier)))
         .addElement(
             'F',
-            TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
+            ofBlock(GregTech_API.sBlockCasings1, 11))
+            /*TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
                 ? ofChain(ofBlock(Block.getBlockFromName("TConstruct:SearedBlock"), 0))
                 : ofChain(ofBlock(Blocks.cauldron, 0)))
+        */
         .addElement(
             'D',
-            BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
+            ofBlock(GregTech_API.sBlockCasings4, 1))
+        /*    BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
                 ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:blockHopper"), 10))
                 : ofChain(ofBlock(Blocks.hopper, 0)))
+        */
         .build();
 
     public GT_MetaTileEntity_MultiSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -264,21 +268,28 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper 2024")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
-            .addInfo("Has 10 parallels by default")
-            .addInfo("Gains an additional 2 parallels per width expansion")
+            .addInfo("Has 4 parallels by default")
+            .addInfo("Gains an additional 10 parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
             .addInfo(
-                AuthorOmdaCZ + "with help of"
+                AuthorOmdaCZ + "with help of "
                     + AuthorFourIsTheNumber
                     + EnumChatFormatting.AQUA
-                    + "GDCloud"
+                    + ", GDCloud "
                     + "&"
                     + authorBaps)
             .addSeparator()
-            .beginVariableStructureBlock(19, 65, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Solidifier/Laurenium/DTPF Casing", 146, true)
-            .addCasingInfoMin("Radiator casing/", 18, false)
+            .addCasingInfoMin("Tier 1: Solidifier Casing", 146, true)
+            .addCasingInfoMin("Tier 2: Laurenium Casing", 146, true)
+            .addCasingInfoMin("Tier 3: DTPF Casing", 146, true)
+            .addCasingInfoMin("Tier 1: Radiator Casing", 18, true)
+            .addCasingInfoMin("Tier 2: Cinobite Pipe Casing", 18, true)
+            .addCasingInfoMin("Tier 3: Abyssal Alloy Pipe Casing", 18, true)
+            .addCasingInfoMin("Heat Proof Casing", 4, false)
+            .addCasingInfoMin("Solid Steel Casing", 4, false)
+            .addInfo("Casings/Pipe Casings limit maximal width 2; 4; 6")
             .addInputBus("Any Tiered Casing", 1)
             .addOutputBus("Any Tiered Casing", 1)
             .addInputHatch("Any Tiered Casing", 1)
@@ -292,7 +303,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
         // max Width, minimal mid pieces to build on each side
-        int tTotalWidth = Math.min(30, stackSize.stackSize + 3);
+        int tTotalWidth = Math.min(6, stackSize.stackSize + 3);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             // horizontal offset 3 from controller and number of pieces times width of each piece
             buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0);
@@ -315,7 +326,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalWidth = Math.min(6, stackSize.stackSize + 3);
+        int tTotalWidth = Math.min(3 + getCasingTier(), stackSize.stackSize + 3);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             mWidth = i;
             nWidth = i;
@@ -348,6 +359,15 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
     private int mCasingAmount;
 
+    int mTier; {
+        if (casingTier>pipeCasingTier) {
+            mTier = pipeCasingTier;
+        }
+        else if (casingTier<=pipeCasingTier) {
+            mTier = casingTier;
+        }
+
+    }
     private void onCasingAdded() {
         mCasingAmount++;
     }
@@ -375,7 +395,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         casingTier = -1;
         pipeCasingTier = -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (mWidth < 6) {
+            while (mWidth < (2 * (mTier + 1))) {
                 if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0)
                     && checkPiece(MS_LEFT_MID, (2 * (mWidth + 1)) + 3, 4, 0)) {
                     mWidth++;
