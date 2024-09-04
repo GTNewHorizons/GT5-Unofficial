@@ -16,6 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -27,7 +28,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     private boolean looseFit = false;
     private boolean isUsingDenseSteam;
 
-    public GT_MTE_LargeTurbine_SCSteam(int aID, String aName, String aNameRegional) {
+    public MTELargeTurbineSCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -66,15 +67,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
-        if (looseFit & isUsingDenseSteam) {
-            aOptFlow *= 4;
-            final double flowMultiplier = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 10f);
-            if (aBaseEff > 10000) {
-                aOptFlow *= flowMultiplier;
-            }
-            aBaseEff *= 0.75f;
-        }
+    long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
 
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
@@ -84,7 +77,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         int steamInHatch = 0;
         // Variable required outside of loop for
         // multi-hatch scenarios.
-        this.realOptFlow = aOptFlow;
+        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
         // this.realOptFlow = (double) aOptFlow * (double) flowMultipliers[0];
         // Will there be an multiplier for SC?
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
@@ -128,7 +121,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
             }
         }
         if (totalFlow <= 0) return 0;
-        tEU = totalFlow;
+        tEU = totalFlow; // SC Steam has 1 EU per litre so the flow equals base EU produced
         if (isUsingDenseSteam) {
             addOutput(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
         } else {
@@ -138,9 +131,9 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
-            tEU = Math.max(1, MathUtils.safeInt((long) tEU * (long) aBaseEff / 10000L));
+            tEU = Math.max(1, MathUtils.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         } else {
-            tEU = MathUtils.safeInt((long) tEU * (long) aBaseEff / 10000L);
+            tEU = MathUtils.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
         if (isUsingDenseSteam) {
             return tEU;
@@ -156,7 +149,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         // (Tight/Loose changes on every action, Slow/Fast changes every other action, all pairs are cycled this way)
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GT_Utility.sendChatToPlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? "Fitting is Loose (Higher Flow)" : "Fitting is Tight (Higher Efficiency)");
         }

@@ -120,6 +120,10 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
+            // At this point all turbines are equivalent in all hatches, use the stats of the first turbine for calculations
+            ItemStack turbineItem = mTurbineRotorHatches.get(0).getTurbine();
+            TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool)turbineItem.getItem(), turbineItem);
+
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             if (tFluids.size() > 0) {
@@ -141,21 +145,11 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
                     ItemStack aStack = getFullTurbineAssemblies().get(0)
                         .getTurbine();
-                    aTotalBaseEff += GTUtility.safeInt(
-                        (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                    aTotalOptimalFlow += GTUtility
-                        .safeInt(
-                            (long) Math.max(
-                                Float.MIN_NORMAL,
-                                ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
-                                    .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed
-                                    * 50));
+                    aTotalBaseEff += turbine.getPlasmaEfficiency() * 10000;
+                    aTotalOptimalFlow += turbine.getOptimalPlasmaFlow();
 
                     // Calculate total EU/t (as shown on turbine tooltip (Fast mode doesn't affect))
-                    double aEUPerTurbine = aTotalOptimalFlow * 40
-                        * 0.0105
-                        * MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier
-                        * (50.0f + (10.0f * ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)));
+                    double aEUPerTurbine = turbine.getOptimalPlasmaEUt();
                     aTotalOptimalFlow *= getSpeedMultiplier();
 
                     if (aTotalOptimalFlow < 0) {
@@ -178,7 +172,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             }
 
             // How much the turbine should be producing with this flow
-            long newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
+            long newPower = fluidIntoPower(tFluids, turbine);
 
             // Reduce produced power depending on the ratio between fuel value and turbine EU/t with the following
             // formula:
@@ -223,15 +217,8 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
-    @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        // TODO @Sampsa: Fix this.
-        return 0;
-    }
-
-    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
-            aOptFlow *= 800; // CHANGED THINGS HERE, check recipe runs once per 20 ticks
             int tEU = 0;
 
             int actualOptimalFlow = 0;
@@ -240,7 +227,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             actualOptimalFlow = GTUtility
-                .safeInt((long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
+                .safeInt((long) Math.ceil(turbine.getOptimalPlasmaFlow() * 20 / (double) fuelValue)); // Check recipe runs once every 20 ticks
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
@@ -276,12 +263,12 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             tEU = GTUtility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
 
             if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt((long) (aBaseEff / 10000D * tEU));
+                tEU = GTUtility.safeInt((long) (turbine.getPlasmaEfficiency() * tEU));
             } else {
                 double efficiency = 1.0D - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
 
                 tEU = (int) (tEU * efficiency);
-                tEU = GTUtility.safeInt((long) (aBaseEff / 10000D * tEU));
+                tEU = GTUtility.safeInt((long) (turbine.getPlasmaEfficiency() * tEU));
             }
 
             return tEU;
