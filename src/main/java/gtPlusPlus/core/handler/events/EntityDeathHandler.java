@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
-import com.kuba6000.mobsinfo.api.MobDrop;
-import com.kuba6000.mobsinfo.api.MobRecipe;
-import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
+import com.kuba6000.mobsinfo.api.MobDrop;
+import com.kuba6000.mobsinfo.api.MobRecipe;
+
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -21,7 +24,6 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
 public class EntityDeathHandler implements IMobExtraInfoProvider {
@@ -133,7 +135,8 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
 
     @Optional.Method(modid = "mobsinfo")
     @Override
-    public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops, @NotNull MobRecipe recipe) {
+    public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
+        @NotNull MobRecipe recipe) {
         AutoMap<Triplet<ItemStack, Integer, Integer>> dropEntry = mMobDropMap.get(recipe.entity.getClass());
 
         if (dropEntry != null && !dropEntry.isEmpty()) {

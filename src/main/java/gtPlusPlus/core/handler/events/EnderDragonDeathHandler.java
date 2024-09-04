@@ -1,20 +1,22 @@
 package gtPlusPlus.core.handler.events;
 
-import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
-import com.kuba6000.mobsinfo.api.MobDrop;
-import com.kuba6000.mobsinfo.api.MobRecipe;
-import cpw.mods.fml.common.Optional;
+import java.util.ArrayList;
+
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
+import com.kuba6000.mobsinfo.api.MobDrop;
+import com.kuba6000.mobsinfo.api.MobRecipe;
+
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
 public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
@@ -73,13 +75,13 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
 
     @Optional.Method(modid = "mobsinfo")
     @Override
-    public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops, @NotNull MobRecipe recipe) {
+    public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
+        @NotNull MobRecipe recipe) {
         if (mHEE && mHardcoreDragonClass != null && mHardcoreDragonClass.isInstance(recipe.entity)) {
             MobDrop drop = new MobDrop(
                 MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(1),
                 MobDrop.DropType.Normal,
-                (int) (MobDrop.getChanceBasedOnFromTo(100, 250) * MobDrop.getChanceBasedOnFromTo(5, 25)
-                    * 10000d),
+                (int) (MobDrop.getChanceBasedOnFromTo(100, 250) * MobDrop.getChanceBasedOnFromTo(5, 25) * 10000d),
                 null,
                 null,
                 false,
@@ -92,9 +94,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             MobDrop drop = new MobDrop(
                 MaterialsElements.STANDALONE.DRAGON_METAL.getIngot(1),
                 MobDrop.DropType.Normal,
-                (int) (MobDrop.getChanceBasedOnFromTo(100, 200)
-                    * MobDrop.getChanceBasedOnFromTo(1, 5)
-                    * 10000d),
+                (int) (MobDrop.getChanceBasedOnFromTo(100, 200) * MobDrop.getChanceBasedOnFromTo(1, 5) * 10000d),
                 null,
                 null,
                 false,
@@ -107,8 +107,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             MobDrop drop = new MobDrop(
                 MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(1),
                 MobDrop.DropType.Normal,
-                (int) (MobDrop.getChanceBasedOnFromTo(25, 50) * MobDrop.getChanceBasedOnFromTo(1, 10)
-                    * 10000d),
+                (int) (MobDrop.getChanceBasedOnFromTo(25, 50) * MobDrop.getChanceBasedOnFromTo(1, 10) * 10000d),
                 null,
                 null,
                 false,
