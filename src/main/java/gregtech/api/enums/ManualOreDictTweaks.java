@@ -18,7 +18,7 @@ public class ManualOreDictTweaks {
 
     private static final Map<String, Map<String, Boolean>> oredictLookupTable = new HashMap<>();
 
-    private static final String[] gregtech = new String[] { "dustAlumina", "dustNikolite" };
+    private static final String[] gregtech = new String[] { "dustAlumina" };
     private static final String[] enderio = new String[] { "ingotDarkSteel" };
     private static final String[] draconicevolution = new String[] { "dustDraconium" };
     private static final String[] thaumcraft = new String[] { "ingotThaumium", "ingotVoid", "nuggetThaumium",
