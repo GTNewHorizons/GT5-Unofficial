@@ -366,19 +366,13 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000);
-            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff)
-            {
-                mEfficiency = Math.max(
-                    0,
-                    Math.min(
-                        mEfficiency + mSuperEfficencyIncrease,
-                        maxEff));
-                if (mEfficiency == maxEff)
-                {
-                    //Adjust the burntime dynamically to account for circuit program
-                    //This is to account for the dramatic issue where the machine outputs the throttled
-                    //amount but the burntime is not throttled.
-                    //This is very apparent when burning blocks with super high burntimes
+            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
+                mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
+                if (mEfficiency == maxEff) {
+                    // Adjust the burntime dynamically to account for circuit program
+                    // This is to account for the dramatic issue where the machine outputs the throttled
+                    // amount but the burntime is not throttled.
+                    // This is very apparent when burning blocks with super high burntimes
                     int oldProgressTime = mProgresstime;
                     int oldMaxProgressTime = mMaxProgresstime;
                     int maxProgressTime = adjustBurnTimeForConfig(oldMaxProgressTime);
