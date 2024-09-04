@@ -1,8 +1,13 @@
 package gtPlusPlus.core.handler.events;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
+import com.kuba6000.mobsinfo.api.MobDrop;
+import com.kuba6000.mobsinfo.api.MobRecipe;
+import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,15 +21,17 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import org.jetbrains.annotations.NotNull;
 
-public class EntityDeathHandler {
+@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
+public class EntityDeathHandler implements IMobExtraInfoProvider {
 
     private static final HashMap<Class, AutoMap<Triplet<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
     private static final HashSet<Class> mInternalClassKeyCache = new HashSet<>();
 
     /**
      * Provides the ability to provide custom drops upon the death of EntityLivingBase objects.
-     * 
+     *
      * @param aMobClass  - The Base Class you want to drop this item.
      * @param aStack     - The ItemStack, stack size is not respected.
      * @param aMaxAmount - The maximum size of the ItemStack which drops.
@@ -120,6 +127,37 @@ public class EntityDeathHandler {
                 if (c.isInstance(event.entityLiving)) {
                     processDropsForMob(event.entityLiving);
                 }
+            }
+        }
+    }
+
+    @Optional.Method(modid = "mobsinfo")
+    @Override
+    public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops, @NotNull MobRecipe recipe) {
+        AutoMap<Triplet<ItemStack, Integer, Integer>> dropEntry = mMobDropMap.get(recipe.entity.getClass());
+
+        if (dropEntry != null && !dropEntry.isEmpty()) {
+            for (Triplet<ItemStack, Integer, Integer> data : dropEntry) {
+                ItemStack loot = data.getValue_1();
+                int maxDrop = data.getValue_2();
+                int chance = data.getValue_3();
+                if (loot == null) continue;
+
+                loot = loot.copy();
+                loot.stackSize = 1;
+
+                MobDrop drop = new MobDrop(
+                    loot,
+                    MobDrop.DropType.Normal,
+                    (int) (MobDrop.getChanceBasedOnFromTo(1, maxDrop) * 10000d * ((double) chance / 10000d)),
+                    null,
+                    null,
+                    false,
+                    false);
+
+                drop.clampChance();
+
+                drops.add(drop);
             }
         }
     }
