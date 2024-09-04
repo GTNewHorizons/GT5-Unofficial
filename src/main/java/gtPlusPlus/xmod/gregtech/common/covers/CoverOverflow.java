@@ -6,14 +6,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
@@ -21,8 +24,6 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 
 public class CoverOverflow extends CoverBehavior {
-
-    private static final ForgeDirection mInMachine = ForgeDirection.UNKNOWN;
 
     public final int mTransferRate;
     public final int mInitialTransferRate;
@@ -34,34 +35,35 @@ public class CoverOverflow extends CoverBehavior {
         this.mMaxTransferRate = aTransferRate * 1000;
     }
 
-    public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int aCoverVariable,
+    /**
+     * Void the fluid from tank if it possible
+     */
+    private void doOverflowThing(FluidStack mFluid, int aAmountLimit) {
+        if (mFluid != null)
+            while (mFluid.amount > aAmountLimit) mFluid.amount -= Math.min(mFluid.amount - aAmountLimit, mTransferRate);
+    }
+
+    private void doOverflowThings(FluidStack[] mFluids, int aAmountLimit) {
+        for (FluidStack mFluid : mFluids) doOverflowThing(mFluid, aAmountLimit);
+    }
+
+    public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int aAmountLimit,
         ICoverable aTileEntity, long aTimer) {
-        if (aCoverVariable == 0) {
-            return aCoverVariable;
+
+        if (aAmountLimit == 0) {
+            return aAmountLimit;
         }
-        if ((aTileEntity instanceof IFluidHandler)) {
-            IFluidHandler tTank;
-            tTank = (IFluidHandler) aTileEntity;
 
-            if (tTank != null) {
-
-                // TODO: find each unique getTankInfo(...) function for situations ...
-                FluidTankInfo[] mInTankInfo = tTank.getTankInfo(mInMachine);
-                if (mInTankInfo.length == 0) {
-                    return aCoverVariable;
-                }
-
-                FluidStack mOutFluid = mInTankInfo[1].fluid;
-
-                int mDrainedAmount;
-                if (tTank.canDrain(mInMachine, mOutFluid.getFluid()))
-                    while (mOutFluid.amount > aCoverVariable) {
-                        mDrainedAmount = (mOutFluid.amount - aCoverVariable) % mTransferRate;
-                        tTank.drain(mInMachine, mDrainedAmount, true);
-                    }
-            }
+        if (aTileEntity instanceof BaseMetaTileEntity mBMTE) {
+            if (mBMTE.getMetaTileEntity() instanceof MTEHatchOutput mMTEHO)
+                doOverflowThing(mMTEHO.mFluid, aAmountLimit);
+            else if (mBMTE.getMetaTileEntity() instanceof MTEBasicMachine mMTEBM)
+                doOverflowThing(mMTEBM.mOutputFluid, aAmountLimit);
+        } else if (aTileEntity instanceof BaseMetaPipeEntity mBMPE) {
+            if (mBMPE.getMetaTileEntity() instanceof MTEFluid mMTEF) doOverflowThings(mMTEF.mFluids, aAmountLimit);
         }
-        return aCoverVariable;
+
+        return aAmountLimit;
     }
 
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
