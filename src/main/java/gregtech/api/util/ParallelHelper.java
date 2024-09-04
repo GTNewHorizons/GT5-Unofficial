@@ -121,7 +121,7 @@ public class ParallelHelper {
     /**
      * Modifier which is applied on the recipe eut. Useful for GT++ machines
      */
-    private float eutModifier = 1;
+    private double eutModifier = 1;
     /**
      * Multiplier that is applied on the output chances
      */
@@ -224,7 +224,7 @@ public class ParallelHelper {
      * Sets the modifier for recipe eut. 1 does nothing 0.9 is 10% less. 1.1 is 10% more
      */
     @Nonnull
-    public ParallelHelper setEUtModifier(float aEUtModifier) {
+    public ParallelHelper setEUtModifier(double aEUtModifier) {
         this.eutModifier = aEUtModifier;
         return this;
     }
