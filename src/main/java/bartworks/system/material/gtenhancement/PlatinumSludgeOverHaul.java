@@ -117,6 +117,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockOresAbstract;
+import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 
 public class PlatinumSludgeOverHaul {
@@ -1054,18 +1055,13 @@ public class PlatinumSludgeOverHaul {
             }
         }
 
-        if (BaseItemComponent.class.isAssignableFrom(
-            stack.getItem()
-                .getClass())
-            && !stack.getUnlocalizedName()
-                .contains("dust")
+        if (stack.getItem() instanceof BaseItemComponent && !stack.getUnlocalizedName()
+            .contains("dust")
             && !stack.getUnlocalizedName()
                 .contains("Dust")) {
             return true;
         }
-        if (gtPlusPlus.core.block.base.BlockBaseModular.class.isAssignableFrom(
-            Block.getBlockFromItem(stack.getItem())
-                .getClass())) {
+        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockBaseModular) {
             return true;
         }
         if (stack.getItem() == HELICOPTER.getDust(1)
