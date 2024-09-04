@@ -202,12 +202,16 @@ import static gregtech.common.items.IDMetaItem02.Plank_Walnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Wenge;
 import static gregtech.common.items.IDMetaItem02.Plank_Willow;
 import static gregtech.common.items.IDMetaItem02.SFMixture;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Creon;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_EnrichedNaquadah;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Infinity;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Mellion;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Naquadah;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Naquadria;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_NetherStar;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_ProtoHalkonite;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Quantum;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Tairitsu;
 import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Transmetal;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Cafe_au_lait;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Chocolate_Milk;
@@ -2428,10 +2432,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "Transcendent Metal Superdense Plate",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
-
-        // Require god forge materials
-        // spotless:off
-        /*
         ItemList.Superdense_Plate_Tairitsu.set(
             addItem(
                 Superdense_Plate_Tairitsu.ID,
@@ -2456,8 +2456,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "Proto-Halkonite Superdense Plate",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
-         */
-        //spotless:on
 
         ItemList.Display_ITS_FREE.set(
             addItem(
