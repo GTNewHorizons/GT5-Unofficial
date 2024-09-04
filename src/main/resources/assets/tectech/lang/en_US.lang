@@ -1004,7 +1004,7 @@ fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% a
 fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Actual Heat = 30000 + (Current Heat - 30000)^0.85
 fog.upgrade.text.21=Unlocks a multiplier to maximum parallel based on total amount of purchased upgrades. This bonus is calculated via this formula: Multiplier = 1 + Upgrade Amount / 5
 fog.upgrade.text.22=Improves IGCC based on current maximum parallel. Improved Formula: Multiplier = (1 / Heat^0.01) / (Parallel^0.02)
-fog.upgrade.text.23=Increases maximum processing voltage by 1 per active ring.
+fog.upgrade.text.23=Increases maximum processing voltage by 1 tier per active ring.
 fog.upgrade.text.24=Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
 fog.upgrade.text.25=Allows the Heliofusion Exoticizer to be affected by other upgrade benefits, but those benefits are square rooted first. The overclock bonus is adjusted via the following formula: OC Factor = 2 + (Base OC Factor - 2)^2
 fog.upgrade.text.26=Allows construction of the second ring and adds 4 module slots.
