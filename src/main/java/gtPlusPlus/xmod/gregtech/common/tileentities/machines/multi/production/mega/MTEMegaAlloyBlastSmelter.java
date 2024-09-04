@@ -62,8 +62,8 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
     private byte glassTier = -1;
-    private float speedBonus = 1;
-    private float energyDiscount = 1;
+    private double speedBonus = 1;
+    private double energyDiscount = 1;
     private boolean hasNormalCoils;
 
     private static final IStructureDefinition<MTEMegaAlloyBlastSmelter> STRUCTURE_DEFINITION = StructureDefinition
@@ -254,7 +254,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             energyDiscount = 1;
             return;
         }
-        energyDiscount = (float) Math.pow(0.95, tierDifference);
+        energyDiscount = Math.pow(0.95, tierDifference);
     }
 
     @Override

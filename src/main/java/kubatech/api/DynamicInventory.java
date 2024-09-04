@@ -34,8 +34,8 @@ import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.kuba6000.mobsinfo.api.utils.ItemID;
 
+import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.helpers.GTHelper;
 import kubatech.api.utils.ModUtils;
 
@@ -117,19 +117,19 @@ public class DynamicInventory<T> {
                 }
             }), builder)
             .attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
-                HashMap<ItemID, Integer> itemMap = new HashMap<>();
-                HashMap<ItemID, ItemStack> stackMap = new HashMap<>();
-                HashMap<ItemID, ArrayList<Integer>> realSlotMap = new HashMap<>();
+                HashMap<ItemId, Integer> itemMap = new HashMap<>();
+                HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
+                HashMap<ItemId, ArrayList<Integer>> realSlotMap = new HashMap<>();
                 for (int i = 0, mStorageSize = inventory.size(); i < mStorageSize; i++) {
                     ItemStack stack = inventoryGetter.get(inventory.get(i));
-                    ItemID id = ItemID.createNoCopy(stack, false);
+                    ItemId id = ItemId.createNoCopyWithStackSize(stack);
                     itemMap.merge(id, 1, Integer::sum);
                     stackMap.putIfAbsent(id, stack);
                     realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
                         .add(i);
                 }
                 List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
-                for (Map.Entry<ItemID, Integer> entry : itemMap.entrySet()) {
+                for (Map.Entry<ItemId, Integer> entry : itemMap.entrySet()) {
                     newDrawables.add(
                         new GTHelper.StackableItemSlot(
                             entry.getValue(),
@@ -172,19 +172,19 @@ public class DynamicInventory<T> {
         ArrayList<Widget> buttons = new ArrayList<>();
 
         if (!ModUtils.isClientThreaded()) {
-            HashMap<ItemID, Integer> itemMap = new HashMap<>();
-            HashMap<ItemID, ItemStack> stackMap = new HashMap<>();
-            HashMap<ItemID, ArrayList<Integer>> realSlotMap = new HashMap<>();
+            HashMap<ItemId, Integer> itemMap = new HashMap<>();
+            HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
+            HashMap<ItemId, ArrayList<Integer>> realSlotMap = new HashMap<>();
             for (int i = 0, inventorySize = inventory.size(); i < inventorySize; i++) {
                 ItemStack stack = inventoryGetter.get(inventory.get(i));
-                ItemID id = ItemID.createNoCopy(stack, false);
+                ItemId id = ItemId.createNoCopyWithStackSize(stack);
                 itemMap.merge(id, 1, Integer::sum);
                 stackMap.putIfAbsent(id, stack);
                 realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
                     .add(i);
             }
             drawables = new ArrayList<>();
-            for (Map.Entry<ItemID, Integer> entry : itemMap.entrySet()) {
+            for (Map.Entry<ItemId, Integer> entry : itemMap.entrySet()) {
                 drawables.add(
                     new GTHelper.StackableItemSlot(
                         entry.getValue(),
