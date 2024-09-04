@@ -617,7 +617,7 @@ public class Godforge implements Runnable {
                     MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(64),
                     MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(64),
                     CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
-                    CustomItemList.EOH_Infinite_Energy_Casing.get(8), ItemList.ZPM6.get(4),
+                    CustomItemList.EOH_Infinite_Energy_Casing.get(8), ItemList.ZPM6.get(2),
                     ItemList.Field_Generator_UMV.get(32) });
 
             godforgeUpgradeMats.put(
@@ -625,9 +625,9 @@ public class Godforge implements Runnable {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
                     GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
                     GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 2),
                     CustomItemList.EOH_Infinite_Energy_Casing.get(64),
-                    CustomItemList.StabilisationFieldGeneratorTier5.get(16), ItemList.ZPM6.get(16),
+                    CustomItemList.StabilisationFieldGeneratorTier5.get(16), ItemList.ZPM6.get(6),
                     ItemList.Field_Generator_UMV.get(64) });
 
             godforgeUpgradeMats.put(
