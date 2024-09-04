@@ -5,6 +5,7 @@ import static detrav.net.ProspectingPacket.fluidColors;
 import java.util.Arrays;
 import java.util.Objects;
 
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.Materials;
@@ -67,13 +68,16 @@ public class FluidColors {
         fluidColors.put(Materials.Ethane.mGas.getID(), new short[] { 0x40, 0x80, 0x20 });
         fluidColors.put(Materials.Ethylene.mGas.getID(), new short[] { 0xd0, 0xd0, 0xd0 });
         fluidColors.put(FluidRegistry.LAVA.getID(), new short[] { 0xFF, 0x00, 0x00 });
-        fluidColors.put(
-            FluidRegistry.getFluid("unknowwater")
-                .getID(),
-            new short[] { 0x8A, 0x2B, 0xE2 });
+        Fluid unknownWater = FluidRegistry.getFluid("unknowwater");
+        if (unknownWater != null) {
+            fluidColors.put(
+                FluidRegistry.getFluid("unknowwater")
+                    .getID(),
+                new short[]{0x8A, 0x2B, 0xE2});
+        }
         fluidColors.put(Materials.Hydrogen.mGas.getID(), new short[] { 0x32, 0x32, 0xD6 });
         fluidColors.put(Materials.SulfuricAcid.mFluid.getID(), new short[] { 0xFF, 0xB9, 0x0F });
-        fluidColors.put(Materials.HydricSulfide.mFluid.getID(), new short[] { 0xFF, 0x8F, 0x43 });
+        fluidColors.put(Materials.HydricSulfide.mGas.getID(), new short[] { 0xFF, 0x8F, 0x43 });
         fluidColors.put(Materials.CarbonMonoxide.mGas.getID(), new short[] { 0x10, 0x4E, 0x8B });
         fluidColors.put(Materials.CarbonDioxide.mGas.getID(), new short[] { 0x69, 0x69, 0x69 });
         fluidColors.put(
