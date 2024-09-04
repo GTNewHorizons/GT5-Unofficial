@@ -57,6 +57,8 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
         tt.addMachineType("Gas Turbine")
             .addInfo("Controller block for the Large Gas Turbine")
             .addInfo("Needs a Turbine, place inside controller")
+            .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
+            .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
             // .addInfo("The excess fuel that gets consumed will be voided!")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
@@ -126,8 +128,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
-        float[] flowMultipliers) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -136,17 +137,17 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
 
-            if (aOptFlow < fuelValue) {
+            if (turbine.getOptimalGasEUt() < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L
                 this.realOptFlow = 1;
                 // wastes the extra fuel and generate aOptFlow directly
                 depleteInput(new FluidStack(firstFuelType, 1));
                 this.storedFluid += 1;
-                return GTUtility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
+                return GTUtility.safeInt((long) turbine.getOptimalGasEUt());
             }
 
-            actualOptimalFlow = GTUtility.safeInt((long) (aOptFlow * flowMultipliers[1] / fuelValue));
+            actualOptimalFlow = GTUtility.safeInt((long) (turbine.getOptimalGasFlow() / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
@@ -158,7 +159,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             // - 300% if it is 2
             // - 450% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
-            int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * (1.5f * overflowMultiplier)));
+            int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency())));
             int flow = 0;
             int totalFlow = 0;
 
@@ -176,10 +177,10 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             tEU = GTUtility.safeInt((long) totalFlow * fuelValue);
 
             if (totalFlow != actualOptimalFlow) {
-                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
+                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, turbine.getOverflowEfficiency());
                 tEU *= efficiency;
             }
-            tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+            tEU = GTUtility.safeInt((long) (tEU * turbine.getGasEfficiency()));
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update

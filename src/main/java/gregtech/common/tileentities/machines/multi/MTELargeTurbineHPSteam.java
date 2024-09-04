@@ -6,10 +6,10 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_EMPTY5;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam.calculateLooseFlow;
 
 import java.util.ArrayList;
 
+import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -103,13 +103,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency,
-        float[] flowMultipliers) {
-        if (looseFit) {
-            float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-            aOptFlow = GTUtility.safeInt((long) calculatedFlow[0]);
-            aBaseEff = GTUtility.safeInt((long) calculatedFlow[1]);
-        }
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
@@ -123,8 +117,8 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
         // - 250% if it is 2
         // - 300% if it is 3
         // Variable required outside of loop for multi-hatch scenarios.
-        this.realOptFlow = aOptFlow * flowMultipliers[0];
-        int remainingFlow = GTUtility.safeInt((long) (realOptFlow * (0.5f * overflowMultiplier + 1.5)));
+        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        int remainingFlow = GTUtility.safeInt((long) (realOptFlow * (0.5f * turbine.getOverflowEfficiency() + 1.5)));
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
@@ -155,14 +149,14 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
         tEU = totalFlow;
         addOutput(GTModHandler.getSteam(totalFlow));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
-            tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+            tEU = GTUtility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         } else {
             float efficiency = getOverflowEfficiency(
                 totalFlow,
                 (GTUtility.safeInt((long) realOptFlow)),
                 overflowMultiplier);
             tEU *= efficiency;
-            tEU = Math.max(1, GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L));
+            tEU = Math.max(1, GTUtility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         }
 
         // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
