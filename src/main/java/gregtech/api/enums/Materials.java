@@ -2002,10 +2002,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + "\u2082"
             + "((CW)\u2087Ti\u2083)\u2083???"
             + "If*";
-        MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = "?"
-            + MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
-        MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = "Hk*"
-            + MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
     }
 
     private static void initSubTags() {
