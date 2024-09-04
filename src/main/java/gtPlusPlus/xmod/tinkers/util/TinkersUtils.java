@@ -19,8 +19,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -89,7 +87,7 @@ public class TinkersUtils {
 
     /**
      * Add a new fluid as a valid Smeltery fuel.
-     * 
+     *
      * @param fluid    The fluid.
      * @param power    The temperature of the fluid. This also influences the melting speed. Lava is 1000.
      * @param duration How long one "portion" of liquid fuels the smeltery. Lava is 10.
@@ -195,7 +193,7 @@ public class TinkersUtils {
 
     /**
      * 0 For Table, 1 For Basin.
-     * 
+     *
      * @param aType - Casting Type
      * @return - The casting instance.
      */
@@ -235,34 +233,6 @@ public class TinkersUtils {
             return new ItemStack(mTinkerMetalPattern, aType, 0);
         }
         return ItemUtils.getErrorStack(1, "Bad Tinkers Pattern");
-    }
-
-    private static AutoMap<?> mDryingRackRecipes;
-
-    public static List<?> getDryingRecipes() {
-        if (mDryingRackRecipes != null) {
-            return mDryingRackRecipes;
-        }
-        AutoMap<Object> aData = new AutoMap<>();
-        int aCount = 0;
-        try {
-            ArrayList<?> recipes = (ArrayList<?>) ReflectionUtils
-                .getField(ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes"), "recipes")
-                .get(null);
-            if (recipes != null) {
-                for (Object o : recipes) {
-                    aData.put(o);
-                    aCount++;
-                }
-                Logger.INFO("Found " + aCount + " Tinkers drying rack recipes.");
-            } else {
-                Logger.INFO("Failed to find any Tinkers drying rack recipes.");
-            }
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            Logger.INFO("Failed to find any Tinkers drying rack recipes.");
-        }
-        mDryingRackRecipes = aData;
-        return aData;
     }
 
     public static List<?> getTableCastingRecipes() {
