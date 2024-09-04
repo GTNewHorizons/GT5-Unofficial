@@ -282,12 +282,7 @@ public class GregTechAPI {
     static {
         sItemStackMappings.add(sCovers);
         sItemStackMappings.add(sCoverBehaviors);
-
         dummyWorlds.add(GTDummyWorld.class);
-        ClassLoader cl = GregTechAPI.class.getClassLoader();
-        try {
-            dummyWorlds.add(Class.forName("blockrenderer6343.client.world.DummyWorld", false, cl));
-        } catch (ReflectiveOperationException ignored) {}
     }
 
     public static void addDummyWorld(Class<?> clazz) {
