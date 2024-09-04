@@ -141,10 +141,10 @@ public class FuelRecipeLoader {
         // MK V Naquadah Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getDust(8),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
+                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 1152),
                 FluidRegistry.getFluidStack("heavyradox", 250))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(500))
             .duration(10 * SECONDS)
