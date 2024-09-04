@@ -297,17 +297,6 @@ public class GregTechAPI {
         }
     }
 
-    private static void tryAddDummyWorld(String className) {
-        ClassLoader cl = GregTechAPI.class.getClassLoader();
-        Class<?> clazz;
-        try {
-            clazz = Class.forName(className, false, cl);
-        } catch (ReflectiveOperationException ex) {
-            return;
-        }
-        dummyWorlds.add(clazz);
-    }
-
     public static void addDummyWorld(Class<?> clazz) {
         dummyWorlds.add(clazz);
     }
