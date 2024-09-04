@@ -37,6 +37,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -1986,14 +1987,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Spray_Empty.get(1L)));
 
         if (!GTValues.D1) {
-            try {
-                Class.forName("codechicken.nei.api.API");
+            if (Mods.NotEnoughItems.isModLoaded()) {
                 GTLog.out.println("GTMod: Hiding certain Items from NEI.");
                 API.hideItem(ItemList.Display_Fluid.getWildcard(1L));
-            } catch (Throwable e) {
-                if (GTValues.D1) {
-                    e.printStackTrace(GTLog.err);
-                }
             }
         }
 
