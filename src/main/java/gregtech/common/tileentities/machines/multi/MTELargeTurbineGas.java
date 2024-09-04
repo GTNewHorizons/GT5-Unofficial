@@ -159,7 +159,8 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             // - 300% if it is 2
             // - 450% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
-            int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency())));
+            int remainingFlow = GTUtility
+                .safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency())));
             int flow = 0;
             int totalFlow = 0;
 

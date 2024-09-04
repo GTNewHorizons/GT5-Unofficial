@@ -3,12 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.objects.GTRenderedTexture;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.TurbineStatCalculator;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -19,14 +13,20 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
@@ -131,9 +131,9 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
                     || this.getBaseMetaTileEntity()
-                    .hasWorkJustBeenEnabled()
+                        .hasWorkJustBeenEnabled()
                     || this.getBaseMetaTileEntity()
-                    .hasInventoryBeenModified()) {
+                        .hasInventoryBeenModified()) {
                     counter = 0;
 
                     float aTotalBaseEff = 0;
@@ -143,12 +143,13 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                         .getTurbine();
                     aTotalBaseEff += GTUtility.safeInt(
                         (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                    aTotalOptimalFlow += GTUtility.safeInt(
-                        (long) Math.max(
-                            Float.MIN_NORMAL,
-                            ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed
-                                * 50));
+                    aTotalOptimalFlow += GTUtility
+                        .safeInt(
+                            (long) Math.max(
+                                Float.MIN_NORMAL,
+                                ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
+                                    .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed
+                                    * 50));
 
                     // Calculate total EU/t (as shown on turbine tooltip (Fast mode doesn't affect))
                     double aEUPerTurbine = aTotalOptimalFlow * 40
@@ -227,7 +228,6 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         // TODO @Sampsa: Fix this.
         return 0;
     }
-
 
     long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {

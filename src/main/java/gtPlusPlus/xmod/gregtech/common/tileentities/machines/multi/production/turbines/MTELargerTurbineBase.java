@@ -14,7 +14,6 @@ import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.G
 
 import java.util.ArrayList;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
@@ -452,7 +452,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             ItemStack aStack = getFullTurbineAssemblies().get(0)
-            .getTurbine();
+                .getTurbine();
 
             TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
 
@@ -468,10 +468,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalOptimalFlow = 0;
 
                     aTotalBaseEff += turbine.getEfficiency();
-                    aTotalOptimalFlow += GTUtility.safeInt(
-                        (long) Math.max(
-                            Float.MIN_NORMAL,
-                            turbine.getOptimalFlow()));
+                    aTotalOptimalFlow += GTUtility.safeInt((long) Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }

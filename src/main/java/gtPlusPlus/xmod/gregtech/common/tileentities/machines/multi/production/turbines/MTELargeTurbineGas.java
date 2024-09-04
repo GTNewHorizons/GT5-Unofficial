@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -26,6 +25,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
@@ -134,8 +134,8 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
-                                                                                        // optimal flow. Variable
-                                                                                        // required outside of loop for
+                                                                                       // optimal flow. Variable
+                                                                                       // required outside of loop for
             // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;

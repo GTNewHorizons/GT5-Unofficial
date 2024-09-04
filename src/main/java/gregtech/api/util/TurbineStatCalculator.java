@@ -3,11 +3,11 @@ package gregtech.api.util;
 // import static gregtech.api.items.GT_MetaGenerated_Tool.getToolMaxDamage;
 // import static gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial;
 // import gregtech.api.items.GT_MetaGenerated_Tool.getToolStats;
-import gregtech.api.items.MetaGeneratedTool;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class TurbineStatCalculator {
 

@@ -18,7 +18,6 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -52,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LightingHelper;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.render.GTRenderUtil;
@@ -267,7 +267,9 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
 
-        TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) controllerSlot.getItem(), controllerSlot);
+        TurbineStatCalculator turbine = new TurbineStatCalculator(
+            (MetaGeneratedTool) controllerSlot.getItem(),
+            controllerSlot);
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (!tFluids.isEmpty()) {
@@ -294,9 +296,9 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         }
 
         int newPower = fluidIntoPower(tFluids, turbine); // How much the
-                                                                                                       // turbine should
-                                                                                                       // be producing
-                                                                                                       // with this flow
+                                                         // turbine should
+                                                         // be producing
+                                                         // with this flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in

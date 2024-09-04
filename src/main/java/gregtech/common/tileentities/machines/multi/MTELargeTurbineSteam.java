@@ -10,7 +10,6 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,6 +26,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 
 public class MTELargeTurbineSteam extends MTELargeTurbine {
 
@@ -158,14 +158,19 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         int waterToOutput = condenseSteam(totalFlow);
         addOutput(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
-            tEU = GTUtility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f));
+            tEU = GTUtility.safeInt(
+                (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f));
         } else {
             float efficiency = getOverflowEfficiency(
                 totalFlow,
                 (GTUtility.safeInt((long) realOptFlow)),
                 overflowMultiplier);
             tEU *= efficiency;
-            tEU = Math.max(1, GTUtility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f)));
+            tEU = Math.max(
+                1,
+                GTUtility.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())
+                        * 0.5f)));
         }
 
         // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the

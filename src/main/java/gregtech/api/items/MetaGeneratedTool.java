@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam.calculateLooseFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -56,6 +54,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.tools.ToolTurbine;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mrtjp.projectred.api.IScrewdriver;
@@ -429,9 +428,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 // EU/t -> toolCombatDamage, toolSpeed
                 // Overflow Tier -> toolQuality
                 float aBaseEff = (5f + getToolCombatDamage(aStack)) * 1000f;
-                TurbineStatCalculator turbine = new TurbineStatCalculator(
-                    (MetaGeneratedTool) aStack.getItem(),
-                    aStack);
+                TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
                 // It was noted by IntelliJ that replacing ((GT_MetaGenerated_Tool) aStack.getItem()) with
                 // GT_MetaGenerated_Tool can have side effects. This refactoring will need tests.
                 @SuppressWarnings("AccessStaticViaInstance")

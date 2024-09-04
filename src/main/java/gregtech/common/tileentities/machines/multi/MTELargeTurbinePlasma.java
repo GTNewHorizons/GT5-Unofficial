@@ -9,9 +9,7 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,7 +33,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 
 public class MTELargeTurbinePlasma extends MTELargeTurbine {
@@ -142,7 +140,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             actualOptimalFlow = GTUtility
-                .safeInt((long) Math.ceil((double) turbine.getOptimalPlasmaFlow()*20 / (double) fuelValue));
+                .safeInt((long) Math.ceil((double) turbine.getOptimalPlasmaFlow() * 20 / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
@@ -154,7 +152,8 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             // - 400% if it is 2
             // - 550% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
-            int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency() + 1)));
+            int remainingFlow = GTUtility
+                .safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency() + 1)));
             int flow = 0;
             int totalFlow = 0;
 
