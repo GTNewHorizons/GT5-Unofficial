@@ -97,10 +97,10 @@ public class GTPPBees {
         if (Comb_Stone == null) {
             Comb_Stone = GTBees.combs.getStackForType(CombType.STONE);
         }
-        if (PTFE != null) {
+        if (PTFE == null) {
             PTFE = trySetValue("Polytetrafluoroethylene");
         }
-        if (PBS != null) {
+        if (PBS == null) {
             PBS = trySetValue("StyreneButadieneRubber");
         }
     }
