@@ -514,6 +514,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MATTER_REPLICATOR_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.MATTER_REPLICATOR_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.MATTER_REPLICATOR_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.MATTER_REPLICATOR_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.METEOR_MINER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_IV;
@@ -1054,6 +1055,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasAdvanced;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTEMeteorMiner;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -1570,6 +1572,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER.ID,
                 "multimachine.electromagneticseparator",
                 "Magnetic Flux Exhibitor").getStackForm(1));
+
+        ItemList.MeteorMiner.set(
+            new MTEMeteorMiner(METEOR_MINER_CONTROLLER.ID, "multimachine.meteorminer", "Meteor Miner").getStackForm(1));
+
         ItemList.Machine_Multi_Canner
             .set(new MTEMultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro").getStackForm(1));
 
