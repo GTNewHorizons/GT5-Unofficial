@@ -1989,6 +1989,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
         MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
         MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
+        Tartarite.mChemicalFormula = "Tt";
+        MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
+        // I hate this
+        MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula = "("
+            + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
+            + ")\u2082"
+            + "(W\u2088Nq*\u2087("
+            + Materials.Bedrockium.mChemicalFormula
+            + ")\u2084C\u2084V\u2083SpPu)\u2082"
+            + Tartarite.mChemicalFormula
+            + "\u2082"
+            + "((CW)\u2087Ti\u2083)\u2083???"
+            + "If*";
+        MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = "?"
+            + MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = "Hk?"
+            + MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
     }
 
     private static void initSubTags() {
