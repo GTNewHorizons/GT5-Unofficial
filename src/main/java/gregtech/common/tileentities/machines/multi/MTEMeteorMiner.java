@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
@@ -73,7 +74,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 .addElement('D', ofFrame(Materials.StainlessSteel))
                 .addElement(
                     'H',
-                    buildHatchAdder(MTEMeteorMiner.class).atLeast(HatchElement.OutputBus)
+                    buildHatchAdder(MTEMeteorMiner.class).atLeast(HatchElement.OutputBus, HatchElement.Energy)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .dot(1)
                         .buildAndChain(
@@ -120,6 +121,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 16, 4);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 16, 4, elementBudget, env, false, true);
     }
 
     @Override
@@ -173,7 +180,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             .addController("Second Layer Center")
             .addOutputBus("Any Structural Solar Casing", 1)
             .addEnergyHatch("Any Structural Solar Casing", 1)
-            .addMaintenanceHatch("Any Structural Solar Casing", 1)
+            .addMaintenanceHatch("Below the Controller", 2)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -185,9 +192,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // mCasingAmount = 0;
-        // mEnergyHatches.clear();
-        return true;
+        aCasingAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 16, 4)
+        && !mEnergyHatches.isEmpty()
+        && mMaintenanceHatches.size() == 1;
     }
 
     @Override
