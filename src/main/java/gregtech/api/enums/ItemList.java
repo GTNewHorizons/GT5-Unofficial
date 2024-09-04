@@ -1643,18 +1643,6 @@ public enum ItemList implements IItemContainer {
     Cover_WirelessNeedsMaintainance,
     Cover_WirelessActivityDetector,
 
-    Superdense_Plate_EnrichedNaquadah,
-    Superdense_Plate_Naquadria,
-    Superdense_Plate_Naquadah,
-    Superdense_Plate_NetherStar,
-    Superdense_Plate_Infinity,
-    Superdense_Plate_Tairitsu,
-    Superdense_Plate_Quantum,
-    Superdense_Plate_Transmetal,
-    Superdense_Plate_ProtoHalkonite,
-    Superdense_Plate_Creon,
-    Superdense_Plate_Mellion,
-
     Cover_RedstoneTransmitterExternal,
     Cover_RedstoneTransmitterInternal,
     Cover_RedstoneReceiverExternal,
