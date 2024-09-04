@@ -1,13 +1,11 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Locale;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import forestry.api.apiculture.BeeManager;
@@ -32,7 +30,6 @@ import gregtech.loaders.misc.GTBranchDefinition;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public enum GTPPBeeDefinition implements IBeeDefinition {
 
@@ -55,8 +52,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                getGregtechBeeType("SLIMEBALL"),
-                getGregtechBeeType("STICKYRESIN"),
+                GTBeeDefinition.SLIMEBALL.getSpecies(),
+                GTBeeDefinition.STICKYRESIN.getSpecies(),
                 10);
         }
     },
@@ -80,8 +77,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                getGregtechBeeType("SLIMEBALL"),
-                getGregtechBeeType("STICKYRESIN"),
+                GTBeeDefinition.SLIMEBALL.getSpecies(),
+                GTBeeDefinition.STICKYRESIN.getSpecies(),
                 10);
         }
     },
@@ -104,7 +101,10 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
 
         @Override
         protected void registerMutations() {
-            IBeeMutationCustom tMutation = registerMutation(RUBBER.species, getGregtechBeeType("OIL"), 10);
+            IBeeMutationCustom tMutation = registerMutation(
+                GTPPBeeDefinition.RUBBER.species,
+                GTBeeDefinition.OIL.getSpecies(),
+                10);
         }
     },
 
@@ -222,8 +222,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                getGregtechBeeType("LAPIS"),
-                getGregtechBeeType("SAPPHIRE"),
+                GTBeeDefinition.LAPIS.getSpecies(),
+                GTBeeDefinition.SAPPHIRE.getSpecies(),
                 5);
             tMutation.restrictBiomeType(Type.COLD);
         }
@@ -253,8 +253,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                getGregtechBeeType("STEEL"),
-                getGregtechBeeType("GOLD"),
+                GTBeeDefinition.STEEL.getSpecies(),
+                GTBeeDefinition.GOLD.getSpecies(),
                 10);
             tMutation.restrictBiomeType(Type.HOT);
         }
@@ -280,8 +280,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                getGregtechBeeType("ALUMINIUM"),
-                getGregtechBeeType("SILVER"),
+                GTBeeDefinition.ALUMINIUM.getSpecies(),
+                GTBeeDefinition.SILVER.getSpecies(),
                 8);
             tMutation.restrictBiomeType(Type.HOT);
         }
@@ -587,19 +587,5 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
             return ItemUtils.getErrorStack(1);
         }
         return result;
-    }
-
-    public static IAlleleBeeSpecies getGregtechBeeType(String name) {
-        try {
-            Enum<GTBeeDefinition> gtBeeEnumObject = Enum.valueOf(GTBeeDefinition.class, name);
-            Field gtBeesField = FieldUtils.getDeclaredField(GTBeeDefinition.class, "species", true);
-            gtBeesField.setAccessible(true);
-            ReflectionUtils.makeFieldAccessible(gtBeesField);
-            Object beeType = gtBeesField.get(gtBeeEnumObject);
-            return (IAlleleBeeSpecies) beeType;
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
