@@ -669,6 +669,8 @@ public class GTValues {
         + "Gold";
     public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
 
+    public static final String AuthorTotto = "Author: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + "Totto";
+
     public static final String AuthorEigenRaven = "Author: " + EnumChatFormatting.DARK_PURPLE
         + "Eigen"
         + EnumChatFormatting.BOLD
