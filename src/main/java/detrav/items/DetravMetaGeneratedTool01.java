@@ -33,7 +33,6 @@ import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
