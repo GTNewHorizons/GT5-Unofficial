@@ -2,6 +2,7 @@ package detrav.items.tools;
 
 import java.util.List;
 
+import gregtech.api.enums.SoundResource;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -18,7 +19,6 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
-import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
@@ -83,7 +83,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public String getBreakingSound() {
-        return (String) GregTechAPI.sSoundList.get(0);
+        return SoundResource.RANDOM_BREAK.toString();
     }
 
     @Override
