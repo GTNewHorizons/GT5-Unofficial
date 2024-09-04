@@ -156,8 +156,8 @@ public enum OrePrefixes {
     /** 9 Plates combined in one Item. */
     plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false,
         B[1], M * 9, 64, 22),
-    plateSuperdense("Superdense Plates", "Superdense ", " Plate", true, true, false, false, false, false, true, true, false, false,
-        B[1], M * 64, 64, 125),
+    plateSuperdense("Superdense Plates", "Superdense ", " Plate", true, true, false, false, false, false, true, true,
+        false, false, B[1], M * 64, 64, 125),
     plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false,
         false, B[1], M * 5, 64, 21),
     plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false,
@@ -693,6 +693,7 @@ public enum OrePrefixes {
         plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);

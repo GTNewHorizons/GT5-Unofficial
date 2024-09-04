@@ -294,7 +294,7 @@ public class GTPreLoad {
             "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
             "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
             "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
-            "cellMolten", "rawOre", "plateSuperdense"};
+            "cellMolten", "rawOre", "plateSuperdense" };
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream()

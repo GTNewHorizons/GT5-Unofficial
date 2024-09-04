@@ -39,6 +39,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -433,15 +434,17 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
+    final CompressionTierKey COMPRESSION_TIER = CompressionTierKey.INSTANCE;
+
     private void registerPlateSuperdense(final Materials aMaterial, final ItemStack aStack, final boolean aNoSmashing,
         final long aMaterialMass) {
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
         if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
-            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UIV) ? 2 : 1;
+            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UIV
+                || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
