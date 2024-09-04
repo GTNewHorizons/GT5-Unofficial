@@ -443,7 +443,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(prefix, Materials.Infinity, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
-            .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (8 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(chemicalBathRecipes);
@@ -451,18 +451,18 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Creon, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
-            .eut(TierEU.RECIPE_UEV)
+            .eut(TierEU.RECIPE_UIV)
             .noOptimize()
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Mellion, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
-            .eut(TierEU.RECIPE_UEV)
+            .eut(TierEU.RECIPE_UIV)
             .noOptimize()
             .addTo(chemicalBathRecipes);
     }
