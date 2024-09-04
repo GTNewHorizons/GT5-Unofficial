@@ -202,6 +202,13 @@ import static gregtech.common.items.IDMetaItem02.Plank_Walnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Wenge;
 import static gregtech.common.items.IDMetaItem02.Plank_Willow;
 import static gregtech.common.items.IDMetaItem02.SFMixture;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_EnrichedNaquadah;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Infinity;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Naquadah;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Naquadria;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_NetherStar;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Quantum;
+import static gregtech.common.items.IDMetaItem02.Superdense_Plate_Transmetal;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Cafe_au_lait;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Chocolate_Milk;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Coffee;
@@ -2378,6 +2385,79 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
+
+        ItemList.Superdense_Plate_Infinity.set(
+            addItem(
+                Superdense_Plate_Infinity.ID,
+                "Infinity Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_Naquadah.set(
+            addItem(
+                Superdense_Plate_Naquadah.ID,
+                "Naquadah Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_EnrichedNaquadah.set(
+            addItem(
+                Superdense_Plate_EnrichedNaquadah.ID,
+                "Enriched Naquadah Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_Naquadria.set(
+            addItem(
+                Superdense_Plate_Naquadria.ID,
+                "Naquadria Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_NetherStar.set(
+            addItem(
+                Superdense_Plate_NetherStar.ID,
+                "Nether Star Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_Quantum.set(
+            addItem(
+                Superdense_Plate_Quantum.ID,
+                "Quantum Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_Transmetal.set(
+            addItem(
+                Superdense_Plate_Transmetal.ID,
+                "Transcendent Metal Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+
+        // Require god forge materials
+        // spotless:off
+        /*
+        ItemList.Superdense_Plate_Tairitsu.set(
+            addItem(
+                Superdense_Plate_Tairitsu.ID,
+                "Tairitsu Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_Creon.set(
+            addItem(
+                Superdense_Plate_Creon.ID,
+                "Creon Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_Mellion.set(
+            addItem(
+                Superdense_Plate_Mellion.ID,
+                "Mellion Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+        ItemList.Superdense_Plate_ProtoHalkonite.set(
+            addItem(
+                Superdense_Plate_ProtoHalkonite.ID,
+                "Proto-Halkonite Superdense Plate",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L)));
+         */
+        //spotless:on
 
         ItemList.Display_ITS_FREE.set(
             addItem(

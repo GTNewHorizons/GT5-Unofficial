@@ -198,6 +198,17 @@ public enum IDMetaItem02 {
     Cover_WirelessItemDetector(582),
     Cover_WirelessNeedsMaintainance(583),
     Cover_WirelessActivityDetector(584),
+    Superdense_Plate_EnrichedNaquadah(585),
+    Superdense_Plate_Naquadria(586),
+    Superdense_Plate_Naquadah(587),
+    Superdense_Plate_NetherStar(588),
+    Superdense_Plate_Infinity(589),
+    Superdense_Plate_Tairitsu(590),
+    Superdense_Plate_Quantum(591),
+    Superdense_Plate_Transmetal(592),
+    Superdense_Plate_ProtoHalkonite(593),
+    Superdense_Plate_Creon(594),
+    Superdense_Plate_Mellion(595),
     Display_ITS_FREE(765);
 
     public final int ID;
