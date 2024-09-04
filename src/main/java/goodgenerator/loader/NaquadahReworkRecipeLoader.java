@@ -416,7 +416,7 @@ public class NaquadahReworkRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 5))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 10), Materials.SulfuricAcid.getCells(30))
