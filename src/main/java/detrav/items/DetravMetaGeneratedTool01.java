@@ -20,6 +20,20 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerZPM;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
+import static detrav.items.tools.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 /**
@@ -33,7 +47,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         super("detrav.metatool.01");
         INSTANCE = this;
         addTool(
-            0,
+            ProspectorScannerULV.ID,
             "Prospector's Scanner(ULV)",
             "",
             new DetravProspector(0),
@@ -42,7 +56,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            2,
+            ProspectorScannerLV.ID,
             "Prospector's Scanner(LV)",
             "",
             new DetravProspector(1),
@@ -51,7 +65,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            4,
+            ProspectorScannerMV.ID,
             "Prospector's Scanner(MV)",
             "",
             new DetravProspector(2),
@@ -60,7 +74,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            6,
+            ProspectorScannerHV.ID,
             "Prospector's Scanner(HV)",
             "",
             new DetravProspector(3),
@@ -69,7 +83,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            8,
+            ProspectorScannerEV.ID,
             "Prospector's Scanner(EV)",
             "",
             new DetravProspector(4),
@@ -78,7 +92,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            10,
+            ProspectorScannerIV.ID,
             "Prospector's Scanner(IV)",
             "",
             new DetravProspector(5),
@@ -87,7 +101,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            12,
+            ProspectorScannerLuV.ID,
             "Prospector's Scanner(LuV)",
             "",
             new DetravProspector(6),
@@ -96,7 +110,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            14,
+            ProspectorScannerZPM.ID,
             "Prospector's Scanner(ZPM)",
             "",
             new DetravProspector(7),
@@ -105,7 +119,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            16,
+            ProspectorScannerUV.ID,
             "Prospector's Scanner(UV)",
             "",
             new DetravProspector(8),
@@ -114,7 +128,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            18,
+            ProspectorScannerUHV.ID,
             "Prospector's Scanner(UHV)",
             "",
             new DetravProspector(9),
@@ -124,7 +138,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
 
         addTool(
-            100,
+            ElectricProspectorScannerLuV.ID,
             "Electric Prospector's Scanner (LuV)",
             "",
             new DetravToolElectricProspector(6),
@@ -133,7 +147,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
-            102,
+            ElectricProspectorScannerZPM.ID,
             "Electric Prospector's Scanner (ZPM)",
             "",
             new DetravToolElectricProspector(7),
@@ -142,7 +156,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
-            104,
+            ElectricProspectorScannerUV.ID,
             "Electric Prospector's Scanner (UV)",
             "",
             new DetravToolElectricProspector(8),
@@ -151,7 +165,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
-            106,
+            ElectricProspectorScannerUHV.ID,
             "Electric Prospector's Scanner (UHV)",
             "",
             new DetravToolElectricProspector(9),
