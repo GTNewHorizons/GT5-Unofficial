@@ -32,6 +32,8 @@ import gregtech.common.UndergroundOil;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
 
+import static gregtech.api.enums.Mods.VisualProspecting;
+
 /**
  * Created by wital_000 on 19.03.2016.
  */
@@ -119,13 +121,13 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                         }
                                     }
-                                } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock)) {
+                                } else if (GTppHelper.isGTppBlock(tBlock)) {
                                     packet.addBlock(
                                         c.xPosition * 16 + x,
                                         y,
                                         c.zPosition * 16 + z,
                                         GTppHelper.getGTppMeta(tBlock));
-                                } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)) {
+                                } else if (BartWorksHelper.isOre(tBlock)) {
                                     if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                                     packet.addBlock(
                                         c.xPosition * 16 + x,
@@ -182,7 +184,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
 
-            if (Loader.isModLoaded("visualprospecting")) {
+            if (VisualProspecting.isModLoaded()) {
                 if (data == 0 || data == 1) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,

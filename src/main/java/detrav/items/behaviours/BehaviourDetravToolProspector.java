@@ -41,6 +41,8 @@ import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.items.behaviors.BehaviourNone;
 
+import static gregtech.api.enums.Mods.VisualProspecting;
+
 /**
  * Created by wital_000 on 19.03.2016.
  */
@@ -82,7 +84,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
 
-                if (Loader.isModLoaded("visualprospecting")) {
+                if (VisualProspecting.isModLoaded()) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,
                         new ArrayList<>(),
@@ -213,7 +215,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             aPlayer.addChatMessage(msg);
         }
 
-        if (Loader.isModLoaded("visualprospecting")) {
+        if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -249,7 +251,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             addChatMassageByValue(aPlayer, value, key);
         }
 
-        if (Loader.isModLoaded("visualprospecting")) {
+        if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -311,10 +313,10 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                 addOreToHashMap(name, aPlayer);
                             }
                         }
-                    } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock)) {
+                    } else if (GTppHelper.isGTppBlock(tBlock)) {
                         String name = GTppHelper.getGTppVeinName(tBlock);
                         if (!name.isEmpty()) addOreToHashMap(name, aPlayer);
-                    } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)) {
+                    } else if (BartWorksHelper.isOre(tBlock)) {
                         if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(
                             (short) ((BartWorksHelper.getMetaFromBlock(aChunk, x, y, z, tBlock)) * -1),

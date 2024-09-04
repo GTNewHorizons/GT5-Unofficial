@@ -28,9 +28,6 @@ public class DetravScannerMod {
     public static final String MODID = "detravscannermod";
     public static final boolean DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("com.detrav.debug", "false"));
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
-    public static boolean isDreamcraftLoaded = false;
-    public static boolean isBartWorksLoaded = false;
-    public static boolean isGTppLoaded = false;
 
     @SidedProxy(clientSide = "detrav.proxies.ClientProxy", serverSide = "detrav.proxies.ServerProxy")
     public static CommonProxy proxy;
@@ -40,9 +37,6 @@ public class DetravScannerMod {
 
     public DetravScannerMod() {
         GregTechAPI.sAfterGTPreload.add(new DetravLoaderAfterGTPreload());
-        isDreamcraftLoaded = Loader.isModLoaded("dreamcraft");
-        isBartWorksLoaded = Loader.isModLoaded("bartworks");
-        isGTppLoaded = Loader.isModLoaded("miscutils");
 
         new DetravNetwork();
     }
@@ -68,7 +62,7 @@ public class DetravScannerMod {
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
-        if (isGTppLoaded) GTppHelper.generate_OreIDs();
+        GTppHelper.generate_OreIDs();
         FluidColors.makeColors();
     }
 }
