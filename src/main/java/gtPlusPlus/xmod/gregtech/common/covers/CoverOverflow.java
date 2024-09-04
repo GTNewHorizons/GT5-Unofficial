@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.covers;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -12,8 +11,8 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluid;
@@ -55,8 +54,7 @@ public class CoverOverflow extends CoverBehavior {
             IMetaTileEntity mIMTE = mBMTE.getMetaTileEntity();
             if (mIMTE instanceof MTEBasicTank mMTEBT)
                 mMTEBT.setDrainableStack(doOverflowThing(mMTEBT.getDrainableStack(), aAmountLimit));
-            else if (mIMTE instanceof MTEFluid mMTEF)
-                doOverflowThings(mMTEF.mFluids, aAmountLimit);
+            else if (mIMTE instanceof MTEFluid mMTEF) doOverflowThings(mMTEF.mFluids, aAmountLimit);
         }
 
         return aAmountLimit;
