@@ -584,6 +584,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             OrePrefixes.plateQuadruple,
             OrePrefixes.plateQuintuple,
             OrePrefixes.plateDense,
+            OrePrefixes.plateSuperdense,
             OrePrefixes.stick,
             OrePrefixes.lens,
             OrePrefixes.round,

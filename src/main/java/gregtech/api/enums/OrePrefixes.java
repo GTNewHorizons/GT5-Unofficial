@@ -156,6 +156,8 @@ public enum OrePrefixes {
     /** 9 Plates combined in one Item. */
     plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false,
         B[1], M * 9, 64, 22),
+    plateSuperdense("Superdense Plates", "Superdense ", " Plate", true, true, false, false, false, false, true, true, false, false,
+        B[1], M * 64, 64, 125),
     plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false,
         false, B[1], M * 5, 64, 21),
     plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false,
@@ -880,6 +882,7 @@ public enum OrePrefixes {
             SubTag.STRETCHY);
 
         plateDense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
+        plateSuperdense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
 
         ingotDouble.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
         ingotTriple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
@@ -972,6 +975,7 @@ public enum OrePrefixes {
             OrePrefixes.plateQuadruple,
             OrePrefixes.plateQuintuple,
             OrePrefixes.plateDense,
+            OrePrefixes.plateSuperdense,
             OrePrefixes.stick,
             OrePrefixes.round,
             OrePrefixes.bolt,
@@ -1285,6 +1289,9 @@ public enum OrePrefixes {
                     }
                     case plateDense -> {
                         return "Strong Cardboard";
+                    }
+                    case plateSuperdense -> {
+                        return "Impossibly Strong Cardboard";
                     }
                 }
             }

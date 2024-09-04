@@ -47,7 +47,7 @@ public class TextureSet {
         "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/handleMallet", "/toolHeadMallet", };
+        aTextVoidDir, aTextVoidDir, aTextVoidDir,  "/plateSuperdense", "/handleMallet", "/toolHeadMallet", };
 
     public boolean is_custom = false;
 

@@ -7,6 +7,7 @@ import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -53,6 +54,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.plateQuadruple.add(this);
         OrePrefixes.plateQuintuple.add(this);
         OrePrefixes.plateDense.add(this);
+        OrePrefixes.plateSuperdense.add(this);
         OrePrefixes.plateAlloy.add(this);
         OrePrefixes.itemCasing.add(this);
     }
@@ -82,6 +84,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case plateQuadruple -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
             case plateQuintuple -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
             case plateDense -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case plateSuperdense -> registerPlateSuperdense(aMaterial, aStack, aNoSmashing, aMaterialMass);
             case itemCasing -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
             case plateAlloy -> registerPlateAlloy(aOreDictName, aStack);
             default -> {}
@@ -426,6 +429,21 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .addTo(benderRecipes);
+        }
+    }
+
+    private void registerPlateSuperdense(final Materials aMaterial, final ItemStack aStack, final boolean aNoSmashing,
+        final long aMaterialMass) {
+        GTModHandler.removeRecipeByOutputDelayed(aStack);
+
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
+                .itemOutputs(GTUtility.copyAmount(1, aStack))
+                .duration(Math.max(aMaterialMass * 9L, 1L))
+                .eut(calculateRecipeEU(aMaterial, 96))
+                .addTo(compressorRecipes);
         }
     }
 
