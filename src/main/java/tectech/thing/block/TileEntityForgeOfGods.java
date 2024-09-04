@@ -7,16 +7,33 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
+import net.minecraftforge.common.util.ForgeDirection;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+
 public class TileEntityForgeOfGods extends TileEntity {
 
     private float radius = 32;
     private float rotationSpeed = 10;
-    private int ringCount = 3;
-    public float colorR = .7f, colorG = .8f, colorB = 1f;
+    private int ringCount = 1;
+    private float colorR = .7f, colorG = .8f, colorB = 1f, gamma = 3f;
+    private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
 
-    public static final float backPlateDistance = -121.5f, backPlateRadius = 13f;
 
-    public float rotAngle = 0, rotx = 1, roty = 0, rotz = 0;
+    private static final String NBT_TAG = "FOG:";
+    private static final String ROTATION_SPEED_NBT_TAG = NBT_TAG + "ROTATION";
+    private static final String SIZE_NBT_TAG = NBT_TAG + "RADIUS";
+    private static final String RINGS_NBT_TAG = NBT_TAG + "RINGS";
+    private static final String COLOR_RED_NBT_TAG = NBT_TAG + "COLOR_RED";
+    private static final String COLOR_GREEN_NBT_TAG = NBT_TAG + "COLOR_GREEN";
+    private static final String COLOR_BLUE_NBT_TAG = NBT_TAG + "COLOR_BLUE";
+    private static final String COLOR_GAMMA_NBT_TAG = NBT_TAG + "COLOR_GAMMA";
+    private static final String ROT_ANGLE_NBT_TAG = NBT_TAG + "ROT_ANGLE";
+    private static final String ROT_AXIS_X_NBT_TAG = NBT_TAG + "ROT_AXIS_X";
+    private static final String ROT_AXIS_Y_NBT_TAG = NBT_TAG + "ROT_AXIS_Y";
+    private static final String ROT_AXIS_Z_NBT_TAG = NBT_TAG + "ROT_AXIS_Z";
+
+    public static final float BACK_PLATE_DISTANCE = -121.5f, BACK_PLATE_RADIUS = 13f;
+
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -25,32 +42,105 @@ public class TileEntityForgeOfGods extends TileEntity {
 
     @Override
     public double getMaxRenderDistanceSquared() {
-        return 25600;
+        return 51200;
     }
 
-    public void setRenderSize(float size) {
+    public void setStarRadius(float size) {
         this.radius = size;
-    }
-
-    public void setRenderRotationSpeed(float rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
     }
 
     public float getStarRadius() {
         return radius;
     }
 
-    public float getRenderRotationSpeed() {
+    public float getRotationSpeed() {
         return rotationSpeed;
     }
 
-    // Used to track the rotation of the star
-    public float angle;
+    public void setRotationSpeed(float speed){
+        this.rotationSpeed = speed;
+    }
 
-    private static final String FOG_NBT_TAG = "FOG:";
-    private static final String ROTATION_SPEED_NBT_TAG = FOG_NBT_TAG + "renderRotationSpeed";
-    private static final String SIZE_NBT_TAG = FOG_NBT_TAG + "renderSize";
+    public float getColorR() {
+        return colorR;
+    }
 
+    public float getColorG() {
+        return colorG;
+    }
+
+    public float getColorB() {
+        return colorB;
+    }
+
+    public float getGamma() {
+        return gamma;
+    }
+
+    public void setColor(float r, float g, float b){
+        setColor(r,g,b,1);
+    }
+
+    public void setColor(float r, float g, float b, float gamma){
+        colorR = r;
+        colorG = g;
+        colorB = b;
+        this.gamma = gamma;
+    }
+
+    public int getRingCount(){
+        return ringCount;
+    }
+
+    public void setRingCount(int count){
+        if (ringCount < 1) return;
+        ringCount = count;
+    }
+
+    public float getRotAngle(){
+        return rotAngle;
+    }
+
+    public float getRotAxisX(){
+        return rotAxisX;
+    }
+
+    public float getRotAxisY(){
+        return rotAxisY;
+    }
+
+    public float getRotAxisZ(){
+        return rotAxisZ;
+    }
+
+    public void setRenderRotation(Rotation rotation, ForgeDirection direction) {
+        //System.out.println(rotation);
+        System.out.println(direction);
+        /*
+        switch (rotation) {
+            case NORMAL -> rotAngle = 0;
+            case CLOCKWISE -> rotAngle = 90;
+            case COUNTER_CLOCKWISE -> rotAngle = -90;
+            case UPSIDE_DOWN -> rotAngle = 180;
+        }
+        */
+        switch (direction) {
+            case SOUTH -> rotAngle = 90;
+            case NORTH -> rotAngle = 90;
+            case WEST -> rotAngle = 0;
+            case EAST -> rotAngle = 180;
+            case UP -> rotAngle = -90;
+            case DOWN -> rotAngle = -90;
+        }
+        rotAxisX = 0;
+        rotAxisY = direction.offsetZ + direction.offsetX;
+        rotAxisZ = direction.offsetY;
+        System.out.println(direction.offsetX);
+        System.out.println(direction.offsetY);
+        System.out.println(direction.offsetZ);
+
+        updateToClient();
+    }
 
     public float getLensDistance(int lensID) {
         return switch (lensID) {
@@ -70,14 +160,6 @@ public class TileEntityForgeOfGods extends TileEntity {
         };
     }
 
-    public int getRingCount(){
-        return ringCount;
-    }
-
-    public void setRingCount(int count){
-        ringCount = count;
-    }
-
     public float getStartAngle(){
         float x = -getLensDistance(getRingCount()-1);
         float y = getLenRadius(getRingCount()-1);
@@ -93,18 +175,36 @@ public class TileEntityForgeOfGods extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-
-        // Save stats
         compound.setFloat(ROTATION_SPEED_NBT_TAG, rotationSpeed);
         compound.setFloat(SIZE_NBT_TAG, radius);
+        compound.setInteger(RINGS_NBT_TAG,ringCount);
+        compound.setFloat(COLOR_RED_NBT_TAG,colorR);
+        compound.setFloat(COLOR_GREEN_NBT_TAG,colorG);
+        compound.setFloat(COLOR_BLUE_NBT_TAG,colorB);
+        compound.setFloat(COLOR_GAMMA_NBT_TAG,gamma);
+        compound.setFloat(ROT_ANGLE_NBT_TAG,rotAngle);
+        compound.setFloat(ROT_AXIS_X_NBT_TAG,rotAxisX);
+        compound.setFloat(ROT_AXIS_Y_NBT_TAG,rotAxisY);
+        compound.setFloat(ROT_AXIS_Z_NBT_TAG,rotAxisZ);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        // Load stats
         rotationSpeed = compound.getFloat(ROTATION_SPEED_NBT_TAG);
-        //radius = compound.getFloat(SIZE_NBT_TAG);
+        radius = compound.getFloat(SIZE_NBT_TAG);
+
+        ringCount = compound.getInteger(RINGS_NBT_TAG);
+        if (ringCount < 1) ringCount = 1;
+
+        colorR = compound.getFloat(COLOR_RED_NBT_TAG);
+        colorG = compound.getFloat(COLOR_GREEN_NBT_TAG);
+        colorB = compound.getFloat(COLOR_BLUE_NBT_TAG);
+        gamma = compound.getFloat(COLOR_GAMMA_NBT_TAG);
+        rotAngle = compound.getFloat(ROT_ANGLE_NBT_TAG);
+        rotAxisX = compound.getFloat(ROT_AXIS_X_NBT_TAG);
+        rotAxisY = compound.getFloat(ROT_AXIS_Y_NBT_TAG);
+        rotAxisZ = compound.getFloat(ROT_AXIS_Z_NBT_TAG);
     }
 
     @Override
@@ -117,5 +217,9 @@ public class TileEntityForgeOfGods extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         readFromNBT(pkt.func_148857_g());
+    }
+
+    public void updateToClient(){
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 }
