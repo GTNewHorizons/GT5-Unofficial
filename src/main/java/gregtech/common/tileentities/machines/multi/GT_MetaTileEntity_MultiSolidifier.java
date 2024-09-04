@@ -315,7 +315,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalWidth = Math.min(30, stackSize.stackSize + 3);
+        int tTotalWidth = Math.min(6, stackSize.stackSize + 3);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             mWidth = i;
             nWidth = i;
@@ -375,7 +375,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         casingTier = -1;
         pipeCasingTier = -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (mWidth < 30) {
+            while (mWidth < 6) {
                 if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0)
                     && checkPiece(MS_LEFT_MID, (2 * (mWidth + 1)) + 3, 4, 0)) {
                     mWidth++;
@@ -416,7 +416,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 20 == 0) {
-            if (this.maxProgresstime() != 0) {
+            if (this.maxProgresstime() != 0 && speedup <= 3) {
                 speedup += 0.2F;
             } else speedup = 1;
         }
@@ -424,7 +424,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * 2);
+        return 4 + (mWidth * 10);
     }
 
     private void setCasingTier(int tier) {
@@ -620,7 +620,6 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                 if (mold != null && fluid != null) {
                     List<ItemStack> inputItems = new ArrayList<>();
                     inputItems.add(mold);
-                    inputItems.add(GT_Utility.getIntegratedCircuit(22));
 
                     processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                     processingLogic.setInputFluids(fluid);
