@@ -5,10 +5,15 @@ import static gregtech.api.enums.GTValues.VP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
 
 class GT_OverclockCalculator_UnitTest {
@@ -252,7 +257,7 @@ class GT_OverclockCalculator_UnitTest {
         long correctConsumption = (long) Math.ceil(VP[1] * 0.9f) << 10;
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
-            .setEUtDiscount(0.9f)
+            .setEUtDiscount(0.9)
             .setDuration(1024)
             .calculate();
         assertEquals(1024 / Math.pow(2, 5), calculator.getDuration(), messageDuration);
@@ -264,7 +269,7 @@ class GT_OverclockCalculator_UnitTest {
         long correctConsumption = (long) Math.ceil(VP[1] * 0.9f) << 10;
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
-            .setEUtDiscount(0.9f)
+            .setEUtDiscount(0.9)
             .setDuration(1024)
             .enablePerfectOC()
             .calculate();
@@ -276,7 +281,7 @@ class GT_OverclockCalculator_UnitTest {
     void imperfectOCWithSpeedBoost_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
-            .setSpeedBoost(0.9f)
+            .setSpeedBoost(0.9)
             .setDuration(1024)
             .calculate();
         assertEquals((int) (1024 * 0.9f / Math.pow(2, 5)), calculator.getDuration(), messageDuration);
@@ -287,7 +292,7 @@ class GT_OverclockCalculator_UnitTest {
     void perfectOCWithSpeedBoost_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
-            .setSpeedBoost(0.9f)
+            .setSpeedBoost(0.9)
             .setDuration(2048)
             .enablePerfectOC()
             .calculate();
@@ -321,7 +326,7 @@ class GT_OverclockCalculator_UnitTest {
     void oneTickDiscountImperfectOC_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
-            .setSpeedBoost(1.1f)
+            .setSpeedBoost(1.1)
             .setDuration(4)
             .setOneTickDiscount(true)
             .calculate();
@@ -347,7 +352,7 @@ class GT_OverclockCalculator_UnitTest {
     void oneTickDiscountPerfectOC_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
-            .setSpeedBoost(1.1f)
+            .setSpeedBoost(1.1)
             .setDuration(16)
             .enablePerfectOC()
             .setOneTickDiscount(true)
@@ -375,7 +380,7 @@ class GT_OverclockCalculator_UnitTest {
         long correctConsumption = (long) Math.ceil((VP[0] << 10) * 0.9f);
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[6])
-            .setEUtDiscount(0.9f)
+            .setEUtDiscount(0.9)
             .setDuration(1024)
             .calculate();
         assertEquals(1024 / Math.pow(2, 5), calculator.getDuration(), messageDuration);
@@ -387,7 +392,7 @@ class GT_OverclockCalculator_UnitTest {
         long correctConsumption = (long) Math.ceil((VP[0] << 6) * 14 * 0.9f);
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[5])
-            .setEUtDiscount(0.9f)
+            .setEUtDiscount(0.9)
             .setParallel(14)
             .setDuration(1024)
             .calculate();
@@ -424,7 +429,7 @@ class GT_OverclockCalculator_UnitTest {
             .setParallel(56)
             .setAmperage(1)
             .setAmperageOC(true)
-            .setSpeedBoost(1f / 6.01f) // If we set this to 1/6 we will get 11 overclocks because of float imprecision.
+            .setSpeedBoost(1 / 6.0)
             .setEUt(V[14] * 1_048_576)
             .setDuration(56)
             .setCurrentParallel(6144)
@@ -660,5 +665,34 @@ class GT_OverclockCalculator_UnitTest {
             .calculate();
         assertEquals(600, calculator.getDuration(), messageDuration);
         assertEquals(614400, calculator.getConsumption(), messageEUt);
+    }
+
+    static Stream<Arguments> noFloatImprecisionIssueParameters() {
+        return Stream.of(
+            // result using float
+            Arguments.arguments(1 / 2.25f, 0.9f, 42_467_327),
+            // result using double
+            Arguments.arguments(1 / 2.25, 0.9, 42_467_328));
+    }
+
+    @ParameterizedTest
+    @MethodSource("noFloatImprecisionIssueParameters")
+    void floatPrecisionIssues(double speedBoost, double eutDiscount, int expectedEUt) {
+        // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/17207
+        // Using centrifuge recipe: Black Granite dust
+        // in an Industrial Centrifuge under UMV power
+        long machineVoltage = V[12];
+        int maxParallel = 6 * GTUtility.getTier(machineVoltage);
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(10)
+            .setEUt(machineVoltage)
+            .setDuration(20 * 20)
+            .setSpeedBoost(speedBoost)
+            .setEUtDiscount(eutDiscount)
+            .setParallel(maxParallel);
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+        maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
+        calculator.setCurrentParallel(maxParallel)
+            .calculate();
+        assertEquals(expectedEUt, calculator.getConsumption());
     }
 }
