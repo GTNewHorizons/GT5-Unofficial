@@ -199,7 +199,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.COMPRESSION_TIER.mode." + machineMode);
+        return StatCollector.translateToLocal("GT5U.BLACKHOLE.mode." + machineMode);
     }
 
     @Override
