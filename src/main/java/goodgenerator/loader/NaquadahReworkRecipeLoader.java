@@ -408,6 +408,7 @@ public class NaquadahReworkRecipeLoader {
         // 2InPO4 + 3Ca = 2In + Ca3(PO4)2
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(1),
                 indiumPhosphate.get(OrePrefixes.dust, 12),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 3))
             .itemOutputs(
