@@ -18,10 +18,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -34,7 +30,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -52,6 +47,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
@@ -741,14 +737,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
                 .setSize(16, 16)
                 .setPos(170, 28))
-            .widget(new CycleButtonWidget()
-                .setToggle(() -> disablePatternOptimization, val -> disablePatternOptimization = val)
-                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
-                .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                .addTooltip(0, "Pattern Optimization:\n§7Allowed")
-                .addTooltip(1, "Pattern Optimization:\n§7Disabled")
-                .setPos(170, 10)
-                .setSize(16, 16));
+            .widget(
+                new CycleButtonWidget()
+                    .setToggle(() -> disablePatternOptimization, val -> disablePatternOptimization = val)
+                    .setStaticTexture(GTUITextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
+                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+                    .addTooltip(0, "Pattern Optimization:\n§7Allowed")
+                    .addTooltip(1, "Pattern Optimization:\n§7Disabled")
+                    .setPos(170, 10)
+                    .setSize(16, 16));
     }
 
     @Override
