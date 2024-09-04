@@ -148,7 +148,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
             }
         }
         if (totalFlow <= 0) return 0;
-        tEU = totalFlow;
+        tEU = (long) (totalFlow * 0.5f);
         int waterToOutput;
         if (isUsingDenseSteam) {
             // Water return is lower to counteract water generation from rounding errors
