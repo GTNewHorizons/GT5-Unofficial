@@ -92,7 +92,6 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.kuba6000.mobsinfo.api.utils.ItemID;
 
 import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.relauncher.Side;
@@ -121,6 +120,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -927,13 +927,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> mSecondaryMode, b -> mSecondaryMode = b));
         screenElements.widget(new FakeSyncWidget<>(() -> {
             HashMap<ItemStack, Double> ret = new HashMap<>();
-            HashMap<ItemID, Double> dropProgress = new HashMap<>();
+            HashMap<ItemId, Double> dropProgress = new HashMap<>();
 
-            for (Map.Entry<ItemID, Double> drop : this.dropProgress.entrySet()) {
+            for (Map.Entry<ItemId, Double> drop : this.dropProgress.entrySet()) {
                 dropProgress.merge(drop.getKey(), drop.getValue(), Double::sum);
             }
 
-            for (Map.Entry<ItemID, Double> drop : dropProgress.entrySet()) {
+            for (Map.Entry<ItemId, Double> drop : dropProgress.entrySet()) {
                 ret.put(BeeSimulator.dropstacks.get(drop.getKey()), drop.getValue());
             }
             return ret;
@@ -962,7 +962,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         super.drawTexts(screenElements, inventorySlot);
     }
 
-    final HashMap<ItemID, Double> dropProgress = new HashMap<>();
+    final HashMap<ItemId, Double> dropProgress = new HashMap<>();
 
     private static class BeeSimulator {
 
@@ -1058,7 +1058,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             return tag;
         }
 
-        static final Map<ItemID, ItemStack> dropstacks = new HashMap<>();
+        static final Map<ItemId, ItemStack> dropstacks = new HashMap<>();
 
         public List<ItemStack> getDrops(final MTEMegaIndustrialApiary MTE, final double timePassed) {
             drops.forEach(d -> {
@@ -1103,7 +1103,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             private static final float MAX_PRODUCTION_MODIFIER_FROM_UPGRADES = 17.19926784f; // 4*1.2^8
             final ItemStack stack;
             double amount;
-            final ItemID id;
+            final ItemId id;
 
             final float chance;
             final float beeSpeed;
@@ -1114,7 +1114,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 this.chance = chance;
                 this.beeSpeed = beeSpeed;
                 this.t = t;
-                id = ItemID.createNoCopy(this.stack);
+                id = ItemId.createNoCopy(this.stack);
                 evaluate();
             }
 
@@ -1150,7 +1150,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 beeSpeed = tag.getFloat("beeSpeed");
                 t = tag.getFloat("t");
                 amount = tag.getDouble("amount");
-                id = ItemID.createNoCopy(stack);
+                id = ItemId.createNoCopy(stack);
             }
 
             public NBTTagCompound toNBTTagCompound() {
