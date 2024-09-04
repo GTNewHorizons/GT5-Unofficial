@@ -207,7 +207,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             .addInfo("Needs a minimum of 128 Pressure Containment Casings.")
             .addInfo(AuthorVolence)
             .addSeparator()
-            .beginStructureBlock(7, 5, 5, true)
+            .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
             .addCasingInfoExactly("Item Pipe Casings", 7, true)
