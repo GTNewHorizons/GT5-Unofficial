@@ -136,13 +136,13 @@ public class CoverOverflow extends CoverBehavior {
     @Override
     public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
-        return true;
+        return false;
     }
 
     @Override
     public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
-        return false;
+        return true;
     }
 
     @Override
