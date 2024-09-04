@@ -1812,6 +1812,15 @@ public class RecipeLoader2 {
             .metadata(FUSION_THRESHOLD, 1_000_000_000)
             .addTo(fusionRecipes);
 
+        // Mk5 recipe
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Copper.getPlasma(288), WerkstoffLoader.Oganesson.getFluidOrGas(500))
+            .fluidOutputs(GGMaterial.metastableOganesson.getMolten(288))
+            .eut(TierEU.RECIPE_UEV)
+            .duration(5 * SECONDS)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .addTo(fusionRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.metastableOganesson.get(OrePrefixes.dust))
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(250))
