@@ -1,13 +1,13 @@
 package gregtech.test;
 
-import static gregtech.api.GregTech_API.sBlockOres1;
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.GregTechAPI.sBlockOres1;
+import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
 import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.enums.OrePrefixes.lens;
-import static gregtech.api.util.GT_OreDictUnificator.get;
-import static gregtech.api.util.GT_Utility.copyAmount;
+import static gregtech.api.util.GTOreDictUnificator.get;
+import static gregtech.api.util.GTUtility.copyAmount;
 import static net.minecraft.init.Blocks.chest;
 import static net.minecraft.init.Blocks.iron_ore;
 import static net.minecraft.init.Blocks.lapis_block;
@@ -32,12 +32,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 class GTRecipeTest {
 
     static RecipeMap<?> recipeMap;
-    static GT_Recipe lapotronChipRecipe;
+    static GTRecipe lapotronChipRecipe;
 
     @BeforeAll
     static void setup() {
@@ -65,7 +65,7 @@ class GTRecipeTest {
             .duration(0)
             .eut(0)
             .addTo(recipeMap)
-            .toArray(new GT_Recipe[0])[0];
+            .toArray(new GTRecipe[0])[0];
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(sBlockOres1, 1, 32))
@@ -115,12 +115,12 @@ class GTRecipeTest {
 
     @Test
     void findWithExactSameInputs() {
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
+        GTRecipe recipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(lapis_block, 1), get(circuit, Materials.HV, 1))
             .find();
         assertNotNull(recipe);
 
-        GT_Recipe stoneRecipe = recipeMap.findRecipeQuery()
+        GTRecipe stoneRecipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(stone_slab, 128))
             .find();
         assertNotNull(stoneRecipe);
@@ -128,12 +128,12 @@ class GTRecipeTest {
 
     @Test
     void findWildcardWithExactSameInputs() {
-        GT_Recipe chestRecipe = recipeMap.findRecipeQuery()
+        GTRecipe chestRecipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(log, 2, WILDCARD_VALUE), new ItemStack(planks, 2, WILDCARD_VALUE))
             .find();
         assertNotNull(chestRecipe);
 
-        GT_Recipe lapotronChipRecipe = recipeMap.findRecipeQuery()
+        GTRecipe lapotronChipRecipe = recipeMap.findRecipeQuery()
             .items(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
             .find();
         assertNotNull(lapotronChipRecipe);
@@ -142,7 +142,7 @@ class GTRecipeTest {
     @Test
     void findWildcardWithDifferentMeta() {
         // https://github.com/GTNewHorizons/GT5-Unofficial/pull/2364/commits/e7112fce5f24431f3a4ad19288d662b93cbb91f2
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
+        GTRecipe recipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(log, 2, 0), new ItemStack(planks, 2, 1))
             .find();
         assertNotNull(recipe);
@@ -155,7 +155,7 @@ class GTRecipeTest {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setFloat("charge", 123456);
         lapisBlock.stackTagCompound = tag;
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
+        GTRecipe recipe = recipeMap.findRecipeQuery()
             .items(lapisBlock, get(circuit, Materials.HV, 1))
             .find();
         assertNotNull(recipe);
@@ -165,7 +165,7 @@ class GTRecipeTest {
         NBTTagCompound glassTag = new NBTTagCompound();
         glassTag.setInteger("integer", 123456);
         glass.setTagCompound(glassTag);
-        GT_Recipe nbtSensitiveRecipe = recipeMap.findRecipeQuery()
+        GTRecipe nbtSensitiveRecipe = recipeMap.findRecipeQuery()
             .items(glass)
             .find();
         assertNotNull(nbtSensitiveRecipe);
@@ -175,7 +175,7 @@ class GTRecipeTest {
         NBTTagCompound dataStickTag = new NBTTagCompound();
         dataStickTag.setInteger("integer", 123456);
         dataStick.setTagCompound(dataStickTag);
-        GT_Recipe checkNBTRecipe = recipeMap.findRecipeQuery()
+        GTRecipe checkNBTRecipe = recipeMap.findRecipeQuery()
             .items(dataStick)
             .find();
         assertNotNull(checkNBTRecipe);
@@ -183,12 +183,12 @@ class GTRecipeTest {
 
     @Test
     void rejectWithInsufficientAmount() {
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
+        GTRecipe recipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(log, 1, 0), new ItemStack(planks, 1, 0))
             .find();
         assertNull(recipe);
 
-        GT_Recipe stoneRecipe = recipeMap.findRecipeQuery()
+        GTRecipe stoneRecipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(stone_slab, 127))
             .find();
         assertNull(stoneRecipe);
@@ -197,7 +197,7 @@ class GTRecipeTest {
     @Test
     void rejectWithoutNonConsumable() {
         // https://github.com/GTNewHorizons/GT5-Unofficial/pull/2364/commits/bfc93bff7ed34616021e8c5b6dbdc50dd7096af5
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
+        GTRecipe recipe = recipeMap.findRecipeQuery()
             .items(IC2_LapotronCrystal.get(1))
             .cachedRecipe(lapotronChipRecipe)
             .find();
@@ -207,13 +207,13 @@ class GTRecipeTest {
     @Test
     void rejectWithoutCorrectNBT() {
         // For NBT sensitive recipes
-        GT_Recipe nbtSensitiveRecipe = recipeMap.findRecipeQuery()
+        GTRecipe nbtSensitiveRecipe = recipeMap.findRecipeQuery()
             .items(new ItemStack(glass_bottle, 2))
             .find();
         assertNull(nbtSensitiveRecipe);
 
         // For items that need to check NBT, e.g. data sticks
-        GT_Recipe checkNBTRecipe = recipeMap.findRecipeQuery()
+        GTRecipe checkNBTRecipe = recipeMap.findRecipeQuery()
             .items(ItemList.Tool_DataStick.get(0))
             .find();
         assertNull(checkNBTRecipe);
@@ -225,12 +225,12 @@ class GTRecipeTest {
         // We cannot use circuit assembling recipe like the issue mentioned above,
         // as mUnificationTarget is not set for circuits in GT5.
         // But it works in the same way; specific circuit -> GT ore block, unificated circuit -> vanilla ore block
-        GT_Recipe recipeCorrectOre = recipeMap.findRecipeQuery()
+        GTRecipe recipeCorrectOre = recipeMap.findRecipeQuery()
             .items(new ItemStack(sBlockOres1, 1, 32))
             .find();
         assertNotNull(recipeCorrectOre);
 
-        GT_Recipe recipeWrongOre = recipeMap.findRecipeQuery()
+        GTRecipe recipeWrongOre = recipeMap.findRecipeQuery()
             .items(new ItemStack(iron_ore, 1))
             .find();
         assertNull(recipeWrongOre);

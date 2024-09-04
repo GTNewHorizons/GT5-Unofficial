@@ -34,6 +34,7 @@ public enum Mods {
     BiblioWoodsNaturaEdition(Names.BIBLIO_WOODS_NATURA_EDITION),
     BinnieCore(Names.BINNIE_CORE),
     BiomesOPlenty(Names.BIOMES_O_PLENTY),
+    BlockRenderer6343(Names.BLOCK_RENDERER_6343),
     BloodArsenal(Names.BLOOD_ARSENAL),
     BloodMagic(Names.BLOOD_MAGIC),
     Botania(Names.BOTANIA),
@@ -179,14 +180,8 @@ public enum Mods {
     ZTones(Names.Z_TONES),
 
     // Do we keep compat of those?
-    ArsMagica2(Names.ARS_MAGICA2),
-    GanysSurface(Names.GANYS_SURFACE),
-    IndustrialCraft2Classic(Names.INDUSTRIAL_CRAFT2_CLASSIC),
-    MagicalCrops(Names.MAGICAL_CROPS),
     Metallurgy(Names.METALLURGY),
     RotaryCraft(Names.ROTARY_CRAFT),
-    ThermalExpansion(Names.THERMAL_EXPANSION),
-    ThermalFondation(Names.THERMAL_FONDATION),
     UndergroundBiomes(Names.UNDERGROUND_BIOMES),
 
     ;
@@ -219,6 +214,7 @@ public enum Mods {
         public static final String BIBLIO_WOODS_NATURA_EDITION = "BiblioWoodsNatura";
         public static final String BINNIE_CORE = "BinnieCore";
         public static final String BIOMES_O_PLENTY = "BiomesOPlenty";
+        public static final String BLOCK_RENDERER_6343 = "blockrenderer6343";
         public static final String BLOOD_ARSENAL = "BloodArsenal";
         public static final String BLOOD_MAGIC = "AWWayofTime";
         public static final String BOTANIA = "Botania";
@@ -364,14 +360,8 @@ public enum Mods {
         public static final String Z_TONES = "Ztones";
 
         // Do we keep compat of those mods?
-        public static final String ARS_MAGICA2 = "arsmagica2";
-        public static final String GANYS_SURFACE = "ganyssurface";
-        public static final String INDUSTRIAL_CRAFT2_CLASSIC = "IC2-Classic-Spmod";
-        public static final String MAGICAL_CROPS = "magicalcrops";
         public static final String METALLURGY = "Metallurgy";
         public static final String ROTARY_CRAFT = "RotaryCraft";
-        public static final String THERMAL_EXPANSION = "ThermalExpansion";
-        public static final String THERMAL_FONDATION = "ThermalFoundation";
         public static final String UNDERGROUND_BIOMES = "UndergroundBiomes";
 
     }

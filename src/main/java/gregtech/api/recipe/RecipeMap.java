@@ -1,6 +1,6 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GT_RecipeBuilder.ENABLE_COLLISION_CHECK;
+import static gregtech.api.util.GTRecipeBuilder.ENABLE_COLLISION_CHECK;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Unmodifiable;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.util.FieldsAreNonnullByDefault;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -82,7 +82,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      * @return All the recipes belonging to this recipemap.
      */
     @Unmodifiable
-    public Collection<GT_Recipe> getAllRecipes() {
+    public Collection<GTRecipe> getAllRecipes() {
         return backend.getAllRecipes();
     }
 
@@ -116,13 +116,13 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     // region add recipe
     @Deprecated
     @Nullable
-    public GT_Recipe addRecipe(GT_Recipe aRecipe) {
+    public GTRecipe addRecipe(GTRecipe aRecipe) {
         return addRecipe(aRecipe, true, false, false);
     }
 
     @Deprecated
     @Nullable
-    public GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
+    public GTRecipe addRecipe(GTRecipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
         aRecipe.mHidden = aHidden;
         aRecipe.mFakeRecipe = aFakeRecipe;
         if (aRecipe.mFluidInputs.length < backend.properties.minFluidInputs
@@ -137,13 +137,13 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      */
     @Deprecated
     @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
+    public GTRecipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
         @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
         @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, ItemStack[][] aAlt,
         boolean hidden) {
         return addFakeRecipe(
             aCheckForCollisions,
-            new GT_Recipe.GT_Recipe_WithAlt(
+            new GTRecipe.GTRecipe_WithAlt(
                 false,
                 aInputs,
                 aOutputs,
@@ -164,23 +164,23 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      */
     @Deprecated
     @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, GT_Recipe aRecipe) {
+    public GTRecipe addFakeRecipe(boolean aCheckForCollisions, GTRecipe aRecipe) {
         return addRecipe(aRecipe, aCheckForCollisions, true, false);
     }
 
     @Deprecated
     @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, GT_Recipe aRecipe, boolean hidden) {
+    public GTRecipe addFakeRecipe(boolean aCheckForCollisions, GTRecipe aRecipe, boolean hidden) {
         return addRecipe(aRecipe, aCheckForCollisions, true, hidden);
     }
 
     @Nonnull
     @Override
-    public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
+    public Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
         return backend.doAdd(builder);
     }
 
-    public GT_Recipe add(GT_Recipe aRecipe) {
+    public GTRecipe add(GTRecipe aRecipe) {
         return backend.compileRecipe(aRecipe);
     }
 
@@ -217,26 +217,26 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     @Nullable
-    public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage,
+    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage,
         @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
         return findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, null, aInputs);
     }
 
     @Nullable
-    public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated,
+    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated,
         boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
         return findRecipe(aTileEntity, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, null, aInputs);
     }
 
     @Nullable
-    public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
+    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GTRecipe aRecipe,
         boolean aNotUnificated, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack aSpecialSlot,
         @Nullable ItemStack... aInputs) {
         return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
     }
 
     @Nullable
-    public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
+    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GTRecipe aRecipe,
         boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids,
         @Nullable ItemStack aSpecialSlot, @Nullable ItemStack... aInputs) {
         return findRecipeQuery().items(aInputs != null ? aInputs : new ItemStack[0])

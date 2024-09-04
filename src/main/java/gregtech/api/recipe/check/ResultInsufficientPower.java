@@ -4,10 +4,13 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GT_Utility;
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.util.GTUtility;
 
 public class ResultInsufficientPower implements CheckRecipeResult {
 
@@ -19,7 +22,7 @@ public class ResultInsufficientPower implements CheckRecipeResult {
 
     @Override
     @Nonnull
-    public String getID() {
+    public @NotNull String getID() {
         return "insufficient_power";
     }
 
@@ -30,17 +33,28 @@ public class ResultInsufficientPower implements CheckRecipeResult {
 
     @Override
     @Nonnull
-    public String getDisplayString() {
+    public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_power",
-                GT_Utility.formatNumbers(required),
-                GT_Utility.getColoredTierNameFromVoltage(required)));
+                GTUtility.formatNumbers(required),
+                GTUtility.getColoredTierNameFromVoltage(required)));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setLong("required", required);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        required = tag.getLong("required");
     }
 
     @Override
     @Nonnull
-    public CheckRecipeResult newInstance() {
+    public @NotNull CheckRecipeResult newInstance() {
         return new ResultInsufficientPower(0);
     }
 

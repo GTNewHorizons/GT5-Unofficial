@@ -3,7 +3,7 @@ package gregtech.common.items;
 import org.apache.commons.lang3.text.WordUtils;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public enum DropType {
 
@@ -36,7 +36,7 @@ public enum DropType {
 
     public String getName() {
 
-        return GT_LanguageManager.addStringLocalization("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
+        return GTLanguageManager.addStringLocalization("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
     }
 
     public int[] getColours() {

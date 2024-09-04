@@ -13,7 +13,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 
 public class VanillaBedHeightFix implements IBugFix {
 
@@ -23,7 +23,7 @@ public class VanillaBedHeightFix implements IBugFix {
     public VanillaBedHeightFix(IPlugin minstance) {
         mParent = minstance;
         Method m;
-        if (!CORE_Preloader.DEV_ENVIRONMENT) {
+        if (!PreloaderCore.DEV_ENVIRONMENT) {
             m = ReflectionUtils.getMethod(EntityPlayer.class, "func_71018_a", int.class, int.class, int.class);
         } else {
             m = ReflectionUtils.getMethod(

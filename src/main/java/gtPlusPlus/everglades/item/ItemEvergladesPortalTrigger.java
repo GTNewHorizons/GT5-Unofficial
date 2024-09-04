@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
 
 public class ItemEvergladesPortalTrigger extends Item {
 
@@ -99,7 +99,7 @@ public class ItemEvergladesPortalTrigger extends Item {
                 "fire.ignite",
                 1.0F,
                 itemRand.nextFloat() * 0.4F + 0.8F);
-            if (Dimension_Everglades.portalBlock.tryToCreatePortal(par3World, par4, par5, par6)) {
+            if (DimensionEverglades.portalBlock.tryToCreatePortal(par3World, par4, par5, par6)) {
                 // Make a Portal
             } else {
                 if (!par3World.isRemote) {

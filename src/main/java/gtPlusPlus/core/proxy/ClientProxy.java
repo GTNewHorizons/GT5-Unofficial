@@ -43,24 +43,24 @@ import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.CORE.ConfigSwitches;
+import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.nei.NEI_GTPP_Config;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_FlaskRenderer;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
+import gtPlusPlus.nei.GTPPNEIConfig;
+import gtPlusPlus.xmod.gregtech.common.render.CapeRenderer;
+import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
+import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
 
 public class ClientProxy extends CommonProxy implements Runnable {
 
-    private final GTPP_CapeRenderer mCapeRenderer;
+    private final CapeRenderer mCapeRenderer;
 
     @SideOnly(Side.CLIENT)
     public static boolean mFancyGraphics = false;
 
     public ClientProxy() {
-        mCapeRenderer = new GTPP_CapeRenderer();
+        mCapeRenderer = new CapeRenderer();
         // Get Graphics Mode.
         mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
     }
@@ -93,11 +93,11 @@ public class ClientProxy extends CommonProxy implements Runnable {
          */
         new CustomOreBlockRenderer();
         new CustomItemBlockRenderer();
-        new GTPP_Render_MachineBlock();
+        new MachineBlockRenderer();
 
-        new GTPP_FlaskRenderer();
+        new FlaskRenderer();
 
-        MinecraftForge.EVENT_BUS.register(new NEI_GTPP_Config());
+        MinecraftForge.EVENT_BUS.register(new GTPPNEIConfig());
 
         super.init(e);
     }
@@ -157,7 +157,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        if (CORE.ConfigSwitches.hideUniversalCells) {
+        if (GTPPCore.ConfigSwitches.hideUniversalCells) {
             hideUniversalCells();
         }
         super.onLoadComplete(event);

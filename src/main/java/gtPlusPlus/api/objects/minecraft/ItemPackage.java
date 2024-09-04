@@ -2,7 +2,7 @@ package gtPlusPlus.api.objects.minecraft;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.handler.CompatHandler;
 
 public abstract class ItemPackage implements RunnableWithInfo<String> {
 
@@ -12,9 +12,9 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
 
     public ItemPackage(boolean hasExtraLateRun) {
         // Register for late run
-        COMPAT_HANDLER.mObjectsToRunInPostInit.put(this);
+        CompatHandler.mObjectsToRunInPostInit.put(this);
         if (hasExtraLateRun) {
-            COMPAT_HANDLER.mObjectsToRunInOnLoadComplete.put(this);
+            CompatHandler.mObjectsToRunInOnLoadComplete.put(this);
         }
         init();
     }
@@ -47,7 +47,7 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
 
     /**
      * Override this to handle GT Recipe map manipulation after they're Baked.
-     * 
+     *
      * @param event - the {@link FMLLoadCompleteEvent}.
      * @return - Did we do anything?
      */

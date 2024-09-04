@@ -1,10 +1,10 @@
 package gtPlusPlus.core.config;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
-import static gtPlusPlus.core.lib.CORE.EVERGLADESBIOME_ID;
-import static gtPlusPlus.core.lib.CORE.EVERGLADES_ID;
-import static gtPlusPlus.core.lib.CORE.turbineCutoffBase;
+import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.*;
+import static gtPlusPlus.core.lib.GTPPCore.EVERGLADESBIOME_ID;
+import static gtPlusPlus.core.lib.GTPPCore.EVERGLADES_ID;
+import static gtPlusPlus.core.lib.GTPPCore.turbineCutoffBase;
 
 import java.io.File;
 

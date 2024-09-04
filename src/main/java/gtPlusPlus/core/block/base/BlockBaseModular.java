@@ -16,11 +16,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -58,7 +58,7 @@ public class BlockBaseModular extends BasicBlock {
         registerComponent();
         sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
         thisBlockMaterialTranslatedName = material.getTranslatedName();
-        GT_LanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", getProperName());
+        GTLanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", getProperName());
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -79,13 +79,13 @@ public class BlockBaseModular extends BasicBlock {
             ItemBlockGtBlock.class,
             Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
-            GT_OreDictUnificator
+            GTOreDictUnificator
                 .registerOre("block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         } else if (fx == 1) {
-            GT_OreDictUnificator
+            GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         } else if (fx == 2) {
-            GT_OreDictUnificator
+            GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
         }
     }
@@ -172,7 +172,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
+        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
             .replace("%s", "%temp")
             .replace("%material", this.thisBlockMaterialTranslatedName)
             .replace("%temp", "%s");
@@ -198,7 +198,7 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        if (!CORE.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
+        if (!GTPPCore.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
             || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }

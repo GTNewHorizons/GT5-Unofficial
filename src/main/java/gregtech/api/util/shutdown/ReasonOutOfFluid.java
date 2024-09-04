@@ -1,10 +1,11 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GT_ModHandler.getWater;
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTModHandler.getWater;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.Objects;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -35,6 +36,16 @@ public class ReasonOutOfFluid implements ShutDownReason {
                 "GT5U.gui.text.out_of_fluid",
                 requiredFluid.getLocalizedName(),
                 formatNumbers(requiredFluid.amount)));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        return requiredFluid.writeToNBT(tag);
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        requiredFluid = FluidStack.loadFluidStackFromNBT(tag);
     }
 
     @NotNull

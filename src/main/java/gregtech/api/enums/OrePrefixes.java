@@ -1,8 +1,8 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.D2;
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GTValues.B;
+import static gregtech.api.enums.GTValues.D2;
+import static gregtech.api.enums.GTValues.M;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,16 +15,16 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.GT_ArrayList;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GTArrayList;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -206,7 +206,7 @@ public enum OrePrefixes {
     gearGtSmall("Small Gears", "Small ", " Gear", true, true, false, false, false, false, true, true, false, false,
         B[7], M * 1, 64, 52),
     /** Introduced by me because BuildCraft has ruined the gear Prefix... */
-    gearGt("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 16, 63),
+    gearGt("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 64, 63),
     /** 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials. */
     lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64,
         24),
@@ -701,6 +701,8 @@ public enum OrePrefixes {
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
+        cell.disableComponent(MaterialsUEVplus.GravitonShard);
+
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
@@ -780,6 +782,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
         nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.SixPhasedCopper);
         // -----
 
         gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -787,6 +790,8 @@ public enum OrePrefixes {
         toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+
+        gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -927,7 +932,7 @@ public enum OrePrefixes {
         bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 3);
     }
 
-    public final ArrayList<ItemStack> mPrefixedItems = new GT_ArrayList<>(false, 16);
+    public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
     public final short mTextureIndex;
     public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
     public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing,
@@ -952,7 +957,7 @@ public enum OrePrefixes {
     private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
         512,
         0.5f,
-        GT_ItemStack.ITEMSTACK_HASH_STRATEGY2);
+        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     public static final List<OrePrefixes> mPreventableComponents = new LinkedList<>(
         Arrays.asList(
             OrePrefixes.gem,
@@ -1001,7 +1006,8 @@ public enum OrePrefixes {
             OrePrefixes.gemExquisite,
             OrePrefixes.gearGt,
             OrePrefixes.itemCasing,
-            OrePrefixes.nanite));
+            OrePrefixes.nanite,
+            OrePrefixes.cell));
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
      */
@@ -1031,36 +1037,36 @@ public enum OrePrefixes {
         mTextureIndex = (short) aTextureindex;
 
         if (name().startsWith("ore")) {
-            new TC_AspectStack(TC_Aspects.TERRA, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
         } else if (name().startsWith("wire") || name().startsWith("cable")) {
-            new TC_AspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
         } else if (name().startsWith("dust")) {
-            new TC_AspectStack(TC_Aspects.PERDITIO, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.PERDITIO, 1).addToAspectList(mAspects);
         } else if (name().startsWith("crushed")) {
-            new TC_AspectStack(TC_Aspects.PERFODIO, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.PERFODIO, 1).addToAspectList(mAspects);
         } else if (name().startsWith("ingot") || name().startsWith("nugget")) {
-            new TC_AspectStack(TC_Aspects.METALLUM, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.METALLUM, 1).addToAspectList(mAspects);
         } else if (name().startsWith("armor")) {
-            new TC_AspectStack(TC_Aspects.TUTAMEN, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.TUTAMEN, 1).addToAspectList(mAspects);
         } else if (name().startsWith("stone")) {
-            new TC_AspectStack(TC_Aspects.TERRA, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
         } else if (name().startsWith("pipe")) {
-            new TC_AspectStack(TC_Aspects.ITER, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.ITER, 1).addToAspectList(mAspects);
         } else if (name().startsWith("gear")) {
-            new TC_AspectStack(TC_Aspects.MOTUS, 1).addToAspectList(mAspects);
-            new TC_AspectStack(TC_Aspects.MACHINA, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.MOTUS, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
         } else if (name().startsWith("frame") || name().startsWith("plate")) {
-            new TC_AspectStack(TC_Aspects.FABRICO, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.FABRICO, 1).addToAspectList(mAspects);
         } else if (name().startsWith("tool")) {
-            new TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
         } else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
-            new TC_AspectStack(TC_Aspects.VITREUS, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.VITREUS, 1).addToAspectList(mAspects);
         } else if (name().startsWith("circuit")) {
-            new TC_AspectStack(TC_Aspects.COGNITIO, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.COGNITIO, 1).addToAspectList(mAspects);
         } else if (name().startsWith("computer")) {
-            new TC_AspectStack(TC_Aspects.COGNITIO, 4).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.COGNITIO, 4).addToAspectList(mAspects);
         } else if (name().startsWith("battery")) {
-            new TC_AspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
         }
     }
 
@@ -1107,7 +1113,7 @@ public enum OrePrefixes {
     }
 
     public static OrePrefixes getPrefix(String aPrefixName, OrePrefixes aReplacement) {
-        Object tObject = GT_Utility.getFieldContent(OrePrefixes.class, aPrefixName, false, false);
+        Object tObject = GTUtility.getFieldContent(OrePrefixes.class, aPrefixName, false, false);
         if (tObject instanceof OrePrefixes) return (OrePrefixes) tObject;
         return aReplacement;
     }
@@ -1139,13 +1145,13 @@ public enum OrePrefixes {
     }
 
     public boolean contains(ItemStack aStack) {
-        return !GT_Utility.isStackInvalid(aStack) && mContainsTestCache.contains(aStack);
+        return !GTUtility.isStackInvalid(aStack) && mContainsTestCache.contains(aStack);
     }
 
     public boolean containsUnCached(ItemStack aStack) {
         // In case someone needs this
         for (ItemStack tStack : mPrefixedItems) {
-            if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
+            if (GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
                 return true;
             }
         }
@@ -1191,20 +1197,20 @@ public enum OrePrefixes {
         }
 
         if (!((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
-            && GT_Utility.isStackValid(aStack))) {
+            && GTUtility.isStackValid(aStack))) {
             return;
         }
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-            if (D2) GT_Log.ore.println(
+            if (D2) GTLog.ore.println(
                 "Processing '" + aOreDictName
                     + "' with the Prefix '"
                     + name()
                     + "' and the Material '"
                     + aMaterial.mName
                     + "' at "
-                    + GT_Utility.getClassName(tRegistrator));
-            tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+                    + GTUtility.getClassName(tRegistrator));
+            tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
     }
 

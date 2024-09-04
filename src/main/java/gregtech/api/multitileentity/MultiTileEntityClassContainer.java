@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.api.enums.GT_Values.NBT;
+import static gregtech.api.enums.GTValues.NBT;
 
 import java.lang.ref.WeakReference;
 
@@ -11,7 +11,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTUtil;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.casings.upgrade.Tank;
 
@@ -43,7 +43,7 @@ public class MultiTileEntityClassContainer {
 
         if (parameters.hasKey(NBT.MATERIAL) && !parameters.hasKey(NBT.COLOR)) parameters.setInteger(
             NBT.COLOR,
-            GT_Util.getRGBInt(
+            GTUtil.getRGBInt(
                 Materials.get(parameters.getString(NBT.MATERIAL))
                     .getRGBA()));
 
@@ -80,7 +80,7 @@ public class MultiTileEntityClassContainer {
     public MultiTileEntityClassContainer material(Materials material) {
         // Sets the material, and the color from the material, if not already set
         parameters.setString(NBT.MATERIAL, material.toString());
-        if (!parameters.hasKey(NBT.COLOR)) parameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(material.getRGBA()));
+        if (!parameters.hasKey(NBT.COLOR)) parameters.setInteger(NBT.COLOR, GTUtil.getRGBInt(material.getRGBA()));
         return this;
     }
 
@@ -90,7 +90,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer color(short[] rgba) {
-        parameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(rgba));
+        parameters.setInteger(NBT.COLOR, GTUtil.getRGBInt(rgba));
         return this;
     }
 
@@ -154,7 +154,7 @@ public class MultiTileEntityClassContainer {
          * Merge in arbitrary NBT tuples of (key, value). Useful for anything for which a custom method has not yet been
          * exposed
          */
-        parameters = GT_Util.fuseNBT(parameters, GT_Util.makeNBT(aTags));
+        parameters = GTUtil.fuseNBT(parameters, GTUtil.makeNBT(aTags));
         return this;
     }
 

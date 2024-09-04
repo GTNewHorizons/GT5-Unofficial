@@ -4,21 +4,21 @@ import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class CuttingRecipes implements Runnable {
 
@@ -29,7 +29,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer.get(16),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4) },
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4) },
                 20 * SECONDS,
                 TierEU.RECIPE_LV,
                 false);
@@ -37,7 +37,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot2.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer2.get(32),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8) },
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8) },
                 40 * SECONDS,
                 TierEU.RECIPE_MV,
                 true);
@@ -45,7 +45,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
                 1 * MINUTES + 20 * SECONDS,
                 TierEU.RECIPE_HV,
                 true);
@@ -53,7 +53,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(128),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
                 Materials.Grade1PurifiedWater,
                 Materials.Grade2PurifiedWater,
                 (int) ((1 * MINUTES + 20 * SECONDS) * 0.75),
@@ -63,7 +63,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot4.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer4.get(64), ItemList.Circuit_Silicon_Wafer4.get(32),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32) },
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32) },
                 Materials.Grade3PurifiedWater,
                 Materials.Grade4PurifiedWater,
                 2 * MINUTES,
@@ -73,7 +73,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot5.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64) },
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64) },
                 Materials.Grade5PurifiedWater,
                 Materials.Grade6PurifiedWater,
                 2 * MINUTES + 40 * SECONDS,
@@ -166,7 +166,7 @@ public class CuttingRecipes implements Runnable {
 
         recipeWithClassicFluids(
             new ItemStack[] { new ItemStack(Blocks.glowstone, 1, 0) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Glowstone, 4) },
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.plate, Materials.Glowstone, 4) },
             5 * SECONDS,
             16,
             false);
@@ -241,7 +241,7 @@ public class CuttingRecipes implements Runnable {
 
     public void recipeWithPurifiedWater(ItemStack[] inputs, ItemStack[] outputs, Materials lowTierWater,
         Materials highTierWater, int duration, int boostedDuration, long eut) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
             .fluidInputs(lowTierWater.getFluid(100L))
@@ -249,7 +249,7 @@ public class CuttingRecipes implements Runnable {
             .eut(eut)
             .addTo(cutterRecipes);
         // Bonus for using higher tier water
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
             .fluidInputs(highTierWater.getFluid(100L))
@@ -261,7 +261,7 @@ public class CuttingRecipes implements Runnable {
     public void recipeWithClassicFluids(ItemStack[] inputs, ItemStack[] outputs, int duration, long eut,
         boolean cleanroomRequired) {
         if (cleanroomRequired) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
@@ -270,16 +270,16 @@ public class CuttingRecipes implements Runnable {
                 .requiresCleanRoom()
                 .addTo(cutterRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
-                .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
+                .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
                 .duration(2 * duration)
                 .eut(eut)
                 .requiresCleanRoom()
                 .addTo(cutterRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
@@ -288,7 +288,7 @@ public class CuttingRecipes implements Runnable {
                 .requiresCleanRoom()
                 .addTo(cutterRecipes);
         } else {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
@@ -296,15 +296,15 @@ public class CuttingRecipes implements Runnable {
                 .eut(eut)
                 .addTo(cutterRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
-                .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
+                .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
                 .duration(2 * duration)
                 .eut(eut)
                 .addTo(cutterRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))

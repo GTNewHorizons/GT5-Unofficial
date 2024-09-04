@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.consumers.EmptyPowerConsumer;
 import gregtech.api.graphs.consumers.NodeEnergyConnected;
@@ -20,7 +20,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MTECable;
 import ic2.api.energy.tile.IEnergySink;
 
 // node map generator for power distribution
@@ -32,8 +32,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
 
     @Override
     protected boolean isPipe(TileEntity aTileEntity) {
-        return super.isPipe(aTileEntity)
-            && ((BaseMetaPipeEntity) aTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable;
+        return super.isPipe(aTileEntity) && ((BaseMetaPipeEntity) aTileEntity).getMetaTileEntity() instanceof MTECable;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
                 aConsumers.add(tConsumerNode);
                 return true;
             }
-        } else if (GregTech_API.mOutputRF && aTileEntity instanceof IEnergyReceiver receiver) {
+        } else if (GregTechAPI.mOutputRF && aTileEntity instanceof IEnergyReceiver receiver) {
             ConsumerNode tConsumerNode = new NodeEnergyReceiver(aNodeValue, receiver, side, aConsumers);
             aConsumers.add(tConsumerNode);
             return true;

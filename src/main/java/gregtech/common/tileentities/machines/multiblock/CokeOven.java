@@ -23,12 +23,12 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.task.tasks.PollutionTask;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
 public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
@@ -73,14 +73,14 @@ public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
             .addInfo("Used for charcoal")
             .beginStructureBlock(3, 3, 3, true)
             .addCasingInfoExactly("Coke Oven Bricks", 25, false)
             .addPollutionAmount(POLLUTION_AMOUNT)
-            .toolTipFinisher(GT_Values.AuthorBlueWeabo);
+            .toolTipFinisher(GTValues.AuthorBlueWeabo);
         return tt;
     }
 
@@ -125,7 +125,7 @@ public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
             .setTextAlignment(Alignment.CenterLeft)
             .setMaxWidth(titleWidth);
-        if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
+        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
             tab.setDrawable(getGUITextureSet().getTitleTabAngular())
                 .setPos(0, -(titleHeight + TAB_PADDING) + 1)
                 .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);

@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity.enums;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 
 public enum GT_MultiTileComponentCasing {
 
@@ -116,7 +116,7 @@ public enum GT_MultiTileComponentCasing {
     UMV_FieldGenerator(109),
     UXV_FieldGenerator(110),
     MAX_FieldGenerator(111),
-    NONE(GT_Values.W);
+    NONE(GTValues.W);
 
     private final int meta;
 

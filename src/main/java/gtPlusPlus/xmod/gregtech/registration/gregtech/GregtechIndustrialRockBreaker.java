@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_IndustrialRockBreaker;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_IndustrialRockBreaker;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_IndustrialRockBreaker;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialRockBreaker;
 
 public class GregtechIndustrialRockBreaker {
 
     public static void run() {
         GregtechItemList.Controller_IndustrialRockBreaker.set(
-            new GregtechMetaTileEntity_IndustrialRockBreaker(
+            new MTEIndustrialRockBreaker(
                 Controller_IndustrialRockBreaker.ID,
                 "industrialrockcrusher.controller.tier.single",
                 "Boldarnator").getStackForm(1L));

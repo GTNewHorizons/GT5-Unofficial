@@ -8,28 +8,27 @@ import javax.annotation.Nonnull;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 
 public enum VoidingMode {
 
     /**
      * Voids nothing, protects both item and fluid
      */
-    VOID_NONE(true, true, GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, "none"),
+    VOID_NONE(true, true, GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, "none"),
     /**
      * Voids item, protects fluid
      */
-    VOID_ITEM(false, true, GT_UITextures.BUTTON_STANDARD_PRESSED, GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM,
-        "item"),
+    VOID_ITEM(false, true, GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM, "item"),
     /**
      * Voids fluid, protects item
      */
-    VOID_FLUID(true, false, GT_UITextures.BUTTON_STANDARD_PRESSED, GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID,
+    VOID_FLUID(true, false, GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID,
         "fluid"),
     /**
      * Voids all, protects nothing
      */
-    VOID_ALL(false, false, GT_UITextures.BUTTON_STANDARD_PRESSED, GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
+    VOID_ALL(false, false, GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
 
     /**
      * Default set of voiding mode you will probably support.

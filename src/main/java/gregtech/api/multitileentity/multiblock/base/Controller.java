@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
+import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
@@ -46,7 +46,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.GTValues.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IDescribable;
@@ -64,11 +64,11 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Waila;
+import gregtech.api.net.GTPacketMultiTileEntity;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -81,7 +81,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
 
-    private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
+    private static final Map<Integer, MultiblockTooltipBuilder> tooltip = new ConcurrentHashMap<>();
     private final List<WeakTargetRef<UpgradeCasing>> upgradeCasings = new ArrayList<>();
     private final List<WeakTargetRef<FunctionalCasing>> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
@@ -131,7 +131,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     /**
      * Create the tooltip for this multi block controller.
      */
-    protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
+    protected abstract MultiblockTooltipBuilder createTooltip();
 
     /**
      * @return The starting offset for the structure builder
@@ -269,8 +269,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         return getMultiTileEntityRegistryID() << 16 + getMultiTileEntityID();
     }
 
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
-        GT_Multiblock_Tooltip_Builder builder = tooltip.get(getToolTipID());
+    protected MultiblockTooltipBuilder getTooltip() {
+        MultiblockTooltipBuilder builder = tooltip.get(getToolTipID());
         if (builder == null) {
             builder = createTooltip();
             tooltip.put(getToolTipID(), builder);
@@ -423,7 +423,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         if (aPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
             // horizontally allowing an extra round of flip make it hard to draw meaningful flip markers in
-            // GT_Proxy#drawGrid
+            // GTProxy#drawGrid
             toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
         } else {
             toolSetRotation(null);
@@ -615,7 +615,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         return side != facing;
     }
 
@@ -992,7 +992,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         if (isSimpleMachine) {
             boolean isActive = tag.getBoolean("isActive");
             currentTip.add(
-                GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+                GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
         }
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
@@ -1002,23 +1002,23 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.waila.energy.use_with_amperage",
-                        GT_Utility.formatNumbers(actualEnergyUsage),
-                        GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
-                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+                        GTUtility.formatNumbers(actualEnergyUsage),
+                        GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                        GTUtility.getColoredTierNameFromTier((byte) energyTier)));
             } else if (actualEnergyUsage < 0) {
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.waila.energy.produce_with_amperage",
-                        GT_Utility.formatNumbers(-actualEnergyUsage),
-                        GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
-                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+                        GTUtility.formatNumbers(-actualEnergyUsage),
+                        GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                        GTUtility.getColoredTierNameFromTier((byte) energyTier)));
             }
         }
     }
 
     @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+    public GTPacketMultiTileEntity getClientDataPacket() {
+        final GTPacketMultiTileEntity packet = super.getClientDataPacket();
 
         return packet;
 

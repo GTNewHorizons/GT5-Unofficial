@@ -1,9 +1,10 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.Objects;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -30,6 +31,19 @@ public class ReasonOutOfStuff implements ShutDownReason {
     public String getDisplayString() {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted("GT5U.gui.text.out_of_stuff", required, formatNumbers(amount)));
+    }
+
+    @Override
+    public @NotNull NBTTagCompound writeToNBT(@NotNull NBTTagCompound tag) {
+        tag.setString("required", required);
+        tag.setInteger("amount", amount);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(@NotNull NBTTagCompound tag) {
+        required = tag.getString("required");
+        tag.setInteger("amount", amount);
     }
 
     @NotNull

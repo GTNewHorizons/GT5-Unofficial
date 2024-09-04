@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class ItemDehydratorCoil extends Item {
@@ -56,7 +56,7 @@ public class ItemDehydratorCoil extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         return StatCollector
-            .translateToLocalFormatted("item.itemDehydratorCoil.name", GT_Values.VN[tItem.getItemDamage() + 4]);
+            .translateToLocalFormatted("item.itemDehydratorCoil.name", GTValues.VN[tItem.getItemDamage() + 4]);
     }
 
     /*

@@ -7,7 +7,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -22,6 +22,6 @@ public class FuelSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.fuel",
-                GT_Utility.formatNumbers(recipeInfo.recipe.mSpecialValue * 1000L)));
+                GTUtility.formatNumbers(recipeInfo.recipe.mSpecialValue * 1000L)));
     }
 }

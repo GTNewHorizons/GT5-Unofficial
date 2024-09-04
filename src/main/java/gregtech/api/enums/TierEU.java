@@ -1,40 +1,40 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GTValues.V;
 
 public class TierEU {
 
     // Do NOT use these for crafting recipes as they are exactly 1A! Use RECIPE_ULV etc.
-    public static final long ULV = V[GTVoltageIndex.ULV];
-    public static final long LV = V[GTVoltageIndex.LV];
-    public static final long MV = V[GTVoltageIndex.MV];
-    public static final long HV = V[GTVoltageIndex.HV];
-    public static final long EV = V[GTVoltageIndex.EV];
-    public static final long IV = V[GTVoltageIndex.IV];
-    public static final long LuV = V[GTVoltageIndex.LuV];
-    public static final long ZPM = V[GTVoltageIndex.ZPM];
-    public static final long UV = V[GTVoltageIndex.UV];
-    public static final long UHV = V[GTVoltageIndex.UHV];
-    public static final long UEV = V[GTVoltageIndex.UEV];
-    public static final long UIV = V[GTVoltageIndex.UIV];
-    public static final long UMV = V[GTVoltageIndex.UMV];
-    public static final long UXV = V[GTVoltageIndex.UXV];
-    public static final long MAX = V[GTVoltageIndex.MAX];
+    public static final long ULV = V[VoltageIndex.ULV];
+    public static final long LV = V[VoltageIndex.LV];
+    public static final long MV = V[VoltageIndex.MV];
+    public static final long HV = V[VoltageIndex.HV];
+    public static final long EV = V[VoltageIndex.EV];
+    public static final long IV = V[VoltageIndex.IV];
+    public static final long LuV = V[VoltageIndex.LuV];
+    public static final long ZPM = V[VoltageIndex.ZPM];
+    public static final long UV = V[VoltageIndex.UV];
+    public static final long UHV = V[VoltageIndex.UHV];
+    public static final long UEV = V[VoltageIndex.UEV];
+    public static final long UIV = V[VoltageIndex.UIV];
+    public static final long UMV = V[VoltageIndex.UMV];
+    public static final long UXV = V[VoltageIndex.UXV];
+    public static final long MAX = V[VoltageIndex.MAX];
 
     // Use me for recipes.
-    public static final long RECIPE_ULV = GT_Values.VP[GTVoltageIndex.ULV];
-    public static final long RECIPE_LV = GT_Values.VP[GTVoltageIndex.LV];
-    public static final long RECIPE_MV = GT_Values.VP[GTVoltageIndex.MV];
-    public static final long RECIPE_HV = GT_Values.VP[GTVoltageIndex.HV];
-    public static final long RECIPE_EV = GT_Values.VP[GTVoltageIndex.EV];
-    public static final long RECIPE_IV = GT_Values.VP[GTVoltageIndex.IV];
-    public static final long RECIPE_LuV = GT_Values.VP[GTVoltageIndex.LuV];
-    public static final long RECIPE_ZPM = GT_Values.VP[GTVoltageIndex.ZPM];
-    public static final long RECIPE_UV = GT_Values.VP[GTVoltageIndex.UV];
-    public static final long RECIPE_UHV = GT_Values.VP[GTVoltageIndex.UHV];
-    public static final long RECIPE_UEV = GT_Values.VP[GTVoltageIndex.UEV];
-    public static final long RECIPE_UIV = GT_Values.VP[GTVoltageIndex.UIV];
-    public static final long RECIPE_UMV = GT_Values.VP[GTVoltageIndex.UMV];
-    public static final long RECIPE_UXV = GT_Values.VP[GTVoltageIndex.UXV];
-    public static final long RECIPE_MAX = GT_Values.VP[GTVoltageIndex.MAX];
+    public static final long RECIPE_ULV = GTValues.VP[VoltageIndex.ULV];
+    public static final long RECIPE_LV = GTValues.VP[VoltageIndex.LV];
+    public static final long RECIPE_MV = GTValues.VP[VoltageIndex.MV];
+    public static final long RECIPE_HV = GTValues.VP[VoltageIndex.HV];
+    public static final long RECIPE_EV = GTValues.VP[VoltageIndex.EV];
+    public static final long RECIPE_IV = GTValues.VP[VoltageIndex.IV];
+    public static final long RECIPE_LuV = GTValues.VP[VoltageIndex.LuV];
+    public static final long RECIPE_ZPM = GTValues.VP[VoltageIndex.ZPM];
+    public static final long RECIPE_UV = GTValues.VP[VoltageIndex.UV];
+    public static final long RECIPE_UHV = GTValues.VP[VoltageIndex.UHV];
+    public static final long RECIPE_UEV = GTValues.VP[VoltageIndex.UEV];
+    public static final long RECIPE_UIV = GTValues.VP[VoltageIndex.UIV];
+    public static final long RECIPE_UMV = GTValues.VP[VoltageIndex.UMV];
+    public static final long RECIPE_UXV = GTValues.VP[VoltageIndex.UXV];
+    public static final long RECIPE_MAX = GTValues.VP[VoltageIndex.MAX];
 }

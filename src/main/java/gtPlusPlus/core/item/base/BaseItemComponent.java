@@ -20,15 +20,15 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -71,15 +71,15 @@ public class BaseItemComponent extends Item {
 
         // if (componentType != ComponentTypes.DUST)
 
-        GT_OreDictUnificator.registerOre(
+        GTOreDictUnificator.registerOre(
             componentType.getOreDictName() + material.getUnlocalizedName(),
             ItemUtils.getSimpleStack(this));
         if (componentType == ComponentTypes.GEAR) {
-            GT_OreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
         }
         registerComponent();
 
-        GT_LanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", getFormattedLangName());
+        GTLanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", getFormattedLangName());
     }
 
     // For Cell Generation
@@ -109,12 +109,12 @@ public class BaseItemComponent extends Item {
 
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
         GameRegistry.registerItem(this, aFormattedNameForFluids);
-        GT_OreDictUnificator.registerOre(
+        GTOreDictUnificator.registerOre(
             ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
             ItemUtils.getSimpleStack(this));
         registerComponent();
 
-        GT_LanguageManager
+        GTLanguageManager
             .addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", getFormattedLangName());
     }
 
@@ -144,17 +144,17 @@ public class BaseItemComponent extends Item {
                     + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
-                GregTech_API.registerCover(
+                GregTechAPI.registerCover(
                     componentMaterial.getPlate(1),
-                    new GT_RenderedTexture(
+                    new GTRenderedTexture(
                         componentMaterial.getTextureSet().mTextures[71],
                         componentMaterial.getRGBA(),
                         false),
                     null);
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                GregTech_API.registerCover(
+                GregTechAPI.registerCover(
                     componentMaterial.getPlateDouble(1),
-                    new GT_RenderedTexture(
+                    new GTRenderedTexture(
                         componentMaterial.getTextureSet().mTextures[72],
                         componentMaterial.getRGBA(),
                         false),
@@ -169,7 +169,7 @@ public class BaseItemComponent extends Item {
     }
 
     public String getCorrectTextures() {
-        if (!CORE.ConfigSwitches.useGregtechTextures) {
+        if (!GTPPCore.ConfigSwitches.useGregtechTextures) {
             return GTPlusPlus.ID + ":" + "item" + this.componentType.COMPONENT_NAME;
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";
@@ -198,12 +198,12 @@ public class BaseItemComponent extends Item {
 
     public String getFluidName(String aKey) {
         String trans;
-        trans = GT_LanguageManager.getTranslation(aKey);
+        trans = GTLanguageManager.getTranslation(aKey);
         if (!trans.equals(aKey)) return trans;
         aKey = "fluid." + aKey;
-        trans = GT_LanguageManager.getTranslation(aKey);
+        trans = GTLanguageManager.getTranslation(aKey);
         if (!trans.equals(aKey)) return trans;
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             "gtplusplus.fluid." + this.materialName.toLowerCase()
                 .replace(" ", ""),
             this.materialName);
@@ -211,7 +211,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GT_LanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
+        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
             .replace("%s", "%temp")
             .replace("%material", translatedMaterialName)
             .replace("%temp", "%s");
@@ -250,7 +250,7 @@ public class BaseItemComponent extends Item {
                     }
 
                     if (this.componentMaterial.isRadioactive) {
-                        list.add(CORE.GT_Tooltip_Radioactive.get());
+                        list.add(GTPPCore.GT_Tooltip_Radioactive.get());
                     }
 
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
@@ -324,7 +324,7 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return (CORE.ConfigSwitches.useGregtechTextures ? true : false);
+        return (GTPPCore.ConfigSwitches.useGregtechTextures ? true : false);
     }
 
     @SuppressWarnings("unchecked")
@@ -332,10 +332,10 @@ public class BaseItemComponent extends Item {
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
         if (this.componentType == ComponentTypes.CELL || this.componentType == ComponentTypes.PLASMACELL) {
-            if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
-            if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
         }
@@ -380,7 +380,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (CORE.ConfigSwitches.useGregtechTextures) {
+        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
             if (pass == 0) {
                 return this.base;
             }
@@ -392,7 +392,7 @@ public class BaseItemComponent extends Item {
     @Override
     public void registerIcons(final IIconRegister i) {
 
-        if (CORE.ConfigSwitches.useGregtechTextures) {
+        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
             this.base = i.registerIcon(getCorrectTextures());
             this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
         } else {

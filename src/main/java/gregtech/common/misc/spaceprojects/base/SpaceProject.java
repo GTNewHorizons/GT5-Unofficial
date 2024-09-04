@@ -378,7 +378,7 @@ public class SpaceProject implements ISpaceProject {
             .setProjectTexture(texture)
             .setProjectRequirements(requirements);
         if (upgradesAvailable != null) {
-            ISP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
+            ISP_Upgrade[] upgrades = new SPUpgrade[upgradesAvailable.size()];
             int index = 0;
             for (ISP_Upgrade upgrade : upgradesAvailable.values()) {
                 upgrades[index++] = upgrade.copy();

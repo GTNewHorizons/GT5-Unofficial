@@ -177,7 +177,7 @@ public class BlockSuperLight extends BlockContainer {
                                 // Turning Lights off
                                 else if (!enable && aLight > 0) {
                                     aBlocksToUpdate.put(new BlockPos(xOff, yOff, zOff, this.worldObj));
-                                    if (aBlockGet instanceof LightGlass) {
+                                    if (aBlockGet instanceof BlockLightGlass) {
                                         Logger.INFO("Dimmed air.");
                                         this.worldObj.setBlock(xOff, yOff, zOff, Blocks.air, 0, 3);
                                     }

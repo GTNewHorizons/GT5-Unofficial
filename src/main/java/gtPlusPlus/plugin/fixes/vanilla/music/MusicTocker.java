@@ -15,7 +15,7 @@ import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 
 @SideOnly(Side.CLIENT)
 public class MusicTocker extends MusicTicker implements Runnable {
@@ -37,7 +37,7 @@ public class MusicTocker extends MusicTicker implements Runnable {
     }
 
     private static int getDelay() {
-        return CORE_Preloader.enableWatchdogBGM;
+        return PreloaderCore.enableWatchdogBGM;
     }
 
     private boolean inject() {

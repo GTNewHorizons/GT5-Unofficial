@@ -2,24 +2,24 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_ModHandler.RecipeBits;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTModHandler.RecipeBits;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
-public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, Runnable {
+public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
 
     public ProcessingAngleGrinder() {
         GregtechOrePrefixes.toolAngleGrinder.add(this);
@@ -63,8 +63,8 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
                     Logger.MATERIALS("Generating Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
-                    final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
-                    final ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
+                    final ItemStack plate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
+                    final ItemStack longrod = GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
 
                     if ((null != plate && longrod != null)) {
                         addRecipe(aMaterial, 1600000L, 3, ItemList.Battery_RE_HV_Lithium.get(1));
@@ -80,9 +80,9 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
                                 + (longrod == null)
                                 + " |");
                     }
-                    // GT_ModHandler.addCraftingRecipe(,
-                    // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
-                    // GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"P H", "PIP", " I ",
+                    // GTModHandler.addCraftingRecipe(,
+                    // GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
+                    // GTModHandler.RecipeBits.BUFFERED, new Object[]{"P H", "PIP", " I ",
                     // Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial),
                     // Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
                     // Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
@@ -111,7 +111,7 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
             1,
             aMaterial,
             Materials.Titanium,
-            new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
+            new long[] { aBatteryStorage, GTValues.V[aVoltageTier], 3L, -1L });
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {
@@ -122,12 +122,12 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
             return false;
         }
 
-        return GT_ModHandler.addCraftingRecipe(
+        return GTModHandler.addCraftingRecipe(
             aOutputStack,
             RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                 CI.getElectricMotor(aVoltageTier, 1), 'S', OrePrefixes.screw.get(Materials.Titanium), 'L',
                 OrePrefixes.stickLong.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial), 'G',
-                ELEMENT.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
+                MaterialsElements.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
     }
 }

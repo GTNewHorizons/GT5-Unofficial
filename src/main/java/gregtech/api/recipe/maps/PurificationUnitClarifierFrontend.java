@@ -11,13 +11,13 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitClarifier;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitClarifier;
+import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -28,7 +28,7 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
         super(
             80,
             uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_CLARIFIER))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_CLARIFIER))
                 .logoPos(new Pos2d(152, 90)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
@@ -60,12 +60,12 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
     }
 
     @Override
-    public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.drawNEIOverlays(neiCachedRecipe);
 
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
             if (stack.item.isItemEqual(ItemList.ActivatedCarbonFilterMesh.get(1))) {
-                drawNEIOverlayText((int) (GT_MetaTileEntity_PurificationUnitClarifier.FILTER_DAMAGE_RATE) + "%", stack);
+                drawNEIOverlayText((int) (MTEPurificationUnitClarifier.FILTER_DAMAGE_RATE) + "%", stack);
             }
         }
     }

@@ -5,19 +5,19 @@ import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
-import gtPlusPlus.core.block.general.FluidTankInfinite;
-import gtPlusPlus.core.block.general.HellFire;
-import gtPlusPlus.core.block.general.LightGlass;
-import gtPlusPlus.core.block.general.MiningExplosives;
+import gtPlusPlus.core.block.general.BlockFluidTankInfinite;
+import gtPlusPlus.core.block.general.BlockHellFire;
+import gtPlusPlus.core.block.general.BlockLightGlass;
+import gtPlusPlus.core.block.general.BlockMiningExplosives;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
-import gtPlusPlus.core.block.machine.CircuitProgrammer;
-import gtPlusPlus.core.block.machine.DecayablesChest;
-import gtPlusPlus.core.block.machine.FishTrap;
-import gtPlusPlus.core.block.machine.Machine_PestKiller;
-import gtPlusPlus.core.block.machine.Machine_PooCollector;
-import gtPlusPlus.core.block.machine.Machine_ProjectTable;
-import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
-import gtPlusPlus.core.block.machine.VolumetricFlaskSetter;
+import gtPlusPlus.core.block.machine.BlockCircuitProgrammer;
+import gtPlusPlus.core.block.machine.BlockDecayablesChest;
+import gtPlusPlus.core.block.machine.BlockFishTrap;
+import gtPlusPlus.core.block.machine.BlockFlaskSetter;
+import gtPlusPlus.core.block.machine.BlockPestKiller;
+import gtPlusPlus.core.block.machine.BlockPooCollector;
+import gtPlusPlus.core.block.machine.BlockProjectTable;
+import gtPlusPlus.core.block.machine.BlockSuperJukebox;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 
 public final class ModBlocks {
@@ -68,31 +68,31 @@ public final class ModBlocks {
     public static void registerBlocks() {
 
         Logger.INFO("Registering Blocks.");
-        MatterFabricatorEffectBlock = new LightGlass(false);
+        MatterFabricatorEffectBlock = new BlockLightGlass(false);
 
         // Fluids
         FluidRegistryHandler.registerFluids();
 
         // Workbench
-        blockFishTrap = new FishTrap();
-        blockInfiniteFLuidTank = new FluidTankInfinite();
-        blockMiningExplosive = new MiningExplosives();
-        blockHellfire = new HellFire();
-        blockProjectTable = new Machine_ProjectTable();
+        blockFishTrap = new BlockFishTrap();
+        blockInfiniteFLuidTank = new BlockFluidTankInfinite();
+        blockMiningExplosive = new BlockMiningExplosives();
+        blockHellfire = new BlockHellFire();
+        blockProjectTable = new BlockProjectTable();
         blockWitherGuard = new BlockWitherProof();
         blockCompressedObsidian = new BlockCompressedObsidian();
 
-        blockCircuitProgrammer = new CircuitProgrammer();
+        blockCircuitProgrammer = new BlockCircuitProgrammer();
 
-        blockDecayablesChest = new DecayablesChest();
+        blockDecayablesChest = new BlockDecayablesChest();
 
-        blockCustomJukebox = new Machine_SuperJukebox();
+        blockCustomJukebox = new BlockSuperJukebox();
 
-        blockPooCollector = new Machine_PooCollector();
+        blockPooCollector = new BlockPooCollector();
 
-        blockPestKiller = new Machine_PestKiller();
+        blockPestKiller = new BlockPestKiller();
 
-        blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
+        blockVolumetricFlaskSetter = new BlockFlaskSetter();
 
     }
 }

@@ -10,7 +10,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -52,21 +52,21 @@ public class AssemblyLineFrontend extends RecipeMapFrontend {
         int bar2Width = 18;
         List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
         builder.widget(
-            new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, bar1Width)
+            new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, bar1Width)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
                 .setPos(new Pos2d(88, 8).add(windowOffset))
                 .setSize(bar1Width, 72));
         builder.widget(
-            new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, bar2Width)
+            new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, bar2Width)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
                 .setPos(new Pos2d(124, 8).add(windowOffset))
                 .setSize(bar2Width, 72));
         builder.widget(
-            new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_3, 18)
+            new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_3, 18)
                 .setDirection(ProgressBar.Direction.UP)
                 .setProgress(progressSupplier)
                 .setSynced(false, false)

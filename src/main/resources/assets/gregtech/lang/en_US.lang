@@ -112,6 +112,7 @@ gt.recipe.brewer=Brewery
 gt.recipe.brewer.description=Brewing your Drinks
 gt.recipe.metalbender=Bending Machine
 gt.recipe.metalbender.description=Boo, he's bad! We want BENDER!!!
+gt.recipe.neutroniumcompressor=Neutronium Compressor
 gt.recipe.canner=Canner
 gt.recipe.canner.description=Unmobile Food Canning Machine GTA4
 gt.recipe.centrifuge=Centrifuge
@@ -342,6 +343,8 @@ GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.1=Fluid
 GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.2=Misc
 GT5U.MULTI_CANNER.mode.0=Canner
 GT5U.MULTI_CANNER.mode.1=Fluid Canner
+GT5U.BLACKHOLE.mode.0=Compressor
+GT5U.BLACKHOLE.mode.1=Singularity Compressor
 GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.0=Vacuum Furnace
 GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.1=Dehydrator
 GT5U.GTPP_MULTI_MASS_FABRICATOR.mode.0=Mass Fabricator
@@ -353,6 +356,9 @@ GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode.1=Normal
 GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
+GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
+GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
+GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
 GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
@@ -525,9 +531,12 @@ GT5U.gui.text.drill_exhausted=§dDrill has exhausted all resources
 GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
+GT5U.gui.text.no_black_hole=§7Black hole is not active
+GT5U.gui.text.unstable_black_hole=§7Black hole is unstable
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
+GT5U.gui.text.overheated=§7HIP Unit overheated!
 GT5U.gui.text.pump_fluid_type=Fluid: §a%s
 GT5U.gui.text.pump_rate.1=Pumping rate: %s§r
 GT5U.gui.text.pump_rate.2= L/t
@@ -554,6 +563,7 @@ GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
+GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
 GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
 GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
@@ -565,7 +575,7 @@ GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
-
+GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
@@ -1406,8 +1416,12 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
+for.bees.authority.machinist=Diddy & Nilau
+
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
+
+for.flowers.flaming=Fire
 
 itemGroup.GTtools=Prebuild Tools
 
@@ -1422,6 +1436,7 @@ gregtech.speedAccelerated=Accelerated
 gregtech.lifeBlink=Blink
 gregtech.lifeEon=Eon
 gregtech.effectTreetwister=Treetwister
+gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 

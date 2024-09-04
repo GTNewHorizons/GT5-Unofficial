@@ -27,8 +27,8 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.BurnableFuelHandler;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
+import gtPlusPlus.core.handler.CompatHandler;
+import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
@@ -36,14 +36,14 @@ import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
@@ -56,9 +56,9 @@ public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         Logger.INFO("Doing some house cleaning.");
-        if (!CORE_Preloader.DEBUG_MODE) {
+        if (!PreloaderCore.DEBUG_MODE) {
             Logger.WARNING("Development mode not enabled.");
-        } else if (CORE_Preloader.DEBUG_MODE) {
+        } else if (PreloaderCore.DEBUG_MODE) {
             Logger.INFO("Development mode enabled.");
         } else {
             Logger.WARNING("Development mode not set.");
@@ -70,7 +70,7 @@ public class CommonProxy {
         ModItems.init();
         ModBlocks.init();
         CI.preInit();
-        COMPAT_IntermodStaging.preInit(e);
+        CompatIntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
         Logger.INFO("[Proxy] Calling Entity registration.");
@@ -97,15 +97,15 @@ public class CommonProxy {
         Utils.registerEvent(new EntityDeathHandler());
 
         // Compat Handling
-        COMPAT_HANDLER.registerMyModsOreDictEntries();
-        COMPAT_HANDLER.intermodOreDictionarySupport();
-        COMPAT_IntermodStaging.init(e);
+        CompatHandler.registerMyModsOreDictEntries();
+        CompatHandler.intermodOreDictionarySupport();
+        CompatIntermodStaging.init(e);
     }
 
     public void postInit(final FMLPostInitializationEvent e) {
 
         // Make Burnables burnable
-        if (!CORE.burnables.isEmpty()) {
+        if (!GTPPCore.burnables.isEmpty()) {
             BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
             GameRegistry.registerFuelHandler(fuelHandler);
             Logger.INFO(
@@ -115,28 +115,28 @@ public class CommonProxy {
 
         // Compat Handling
         Logger.INFO("Removing recipes from other mods.");
-        COMPAT_HANDLER.RemoveRecipesFromOtherMods();
+        CompatHandler.RemoveRecipesFromOtherMods();
         Logger.INFO("Initialising Handler, Then Adding Recipes");
-        COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
+        CompatHandler.InitialiseHandlerThenAddRecipes();
         Logger.INFO("Loading Intermod staging.");
-        COMPAT_IntermodStaging.postInit(e);
+        CompatIntermodStaging.postInit(e);
         Logger.INFO("Loading queued recipes.");
-        COMPAT_HANDLER.runQueuedRecipes();
+        CompatHandler.runQueuedRecipes();
         Logger.INFO("Registering custom mob drops.");
         registerCustomMobDrops();
 
         // Moved last, to prevent recipes being generated post initialisation.
         Logger.INFO("Loading Gregtech API recipes.");
-        COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
+        CompatHandler.startLoadingGregAPIBasedRecipes();
     }
 
     public void serverStarting(final FMLServerStartingEvent e) {
-        COMPAT_HANDLER.InitialiseLateHandlerThenAddRecipes();
+        CompatHandler.InitialiseLateHandlerThenAddRecipes();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        COMPAT_IntermodStaging.onLoadComplete(event);
-        COMPAT_HANDLER.onLoadComplete(event);
+        CompatIntermodStaging.onLoadComplete(event);
+        CompatHandler.onLoadComplete(event);
     }
 
     public void registerNetworkStuff() {

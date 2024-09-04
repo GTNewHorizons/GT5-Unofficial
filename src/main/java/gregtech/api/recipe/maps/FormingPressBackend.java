@@ -7,12 +7,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -27,7 +27,7 @@ public class FormingPressBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+    protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
         for (ItemStack mold : items) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
@@ -46,7 +46,7 @@ public class FormingPressBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+    protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length < 2) {
             return null;
         }
@@ -54,16 +54,16 @@ public class FormingPressBackend extends RecipeMapBackend {
     }
 
     @Nullable
-    private GT_Recipe findRenamingRecipe(ItemStack[] inputs) {
+    private GTRecipe findRenamingRecipe(ItemStack[] inputs) {
         ItemStack mold = findNameMoldIndex(inputs);
         if (mold == null) return null;
         ItemStack input = findStackToRename(inputs, mold);
         if (input == null) return null;
-        ItemStack output = GT_Utility.copyAmount(1, input);
+        ItemStack output = GTUtility.copyAmount(1, input);
         if (output == null) return null;
         output.setStackDisplayName(mold.getDisplayName());
-        return GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(0, mold), GT_Utility.copyAmount(1, input))
+        return GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(0, mold), GTUtility.copyAmount(1, input))
             .itemOutputs(output)
             .duration(128)
             .eut(8)

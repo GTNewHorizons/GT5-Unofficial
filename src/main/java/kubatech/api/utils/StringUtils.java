@@ -22,7 +22,7 @@ package kubatech.api.utils;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 
 public class StringUtils {
 
@@ -53,6 +53,6 @@ public class StringUtils {
     }
 
     public static String voltageTooltipFormatted(int tier) {
-        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.GRAY;
+        return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.GRAY;
     }
 }

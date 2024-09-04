@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.objects.GT_ArrayList;
+import gregtech.api.objects.GTArrayList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
@@ -14,7 +14,7 @@ public class GregtechItemData {
 
     private static final GregtechMaterialStack[] EMPTY_GT_MaterialStack_ARRAY = new GregtechMaterialStack[0];
 
-    public final List<Object> mExtraData = new GT_ArrayList<>(false, 1);
+    public final List<Object> mExtraData = new GTArrayList<>(false, 1);
     public final GregtechOrePrefixes mPrefix;
     public final GregtechMaterialStack mMaterial;
     public final GregtechMaterialStack[] mByProducts;

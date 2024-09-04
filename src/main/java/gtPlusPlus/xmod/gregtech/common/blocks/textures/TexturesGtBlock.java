@@ -6,17 +6,17 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 
 public class TexturesGtBlock {
 
-    private static final boolean mAnimated = CORE.ConfigSwitches.enableAnimatedTextures;
+    private static final boolean mAnimated = GTPPCore.ConfigSwitches.enableAnimatedTextures;
     private static final AutoMap<Runnable> mCustomiconMap = new AutoMap<>();
 
     /*
@@ -38,7 +38,7 @@ public class TexturesGtBlock {
             this.mModID = aModID;
             mCustomiconMap.put(this);
             Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
-            GregTech_API.sGTBlockIconload.add(this);
+            GregTechAPI.sGTBlockIconload.add(this);
         }
 
         @Override
@@ -53,7 +53,7 @@ public class TexturesGtBlock {
 
         @Override
         public void run() {
-            this.mIcon = GregTech_API.sBlockIcons.registerIcon(this.mModID + ":" + this.mIconName);
+            this.mIcon = GregTechAPI.sBlockIcons.registerIcon(this.mModID + ":" + this.mIconName);
             Logger.WARNING(
                 "FIND ME _ Processing texture: " + this.getTextureFile()
                     .getResourcePath());
@@ -565,16 +565,16 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
 
     public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
 
     public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_II_1,
         TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3, TEXTURE_CASING_FUSION_COIL_II_4,

@@ -5,7 +5,7 @@ import net.minecraft.server.MinecraftServer;
 import gregtech.api.enums.TickTime;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.AveragePerTickCounter;
 
 // path for cables
@@ -49,7 +49,7 @@ public class PowerNodePath extends NodePath {
         if (aVoltage > mMaxVoltage) {
             lock.addTileEntity(null);
             for (MetaPipeEntity tCable : mPipes) {
-                if (((GT_MetaPipeEntity_Cable) tCable).mVoltage < this.mVoltage) {
+                if (((MTECable) tCable).mVoltage < this.mVoltage) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -75,7 +75,7 @@ public class PowerNodePath extends NodePath {
         if (this.mAmps > mMaxAmps * 40) {
             lock.addTileEntity(null);
             for (MetaPipeEntity tCable : mPipes) {
-                if (((GT_MetaPipeEntity_Cable) tCable).mAmperage * 40 < this.mAmps) {
+                if (((MTECable) tCable).mAmperage * 40 < this.mAmps) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -107,10 +107,10 @@ public class PowerNodePath extends NodePath {
         mMaxAmps = Integer.MAX_VALUE;
         mMaxVoltage = Integer.MAX_VALUE;
         for (MetaPipeEntity tCable : mPipes) {
-            if (tCable instanceof GT_MetaPipeEntity_Cable) {
-                mMaxAmps = Math.min(((GT_MetaPipeEntity_Cable) tCable).mAmperage, mMaxAmps);
-                mLoss += ((GT_MetaPipeEntity_Cable) tCable).mCableLossPerMeter;
-                mMaxVoltage = Math.min(((GT_MetaPipeEntity_Cable) tCable).mVoltage, mMaxVoltage);
+            if (tCable instanceof MTECable) {
+                mMaxAmps = Math.min(((MTECable) tCable).mAmperage, mMaxAmps);
+                mLoss += ((MTECable) tCable).mCableLossPerMeter;
+                mMaxVoltage = Math.min(((MTECable) tCable).mVoltage, mMaxVoltage);
             }
         }
     }

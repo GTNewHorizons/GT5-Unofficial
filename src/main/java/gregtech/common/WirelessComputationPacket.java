@@ -4,11 +4,11 @@ import static gregtech.common.misc.GlobalVariableStorage.GlobalWirelessComputati
 
 import java.util.UUID;
 
-import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import tectech.mechanics.dataTransport.QuantumDataPacket;
 
 public class WirelessComputationPacket {
 

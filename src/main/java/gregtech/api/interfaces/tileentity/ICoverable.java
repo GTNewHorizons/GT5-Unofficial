@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
@@ -49,9 +49,9 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     ItemStack getCoverItemAtSide(ForgeDirection side);
 
     @Deprecated
-    GT_CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
+    CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
 
-    default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
+    default CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
         return getCoverBehaviorAtSide(side);
     }
 

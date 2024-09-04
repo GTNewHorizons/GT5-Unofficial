@@ -9,7 +9,7 @@ import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.bartworks.BW_Utils;
+import gtPlusPlus.xmod.bartworks.BWUtils;
 
 public class MaterialStack {
 
@@ -58,7 +58,7 @@ public class MaterialStack {
 
     public ItemStack getUnificatedDustStack(final int amount) {
         if (this.stackMaterial.werkstoffID != 0) {
-            ItemStack stack = BW_Utils
+            ItemStack stack = BWUtils
                 .getCorrespondingItemStack(OrePrefixes.dust, this.stackMaterial.werkstoffID, amount);
             if (stack != null) {
                 return stack;

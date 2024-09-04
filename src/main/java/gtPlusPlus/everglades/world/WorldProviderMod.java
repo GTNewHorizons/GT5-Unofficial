@@ -8,7 +8,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.everglades.chunk.ChunkProviderModded;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.everglades.dimension.DimensionEverglades;
 
 public class WorldProviderMod extends WorldProvider {
 
@@ -17,7 +17,7 @@ public class WorldProviderMod extends WorldProvider {
         this.worldChunkMgr = new WorldChunkManagerCustom(this.worldObj.getSeed(), WorldType.AMPLIFIED);
         this.isHellWorld = false;
         this.hasNoSky = false;
-        this.dimensionId = Dimension_Everglades.DIMID;
+        this.dimensionId = DimensionEverglades.DIMID;
     }
 
     @Override

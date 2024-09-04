@@ -4,11 +4,12 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
 /**
- * Getter for description for {@link gregtech.api.util.GT_Recipe#mSpecialValue} etc. that will be drawn on NEI.
+ * Getter for description for {@link GTRecipe#mSpecialValue} etc. that will be drawn on NEI.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

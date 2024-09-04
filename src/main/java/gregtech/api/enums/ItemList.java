@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.NI;
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.GTValues.NI;
+import static gregtech.api.enums.GTValues.W;
 
 import java.util.Locale;
 
@@ -11,11 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -1091,6 +1091,8 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_LuV,
     Hatch_DataAccess_UV,
 
+    Hatch_HeatSensor,
+
     Battery_Buffer_1by1_ULV,
     Battery_Buffer_1by1_LV,
     Battery_Buffer_1by1_MV,
@@ -1474,6 +1476,24 @@ public enum ItemList implements IItemContainer {
     Electromagnet_Tengam,
 
     Machine_Multi_Canner,
+
+    Machine_Multi_IndustrialCompressor,
+    Machine_Multi_HIPCompressor,
+    Machine_Multi_NeutroniumCompressor,
+    Machine_Multi_BlackHoleCompressor,
+    Compressor_Casing,
+    Compressor_Pipe_Casing,
+    Heating_Duct_Casing,
+    Coolant_Duct_Casing,
+    Neutronium_Casing,
+    Neutronium_Active_Casing,
+    Neutronium_Stable_Casing,
+    Background_Radiation_Casing,
+    Extreme_Density_Casing,
+    Hawking_Glass,
+    Black_Hole_Opener,
+    Black_Hole_Closer,
+
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,
@@ -2047,6 +2067,7 @@ public enum ItemList implements IItemContainer {
     TierdDrone1,
     TierdDrone2,
     Hatch_DroneDownLink,
+    ElectronicsLump,
     Casing_Shielded_Accelerator,
     WormholeGenerator,
     Hatch_pHSensor,
@@ -2083,6 +2104,7 @@ public enum ItemList implements IItemContainer {
     BlockQuarkPipe,
     BlockQuarkReleaseChamber,
     BlockQuarkContainmentCasing,
+    LargeFluidExtractor,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2532,6 +2554,11 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_EV,
     BetterJukebox_IV,
     WirelessHeadphones,
+    Thermal_Superconductor,
+    Relativistic_Heat_Capacitor,
+    Phononic_Seed_Crystal,
+    ResearchCompleter, // Populated in EMT
+    SpaceElevatorController, // Populated in GTNH-Intergalactic
     // semicolon after the comment to reduce merge conflicts
     ;
 
@@ -2588,14 +2615,14 @@ public enum ItemList implements IItemContainer {
         mHasNotBeenSet = false;
         if (aItem == null) return this;
         ItemStack aStack = new ItemStack(aItem, 1, 0);
-        mStack = GT_Utility.copyAmount(1, aStack);
+        mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
     @Override
     public IItemContainer set(ItemStack aStack) {
         mHasNotBeenSet = false;
-        mStack = GT_Utility.copyAmount(1, aStack);
+        mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
@@ -2608,14 +2635,14 @@ public enum ItemList implements IItemContainer {
     @Override
     public Item getItem() {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) return null;
+        if (GTUtility.isStackInvalid(mStack)) return null;
         return mStack.getItem();
     }
 
     @Override
     public Block getBlock() {
         sanityCheck();
-        return GT_Utility.getBlockFromItem(getItem());
+        return GTUtility.getBlockFromItem(getItem());
     }
 
     @Override
@@ -2631,50 +2658,50 @@ public enum ItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GT_Log.err);
+            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
             // warn only once
             mWarned = true;
         }
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        return GT_Utility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+        if (GTUtility.isStackInvalid(aStack)) return false;
+        return GTUtility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
     @Override
     public ItemStack get(long aAmount, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) {
-            GT_Log.out.println("Object in the ItemList is null at:");
-            new NullPointerException().printStackTrace(GT_Log.out);
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GTUtility.isStackInvalid(mStack)) {
+            GTLog.out.println("Object in the ItemList is null at:");
+            new NullPointerException().printStackTrace(GTLog.out);
+            return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
+        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(mStack));
+        if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(mStack));
+        if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
+        if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GTOreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) return NI;
+        if (GTUtility.isStackInvalid(rStack)) return NI;
 
         // CamelCase alphanumeric words from aDisplayName
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
@@ -2695,36 +2722,36 @@ public enum ItemList implements IItemContainer {
         // Construct a translation key from UnlocalizedName and CamelCased DisplayName
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
 
-        rStack.setStackDisplayName(GT_LanguageManager.addStringLocalization(tKey, aDisplayName));
-        return GT_Utility.copyAmount(aAmount, rStack);
+        rStack.setStackDisplayName(GTLanguageManager.addStringLocalization(tKey, aDisplayName));
+        return GTUtility.copyAmount(aAmount, rStack);
     }
 
     @Override
     public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) return null;
-        GT_ModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
-        return GT_Utility.copyAmount(aAmount, rStack);
+        if (GTUtility.isStackInvalid(rStack)) return null;
+        GTModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
+        return GTUtility.copyAmount(aAmount, rStack);
     }
 
     @Override
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(mStack));
+        if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(mStack));
     }
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
         return this;
     }
 
     @Override
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
         return this;
     }
 
@@ -2740,7 +2767,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GT_Log.err);
+            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
             // warn only once
             mWarned = true;
         }

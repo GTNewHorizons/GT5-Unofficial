@@ -1,6 +1,6 @@
 package kekztech;
 
-import common.CommonProxy;
+import kekztech.common.CommonProxy;
 
 public class ServerProxy extends CommonProxy {
 }

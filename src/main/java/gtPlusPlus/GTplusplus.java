@@ -3,7 +3,7 @@ package gtPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
+import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.enableCustomCapes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +27,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondFakeRecipe;
@@ -40,22 +41,22 @@ import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.plugin.manager.Core_Manager;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.plugin.manager.CoreManager;
+import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelterGTNH;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
     modid = Names.G_T_PLUS_PLUS,
-    name = CORE.name,
-    version = CORE.VERSION,
+    name = GTPPCore.name,
+    version = GTPPCore.VERSION,
     dependencies = "required-after:Forge;" + " after:TConstruct;"
         + " after:dreamcraft;"
         + " after:IC2;"
@@ -146,7 +147,7 @@ public class GTplusplus implements ActionListener {
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
         // Load all class objects within the plugin package.
-        Core_Manager.veryEarlyInit();
+        CoreManager.veryEarlyInit();
         PacketHandler.init();
 
         if (!Utils.isServer()) {
@@ -160,12 +161,12 @@ public class GTplusplus implements ActionListener {
         ConfigHandler.handleConfigFile(event);
 
         // Check for Dev
-        CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+        GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         proxy.preInit(event);
-        Logger.INFO("Setting up our own GT_Proxy.");
-        Meta_GT_Proxy.preInit();
-        Core_Manager.preInit();
+        Logger.INFO("Setting up our own GTProxy.");
+        MetaGTProxy.preInit();
+        CoreManager.preInit();
     }
 
     // Init
@@ -174,10 +175,10 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.INIT.setPhaseActive(true);
         proxy.init(event);
         proxy.registerNetworkStuff();
-        Meta_GT_Proxy.init();
-        Core_Manager.init();
+        MetaGTProxy.init();
+        CoreManager.init();
         // Used by foreign players to generate .lang files for translation.
-        if (CORE.ConfigSwitches.dumpItemAndBlockData) {
+        if (GTPPCore.ConfigSwitches.dumpItemAndBlockData) {
             LocaleUtils.generateFakeLocaleFile();
         }
     }
@@ -188,8 +189,8 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.POST_INIT.setPhaseActive(true);
         proxy.postInit(event);
         BookHandler.runLater();
-        Meta_GT_Proxy.postInit();
-        Core_Manager.postInit();
+        MetaGTProxy.postInit();
+        CoreManager.postInit();
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO(
@@ -201,16 +202,16 @@ public class GTplusplus implements ActionListener {
         Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 
         // Log free GT++ Meta IDs
-        if (CORE.DEVENV) {
+        if (GTPPCore.DEVENV) {
             // 750 - 999 are reserved for Alkalus.
             for (int i = 750; i < 1000; i++) {
-                if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
+                if (GregTechAPI.METATILEENTITIES[i] == null) {
                     Logger.INFO("MetaID " + i + " is free.");
                 }
             }
             // 30000 - 31999 are reserved for Alkalus.
             for (int i = 30000; i < 32000; i++) {
-                if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
+                if (GregTechAPI.METATILEENTITIES[i] == null) {
                     Logger.INFO("MetaID " + i + " is free.");
                 }
             }
@@ -225,13 +226,13 @@ public class GTplusplus implements ActionListener {
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
-        Core_Manager.serverStart();
+        CoreManager.serverStart();
         INIT_PHASE.STARTED.setPhaseActive(true);
     }
 
     @Mod.EventHandler
     public synchronized void serverStopping(final FMLServerStoppingEvent event) {
-        Core_Manager.serverStop();
+        CoreManager.serverStop();
     }
 
     @Override
@@ -255,25 +256,25 @@ public class GTplusplus implements ActionListener {
 
         int[] mInvalidCount = new int[] { 0, 0, 0, 0, 0, 0, 0 };
 
-        RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
+        RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
         FishPondFakeRecipe.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
-        mInvalidCount[0] = RecipeGen_MultisUsingFluidInsteadOfCells
+        mInvalidCount[0] = RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
-        mInvalidCount[1] = RecipeGen_MultisUsingFluidInsteadOfCells
+        mInvalidCount[1] = RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
-        mInvalidCount[2] = RecipeGen_MultisUsingFluidInsteadOfCells
+        mInvalidCount[2] = RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
-        mInvalidCount[3] = RecipeGen_MultisUsingFluidInsteadOfCells
+        mInvalidCount[3] = RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
-        mInvalidCount[4] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        mInvalidCount[4] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.chemicalDehydratorRecipes,
             GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
-        mInvalidCount[5] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        mInvalidCount[5] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.coldTrapRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-        mInvalidCount[6] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        mInvalidCount[6] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.reactorProcessingUnitRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }

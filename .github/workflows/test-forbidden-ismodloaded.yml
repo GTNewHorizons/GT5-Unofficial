@@ -1,0 +1,18 @@
+name: Forbidden isModLoaded
+
+on:
+  pull_request:
+    branches: [ master, main ]
+  push:
+    branches: [ master, main ]
+
+jobs:
+  test-forbidden-ismodloaded:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Detect forbidden isModLoaded calls
+        shell: bash
+        run: |
+          ! grep -E -r '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static gregtech.GT_Mod.gregtechproxy;
+import static gregtech.GTMod.gregtechproxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTUtil;
 
 /**
  * Small wrapper around a GT_MetaTileEntity_PurificationUnitBase, to be stored in the main purification plant
@@ -25,9 +25,9 @@ public class LinkedPurificationUnit {
      */
     private boolean mIsActive = false;
 
-    private final GT_MetaTileEntity_PurificationUnitBase<?> mMetaTileEntity;
+    private final MTEPurificationUnitBase<?> mMetaTileEntity;
 
-    public LinkedPurificationUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
+    public LinkedPurificationUnit(MTEPurificationUnitBase<?> unit) {
         this.mMetaTileEntity = unit;
     }
 
@@ -52,18 +52,17 @@ public class LinkedPurificationUnit {
         int z = linkData.getInteger("z");
 
         // Find a TileEntity at this location
-        TileEntity te = GT_Util.getTileEntity(world, x, y, z, true);
+        TileEntity te = GTUtil.getTileEntity(world, x, y, z, true);
         if (te == null) {
             // This is a bug, throw a fatal error.
             throw new NullPointerException("Unit disappeared during server sync. This is a bug.");
         }
 
         // Cast TileEntity to proper GT TileEntity
-        this.mMetaTileEntity = (GT_MetaTileEntity_PurificationUnitBase<?>) ((IGregTechTileEntity) te)
-            .getMetaTileEntity();
+        this.mMetaTileEntity = (MTEPurificationUnitBase<?>) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
-    public GT_MetaTileEntity_PurificationUnitBase<?> metaTileEntity() {
+    public MTEPurificationUnitBase<?> metaTileEntity() {
         return mMetaTileEntity;
     }
 

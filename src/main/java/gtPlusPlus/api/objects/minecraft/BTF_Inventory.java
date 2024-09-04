@@ -7,7 +7,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.data.ArrayUtils;
@@ -69,7 +69,7 @@ public class BTF_Inventory implements ISidedInventory {
     @Override
     public ItemStack decrStackSize(int aIndex, int aAmount) {
         ItemStack tStack = this.getStackInSlot(aIndex);
-        ItemStack rStack = GT_Utility.copy(new Object[] { tStack });
+        ItemStack rStack = GTUtility.copy(new Object[] { tStack });
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
                 if (this.setStackToZeroInsteadOfNull(aIndex)) {
@@ -115,7 +115,7 @@ public class BTF_Inventory implements ISidedInventory {
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
             && aIndex < this.mInventory.length
-            && (this.mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, this.mInventory[aIndex]))
+            && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(aStack, this.mInventory[aIndex]))
             && this.allowPutStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
@@ -133,7 +133,7 @@ public class BTF_Inventory implements ISidedInventory {
     public boolean allowPutStack(TileEntityBase aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return (aIndex >= 0 && aIndex < this.getSizeInventory())
-            && (this.mInventory[aIndex] == null || GT_Utility.areStacksEqual(this.mInventory[aIndex], aStack));
+            && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(this.mInventory[aIndex], aStack));
     }
 
     @Override
@@ -197,7 +197,7 @@ public class BTF_Inventory implements ISidedInventory {
             for (int s = 0; s < this.getSizeInventory(); s++) {
                 if (mInventory != null && mInventory[s] != null) {
                     ItemStack slot = mInventory[s];
-                    if (slot == null || (slot != null && GT_Utility.areStacksEqual(aInput, slot)
+                    if (slot == null || (slot != null && GTUtility.areStacksEqual(aInput, slot)
                         && slot.stackSize != slot.getItem()
                             .getItemStackLimit(slot))) {
                         if (slot == null) {

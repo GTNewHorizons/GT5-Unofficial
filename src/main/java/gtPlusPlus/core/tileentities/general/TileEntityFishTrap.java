@@ -17,7 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -76,7 +76,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         }
         for (final ItemStack contents : this.getInventory()
             .getInventory()) {
-            if (GT_Utility.areStacksEqual(loot, contents)) {
+            if (GTUtility.areStacksEqual(loot, contents)) {
                 if (contents.stackSize < contents.getMaxStackSize()) {
                     contents.stackSize++;
                     this.markDirty();

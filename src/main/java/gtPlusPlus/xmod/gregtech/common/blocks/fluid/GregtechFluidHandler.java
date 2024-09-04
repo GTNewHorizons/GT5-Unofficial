@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -28,7 +28,7 @@ public class GregtechFluidHandler {
                 GT_Materials.Cryotheum,
                 4,
                 5,
-                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L),
                 ItemUtils.getEmptyCell(),
                 1000);
         }
@@ -39,7 +39,7 @@ public class GregtechFluidHandler {
                 GT_Materials.Pyrotheum,
                 4,
                 4000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L),
                 ItemUtils.getEmptyCell(),
                 1000);
         }
@@ -50,7 +50,7 @@ public class GregtechFluidHandler {
                 GT_Materials.Ender,
                 4,
                 4000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Ender, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.Ender, 1L),
                 ItemUtils.getEmptyCell(),
                 1000);
         }
@@ -62,7 +62,7 @@ public class GregtechFluidHandler {
             GT_Materials.HydrofluoricAcid,
             1,
             120,
-            GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L),
+            GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L),
             ItemUtils.getEmptyCell(),
             1000,
             false);
@@ -80,7 +80,7 @@ public class GregtechFluidHandler {
             GT_Materials.SulfurousAcid,
             4,
             75,
-            GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L),
+            GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L),
             ItemUtils.getEmptyCell(),
             1000,
             false);
@@ -92,7 +92,7 @@ public class GregtechFluidHandler {
             GT_Materials.SulfuricApatite,
             4,
             500,
-            GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L),
+            GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L),
             ItemUtils.getEmptyCell(),
             1000,
             false);
@@ -106,7 +106,7 @@ public class GregtechFluidHandler {
                 GT_Materials.HydrogenChloride,
                 4,
                 75,
-                GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L),
                 ItemUtils.getEmptyCell(),
                 1000,
                 false);
@@ -119,7 +119,7 @@ public class GregtechFluidHandler {
             GT_Materials.SulfuricLithium,
             4,
             280,
-            GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L),
+            GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L),
             ItemUtils.getEmptyCell(),
             1000,
             false);
@@ -131,7 +131,7 @@ public class GregtechFluidHandler {
             GT_Materials.LithiumHydroxide,
             4,
             500,
-            GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L),
+            GTOreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L),
             ItemUtils.getEmptyCell(),
             1000,
             false);

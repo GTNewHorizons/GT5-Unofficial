@@ -55,17 +55,17 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import kubatech.Tags;
 
-public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
+    extends MTEExtendedPowerMultiBlockBase<T> {
 
     @Deprecated
     public final int mEUt = 0;
@@ -212,8 +212,8 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         if (list == null || list.isEmpty() || mappingFunction == null) return false;
         int emptySlots = 0;
         boolean ignoreEmptiness = false;
-        for (GT_MetaTileEntity_Hatch_OutputBus i : mOutputBusses) {
-            if (i instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+        for (MTEHatchOutputBus i : mOutputBusses) {
+            if (i instanceof MTEHatchOutputBusME) {
                 ignoreEmptiness = true;
                 break;
             }
@@ -277,7 +277,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
 
     public void createInventorySlots() {
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        inventorySlot.setBackground(GT_UITextures.SLOT_DARK_GRAY);
+        inventorySlot.setBackground(GTUITextures.SLOT_DARK_GRAY);
         slotWidgets.add(inventorySlot);
     }
 
@@ -294,7 +294,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85));
 
@@ -334,13 +334,13 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     }
 
     protected static String voltageTooltipFormatted(int tier) {
-        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.GRAY;
+        return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.GRAY;
     }
 
     protected final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
     protected static final Function<Integer, IDrawable> toggleButtonTextureGetter = val -> val == 0
-        ? GT_UITextures.OVERLAY_BUTTON_CROSS
-        : GT_UITextures.OVERLAY_BUTTON_CHECKMARK;
+        ? GTUITextures.OVERLAY_BUTTON_CROSS
+        : GTUITextures.OVERLAY_BUTTON_CHECKMARK;
     protected static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> new IDrawable[] {
-        val == 0 ? GT_UITextures.BUTTON_STANDARD : GT_UITextures.BUTTON_STANDARD_PRESSED };
+        val == 0 ? GTUITextures.BUTTON_STANDARD : GTUITextures.BUTTON_STANDARD_PRESSED };
 }

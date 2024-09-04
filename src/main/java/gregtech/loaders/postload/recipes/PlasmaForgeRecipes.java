@@ -1,20 +1,22 @@
 package gregtech.loaders.postload.recipes;
 
 import static goodgenerator.loader.Loaders.huiCircuit;
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class PlasmaForgeRecipes implements Runnable {
@@ -22,7 +24,7 @@ public class PlasmaForgeRecipes implements Runnable {
     @Override
     public void run() {
         // Giga chad trophy.
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Field_Generator_UEV.get(64),
                 ItemList.Field_Generator_UIV.get(64),
@@ -37,7 +39,7 @@ public class PlasmaForgeRecipes implements Runnable {
             .addTo(plasmaForgeRecipes);
 
         // Quantum anomaly recipe bypass for UEV+. Avoids RNG.
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemStandarParticleBase, 1, 24),
                 getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
@@ -49,5 +51,23 @@ public class PlasmaForgeRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)
             .addTo(plasmaForgeRecipes);
+
+        if (Avaritia.isModLoaded()) {
+            // Six-Phased Copper
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
+                .fluidInputs(
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(72 * 144),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * 72 * 144),
+                    MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36 * 144),
+                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * 72 * 144),
+                    MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(18 * 144),
+                    MaterialsUEVplus.Mellion.getMolten(72 * 144))
+                .fluidOutputs(MaterialsUEVplus.SixPhasedCopper.getMolten(72 * 144L))
+                .duration(60 * SECONDS)
+                .eut((int) TierEU.RECIPE_UMV)
+                .metadata(COIL_HEAT, 12600)
+                .addTo(plasmaForgeRecipes);
+        }
     }
 }

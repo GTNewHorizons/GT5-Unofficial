@@ -14,7 +14,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 
-import gregtech.api.util.GT_MusicSystem;
+import gregtech.api.util.GTMusicSystem;
 import gregtech.client.ISeekingSound;
 import gregtech.client.SeekingOggCodec;
 
@@ -37,16 +37,16 @@ public class SoundManagerMixin {
 
     @Inject(method = "stopAllSounds", at = @At("HEAD"))
     void gt5u$notifyOfSoundStop(CallbackInfo ci) {
-        GT_MusicSystem.ClientSystem.onSoundBatchStop();
+        GTMusicSystem.ClientSystem.onSoundBatchStop();
     }
 
     @Inject(method = "pauseAllSounds", at = @At("HEAD"))
     void gt5u$notifyOfSoundPause(CallbackInfo ci) {
-        GT_MusicSystem.ClientSystem.onSoundBatchPause();
+        GTMusicSystem.ClientSystem.onSoundBatchPause();
     }
 
     @Inject(method = "resumeAllSounds", at = @At("HEAD"))
     void gt5u$notifyOfSoundResume(CallbackInfo ci) {
-        GT_MusicSystem.ClientSystem.onSoundBatchResume();
+        GTMusicSystem.ClientSystem.onSoundBatchResume();
     }
 }

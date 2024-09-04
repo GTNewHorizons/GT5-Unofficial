@@ -8,7 +8,7 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
-import gregtech.common.GT_Pollution;
+import gregtech.common.Pollution;
 
 public class PollutionTask<T extends TaskHost & IMachineProgress> extends TickableTask<T> {
 
@@ -38,7 +38,7 @@ public class PollutionTask<T extends TaskHost & IMachineProgress> extends Tickab
     public void update(long tick, boolean isServerSide) {
         if (isServerSide && tick % POLLUTION_TICK == 0 && taskHost.hasThingsToDo()) {
             if (taskHost instanceof final TileEntity entity) {
-                GT_Pollution.addPollution(entity, getPollutionPerSecond());
+                Pollution.addPollution(entity, getPollutionPerSecond());
             }
         }
     }

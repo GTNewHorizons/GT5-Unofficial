@@ -58,7 +58,7 @@ You can simply add textures named by the following rules:
 - Basically place at `gregtech/textures/gui/progressbar/${unlocalized name of recipemap}`. Unlocalized name can be found on either of:
   - Hold shift while hovering over NEI tab. "HandlerID" indicates unlocalized name.
 ![](/docs/img/recipemap-unlocalized-name.png)
-  - Read code. Usually they're passed as 2nd argument for `GT_Recipe_Map` constructor. Recipemaps are defined at `gregtech.api.util.GT_Recipe`.
+  - Read code. Usually they're passed as 2nd argument for `GTRecipe_Map` constructor. Recipemaps are defined at `gregtech.api.util.GTRecipe`.
 - For steam machines, append `_bronze`, `_steel`, or `_primitive`.
 - Exceptions: Miner: `miner`, Electric Furnace: `E_Furnace`, Electric Oven: `E_Oven`
 

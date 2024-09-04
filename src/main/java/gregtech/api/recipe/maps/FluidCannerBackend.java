@@ -8,11 +8,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -24,17 +24,17 @@ public class FluidCannerBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+    protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length == 0 || items[0] == null) {
             return null;
         }
 
         if (fluids.length > 0 && fluids[0] != null) {
-            ItemStack filledItem = GT_Utility.fillFluidContainer(fluids[0], items[0], false, true);
-            FluidStack fluidToTake = GT_Utility.getFluidForFilledItem(filledItem, true);
+            ItemStack filledItem = GTUtility.fillFluidContainer(fluids[0], items[0], false, true);
+            FluidStack fluidToTake = GTUtility.getFluidForFilledItem(filledItem, true);
             if (fluidToTake != null) {
-                return GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, items[0]))
+                return GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, items[0]))
                     .itemOutputs(filledItem)
                     .fluidInputs(fluidToTake)
                     .duration(Math.max(fluidToTake.amount / 64, 16))
@@ -45,11 +45,11 @@ public class FluidCannerBackend extends RecipeMapBackend {
                     .orElse(null);
             }
         }
-        FluidStack drainedFluid = GT_Utility.getFluidForFilledItem(items[0], true);
+        FluidStack drainedFluid = GTUtility.getFluidForFilledItem(items[0], true);
         if (drainedFluid != null) {
-            return GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1, items[0]))
-                .itemOutputs(GT_Utility.getContainerItem(items[0], true))
+            return GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, items[0]))
+                .itemOutputs(GTUtility.getContainerItem(items[0], true))
                 .fluidOutputs(drainedFluid)
                 .duration(Math.max(drainedFluid.amount / 64, 16))
                 .eut(1)

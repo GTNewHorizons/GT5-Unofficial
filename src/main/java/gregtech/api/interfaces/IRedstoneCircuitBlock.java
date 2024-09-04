@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.CoverBehavior;
 
 /**
  * Implemented by the MetaTileEntity of the Redstone Circuit Block
@@ -36,7 +36,7 @@ public interface IRedstoneCircuitBlock {
     /**
      * If this Side is Covered up and therefor not doing any Redstone
      */
-    GT_CoverBehavior getCover(ForgeDirection side);
+    CoverBehavior getCover(ForgeDirection side);
 
     int getCoverID(ForgeDirection side);
 

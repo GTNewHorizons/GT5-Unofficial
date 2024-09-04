@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GT_Values.NW;
+import static gregtech.api.enums.GTValues.NW;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,10 +47,10 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.enums.GTValues;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -60,11 +60,11 @@ import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
-import gregtech.api.util.GT_TooltipDataCache;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.net.GTPacketBlockEvent;
+import gregtech.api.net.GTPacketSetConfigurationCircuit;
+import gregtech.api.util.GTTooltipDataCache;
+import gregtech.api.util.GTUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -103,7 +103,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public static ForgeDirection getSideForPlayerPlacing(Entity player, ForgeDirection defaultFacing,
         boolean[] aAllowedFacings) {
 
-        final ForgeDirection facingFromPlayer = GT_Utility.getSideFromPlayerFacing(player);
+        final ForgeDirection facingFromPlayer = GTUtility.getSideFromPlayerFacing(player);
         if (facingFromPlayer != ForgeDirection.UNKNOWN && aAllowedFacings[facingFromPlayer.ordinal()])
             return facingFromPlayer;
 
@@ -424,13 +424,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final boolean getOpacity(int x, int y, int z) {
         if (ignoreUnloadedChunks && crossedChunkBorder(x, z) && !worldObj.blockExists(x, y, z)) return false;
-        return GT_Utility.isOpaqueBlock(worldObj, x, y, z);
+        return GTUtility.isOpaqueBlock(worldObj, x, y, z);
     }
 
     @Override
     public final boolean getAir(int x, int y, int z) {
         if (ignoreUnloadedChunks && crossedChunkBorder(x, z) && !worldObj.blockExists(x, y, z)) return true;
-        return GT_Utility.isBlockAir(worldObj, x, y, z);
+        return GTUtility.isBlockAir(worldObj, x, y, z);
     }
 
     @Override
@@ -540,7 +540,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final void sendBlockEvent(byte aID, byte aValue) {
         NW.sendPacketToAllPlayersInRange(
             worldObj,
-            new GT_Packet_Block_Event(xCoord, (short) yCoord, zCoord, aID, aValue),
+            new GTPacketBlockEvent(xCoord, (short) yCoord, zCoord, aID, aValue),
             xCoord,
             zCoord);
     }
@@ -554,7 +554,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     public final void setOnFire() {
-        GT_Utility.setCoordsOnFire(worldObj, xCoord, yCoord, zCoord, false);
+        GTUtility.setCoordsOnFire(worldObj, xCoord, yCoord, zCoord, false);
     }
 
     public final void setToFire() {
@@ -631,7 +631,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return null;
     }
 
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     // Tooltip localization keys
     public static final String BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
@@ -666,7 +666,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void addTitleToUI(ModularWindow.Builder builder, String title) {
-        if (GT_Mod.gregtechproxy.mTitleTabStyle == 2) {
+        if (GTMod.gregtechproxy.mTitleTabStyle == 2) {
             addTitleItemIconStyle(builder, title);
         } else {
             addTitleTextStyle(builder, title);
@@ -691,7 +691,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
             .setTextAlignment(Alignment.CenterLeft)
             .setMaxWidth(titleWidth);
-        if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
+        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
             tab.setDrawable(getGUITextureSet().getTitleTabAngular())
                 .setPos(0, -(titleHeight + TAB_PADDING) + 1)
                 .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
@@ -852,9 +852,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                     }
                 } else {
                     final List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
-                    final int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
+                    final int index = GTUtility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
-                        int curIndex = GT_Utility
+                        int curIndex = GTUtility
                             .findMatchingStackInList(tCircuits, inv.getStackInSlot(ccs.getCircuitSlot())) + 1;
                         if (clickData.mouseButton == 0) {
                             curIndex += 1;
@@ -894,7 +894,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         })
             .disableShiftInsert()
             .setHandlePhantomActionClient(true)
-            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_INT_CIRCUIT)
             .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
@@ -913,7 +913,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                 getStackForm(0),
                 this::onCircuitSelected,
                 circuits,
-                GT_Utility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
+                GTUtility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
                     .setAnotherWindow(true, dialogOpened)
                     .setGuiTint(getGUIColorization())
                     .setCurrentGetter(() -> inv.getStackInSlot(ccs.getCircuitSlot()))
@@ -926,7 +926,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(this, selected));
+        GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
         // we will not do any validation on client side
         // it doesn't get to actually decide what inventory contains anyway
         inv.setInventorySlotContents(ccs.getCircuitSlot(), selected);
@@ -943,7 +943,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
 
     public int getGUIColorization() {
-        return GT_Util.getRGBaInt(Dyes.dyeWhite.getRGBA());
+        return GTUtil.getRGBaInt(Dyes.dyeWhite.getRGBA());
     }
 
     public ItemStack getStackForm(long aAmount) {

@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.asm.AsmConfig;
 
 public class Logger {
@@ -37,8 +37,8 @@ public class Logger {
     // Non-Dev Comments
     public static void MACHINE_INFO(String s, Object... args) {
         if (enabled) {
-            boolean localPlayer = CORE_Preloader.DEV_ENVIRONMENT;
-            if (CORE.ConfigSwitches.MACHINE_INFO || localPlayer) {
+            boolean localPlayer = PreloaderCore.DEV_ENVIRONMENT;
+            if (GTPPCore.ConfigSwitches.MACHINE_INFO || localPlayer) {
                 final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
                 modLogger.info("Machine Info: " + s + " | " + name1, args);
             }
@@ -48,7 +48,7 @@ public class Logger {
     // Developer Comments
     public static void WARNING(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEBUG_MODE) {
                 modLogger.warn(s);
             }
         }
@@ -57,7 +57,7 @@ public class Logger {
     // Errors
     public static void ERROR(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEBUG_MODE) {
                 modLogger.fatal(s);
             }
         }
@@ -95,7 +95,7 @@ public class Logger {
      */
     public static void DEBUG_BEES(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
                 modLogger.info("[Debug][Bees] " + s);
             }
         }
@@ -106,7 +106,7 @@ public class Logger {
      */
     public static void MATERIALS(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
                 modLogger.info("[Materials] " + s);
             }
         }
@@ -117,7 +117,7 @@ public class Logger {
      */
     public static void DEBUG_MATERIALS(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
                 modLogger.info("[Debug][Materials] " + s);
             }
         }
@@ -128,7 +128,7 @@ public class Logger {
      */
     public static void REFLECTION(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
                 modLogger.info("[Reflection] " + s);
             }
         }
@@ -139,7 +139,7 @@ public class Logger {
      */
     public static void WORLD(final String s) {
         if (enabled) {
-            if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
+            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
                 modLogger.info("[WorldGen] " + s);
             }
         }
@@ -148,7 +148,7 @@ public class Logger {
     public static void RECIPE(String string) {
         if (enabled) {
             if (
-            /* CORE_Preloader.DEV_ENVIRONMENT || */ CORE_Preloader.DEBUG_MODE) {
+            /* CORE_Preloader.DEV_ENVIRONMENT || */ PreloaderCore.DEBUG_MODE) {
                 modLogger.info("[Recipe] " + string);
             }
         }

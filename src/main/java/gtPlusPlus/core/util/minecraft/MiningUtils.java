@@ -2,7 +2,7 @@ package gtPlusPlus.core.util.minecraft;
 
 import java.util.HashMap;
 
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -18,12 +18,11 @@ public class MiningUtils {
         String aTextWorldGen;
         if (MiningUtils.findAndMapOreTypesFromGT()) {
             int mapKey = 0;
-            for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
-                for (GT_Worldgen_GT_Ore_Layer h : g) {
+            for (AutoMap<WorldgenGTOreLayer> g : MiningUtils.mOreMaps) {
+                for (WorldgenGTOreLayer h : g) {
 
                     try {
-                        aTextWorldGen = (String) ReflectionUtils
-                            .getField(GT_Worldgen_GT_Ore_Layer.class, "aTextWorldgen")
+                        aTextWorldGen = (String) ReflectionUtils.getField(WorldgenGTOreLayer.class, "aTextWorldgen")
                             .get(h);
                     } catch (IllegalArgumentException | IllegalAccessException e) {
                         aTextWorldGen = h.mWorldGenName;
@@ -37,14 +36,14 @@ public class MiningUtils {
         }
     }
 
-    public static AutoMap<GT_Worldgen_GT_Ore_Layer>[] mOreMaps = new AutoMap[7];
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Overworld = new AutoMap<>();
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Nether = new AutoMap<>();
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_End = new AutoMap<>();
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Moon = new AutoMap<>();
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Mars = new AutoMap<>();
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Comets = new AutoMap<>();
-    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Misc = new AutoMap<>();
+    public static AutoMap<WorldgenGTOreLayer>[] mOreMaps = new AutoMap[7];
+    private static final AutoMap<WorldgenGTOreLayer> Ores_Overworld = new AutoMap<>();
+    private static final AutoMap<WorldgenGTOreLayer> Ores_Nether = new AutoMap<>();
+    private static final AutoMap<WorldgenGTOreLayer> Ores_End = new AutoMap<>();
+    private static final AutoMap<WorldgenGTOreLayer> Ores_Moon = new AutoMap<>();
+    private static final AutoMap<WorldgenGTOreLayer> Ores_Mars = new AutoMap<>();
+    private static final AutoMap<WorldgenGTOreLayer> Ores_Comets = new AutoMap<>();
+    private static final AutoMap<WorldgenGTOreLayer> Ores_Misc = new AutoMap<>();
 
     public static boolean findAndMapOreTypesFromGT() {
         // Gets Moon ID
@@ -92,11 +91,11 @@ public class MiningUtils {
         Ores_End.clear();
         Ores_Misc.clear();
 
-        for (GT_Worldgen_GT_Ore_Layer x : GT_Worldgen_GT_Ore_Layer.sList) {
+        for (WorldgenGTOreLayer x : WorldgenGTOreLayer.sList) {
             if (x.mEnabled) {
 
                 try {
-                    aEndAsteroids = ReflectionUtils.getField(GT_Worldgen_GT_Ore_Layer.class, "mEndAsteroid")
+                    aEndAsteroids = ReflectionUtils.getField(WorldgenGTOreLayer.class, "mEndAsteroid")
                         .getBoolean(x);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     aEndAsteroids = false;
