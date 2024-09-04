@@ -306,8 +306,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F)
-                    .setSpeedBoost(1.5F);
+                    .setEUtDiscount(1.33)
+                    .setSpeedBoost(1.5);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
