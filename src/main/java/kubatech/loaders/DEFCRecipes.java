@@ -20,12 +20,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
@@ -198,7 +198,7 @@ public class DEFCRecipes {
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
-        if (Loader.isModLoaded("supersolarpanel")) {
+        if (Mods.SuperSolarPanels.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),

@@ -37,7 +37,7 @@ import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 
-public class GTNEIConfig implements IConfigureNEI {
+public class NEIGTConfig implements IConfigureNEI {
 
     /**
      * This map determines the order in which NEI handlers will be registered and displayed in tabs.
@@ -87,7 +87,7 @@ public class GTNEIConfig implements IConfigureNEI {
                     .getNEIProperties().registerNEI)
             .map(GTNEIDefaultHandler::new)
             .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
-            .forEach(GTNEIConfig::addHandler);
+            .forEach(NEIGTConfig::addHandler);
     }
 
     private void registerCatalysts() {

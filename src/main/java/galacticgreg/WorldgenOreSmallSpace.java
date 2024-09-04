@@ -34,7 +34,7 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
 
         allowedDims = new HashMap<>();
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
-            if (!mc.getEnabled()) continue;
+            if (!mc.isModLoaded()) continue;
 
             for (ModDimensionDef mdd : mc.getDimensionList()) {
                 String tDimIdentifier = mdd.getDimIdentifier();

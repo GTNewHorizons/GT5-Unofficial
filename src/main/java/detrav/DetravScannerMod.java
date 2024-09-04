@@ -36,7 +36,6 @@ public class DetravScannerMod {
 
     public DetravScannerMod() {
         GregTechAPI.sAfterGTPreload.add(new DetravLoaderAfterGTPreload());
-
         new DetravNetwork();
     }
 

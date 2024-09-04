@@ -51,12 +51,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -638,7 +638,7 @@ public class RecipesGregTech {
 
     private static void breweryRecipes() {
 
-        if (Loader.isModLoaded("OpenBlocks")) {
+        if (Mods.OpenBlocks.isModLoaded()) {
             RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(14))
                 .fluidInputs(FluidRegistry.getFluidStack("mobessence", 100))
