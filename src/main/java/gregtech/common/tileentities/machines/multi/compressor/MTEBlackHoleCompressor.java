@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -111,7 +112,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 4))
         .addElement(
             'B',
-            buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(Maintenance, Energy)
+            buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(Maintenance, Energy, InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(12))
                 .dot(2)
                 .buildAndChain(
@@ -120,7 +121,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         .addElement('D', ofFrame(Materials.NaquadahAlloy))
         .addElement(
             'E',
-            buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
+            buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputHatch)
+                .adder(MTEBlackHoleCompressor::addSpacetimeInput)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(11))
                 .dot(1)
                 .buildAndChain(
@@ -131,6 +133,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private boolean blackholeOn = false;
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
+    private ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
 
     private final FluidStack blackholeCatalyzingCost = (MaterialsUEVplus.SpaceTime).getMolten(1);
     private int catalyzingCostModifier = 1;
@@ -141,6 +144,23 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     public MTEBlackHoleCompressor(String aName) {
         super(aName);
+    }
+
+    private boolean addSpacetimeInput(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            if (aTileEntity.getMetaTileEntity() instanceof MTEHatchInput hatch) {
+                hatch.updateTexture(aBaseCasingIndex);
+                setHatchRecipeMap(hatch);
+                spacetimeHatches.add(hatch);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected boolean filtersFluid() {
+        return false;
     }
 
     @Override
@@ -232,7 +252,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Activation Catalyst"
+                    + "Black Hole Seed"
                     + EnumChatFormatting.GRAY
                     + " to open a black hole")
             .addInfo(
@@ -261,7 +281,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Deactivation Catalyst"
+                    + "Black Hole Collapser"
                     + EnumChatFormatting.GRAY
                     + " to close the black hole")
             .addSeparator()
@@ -294,11 +314,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
             .addCasingInfoExactly("Hawking Radiation Realignment Focus", 64, false)
             .addCasingInfoExactly("Naquadah Alloy Frame Box", 144, false)
-            .addInputBus("Behind Laser", 1)
-            .addOutputBus("Behind Laser", 1)
-            .addInputHatch("Behind Laser", 1)
-            .addEnergyHatch("Any Radiation Absorbent Casing", 2)
-            .addMaintenanceHatch("Any Radiation Absorbent Casing", 2)
+            .addInputHatch("Spacetime Insertion, Behind Laser", 2)
+            .addInputBus("Any Radiation Absorbent Casing", 1)
+            .addOutputBus("Any Radiation Absorbent Casing", 1)
+            .addInputHatch("Any Radiation Absorbent Casing", 1)
+            .addEnergyHatch("Any Radiation Absorbent Casing", 1)
+            .addMaintenanceHatch("Any Radiation Absorbent Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -324,6 +345,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mEnergyHatches.clear();
+        spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
         if (mCasingAmount < 0) return false;
@@ -456,7 +478,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 // If found enough, drain it and reduce stability loss to 0
                 // Every 30 drains, double the cost
                 FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
-                for (MTEHatchInput hatch : mInputHatches) {
+                for (MTEHatchInput hatch : spacetimeHatches) {
                     if (drain(hatch, totalCost, false)) {
                         drain(hatch, totalCost, true);
                         catalyzingCounter += 1;
@@ -465,6 +487,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             catalyzingCostModifier *= 2;
                             catalyzingCounter = 0;
                         }
+                        break;
                     }
                 }
                 if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
