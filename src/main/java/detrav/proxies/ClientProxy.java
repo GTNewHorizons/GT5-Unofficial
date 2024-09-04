@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 import detrav.DetravScannerMod;
-import detrav.enums.Textures01;
 import detrav.gui.DetravScannerGUI;
 
 /**
@@ -13,7 +12,6 @@ import detrav.gui.DetravScannerGUI;
 public class ClientProxy extends CommonProxy {
 
     public ClientProxy() {
-        int test = Textures01.mTextures.length;
     }
 
     @Override

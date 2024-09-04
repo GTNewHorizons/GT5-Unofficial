@@ -22,22 +22,15 @@ public class CommonProxy implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch (ID) {
-            case DetravScannerGUI.GUI_ID:
-                return null;
-            default:
-                return null;
-        }
+        return null;
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch (ID) {
-            case DetravScannerGUI.GUI_ID:
-                return new DetravScannerGUI();
-            default:
-                return null;
+        if (ID == DetravScannerGUI.GUI_ID) {
+            return new DetravScannerGUI();
         }
+        return null;
     }
 
     public void openProspectorGUI() {
