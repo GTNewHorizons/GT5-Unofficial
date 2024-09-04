@@ -39,8 +39,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     protected Supplier<Integer> maxParallelSupplier;
     protected int calculatedParallels = 0;
     protected int batchSize = 1;
-    protected float euModifier = 1.0f;
-    protected float speedBoost = 1.0f;
+    protected double euModifier = 1.0;
+    protected double speedBoost = 1.0;
     protected boolean amperageOC = true;
     protected boolean isCleanroom;
 
@@ -100,12 +100,12 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
         return getThis();
     }
 
-    public P setEuModifier(float modifier) {
+    public P setEuModifier(double modifier) {
         this.euModifier = modifier;
         return getThis();
     }
 
-    public P setSpeedBonus(float speedModifier) {
+    public P setSpeedBonus(double speedModifier) {
         this.speedBoost = speedModifier;
         return getThis();
     }

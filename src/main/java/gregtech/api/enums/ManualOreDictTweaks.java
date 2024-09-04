@@ -18,18 +18,18 @@ public class ManualOreDictTweaks {
 
     private static final Map<String, Map<String, Boolean>> oredictLookupTable = new HashMap<>();
 
-    private static final String[] gregtech = new String[] { "dustAlumina', 'dustNikolite" };
+    private static final String[] gregtech = new String[] { "dustAlumina" };
     private static final String[] enderio = new String[] { "ingotDarkSteel" };
     private static final String[] draconicevolution = new String[] { "dustDraconium" };
-    private static final String[] thaumcraft = new String[] {
-        "ingotThaumium', 'ingotVoid', 'nuggetThaumium', 'nuggetVoid" };
+    private static final String[] thaumcraft = new String[] { "ingotThaumium", "ingotVoid", "nuggetThaumium",
+        "nuggetVoid" };
     private static final String[] projred_core = new String[] { "dustElectrotine" };
     private static final String[] translocator = new String[] { "nuggetDiamond" };
     private static final String[] hardcoreenderexpansion = new String[] { "ingotHeeEndium" };
-    private static final String[] avaritia = new String[] { "ingotCosmicNeutronium', 'ingotInfinity" };
+    private static final String[] avaritia = new String[] { "ingotCosmicNeutronium", "ingotInfinity" };
     private static final String[] randomthings = new String[] { "stickObsidian" };
-    private static final String[] botania = new String[] {
-        "ingotElvenElementium', 'ingotManasteel', 'ingotTerrasteel', 'nuggetElvenElementium', 'nuggetManasteel', 'nuggetTerrasteel" };
+    private static final String[] botania = new String[] { "ingotElvenElementium", "ingotManasteel", "ingotTerrasteel",
+        "nuggetElvenElementium", "nuggetManasteel", "nuggetTerrasteel" };
 
     private static final String[] modNames = { GregTech.ID, EnderIO.ID, DraconicEvolution.ID, Thaumcraft.ID,
         ProjectRedCore.ID, Translocator.ID, HardcoreEnderExpansion.ID, Avaritia.ID, RandomThings.ID, Botania.ID };
