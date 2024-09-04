@@ -255,8 +255,8 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F)
-                    .setSpeedBoost(1.5F);
+                    .setEUtDiscount(1.33)
+                    .setSpeedBoost(1.5);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
