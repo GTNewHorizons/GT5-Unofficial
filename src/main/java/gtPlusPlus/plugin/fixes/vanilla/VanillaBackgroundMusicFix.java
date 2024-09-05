@@ -7,7 +7,7 @@ import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 import gtPlusPlus.plugin.fixes.vanilla.music.MusicTocker;
-import gtPlusPlus.preloader.CORE_Preloader;
+import gtPlusPlus.preloader.PreloaderCore;
 
 public class VanillaBackgroundMusicFix implements IBugFix {
 
@@ -17,11 +17,11 @@ public class VanillaBackgroundMusicFix implements IBugFix {
 
     public VanillaBackgroundMusicFix(IPlugin minstance) {
         mParent = minstance;
-        if (CORE_Preloader.enableWatchdogBGM > 0 && Utils.isClient()) {
+        if (PreloaderCore.enableWatchdogBGM > 0 && Utils.isClient()) {
             mParent.log("[BGM] Registering BGM delay Fix.");
             enabled = true;
             mFixInstance = new MusicTocker(mParent);
-        } else if (CORE_Preloader.enableWatchdogBGM > 0 && Utils.isServer()) {
+        } else if (PreloaderCore.enableWatchdogBGM > 0 && Utils.isServer()) {
             mParent.log("[BGM] Tried registering BGM delay Fix on Server, disabling.");
             enabled = false;
         } else {
@@ -36,7 +36,7 @@ public class VanillaBackgroundMusicFix implements IBugFix {
     }
 
     public void manage() {
-        if (CORE_Preloader.enableWatchdogBGM > 0 && Utils.isClient()) {
+        if (PreloaderCore.enableWatchdogBGM > 0 && Utils.isClient()) {
             TimerTask task = new ManageTask(this.mFixInstance);
             Timer timer = new Timer("BGM-WatchDog");
             long delay = 1000 * 60;
@@ -54,7 +54,7 @@ public class VanillaBackgroundMusicFix implements IBugFix {
 
         @Override
         public void run() {
-            if (CORE_Preloader.enableWatchdogBGM > 0 && Utils.isClient()) {
+            if (PreloaderCore.enableWatchdogBGM > 0 && Utils.isClient()) {
                 if (!A.mVanillaManager) {
                     A.run();
                 }

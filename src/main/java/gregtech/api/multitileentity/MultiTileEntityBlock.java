@@ -1,11 +1,11 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.api.enums.GT_Values.OFFX;
-import static gregtech.api.enums.GT_Values.OFFY;
-import static gregtech.api.enums.GT_Values.OFFZ;
-import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
-import static gregtech.api.util.GT_Util.getTileEntity;
-import static gregtech.api.util.GT_Util.setTileEntity;
+import static gregtech.api.enums.GTValues.OFFX;
+import static gregtech.api.enums.GTValues.OFFY;
+import static gregtech.api.enums.GTValues.OFFZ;
+import static gregtech.api.util.GTUtil.LAST_BROKEN_TILEENTITY;
+import static gregtech.api.util.GTUtil.getTileEntity;
+import static gregtech.api.util.GTUtil.setTileEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -53,10 +53,10 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtil;
 import gregtech.common.covers.CoverInfo;
-import gregtech.common.render.GT_MultiTile_Renderer;
+import gregtech.common.render.MultiTileRenderer;
 
 /*
  * MultiTileEntityBlock ported from GT6
@@ -85,7 +85,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
 
     public MultiTileEntityBlock(Material material) {
         super(material);
-        if (GregTech_API.sPreloadFinished)
+        if (GregTechAPI.sPreloadFinished)
             throw new IllegalStateException("Blocks can only be initialized within preInit!");
     }
 
@@ -121,7 +121,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
 
     public MultiTileEntityBlock register() {
         if (registered) throw new IllegalStateException("Block already registered " + internalName);
-        if (GregTech_API.sPreloadFinished)
+        if (GregTechAPI.sPreloadFinished)
             throw new IllegalStateException("Blocks can only be initialized within preInit!");
 
         registered = true;
@@ -141,7 +141,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
         // spotless:off
         // if (aTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData
         //     && ((IMTE_HasMultiBlockMachineRelevantData) aTileEntity).hasMultiBlockMachineRelevantData())
-        //     GregTech_API.causeMachineUpdate(world, x, y, z);
+        //     GregTechAPI.causeMachineUpdate(world, x, y, z);
         // spotless:on
 
         world.removeTileEntity(x, y, z);
@@ -160,8 +160,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
 
     @Override
     public int getRenderType() {
-        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType()
-            : GT_MultiTile_Renderer.INSTANCE.getRenderId();
+        return MultiTileRenderer.INSTANCE == null ? super.getRenderType() : MultiTileRenderer.INSTANCE.getRenderId();
     }
 
     @Override
@@ -455,7 +454,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
 
     @Override
     public boolean removedByPlayer(World world, EntityPlayer aPlayer, int x, int y, int z, boolean aWillHarvest) {
-        final TileEntity tileEntity = GT_Util.getTileEntity(world, x, y, z, true);
+        final TileEntity tileEntity = GTUtil.getTileEntity(world, x, y, z, true);
         if (tileEntity != null) LAST_BROKEN_TILEENTITY.set(tileEntity);
         return super.removedByPlayer(world, aPlayer, x, y, z, aWillHarvest);
     }
@@ -467,7 +466,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return GregTech_API.sMachineFlammable && (world.getBlockMetadata(x, y, z) == 0) ? 100 : 0;
+        return GregTechAPI.sMachineFlammable && (world.getBlockMetadata(x, y, z) == 0) ? 100 : 0;
     }
 
     @Override
@@ -502,7 +501,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
         final TileEntity tileEntity = getTileEntity(world, x, y, z, true);
         if (tileEntity != null) LAST_BROKEN_TILEENTITY.set(tileEntity);
         if (tileEntity instanceof IMultiTileEntity mute) {
-            GT_Log.exp.printf(
+            GTLog.exp.printf(
                 "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
                 x,
                 y,

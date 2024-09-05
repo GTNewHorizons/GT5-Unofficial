@@ -1,20 +1,20 @@
 package gtnhlanth.common.tileentity;
 
-import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
-import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
+import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
@@ -25,45 +25,44 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.elisis.gtnhlanth.common.beamline.BeamInformation;
-import com.elisis.gtnhlanth.common.beamline.Particle;
-import com.elisis.gtnhlanth.common.hatch.TileBusInputFocus;
-import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
-import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.RecipeTC;
-import com.elisis.gtnhlanth.util.DescTextLocalization;
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import bartworks.common.loaders.ItemRegistry;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.hatch.MTEBusInputFocus;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
+import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
+import gtnhlanth.common.tileentity.recipe.beamline.RecipeTC;
+import gtnhlanth.util.DescTextLocalization;
 
-public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETargetChamber>
-    implements ISurvivalConstructable {
+public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-    private ArrayList<TileBusInputFocus> mInputFocus = new ArrayList<>();
+    private ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
-    private static final int CASING_INDEX_FRONT = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings3, 10); // Grate
-    private static final int CASING_INDEX_CENTRE = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14); // Shielded
-                                                                                                                      // Acc.
+    private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
+    private static final int CASING_INDEX_CENTRE = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14); // Shielded
+                                                                                                                    // Acc.
 
     private float inputEnergy;
     private float inputRate;
@@ -82,19 +81,19 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     						{"csssc", "s---s", "s---s", "s---s", "ccccc"},
     						{"cstsc", "s-u-s", "suius", "s-u-s", "ccccc"},
     						{"ggggg", "gjjjg", "gjojg", "gjjjg", "ggggg"}})
-    			
-    			.addElement('g', ofBlock(GregTech_API.sBlockCasings3, 10)) //Grate casing
+
+    			.addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) //Grate casing
     			.addElement(
-    					'f', 
+    					'f',
     					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
-    					.casingIndex(CASING_INDEX_FRONT).dot(2).buildAndChain(ofBlock(GregTech_API.sBlockCasings3, 10)))
-    			
+    					.casingIndex(CASING_INDEX_FRONT).dot(2).buildAndChain(ofBlock(GregTechAPI.sBlockCasings3, 10)))
+
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
     			.addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-    			
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(TileBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(MTETargetChamber::addFocusInputHatch).build())
-    			
+
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(MTETargetChamber::addFocusInputHatch).build())
+
     			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).dot(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
     			.addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
@@ -102,7 +101,6 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
     			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
-    			
     			.build();
     }
     //spotless:on
@@ -119,8 +117,8 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
         if (mte == null) return false;
 
-        if (mte instanceof TileHatchInputBeamline) {
-            return this.mInputBeamline.add((TileHatchInputBeamline) mte);
+        if (mte instanceof MTEHatchInputBeamline) {
+            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
         }
 
         return false;
@@ -134,8 +132,8 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
         if (mte == null) return false;
 
-        if (mte instanceof TileBusInputFocus) {
-            return this.mInputFocus.add((TileBusInputFocus) mte);
+        if (mte instanceof MTEBusInputFocus) {
+            return this.mInputFocus.add((MTEBusInputFocus) mte);
         }
 
         return false;
@@ -182,8 +180,8 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Collision Chamber")
             .addInfo("Controller block for the Target Chamber")
             .addInfo("Hitting things with other things")
@@ -265,7 +263,7 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
         RecipeTC tRecipe = (RecipeTC) BeamlineRecipeAdder2.instance.TargetChamberRecipes.findRecipeQuery()
             .items(tItemsWithFocusItemArray)
             .voltage(tVoltage)
-            .filter((GT_Recipe recipe) -> {
+            .filter((GTRecipe recipe) -> {
 
                 RecipeTC recipeTc = (RecipeTC) recipe;
 
@@ -329,7 +327,7 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
     private BeamInformation getInputInformation() {
 
-        for (TileHatchInputBeamline in : this.mInputBeamline) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
             // if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // temporary
@@ -343,7 +341,7 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
     private ItemStack getFocusItemStack() {
 
-        for (TileBusInputFocus hatch : this.mInputFocus) {
+        for (MTEBusInputFocus hatch : this.mInputFocus) {
             return hatch.getContentUsageSlots()
                 .get(0);
         }
@@ -396,7 +394,7 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for (MTEHatchEnergy tHatch : mEnergyHatches) {
             if (tHatch.isValid()) {
                 storedEnergy += tHatch.getBaseMetaTileEntity()
                     .getStoredEU();
@@ -410,36 +408,36 @@ public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + GTUtility.formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(storedEnergy)
+                + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(getActualEnergyUsage())
+                + GTUtility.formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(getMaxInputVoltage())
+                + GTUtility.formatNumbers(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + VN[GT_Utility.getTier(getMaxInputVoltage())]
+                + VN[GTUtility.getTier(getMaxInputVoltage())]
                 + EnumChatFormatting.RESET,
             /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED

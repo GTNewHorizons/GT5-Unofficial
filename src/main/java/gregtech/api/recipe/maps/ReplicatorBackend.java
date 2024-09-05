@@ -12,34 +12,34 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_RecipeConstants;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ReplicatorBackend extends RecipeMapBackend {
 
-    private final Map<Materials, GT_Recipe> recipesByMaterial = new HashMap<>();
+    private final Map<Materials, GTRecipe> recipesByMaterial = new HashMap<>();
 
     public ReplicatorBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder.recipeEmitter(ReplicatorBackend::replicatorRecipeEmitter));
     }
 
     @Override
-    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+    public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
-        Materials material = recipe.getMetadata(GT_RecipeConstants.MATERIAL);
+        Materials material = recipe.getMetadata(GTRecipeConstants.MATERIAL);
         assert material != null; // checked by replicatorRecipeEmitter
         recipesByMaterial.put(material, recipe);
         return recipe;
@@ -51,8 +51,8 @@ public class ReplicatorBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        @Nullable GT_Recipe cachedRecipe) {
+    protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GTRecipe cachedRecipe) {
         if (specialSlot == null) {
             return null;
         }
@@ -65,19 +65,19 @@ public class ReplicatorBackend extends RecipeMapBackend {
 
     @Nullable
     private static Materials getMaterialFromDataOrb(ItemStack stack) {
-        if (ItemList.Tool_DataOrb.isStackEqual(stack, false, true) && Behaviour_DataOrb.getDataTitle(stack)
+        if (ItemList.Tool_DataOrb.isStackEqual(stack, false, true) && BehaviourDataOrb.getDataTitle(stack)
             .equals("Elemental-Scan")) {
-            return Element.get(Behaviour_DataOrb.getDataName(stack)).mLinkedMaterials.stream()
+            return Element.get(BehaviourDataOrb.getDataName(stack)).mLinkedMaterials.stream()
                 .findFirst()
                 .orElse(null);
         }
         return null;
     }
 
-    private static Collection<GT_Recipe> replicatorRecipeEmitter(GT_RecipeBuilder builder) {
-        Materials material = builder.getMetadata(GT_RecipeConstants.MATERIAL);
+    private static Collection<GTRecipe> replicatorRecipeEmitter(GTRecipeBuilder builder) {
+        Materials material = builder.getMetadata(GTRecipeConstants.MATERIAL);
         if (material == null) {
-            throw new IllegalStateException("GT_RecipeConstants.MATERIAL must be set for replicator recipe");
+            throw new IllegalStateException("GTRecipeConstants.MATERIAL must be set for replicator recipe");
         }
         return Optional.of(material)
             .map(material1 -> material1.mElement)
@@ -85,7 +85,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
             .map(ReplicatorBackend::getUUMAmountFromMass)
             .flatMap(
                 uum -> builder.fluidInputs(Materials.UUMatter.getFluid(uum))
-                    .duration(GT_Utility.safeInt(uum * 512L, 1))
+                    .duration(GTUtility.safeInt(uum * 512L, 1))
                     .eut(TierEU.RECIPE_LV)
                     .ignoreCollision()
                     .noOptimize()
@@ -95,6 +95,6 @@ public class ReplicatorBackend extends RecipeMapBackend {
     }
 
     private static int getUUMAmountFromMass(long mass) {
-        return GT_Utility.safeInt((long) Math.pow(mass, GT_Mod.gregtechproxy.replicatorExponent), 1);
+        return GTUtility.safeInt((long) Math.pow(mass, GTMod.gregtechproxy.replicatorExponent), 1);
     }
 }

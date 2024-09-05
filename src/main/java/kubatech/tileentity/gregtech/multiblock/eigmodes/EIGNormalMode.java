@@ -2,9 +2,9 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
 import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
 
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public class EIGNormalMode extends EIGMode {
 
@@ -22,7 +22,7 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public int getMinVoltageTier() {
-        return GT_MetaTileEntity_ExtremeIndustrialGreenhouse.EIG_BALANCE_REGULAR_MODE_MIN_TIER;
+        return MTEExtremeIndustrialGreenhouse.EIG_BALANCE_REGULAR_MODE_MIN_TIER;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class EIGNormalMode extends EIGMode {
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder addTooltipInfo(GT_Multiblock_Tooltip_Builder builder) {
+    public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
         String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
         String minVoltageTierMinus1 = voltageTooltipFormatted(this.getMinVoltageTier() - 1);
 

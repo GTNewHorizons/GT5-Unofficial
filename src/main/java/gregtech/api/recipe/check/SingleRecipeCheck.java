@@ -22,11 +22,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableMap;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Utility.ItemId;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 
 /**
  * Used by machines that are locked to a single recipe, for faster recipe check.
@@ -37,10 +37,10 @@ import gregtech.api.util.GT_Utility.ItemId;
  * <ul>
  * {@link gregtech.api.recipe.FindRecipeQuery#find Find recipe from recipemap}: O(NCR)
  * where N = number of machine inputs, C = average amount of recipe candidates found for specific input,
- * R = computation time to {@link GT_Recipe#isRecipeInputEqual check if inputs match to recipe}
+ * R = computation time to {@link GTRecipe#isRecipeInputEqual check if inputs match to recipe}
  * </ul>
  * <ul>
- * {@link GT_Recipe#isRecipeInputEqual Check if inputs match to recipe}: O(NM)
+ * {@link GTRecipe#isRecipeInputEqual Check if inputs match to recipe}: O(NM)
  * where N = number of machine inputs, M = number of recipe inputs
  * </ul>
  * </ul>
@@ -52,7 +52,7 @@ import gregtech.api.util.GT_Utility.ItemId;
 public class SingleRecipeCheck {
 
     @Nonnull
-    private final GT_Recipe recipe;
+    private final GTRecipe recipe;
     @Nonnull
     private final RecipeMap<?> recipeMap;
     @Nonnull
@@ -63,7 +63,7 @@ public class SingleRecipeCheck {
     private final int totalItemCost;
     private final int totalFluidCost;
 
-    private SingleRecipeCheck(@Nonnull GT_Recipe recipe, @Nonnull RecipeMap<?> recipeMap,
+    private SingleRecipeCheck(@Nonnull GTRecipe recipe, @Nonnull RecipeMap<?> recipeMap,
         @Nonnull ImmutableMap<ItemId, Integer> itemCost, @Nonnull ImmutableMap<Fluid, Integer> fluidCost) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
@@ -81,7 +81,7 @@ public class SingleRecipeCheck {
     }
 
     @Nonnull
-    public GT_Recipe getRecipe() {
+    public GTRecipe getRecipe() {
         return recipe;
     }
 
@@ -188,14 +188,14 @@ public class SingleRecipeCheck {
         // At load time we do a recipe check again, so in case the recipe is gone, we can stop tracking.
         // Of course the next step would be auto migrating to new recipe (if any), but given
         // we don't yet have a mean to uniquely name a recipe, this will have to make do.
-        // Consider move serialization code to GT_Recipe once this has been proven to work
+        // Consider move serialization code to GTRecipe once this has been proven to work
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("recipemap", recipeMap.unlocalizedName);
         if (recipe.mInputs != null) {
-            tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
+            tag.setTag("inputs", writeList(recipe.mInputs, GTUtility::saveItem));
         }
         if (recipe.mOutputs != null) {
-            tag.setTag("outputs", writeList(recipe.mOutputs, GT_Utility::saveItem));
+            tag.setTag("outputs", writeList(recipe.mOutputs, GTUtility::saveItem));
         }
         if (recipe.mChances != null) {
             tag.setIntArray("chances", recipe.mChances);
@@ -270,45 +270,44 @@ public class SingleRecipeCheck {
             return null;
         }
 
-        GT_Recipe foundRecipe = tryFindRecipe(mapToUse, tag);
+        GTRecipe foundRecipe = tryFindRecipe(mapToUse, tag);
         if (foundRecipe == null) return null;
         return new SingleRecipeCheck(foundRecipe, mapToUse, loadItemCost(tag), loadFluidCost(tag));
     }
 
     private static ImmutableMap<Fluid, Integer> loadFluidCost(NBTTagCompound tag) {
-        return GT_Utility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND))
+        return GTUtility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND))
             .collect(
-                GT_Utility
+                GTUtility
                     .toImmutableMapSerial(t -> FluidRegistry.getFluid(t.getString("id")), t -> t.getInteger("count")));
     }
 
     private static ImmutableMap<ItemId, Integer> loadItemCost(NBTTagCompound tag) {
-        return GT_Utility.streamCompounds(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND))
+        return GTUtility.streamCompounds(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND))
             .collect(
-                GT_Utility
-                    .toImmutableMapSerial(t -> ItemId.create(t.getCompoundTag("id")), t -> t.getInteger("count")));
+                GTUtility.toImmutableMapSerial(t -> ItemId.create(t.getCompoundTag("id")), t -> t.getInteger("count")));
     }
 
-    private static GT_Recipe tryFindRecipe(@Nonnull RecipeMap<?> recipeMap, NBTTagCompound tag) {
-        ItemStack[] inputs = GT_Utility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
-            .map(GT_Utility::loadItem)
+    private static GTRecipe tryFindRecipe(@Nonnull RecipeMap<?> recipeMap, NBTTagCompound tag) {
+        ItemStack[] inputs = GTUtility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
+            .map(GTUtility::loadItem)
             .toArray(ItemStack[]::new);
-        ItemStack[] outputs = GT_Utility.streamCompounds(tag.getTagList("outputs", Constants.NBT.TAG_COMPOUND))
-            .map(GT_Utility::loadItem)
+        ItemStack[] outputs = GTUtility.streamCompounds(tag.getTagList("outputs", Constants.NBT.TAG_COMPOUND))
+            .map(GTUtility::loadItem)
             .toArray(ItemStack[]::new);
-        FluidStack[] fInputs = GT_Utility.streamCompounds(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
+        FluidStack[] fInputs = GTUtility.streamCompounds(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
             .map(FluidStack::loadFluidStackFromNBT)
             .toArray(FluidStack[]::new);
-        FluidStack[] fOutputs = GT_Utility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
+        FluidStack[] fOutputs = GTUtility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
             .map(FluidStack::loadFluidStackFromNBT)
             .toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
-        GT_Recipe found = recipeMap.findRecipe(null, false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
+        GTRecipe found = recipeMap.findRecipe(null, false, GTValues.V[GTUtility.getTier(eut)], fInputs, inputs);
         int[] chances = tag.getIntArray("chances");
         if (chances.length == 0) chances = null;
-        if (found == null || !GT_Utility.equals(inputs, found.mInputs)
+        if (found == null || !GTUtility.equals(inputs, found.mInputs)
             || !Arrays.equals(fInputs, found.mFluidInputs)
-            || !GT_Utility.equals(outputs, found.mOutputs)
+            || !GTUtility.equals(outputs, found.mOutputs)
             || !Arrays.equals(fOutputs, found.mFluidOutputs)
             || !Arrays.equals(chances, found.mChances)
             || found.mDuration != tag.getInteger("duration")
@@ -350,7 +349,7 @@ public class SingleRecipeCheck {
         private Map<ItemId, Integer> afterItems;
         private Map<Fluid, Integer> afterFluids;
 
-        private GT_Recipe recipe;
+        private GTRecipe recipe;
 
         private Builder(@Nonnull RecipeMap<?> recipeMap) {
             this.recipeMap = recipeMap;
@@ -368,7 +367,7 @@ public class SingleRecipeCheck {
             return this;
         }
 
-        public Builder setRecipe(@Nonnull GT_Recipe recipe) {
+        public Builder setRecipe(@Nonnull GTRecipe recipe) {
             this.recipe = recipe;
             return this;
         }

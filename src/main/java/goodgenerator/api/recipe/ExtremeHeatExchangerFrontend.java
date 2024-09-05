@@ -13,7 +13,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
@@ -46,12 +46,12 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
             int threshold = recipeInfo.recipe.mSpecialValue;
             return Arrays.asList(
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                    + GT_Utility.formatNumbers(Inputs[0].amount)
+                    + GTUtility.formatNumbers(Inputs[0].amount)
                     + " L/s",
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
-                GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s",
+                GTUtility.formatNumbers(Outputs[0].amount / 160) + " L/s",
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
-                GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s",
+                GTUtility.formatNumbers(Outputs[1].amount / 160) + " L/s",
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
         }
     }

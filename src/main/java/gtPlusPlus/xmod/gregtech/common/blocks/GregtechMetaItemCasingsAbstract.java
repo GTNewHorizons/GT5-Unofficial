@@ -7,21 +7,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
 
-    protected final String mCasing_Centrifuge = GT_LanguageManager
+    protected final String mCasing_Centrifuge = GTLanguageManager
         .addStringLocalization("mu.centrifugecasing", "Warning! Standing in the Centrifuge not recommended");
-    protected final String mCasing_CokeOven = GT_LanguageManager
+    protected final String mCasing_CokeOven = GTLanguageManager
         .addStringLocalization("mu.cokeoven", "Sturdy and Strong");
-    protected final String mCasing_CokeCoil1 = GT_LanguageManager
+    protected final String mCasing_CokeCoil1 = GTLanguageManager
         .addStringLocalization("mu.coil01tooltip", "Base Heating Capacity = 1350 Kelvin");
-    protected final String mCasing_CokeCoil2 = GT_LanguageManager
+    protected final String mCasing_CokeCoil2 = GTLanguageManager
         .addStringLocalization("mu.coil02tooltip", "Base Heating Capacity = 2275 Kelvin");
-    protected final String mNoMobsToolTip = GT_LanguageManager
+    protected final String mNoMobsToolTip = GTLanguageManager
         .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    protected final String mNoTileEntityToolTip = GT_LanguageManager
+    protected final String mNoTileEntityToolTip = GTLanguageManager
         .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GregtechMetaItemCasingsAbstract(final Block par1) {

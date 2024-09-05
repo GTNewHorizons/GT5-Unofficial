@@ -10,7 +10,7 @@ import org.mockito.Answers;
 import org.mockito.Mockito;
 
 /**
- * Tests some functions of {@link GT_MetaTileEntity_MultiBlockBase}.
+ * Tests some functions of {@link MTEMultiBlockBase}.
  * <p>
  * The classes and tests are non-public because JUnit5
  * <a href="https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-classes-and-methods">recommends</a>
@@ -26,11 +26,10 @@ class GT_MetaTileEntity_MultiBlockBaseTest {
     @CsvSource({ "0,0,false", "2,0,false", "1,0,true", "1,1,false", "0,1,true", "0,2,true", "0,3,false" })
     void checkExoticAndNormalEnergyHatches_parametrizedTest(int exoticEnergyHatchesCount, int normalEnergyHatchesCount,
         boolean expectedResult) {
-        GT_MetaTileEntity_MultiBlockBase testedClassInstance = Mockito
-            .mock(GT_MetaTileEntity_MultiBlockBase.class, Answers.CALLS_REAL_METHODS);
+        MTEMultiBlockBase testedClassInstance = Mockito.mock(MTEMultiBlockBase.class, Answers.CALLS_REAL_METHODS);
 
-        testedClassInstance.setEnergyHatches(fillList(GT_MetaTileEntity_Hatch_Energy.class, normalEnergyHatchesCount));
-        testedClassInstance.setExoticEnergyHatches(fillList(GT_MetaTileEntity_Hatch.class, exoticEnergyHatchesCount));
+        testedClassInstance.setEnergyHatches(fillList(MTEHatchEnergy.class, normalEnergyHatchesCount));
+        testedClassInstance.setExoticEnergyHatches(fillList(MTEHatch.class, exoticEnergyHatchesCount));
 
         assertEquals(expectedResult, testedClassInstance.checkExoticAndNormalEnergyHatches());
     }

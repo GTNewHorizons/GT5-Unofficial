@@ -1,6 +1,6 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +21,12 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import appeng.core.CreativeTab;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtil;
+import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
@@ -61,7 +61,7 @@ public class MultiTileEntityRegistry {
         this.block = block;
         GT_FML_LOGGER.info(internalName + " " + Block.getIdFromBlock(block) + " This is the answer");
         this.block.setRegistry(this);
-        REGISTRIES.put(new ItemStack(Item.getItemById(Block.getIdFromBlock(block)), 1, GT_Values.W), this);
+        REGISTRIES.put(new ItemStack(Item.getItemById(Block.getIdFromBlock(block)), 1, GTValues.W), this);
         NAMED_REGISTRIES.put(internalName, this);
     }
 
@@ -84,7 +84,7 @@ public class MultiTileEntityRegistry {
     }
 
     public static MultiTileEntityRegistry getRegistry(int aRegistryID) {
-        return REGISTRIES.get(new ItemStack(Item.getItemById(aRegistryID), 1, GT_Values.W));
+        return REGISTRIES.get(new ItemStack(Item.getItemById(aRegistryID), 1, GTValues.W));
     }
 
     public static MultiTileEntityRegistry getRegistry(String aRegistryName) {
@@ -101,7 +101,7 @@ public class MultiTileEntityRegistry {
      */
     public ItemStack add(String aLocalised, MultiTileEntityClassContainer aClassContainer) {
         boolean tFailed = false;
-        if (GT_Utility.isStringInvalid(aLocalised)) {
+        if (GTUtility.isStringInvalid(aLocalised)) {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Localisation Missing!");
             tFailed = true;
         }
@@ -113,7 +113,7 @@ public class MultiTileEntityRegistry {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class inside Class Container is null!");
                 tFailed = true;
             }
-            if (aClassContainer.getMuteID() == GT_Values.W) {
+            if (aClassContainer.getMuteID() == GTValues.W) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses Wildcard MetaData!");
                 tFailed = true;
             }
@@ -138,8 +138,7 @@ public class MultiTileEntityRegistry {
             return null;
         }
 
-        GT_LanguageManager
-            .addStringLocalization(internalName + "." + aClassContainer.getMuteID() + ".name", aLocalised);
+        GTLanguageManager.addStringLocalization(internalName + "." + aClassContainer.getMuteID() + ".name", aLocalised);
         registry.put(aClassContainer.getMuteID(), aClassContainer);
         mLastRegisteredID = aClassContainer.getMuteID();
         registrations.add(aClassContainer);
@@ -154,7 +153,7 @@ public class MultiTileEntityRegistry {
         return getItem(aClassContainer.getMuteID());
     }
 
-    public short mLastRegisteredID = GT_Values.W;
+    public short mLastRegisteredID = GTValues.W;
 
     public ItemStack getItem() {
         return getItem(mLastRegisteredID, 1, null);
@@ -206,14 +205,14 @@ public class MultiTileEntityRegistry {
     public TileEntity getNewTileEntity(World aWorld, int x, int y, int z, int metaID, NBTTagCompound nbt) {
         final MultiTileEntityClassContainer container = registry.get((short) metaID);
         if (container == null) return null;
-        final MultiTileEntity te = (MultiTileEntity) GT_Utility
+        final MultiTileEntity te = (MultiTileEntity) GTUtility
             .callConstructor(container.getMuteClass(), -1, null, true);
         te.setWorldObj(aWorld);
         te.xCoord = x;
         te.yCoord = y;
         te.zCoord = z;
         nbt = (nbt == null || nbt.hasNoTags()) ? container.getParameters()
-            : GT_Util.fuseNBT(nbt, container.getParameters());
+            : GTUtil.fuseNBT(nbt, container.getParameters());
         te.initFromNBT(nbt, (short) metaID, (short) Block.getIdFromBlock(block));
         return te;
     }

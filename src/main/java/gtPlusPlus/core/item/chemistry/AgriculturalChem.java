@@ -6,9 +6,9 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
@@ -23,16 +23,16 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
+import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -152,7 +152,7 @@ public class AgriculturalChem extends ItemPackage {
 
         mAlgae = new ItemAlgaeBase();
         mAgrichemItem1 = new ItemAgrichemBase();
-        mBioCircuit = new GTPP_IntegratedCircuit_Item("BioRecipeSelector", "bioscience/BioCircuit");
+        mBioCircuit = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
         GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
 
         mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);
@@ -422,8 +422,8 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aDirtDust = ItemUtils.getSimpleStack(dustDirt, 1);
 
         // Poop Juice to Basic Slurry
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(10))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(10))
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
             .outputChances(2000, 2000, 500, 500, 250, 250)
             .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
@@ -433,8 +433,8 @@ public class AgriculturalChem extends ItemPackage {
             .addTo(centrifugeRecipes);
 
         // More Efficient way to get byproducts, less Slurry
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(20))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(20))
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod2, aManureByprod2)
             .outputChances(4000, 3000, 1250, 1250, 675, 675)
             .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
@@ -446,7 +446,7 @@ public class AgriculturalChem extends ItemPackage {
 
     private static void addAdvancedSlurryRecipes() {
 
-        ItemStack aCircuit = GT_Utility.getIntegratedCircuit(10);
+        ItemStack aCircuit = GTUtility.getIntegratedCircuit(10);
         ItemStack aBone;
         ItemStack aMeat;
         ItemStack aEmptyCells = Materials.Empty.getCells(2);
@@ -459,7 +459,7 @@ public class AgriculturalChem extends ItemPackage {
                 for (ItemStack aMeatStack : mList_Master_Meats) {
                     aMeat = ItemUtils.getSimpleStack(aMeatStack, 5);
                     // Poop Juice to Fertile Slurry
-                    GT_Values.RA.stdBuilder()
+                    GTValues.RA.stdBuilder()
                         .itemInputs(aCircuit, aBone, aMeat, aInputCells)
                         .itemOutputs(aEmptyCells)
                         .fluidInputs(aBloodStack)
@@ -481,7 +481,7 @@ public class AgriculturalChem extends ItemPackage {
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 3);
             for (ItemStack aMeatStack : mList_Master_Meats) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 5);
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(aPeat, aMeat)
                     .itemOutputs(aOutputDust)
                     .fluidInputs(aInputFluid)
@@ -492,7 +492,7 @@ public class AgriculturalChem extends ItemPackage {
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 2);
             for (ItemStack aMeatStack : mList_Master_FruitVege) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 9);
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(aPeat, aMeat)
                     .itemOutputs(aOutputDust)
                     .fluidInputs(aInputFluid)
@@ -512,7 +512,7 @@ public class AgriculturalChem extends ItemPackage {
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 5);
             for (ItemStack aMeatStack : mList_Master_Meats) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 7);
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(aPeat, aMeat)
                     .itemOutputs(aOutputDust)
                     .fluidInputs(aInputFluid)
@@ -523,7 +523,7 @@ public class AgriculturalChem extends ItemPackage {
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 3);
             for (ItemStack aMeatStack : mList_Master_FruitVege) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 12);
-                GT_Values.RA.stdBuilder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(aPeat, aMeat)
                     .itemOutputs(aOutputDust)
                     .fluidInputs(aInputFluid)
@@ -558,9 +558,9 @@ public class AgriculturalChem extends ItemPackage {
                     if (aItemInstance instanceof Item aForestryFert) {
                         aFertForestry = ItemUtils.getSimpleStack((Item) aItemInstance);
 
-                        GT_Values.RA.stdBuilder()
+                        GTValues.RA.stdBuilder()
                             .itemInputs(
-                                GT_Utility.getIntegratedCircuit(11),
+                                GTUtility.getIntegratedCircuit(11),
                                 ItemUtils.getSimpleStack(aDustOrganicFert, 4))
                             .itemOutputs(ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod)
                             .outputChances(100_00, 20_00, 20_00)
@@ -578,8 +578,8 @@ public class AgriculturalChem extends ItemPackage {
          * IC2 Support
          */
         aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod)
             .outputChances(100_00, 20_00, 20_00)
             .eut(240)
@@ -587,7 +587,7 @@ public class AgriculturalChem extends ItemPackage {
             .addTo(chemicalDehydratorRecipes);
 
         // Dirt Production
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemUtils.getSimpleStack(dustDirt, 9))
             .itemOutputs(ItemUtils.getSimpleStack(Blocks.dirt))
             .duration(2 * SECONDS)
@@ -597,13 +597,13 @@ public class AgriculturalChem extends ItemPackage {
         // Centrifuge Byproducts
 
         // Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(aManureByprod, 4), GT_Utility.getIntegratedCircuit(20))
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemUtils.getSimpleStack(aManureByprod, 4), GTUtility.getIntegratedCircuit(20))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                 ItemUtils.getSimpleStack(dustDirt, 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1))
             .outputChances(2500, 2500, 750, 1000, 5000, 250)
@@ -614,21 +614,21 @@ public class AgriculturalChem extends ItemPackage {
             .addTo(centrifugeRecipes);
 
         // Add Fuel Usages
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 12)
             .addTo(semiFluidFuels);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(FluidUtils.getFluidStack(ManureSlurry, 1000))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 24)
             .addTo(semiFluidFuels);
 
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(FluidUtils.getFluidStack(FertileManureSlurry, 1000))
             .duration(0)
             .eut(0)
@@ -636,15 +636,15 @@ public class AgriculturalChem extends ItemPackage {
             .addTo(semiFluidFuels);
 
         // Red Slurry / Tailings Processing
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(CI.getNumberedBioCircuit(10))
             .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tin, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tin, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 1000))
             .fluidOutputs(Materials.Water.getFluid(500))

@@ -9,11 +9,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
@@ -46,11 +46,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         return ALLOWED_SOLID_FUELS.add(itemregistryName + ":" + meta);
     }
 
-    public GT_Recipe addDenseLiquidRecipe(GT_Recipe recipe) {
+    public GTRecipe addDenseLiquidRecipe(GTRecipe recipe) {
         return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10, false);
     }
 
-    public GT_Recipe addDieselRecipe(GT_Recipe recipe) {
+    public GTRecipe addDieselRecipe(GTRecipe recipe) {
         return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40, false);
     }
 
@@ -61,12 +61,12 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     @Nullable
-    public GT_Recipe addSolidRecipe(@Nullable ItemStack fuelItemStack) {
+    public GTRecipe addSolidRecipe(@Nullable ItemStack fuelItemStack) {
         if (fuelItemStack == null) {
             return null;
         }
         if (!addedGeneralDesc) {
-            GT_Values.RA.stdBuilder()
+            GTValues.RA.stdBuilder()
                 .duration(1)
                 .eut(1)
                 .specialValue(1)
@@ -82,17 +82,17 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
         String registryName = Item.itemRegistry.getNameForObject(fuelItemStack.getItem());
         boolean isHighTierAllowed = ALLOWED_SOLID_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
-        return GT_Values.RA.stdBuilder()
+        return GTValues.RA.stdBuilder()
             .itemInputs(fuelItemStack)
             .duration(1)
             .eut(0)
-            .specialValue(GT_ModHandler.getFuelValue(fuelItemStack) / 1600)
+            .specialValue(GTModHandler.getFuelValue(fuelItemStack) / 1600)
             .build()
-            .map(r -> addRecipe(r, ((double) GT_ModHandler.getFuelValue(fuelItemStack)) / 1600, isHighTierAllowed))
+            .map(r -> addRecipe(r, ((double) GTModHandler.getFuelValue(fuelItemStack)) / 1600, isHighTierAllowed))
             .orElse(null);
     }
 
-    private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime, boolean isHighTierAllowed) {
+    private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isHighTierAllowed) {
         // Some recipes will have a burn time like 15.9999999 and % always rounds down
         double floatErrorCorrection = 0.0001;
 

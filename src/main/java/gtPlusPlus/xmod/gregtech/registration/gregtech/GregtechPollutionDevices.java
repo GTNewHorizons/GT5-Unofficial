@@ -13,12 +13,12 @@ import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Creator;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Detector;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionDetector;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionCreator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionDetector;
 
 public class GregtechPollutionDevices {
 
@@ -30,10 +30,10 @@ public class GregtechPollutionDevices {
     }
 
     private static void run1() {
-        if (CORE.ConfigSwitches.enableMachine_Pollution) {
+        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
             // 759
             GregtechItemList.Pollution_Detector.set(
-                new GregtechMetaPollutionDetector(
+                new MTEPollutionDetector(
                     Pollution_Detector.ID,
                     "pollutiondetector.01.tier.single",
                     "Pollution Detection Device",
@@ -41,7 +41,7 @@ public class GregtechPollutionDevices {
                     "Tells you if you're living in Gwalior yet.",
                     0).getStackForm(1L));
             GregtechItemList.Pollution_Creator.set(
-                new GregtechMetaPollutionCreator(
+                new MTEPollutionCreator(
                     Pollution_Creator.ID,
                     "pollutioncreator.01.tier.single",
                     "Smog Device",
@@ -50,55 +50,55 @@ public class GregtechPollutionDevices {
                     0).getStackForm(1L));
 
             GregtechItemList.Pollution_Cleaner_LV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_LV.ID,
                     "pollutioncleaner.02.tier.single",
                     "Upgraded Pollution Scrubber",
                     1).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_MV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_MV.ID,
                     "pollutioncleaner.03.tier.single",
                     "Advanced Pollution Scrubber",
                     2).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_HV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_HV.ID,
                     "pollutioncleaner.04.tier.single",
                     "Precision Pollution Scrubber",
                     3).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_EV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_EV.ID,
                     "pollutioncleaner.05.tier.single",
                     "Air Recycler",
                     4).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_IV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_IV.ID,
                     "pollutioncleaner.06.tier.single",
                     "Upgraded Air Recycler",
                     5).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_LuV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_LuV.ID,
                     "pollutioncleaner.07.tier.single",
                     "Advanced Air Recycler",
                     6).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_ZPM.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_ZPM.ID,
                     "pollutioncleaner.08.tier.single",
                     "Precision Air Recycler",
                     7).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_UV.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_UV.ID,
                     "pollutioncleaner.09.tier.single",
                     "Atmospheric Cleaner",
                     8).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_MAX.set(
-                new GregtechMetaAtmosphericReconditioner(
+                new MTEAtmosphericReconditioner(
                     Pollution_Cleaner_MAX.ID,
                     "pollutioncleaner.10.tier.single",
                     "Biosphere Cleanser",

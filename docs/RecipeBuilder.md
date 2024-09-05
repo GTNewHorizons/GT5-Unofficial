@@ -1,6 +1,6 @@
 # introduction
 
-GT_RecipeBuilder is the replacement of GT_Values.RA.addXXXX for constructing and adding recipes.
+GTRecipeBuilder is the replacement of GT_Values.RA.addXXXX for constructing and adding recipes.
 Compared to the old style, this one utilizes the builder pattern to
 
 1. allow greater flexibility in API.
@@ -29,13 +29,13 @@ being the preferred choice.
 ## complicated recipe adder
 
 1. If one invocation of recipe adder would add multiple recipe to same recipe map, give that recipe map a recipeEmitter
-2. If one invocation of recipe adder would conditionally add recipe, define a new IRecipeMap in GT_RecipeConstants
+2. If one invocation of recipe adder would conditionally add recipe, define a new IRecipeMap in GTRecipeConstants
 3. If one invocation of recipe adder would add recipe to multiple recipe map,
-   1. If all recipe maps involved receive recipe only via this type of adding, use the chaining mechanism offered by GT_RecipeMap, i.e. addDownstream().
+   1. If all recipe maps involved receive recipe only via this type of adding, use the chaining mechanism offered by GTRecipeMap, i.e. addDownstream().
 
       e.g.sMultiblockElectrolyzerRecipes and sElectrolyzerRecipes
-   2. Otherwise, define a new IRecipeMap in GT_RecipeConstants.
-4. If the target isn't a real recipe map (e.g. AssLine stuff), define a new IRecipeMap in GT_RecipeConstants.
+   2. Otherwise, define a new IRecipeMap in GTRecipeConstants.
+4. If the target isn't a real recipe map (e.g. AssLine stuff), define a new IRecipeMap in GTRecipeConstants.
 
 ## Downstream in an addon
 

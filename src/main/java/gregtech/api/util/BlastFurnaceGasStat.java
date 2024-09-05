@@ -6,9 +6,8 @@ import java.util.List;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
+import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Materials;
 
 public class BlastFurnaceGasStat {

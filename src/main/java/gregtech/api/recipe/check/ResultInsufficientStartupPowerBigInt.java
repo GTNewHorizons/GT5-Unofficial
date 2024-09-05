@@ -1,6 +1,6 @@
 package gregtech.api.recipe.check;
 
-import static util.Util.toStandardForm;
+import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.util.Objects;

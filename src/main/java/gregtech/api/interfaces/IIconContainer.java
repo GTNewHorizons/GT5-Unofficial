@@ -1,6 +1,6 @@
 package gregtech.api.interfaces;
 
-import static gregtech.api.enums.GT_Values.UNCOLORED_RGBA;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;

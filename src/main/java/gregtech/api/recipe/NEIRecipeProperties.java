@@ -12,7 +12,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import codechicken.nei.recipe.HandlerInfo;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.FieldsAreNonnullByDefault;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
@@ -49,7 +49,7 @@ public final class NEIRecipeProperties {
     public final Pos2d recipeBackgroundOffset;
 
     /**
-     * Formats special description for the recipe, mainly {@link gregtech.api.util.GT_Recipe#mSpecialValue}.
+     * Formats special description for the recipe, mainly {@link GTRecipe#mSpecialValue}.
      */
     public final INEISpecialInfoFormatter neiSpecialInfoFormatter;
 
@@ -68,14 +68,14 @@ public final class NEIRecipeProperties {
     public final boolean renderRealStackSizes;
 
     /**
-     * Comparator for NEI recipe sort. {@link GT_Recipe#compareTo(GT_Recipe)} by default.
+     * Comparator for NEI recipe sort. {@link GTRecipe#compareTo(GTRecipe)} by default.
      */
-    public final Comparator<GT_Recipe> comparator;
+    public final Comparator<GTRecipe> comparator;
 
     NEIRecipeProperties(boolean registerNEI, @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator,
         Size recipeBackgroundSize, Pos2d recipeBackgroundOffset, INEISpecialInfoFormatter neiSpecialInfoFormatter,
         boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
-        Comparator<GT_Recipe> comparator) {
+        Comparator<GTRecipe> comparator) {
         this.registerNEI = registerNEI;
         this.handlerInfoCreator = handlerInfoCreator;
         this.recipeBackgroundOffset = recipeBackgroundOffset;

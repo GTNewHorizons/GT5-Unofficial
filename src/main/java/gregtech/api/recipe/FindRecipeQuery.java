@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 // spotless:off spotless likes formatting @code to &#64;code
@@ -20,7 +20,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
  *
  * <pre>
  * {@code
- *     GT_Recipe recipe = recipeMap.findRecipeQuery()
+ *     GTRecipe recipe = recipeMap.findRecipeQuery()
  *         .items(inputItems)
  *         .fluids(inputFluids)
  *         .find();
@@ -33,7 +33,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public final class FindRecipeQuery {
 
-    private static final Predicate<GT_Recipe> ALWAYS = r -> true;
+    private static final Predicate<GTRecipe> ALWAYS = r -> true;
 
     private final RecipeMap<?> recipeMap;
 
@@ -43,10 +43,10 @@ public final class FindRecipeQuery {
     private FluidStack[] fluids;
     @Nullable
     private ItemStack specialSlot;
-    private Predicate<GT_Recipe> filter = ALWAYS;
+    private Predicate<GTRecipe> filter = ALWAYS;
     private long voltage = Integer.MAX_VALUE;
     @Nullable
-    private GT_Recipe cachedRecipe;
+    private GTRecipe cachedRecipe;
     private boolean notUnificated;
     private boolean dontCheckStackSizes;
     private boolean forCollisionCheck;
@@ -61,7 +61,7 @@ public final class FindRecipeQuery {
      * @return The first matched recipe, or null if not found.
      */
     @Nullable
-    public GT_Recipe find() {
+    public GTRecipe find() {
         return findAll().findFirst()
             .orElse(null);
     }
@@ -69,7 +69,7 @@ public final class FindRecipeQuery {
     /**
      * @return All the matched recipes in the form of Stream.
      */
-    public Stream<GT_Recipe> findAll() {
+    public Stream<GTRecipe> findAll() {
         if (items == null) {
             items = new ItemStack[0];
         }
@@ -135,7 +135,7 @@ public final class FindRecipeQuery {
      * @param filter Matched recipe will be tested by this function. If it returns false, the query will attempt to
      *               find next recipe.
      */
-    public FindRecipeQuery filter(Predicate<GT_Recipe> filter) {
+    public FindRecipeQuery filter(Predicate<GTRecipe> filter) {
         this.filter = filter;
         return this;
     }
@@ -152,7 +152,7 @@ public final class FindRecipeQuery {
     /**
      * @param cachedRecipe If this is not null, the query tests it before all other recipes.
      */
-    public FindRecipeQuery cachedRecipe(@Nullable GT_Recipe cachedRecipe) {
+    public FindRecipeQuery cachedRecipe(@Nullable GTRecipe cachedRecipe) {
         this.cachedRecipe = cachedRecipe;
         return this;
     }

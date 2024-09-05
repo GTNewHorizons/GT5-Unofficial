@@ -1,6 +1,6 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GT_ModHandler.getWater;
+import static gregtech.api.util.GTModHandler.getWater;
 
 import java.util.HashMap;
 import java.util.Map;

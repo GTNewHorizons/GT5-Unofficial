@@ -9,7 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks5;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IsaMill;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 
 public class TexturesGrinderMultiblock {
 
@@ -61,7 +61,7 @@ public class TexturesGrinderMultiblock {
     private static int isIsaControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
-        if (tTile.getMetaTileEntity() instanceof GregtechMetaTileEntity_IsaMill && tTile.getFrontFacing() == side)
+        if (tTile.getMetaTileEntity() instanceof MTEIsaMill && tTile.getFrontFacing() == side)
             return tTile.isActive() ? 1 : 2;
         return 0;
     }

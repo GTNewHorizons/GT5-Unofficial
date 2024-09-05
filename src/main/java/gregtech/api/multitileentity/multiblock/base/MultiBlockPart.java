@@ -1,7 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static com.google.common.math.LongMath.log2;
-import static gregtech.api.enums.GT_Values.B;
+import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_IN_SIGN;
@@ -36,9 +36,9 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
-import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.GTValues.NBT;
 import gregtech.api.enums.InventoryType;
-import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
 import gregtech.api.interfaces.ITexture;
@@ -54,7 +54,7 @@ import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.gui.PartGUIProvider;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -80,7 +80,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     protected UUID lockedInventory;
     protected int mLockedInventoryIndex = 0;
-    protected FluidTankGT configurationTank = new FluidTankGT();
+    protected GTFluidTank configurationTank = new GTFluidTank();
 
     @Nonnull
     protected final GUIProvider<?> guiProvider = createGUIProvider();
@@ -436,7 +436,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (aPlayer.isSneaking()) {
             facing = wrenchSide;
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Mode set to `" + getModeName(mode) + "' (" + mode + ")");
+        GTUtility.sendChatToPlayer(aPlayer, "Mode set to `" + getModeName(mode) + "' (" + mode + ")");
         sendClientData((EntityPlayerMP) aPlayer);
         return true;
     }

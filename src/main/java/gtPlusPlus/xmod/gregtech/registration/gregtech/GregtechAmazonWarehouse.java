@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Amazon_Warehouse_Controller;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc.GMTE_AmazonPackager;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc.MTEAmazonPackager;
 
 public class GregtechAmazonWarehouse {
 
@@ -16,7 +16,7 @@ public class GregtechAmazonWarehouse {
     private static void run1() {
         // Amazon packager multiblock
         GregtechItemList.Amazon_Warehouse_Controller.set(
-            new GMTE_AmazonPackager(
+            new MTEAmazonPackager(
                 Amazon_Warehouse_Controller.ID,
                 "amazonprime.controller.tier.single",
                 "Amazon Warehousing Depot.").getStackForm(1L));

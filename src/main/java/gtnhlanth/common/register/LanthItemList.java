@@ -2,30 +2,28 @@ package gtnhlanth.common.register;
 
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import com.elisis.gtnhlanth.common.block.AntennaCasing;
-import com.elisis.gtnhlanth.common.block.Casing;
-import com.elisis.gtnhlanth.common.block.ShieldedAccGlass;
-import com.elisis.gtnhlanth.common.hatch.TileBusInputFocus;
-import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.elisis.gtnhlanth.common.item.LanthItem;
-import com.elisis.gtnhlanth.common.item.MaskList;
-import com.elisis.gtnhlanth.common.item.ParticleItem;
-import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
-import com.elisis.gtnhlanth.common.tileentity.Digester;
-import com.elisis.gtnhlanth.common.tileentity.DissolutionTank;
-
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
+import gtnhlanth.common.block.BlockAntennaCasing;
+import gtnhlanth.common.block.BlockCasing;
+import gtnhlanth.common.block.BlockShieldedAccGlass;
+import gtnhlanth.common.hatch.MTEBusInputFocus;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import gtnhlanth.common.item.ItemLanth;
+import gtnhlanth.common.item.ItemParticle;
+import gtnhlanth.common.item.ItemPhotolithographicMask;
+import gtnhlanth.common.item.MaskList;
+import gtnhlanth.common.tileentity.MTEDigester;
+import gtnhlanth.common.tileentity.MTEDissolutionTank;
 import gtnhlanth.common.tileentity.MTELINAC;
 import gtnhlanth.common.tileentity.MTESourceChamber;
 import gtnhlanth.common.tileentity.MTESynchrotron;
 import gtnhlanth.common.tileentity.MTETargetChamber;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public final class LanthItemList {
 
@@ -46,52 +44,52 @@ public final class LanthItemList {
 
     public static ItemStack BEAMLINE_FOCUS_INPUT_BUS;
 
-    public static Item CAPILLARY_EXCHANGE = new LanthItem("capillary_exchange");
+    public static Item CAPILLARY_EXCHANGE = new ItemLanth("capillary_exchange");
 
-    public static Item MM_LATTICE = new LanthItem("mm_lattice");
+    public static Item MM_LATTICE = new ItemLanth("mm_lattice");
 
-    public static Item IRON_COATED_QUARTZ = new LanthItem("iron_quartz_plate");
+    public static Item IRON_COATED_QUARTZ = new ItemLanth("iron_quartz_plate");
 
-    public static Item SUBSTRATE_PRECURSOR = new LanthItem("substrate_precursor");
+    public static Item SUBSTRATE_PRECURSOR = new ItemLanth("substrate_precursor");
 
-    public static Item MASK_SUBSTRATE = new LanthItem("mask_substrate");
+    public static Item MASK_SUBSTRATE = new ItemLanth("mask_substrate");
 
-    public static Item MASKED_MASK = new LanthItem("masked_mask_substrate");
+    public static Item MASKED_MASK = new ItemLanth("masked_mask_substrate");
 
-    public static Item ETCHED_MASK_1 = new LanthItem("etched_mask1");
+    public static Item ETCHED_MASK_1 = new ItemLanth("etched_mask1");
 
-    public static Item SILICON_NITRIDE_MEMBRANE = new LanthItem("nitride_gold_membrane");
+    public static Item SILICON_NITRIDE_MEMBRANE = new ItemLanth("nitride_gold_membrane");
 
-    public static Item PARTICLE_ITEM = new ParticleItem().setUnlocalizedName("particle");
+    public static Item PARTICLE_ITEM = new ItemParticle().setUnlocalizedName("particle");
 
-    public static final Block SHIELDED_ACCELERATOR_CASING = new Casing("shielded_accelerator");
-    public static final Block SHIELDED_ACCELERATOR_GLASS = new ShieldedAccGlass();
+    public static final Block SHIELDED_ACCELERATOR_CASING = new BlockCasing("shielded_accelerator");
+    public static final Block SHIELDED_ACCELERATOR_GLASS = new BlockShieldedAccGlass();
 
-    public static final Block ELECTRODE_CASING = new Casing("electrode");
+    public static final Block ELECTRODE_CASING = new BlockCasing("electrode");
 
-    public static final Block COOLANT_DELIVERY_CASING = new Casing("coolant_delivery");
+    public static final Block COOLANT_DELIVERY_CASING = new BlockCasing("coolant_delivery");
 
     // public static final Block ANTENNA_CASING_T1 = new Casing("antenna_t1");
-    public static final Block ANTENNA_CASING_T1 = new AntennaCasing(1);
-    public static final Block ANTENNA_CASING_T2 = new AntennaCasing(2);
+    public static final Block ANTENNA_CASING_T1 = new BlockAntennaCasing(1);
+    public static final Block ANTENNA_CASING_T2 = new BlockAntennaCasing(2);
 
-    public static final Block NIOBIUM_CAVITY_CASING = new Casing("niobium_cavity");
+    public static final Block NIOBIUM_CAVITY_CASING = new BlockCasing("niobium_cavity");
 
-    public static final Block FOCUS_MANIPULATION_CASING = new Casing("focus_manipulator");
-    public static final Block FOCUS_HOLDER = new Casing("focus_holder");
+    public static final Block FOCUS_MANIPULATION_CASING = new BlockCasing("focus_manipulator");
+    public static final Block FOCUS_HOLDER = new BlockCasing("focus_holder");
 
-    public static final Block TARGET_RECEPTACLE_CASING = new Casing("target_receptacle");
-    public static final Block TARGET_HOLDER = new Casing("target_holder");
+    public static final Block TARGET_RECEPTACLE_CASING = new BlockCasing("target_receptacle");
+    public static final Block TARGET_HOLDER = new BlockCasing("target_holder");
 
     public static HashMap<MaskList, Item> maskMap = new HashMap<>();
 
     public static void registerGTMTE() {
 
-        DIGESTER = new Digester(10500, "Digester", "Digester").getStackForm(1L);
-        DISSOLUTION_TANK = new DissolutionTank(10501, "Dissolution Tank", "Dissolution Tank").getStackForm(1L);
+        DIGESTER = new MTEDigester(10500, "Digester", "Digester").getStackForm(1L);
+        DISSOLUTION_TANK = new MTEDissolutionTank(10501, "Dissolution Tank", "Dissolution Tank").getStackForm(1L);
 
         BEAMLINE_PIPE = new MTEBeamlinePipe(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
-        LUV_BEAMLINE_INPUT_HATCH = new TileHatchInputBeamline(
+        LUV_BEAMLINE_INPUT_HATCH = new MTEHatchInputBeamline(
             10503,
             "LuV Beamline Input Hatch",
             "LuV Beamline Input Hatch",
@@ -102,7 +100,7 @@ public final class LanthItemList {
             "LuV Beamline Output Hatch",
             6).getStackForm(1L);
 
-        BEAMLINE_FOCUS_INPUT_BUS = new TileBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
+        BEAMLINE_FOCUS_INPUT_BUS = new MTEBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
 
         LINAC = new MTELINAC(10505, "Linear Accelerator", "Linear Accelerator").getStackForm(1L);
 
@@ -159,10 +157,13 @@ public final class LanthItemList {
 
             String descSpectrum = mask.getSpectrum();
 
-            PhotolithographicMask maskItem = new PhotolithographicMask(mask.getName(), mask.getDamage(), descSpectrum);
+            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(
+                mask.getName(),
+                mask.getDamage(),
+                descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
 
-            GT_LanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
+            GTLanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
 
             maskMap.put(mask, maskItem);
 

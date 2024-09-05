@@ -12,6 +12,8 @@ import net.minecraft.util.ResourceLocation;
 
 import com.google.common.collect.Maps;
 
+import gregtech.api.GregTechAPI;
+
 /**
  * Enumerates known sounds with id and resource-location
  *
@@ -361,7 +363,7 @@ public enum SoundResource {
     /**
      * Provides a backward-compatible Sounds {@code Map<Integer, String>} sound list
      *
-     * @return The map for the deprecated {@link gregtech.api.GregTech_API#sSoundList}
+     * @return The map for the deprecated {@link GregTechAPI#sSoundList}
      * @deprecated This method is planned for removal.
      *             <p>
      *             Use this {@link SoundResource} enum instead.

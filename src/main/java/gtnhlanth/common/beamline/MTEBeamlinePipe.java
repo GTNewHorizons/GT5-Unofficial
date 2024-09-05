@@ -2,7 +2,7 @@ package gtnhlanth.common.beamline;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import com.elisis.gtnhlanth.common.beamline.IConnectsToBeamline;
+import gtnhlanth.common.beamline.IConnectsToBeamline;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -24,8 +24,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.common.GT_Client;
-import gregtech.common.render.GT_TextureBuilder;
+import gregtech.common.GTClient;
+import gregtech.common.render.GTTextureBuilder;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
 
@@ -69,7 +69,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
@@ -92,7 +92,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
 
     @Override
     public float getThickNess() {
-        if (GT_Mod.instance.isClientSide() && GT_Client.hideValue == 1) {
+        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
             return 0.0625F;
         }
         return 0.5f;
@@ -152,9 +152,9 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, int aConnections,
         int aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { new GT_TextureBuilder().addIcon(pipe)
+        return new ITexture[] { new GTTextureBuilder().addIcon(pipe)
             .build(),
-            new GT_TextureBuilder().addIcon(pipe)
+            new GTTextureBuilder().addIcon(pipe)
                 .setRGBA(Dyes.getModulation((byte) aColorIndex, MACHINE_METAL.getRGBA()))
                 .build() };
     }

@@ -1,12 +1,12 @@
 package gregtech.loaders.materialprocessing;
 
-import gregtech.api.enums.GTNH_ExtraMaterials;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsGTNH;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
 
     public ProcessingConfig() {
-        new GTNH_ExtraMaterials();
+        new MaterialsGTNH();
         Materials.add(this);
     }
 
@@ -15,7 +15,7 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
      * <blockquote>
      *
      * <pre>
-     * int numberOfMaterialSlots = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16);
+     * int numberOfMaterialSlots = GregTechAPI.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16);
      * for (int i = 0; i < numberOfMaterialSlots; i++) {
      *     String aID = (i < 10 ? "0" : "") + i;
      *     new Materials(

@@ -8,10 +8,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.api.energy.tile.IEnergySink;
 
 /**
@@ -97,8 +97,8 @@ public interface IEnergyConnected extends IColoredTileEntity {
                         while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
                             && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
                     }
-                } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
-                    final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
+                } else if (GregTechAPI.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
+                    final int rfOut = GTUtility.safeInt(voltage * GregTechAPI.mEUtoRF / 100);
                     if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
                         receiver.receiveEnergy(oppositeSide, rfOut, false);
                         usedAmperes++;
@@ -152,7 +152,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
                 emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
                 return;
             }
-    
+
             if (tileEntity instanceof IEnergySink sink) {
                 if (sink.acceptsEnergyFrom((TileEntity) emitter, oppositeSide)) {
                     while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
@@ -164,8 +164,8 @@ public interface IEnergyConnected extends IColoredTileEntity {
                 }
             }
 
-            if (GregTech_API.mOutputRF && tileEntity instanceof IEnergyReceiver receiver) {
-                final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
+            if (GregTechAPI.mOutputRF && tileEntity instanceof IEnergyReceiver receiver) {
+                final int rfOut = GTUtility.safeInt(voltage * GregTechAPI.mEUtoRF / 100);
                 if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
                     receiver.receiveEnergy(oppositeSide, rfOut, false);
                     usedAmperes++;

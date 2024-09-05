@@ -9,24 +9,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gnu.trove.strategy.HashingStrategy;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 
 public class RecipeHashStrat {
 
-    public static final HashingStrategy<GT_Recipe> RecipeHashingStrategy = new HashingStrategy<>() {
+    public static final HashingStrategy<GTRecipe> RecipeHashingStrategy = new HashingStrategy<>() {
 
         @Override
-        public int computeHashCode(GT_Recipe recipe) {
+        public int computeHashCode(GTRecipe recipe) {
             return com.google.common.base.Objects.hashCode(recipe.mDuration, recipe.mEUt);
         }
 
         @Override
-        public boolean equals(GT_Recipe recipe1, GT_Recipe recipe2) {
+        public boolean equals(GTRecipe recipe1, GTRecipe recipe2) {
             return areRecipesEqual(recipe1, recipe2);
         }
     };
 
-    public static boolean areRecipesEqual(GT_Recipe recipe1, GT_Recipe recipe2) {
+    public static boolean areRecipesEqual(GTRecipe recipe1, GTRecipe recipe2) {
         // both item outputs use a copy to prevent interfering with chance based output orders
         // sort all the arrays for recipe1
         RecipeHashStrat.sortItemStackArray(recipe1.mInputs);

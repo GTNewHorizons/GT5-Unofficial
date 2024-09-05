@@ -33,14 +33,14 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableModularController;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.LayeredCokeBatteryProcessingLogic;
 
 public class LayeredCokeBattery
@@ -155,8 +155,8 @@ public class LayeredCokeBattery
                     ofMuTECasings(
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.Distillation.getCasing()))
-                .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
-                .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))
+                .addElement('C', ofBlock(GregTechAPI.sBlockCasings4, 1))
+                .addElement('D', GTStructureUtility.ofFrame(Materials.Steel))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'F',
@@ -238,8 +238,8 @@ public class LayeredCokeBattery
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
             .addInfo("Controller for the Layered Coke Battery")
             .addSeparator()

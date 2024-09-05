@@ -1,54 +1,23 @@
 package gtnhlanth.common.tileentity;
 
-import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import com.elisis.gtnhlanth.common.beamline.BeamInformation;
-import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
-import com.elisis.gtnhlanth.common.beamline.Particle;
-import com.elisis.gtnhlanth.common.block.AntennaCasing;
-import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import com.elisis.gtnhlanth.util.DescTextLocalization;
-import com.elisis.gtnhlanth.util.Util;
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
-import com.google.common.collect.ImmutableMap;
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TickTime;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import gtnhlanth.common.register.LanthItemList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -58,8 +27,38 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTESynchrotron>
-    implements ISurvivalConstructable {
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import bartworks.API.BorosilicateGlass;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TickTime;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.block.BlockAntennaCasing;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import gtnhlanth.common.register.LanthItemList;
+import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
+import gtnhlanth.util.DescTextLocalization;
+import gtnhlanth.util.Util;
+
+public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<MTESynchrotron> STRUCTURE_DEFINITION;
 
@@ -69,12 +68,12 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     public static final int CONSUMED_FLUID = 32_000; // Fluid consumed per processed recipe, maybe increase with EU
     public static final int MIN_INPUT_FOCUS = 25; // Inclusive
 
-    private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    public ArrayList<AntennaCasing> mAntennaCasings = new ArrayList<>();
+    public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
 
-    private static final int CASING_INDEX = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14);
+    private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 
     private static final byte MIN_GLASS_TIER = 6;
 
@@ -95,77 +94,77 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         STRUCTURE_DEFINITION = StructureDefinition.<MTESynchrotron>builder().addShape(
                 STRUCTURE_PIECE_ENTRANCE,
 
-                
-                
-                new String[][] { 
-                		{ 
-                			"                                    ", 
+
+
+                new String[][] {
+                		{
+                			"                                    ",
                 			"  ccc                               ",
-                			" cgggc                              ", 
+                			" cgggc                              ",
                         	" cgvgc                              ",
-                        	" cgggc                              ", 
-                        	"  ccc                               " 
-                		} 
+                        	" cgggc                              ",
+                        	"  ccc                               "
+                		}
                 })
                 .addShape(
                     STRUCTURE_PIECE_BASE,
 
                     new String[][] {
-                    	{ 
-                    		"                                    ", 
+                    	{
+                    		"                                    ",
                     		"  ccc                               ",
-                    		" ccccc       cjjjjjc                ", 
+                    		" ccccc       cjjjjjc                ",
                     		" cc-cc      cjjc~cjjc               ",
-                    		" ccccc       cjjjjjc                ", 
+                    		" ccccc       cjjjjjc                ",
                     		"  ccc                               ",
-                    		"                                    " 
-                    	},
-                    	{ 
-                    		"                                    ", 
-                    		"  ccc      ccccccccccc              ",
-                    		" c---c    ccc-------ccc             ", 
-                    		" c---c    ccc-------ccc             ",
-                    		" c---c    ccc-------ccc             ", 
-                    		"  ccc      ccccccccccc              ",
-                    		"                                    " 
-                    	},
-                    	{ 
-                    		"           ccccccccccc              ", 
-                    		"  ccc    cc-----------cc            ",
-                    		" c---c  cc-------------cc           ", 
-                    		" c---c  cc-------------cc           ",
-                    		" c---c  cc-------------cc           ", 
-                    		"  ccc    ccc---------ccc            ",
-                    		"           ccccccccccc              " 
+                    		"                                    "
                     	},
                     	{
-                    		"         ccccccccccccccc            ", 
+                    		"                                    ",
+                    		"  ccc      ccccccccccc              ",
+                    		" c---c    ccc-------ccc             ",
+                    		" c---c    ccc-------ccc             ",
+                    		" c---c    ccc-------ccc             ",
+                    		"  ccc      ccccccccccc              ",
+                    		"                                    "
+                    	},
+                    	{
+                    		"           ccccccccccc              ",
+                    		"  ccc    cc-----------cc            ",
+                    		" c---c  cc-------------cc           ",
+                    		" c---c  cc-------------cc           ",
+                    		" c---c  cc-------------cc           ",
+                    		"  ccc    ccc---------ccc            ",
+                    		"           ccccccccccc              "
+                    	},
+                    	{
+                    		"         ccccccccccccccc            ",
                     		"  ccc  cc---------------cc          ",
-                    		" c---ccc-----------------c          ", 
+                    		" c---ccc-----------------c          ",
                     		" c---ccc-----------------cc         ",
-                    		" c---ccc-----------------c          ", 
+                    		" c---ccc-----------------c          ",
                     		"  ccc  cc---------------cc          ",
                     		"         ccccccccccccccc            ",
-                    		
+
                     	},
                     	{
-                    		"  ccc   ccccccccccccccccc           ", 
+                    		"  ccc   ccccccccccccccccc           ",
                     		" ckkkccc-----------------cc         ",
-                    		"ck---kc-------------------cc        ", 
+                    		"ck---kc-------------------cc        ",
                     		"ck---kc--------------------c        ",
-                    		"ck---kc-------------------cc        ", 
+                    		"ck---kc-------------------cc        ",
                     		" ckkkccc-----------------cc         ",
                     		"  ccc  cccccccccccccccccc           "
-                    		
+
                     	},
-                    	{ 
-                    		"  cccccccccccc     ccccccc          ", 
+                    	{
+                    		"  cccccccccccc     ccccccc          ",
                     		" cdddcc-------ccccc-------cc        ",
-                    		"cd---d----------------------c       ", 
                     		"cd---d----------------------c       ",
-                    		"cd---d----------------------c       ", 
+                    		"cd---d----------------------c       ",
+                    		"cd---d----------------------c       ",
                     		" cdddcc-------ccccc-------cc        ",
-                    		"  cccccccccccc     ccccccc          ", 
+                    		"  cccccccccccc     ccccccc          ",
                     	},
                     	{
                     		"  ccccccccc           ccccc         ",
@@ -184,7 +183,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c----------cc       cc-------c      ",
                     		" c--------cc         cc-----cc      ",
                     		"  cccccccc             ccccc        "
-                    		
+
                     	},
                     	{
                     		"  ccccccc               ccccc       ",
@@ -194,7 +193,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c---------c           c-------c     ",
                     		" c-------c             c-----c      ",
                     		"  ccccccc               ccccc       "
-                    	
+
                     	},
                     	{
                     		"  cccccc                 ccccc      ",
@@ -204,7 +203,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c--------c             c------c     ",
                     		" c------c               c-----c     ",
                     		"  cccccc                 ccccc      "
-                    	
+
                     	},
                     	{
                     		"  ccccc                   cccc      ",
@@ -214,7 +213,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c-------c               c------c    ",
                     		" c-----c                 c----c     ",
                     		"  ccccc                   cccc      "
-                    		
+
                     	},
                     	{
                     		"  cccc                     ccc      ",
@@ -224,7 +223,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c------c                 c-----c    ",
                     		" c----cc                 cc---cc    ",
                     		"  cccc                     ccc      "
-                    		
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -234,7 +233,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c------c                 c-----c    ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    	
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -244,7 +243,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"c-----c                   c----cc   ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    	
+
                     	},
                     	{
                     		"  ccc                       ccc     ",
@@ -254,7 +253,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"ck---kc                   ck---kc   ",
                     		" ckkkcc                   cckkkc    ",
                     		"  ccc                       ccc     "
-                    	
+
                     	},
                     	{
                     		"  cec                       cec     ",
@@ -264,7 +263,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"cn---nc                   cn---nc   ",
                     		" cnnnc                     cnnnc    ",
                     		"  ccc                       ccc     "
-                    		
+
                     	},
                     	{
                     		"  cic                       cic     ",
@@ -274,7 +273,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"cn---nc                   cn---nc   ",
                     		" cndnc                     cndnc    ",
                     		"  coc                       coc     "
-                    		
+
                     	},
                     	{
                     		"  cec                       cec     ",
@@ -284,7 +283,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"cn---nc                   cn---nc   ",
                     		" cnnnc                     cnnnc    ",
                     		"  ccc                       ccc     "
-                    		
+
                     	},
                     	{
                     		"  ccc                       ccc     ",
@@ -294,7 +293,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"ck---kc                   ck---kc   ",
                     		" ckkkcc                   cckkkc    ",
                     		"  ccc                       ccc     "
-                    		
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -304,7 +303,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"cc----c                   c----cc   ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    		
+
                     	},
                     	{
                     		"  cccc                     cccc     ",
@@ -314,7 +313,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		" c-----c                 c-----c    ",
                     		" c---cc                   cc---c    ",
                     		"  cccc                     cccc     "
-                    		
+
                     	},
                     	{
                     		"   ccc                     ccc      ",
@@ -324,7 +323,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		" c-----c                 c-----c    ",
                     		" cc---cc                 cc---cc    ",
                     		"   ccc                     ccc      "
-                    		
+
                     	},
                     	{
                     		"   cccc                   cccc      ",
@@ -334,7 +333,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		" c------c               c------c    ",
                     		"  c----c                 c----c     ",
                     		"   cccc                   cccc      "
-                    		
+
                     	},
                     	{
                     		"   ccccc                 ccccc      ",
@@ -344,7 +343,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"  c------c             c------c     ",
                     		"  c-----c               c-----c     ",
                     		"   ccccc                 ccccc      "
-                    		
+
                     	},
                     	{
                     		"    ccccc               ccccc       ",
@@ -354,7 +353,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"  c-------c           c-------c     ",
                     		"   c-----c             c-----c      ",
                     		"    ccccc               ccccc       "
-                    		
+
                     	},
                     	{
                     		"     ccccc             ccccc        ",
@@ -364,7 +363,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"   c-------cc       cc-------cc     ",
                     		"    c-----cc         cc------c      ",
                     		"     ccccc             cccccc       "
-                    		
+
                     	},
                     	{
                     		"      ccccc           ccccccc       ",
@@ -374,7 +373,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"    c--------ccccccc--------cccc    ",
                     		"    cc-----cccc   cccc------cc      ",
                     		"      ccccc           cccccc        "
-                    		
+
                     	},
                     	{
                     		"       ccccccc     cccccccccc       ",
@@ -384,7 +383,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"    c---------kdkdk--------ccccccccc",
                     		"     cc-------ccccc--------cccc     ",
                     		"       ccccccc     cccccccc         "
-                    		
+
                     	},
                     	{
                     		"        cccccccccccccccccccc        ",
@@ -394,7 +393,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"     cc---------------------------cg",
                     		"       c-------------------ccccccccc",
                     		"        ccccccccccccccccccc         "
-                    		
+
                     	},
                     	{
                     		"         ccccccccccccccccccc        ",
@@ -404,7 +403,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"       c--------------------------cg",
                     		"        c-----------------cccccccccc",
                     		"         ccccccccccccccccc          "
-                    		
+
                     	},
                     	{
                     		"            ccccccccccccccc         ",
@@ -414,7 +413,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"        cc------------------------cg",
                     		"         ccc-------------ccccccccccc",
                     		"            ccccccccccccc           "
-                    		
+
                     	},
                     	{
                     		"                                    ",
@@ -423,7 +422,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"          cc--kdkdk------ccccccccccc",
                     		"          ccc-kdkdk------ccccccccccc",
                     		"           cccccccccccccccccc       "
-                    		
+
                     	},
                     	{
                     		"                                    ",
@@ -433,34 +432,34 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     		"             cccccccccccccccc       ",
                     		"                                    ",
                     		"                                    "
-                    		
+
                     	}
 
                    }
 
                 ).addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('k', ofBlock(GregTech_API.sBlockCasings1, 15)) // Superconducting coils
+                .addElement('k', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coils
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy, 4)).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', ofBlockAdder(MTESynchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 0)) //Antenna Casings
                 .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
                 .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
-                .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX)
+                .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
                 .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
-                .addElement('j', 
+                .addElement('j',
                 		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                
+
                 .build();
-        
-     
+
+
 
     }
-    
+
     // spotless:on
 
     /*
@@ -490,8 +489,8 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Accelerator")
             .addInfo("Controller block for the Synchrotron")
             .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,").addInfo("in the form of photons")
@@ -541,8 +540,8 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
         if (mte == null) return false;
 
-        if (mte instanceof TileHatchInputBeamline) {
-            return this.mInputBeamline.add((TileHatchInputBeamline) mte);
+        if (mte instanceof MTEHatchInputBeamline) {
+            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
         }
 
         return false;
@@ -624,9 +623,9 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
 
-            GT_MetaTileEntity_Hatch_Energy hatch = (GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity;
+            MTEHatchEnergy hatch = (MTEHatchEnergy) aMetaTileEntity;
 
             // First energy hatch added
             if (this.mEnergyHatches.size() == 0) this.energyHatchTier = hatch.mTier;
@@ -645,9 +644,9 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
         if (block == null) return false;
 
-        if (!(block instanceof AntennaCasing)) return false;
+        if (!(block instanceof BlockAntennaCasing)) return false;
 
-        AntennaCasing antennaBlock = (AntennaCasing) block;
+        BlockAntennaCasing antennaBlock = (BlockAntennaCasing) block;
 
         int antennaTier = antennaBlock.getTier();
 
@@ -724,8 +723,8 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         mMaxProgresstime = TickTime.SECOND;
 
         long voltage = this.getMaxInputVoltage();
-        mEUt = (int) (-voltage / GT_Values.V[(int) this.getInputVoltageTier()]
-            * GT_Values.VP[(int) this.getInputVoltageTier()]); // Multiply VP by amps
+        mEUt = (int) (-voltage / GTValues.V[(int) this.getInputVoltageTier()]
+            * GTValues.VP[(int) this.getInputVoltageTier()]); // Multiply VP by amps
 
         outputParticle = 1; // Photon
 
@@ -850,7 +849,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
     private BeamInformation getInputInformation() {
 
-        for (TileHatchInputBeamline in : this.mInputBeamline) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
             // if (in.q == null) return new BeamInformation(10000, 10, 0, 90); // TODO temporary for testing purposes
@@ -921,7 +920,7 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for (MTEHatchEnergy tHatch : mEnergyHatches) {
             if (tHatch.isValid()) {
                 storedEnergy += tHatch.getBaseMetaTileEntity()
                     .getStoredEU();
@@ -935,36 +934,36 @@ public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + GTUtility.formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(storedEnergy)
+                + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(getActualEnergyUsage())
+                + GTUtility.formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(getMaxInputVoltage())
+                + GTUtility.formatNumbers(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + VN[GT_Utility.getTier(getMaxInputVoltage())]
+                + VN[GTUtility.getTier(getMaxInputVoltage())]
                 + EnumChatFormatting.RESET,
             /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED

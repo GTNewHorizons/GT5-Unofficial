@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 
 public interface IThaumcraftCompat {
 
@@ -35,10 +35,10 @@ public interface IThaumcraftCompat {
     Object addCrucibleRecipe(String aResearch, Object aInput, ItemStack aOutput, List<TC_AspectStack> aAspects);
 
     Object addInfusionRecipe(String aResearch, ItemStack aMainInput, ItemStack[] aSideInputs, ItemStack aOutput,
-        int aInstability, List<TC_Aspects.TC_AspectStack> aAspects);
+        int aInstability, List<TCAspects.TC_AspectStack> aAspects);
 
     Object addInfusionEnchantmentRecipe(String aResearch, Enchantment aEnchantment, int aInstability,
-        List<TC_Aspects.TC_AspectStack> aAspects, ItemStack[] aSideInputs);
+        List<TCAspects.TC_AspectStack> aAspects, ItemStack[] aSideInputs);
 
     Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory,
         ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_AspectStack> aAspects,

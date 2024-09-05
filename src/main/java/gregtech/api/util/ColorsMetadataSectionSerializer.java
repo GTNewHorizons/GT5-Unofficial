@@ -14,8 +14,8 @@ import com.google.gson.JsonSerializationContext;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 
 @SideOnly(Side.CLIENT)
@@ -24,7 +24,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
     public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
         JsonDeserializationContext context) {
         // Default values
-        boolean enableGuiTint = GregTech_API.sColoredGUI;
+        boolean enableGuiTint = GregTechAPI.sColoredGUI;
         Map<String, String> hexGuiTintMap = new HashMap<>();
         Map<String, String> hexTextColorMap = new HashMap<>();
 
@@ -39,7 +39,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
                         entry.getValue()
                             .getAsString());
                 } else {
-                    GT_Mod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
+                    GTMod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
                 }
             }
         }
@@ -50,7 +50,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
                 .getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
 
             for (Dyes dye : Dyes.values()) {
-                hexGuiTintMap.put(dye.mName, GT_Util.toHexString(dye.getRGBA()));
+                hexGuiTintMap.put(dye.mName, GTUtil.toHexString(dye.getRGBA()));
             }
 
             for (String key : hexGuiTintMap.keySet()) {
@@ -59,7 +59,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
                         key,
                         JsonUtils.getJsonObjectStringFieldValueOrDefault(guiTints, key, hexGuiTintMap.get(key)));
                 } else {
-                    hexGuiTintMap.replace(key, GT_Util.toHexString(Dyes.dyeWhite.getRGBA()));
+                    hexGuiTintMap.replace(key, GTUtil.toHexString(Dyes.dyeWhite.getRGBA()));
                 }
             }
         }

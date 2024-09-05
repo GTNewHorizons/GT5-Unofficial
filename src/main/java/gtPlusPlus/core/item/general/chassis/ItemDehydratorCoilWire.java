@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class ItemDehydratorCoilWire extends Item {
@@ -56,7 +56,7 @@ public class ItemDehydratorCoilWire extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         return StatCollector
-            .translateToLocalFormatted("item.itemDehydratorCoilWire.name", GT_Values.VN[tItem.getItemDamage() + 4]);
+            .translateToLocalFormatted("item.itemDehydratorCoilWire.name", GTValues.VN[tItem.getItemDamage() + 4]);
     }
 
     /*

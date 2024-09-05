@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NW;
+import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.enums.GTValues.NW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Lock;
@@ -38,13 +38,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
-import gregtech.api.net.GT_Packet_TileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.net.GTPacketTileEntity;
+import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.CoverBehaviorBase;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -59,7 +59,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
-    private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
+    private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
     private boolean hasTimeStatisticsStarted;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
@@ -214,7 +214,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             | IConnectable.HAS_HARDENEDFOAM);
                     }
                     if (mTickTimer > 12 && oldConnections != mConnections)
-                        GregTech_API.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+                        GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
                 }
                 mMetaTileEntity.onPreTick(this, mTickTimer);
                 if (!hasValidMetaTileEntity()) return;
@@ -264,14 +264,14 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             }
         } catch (Throwable e) {
             e.printStackTrace();
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
         }
 
         if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
             mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1000000L)
+            if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1000000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
                 && mLagWarningCount++ < 10)
@@ -296,7 +296,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (mSendClientData) {
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
-                new GT_Packet_TileEntity(
+                new GTPacketTileEntity(
                     xCoord,
                     (short) yCoord,
                     zCoord,
@@ -438,7 +438,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 tList.add(
                     "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
                         + " Lag Spike Warnings (anything taking longer than "
-                        + GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
+                        + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
                         + "ms) on the Server.");
             }
             if (mMetaTileEntity != null) {
@@ -491,13 +491,13 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         markDirty();
         mInventoryChanged = true;
         if (canAccessData()) mMetaTileEntity
-            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GT_OreDictUnificator.setStack(true, aStack));
+            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GTOreDictUnificator.setStack(true, aStack));
     }
 
     @Override
     public String getInventoryName() {
         if (canAccessData()) return mMetaTileEntity.getInventoryName();
-        if (GregTech_API.METATILEENTITIES[mID] != null) return GregTech_API.METATILEENTITIES[mID].getInventoryName();
+        if (GregTechAPI.METATILEENTITIES[mID] != null) return GregTechAPI.METATILEENTITIES[mID].getInventoryName();
         return "";
     }
 
@@ -776,7 +776,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public ArrayList<ItemStack> getDrops() {
-        final ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
+        final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
 
         writeCoverNBT(tNBT, true);
@@ -799,7 +799,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
                 final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
-                    ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ)
+                    ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
             } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
@@ -810,19 +810,19 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
                 if (getColorization() >= 0
-                    && GT_Utility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
+                    && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                     mMetaTileEntity.markDirty();
                     tCurrentItem.func_150996_a(Items.bucket);
                     setColorization((byte) -1);
                     return true;
                 }
-                final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
+                final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
 
                     if (mMetaTileEntity.onWrenchRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
-                        GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                        GT_Utility.sendSoundToPlayers(
+                        GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
+                        GTUtility.sendSoundToPlayers(
                             worldObj,
                             SoundResource.IC2_TOOLS_WRENCH,
                             1.0F,
@@ -833,15 +833,15 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     }
                     return true;
                 }
-                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)) {
                     if (getCoverIDAtSide(side) == 0 && getCoverIDAtSide(tSide) != 0) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             setCoverDataAtSide(
                                 tSide,
                                 getCoverInfoAtSide(tSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F));
                             mMetaTileEntity.onScrewdriverRightClick(tSide, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            GT_Utility.sendSoundToPlayers(
+                            GTUtility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.IC2_TOOLS_WRENCH,
                                 1.0F,
@@ -851,13 +851,13 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                                 zCoord);
                         }
                     } else {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             setCoverDataAtSide(
                                 side,
                                 getCoverInfoAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            GT_Utility.sendSoundToPlayers(
+                            GTUtility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.IC2_TOOLS_WRENCH,
                                 1.0F,
@@ -870,21 +870,21 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     return true;
                 }
 
-                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)) {
                     return true;
                 }
 
-                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {
-                    if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
+                    if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                         if (mWorks) disableWorking();
                         else enableWorking();
                         mMetaTileEntity.markDirty();
-                        GT_Utility.sendChatToPlayer(
+                        GTUtility.sendChatToPlayer(
                             aPlayer,
-                            GT_Utility.trans("090", "Machine Processing: ")
-                                + (isAllowedToWork() ? GT_Utility.trans("088", "Enabled")
-                                    : GT_Utility.trans("087", "Disabled")));
-                        GT_Utility.sendSoundToPlayers(
+                            GTUtility.trans("090", "Machine Processing: ")
+                                + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
+                                    : GTUtility.trans("087", "Disabled")));
+                        GTUtility.sendSoundToPlayers(
                             worldObj,
                             SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
                             1.0F,
@@ -896,11 +896,11 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     return true;
                 }
 
-                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)) {
                     if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
-                        GT_Utility.sendSoundToPlayers(
+                        GTUtility.sendSoundToPlayers(
                             worldObj,
                             SoundResource.IC2_TOOLS_WRENCH,
                             1.0F,
@@ -913,11 +913,11 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     return true;
                 }
 
-                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
                     if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
-                        GT_Utility.sendSoundToPlayers(
+                        GTUtility.sendSoundToPlayers(
                             worldObj,
                             SoundResource.IC2_TOOLS_BATTERY_USE,
                             1.0F,
@@ -925,16 +925,16 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             xCoord,
                             yCoord,
                             zCoord);
-                    } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
+                    } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mMetaTileEntity.markDirty();
                         mStrongRedstone ^= tSide.flag;
-                        GT_Utility.sendChatToPlayer(
+                        GTUtility.sendChatToPlayer(
                             aPlayer,
-                            GT_Utility.trans("091", "Redstone Output at Side ") + tSide
-                                + GT_Utility.trans("092", " set to: ")
-                                + ((mStrongRedstone & tSide.flag) != 0 ? GT_Utility.trans("093", "Strong")
-                                    : GT_Utility.trans("094", "Weak")));
-                        GT_Utility.sendSoundToPlayers(
+                            GTUtility.trans("091", "Redstone Output at Side ") + tSide
+                                + GTUtility.trans("092", " set to: ")
+                                + ((mStrongRedstone & tSide.flag) != 0 ? GTUtility.trans("093", "Strong")
+                                    : GTUtility.trans("094", "Weak")));
+                        GTUtility.sendSoundToPlayers(
                             worldObj,
                             SoundResource.IC2_TOOLS_BATTERY_USE,
                             3.0F,
@@ -954,17 +954,17 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
 
                 if (coverInfo.getCoverID() == 0) {
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                        final GT_CoverBehaviorBase<?> coverBehavior = GregTech_API.getCoverBehaviorNew(tCurrentItem);
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
+                        final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
-                            && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
+                            && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
                             setCoverItemAtSide(coverSide, tCurrentItem);
                             coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, side);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            GT_Utility.sendSoundToPlayers(
+                            GTUtility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.IC2_TOOLS_WRENCH,
                                 1.0F,
@@ -976,9 +976,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         return true;
                     }
                 } else {
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            GT_Utility.sendSoundToPlayers(
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                            GTUtility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.RANDOM_BREAK,
                                 1.0F,
@@ -993,7 +993,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     }
                 }
             } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config or turn back.
-                side = (getCoverIDAtSide(side) == 0) ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ) : side;
+                side = (getCoverIDAtSide(side) == 0) ? GTUtility.determineWrenchingSide(side, aX, aY, aZ) : side;
                 final CoverInfo coverInfo = getCoverInfoAtSide(side);
                 return coverInfo.isValid() && coverInfo.onCoverShiftRightClick(aPlayer);
             }
@@ -1064,7 +1064,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         final CoverInfo coverInfo = getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide));
         if (canAccessData() && (coverInfo.letsItemsOut(-1) || coverInfo.letsItemsIn(-1)))
             return mMetaTileEntity.getAccessibleSlotsFromSide(ordinalSide);
-        return GT_Values.emptyIntArray;
+        return GTValues.emptyIntArray;
     }
 
     /**
@@ -1164,7 +1164,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public UUID getOwnerUuid() {
-        return GT_Utility.defaultUuid;
+        return GTUtility.defaultUuid;
     }
 
     @Override
@@ -1276,15 +1276,15 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return true;
+        if (GTUtility.isStackInvalid(aStack)) return true;
         if (aIndex < 0 || aIndex >= getSizeInventory()) return false;
         final ItemStack tStack = getStackInSlot(aIndex);
-        if (GT_Utility.isStackInvalid(tStack)) {
+        if (GTUtility.isStackInvalid(tStack)) {
             setInventorySlotContents(aIndex, aStack);
             return true;
         }
-        aStack = GT_OreDictUnificator.get(aStack);
-        if (GT_Utility.areStacksEqual(tStack, aStack)
+        aStack = GTOreDictUnificator.get(aStack);
+        if (GTUtility.areStacksEqual(tStack, aStack)
             && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             markDirty();
             tStack.stackSize += aStack.stackSize;
@@ -1295,7 +1295,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        return addStackToSlot(aIndex, GT_Utility.copyAmount(aAmount, aStack));
+        return addStackToSlot(aIndex, GTUtility.copyAmount(aAmount, aStack));
     }
 
     @Override

@@ -5,21 +5,21 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
-import com.elisis.gtnhlanth.common.beamline.IConnectsToBeamline;
-import com.elisis.gtnhlanth.common.hatch.TileHatchBeamlineConnector;
-import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.github.technus.tectech.util.TT_Utility;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.IConnectsToBeamline;
+import gtnhlanth.common.hatch.MTEHatchBeamlineConnector;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import tectech.util.TTUtility;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 
-public class MTEHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
+public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
 
     private static final String activeIconPath = "iconsets/OVERLAY_BO_ACTIVE";
     private static final String sideIconPath = "iconsets/OVERLAY_BO_SIDES";
@@ -31,7 +31,7 @@ public class MTEHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLineP
 
     public MTEHatchOutputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");
-        TT_Utility.setTier(tier, this);
+        TTUtility.setTier(tier, this);
     }
 
     public MTEHatchOutputBeamline(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -41,19 +41,19 @@ public class MTEHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLineP
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 activeIcon,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(connIcon) };
+            new GTRenderedTexture(connIcon) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 sideIcon,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(connIcon) };
+            new GTRenderedTexture(connIcon) };
     }
 
     @Override
@@ -72,7 +72,7 @@ public class MTEHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLineP
             ((MTEBeamlinePipe) meta).markUsed();
             return (IConnectsToBeamline) meta;
 
-        } else if (meta instanceof TileHatchInputBeamline && ((TileHatchInputBeamline) meta).canConnect(
+        } else if (meta instanceof MTEHatchInputBeamline && ((MTEHatchInputBeamline) meta).canConnect(
             base.getFrontFacing()
                 .getOpposite())) {
 
@@ -105,8 +105,8 @@ public class MTEHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLineP
                 return;
             }
 
-            if (((IConnectsToBeamline) nextMeta) instanceof TileHatchInputBeamline) {
-                ((TileHatchInputBeamline) nextMeta).setContents(q); // Reached another multi
+            if (((IConnectsToBeamline) nextMeta) instanceof MTEHatchInputBeamline) {
+                ((MTEHatchInputBeamline) nextMeta).setContents(q); // Reached another multi
                 break;
 
             } else if (((IConnectsToBeamline) nextMeta) instanceof MTEBeamlinePipe) { // Another pipe follows

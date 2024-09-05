@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 
 import codechicken.nei.NEIClientUtils;
-import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.items.MetaGeneratedItem;
 
 public class MetaItemDumper extends GregTechIDDumper {
 
-    private final GT_MetaGenerated_Item item;
+    private final MetaGeneratedItem item;
     private final String nameSuffix;
 
-    public MetaItemDumper(GT_MetaGenerated_Item item, String name) {
+    public MetaItemDumper(MetaGeneratedItem item, String name) {
         super(name);
         this.nameSuffix = name;
         this.item = item;

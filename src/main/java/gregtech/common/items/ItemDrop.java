@@ -7,8 +7,8 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.MagicBees;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -25,11 +25,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipeBuilder;
 
 public class ItemDrop extends Item {
 
@@ -110,53 +110,53 @@ public class ItemDrop extends Item {
         addProcessLV(
             tDrop,
             Materials.OilHeavy.getFluid(100L),
-            GT_ModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
+            GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
             3000,
             8);
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
             Materials.OilHeavy.getFluid(100L),
-            GT_ModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
+            GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.COOLANT);
         addProcessLV(
             tDrop,
             new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
             3000,
             8);
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
             new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.HOT_COOLANT);
         addProcessLV(
             tDrop,
             new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
             3000,
             8);
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
             new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.SNOW_QUEEN);
         addProcessMV(
             tDrop,
             Materials.FierySteel.getFluid(200L),
-            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
         tDrop = getStackForType(DropType.LAPIS);
         addProcessLV(
             tDrop,
             new FluidStack(FluidRegistry.getFluid("ic2coolant"), 200),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
             5000,
             1200,
             2);
@@ -164,20 +164,20 @@ public class ItemDrop extends Item {
             400,
             new ItemStack[] { tDrop },
             new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
             30);
         tDrop = getStackForType(DropType.HYDRA);
         addProcessMV(
             tDrop,
             Materials.FierySteel.getFluid(50L),
-            GT_ModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
+            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
             3000,
             8);
         tDrop = getStackForType(DropType.OXYGEN);
         addProcessLV(
             tDrop,
             new FluidStack(FluidRegistry.getFluid("liquidoxygen"), 100),
-            GT_ModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
+            GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             250,
             1200,
             8);
@@ -185,15 +185,15 @@ public class ItemDrop extends Item {
             400,
             new ItemStack[] { tDrop },
             new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
-            GT_ModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
+            GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);
         if (HardcoreEnderExpansion.isModLoaded())
-            addProcessHV(tDrop, new FluidStack(FluidRegistry.getFluid("endergoo"), 500), GT_Values.NI, 1000);
+            addProcessHV(tDrop, new FluidStack(FluidRegistry.getFluid("endergoo"), 500), GTValues.NI, 1000);
     }
 
     public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(tDrop)
             .itemOutputs(aOutput2)
             .outputChances(aChance)
@@ -205,7 +205,7 @@ public class ItemDrop extends Item {
 
     public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aDuration,
         int aEUt) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(tDrop)
             .itemOutputs(aOutput2)
             .outputChances(aChance)
@@ -216,7 +216,7 @@ public class ItemDrop extends Item {
     }
 
     public void addProcessMV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(tDrop)
             .itemOutputs(aOutput2)
             .outputChances(aChance)
@@ -227,9 +227,9 @@ public class ItemDrop extends Item {
     }
 
     public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
-        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
         recipeBuilder.itemInputs(tDrop);
-        if (aOutput2 != GT_Values.NI) {
+        if (aOutput2 != GTValues.NI) {
             recipeBuilder.itemOutputs(aOutput2)
                 .outputChances(aChance);
         }

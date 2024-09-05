@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.*;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
@@ -220,7 +220,7 @@ public class GT_StructureUtilityMuTE {
     public static class MuTEStructureCasing {
 
         private String registryName;
-        private int registryId = GT_Values.W;
+        private int registryId = GTValues.W;
         private final int defaultMeta;
         private final Integer[] validIds;
 
@@ -253,7 +253,7 @@ public class GT_StructureUtilityMuTE {
         public int getRegistryId() {
             // TODO: MuTE registry seems to somehow shift, probably due to NBT shenanigans. Lazy init circumvents this
             // but it should be properly fixed in the future
-            if (registryId == GT_Values.W) {
+            if (registryId == GTValues.W) {
                 MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
                 registryId = Block.getIdFromBlock(registry.getBlock());
             }

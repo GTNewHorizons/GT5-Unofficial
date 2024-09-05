@@ -9,7 +9,7 @@ import net.minecraftforge.common.config.Property;
 import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.FMLLog;
-import gtPlusPlus.preloader.Preloader_Logger;
+import gtPlusPlus.preloader.PreloaderLogger;
 
 public class AsmConfig {
 
@@ -130,11 +130,11 @@ public class AsmConfig {
                 config.save();
             }
 
-            Preloader_Logger.INFO("Gt Nbt Fix - Enabled: " + enableGtNbtFix);
-            Preloader_Logger.INFO("Gt Tooltip Fix - Enabled: " + enableGtTooltipFix);
-            Preloader_Logger.INFO("COFH Patch - Enabled: " + enableCofhPatch);
-            Preloader_Logger.INFO("Thaumcraft Aspect Safety Patch - Enabled: " + enableTcAspectSafety);
-            Preloader_Logger
+            PreloaderLogger.INFO("Gt Nbt Fix - Enabled: " + enableGtNbtFix);
+            PreloaderLogger.INFO("Gt Tooltip Fix - Enabled: " + enableGtTooltipFix);
+            PreloaderLogger.INFO("COFH Patch - Enabled: " + enableCofhPatch);
+            PreloaderLogger.INFO("Thaumcraft Aspect Safety Patch - Enabled: " + enableTcAspectSafety);
+            PreloaderLogger
                 .INFO("Fix bad usage of EntityLivingBase.setHealth Patch - Enabled: " + enabledFixEntitySetHealth);
 
         } catch (Exception var3) {

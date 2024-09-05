@@ -14,7 +14,7 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.parts.AEBasePart;
 import appeng.parts.p2p.PartP2PIC2Power;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 
 public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
 
@@ -96,8 +96,8 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
             fSide.setAccessible(true);
             return (ForgeDirection) fSide.get(this);
         } catch (Exception e) {
-            GT_Log.out.println("A fatal error occured at the P2P tunnel for GT electricity");
-            e.printStackTrace(GT_Log.out);
+            GTLog.out.println("A fatal error occured at the P2P tunnel for GT electricity");
+            e.printStackTrace(GTLog.out);
             throw new RuntimeException(e);
         }
     }

@@ -1,7 +1,7 @@
 package gtPlusPlus.core.handler.Recipes;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 
 public class LateRegistrationHandler {
@@ -14,7 +14,7 @@ public class LateRegistrationHandler {
     }
 
     private static void init() {
-        for (final ShapedRecipeObject item : COMPAT_HANDLER.AddRecipeQueue) {
+        for (final ShapedRecipeObject item : CompatHandler.AddRecipeQueue) {
             item.buildRecipe();
         }
         try {

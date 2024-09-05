@@ -1,6 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.enums.GT_Values.L;
+import static gregtech.api.enums.GTValues.L;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -12,13 +12,13 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -33,14 +33,14 @@ public class PrinterBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+    protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
         if (items[0].getItem() == Items.paper) {
             assert specialSlot != null;
             if (!ItemList.Tool_DataStick.isStackEqual(specialSlot, false, true)) return null;
             NBTTagCompound nbt = specialSlot.getTagCompound();
-            if (nbt == null || GT_Utility.isStringInvalid(nbt.getString("title"))
-                || GT_Utility.isStringInvalid(nbt.getString("author"))) return null;
+            if (nbt == null || GTUtility.isStringInvalid(nbt.getString("title"))
+                || GTUtility.isStringInvalid(nbt.getString("author"))) return null;
 
             recipe = recipe.copy();
             recipe.mCanBeBuffered = false;
@@ -67,7 +67,7 @@ public class PrinterBackend extends RecipeMapBackend {
             recipe = recipe.copy();
             recipe.mCanBeBuffered = false;
             recipe.mOutputs[0].setTagCompound(
-                GT_Utility.getNBTContainingString(
+                GTUtility.getNBTContainingString(
                     new NBTTagCompound(),
                     "GT.PunchCardData",
                     nbt.getString("GT.PunchCardData")));
@@ -77,7 +77,7 @@ public class PrinterBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+    protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length == 0 || items[0] == null || fluids.length == 0 || fluids[0] == null) {
             return null;
         }
@@ -88,7 +88,7 @@ public class PrinterBackend extends RecipeMapBackend {
         }
         if (dye == null) return null;
 
-        ItemStack batchRecolorOutput = GT_ModHandler.getAllRecipeOutput(
+        ItemStack batchRecolorOutput = GTModHandler.getAllRecipeOutput(
             null,
             items[0],
             items[0],
@@ -100,8 +100,8 @@ public class PrinterBackend extends RecipeMapBackend {
             items[0],
             items[0]);
         if (batchRecolorOutput != null) {
-            return GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(8, items[0]))
+            return GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(8, items[0]))
                 .itemOutputs(batchRecolorOutput)
                 .fluidInputs(new FluidStack(fluids[0].getFluid(), (int) L))
                 .duration(256)
@@ -112,11 +112,11 @@ public class PrinterBackend extends RecipeMapBackend {
                 .orElse(null);
         }
 
-        ItemStack singleRecolorOutput = GT_ModHandler
+        ItemStack singleRecolorOutput = GTModHandler
             .getAllRecipeOutput(null, items[0], ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1));
         if (singleRecolorOutput != null) {
-            return GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1, items[0]))
+            return GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, items[0]))
                 .itemOutputs(singleRecolorOutput)
                 .fluidInputs(new FluidStack(fluids[0].getFluid(), (int) L))
                 .duration(32)

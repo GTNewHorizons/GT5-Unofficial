@@ -15,12 +15,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.GregTechAPI;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.CoverBehaviorBase;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 
 public final class CoverInfo {
@@ -33,7 +33,7 @@ public final class CoverInfo {
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
     private int coverID = 0;
-    private GT_CoverBehaviorBase<?> coverBehavior;
+    private CoverBehaviorBase<?> coverBehavior;
     private ISerializableObject coverData;
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
@@ -43,13 +43,13 @@ public final class CoverInfo {
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
-        coverBehavior = GregTech_API.sNoBehavior;
+        coverBehavior = GregTechAPI.sNoBehavior;
     }
 
     public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
         coverSide = side;
         coverID = aID;
-        coverBehavior = GregTech_API.getCoverBehaviorNew(aID);
+        coverBehavior = GregTechAPI.getCoverBehaviorNew(aID);
         coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
         coveredTile = new WeakReference<>(aTile);
     }
@@ -57,7 +57,7 @@ public final class CoverInfo {
     public CoverInfo(ICoverable aTile, NBTTagCompound aNBT) {
         coverSide = ForgeDirection.getOrientation(aNBT.getByte(NBT_SIDE));
         coverID = aNBT.getInteger(NBT_ID);
-        coverBehavior = GregTech_API.getCoverBehaviorNew(coverID);
+        coverBehavior = GregTechAPI.getCoverBehaviorNew(coverID);
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
             : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
@@ -89,13 +89,13 @@ public final class CoverInfo {
         needsUpdate = aUpdate;
     }
 
-    public GT_CoverBehaviorBase<?> getCoverBehavior() {
+    public CoverBehaviorBase<?> getCoverBehavior() {
         return coverBehavior;
     }
 
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
-        return GregTech_API.sNoBehavior.createDataObject();
+        return GregTechAPI.sNoBehavior.createDataObject();
     }
 
     public boolean onCoverRemoval(boolean aForced) {
@@ -160,7 +160,7 @@ public final class CoverInfo {
     }
 
     public void updateCoverBehavior() {
-        coverBehavior = GregTech_API.getCoverBehaviorNew(coverID);
+        coverBehavior = GregTechAPI.getCoverBehaviorNew(coverID);
     }
 
     public void preDataChanged(int aCoverID, ISerializableObject aCoverData) {
@@ -176,7 +176,7 @@ public final class CoverInfo {
     }
 
     public ModularWindow createWindow(EntityPlayer player) {
-        final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
+        final CoverUIBuildContext buildContext = new CoverUIBuildContext(
             player,
             coverID,
             coverSide,
@@ -246,7 +246,7 @@ public final class CoverInfo {
     public void onCoverJackhammer(EntityPlayer aPlayer) {
         adjustTickRateMultiplier(aPlayer.isSneaking());
 
-        GT_Utility.sendChatToPlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
     }

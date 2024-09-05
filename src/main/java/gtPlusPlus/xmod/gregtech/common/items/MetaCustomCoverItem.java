@@ -16,17 +16,17 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_MultiTexture;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTMultiTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_ToggleVisual;
+import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
 public class MetaCustomCoverItem extends Item {
 
@@ -72,10 +72,10 @@ public class MetaCustomCoverItem extends Item {
             if (i > 0 && hide()) {
                 ItemUtils.hideItemFromNEI(thisStack);
             }
-            GregTech_API.registerCover(
+            GregTechAPI.registerCover(
                 thisStack,
-                new GT_MultiTexture(new ITexture[] { new GT_RenderedTexture(mTextures[i]) }),
-                new GTPP_Cover_ToggleVisual());
+                new GTMultiTexture(new ITexture[] { new GTRenderedTexture(mTextures[i]) }),
+                new CoverToggleVisual());
         }
     }
 

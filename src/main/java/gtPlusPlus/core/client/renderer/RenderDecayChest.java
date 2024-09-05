@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.model.ModelDecayChest;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 
 @SideOnly(Side.CLIENT)
@@ -71,7 +71,7 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
 
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
-            mChestModel.chestLid.rotateAngleX = -(f1 * CORE.PI / 2.0F);
+            mChestModel.chestLid.rotateAngleX = -(f1 * GTPPCore.PI / 2.0F);
             mChestModel.renderAll();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();

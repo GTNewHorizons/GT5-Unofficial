@@ -15,8 +15,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.logic.ComplexParallelProcessingLogic;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Waila;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -56,12 +56,12 @@ public abstract class ComplexParallelController<C extends ComplexParallelControl
                     + (i + 1)
                     + ": "
                     + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(
+                    + GTUtility.formatNumbers(
                         processing.getProgress(i) > 20 ? processing.getProgress(i) / 20 : processing.getProgress(i))
                     + EnumChatFormatting.RESET
                     + (processing.getProgress(i) > 20 ? " s / " : " ticks / ")
                     + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(
+                    + GTUtility.formatNumbers(
                         processing.getDuration(i) > 20 ? processing.getDuration(i) / 20 : processing.getDuration(i))
                     + EnumChatFormatting.RESET
                     + (processing.getDuration(i) > 20 ? " s" : " ticks"));
@@ -92,7 +92,7 @@ public abstract class ComplexParallelController<C extends ComplexParallelControl
             currentTip.add(
                 "Process " + (i + 1)
                     + ": "
-                    + GT_Waila
+                    + GTWaila
                         .getMachineProgressString(maxProgress > 0 && maxProgress >= progress, maxProgress, progress));
         }
     }

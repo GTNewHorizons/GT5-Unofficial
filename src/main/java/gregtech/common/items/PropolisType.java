@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GTLanguageManager;
 
 public enum PropolisType {
 
@@ -34,7 +34,7 @@ public enum PropolisType {
 
     public String getName() {
         // return "gt.comb."+this.name;
-        return GT_LanguageManager.addStringLocalization(
+        return GTLanguageManager.addStringLocalization(
             "propolis." + this.name,
             this.name.substring(0, 1)
                 .toUpperCase() + this.name.substring(1) + " Propolis");

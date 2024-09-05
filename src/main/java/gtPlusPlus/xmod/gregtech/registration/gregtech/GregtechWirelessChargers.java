@@ -14,7 +14,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEWirelessCharger;
 
 public class GregtechWirelessChargers {
 
@@ -25,7 +25,7 @@ public class GregtechWirelessChargers {
         Utils.registerEvent(new ChargingHelper());
 
         GregtechItemList.Charger_LV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_LV.ID,
                 "wificharger.01.tier.single",
                 "Wireless Charger MK I",
@@ -33,7 +33,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_MV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_MV.ID,
                 "wificharger.02.tier.single",
                 "Wireless Charger MK II",
@@ -41,7 +41,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_HV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_HV.ID,
                 "wificharger.03.tier.single",
                 "Wireless Charger MK III",
@@ -49,7 +49,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_EV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_EV.ID,
                 "wificharger.04.tier.single",
                 "Wireless Charger MK IV",
@@ -57,7 +57,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_IV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_IV.ID,
                 "wificharger.05.tier.single",
                 "Wireless Charger MK V",
@@ -65,7 +65,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_LuV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_LuV.ID,
                 "wificharger.06.tier.single",
                 "Wireless Charger MK VI",
@@ -73,7 +73,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_ZPM.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_ZPM.ID,
                 "wificharger.07.tier.single",
                 "Wireless Charger MK VII",
@@ -81,7 +81,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_UV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_UV.ID,
                 "wificharger.08.tier.single",
                 "Wireless Charger MK VIII",
@@ -89,7 +89,7 @@ public class GregtechWirelessChargers {
                 "Hopefully won't give you cancer.",
                 0).getStackForm(1L));
         GregtechItemList.Charger_UHV.set(
-            new GregtechMetaWirelessCharger(
+            new MTEWirelessCharger(
                 Charger_UHV.ID,
                 "wificharger.09.tier.single",
                 "Wireless Charger MK IX",
