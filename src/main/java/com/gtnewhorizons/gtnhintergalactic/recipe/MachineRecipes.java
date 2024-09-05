@@ -233,7 +233,8 @@ public class MachineRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 16),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
-                        Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(24000) },
+                        Materials.Naquadria.getMolten(1440),
+                        MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(24000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 2),
                 1 * MINUTE,
                 (int) TierEU.RECIPE_UEV);
@@ -250,9 +251,10 @@ public class MachineRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.stick, MaterialsUEVplus.TranscendentMetal, 4),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1 },
                         GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 16),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.ProtoHalkonite, 16), },
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
-                        Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(24000) },
+                        Materials.Naquadria.getMolten(1440),
+                        MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(24000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 3),
                 1 * MINUTE,
                 (int) TierEU.RECIPE_UIV);
@@ -271,7 +273,8 @@ public class MachineRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.Universium, 16),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
-                        Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(24000) },
+                        Materials.Naquadria.getMolten(1440),
+                        MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(24000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 4),
                 1 * MINUTE,
                 (int) TierEU.RECIPE_UIV);
@@ -311,7 +314,7 @@ public class MachineRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4),
                         metaStableOgScrew_64, },
                 new FluidStack[] { new FluidStack(solderUEV, 4608),
-                        MaterialsUEVplus.TranscendentMetal.getMolten(2304) },
+                        MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(2304) },
                 IGItems.SpaceElevatorModulePumpT2,
                 2 * MINUTE,
                 (int) TierEU.RECIPE_UIV);
@@ -325,7 +328,7 @@ public class MachineRecipes implements Runnable {
                         ItemList.Electric_Pump_UIV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 8),
                         metaStableOgScrew_64,
-                        GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.TranscendentMetal, 16))
+                        GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT2).fluidInputs(new FluidStack(solderUEV, 4608))
                 .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(assemblerRecipes);
 
@@ -395,7 +398,7 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10784),
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12091),
                         GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.TranscendentMetal, 8),
-                        GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.TranscendentMetal, 16),
+                        GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.ProtoHalkonite, 16),
                         ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16),
                         highComputationStationT4_32, new Object[] { OrePrefixes.circuit.get(Materials.Optical), 16 },
                         hypogenFrameBox_8, hypogenScrew_32 },
