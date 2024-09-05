@@ -148,7 +148,8 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
                 return GTUtility.safeInt((long) turbine.getOptimalGasEUt());
             }
 
-            actualOptimalFlow = GTUtility.safeInt((long) ((looseFit ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue));
+            actualOptimalFlow = GTUtility.safeInt(
+                (long) ((looseFit ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
@@ -182,7 +183,8 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, turbine.getOverflowEfficiency());
                 tEU *= efficiency;
             }
-            tEU = GTUtility.safeInt((long) (tEU * (looseFit ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
+            tEU = GTUtility
+                .safeInt((long) (tEU * (looseFit ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update

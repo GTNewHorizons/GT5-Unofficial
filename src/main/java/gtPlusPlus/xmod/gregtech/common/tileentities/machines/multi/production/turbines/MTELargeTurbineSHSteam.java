@@ -2,10 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
@@ -15,11 +12,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
@@ -78,7 +73,8 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
         // Variable required outside of loop for
         // multi-hatch scenarios.
-        this.realOptFlow = getSpeedMultiplier() * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
+        this.realOptFlow = getSpeedMultiplier()
+            * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
 
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
         // 125% of optimal flow.
@@ -149,9 +145,13 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
-            tEU = Math.max(1, MathUtils.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
+            tEU = Math.max(
+                1,
+                MathUtils.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         } else {
-            tEU = MathUtils.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
+            tEU = MathUtils
+                .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
 
         return tEU;

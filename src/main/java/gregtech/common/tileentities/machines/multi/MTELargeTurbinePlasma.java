@@ -139,8 +139,10 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = GTUtility
-                .safeInt((long) Math.ceil((double) (looseFit ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20 / (double) fuelValue));
+            actualOptimalFlow = GTUtility.safeInt(
+                (long) Math.ceil(
+                    (double) (looseFit ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20
+                        / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
@@ -188,7 +190,8 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, turbine.getOverflowEfficiency());
                 tEU = (int) (tEU * efficiency);
             }
-            tEU = GTUtility.safeInt((long) ((looseFit ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
+            tEU = GTUtility.safeInt(
+                (long) ((looseFit ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine

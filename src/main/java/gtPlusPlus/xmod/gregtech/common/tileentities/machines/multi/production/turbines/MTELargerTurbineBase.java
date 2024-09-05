@@ -54,7 +54,6 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -105,10 +104,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the XL " + getTurbineType() + " Turbine")
             .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
-            .addInfo("Right-click with screwdriver to enable Fast Mode, to run it even faster")
-            .addInfo("Optimal flow will increase or decrease accordingly on mode switch")
-            .addInfo("Fast Mode increases speed to 48x instead of 16x, with some penalties")
-            .addInfo("Maintenance problems and turbine damage happen 12x as often in Fast Mode");
+            .addInfo("Right-click with screwdriver to enable loose fit")
+            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Loose fit increases flow in exchange for efficiency");
         if (getTurbineType().contains("Steam")) {
             tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
         }
@@ -117,7 +115,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
         tt.addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo("Pollution is 3x higher in Fast Mode")
             .addSeparator()
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top Middle")
@@ -468,7 +465,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalOptimalFlow = 0;
 
                     aTotalBaseEff += turbine.getEfficiency();
-                    aTotalOptimalFlow += GTUtility.safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
+                    aTotalOptimalFlow += GTUtility
+                        .safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (aTotalOptimalFlow < 0) {

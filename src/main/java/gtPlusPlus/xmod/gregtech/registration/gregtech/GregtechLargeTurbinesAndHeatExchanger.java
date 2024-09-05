@@ -13,10 +13,10 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvHeatExchanger;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargeTurbineGas;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbinePlasma;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargeTurbineSCSteam;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargeTurbineSHSteam;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargeTurbineSteam;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbinePlasma;
 
 public class GregtechLargeTurbinesAndHeatExchanger {
 

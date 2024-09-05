@@ -130,7 +130,9 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 return GTUtility.safeInt((long) (turbine.getOptimalGasEUt()));
             }
 
-            actualOptimalFlow = GTUtility.safeInt((long) (getSpeedMultiplier() * ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue)));
+            actualOptimalFlow = GTUtility.safeInt(
+                (long) (getSpeedMultiplier()
+                    * ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue)));
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
@@ -155,11 +157,13 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
             tEU = GTUtility.safeInt((long) totalFlow * fuelValue);
 
             if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt((long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
+                tEU = GTUtility.safeInt(
+                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
             } else {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
-                tEU = GTUtility.safeInt((long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
+                tEU = GTUtility.safeInt(
+                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
             }
 
             return tEU;

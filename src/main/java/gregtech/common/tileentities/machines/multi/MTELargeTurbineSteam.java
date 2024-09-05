@@ -11,7 +11,6 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
