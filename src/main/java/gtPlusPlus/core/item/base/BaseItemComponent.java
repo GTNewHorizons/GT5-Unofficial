@@ -425,7 +425,8 @@ public class BaseItemComponent extends Item {
         SPRING("Spring", "@ Spring", "spring", OrePrefixes.spring),
         SMALLSPRING("SmallSpring", "Small @ Spring", "springSmall", OrePrefixes.springSmall),
         FINEWIRE("FineWire", "Fine @ Wire", "wireFine", OrePrefixes.wireFine),
-        PLATEDENSE("PlateDense", "Dense @ Plate", "plateDense", OrePrefixes.plateDense),;
+        PLATEDENSE("PlateDense", "Dense @ Plate", "plateDense", OrePrefixes.plateDense),
+        PLATESUPERDENSE("PlateSuperDense", "Superdense @ Plate", "plateSuperdense", OrePrefixes.plateSuperdense);
 
         private final String COMPONENT_NAME;
         private final String DISPLAY_NAME;
