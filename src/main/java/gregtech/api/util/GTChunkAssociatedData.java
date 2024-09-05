@@ -114,7 +114,7 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
         this.version = version;
         this.saveDefaults = saveDefaults;
         if (instances.putIfAbsent(aId, this) != null)
-            throw new IllegalArgumentException("Duplicate GT_ChunkAssociatedData: " + aId);
+            throw new IllegalArgumentException("Duplicate GTChunkAssociatedData: " + aId);
     }
 
     private ChunkCoordIntPair getRegionID(int aChunkX, int aChunkZ) {
