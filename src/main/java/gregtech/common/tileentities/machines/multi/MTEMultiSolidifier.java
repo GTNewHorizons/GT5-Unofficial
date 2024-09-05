@@ -260,11 +260,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo("Controller Block for the Fluid Shaper 2024")
+            .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
             .addInfo("Has 4 parallels by default")
             .addInfo("Gains an additional 10 parallels per width expansion")
-            .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
+            .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addInfo(
                 AuthorOmdaCZ + "with help of "
                     + AuthorFourIsTheNumber
@@ -390,7 +390,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         casingTier = -1;
         pipeCasingTier = -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (mWidth < (2 * (mTier + 1))) {
+            while (mWidth < (6)) {
                 if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0)
                     && checkPiece(MS_LEFT_MID, (2 * (mWidth + 1)) + 3, 4, 0)) {
                     mWidth++;
@@ -405,6 +405,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             return false;
         } else casingAmount = 0;
         machineTier = Math.min(pipeCasingTier, casingTier);
+        if (mWidth > (2 * (machineTier + 1)))
+        {
+            return false;
+        }
         if (casingTier > -1) {
             updateHatchTextures(casingIndices.get(casingTier));
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
