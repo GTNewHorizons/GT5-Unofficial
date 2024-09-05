@@ -45,7 +45,7 @@ public class CoverOverflow extends CoverBehavior {
     }
 
     public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int amountLimit,
-                             ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
 
         if (amountLimit == 0) return amountLimit;
 
