@@ -12,6 +12,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -40,7 +43,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 
 public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> implements ISurvivalConstructable {
@@ -52,6 +54,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private int xDrill, yDrill, zDrill;
     private int xStart, yStart, zStart;
     private boolean isStartInitialized = false;
+    private boolean shouldMine = false;
+    ArrayList<ItemStack> res = new ArrayList<ItemStack>();
 
     @Override
     public IStructureDefinition<MTEMeteorMiner> getStructureDefinition() {
@@ -258,15 +262,13 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      */
     private void setStartCoords() {
         xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
-        zStart = -3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
-        yStart = 48 * getExtendedFacing().getRelativeBackInWorld().offsetY + getBaseMetaTileEntity().getYCoord();
-        this.xDrill = this.xStart;
+        zStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+        yStart = 48 + getBaseMetaTileEntity().getYCoord();
+        this.xDrill = this.xStart - RADIUS;
         this.yDrill = this.yStart;
-        this.zDrill = this.zStart;
+        this.zDrill = this.zStart - RADIUS;
         this.isStartInitialized = true;
-        for (int i = 0; i < 100; i++) {
-            Logger.INFO("TEST");
-        }
+        this.shouldMine = true;
     }
 
     @Override
@@ -280,19 +282,49 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         if (!isStartInitialized) {
             this.setStartCoords();
         }
-
-        return SimpleCheckRecipeResult.ofSuccess("Mining...");
+        if (shouldMine) {
+            this.startMining(this.xDrill, this.zDrill);
+            mOutputItems = res.toArray(new ItemStack[0]);
+            this.moveToNextColumn();
+        } else {
+            this.isStartInitialized = false;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailure("drill_exhausted");
+        }
+        return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
     }
 
-    private boolean startMining() {
-        for (int x = -RADIUS; x <= RADIUS; x++) {
-            for (int z = -RADIUS; z <= RADIUS; z++) {
-                for (int y = -RADIUS; y <= RADIUS; y++) {
-
-                }
+    /*
+     * TODO
+     * Drop blocks instead of ores
+     * Redstone compatibility
+     * Restart Button
+     */
+    private void startMining(int currentX, int currentZ) {
+        for (int y = -RADIUS; y <= RADIUS; y++) {
+            System.out // DEBUG
+                .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (this.yStart + y) + "\nZ: " + (currentZ));
+            if (!getBaseMetaTileEntity().getWorld()
+                .isAirBlock(currentX, this.yStart + y, currentZ)) {
+                Block target = getBaseMetaTileEntity().getWorld()
+                    .getBlock(currentX, this.yStart + y, currentZ);
+                res.add(
+                    new ItemStack(target, 1, getBaseMetaTileEntity().getMetaID(currentX, this.yStart + y, currentZ)));
+                getBaseMetaTileEntity().getWorld()
+                    .setBlockToAir(currentX, this.yStart + y, currentZ);
             }
         }
-        return true;
+    }
+
+    private void moveToNextColumn() {
+        if (this.xDrill <= this.xStart + RADIUS) {
+            this.xDrill++;
+        } else if (this.zDrill <= this.zStart + RADIUS) {
+            this.xDrill = this.xStart - RADIUS;
+            this.zDrill++;
+        } else {
+            this.shouldMine = false;
+        }
     }
 
     protected void setElectricityStats() {
@@ -301,6 +333,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -3 * (1 << (tier << 1));
         this.mMaxProgresstime = calculateMaxProgressTime(tier);
+    }
+
+    private void reset() {
+        this.isStartInitialized = false;
     }
 
     private int calculateMaxProgressTime(int tier) {
