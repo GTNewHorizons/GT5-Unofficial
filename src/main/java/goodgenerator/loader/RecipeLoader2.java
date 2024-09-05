@@ -648,12 +648,12 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UIV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                     GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
-                    Materials.Lubricant.getFluid(46080))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T9.get(1))
                 .eut(TierEU.RECIPE_UMV)
                 .duration(50 * SECONDS)
@@ -669,13 +669,13 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UMV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 10))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
                     MaterialsUEVplus.TranscendentMetal.getMolten(1440),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
-                    Materials.Lubricant.getFluid(46080))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T10.get(1))
                 .eut(TierEU.RECIPE_UXV)
                 .duration(50 * SECONDS)
@@ -1809,6 +1809,15 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(36))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .addTo(fusionRecipes);
+
+        // Mk5 recipe
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Copper.getPlasma(288), WerkstoffLoader.Oganesson.getFluidOrGas(500))
+            .fluidOutputs(GGMaterial.metastableOganesson.getMolten(288))
+            .eut(TierEU.RECIPE_UEV)
+            .duration(5 * SECONDS)
             .metadata(FUSION_THRESHOLD, 1_000_000_000)
             .addTo(fusionRecipes);
 
