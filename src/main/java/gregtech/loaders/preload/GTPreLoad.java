@@ -262,7 +262,7 @@ public class GTPreLoad {
                                     null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
                                     "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
                                     "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
-                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre" };
+                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre", "plateSuperdense" };
                                 if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
