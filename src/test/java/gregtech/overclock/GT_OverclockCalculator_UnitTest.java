@@ -649,10 +649,29 @@ class GT_OverclockCalculator_UnitTest {
 
         assertEquals(Math.pow(2, 10) / 64, (int) (1 / calculator.calculateDurationUnderOneTick()));
 
-        calculator.calculate();
+        calculator.setCurrentParallel((int) (1 / calculator.calculateDurationUnderOneTick()))
+            .calculate();
 
         assertEquals(5 + 5, calculator.getPerformedOverclocks());
         assertEquals((int) (VP[1] * Math.pow(4, 5) * 4.3 * 4.6 * 4.9 * 5.2 * 5.5), calculator.getConsumption());
+    }
+
+    @Test
+    void stopsCorrectlyWhenOneTickingWithCustomEutIncreasePerOCSupplier() {
+        Function<Integer, Double> laserOC = overclockCount -> overclockCount <= 5 ? 4
+            : (4 + 0.3 * (overclockCount - 5));
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
+            .setEUt(V[6])
+            .setAmperageOC(true)
+            .setAmperage(4000)
+            .setDuration(64)
+            .setEutIncreasePerOCSupplier(laserOC);
+
+        calculator.setCurrentParallel(1)
+            .calculate();
+
+        assertEquals(6, calculator.getPerformedOverclocks());
+        assertEquals((int) (VP[1] * Math.pow(4, 5) * 4.3), calculator.getConsumption());
     }
 
     @Test
