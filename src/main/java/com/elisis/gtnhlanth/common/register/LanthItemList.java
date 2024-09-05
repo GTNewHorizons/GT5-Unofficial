@@ -6,23 +6,23 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.elisis.gtnhlanth.common.beamline.MTEBeamlinePipe;
+import com.elisis.gtnhlanth.common.beamline.TileBeamline;
 import com.elisis.gtnhlanth.common.block.AntennaCasing;
 import com.elisis.gtnhlanth.common.block.Casing;
 import com.elisis.gtnhlanth.common.block.ShieldedAccGlass;
 import com.elisis.gtnhlanth.common.hatch.TileBusInputFocus;
 import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.elisis.gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.item.LanthItem;
 import com.elisis.gtnhlanth.common.item.MaskList;
 import com.elisis.gtnhlanth.common.item.ParticleItem;
 import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
 import com.elisis.gtnhlanth.common.tileentity.Digester;
 import com.elisis.gtnhlanth.common.tileentity.DissolutionTank;
-import com.elisis.gtnhlanth.common.tileentity.MTELINAC;
-import com.elisis.gtnhlanth.common.tileentity.MTESourceChamber;
-import com.elisis.gtnhlanth.common.tileentity.MTESynchrotron;
-import com.elisis.gtnhlanth.common.tileentity.MTETargetChamber;
+import com.elisis.gtnhlanth.common.tileentity.LINAC;
+import com.elisis.gtnhlanth.common.tileentity.SourceChamber;
+import com.elisis.gtnhlanth.common.tileentity.Synchrotron;
+import com.elisis.gtnhlanth.common.tileentity.TargetChamber;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_LanguageManager;
@@ -90,13 +90,13 @@ public final class LanthItemList {
         DIGESTER = new Digester(10500, "Digester", "Digester").getStackForm(1L);
         DISSOLUTION_TANK = new DissolutionTank(10501, "Dissolution Tank", "Dissolution Tank").getStackForm(1L);
 
-        BEAMLINE_PIPE = new MTEBeamlinePipe(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
+        BEAMLINE_PIPE = new TileBeamline(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
         LUV_BEAMLINE_INPUT_HATCH = new TileHatchInputBeamline(
             10503,
             "LuV Beamline Input Hatch",
             "LuV Beamline Input Hatch",
             6).getStackForm(1L);
-        LUV_BEAMLINE_OUTPUT_HATCH = new MTEHatchOutputBeamline(
+        LUV_BEAMLINE_OUTPUT_HATCH = new TileHatchOutputBeamline(
             10504,
             "LuV Beamline Output Hatch",
             "LuV Beamline Output Hatch",
@@ -104,13 +104,13 @@ public final class LanthItemList {
 
         BEAMLINE_FOCUS_INPUT_BUS = new TileBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
 
-        LINAC = new MTELINAC(10505, "Linear Accelerator", "Linear Accelerator").getStackForm(1L);
+        LINAC = new LINAC(10505, "Linear Accelerator", "Linear Accelerator").getStackForm(1L);
 
-        SOURCE_CHAMBER = new MTESourceChamber(10506, "Source Chamber", "Source Chamber").getStackForm(1L);
+        SOURCE_CHAMBER = new SourceChamber(10506, "Source Chamber", "Source Chamber").getStackForm(1L);
 
-        SYNCHROTRON = new MTESynchrotron(10507, "Synchrotron", "Synchrotron").getStackForm(1L);
+        SYNCHROTRON = new Synchrotron(10507, "Synchrotron", "Synchrotron").getStackForm(1L);
 
-        TARGET_CHAMBER = new MTETargetChamber(10508, "Target Chamber", "Target Chamber").getStackForm(1L);
+        TARGET_CHAMBER = new TargetChamber(10508, "Target Chamber", "Target Chamber").getStackForm(1L);
     }
 
     public static void registerTypical() {

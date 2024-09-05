@@ -25,7 +25,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.common.GT_Client;
 import gregtech.common.render.GT_TextureBuilder;
 
-public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
+public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline {
 
     private static Textures.BlockIcons.CustomIcon pipe;
 
@@ -33,11 +33,11 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
 
     private boolean active;
 
-    public MTEBeamlinePipe(int id, String name, String nameRegional) {
+    public TileBeamline(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0);
     }
 
-    public MTEBeamlinePipe(String name) {
+    public TileBeamline(String name) {
         super(name, 0);
     }
 
@@ -82,7 +82,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new MTEBeamlinePipe(mName);
+        return new TileBeamline(mName);
     }
 
     @Override

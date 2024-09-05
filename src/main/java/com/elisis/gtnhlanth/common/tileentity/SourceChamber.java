@@ -26,7 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
-import com.elisis.gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.RecipeSC;
@@ -49,12 +49,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
-public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTESourceChamber>
+public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<SourceChamber>
     implements ISurvivalConstructable {
 
-    private static final IStructureDefinition<MTESourceChamber> STRUCTURE_DEFINITION;
+    private static final IStructureDefinition<SourceChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14);
 
@@ -64,7 +64,7 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     private float outputFocus;
 
     static {
-        STRUCTURE_DEFINITION = StructureDefinition.<MTESourceChamber>builder()
+        STRUCTURE_DEFINITION = StructureDefinition.<SourceChamber>builder()
             .addShape(
                 "sc",
                 new String[][] { { "ccccc", "ckkkc", "ckikc", "ckkkc", "dd~dd" },
@@ -76,26 +76,26 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
             .addElement('e', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement(
                 'b',
-                buildHatchAdder(MTESourceChamber.class).hatchClass(MTEHatchOutputBeamline.class)
+                buildHatchAdder(SourceChamber.class).hatchClass(TileHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
                     .dot(4)
-                    .adder(MTESourceChamber::addBeamLineOutputHatch)
+                    .adder(SourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
-                buildHatchAdder(MTESourceChamber.class).atLeast(InputBus)
+                buildHatchAdder(SourceChamber.class).atLeast(InputBus)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .build())
             .addElement(
                 'o',
-                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
+                buildHatchAdder(SourceChamber.class).atLeast(OutputBus)
                     .casingIndex(CASING_INDEX)
                     .dot(2)
                     .build())
             .addElement(
                 'd',
-                buildHatchAdder(MTESourceChamber.class).atLeast(Maintenance, Energy)
+                buildHatchAdder(SourceChamber.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(3)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
@@ -103,11 +103,11 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
             .build();
     }
 
-    public MTESourceChamber(int id, String name, String nameRegional) {
+    public SourceChamber(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
-    public MTESourceChamber(String name) {
+    public SourceChamber(String name) {
         super(name);
     }
 
@@ -119,7 +119,7 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity te) {
-        return new MTESourceChamber(this.mName);
+        return new SourceChamber(this.mName);
     }
 
     @Override
@@ -153,8 +153,8 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
 
         if (mte == null) return false;
 
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
+        if (mte instanceof TileHatchOutputBeamline) {
+            return this.mOutputBeamline.add((TileHatchOutputBeamline) mte);
         }
 
         return false;
@@ -238,7 +238,7 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
 
-            for (MTEHatchOutputBeamline o : mOutputBeamline) {
+            for (TileHatchOutputBeamline o : mOutputBeamline) {
 
                 o.q = packet;
             }
@@ -345,7 +345,7 @@ public class MTESourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<M
     }
 
     @Override
-    public IStructureDefinition<MTESourceChamber> getStructureDefinition() {
+    public IStructureDefinition<SourceChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
