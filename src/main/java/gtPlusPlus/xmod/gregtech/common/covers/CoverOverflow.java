@@ -13,6 +13,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluid;
@@ -44,7 +45,7 @@ public class CoverOverflow extends CoverBehavior {
         for (FluidStack fluid : fluids) doOverflowThing(fluid, amountLimit);
     }
 
-    public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int amountLimit,
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int amountLimit,
         ICoverable aTileEntity, long aTimer) {
 
         if (amountLimit == 0) return amountLimit;
@@ -53,7 +54,10 @@ public class CoverOverflow extends CoverBehavior {
             IMetaTileEntity iMetaTileEntity = baseMetaTileEntity.getMetaTileEntity();
             if (iMetaTileEntity instanceof MTEBasicTank mteBasicTank)
                 mteBasicTank.setDrainableStack(doOverflowThing(mteBasicTank.getDrainableStack(), amountLimit));
-            else if (iMetaTileEntity instanceof MTEFluid mteFluid) doOverflowThings(mteFluid.mFluids, amountLimit);
+        } else if (aTileEntity instanceof BaseMetaPipeEntity baseMetaPipeEntity) {
+            IMetaTileEntity iMetaTileEntity = baseMetaPipeEntity.getMetaTileEntity();
+            if (iMetaTileEntity instanceof MTEFluid mteFluid && mteFluid.isConnectedAtSide(side))
+                doOverflowThings(mteFluid.mFluids, amountLimit);
         }
 
         return amountLimit;
