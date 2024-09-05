@@ -301,8 +301,6 @@ public class ComponentAssemblyLineRecipeLoader {
             if (strippedOreDict.contains("PTMEG")) return FluidRegistry.getFluidStack(
                 "molten.silicone",
                 (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
-            if (strippedOreDict.contains("PTMEG")) return FluidRegistry
-                .getFluidStack("molten.silicone", (int) (orePrefix.mMaterialAmount / (M / 144)) * input.stackSize);
             return FluidRegistry.getFluidStack(
                 "molten." + strippedOreDict.toLowerCase(),
                 (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
