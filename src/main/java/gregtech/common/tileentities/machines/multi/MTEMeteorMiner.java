@@ -12,8 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import gtPlusPlus.api.objects.Logger;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,6 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 
 public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> implements ISurvivalConstructable {
@@ -258,43 +257,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      * 
      */
     private void setStartCoords() {
-        this.yStart = this.getBaseMetaTileEntity()
-            .getYCoord() + 48; // Controller + 16 (end of multi) + 32 (end of multi to meteor center)
-        ForgeDirection facing = this.getBaseMetaTileEntity()
-            .getFrontFacing();
-        try {
-            switch (facing) {
-                case EAST:
-                    this.xStart = this.getBaseMetaTileEntity()
-                        .getXCoord() - 3;
-                    this.zStart = this.getBaseMetaTileEntity()
-                        .getZCoord();
-                case NORTH:
-                    this.xStart = this.getBaseMetaTileEntity()
-                        .getXCoord();
-                    this.zStart = this.getBaseMetaTileEntity()
-                        .getZCoord() + 3;
-                case SOUTH:
-                    this.xStart = this.getBaseMetaTileEntity()
-                        .getXCoord();
-                    this.zStart = this.getBaseMetaTileEntity()
-                        .getZCoord() - 3;
-                case WEST:
-                    this.xStart = this.getBaseMetaTileEntity()
-                        .getXCoord() + 3;
-                    this.zStart = this.getBaseMetaTileEntity()
-                        .getZCoord();
-                default:
-                    throw new IllegalStateException("Error in facing logic");
-            }
-        } finally {
-            this.xDrill = this.xStart;
-            this.yDrill = this.yStart;
-            this.zDrill = this.zStart;
-            this.isStartInitialized = true;
-            for (int i = 0; i < 100; i++) {
-                Logger.INFO("IT WORKED");
-            }
+        xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
+        zStart = -3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+        yStart = 48 * getExtendedFacing().getRelativeBackInWorld().offsetY + getBaseMetaTileEntity().getYCoord();
+        this.xDrill = this.xStart;
+        this.yDrill = this.yStart;
+        this.zDrill = this.zStart;
+        this.isStartInitialized = true;
+        for (int i = 0; i < 100; i++) {
+            Logger.INFO("TEST");
         }
     }
 
@@ -309,7 +280,19 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         if (!isStartInitialized) {
             this.setStartCoords();
         }
+
         return SimpleCheckRecipeResult.ofSuccess("Mining...");
+    }
+
+    private boolean startMining() {
+        for (int x = -RADIUS; x <= RADIUS; x++) {
+            for (int z = -RADIUS; z <= RADIUS; z++) {
+                for (int y = -RADIUS; y <= RADIUS; y++) {
+
+                }
+            }
+        }
+        return true;
     }
 
     protected void setElectricityStats() {
