@@ -1,5 +1,6 @@
 package detrav.proxies;
 
+import detrav.enums.Textures01;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -11,7 +12,10 @@ import detrav.gui.DetravScannerGUI;
  */
 public class ClientProxy extends CommonProxy {
 
-    public ClientProxy() {}
+    public ClientProxy() {
+        // if removed, textures are somehow not loaded in the game.
+        int test = Textures01.mTextures.length;
+    }
 
     @Override
     public void onPostLoad() {
