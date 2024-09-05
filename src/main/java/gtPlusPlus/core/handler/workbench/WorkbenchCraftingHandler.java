@@ -47,18 +47,16 @@ public class WorkbenchCraftingHandler {
             for (final String s2 : as) {
                 k++;
                 j = s2.length();
-                s = (new StringBuilder()).append(s)
-                    .append(s2)
-                    .toString();
+                s = s +
+                    s2;
             }
         } else {
             while (par2ArrayOfObj[i] instanceof String) {
                 final String s1 = (String) par2ArrayOfObj[i++];
                 k++;
                 j = s1.length();
-                s = (new StringBuilder()).append(s)
-                    .append(s1)
-                    .toString();
+                s = s +
+                    s1;
             }
         }
 

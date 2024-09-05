@@ -10,14 +10,14 @@ public abstract class GTWaila {
 
         if (!isActive) return "Idle";
 
-        StringBuilder ret = new StringBuilder("In progress: ")
-            .append(String.format("%,.2f", (double) progresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) maxProgresstime / 20))
-            .append("s (")
-            .append(GTUtility.formatNumbers((Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)))
-            .append("%)");
+        String ret = "In progress: " +
+            String.format("%,.2f", (double) progresstime / 20) +
+            "s / " +
+            String.format("%,.2f", (double) maxProgresstime / 20) +
+            "s (" +
+            GTUtility.formatNumbers((Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)) +
+            "%)";
 
-        return ret.toString();
+        return ret;
     }
 }
