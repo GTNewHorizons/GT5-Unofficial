@@ -262,7 +262,7 @@ public class GTPreLoad {
                                     null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
                                     "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
                                     "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
-                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre", "plateSuperdense" };
+                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre" };
                                 if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
@@ -270,7 +270,7 @@ public class GTPreLoad {
                                     "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine", "gearGtSmall", "rotor",
                                     "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped",
                                     "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
-                                if (mIt == 3) tags = new String[] { "itemCasing", "nanite" };
+                                if (mIt == 3) tags = new String[] { "itemCasing", "nanite", "plateSuperdense" };
                                 if (tags.length > prefix) tag = tags[prefix];
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
                                     tag += GregTechAPI.sGeneratedMaterials[material].mName;
