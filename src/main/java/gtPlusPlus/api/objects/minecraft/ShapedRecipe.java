@@ -67,7 +67,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                 Object[] mVarags2 = null;
                 Logger.RECIPE("Generating Shaped Crafting Recipe for " + aOutput.getDisplayName());
 
-                if (aInputs.length < 9 || aInputs.length > 9) {
+                if (aInputs.length != 9) {
                     Logger.RECIPE(
                         "[Fix] Recipe for " + aOutput.getDisplayName()
                             + " has incorrect number of inputs. Size: "
