@@ -33,7 +33,7 @@ public class GTPacketMultiTileEntity extends GTPacketNew {
         Set<PacketData<MultiTileEntityProcess>> set = data.stream()
             .sorted()
             .collect(
-                HashSet<PacketData<MultiTileEntityProcess>>::new,
+                HashSet::new,
                 HashSet<PacketData<MultiTileEntityProcess>>::add,
                 HashSet<PacketData<MultiTileEntityProcess>>::addAll);
         clearData();
@@ -119,7 +119,7 @@ public class GTPacketMultiTileEntity extends GTPacketNew {
         Set<PacketData<MultiTileEntityProcess>> set = packet.data.stream()
             .sorted()
             .collect(
-                HashSet<PacketData<MultiTileEntityProcess>>::new,
+                HashSet::new,
                 HashSet<PacketData<MultiTileEntityProcess>>::add,
                 HashSet<PacketData<MultiTileEntityProcess>>::addAll);
         packet.clearData();
