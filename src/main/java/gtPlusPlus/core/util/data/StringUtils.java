@@ -105,7 +105,7 @@ public class StringUtils {
 
     /**
      * Is this a special regex character for delimination? (.$|()[]{}^?*+\\)
-     * 
+     *
      * @param aChar - The char to test
      * @return - Is this a special character?
      */
@@ -146,7 +146,7 @@ public class StringUtils {
 
         Logger.INFO("Splitting " + aInput);
         String[] aSplit = aInput.split(aDelim);
-        Logger.INFO("Split into " + aSplit == null ? "" + 0 : aSplit.length + " parts.");
+        Logger.INFO("Split into " + aSplit.length + " parts.");
         if (aSplit == null || aSplit.length == 0) {
             return aInput;
         } else {
