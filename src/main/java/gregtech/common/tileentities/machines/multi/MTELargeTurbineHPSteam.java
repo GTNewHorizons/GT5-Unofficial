@@ -195,17 +195,6 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
-                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
-        }
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return (looseFit && XSTR_INSTANCE.nextInt(4) == 0) ? 0 : 1;
     }

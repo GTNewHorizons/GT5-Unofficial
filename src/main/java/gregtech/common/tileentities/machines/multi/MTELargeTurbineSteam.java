@@ -32,7 +32,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     private int excessWater;
     private boolean achievement = false;
-    private boolean looseFit = false;
 
     public MTELargeTurbineSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -201,17 +200,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         }
 
         return efficiency;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
-                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
-        }
     }
 
     @Override

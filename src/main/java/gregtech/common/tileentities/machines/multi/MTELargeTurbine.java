@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -451,6 +452,16 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     public boolean hasTurbine() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isClientSide() ? mHasTurbine
             : this.getMaxEfficiency(mInventory[1]) > 0;
+    }
+
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+            looseFit ^= true;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
+                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
+        }
     }
 
     @Override

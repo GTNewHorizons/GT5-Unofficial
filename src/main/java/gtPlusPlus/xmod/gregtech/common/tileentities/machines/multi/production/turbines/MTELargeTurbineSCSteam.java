@@ -142,28 +142,6 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        // Using a screwdriver to change modes should allow for any combination of Slow/Fast and Tight/Loose Mode
-        // Whenever there's a mode switch, there will be two messages on the player chat
-        // The two messages specify which two modes the turbine is on after the change
-        // (Tight/Loose changes on every action, Slow/Fast changes every other action, all pairs are cycled this way)
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                looseFit ? "Fitting is Loose (Higher Flow)" : "Fitting is Tight (Higher Efficiency)");
-        }
-
-        if (looseFit) {
-            super.onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
-        } else if (mFastMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
-        }
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return (looseFit && GTPPCore.RANDOM.nextInt(4) == 0) ? 0 : 1;
     }

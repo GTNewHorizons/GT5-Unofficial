@@ -68,7 +68,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
-    protected boolean mFastMode = false;
+    private boolean looseFit = false;
     protected double mufflerReduction = 1;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
@@ -687,33 +687,28 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public long maxAmperesOut() {
-        // This should not be a hard limit, due to TecTech dynamos
-        if (mFastMode) {
-            return 64;
-        } else {
-            return 16;
-        }
+        return 16;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mFastMode", mFastMode);
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("turbineFitting", looseFit);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mFastMode = aNBT.getBoolean("mFastMode");
         super.loadNBTData(aNBT);
+        looseFit = aNBT.getBoolean("turbineFitting");
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mFastMode = !mFastMode;
-        if (mFastMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+            looseFit ^= true;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         }
     }
 
@@ -855,19 +850,19 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     public int getSpeedMultiplier() {
-        return mFastMode ? 48 : 16;
+        return 16;
     }
 
     public int getMaintenanceThreshold() {
-        return mFastMode ? 12 : 1;
+        return 1;
     }
 
     public int getPollutionMultiplier() {
-        return mFastMode ? 3 : 1;
+        return 1;
     }
 
     public int getTurbineDamageMultiplier() {
-        return mFastMode ? 3 : 1;
+        return 1;
     }
 
     @Override

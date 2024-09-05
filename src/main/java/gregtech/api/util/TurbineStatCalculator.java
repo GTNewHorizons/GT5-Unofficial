@@ -53,8 +53,8 @@ public class TurbineStatCalculator {
     }
 
     public float getLooseEfficiency() {
-        // 0.75x the base efficiency
-        return (float) (Math.round(getEfficiency() * 75.0f) * 0.01);
+        // 0.85x - 0.3, where x is the base efficiency 
+        return (float) (-0.2f + Math.round(getEfficiency() * 85.0f) * 0.01);
     }
 
     public float getLooseSteamEfficiency() {
@@ -62,11 +62,11 @@ public class TurbineStatCalculator {
     }
 
     public float getLooseGasEfficiency() {
-        return getLooseEfficiency();
+        return getLooseEfficiency() * 0.95f;
     }
 
     public float getLoosePlasmaEfficiency() {
-        return getLooseEfficiency();
+        return getLooseEfficiency() * 0.9f;
     }
 
     // Base optimal flows
@@ -91,18 +91,18 @@ public class TurbineStatCalculator {
     // Loose optimal flows
 
     public float getOptimalLooseSteamFlow() {
-        // 1.1^((Efficiency - 0.8) * 20)
-        return getOptimalSteamFlow() * (float) Math.pow(1.1f, ((getEfficiency() - 0.8f)) * 20f);
+        // 3 * 1.1^((Efficiency - 0.8) * 20)
+        return 3.0f * getOptimalSteamFlow() * (float) Math.pow(1.1f, ((getEfficiency() - 0.8f)) * 20f);
     }
 
     public float getOptimalLooseGasFlow() {
-        // 1.05^((Efficiency - 0.8) * 20)
-        return getOptimalGasFlow() * (float) Math.pow(1.05f, ((getEfficiency() - 0.8f)) * 20f);
+        // 2 * 1.05^((Efficiency - 0.8) * 20)
+        return 2.0f * getOptimalGasFlow() * (float) Math.pow(1.05f, ((getEfficiency() - 0.8f)) * 20f);
     }
 
     public float getOptimalLoosePlasmaFlow() {
-        // 1.05^((Efficiency - 0.8) * 20)
-        return getOptimalPlasmaFlow() * (float) Math.pow(1.02f, ((getEfficiency() - 0.8f)) * 20f);
+        // 1 * 1.05^((Efficiency - 0.8) * 20)
+        return 1.5f * getOptimalPlasmaFlow() * (float) Math.pow(1.02f, ((getEfficiency() - 0.8f)) * 20f);
     }
 
     // Base EU/t from optimal flow
