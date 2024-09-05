@@ -100,7 +100,7 @@ public final class TTUtility {
 
         do {
             ++b;
-            if (b >= V.length) {
+            if (b == V.length) {
                 return b;
             }
         } while (l > V[b]);

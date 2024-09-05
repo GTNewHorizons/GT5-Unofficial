@@ -181,7 +181,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
         input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
         input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
-        input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        input[3] = (inputStacks.length == 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
         if (inputStacks.length == 1) {
             input[1] = input[0];
@@ -298,7 +298,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         input1 = inputStacks[0];
         input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
         input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
-        input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        input4 = (inputStacks.length == 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
         if (inputStacks.length == 1) {
             input2 = input1;

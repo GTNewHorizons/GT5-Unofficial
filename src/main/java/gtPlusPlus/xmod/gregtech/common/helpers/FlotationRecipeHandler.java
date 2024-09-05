@@ -39,14 +39,14 @@ public class FlotationRecipeHandler {
     }
 
     public static ItemStack findMilledStack(GTRecipe aRecipe) {
-        if (aRecipe == null || aRecipe.mInputs == null || aRecipe.mInputs.length <= 0) {
+        if (aRecipe == null || aRecipe.mInputs == null || aRecipe.mInputs.length == 0) {
             return null;
         }
         return findMilledStack(aRecipe.mInputs);
     }
 
     public static ItemStack findMilledStack(ItemStack[] aInputs) {
-        if (aInputs == null || aInputs.length <= 0) {
+        if (aInputs == null || aInputs.length == 0) {
             return null;
         }
         for (ItemStack aStack : aInputs) {

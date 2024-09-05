@@ -126,7 +126,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Constructor} object.
-     * 
+     *
      * @param aClass - Class containing the Constructor.
      * @param aTypes - Varags Class Types for objects constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
@@ -155,12 +155,12 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Class} object.
-     * 
+     *
      * @param aClassCanonicalName - The canonical name of the underlying class.
      * @return - Valid, {@link Class} object, or {@link null}.
      */
     public static Class<?> getClass(String aClassCanonicalName) {
-        if (aClassCanonicalName == null || aClassCanonicalName.length() <= 0) {
+        if (aClassCanonicalName == null || aClassCanonicalName.length() == 0) {
             return null;
         }
         Class<?> y = mCachedClasses.get(aClassCanonicalName);
@@ -176,7 +176,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object. Wraps {@link #getMethod(Class, String, Class...)}.
-     * 
+     *
      * @param aObject     - Object containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
      * @param aTypes      - Class Array of Types for {@link Method}'s constructor.
@@ -188,14 +188,14 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object.
-     * 
+     *
      * @param aClass      - Class containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
      * @param aTypes      - Varags Class Types for {@link Method}'s constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
      */
     public static Method getMethod(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
-        if (aClass == null || aMethodName == null || aMethodName.length() <= 0) {
+        if (aClass == null || aMethodName == null || aMethodName.length() == 0) {
             return null;
         }
         String aMethodKey = ArrayUtils.toString(aTypes);
@@ -217,13 +217,13 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * 
+     *
      * @param aClass     - Class containing the Method.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
      */
     public static Field getField(final Class<?> aClass, final String aFieldName) {
-        if (aClass == null || aFieldName == null || aFieldName.length() <= 0) {
+        if (aClass == null || aFieldName == null || aFieldName.length() == 0) {
             return null;
         }
         CachedField y = mCachedFields.get(aClass.getName() + "." + aFieldName);
@@ -246,7 +246,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * 
+     *
      * @param aInstance  - {@link Object} to get the field instance from.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
@@ -286,7 +286,7 @@ public class ReflectionUtils {
     /**
      * Get the method name for a depth in call stack. <br />
      * Utility function
-     * 
+     *
      * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
      * @return Method name
      */
@@ -634,7 +634,7 @@ public class ReflectionUtils {
                 Class<?> clazz = ReflectionUtils.getClass(aClassName);
                 if (clazz != null) {
                     Class[] y = clazz.getDeclaredClasses();
-                    if (y == null || y.length <= 0) {
+                    if (y == null || y.length == 0) {
                         Logger.REFLECTION("No hidden inner classes found.");
                         return null;
                     } else {

@@ -979,7 +979,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 int maxRemove = bucket.getSeedStack()
                     .getMaxStackSize();
                 ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
-                if (outputs == null || outputs.length <= 0) return null;
+                if (outputs == null || outputs.length == 0) return null;
                 ItemStack ret = outputs[0];
                 for (int i = 1; i < outputs.length; i++) {
                     ItemStack suppertItem = outputs[i];

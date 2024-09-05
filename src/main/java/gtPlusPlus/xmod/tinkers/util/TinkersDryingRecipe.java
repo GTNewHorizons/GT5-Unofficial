@@ -63,7 +63,7 @@ public class TinkersDryingRecipe {
                     + ReflectionUtils.doesClassExist("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe"));
             Class clazz = ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes");
             Class[] y = clazz.getDeclaredClasses();
-            if (y == null || y.length <= 0) {
+            if (y == null || y.length == 0) {
                 Logger.INFO("No hidden inner classes.");
                 return null;
             } else {

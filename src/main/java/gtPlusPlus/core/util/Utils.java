@@ -379,7 +379,7 @@ public class Utils {
             return GTUtility.copyAmount(1L, stack);
         }
 
-        if (GTUtility.isStringInvalid(title) || GTUtility.isStringInvalid(author) || pages.length <= 0) {
+        if (GTUtility.isStringInvalid(title) || GTUtility.isStringInvalid(author) || pages.length == 0) {
             return null;
         }
 

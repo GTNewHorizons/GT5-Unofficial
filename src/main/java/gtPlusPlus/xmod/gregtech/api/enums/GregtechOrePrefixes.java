@@ -1020,7 +1020,7 @@ public enum GregtechOrePrefixes {
             if (this.mElement != null) {
                 return this.mElement.getProtons();
             }
-            if (this.mMaterialList.size() <= 0) {
+            if (this.mMaterialList.size() == 0) {
                 return Element.Tc.getProtons();
             }
             long rAmount = 0, tAmount = 0;
@@ -1035,7 +1035,7 @@ public enum GregtechOrePrefixes {
             if (this.mElement != null) {
                 return this.mElement.getNeutrons();
             }
-            if (this.mMaterialList.size() <= 0) {
+            if (this.mMaterialList.size() == 0) {
                 return Element.Tc.getNeutrons();
             }
             long rAmount = 0, tAmount = 0;
@@ -1050,7 +1050,7 @@ public enum GregtechOrePrefixes {
             if (this.mElement != null) {
                 return this.mElement.getMass();
             }
-            if (this.mMaterialList.size() <= 0) {
+            if (this.mMaterialList.size() == 0) {
                 return Element.Tc.getMass();
             }
             long rAmount = 0, tAmount = 0;
@@ -1105,7 +1105,7 @@ public enum GregtechOrePrefixes {
          * This is used to determine if any of the ItemStacks belongs to this Material.
          */
         public boolean contains(final ItemStack... aStacks) {
-            if ((aStacks == null) || (aStacks.length <= 0)) {
+            if ((aStacks == null) || (aStacks.length == 0)) {
                 return false;
             }
             for (final ItemStack tStack : this.mMaterialItems) {

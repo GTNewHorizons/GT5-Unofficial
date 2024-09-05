@@ -119,7 +119,7 @@ public class ThreadAspectScanner extends Thread {
                 // Logger.INFO("Looking for key: "+key);
                 if (mAllGameContent.containsKey(key)) {
                     AutoMap<ItemStack> group = mAllGameContent.get(key);
-                    if (group == null || group.size() <= 0) {
+                    if (group == null || group.size() == 0) {
                         continue;
                     }
                     for (ItemStack stack : group) {

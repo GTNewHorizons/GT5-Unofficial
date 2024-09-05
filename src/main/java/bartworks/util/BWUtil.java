@@ -281,7 +281,7 @@ public class BWUtil {
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
 
-        if (ret.size() <= 0) return (T[]) Array.newInstance(clazz, 0);
+        if (ret.size() == 0) return (T[]) Array.newInstance(clazz, 0);
 
         T[] retArr = (T[]) Array.newInstance(clazz, ret.size());
 
@@ -527,7 +527,7 @@ public class BWUtil {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
-        if (aRecipe == null || aRecipe.length <= 0) return null;
+        if (aRecipe == null || aRecipe.length == 0) return null;
 
         boolean tThereWasARecipe = false;
 

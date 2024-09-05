@@ -24,7 +24,7 @@ public final class AddGregtechRecipe {
             || aRecipe.mFluidOutputs.length > 1
             || aRecipe.mOutputs.length > 9) {
             return false;
-        } else if (aRecipe.mInputs.length <= 0) {
+        } else if (aRecipe.mInputs.length == 0) {
             return false;
         }
 

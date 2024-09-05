@@ -129,7 +129,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                     String aCurrentText = getText();
                     if (aCurrentText.length() > 0) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
-                        if (getText().length() <= 0) {
+                        if (getText().length() == 0) {
                             setText(0);
                         }
                         sendUpdateToServer();
@@ -204,7 +204,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     public void updateScreen() {
         super.updateScreen();
         // Update Textbox to 0 if Empty
-        if (getText().length() <= 0) {
+        if (getText().length() == 0) {
             this.mText.setText("0");
             sendUpdateToServer();
         }
