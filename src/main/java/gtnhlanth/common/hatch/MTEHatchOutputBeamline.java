@@ -5,19 +5,16 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gtnhlanth.common.beamline.BeamLinePacket;
-import gtnhlanth.common.beamline.IConnectsToBeamline;
-import gtnhlanth.common.hatch.MTEHatchBeamlineConnector;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import tectech.util.TTUtility;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTRenderedTexture;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
+import tectech.util.TTUtility;
 
 public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
 

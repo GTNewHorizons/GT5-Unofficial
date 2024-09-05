@@ -10,6 +10,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -27,9 +31,6 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
