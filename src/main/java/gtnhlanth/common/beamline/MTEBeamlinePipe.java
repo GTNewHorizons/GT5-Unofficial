@@ -2,8 +2,6 @@ package gtnhlanth.common.beamline;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import gtnhlanth.common.beamline.IConnectsToBeamline;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

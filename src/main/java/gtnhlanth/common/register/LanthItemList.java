@@ -2,6 +2,10 @@ package gtnhlanth.common.register;
 
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTLanguageManager;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
@@ -21,9 +25,6 @@ import gtnhlanth.common.tileentity.MTELINAC;
 import gtnhlanth.common.tileentity.MTESourceChamber;
 import gtnhlanth.common.tileentity.MTESynchrotron;
 import gtnhlanth.common.tileentity.MTETargetChamber;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public final class LanthItemList {
 
