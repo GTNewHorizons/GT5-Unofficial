@@ -35,19 +35,12 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
         @Override
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int aMeta = aStack.getItemDamage();
-            if (aMeta < 10) {
-                // aList.add("Tier: "+GT_Values.VN[aMeta]);
-            }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
     }
 
     public GregtechMetaSpecialMachineCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.2", MaterialCasings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            // TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
-            // Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)
-        }
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Strong Bronze Machine Casing");
         GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");

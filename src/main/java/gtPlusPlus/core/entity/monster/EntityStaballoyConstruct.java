@@ -409,8 +409,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
                         }
                     }
                 }
-            } else {
-
             }
 
             // Get a private field from a super class if it exists.

@@ -57,9 +57,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             && !(result.getItem() instanceof BaseItemDustUnique))) {
             return;
         }
-        if (result != null) {
-            // Logger.INFO("Looking up crafting recipes for "+ItemUtils.getItemName(result));
-        }
+
         final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;
         for (final DecayableRecipe recipe : recipes) {
             if (recipe.isValid()) {
@@ -97,9 +95,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
         final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;
-        if (ingredient != null) {
-            // Logger.INFO("Looking up Usage results for "+ItemUtils.getItemName(ingredient));
-        }
+
         for (final DecayableRecipe recipe : recipes) {
             if (recipe.isValid()) {
                 final ItemStack input = recipe.mInput.copy();

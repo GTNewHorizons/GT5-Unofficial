@@ -297,7 +297,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                                         .getStoredEU() + diff);
                             }
                         } else if (aMetaTileEntity instanceof MTEPipeEnergy) {
-                            if (((MTEPipeEnergy) aMetaTileEntity).connectionCount < 2) {} else {
+                            if (((MTEPipeEnergy) aMetaTileEntity).connectionCount >= 2) {
                                 ((MTEPipeEnergy) aMetaTileEntity).markUsed();
                             }
                         }

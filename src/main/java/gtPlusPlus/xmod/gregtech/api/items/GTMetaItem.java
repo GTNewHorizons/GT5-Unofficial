@@ -266,8 +266,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     @Override
     public final ItemStack onEaten(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
         final IFoodStat tStat = this.mFoodStats.get((short) this.getDamage(aStack));
-        if (tStat != null) {}
-
         return aStack;
     }
 

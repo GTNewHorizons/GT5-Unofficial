@@ -173,8 +173,6 @@ public class MaterialGenerator {
             } else if (matInfo.getState() == MaterialState.PURE_LIQUID) {
                 FluidUtils.generateFluidNoPrefix(unlocalizedName, materialName, matInfo.getMeltingPointK(), C);
                 return true;
-            } else if (matInfo.getState() == MaterialState.ORE) {
-
             }
 
             // Add A jillion Recipes - old code

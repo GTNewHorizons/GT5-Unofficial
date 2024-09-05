@@ -247,8 +247,6 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree {
                                         }
                                     }
                                 }
-                            } else {
-
                             }
                         }
 

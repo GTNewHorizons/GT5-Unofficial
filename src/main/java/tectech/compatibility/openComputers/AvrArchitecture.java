@@ -72,7 +72,6 @@ public class AvrArchitecture implements Architecture {
             Math.max(memory, 0),
             Settings.get()
                 .maxTotalRam());
-        if (memory != memSize) {}
     }
 
     @Override

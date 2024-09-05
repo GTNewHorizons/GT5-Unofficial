@@ -45,7 +45,10 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 
         if (voltage <= GTValues.V[6]) {
             // no-op
-        } else if (voltage <= GTValues.V[7]) {
+            return tier;
+        }
+
+        if (voltage <= GTValues.V[7]) {
             tier = Math.max(tier, 2);
         } else if (voltage <= GTValues.V[8]) {
             tier = Math.max(tier, 3);

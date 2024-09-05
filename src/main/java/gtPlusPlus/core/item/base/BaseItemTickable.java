@@ -134,11 +134,6 @@ public class BaseItemTickable extends CoreItem {
         tagNBT.setLong("maxTick", getMaxTicks(rStack));
         tagNBT.setBoolean("isActive", true);
 
-        // Try set world time
-        if (world != null) {
-            // tagNBT.setLong("CreationDate", world.getTotalWorldTime());
-        }
-
         tagMain.setTag("TickableItem", tagNBT);
         rStack.setTagCompound(tagMain);
         Logger.INFO("Created Tickable NBT data.");

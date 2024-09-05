@@ -184,7 +184,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchInput)
             aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof MTEHatchOutput);
+
 
         return aDidAdd;
     }

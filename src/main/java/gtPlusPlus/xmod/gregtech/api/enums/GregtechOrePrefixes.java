@@ -997,10 +997,9 @@ public enum GregtechOrePrefixes {
                     tMaterial.mBlastFurnaceRequired = aConfiguration
                         .get(ConfigCategories.Materials.blastfurnacerequirements, tString, true);
                 }
-                if (tMaterial.mBlastFurnaceRequired && aConfiguration.get(
-                    ConfigCategories.Materials.blastinductionsmelter,
-                    tString,
-                    tMaterial.mBlastFurnaceTemp < 1500)) {}
+
+                // only populate the config if entry not in it
+                aConfiguration.get(ConfigCategories.Materials.blastinductionsmelter, tString, tMaterial.mBlastFurnaceTemp < 1500);
             }
         }
 

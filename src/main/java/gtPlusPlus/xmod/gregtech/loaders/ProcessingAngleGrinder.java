@@ -28,12 +28,6 @@ public class ProcessingAngleGrinder implements IOreRecipeRegistrator, Runnable {
     @Override
     public void registerOre(final GregtechOrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
         final String aModName, final ItemStack aStack) {
-        if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
-            if (aMaterial != Materials.Rubber) {
-                if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-                    && (!aMaterial.contains(SubTag.NO_SMASHING))) {}
-            }
-        }
     }
 
     @Override

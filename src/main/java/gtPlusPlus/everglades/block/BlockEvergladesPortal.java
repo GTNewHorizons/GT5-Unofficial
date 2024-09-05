@@ -204,16 +204,17 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             b0 = 1;
             b1 = 0;
         }
-        int i1;
-        for (i1 = y; par1World.getBlock(x, i1 - 1, z) == this; --i1) {
-            ;
+        int i1 = y;
+        while (par1World.getBlock(x, i1 - 1, z) == this){
+            i1 = i1-1;
         }
+
         if (par1World.getBlock(x, i1 - 1, z) != DimensionEverglades.blockPortalFrame) {
             par1World.setBlockToAir(x, y, z);
         } else {
-            int j1;
-            for (j1 = 1; j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this; ++j1) {
-                ;
+            int j1 = 1;
+            while (j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this){
+                j1 = j1+1;
             }
             if (j1 == 3 && par1World.getBlock(x, i1 + j1, z) == DimensionEverglades.blockPortalFrame) {
                 boolean flag = par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this;

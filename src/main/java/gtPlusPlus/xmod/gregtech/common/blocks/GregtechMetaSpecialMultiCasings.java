@@ -31,9 +31,6 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         @Override
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int aMeta = aStack.getItemDamage();
-            if (aMeta < 10) {
-                // aList.add("Tier: "+GT_Values.VN[aMeta]);
-            }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
     }

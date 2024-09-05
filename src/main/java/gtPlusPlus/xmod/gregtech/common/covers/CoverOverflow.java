@@ -37,28 +37,15 @@ public class CoverOverflow extends CoverBehavior {
             return aCoverVariable;
         }
         if ((aTileEntity instanceof IFluidHandler)) {
-            // Logger.INFO("Trying to Void via Overflow.");
             IFluidHandler tTank1;
             ForgeDirection directionFrom;
             directionFrom = ForgeDirection.UNKNOWN;
             tTank1 = (IFluidHandler) aTileEntity;
-            if (tTank1 != null) {
-                FluidStack aTankStack = tTank1.getTankInfo(directionFrom)[0].fluid;
-                if (aTankStack != null) {
-                    // Logger.INFO("Found Fluid inside self - "+aTankStack.getLocalizedName()+", overflow point set at
-                    // "+aCoverVariable+"L and we have "+aTankStack.amount+"L inside.");
-                    if (aTankStack.amount > aCoverVariable) {
-                        int aAmountToDrain = aTankStack.amount - aCoverVariable;
-                        // Logger.INFO("There is "+aAmountToDrain+" more fluid in the tank than we would like.");
-                        if (aAmountToDrain > 0) {
-                            FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aAmountToDrain), true);
-                            if (tLiquid != null) {
-                                // Logger.INFO("Drained "+aAmountToDrain+"L.");
-                            }
-                        }
-                    }
-                } else {
-                    // Logger.INFO("Could not simulate drain on self.");
+            FluidStack aTankStack = tTank1.getTankInfo(directionFrom)[0].fluid;
+            if (aTankStack != null && aTankStack.amount > aCoverVariable) {
+                int aAmountToDrain = aTankStack.amount - aCoverVariable;
+                if (aAmountToDrain > 0) {
+                    tTank1.drain(directionFrom, Math.abs(aAmountToDrain), true);
                 }
             }
         }

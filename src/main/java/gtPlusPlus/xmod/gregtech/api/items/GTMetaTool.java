@@ -474,7 +474,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         }
         this.doDamage(aStack, tStats.getToolDamagePerContainerCraft());
         aStack = aStack.stackSize > 0 ? aStack : null;
-        if (playSound) {}
         return aStack;
     }
 

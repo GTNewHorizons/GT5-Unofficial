@@ -119,40 +119,6 @@ public class WorkbenchCraftingHandler {
         this.recipes.add(new ShapelessRecipes(par1ItemStack, arraylist));
     }
 
-    public ItemStack findMatchingRecipe(final InventoryCrafting par1InventoryCrafting, final World par2World) {
-        int i = 0;
-        for (int j = 0; j < par1InventoryCrafting.getSizeInventory(); j++) {
-            final ItemStack itemstack2 = par1InventoryCrafting.getStackInSlot(j);
-
-            if (itemstack2 == null) {
-                continue;
-            }
-
-            if (i == 0) {}
-
-            if (i == 1) {}
-
-            i++;
-        }
-
-        // TODO - Update from itemIDs
-        /*
-         * if (i == 2 && itemstack.itemID == itemstack1.itemID && itemstack.stackSize == 1 && itemstack1.stackSize == 1
-         * && Item.itemsList[itemstack.itemID].isDamageable()) { Item item = Item.itemsList[itemstack.itemID]; int l =
-         * item.getMaxDamage() - itemstack.getItemDamageForDisplay(); int i1 = item.getMaxDamage() -
-         * itemstack1.getItemDamageForDisplay(); int j1 = l + i1 + (item.getMaxDamage() * 10) / 100; int k1 =
-         * item.getMaxDamage() - j1; if (k1 < 0) { k1 = 0; } return new ItemStack(itemstack.itemID, 1, k1); }
-         */
-
-        for (final IRecipe irecipe : this.recipes) {
-            if (irecipe.matches(par1InventoryCrafting, par2World)) {
-                return irecipe.getCraftingResult(par1InventoryCrafting);
-            }
-        }
-
-        return null;
-    }
-
     public List<IRecipe> getRecipeList() {
         return this.recipes;
     }

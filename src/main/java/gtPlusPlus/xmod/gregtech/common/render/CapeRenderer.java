@@ -454,8 +454,6 @@ public class CapeRenderer extends RenderPlayer {
                         || !aCapeType4.isEmpty()
                         || !aCapeType5.isEmpty()) {
                         didProcessStringData = true;
-                    } else {
-                        // did not process any data
                     }
                     if (didProcessStringData) {
                         if (!aCapeType1.isEmpty()) {
@@ -489,11 +487,7 @@ public class CapeRenderer extends RenderPlayer {
                             }
                         }
                     }
-                } else {
-                    // No data decoded
                 }
-            } else {
-                // Nothing was cached?
             }
         }
     }

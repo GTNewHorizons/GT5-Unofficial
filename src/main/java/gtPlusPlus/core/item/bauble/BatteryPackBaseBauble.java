@@ -166,21 +166,10 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                                                 false);
                                                             ElectricItem.manager
                                                                 .discharge(aBaubleStack, d, mTier, false, true, false);
-                                                            // Logger.INFO("Charging " + aInvStack.getDisplayName() + "
-                                                            // | " + d + " | "+electricItem.getMaxCharge(aInvStack));
                                                         }
-                                                    } else {
-                                                        // Logger.INFO("5");
                                                     }
-                                                } else {
-                                                    // Logger.INFO("4");
                                                 }
-                                            } else {
-                                                // Logger.INFO("3");
                                             }
-
-                                        } else {
-                                            // Logger.INFO("1");
                                         }
                                     }
                                 }
@@ -221,21 +210,10 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                                                 .charge(aInvStack, aTransferRate, mTier, false, false);
                                                             ElectricItem.manager
                                                                 .discharge(aBaubleStack, d, mTier, false, true, false);
-                                                            // Logger.INFO("Charging " + aInvStack.getDisplayName() + "
-                                                            // | " + d + " | "+electricItem.getMaxCharge(aInvStack));
                                                         }
-                                                    } else {
-                                                        // Logger.INFO("5");
                                                     }
-                                                } else {
-                                                    // Logger.INFO("4");
                                                 }
-                                            } else {
-                                                // Logger.INFO("3");
                                             }
-
-                                        } else {
-                                            // Logger.INFO("1");
                                         }
                                     }
                                 }
