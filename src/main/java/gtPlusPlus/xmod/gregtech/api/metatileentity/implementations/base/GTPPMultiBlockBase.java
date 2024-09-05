@@ -634,10 +634,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         // Handle Custom Hatches
         if (aMetaTileEntity instanceof MTEHatchInputBattery) {
-            log("Found GT_MetaTileEntity_Hatch_InputBattery");
+            log("Found MTEHatchInputBattery");
             aDidAdd = addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
-            log("Found GT_MetaTileEntity_Hatch_OutputBattery");
+            log("Found MTEHatchOutputBattery");
             aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof METHatchAirIntake) {
             aDidAdd = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex)
@@ -1020,7 +1020,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (tCurrentItem != null) {
                 // Logger.INFO("Holding Item.");
                 if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    // Logger.INFO("Is GT_MetaGenerated_Tool.");
+                    // Logger.INFO("Is MetaGeneratedTool.");
                     int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
                     for (int id : aOreID) {
                         // Plunger
