@@ -47,6 +47,7 @@ import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
@@ -375,7 +376,12 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     setEuModifier(1.1F);
                 }
 
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 1) > 0) doingHIP = true;
+                int recipeReq = recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0);
+                if (recipeReq == 1) {
+                    doingHIP = true;
+                } else if (recipeReq == 2) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
