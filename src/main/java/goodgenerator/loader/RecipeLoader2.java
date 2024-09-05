@@ -1510,7 +1510,7 @@ public class RecipeLoader2 {
 
         // Compact MK4 Fusion Coil
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(4, 1))
+            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(3, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 1152),
