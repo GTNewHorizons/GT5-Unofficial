@@ -617,8 +617,7 @@ public class GTUtility {
         ForgeDirection fromSide, ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter,
         byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce,
         boolean dropItem) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMaxMoveAtOnce <= 0
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -824,8 +823,7 @@ public class GTUtility {
         ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize,
         byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, int aMaxStackTransfer,
         boolean aDoCheckChests) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce
@@ -1255,8 +1253,7 @@ public class GTUtility {
     private static byte moveOneItemStack(IInventory fromInventory, Object toObject, ForgeDirection fromSide,
         ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize,
         byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, boolean aDoCheckChests) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -1447,8 +1444,7 @@ public class GTUtility {
     public static byte moveOneItemStackIntoSlot(Object fromTileEntity, Object toTileEntity, ForgeDirection fromSide,
         int putSlot, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize,
         byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (!(fromTileEntity instanceof IInventory fromInv) || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (!(fromTileEntity instanceof IInventory fromInv) || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;

@@ -77,7 +77,7 @@ public class BlockSuperJukebox extends BlockJukebox {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntitySuperJukebox)) {
+        if ((te instanceof TileEntitySuperJukebox)) {
             player.openGui(GTplusplus.instance, GuiHandler.GUI14, world, x, y, z);
             return true;
         }

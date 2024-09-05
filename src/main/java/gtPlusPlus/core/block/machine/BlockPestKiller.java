@@ -87,7 +87,7 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntityPestKiller)) {
+        if ((te instanceof TileEntityPestKiller)) {
             player.openGui(GTplusplus.instance, GuiHandler.GUI15, world, x, y, z);
             return true;
         }

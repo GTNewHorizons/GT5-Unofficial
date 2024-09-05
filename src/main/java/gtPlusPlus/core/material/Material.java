@@ -837,7 +837,7 @@ public class Material {
                 }
             }
             TextureSet mostUsedTypeTextureSet = MaterialUtils.getMostCommonTextureSet(new ArrayList<>(sets.values()));
-            if (mostUsedTypeTextureSet != null && mostUsedTypeTextureSet instanceof TextureSet) {
+            if (mostUsedTypeTextureSet instanceof TextureSet) {
                 Logger.MATERIALS(
                     "Set textureset for " + this.localizedName + " to be " + mostUsedTypeTextureSet.mSetName + ".");
                 return mostUsedTypeTextureSet;

@@ -17,7 +17,7 @@ public class InventoryUtils {
     public static void dropInventoryItems(World world, int x, int y, int z, Block block) {
         TileEntity tileentity = world.getTileEntity(x, y, z);
 
-        if (tileentity != null && tileentity instanceof IInventory aTileInv
+        if (tileentity instanceof IInventory aTileInv
             && ((IInventory) tileentity).getSizeInventory() > 0) {
 
             int aMinSlot = 0;

@@ -283,7 +283,7 @@ public enum GregtechOrePrefixes {
 
     public static GregtechOrePrefixes getPrefix(final String aPrefixName, final GregtechOrePrefixes aReplacement) {
         final Object tObject = GTUtility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
-        if ((tObject != null) && (tObject instanceof GregtechOrePrefixes)) {
+        if ((tObject instanceof GregtechOrePrefixes)) {
             return (GregtechOrePrefixes) tObject;
         }
         return aReplacement;
@@ -972,7 +972,7 @@ public enum GregtechOrePrefixes {
 
         public static GT_Materials get(final String aMaterialName) {
             final Object tObject = GTUtility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
-            if ((tObject != null) && (tObject instanceof GT_Materials)) {
+            if ((tObject instanceof GT_Materials)) {
                 return (GT_Materials) tObject;
             }
             return _NULL;

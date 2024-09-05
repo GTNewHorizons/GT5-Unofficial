@@ -86,7 +86,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntityFishTrap)) {
+        if ((te instanceof TileEntityFishTrap)) {
             player.openGui(GTplusplus.instance, 5, world, x, y, z);
             return true;
         }

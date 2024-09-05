@@ -92,7 +92,7 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
             } else if (aPooMaker instanceof EntitySheep) {
                 aPooAmount = MathUtils.randInt(8, 30);
             } else {
-                if (aPooMaker instanceof EntityAnimal || aPooMaker instanceof IAnimals) {
+                if (aPooMaker instanceof IAnimals) {
                     aPooAmount = MathUtils.randInt(5, 35);
                 } else if (aPooMaker instanceof EntityVillager) {
                     aPooAmount = MathUtils.randInt(25, 30);

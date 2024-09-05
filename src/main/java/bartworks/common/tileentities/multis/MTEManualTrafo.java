@@ -99,7 +99,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
             public boolean check(MTEManualTrafo te, World world, int x, int y, int z) {
                 if (world.isAirBlock(x, y, z)) return true;
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
+                if (!(tileEntity instanceof IGregTechTileEntity)) return true;
                 IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
                 if (mte instanceof MTEHatchDynamo || mte instanceof MTEHatchEnergy) {
                     int intier = te.mEnergyHatches.get(0).mTier;
