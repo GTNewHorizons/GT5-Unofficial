@@ -201,7 +201,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchMillingBalls) {
-            log("Found GT_MetaTileEntity_Hatch_MillingBalls");
+            log("Found MTEHatchMillingBalls");
             return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);

@@ -98,8 +98,8 @@ public class RunnableMachineUpdate implements Runnable {
                 EXECUTOR_SERVICE.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
                 if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
-                    GTMod.GT_FML_LOGGER.error(
-                        "Well this didn't terminated well... GT_Runnable_MachineBlockUpdate.shutdownExecutorService");
+                    GTMod.GT_FML_LOGGER
+                        .error("Well this didn't terminated well... RunnableMachineUpdate.shutdownExecutorService");
                 }
             }
         } catch (InterruptedException ie) {
@@ -114,7 +114,7 @@ public class RunnableMachineUpdate implements Runnable {
             // (Re-)Cancel in case
             EXECUTOR_SERVICE.shutdownNow();
         } finally {
-            GTMod.GT_FML_LOGGER.info("Leaving... GT_Runnable_MachineBlockUpdate.shutdownExecutorService");
+            GTMod.GT_FML_LOGGER.info("Leaving... RunnableMachineUpdate.shutdownExecutorService");
         }
     }
 
