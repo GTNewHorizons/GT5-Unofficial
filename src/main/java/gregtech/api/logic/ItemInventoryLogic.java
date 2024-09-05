@@ -165,7 +165,7 @@ public class ItemInventoryLogic {
         final ItemStack[] items = inventory.getStacks()
             .stream()
             .filter(item -> item != null)
-            .collect(Collectors.toList())
+            .toList()
             .toArray(new ItemStack[0]);
         if (items == null) {
             return new ItemStack[0];

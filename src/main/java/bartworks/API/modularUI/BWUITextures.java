@@ -45,7 +45,7 @@ public class BWUITextures {
         .mapToObj(
             i -> UITexture
                 .partly(MainMod.MOD_ID, "GUI/picture/windmill_rotating", 32, 128, 0, i * 32, 32, (i + 1) * 32))
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
     public static final UITexture PICTURE_STORED_EU_FRAME = UITexture
         .fullImage(MainMod.MOD_ID, "GUI/picture/stored_eu_frame");

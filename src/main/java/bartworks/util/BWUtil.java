@@ -279,7 +279,7 @@ public class BWUtil {
     public static <T> T[] copyAndRemoveNulls(T[] input, Class<T> clazz) {
         List<T> ret = Arrays.stream(input)
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .toList();
 
         if (ret.size() == 0) return (T[]) Array.newInstance(clazz, 0);
 

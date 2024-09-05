@@ -171,7 +171,7 @@ public class SPMCommand extends CommandBase {
                             project.getAllUpgrades()
                                 .stream()
                                 .map(ISpaceProject.ISP_Upgrade::getUnlocalizedName)
-                                .collect(Collectors.toList()));
+                                .toList());
                     }
                 } else {
                     autoComplete.addAll(Arrays.asList(getPlayers()));

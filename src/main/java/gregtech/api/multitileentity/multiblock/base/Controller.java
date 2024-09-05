@@ -827,8 +827,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 ItemInventoryLogic input = controllerItemInput.removeInventory(id);
                 ItemInventoryLogic output = controllerItemOutput.removeInventory(id);
                 yield new ItemInventoryLogic(
-                    Arrays.asList(input, output)
-                        .stream()
+                    Stream.of(input, output)
                         .map(inv -> inv.getInventory())
                         .collect(Collectors.toList()));
             }

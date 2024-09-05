@@ -290,7 +290,7 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
         final List<ItemStack> inputOres = this.getStoredInputs()
             .stream()
             .filter(GTUtility::isOre)
-            .collect(Collectors.toList());;
+            .toList();;
         final ItemStack output = this.nextOre();
         output.stackSize = multiplier;
         if (inputOres.size() == 0 || this.mBlacklist && inputOres.stream()

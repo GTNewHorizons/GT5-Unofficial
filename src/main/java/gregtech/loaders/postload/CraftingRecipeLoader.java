@@ -1508,7 +1508,7 @@ public class CraftingRecipeLoader implements Runnable {
                     "insulatedIronCableItem", "glassFiberCableItem", "tinCableItem", "ironCableItem",
                     "insulatedTinCableItem", "detectorCableItem", "splitterCableItem", "electrolyzer", "cutter" })
             .map(x -> GTModHandler.getIC2Item(x, 1L))
-            .collect(Collectors.toList());
+            .toList();
 
         if (NotEnoughItems.isModLoaded()) {
             iToRemoveAndHide.forEach(item -> {

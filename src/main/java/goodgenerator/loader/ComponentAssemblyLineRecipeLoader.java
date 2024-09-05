@@ -346,7 +346,7 @@ public class ComponentAssemblyLineRecipeLoader {
 
             for (String dict : Arrays.stream(OreDictionary.getOreIDs(itemstack))
                 .mapToObj(OreDictionary::getOreName)
-                .collect(Collectors.toList())) {
+                .toList()) {
                 if (dict.startsWith("circuit")) {
                     stacks.addAll(getWrappedCircuits(itemstack, totalItems, dict));
                     isCompacted = true;

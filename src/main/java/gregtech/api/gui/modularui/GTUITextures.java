@@ -146,7 +146,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_WRENCH = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/wrench");
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
         .mapToObj(i -> UITexture.fullImage(GregTech.ID, "gui/overlay_slot/number_" + i))
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
 
     public static final UITexture PROGRESSBAR_ARROW = UITexture.fullImage(GregTech.ID, "gui/progressbar/arrow");

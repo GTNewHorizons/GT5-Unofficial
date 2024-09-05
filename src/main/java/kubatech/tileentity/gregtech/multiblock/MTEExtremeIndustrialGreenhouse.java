@@ -1146,7 +1146,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     a -> a.getKey()
                         .toString()
                         .toLowerCase()))
-            .collect(Collectors.toList())) {
+            .toList()) {
             int outputSize = Arrays.stream(this.mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)

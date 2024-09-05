@@ -177,7 +177,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
                 .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .stream()
-                .collect(Collectors.toList());
+                .toList();
             for (MTEDroneCentre centre : target) {
                 if (centre.getCoords()
                     .withinDistance(this.downlinkCoord, centre.getRange())
