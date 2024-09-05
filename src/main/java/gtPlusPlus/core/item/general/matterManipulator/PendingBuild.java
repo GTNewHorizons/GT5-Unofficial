@@ -10,9 +10,9 @@ import java.util.concurrent.Future;
 
 import org.spongepowered.include.com.google.common.base.Objects;
 
-import gregtech.GT_Mod;
+import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
 import net.minecraft.block.Block;
@@ -209,7 +209,7 @@ public class PendingBuild {
             world.setBlock(pending.x, pending.y, pending.z, pending.block, pending.metadata, 3);
         }
 
-        GT_Utility.sendSoundToPlayers(
+        GTUtility.sendSoundToPlayers(
             world,
             SoundResource.MOB_ENDERMEN_PORTAL,
             1.0F,
@@ -314,7 +314,7 @@ public class PendingBuild {
                 euUsage *= TE_PENALTY;
             }
         } catch (Throwable e) {
-            GT_Mod.GT_FML_LOGGER.error("Could not get Block.isBlockContainer field", e);
+            GTMod.GT_FML_LOGGER.error("Could not get Block.isBlockContainer field", e);
         }
 
         return ElectricItem.manager.use(stack, euUsage, placingPlayer);
