@@ -74,10 +74,10 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 {"      BBB      ","     BBBBB     ","    BBBBBBB    "," C  BBBBBBB  D ","    BBBBBBB    ","     BBBBB     ","      BBB      "},
                 {"      HHH      ","     B   B     ","    BF   FB    "," C  BF   FB  D ","    BF   FB    ","     B   B     ","      HHH      "},
                 {"      HAH      ","     B   B     ","    GF   FG    "," C  GF   FG  D ","    GF   FG    ","     B   B     ","      HAH      "},
-                {"      HAH      ","     B   B     "," E  GF   FG  E ","EEE GF   FG EEE"," E  GF   FG  E ","     B   B     ","      HAH      "},
+                {"      HAH      ","     B   B     "," B  GF   FG  B ","BBB GF   FG BBB"," B  GF   FG  B ","     B   B     ","      HAH      "},
                 {"      HAH      ","     B   B     "," A  GF   FG  A ","A A GF   FG A A"," A  GF   FG  A ","     B   B     ","      HAH      "},
                 {"      HHH      ","     B   B     "," A  BF   FB  A ","A A BF   FB A A"," A  BF   FB  A ","     B   B     ","      HHH      "},
-                {"      B~B      ","     BBBBB     "," E  BBBBBBB  E ","EEE BBBBBBB EEE"," E  BBBBBBB  E ","     BBBBB     ","      BBB      "}
+                {"      B~B      ","     BBBBB     "," B  BBBBBBB  B ","BBB BBBBBBB BBB"," B  BBBBBBB  B ","     BBBBB     ","      BBB      "}
             }))
             //spotless:on
         .addElement('A', Glasses.chainAllGlasses())
@@ -89,7 +89,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 10))
-        .addElement('E', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement('F', ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))
         .addElement(
             'G',
