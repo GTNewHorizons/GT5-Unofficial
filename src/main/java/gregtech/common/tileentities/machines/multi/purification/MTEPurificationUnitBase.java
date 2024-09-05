@@ -376,8 +376,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
+            fluidOutputs[i].amount *= effectiveParallel;
         }
-        fluidOutputs[0].amount *= effectiveParallel;
         this.mOutputFluids = fluidOutputs;
         this.mOutputItems = this.currentRecipe.mOutputs;
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is
