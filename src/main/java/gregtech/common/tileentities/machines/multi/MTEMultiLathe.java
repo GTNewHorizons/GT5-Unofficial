@@ -72,6 +72,7 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
     protected int pipeTier = 0;
 
     public enum PipeTiers {
+
         Tin(1, 0.75F),
         Brass(1, 0.8F),
         Electrum(2, 0.9F),
@@ -106,15 +107,9 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
 
     // get tier from block meta
     private static Integer getTierFromMeta(Block block, Integer metaID) {
-<<<<<<< HEAD:src/main/java/gregtech/common/tileentities/machines/multi/MTEMultiLathe.java
         if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 3 || metaID > 7) return -1;
-        return (metaID - 2);
-=======
-        if (block != GregTech_API.sBlockCasings11) return -1;
         if (metaID < 0 || metaID > 7) return -1;
         return metaID + 1;
->>>>>>> 764db9a4a806720bc9bc31ff17328572d0fe519a:src/main/java/gregtech/common/tileentities/machines/multi/GT_MetaTileEntity_MultiLathe.java
     }
 
     private void setPipeTier(int tier) {
@@ -161,22 +156,14 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
             ofBlocksTiered(
                 MTEMultiLathe::getTierFromMeta,
                 ImmutableList.of(
-<<<<<<< HEAD:src/main/java/gregtech/common/tileentities/machines/multi/MTEMultiLathe.java
+                    Pair.of(GregTechAPI.sBlockCasings11, 0),
+                    Pair.of(GregTechAPI.sBlockCasings11, 1),
+                    Pair.of(GregTechAPI.sBlockCasings11, 2),
                     Pair.of(GregTechAPI.sBlockCasings11, 3),
                     Pair.of(GregTechAPI.sBlockCasings11, 4),
                     Pair.of(GregTechAPI.sBlockCasings11, 5),
                     Pair.of(GregTechAPI.sBlockCasings11, 6),
                     Pair.of(GregTechAPI.sBlockCasings11, 7)),
-=======
-                    Pair.of(GregTech_API.sBlockCasings11, 0),
-                    Pair.of(GregTech_API.sBlockCasings11, 1),
-                    Pair.of(GregTech_API.sBlockCasings11, 2),
-                    Pair.of(GregTech_API.sBlockCasings11, 3),
-                    Pair.of(GregTech_API.sBlockCasings11, 4),
-                    Pair.of(GregTech_API.sBlockCasings11, 5),
-                    Pair.of(GregTech_API.sBlockCasings11, 6),
-                    Pair.of(GregTech_API.sBlockCasings11, 7)),
->>>>>>> 764db9a4a806720bc9bc31ff17328572d0fe519a:src/main/java/gregtech/common/tileentities/machines/multi/GT_MetaTileEntity_MultiLathe.java
                 -2,
                 MTEMultiLathe::setPipeTier,
                 MTEMultiLathe::getPipeTier))
