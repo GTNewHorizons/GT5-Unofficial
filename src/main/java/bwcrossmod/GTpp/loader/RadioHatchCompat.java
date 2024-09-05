@@ -13,106 +13,34 @@
 
 package bwcrossmod.GTpp.loader;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.API.IRadMaterial;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.item.base.rods.BaseItemRod;
+import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
+import gtPlusPlus.core.material.Material;
 
 public class RadioHatchCompat {
 
-    private static Class<?> intf;
-    private static Class<?> materialClass;
-    private static Class<?> enu;
-    private static Class<?> materialStackClass;
-
-    private static Field isRadioactive;
-    private static Field f;
-    private static Field componentType;
-    private static Field radlevel;
-    private static Field protons;
-
-    private static Field vMaterialInput;
-    private static Field stackMaterial;
-    private static Field RGBA;
-    private static Field localizedName;
-    private static Field unlocalizedName;
-
-    private static Object rod;
-    private static Object longRod;
-
     public static HashSet<String> TranslateSet = new HashSet<>();
-
-    static {
-        try {
-            RadioHatchCompat.intf = Class.forName("gtPlusPlus.core.item.base.BaseItemComponent");
-            RadioHatchCompat.enu = Class.forName("gtPlusPlus.core.item.base.BaseItemComponent$ComponentTypes");
-            RadioHatchCompat.materialClass = Class.forName("gtPlusPlus.core.material.Material");
-            RadioHatchCompat.materialStackClass = Class.forName("gtPlusPlus.core.material.MaterialStack");
-
-            RadioHatchCompat.f = RadioHatchCompat.intf.getField("componentMaterial");
-            RadioHatchCompat.isRadioactive = RadioHatchCompat.materialClass.getField("isRadioactive");
-            RadioHatchCompat.componentType = RadioHatchCompat.intf.getDeclaredField("componentType");
-            RadioHatchCompat.radlevel = RadioHatchCompat.materialClass.getField("vRadiationLevel");
-
-            RadioHatchCompat.vMaterialInput = RadioHatchCompat.materialClass.getDeclaredField("vMaterialInput");
-            RadioHatchCompat.stackMaterial = RadioHatchCompat.materialStackClass.getDeclaredField("stackMaterial");
-            RadioHatchCompat.protons = RadioHatchCompat.materialClass.getDeclaredField("vProtons");
-            RadioHatchCompat.RGBA = RadioHatchCompat.materialClass.getDeclaredField("RGBA");
-            RadioHatchCompat.localizedName = RadioHatchCompat.materialClass.getDeclaredField("localizedName");
-            RadioHatchCompat.unlocalizedName = RadioHatchCompat.materialClass.getDeclaredField("unlocalizedName");
-
-            RadioHatchCompat.vMaterialInput.setAccessible(true);
-            RadioHatchCompat.stackMaterial.setAccessible(true);
-            RadioHatchCompat.protons.setAccessible(true);
-            RadioHatchCompat.RGBA.setAccessible(true);
-            RadioHatchCompat.localizedName.setAccessible(true);
-            RadioHatchCompat.unlocalizedName.setAccessible(true);
-
-            Object[] arr = RadioHatchCompat.enu.getEnumConstants();
-            for (Object o : arr) {
-                if (RadioHatchCompat.rod != null && RadioHatchCompat.longRod != null) break;
-                if ("ROD".equalsIgnoreCase(o.toString())) RadioHatchCompat.rod = o;
-                else if ("RODLONG".equalsIgnoreCase(o.toString())) RadioHatchCompat.longRod = o;
-            }
-
-        } catch (NoSuchFieldException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     @SuppressWarnings("unchecked")
     public static void run() {
         DebugLog.log("Starting Generation of missing GT++ rods/longrods");
         try {
-            Class<? extends Item> rodclass = (Class<? extends Item>) Class
-                .forName("gtPlusPlus.core.item.base.rods.BaseItemRod");
-            Class<? extends Item> longrodclass = (Class<? extends Item>) Class
-                .forName("gtPlusPlus.core.item.base.rods.BaseItemRodLong");
-            Constructor<? extends Item> c1 = rodclass.getConstructor(RadioHatchCompat.materialClass);
-            Constructor<? extends Item> c2 = longrodclass.getConstructor(RadioHatchCompat.materialClass);
             Field cOwners = GameData.class.getDeclaredField("customOwners");
             cOwners.setAccessible(true);
             Field map = RegistryNamespaced.class.getDeclaredField("field_148758_b");
@@ -127,158 +55,42 @@ public class RadioHatchCompat {
             for (ModContainer container : Loader.instance()
                 .getModList()) {
                 if (gtpp != null && bartworks != null) break;
-                if (BartWorksCrossmod.MOD_ID.equalsIgnoreCase(container.getModId())) bartworks = container;
-                else if (container.getModId()
-                    .equalsIgnoreCase(GTPlusPlus.ID)) gtpp = container;
-            }
-
-            for (Object mats : (Set<?>) RadioHatchCompat.materialClass.getField("mMaterialMap")
-                .get(null)) {
-                if (RadioHatchCompat.isRadioactive.getBoolean(mats)) {
-
-                    if (OreDictionary.getOres("stick" + RadioHatchCompat.unlocalizedName.get(mats))
-                        .isEmpty()) {
-                        Item it = c1.newInstance(mats);
-                        UniqueIdentifierMap.replace(it, "miscutils:" + it.getUnlocalizedName());
-                        GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(it);
-                        ownerItems.replace(ui, bartworks, gtpp);
-
-                        String tanslate = it.getUnlocalizedName() + ".name="
-                            + RadioHatchCompat.localizedName.get(mats)
-                            + " Rod";
-                        RadioHatchCompat.TranslateSet.add(tanslate);
-
-                        DebugLog.log(tanslate);
-                        DebugLog.log("Generate: " + RadioHatchCompat.rod + RadioHatchCompat.unlocalizedName.get(mats));
-                    }
-                    if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats))
-                        .isEmpty()) {
-                        Item it2 = c2.newInstance(mats);
-                        UniqueIdentifierMap.replace(it2, "miscutils:" + it2.getUnlocalizedName());
-                        GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(it2);
-                        ownerItems.replace(ui2, bartworks, gtpp);
-
-                        DebugLog
-                            .log("Generate: " + RadioHatchCompat.longRod + RadioHatchCompat.unlocalizedName.get(mats));
-                    }
+                if (BartWorksCrossmod.MOD_ID.equalsIgnoreCase(container.getModId())) {
+                    bartworks = container;
+                } else if (Mods.GTPlusPlus.ID.equalsIgnoreCase(container.getModId())) {
+                    gtpp = container;
                 }
             }
-        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException
-            | InstantiationException | ClassNotFoundException e) {
+
+            for (Material mats : Material.mMaterialMap) {
+                if (!mats.isRadioactive) continue;
+
+                if (OreDictionary.getOres("stick" + mats.getUnlocalizedName())
+                    .isEmpty()) {
+                    Item itemRod = new BaseItemRod(mats);
+                    UniqueIdentifierMap.replace(itemRod, "miscutils:" + itemRod.getUnlocalizedName());
+                    GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(itemRod);
+                    ownerItems.replace(ui, bartworks, gtpp);
+                    String tanslate = itemRod.getUnlocalizedName() + ".name=" + mats.getLocalizedName() + " Rod";
+                    RadioHatchCompat.TranslateSet.add(tanslate);
+                    DebugLog.log(tanslate);
+                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
+                }
+
+                if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName())
+                    .isEmpty()) {
+                    Item itemRodLong = new BaseItemRodLong(mats);
+                    UniqueIdentifierMap.replace(itemRodLong, "miscutils:" + itemRodLong.getUnlocalizedName());
+                    GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(itemRodLong);
+                    ownerItems.replace(ui2, bartworks, gtpp);
+                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.RODLONG + mats.getUnlocalizedName());
+                }
+
+            }
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    public static IRadMaterial GTppRadChecker(ItemStack lStack) {
-        try {
-            if (RadioHatchCompat.intf.isAssignableFrom(
-                lStack.getItem()
-                    .getClass())) {
-                if (!RadioHatchCompat.isRadioactive.getBoolean(RadioHatchCompat.f.get(lStack.getItem()))) return null;
-                int amount = RadioHatchCompat.componentType.get(lStack.getItem())
-                    .equals(RadioHatchCompat.rod) ? 1
-                        : RadioHatchCompat.componentType.get(lStack.getItem())
-                            .equals(RadioHatchCompat.longRod) ? 2 : 0;
-                if (amount == 0) return null;
-                return new RadioHatchCompat.GTPPRadAdapter(amount, RadioHatchCompat.f.get(lStack.getItem()));
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    static class GTPPRadAdapter implements IRadMaterial {
-
-        static final HashMap<Object, Integer> BUFFER = new HashMap<>();
-
-        GTPPRadAdapter(Object m) {
-            this.m = m;
-        }
-
-        GTPPRadAdapter(int amount, Object m) {
-            this.amount = (byte) amount;
-            this.m = m;
-        }
-
-        byte amount;
-        final Object m;
-
-        private static ArrayList<?> getMaterialInput(Object GTPPMaterial) throws IllegalAccessException {
-            Object ret = RadioHatchCompat.vMaterialInput.get(GTPPMaterial);
-            return ret instanceof ArrayList ? (ArrayList<?>) ret : new ArrayList<>();
-        }
-
-        private static boolean isElement(Object GTPPMaterial) throws IllegalAccessException {
-            return RadioHatchCompat.GTPPRadAdapter.getMaterialInput(GTPPMaterial)
-                .isEmpty();
-        }
-
-        private static List<?> getElemets(Object GTPPMaterial) throws IllegalAccessException {
-            ArrayList<Object> elements = new ArrayList<>();
-            Queue<Object> toCheck = new LinkedList<>();
-            ArrayList<?> materialInputs = RadioHatchCompat.GTPPRadAdapter.getMaterialInput(GTPPMaterial);
-            if (materialInputs.isEmpty()) return Collections.singletonList(GTPPMaterial);
-            for (Object materialStack : materialInputs) {
-                if (!RadioHatchCompat.GTPPRadAdapter.isElement(RadioHatchCompat.stackMaterial.get(materialStack)))
-                    toCheck.add(RadioHatchCompat.stackMaterial.get(materialStack));
-                else elements.add(RadioHatchCompat.stackMaterial.get(materialStack));
-            }
-            while (!toCheck.isEmpty()) {
-                elements.addAll(GTPPRadAdapter.getElemets(toCheck.poll()));
-            }
-            return elements;
-        }
-
-        private static Integer calulateRad(Object m) {
-            int ret = 0;
-            try {
-                List<?> pureElements = RadioHatchCompat.GTPPRadAdapter.getElemets(m);
-                for (Object materialObj : pureElements) if (RadioHatchCompat.isRadioactive.getBoolean(materialObj))
-                    ret += RadioHatchCompat.radlevel.getByte(m)
-                        + RadioHatchCompat.GTPPRadAdapter.clampToZero(RadioHatchCompat.protons.getLong(materialObj));
-                else ret += RadioHatchCompat.radlevel.getByte(m);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return ret;
-        }
-
-        @Override
-        public int getRadiationLevel(ItemStack aStack) {
-            return RadioHatchCompat.GTPPRadAdapter.BUFFER
-                .computeIfAbsent(this.m, radlvl -> RadioHatchCompat.GTPPRadAdapter.calulateRad(this.m));
-        }
-
-        private static long clampToZero(long number) {
-            return number > 0 ? number : 0;
-        }
-
-        @Override
-        public byte getAmountOfMaterial(ItemStack aStack) {
-            return this.amount;
-        }
-
-        @Override
-        public short[] getColorForGUI(ItemStack aStack) {
-            short[] rgba = { 0, 0, 0, 0 };
-            try {
-                rgba = (short[]) RadioHatchCompat.RGBA.get(this.m);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return rgba;
-        }
-
-        @Override
-        public String getNameForGUI(ItemStack aStack) {
-            String ret = "";
-            try {
-                ret = (String) RadioHatchCompat.localizedName.get(this.m);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return ret;
-        }
-    }
 }
