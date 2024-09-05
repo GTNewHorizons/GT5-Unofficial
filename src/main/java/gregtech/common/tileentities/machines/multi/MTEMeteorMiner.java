@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorTotto;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW;
@@ -21,7 +22,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -74,7 +74,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 .addElement('D', ofFrame(Materials.StainlessSteel))
                 .addElement(
                     'H',
-                    buildHatchAdder(MTEMeteorMiner.class).atLeast(HatchElement.OutputBus, HatchElement.Energy)
+                    buildHatchAdder(MTEMeteorMiner.class).atLeast(OutputBus, Energy)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .dot(1)
                         .buildAndChain(
@@ -86,7 +86,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
                 .addElement(
                     'I',
-                    buildHatchAdder(MTEMeteorMiner.class).atLeast(HatchElement.Maintenance)
+                    buildHatchAdder(MTEMeteorMiner.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 8))
                         .dot(2)
                         .buildAndChain(
@@ -193,9 +193,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         aCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 16, 4)
-        && !mEnergyHatches.isEmpty()
-        && mMaintenanceHatches.size() == 1;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 16, 4) && !mEnergyHatches.isEmpty()
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
