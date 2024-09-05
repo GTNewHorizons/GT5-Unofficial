@@ -152,24 +152,11 @@ public class WerkstoffLoader {
     public static final SubTag ANAEROBE_SMELTING = SubTag.getNewSubTag("AnaerobeSmelting");
     public static final SubTag NOBLE_GAS_SMELTING = SubTag.getNewSubTag("NobleGasSmelting");
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
-    public static ItemList rotorMold;
-    public static ItemList rotorShape;
-    public static ItemList smallGearShape;
-    public static ItemList ringMold;
-    public static ItemList boltMold;
 
     public static void setUp() {
 
         OrePrefixes.cellMolten.mMaterialGenerationBits = 0b1000000;
         OrePrefixes.capsuleMolten.mMaterialGenerationBits = 0b1000000;
-
-        try {
-            WerkstoffLoader.rotorMold = Enum.valueOf(ItemList.class, "Shape_Mold_Rotor");
-            WerkstoffLoader.rotorShape = Enum.valueOf(ItemList.class, "Shape_Extruder_Rotor");
-            WerkstoffLoader.smallGearShape = Enum.valueOf(ItemList.class, "Shape_Extruder_Small_Gear");
-            WerkstoffLoader.ringMold = Enum.valueOf(ItemList.class, "Shape_Mold_Ring");
-            WerkstoffLoader.boltMold = Enum.valueOf(ItemList.class, "Shape_Mold_Bolt");
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
 
         // add tiberium
         EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
