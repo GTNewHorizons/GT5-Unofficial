@@ -12,9 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import gtPlusPlus.api.objects.Logger;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -30,9 +34,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.block.ModBlocks;
 
 public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> implements ISurvivalConstructable {
@@ -40,8 +49,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static IStructureDefinition<MTEMeteorMiner> STRUCTURE_DEFINITION = null;
     private static final int BASE_CASING_COUNT = 469;
+    private static final int RADIUS = 24;
     private int xDrill, yDrill, zDrill;
     private int xStart, yStart, zStart;
+    private boolean isStartInitialized = false;
 
     @Override
     public IStructureDefinition<MTEMeteorMiner> getStructureDefinition() {
@@ -227,7 +238,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     protected int getBaseProgressTime() {
-        return 1;
+        return 480;
     };
 
     protected int getXDrill() {
@@ -242,40 +253,83 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         return zDrill;
     }
 
+    /**
+     * Sets the coordinates of the center to the max range meteor center
+     * 
+     */
     private void setStartCoords() {
         this.yStart = this.getBaseMetaTileEntity()
-            .getYCoord() + 24; // Controller + 16 (end of multi) + 32 (end of multi to meteor center) - 24 (range of max
-                               // meteor)
+            .getYCoord() + 48; // Controller + 16 (end of multi) + 32 (end of multi to meteor center)
         ForgeDirection facing = this.getBaseMetaTileEntity()
-            .getBackFacing();
-        switch (facing) {
-            case EAST:
-                this.xStart = this.getBaseMetaTileEntity()
-                    .getXCoord() - 3;
-                this.zStart = this.getBaseMetaTileEntity()
-                    .getZCoord();
-                break;
-            case NORTH:
-                this.xStart = this.getBaseMetaTileEntity()
-                    .getXCoord();
-                this.zStart = this.getBaseMetaTileEntity()
-                    .getZCoord() + 3;
-                break;
-            case SOUTH:
-                this.xStart = this.getBaseMetaTileEntity()
-                    .getXCoord();
-                this.zStart = this.getBaseMetaTileEntity()
-                    .getZCoord() - 3;
-                break;
-            case WEST:
-                this.xStart = this.getBaseMetaTileEntity()
-                    .getXCoord() + 3;
-                this.zStart = this.getBaseMetaTileEntity()
-                    .getZCoord();
-                break;
-            default:
-                break;
-
+            .getFrontFacing();
+        try {
+            switch (facing) {
+                case EAST:
+                    this.xStart = this.getBaseMetaTileEntity()
+                        .getXCoord() - 3;
+                    this.zStart = this.getBaseMetaTileEntity()
+                        .getZCoord();
+                case NORTH:
+                    this.xStart = this.getBaseMetaTileEntity()
+                        .getXCoord();
+                    this.zStart = this.getBaseMetaTileEntity()
+                        .getZCoord() + 3;
+                case SOUTH:
+                    this.xStart = this.getBaseMetaTileEntity()
+                        .getXCoord();
+                    this.zStart = this.getBaseMetaTileEntity()
+                        .getZCoord() - 3;
+                case WEST:
+                    this.xStart = this.getBaseMetaTileEntity()
+                        .getXCoord() + 3;
+                    this.zStart = this.getBaseMetaTileEntity()
+                        .getZCoord();
+                default:
+                    throw new IllegalStateException("Error in facing logic");
+            }
+        } finally {
+            this.xDrill = this.xStart;
+            this.yDrill = this.yStart;
+            this.zDrill = this.zStart;
+            this.isStartInitialized = true;
+            for (int i = 0; i < 100; i++) {
+                Logger.INFO("IT WORKED");
+            }
         }
+    }
+
+    @Override
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        setElectricityStats();
+        if (!isEnergyEnough()) {
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
+        }
+        if (!isStartInitialized) {
+            this.setStartCoords();
+        }
+        return SimpleCheckRecipeResult.ofSuccess("Mining...");
+    }
+
+    protected void setElectricityStats() {
+        this.mEfficiency = getCurrentEfficiency(null);
+        this.mEfficiencyIncrease = 10000;
+        int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
+        this.mEUt = -3 * (1 << (tier << 1));
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
+    }
+
+    private int calculateMaxProgressTime(int tier) {
+        return Math.max(1, getBaseProgressTime() / (1 << tier));
+    }
+
+    private boolean isEnergyEnough() {
+        long requiredEnergy = 512 + getMaxInputVoltage() * 4;
+        for (MTEHatchEnergy energyHatch : mEnergyHatches) {
+            requiredEnergy -= energyHatch.getEUVar();
+            if (requiredEnergy <= 0) return true;
+        }
+        return false;
     }
 }
