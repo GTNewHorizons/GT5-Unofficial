@@ -800,7 +800,7 @@ public class MilledOreProcessing extends ItemPackage {
         Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aData) {
         AutoMap<ItemStack> aOutputs = new AutoMap<>();
         for (Object aPair : aData.values()) {
-            if (aPair != null && Pair.class.isInstance(aPair)) {
+            if (aPair instanceof Pair) {
                 Pair aObj = (Pair) aPair;
                 Material aMat = (Material) aObj.getKey();
                 int aCount = (int) aObj.getValue();

@@ -343,7 +343,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.componentMaterial == null) {
                 if (extraData != null) {
-                    if (short.class.isInstance(extraData)) {
+                    if (extraData instanceof Short) {
                         short[] abc = (short[]) extraData;
                         return Utils.rgbtoHexValue(abc[0], abc[1], abc[2]);
                     }

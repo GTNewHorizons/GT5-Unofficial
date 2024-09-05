@@ -1618,7 +1618,7 @@ public class Material {
         if (obj == null) {
             return false;
         }
-        if (!Material.class.isInstance(obj)) {
+        if (!(obj instanceof Material)) {
             return false;
         }
         Material aObj = (Material) obj;

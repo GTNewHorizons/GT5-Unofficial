@@ -1177,7 +1177,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             } else {
 
                 // Rewrite Fluid handling for Vanilla type tanks
-                if (!IFluidHandler.class.isInstance(aTileEntity)) {
+                if (!(aTileEntity instanceof IFluidHandler)) {
                     Logger.INFO("Tile Was not an instance of IFluidHandler.");
                     return false;
                 }

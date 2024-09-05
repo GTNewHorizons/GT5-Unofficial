@@ -140,13 +140,13 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
                     if (g.size() > 0) {
                         for (Entity e : g) {
                             if (e != null) {
-                                if (!EntityXPOrb.class.isInstance(e) && !EntityBoat.class.isInstance(e)
-                                    && !EntitySnowball.class.isInstance(e)
-                                    && !EntityFireball.class.isInstance(e)
-                                    && !EntityEgg.class.isInstance(e)
-                                    && !EntityExpBottle.class.isInstance(e)
-                                    && !EntityEnderEye.class.isInstance(e)
-                                    && !EntityEnderPearl.class.isInstance(e)) {
+                                if (!(e instanceof EntityXPOrb) && !(e instanceof EntityBoat)
+                                    && !(e instanceof EntitySnowball)
+                                    && !(e instanceof EntityFireball)
+                                    && !(e instanceof EntityEgg)
+                                    && !(e instanceof EntityExpBottle)
+                                    && !(e instanceof EntityEnderEye)
+                                    && !(e instanceof EntityEnderPearl)) {
                                     continue;
                                 } else {
                                     // Logger.INFO("Found "+e.getClass().getName());

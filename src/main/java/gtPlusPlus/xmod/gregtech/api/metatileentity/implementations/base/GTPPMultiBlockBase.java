@@ -851,7 +851,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
             Method mProper = ReflectionUtils.getMethod(MTEHatch.class, "updateTexture", int.class);
             if (mProper != null) {
-                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
+                if (aMetaTileEntity instanceof MTEHatch) {
                     mProper.setAccessible(true);
                     mProper.invoke(aMetaTileEntity, aCasingID);
                     // log("Good Method Call for updateTexture.");
@@ -859,7 +859,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 }
             } else {
                 log("Bad Method Call for updateTexture.");
-                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
+                if (aMetaTileEntity instanceof MTEHatch) {
                     if (aCasingID <= Byte.MAX_VALUE) {
                         ((MTEHatch) aTileEntity).updateTexture(aCasingID);
                         log(

@@ -53,8 +53,8 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        if (result == null || (!DustDecayable.class.isInstance(result.getItem())
-            && !BaseItemDustUnique.class.isInstance(result.getItem()))) {
+        if (result == null || (!(result.getItem() instanceof DustDecayable)
+            && !(result.getItem() instanceof BaseItemDustUnique))) {
             return;
         }
         if (result != null) {
@@ -227,7 +227,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
         @Override
         public int compareTo(CachedRecipe o) {
-            boolean b = DecayableRecipeNEI.class.isInstance(o);
+            boolean b = o instanceof DecayableRecipeNEI;
             if (b) {
                 DecayableRecipeNEI p = (DecayableRecipeNEI) o;
                 if (p.time > this.time) {
@@ -244,7 +244,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         @Override
         public boolean equals(Object obj) {
             if (obj != null) {
-                if (DecayableRecipeNEI.class.isInstance(obj)) {
+                if (obj instanceof DecayableRecipeNEI) {
                     DecayableRecipeNEI p = (DecayableRecipeNEI) obj;
                     if (p != null) {
                         // Time check first to keep it simple and not unbox the Recipes.
