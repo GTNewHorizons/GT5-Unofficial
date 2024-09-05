@@ -11,7 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static tectech.thing.CustomItemList.LASERpipeBlock;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -83,7 +82,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                                 MTEMeteorMiner::onCasingAdded,
                                 ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
                 .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
-                .addElement('G', ofBlock(LASERpipeBlock.getBlock(), 0))
+                .addElement('G', ofBlock(GregTechAPI.sBlockCasings1, 15))
                 .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
                 .addElement(
                     'I',
