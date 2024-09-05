@@ -13,7 +13,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class RecipeGenFluidCanning implements Runnable {
 
@@ -206,13 +205,7 @@ public class RecipeGenFluidCanning implements Runnable {
     }
 
     private void dumpStack() {
-        int parents = 2;
-        for (int i = 0; i < 6; i++) {
-            Logger.INFO(
-                (disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG | "
-                    + (i == 0 ? "Called from: " : "Parent: ")
-                    + ReflectionUtils.getMethodName(i + parents));
-        }
+        Logger.modLogger.info((disableOptional ? "EXTRACTING" : "CANNING") + " DEBUG ", new Exception());
     }
 
     private int getMapSize(RecipeMap<?> aMap) {

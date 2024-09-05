@@ -17,7 +17,6 @@ import gregtech.GT_Version;
 import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
@@ -190,34 +189,19 @@ public class GTPPCore {
         public static final String VERSION = GT_Version.VERSION;
     }
 
-    public static final void crash() {
+    public static void crash() {
         crash("Generic Crash");
     }
 
-    public static final void crash(String aReason) {
+    public static void crash(String aReason) {
         try {
             Logger.INFO("==========================================================");
             Logger.INFO("[GT++ CRASH]");
             Logger.INFO("==========================================================");
             Logger.INFO("Oooops...");
-            Logger.INFO("This should only happy in a development environment or when something really bad happens.");
+            Logger.INFO("This should only happen in a development environment or when something really bad happens.");
             Logger.INFO("Reason: " + aReason);
             Logger.INFO("==========================================================");
-            Logger.INFO("Called from: " + ReflectionUtils.getMethodName(1));
-            Logger.INFO(ReflectionUtils.getMethodName(2));
-            Logger.INFO(ReflectionUtils.getMethodName(3));
-            Logger.INFO(ReflectionUtils.getMethodName(4));
-            Logger.INFO(ReflectionUtils.getMethodName(5));
-            Logger.INFO(ReflectionUtils.getMethodName(6));
-            Logger.INFO(ReflectionUtils.getMethodName(7));
-            Logger.INFO(ReflectionUtils.getMethodName(8));
-            Logger.INFO(ReflectionUtils.getMethodName(9));
-            Logger.INFO(ReflectionUtils.getMethodName(10));
-            Logger.INFO(ReflectionUtils.getMethodName(11));
-            Logger.INFO(ReflectionUtils.getMethodName(12));
-            Logger.INFO(ReflectionUtils.getMethodName(13));
-            Logger.INFO(ReflectionUtils.getMethodName(14));
-            Logger.INFO(ReflectionUtils.getMethodName(15));
         } catch (Throwable t) {
             t.printStackTrace();
         }
