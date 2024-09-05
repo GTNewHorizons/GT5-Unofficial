@@ -266,11 +266,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Gains an additional 10 parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addInfo(
-                AuthorOmdaCZ + "with help of "
+                AuthorOmdaCZ + " with help of "
                     + AuthorFourIsTheNumber
                     + EnumChatFormatting.AQUA
                     + ", GDCloud "
-                    + "&"
+                    + "& "
                     + authorBaps)
             .addSeparator()
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
@@ -405,8 +405,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             return false;
         } else casingAmount = 0;
         machineTier = Math.min(pipeCasingTier, casingTier);
-        if (mWidth > (2 * (machineTier + 1)))
-        {
+        if (mWidth > (2 * (machineTier + 1))) {
             return false;
         }
         if (casingTier > -1) {
