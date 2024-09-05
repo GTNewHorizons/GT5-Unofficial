@@ -322,6 +322,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             }
         }
         currentParallel = itemParallel;
+        if (currentParallel <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
         calculator.setCurrentParallel(currentParallelBeforeBatchMode)
