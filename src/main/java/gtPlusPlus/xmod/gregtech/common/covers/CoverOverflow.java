@@ -34,15 +34,14 @@ public class CoverOverflow extends CoverBehavior {
         this.mMaxTransferRate = aTransferRate * 1000;
     }
 
-    private FluidStack doOverflowThing(FluidStack mFluid, int aAmountLimit) {
-        if (mFluid != null && mFluid.amount > aAmountLimit)
-            mFluid.amount -= Math.min(mFluid.amount - aAmountLimit, mTransferRate);
-        return mFluid;
+    private FluidStack doOverflowThing(FluidStack fluid, int amountLimit) {
+        if (fluid != null && fluid.amount > amountLimit)
+            fluid.amount -= Math.min(fluid.amount - amountLimit, mTransferRate);
+        return fluid;
     }
 
-    private FluidStack[] doOverflowThings(FluidStack[] mFluids, int aAmountLimit) {
-        for (FluidStack mFluid : mFluids) doOverflowThing(mFluid, aAmountLimit);
-        return mFluids;
+    private void doOverflowThings(FluidStack[] fluids, int amountLimit) {
+        for (FluidStack fluid : fluids) doOverflowThing(fluid, amountLimit);
     }
 
     public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int aAmountLimit,
