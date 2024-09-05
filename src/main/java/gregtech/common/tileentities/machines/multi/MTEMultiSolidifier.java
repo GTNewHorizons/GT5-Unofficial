@@ -283,7 +283,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addCasingInfoMin("Tier 3: Abyssal Alloy Pipe Casing", 18, true)
             .addCasingInfoMin("Heat Proof Casing", 4, false)
             .addCasingInfoMin("Solid Steel Casing", 4, false)
-            .addInfo("Casings/Pipe Casings limit maximal width 2; 4; 6")
+            .addInfo("Tier limits maximal width 2; 4; 6")
             .addInputBus("Any Tiered Casing", 1)
             .addOutputBus("Any Tiered Casing", 1)
             .addInputHatch("Any Tiered Casing", 1)
@@ -320,7 +320,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalWidth = Math.min(3 + getCasingTier(), stackSize.stackSize + 3);
+        int tTotalWidth = Math.min(3 + machineTier, stackSize.stackSize + 3);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             mWidth = i;
             nWidth = i;
