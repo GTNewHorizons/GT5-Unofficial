@@ -327,14 +327,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.GRAY
                     + " when stability is BELOW "
                     + EnumChatFormatting.RED
-                    + "50%")
+                    + "50")
             .addInfo(
                 "Parallels are " + EnumChatFormatting.RED
                     + "quadrupled"
                     + EnumChatFormatting.GRAY
                     + " when stability is BELOW "
                     + EnumChatFormatting.RED
-                    + "20%")
+                    + "20")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
