@@ -6,16 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-
-import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GT_Version;
@@ -29,8 +24,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGener
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
 
 public class GTPPCore {
-
-    public static Map PlayerCache;
 
     // Math Related
     public static final float PI = (float) Math.PI;
@@ -48,11 +41,6 @@ public class GTPPCore {
 
     public static int turbineCutoffBase = 75000;
 
-    // GT++ Fake Player Profile
-    public static final GameProfile gameProfile = new GameProfile(
-        UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()),
-        "[GT++]");
-    public static final WeakHashMap<World, EntityPlayerMP> fakePlayerCache = new WeakHashMap<>();
     // Tooltips;
     public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
     public static final Supplier<String> GT_Tooltip_Builder = () -> StatCollector
