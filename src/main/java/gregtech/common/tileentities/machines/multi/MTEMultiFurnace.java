@@ -152,12 +152,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         ArrayList<ItemStack> tInputList = getAllStoredInputs();
         if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        long inputVoltage = getMaxInputVoltage();
-
         int fakeOriginalMaxParallel = 1;
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(inputVoltage)
+        OverclockCalculator calculator = new OverclockCalculator().setEUt(getAverageInputVoltage())
+            .setAmperage(getMaxInputAmps())
             .setRecipeEUt(RECIPE_EUT)
             .setDuration(RECIPE_DURATION)
+            .setAmperageOC(mEnergyHatches.size() != 1)
             .setParallel(fakeOriginalMaxParallel);
 
         int maxParallel = this.mLevel;
