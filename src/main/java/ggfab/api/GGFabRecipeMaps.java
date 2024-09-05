@@ -36,7 +36,7 @@ public class GGFabRecipeMaps {
                 .validateNoOutput()
                 .validateNoOutputFluid()
                 .build();
-            if (!rr.isPresent()) return Collections.emptyList();
+            if (rr.isEmpty()) return Collections.emptyList();
             ToolDictNames outputType = b.getMetadata(OUTPUT_TYPE);
             GTRecipe r = rr.get();
             int outputSize = b.getMetadataOrDefault(OUTPUT_COUNT, 0);
