@@ -181,9 +181,9 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 tOffset + 0,
                 EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
                     + EnumChatFormatting.GREEN
-                    + Long.toString(tMaxDamage - getToolDamage(aStack))
+                    + (tMaxDamage - getToolDamage(aStack))
                     + " / "
-                    + Long.toString(tMaxDamage)
+                    + tMaxDamage
                     + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 1,
@@ -191,9 +191,9 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             aList.add(
                 tOffset + 2,
                 EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
-                    + Integer.toString(range)
+                    + range
                     + "x"
-                    + Integer.toString(range)
+                    + range
                     + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 3,
@@ -207,7 +207,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 tOffset + 5,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.success.chance")
                     + EnumChatFormatting.RESET
-                    + Integer.toString(((((1 + meta) * 8) <= 100) ? ((1 + meta) * 8) : 100))
+                    + ((((1 + meta) * 8) <= 100) ? ((1 + meta) * 8) : 100)
                     + EnumChatFormatting.GRAY
                     + "%");
             aList.add(

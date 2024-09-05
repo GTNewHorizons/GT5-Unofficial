@@ -189,11 +189,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(
                 StatCollector.translateToLocal(
                     "" + EnumChatFormatting.GREEN
-                        + Long.toString(storedEnergy)
+                        + storedEnergy
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
-                        + Long.toString(maxEnergy)
+                        + maxEnergy
                         + EnumChatFormatting.RESET
                         + " EU"));
 
@@ -201,7 +201,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(
                 StatCollector.translateToLocal(
                     "" + EnumChatFormatting.YELLOW
-                        + Long.toString(getMaxInputVoltage())
+                        + getMaxInputVoltage()
                         + EnumChatFormatting.RESET
                         + " EU/t(*2A) "
                         + StatCollector.translateToLocal("GTPP.machines.tier")
@@ -217,11 +217,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(
                 StatCollector.translateToLocal(
                     "" + EnumChatFormatting.GREEN
-                        + Long.toString(storedEnergy)
+                        + storedEnergy
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
-                        + Long.toString(maxEnergy)
+                        + maxEnergy
                         + EnumChatFormatting.RESET
                         + " EU"));
         }
@@ -247,7 +247,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + StatCollector.translateToLocal("GTPP.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %");
 
@@ -275,11 +275,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         mInfo.add(
             "Total Time Since Built: " + EnumChatFormatting.DARK_GREEN
-                + Integer.toString(weeks)
+                + weeks
                 + EnumChatFormatting.RESET
                 + " Weeks, "
                 + EnumChatFormatting.DARK_GREEN
-                + Integer.toString(days)
+                + days
                 + EnumChatFormatting.RESET
                 + " Days, ");
         mInfo.add(
@@ -287,14 +287,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + EnumChatFormatting.RESET
                 + " Hours, "
                 + EnumChatFormatting.DARK_GREEN
-                + Long.toString(minutes)
+                + minutes
                 + EnumChatFormatting.RESET
                 + " Minutes, "
                 + EnumChatFormatting.DARK_GREEN
-                + Long.toString(second)
+                + second
                 + EnumChatFormatting.RESET
                 + " Seconds.");
-        mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + Long.toString(this.mTotalRunTime));
+        mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
 
         String[] mInfo2 = mInfo.toArray(new String[mInfo.size()]);
         return mInfo2;
