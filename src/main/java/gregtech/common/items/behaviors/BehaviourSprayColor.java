@@ -51,7 +51,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         "If used while sneaking it will spray a chain of blocks");
 
     private final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.paintspray.chain",
+        "gt.behaviour.paintspray.chain_amount",
         "Sprays up to %d blocks, in the direction you're looking at");
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
