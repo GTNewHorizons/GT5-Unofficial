@@ -140,7 +140,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     /**
      * 1: Off
      * 2: On, stable
-     * 3: Off, unstable
+     * 3: On, unstable
      */
     private byte blackHoleStatus = 1;
 
@@ -270,7 +270,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         tt.addMachineType("Compressor/Advanced Neutronium Compressor")
             .addInfo("Controller Block for the Semi-Stable Black Hole Containment Field")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
-            .addInfo("No longer requires heat management to perform perfect compression")
+            .addInfo("No longer requires heat management to perform superdense compression")
             .addInfo("Can create advanced singularities!")
             .addSeparator()
             .addInfo(
@@ -289,6 +289,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.GRAY
                     + " until it reaches 0")
             .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
+            .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
             .addSeparator()
             .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
             .addInfo(
@@ -301,24 +302,24 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 "Every " + EnumChatFormatting.RED
                     + "30"
                     + EnumChatFormatting.GRAY
-                    + " seconds saved by spacetime insertion will "
+                    + " total seconds saved by spacetime insertion will "
                     + EnumChatFormatting.RED
                     + "double"
                     + EnumChatFormatting.GRAY
                     + " the cost per second!")
-            .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
                     + "Black Hole Collapser"
                     + EnumChatFormatting.GRAY
                     + " to close the black hole")
+            .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
             .addSeparator()
             .addInfo(
                 "Recipes not utilizing the black hole have their lengths " + EnumChatFormatting.RED
                     + "doubled"
                     + EnumChatFormatting.GRAY
                     + " if it becomes unstable")
-            .addInfo("400% faster than singleblock machines of the same voltage when black hole is open")
+            .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
             .addInfo(
@@ -465,16 +466,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
                 // Default speed bonus
-                setSpeedBonus(1F);
+                setSpeedBonus(0.2F);
+                if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
 
-                // If recipe needs a black hole and one is not open, just wait
-                // If the recipe doesn't require black hole, incur a 0.5x speed penalty
-                // If recipe doesn't require black hole but one is open, give 5x speed bonus
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
-                    if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
-                } else {
-                    if (blackHoleStatus == 2) setSpeedBonus(5F);
-                    else if (blackHoleStatus == 3) setSpeedBonus(0.2F);
+                // If the recipe doesn't require black hole, but it is unstable, incur a 0.5x speed penalty
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 0 && (blackHoleStatus == 3)) {
+                    setSpeedBonus(5F);
                 }
                 return super.validateRecipe(recipe);
             }
