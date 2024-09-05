@@ -95,7 +95,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             'G',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
-                .dot(1)
+                .dot(2)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings10, 5))
         .build();
