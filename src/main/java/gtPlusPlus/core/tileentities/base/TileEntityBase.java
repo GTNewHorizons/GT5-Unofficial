@@ -1,5 +1,6 @@
 package gtPlusPlus.core.tileentities.base;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -482,9 +483,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     protected final void clearTileEntityBuffer() {
-        for (int i = 0; i < this.mBufferedTileEntities.length; ++i) {
-            this.mBufferedTileEntities[i] = null;
-        }
+        Arrays.fill(this.mBufferedTileEntities, null);
     }
 
     @Override
