@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.MetaTileEntityIDs.ChargingBus;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
@@ -18,6 +19,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Reservoir;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.common.tileentities.machines.MTEHatchChargingBus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
@@ -95,6 +97,10 @@ public class GregtechCustomHatches {
                 "hatch.air.intake.tier.01",
                 "Extreme Air Intake Hatch",
                 6).getStackForm(1L));
+
+        // MultiBlock ChargingBus
+        GregtechItemList.ChargingBus
+            .set(new MTEHatchChargingBus(ChargingBus.ID, "ChargingBus", "ChargingBus", 4).getStackForm(1L));
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
