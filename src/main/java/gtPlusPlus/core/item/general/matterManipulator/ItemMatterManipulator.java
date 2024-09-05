@@ -34,11 +34,11 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.net.GT_Packet_UpdateItem;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.net.GTPacketUpdateItem;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockRemoveMode;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockSelectMode;
@@ -152,7 +152,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             itemStack.setTagCompound(newState);
 
             if(needsSyncToServer) {
-                GT_Values.NW.sendToServer(new GT_Packet_UpdateItem(
+                GTValues.NW.sendToServer(new GTPacketUpdateItem(
                     newState.getCompoundTag("config")
                 ));
             }
