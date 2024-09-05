@@ -130,7 +130,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 return GTUtility.safeInt((long) (turbine.getOptimalGasEUt()));
             }
 
-            actualOptimalFlow = GTUtility.safeInt((long) ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue));
+            actualOptimalFlow = GTUtility.safeInt((long) (getSpeedMultiplier() * ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue)));
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of

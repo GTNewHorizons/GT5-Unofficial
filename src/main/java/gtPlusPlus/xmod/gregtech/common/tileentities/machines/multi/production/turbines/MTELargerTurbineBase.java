@@ -68,7 +68,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
-    private boolean looseFit = false;
+    protected boolean looseFit = false;
     protected double mufflerReduction = 1;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
@@ -468,7 +468,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalOptimalFlow = 0;
 
                     aTotalBaseEff += turbine.getEfficiency();
-                    aTotalOptimalFlow += GTUtility.safeInt((long) Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
+                    aTotalOptimalFlow += GTUtility.safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
+                    baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
+                    optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }
@@ -565,7 +567,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     public boolean isLooseMode() {
-        return false;
+        return looseFit;
     }
 
     @Override

@@ -26,7 +26,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
     public boolean achievement = false;
-    private boolean looseFit = false;
     private boolean isUsingDenseSteam;
 
     public MTELargeTurbineSHSteam(int aID, String aName, String aNameRegional) {
@@ -79,7 +78,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
         // Variable required outside of loop for
         // multi-hatch scenarios.
-        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        this.realOptFlow = getSpeedMultiplier() * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
 
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
         // 125% of optimal flow.
@@ -161,23 +160,6 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return (looseFit && GTPPCore.RANDOM.nextInt(4) == 0) ? 0 : 1;
-    }
-
-    @Override
-    public boolean isLooseMode() {
-        return looseFit;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("turbineFitting", looseFit);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        looseFit = aNBT.getBoolean("turbineFitting");
     }
 
     @Override
