@@ -278,7 +278,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             OrePrefixes.___placeholder___,
             OrePrefixes.___placeholder___,
             OrePrefixes.nanite,
-            OrePrefixes.rawOre);
+            OrePrefixes.rawOre,
+            OrePrefixes.plateSuperdense);
         INSTANCE = this;
         Object[] o = new Object[0];
 
@@ -1482,11 +1483,10 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return aDoShowAllItems || (aPrefix.toString()
-            .toLowerCase()
-            .contains("nanite"))
-            || (aPrefix.toString()
-                .toLowerCase()
-                .contains("rawore"));
+        String pref = aPrefix.toString()
+            .toLowerCase();
+        return aDoShowAllItems || pref.contains("nanite")
+            || pref.contains("rawore")
+            || pref.contains("platesuperdense");
     }
 }

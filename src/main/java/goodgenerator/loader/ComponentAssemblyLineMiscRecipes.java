@@ -344,7 +344,7 @@ public class ComponentAssemblyLineMiscRecipes {
             1 << (t - 3),
             (int) TierEU.RECIPE_UEV,
             1,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.ProtoHalkonite, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
@@ -353,11 +353,12 @@ public class ComponentAssemblyLineMiscRecipes {
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.TranscendentMetal, 4),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.TranscendentMetal, 16),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.ProtoHalkonite, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
             new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t), Materials.Lubricant.getFluid(1000 * (t - 2)) },
+                StackUtils.getTieredFluid(t, 144 * t),
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UEV);
@@ -382,7 +383,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
             new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t - 1, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t), Materials.Lubricant.getFluid(1000 * (t - 2)) },
+                StackUtils.getTieredFluid(t, 144 * t),
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UMV.get(1),
             50 * 20,
             (int) TierEU.RECIPE_UIV);
@@ -416,7 +418,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t - 1, 16) },
             new FluidStack[] { new FluidStack(sold, 144 * t * 4),
                 MaterialsUEVplus.BlackDwarfMatter.getMolten(144 * t * 2), MaterialsUEVplus.Eternity.getMolten(144 * t),
-                Materials.Lubricant.getFluid(1000 * (t - 2)) },
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UXV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UMV);
