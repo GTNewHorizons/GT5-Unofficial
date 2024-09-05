@@ -73,7 +73,7 @@ public class FluidColors {
             fluidColors.put(
                 FluidRegistry.getFluid("unknowwater")
                     .getID(),
-                new short[]{0x8A, 0x2B, 0xE2});
+                new short[] { 0x8A, 0x2B, 0xE2 });
         }
         fluidColors.put(Materials.Hydrogen.mGas.getID(), new short[] { 0x32, 0x32, 0xD6 });
         fluidColors.put(Materials.SulfuricAcid.mFluid.getID(), new short[] { 0xFF, 0xB9, 0x0F });

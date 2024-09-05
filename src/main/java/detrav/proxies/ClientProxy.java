@@ -1,10 +1,10 @@
 package detrav.proxies;
 
-import detrav.enums.Textures01;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 import detrav.DetravScannerMod;
+import detrav.enums.Textures01;
 import detrav.gui.DetravScannerGUI;
 
 /**
