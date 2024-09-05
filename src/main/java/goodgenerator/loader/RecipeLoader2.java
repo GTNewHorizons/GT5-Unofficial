@@ -653,7 +653,7 @@ public class RecipeLoader2 {
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
-                    Materials.Lubricant.getFluid(46080))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T9.get(1))
                 .eut(TierEU.RECIPE_UMV)
                 .duration(50 * SECONDS)
@@ -675,7 +675,7 @@ public class RecipeLoader2 {
                     Materials.DraconiumAwakened.getMolten(14400),
                     MaterialsUEVplus.TranscendentMetal.getMolten(1440),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
-                    Materials.Lubricant.getFluid(46080))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T10.get(1))
                 .eut(TierEU.RECIPE_UXV)
                 .duration(50 * SECONDS)
