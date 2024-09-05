@@ -82,14 +82,13 @@ public class PlasmaForgeRecipes implements Runnable {
             .itemInputs()
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(250),
-                GGMaterial.metastableOganesson.getMolten(144),
+                GGMaterial.metastableOganesson.getMolten(288),
                 Materials.Grade8PurifiedWater.getFluid(400),
-                new FluidStack(celestialTungstenPlasma, 16 * 144),
+                new FluidStack(celestialTungstenPlasma, 32 * 144),
                 Materials.RadoxSuperHeavy.getFluid(2000),
                 MaterialsUEVplus.ExcitedDTCC.getFluid(1000))
             .fluidOutputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(5200), // Exact sum of materials is 5192, but
-                                                                                // that makes no sense
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(7500),
                 MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(500))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -104,13 +103,13 @@ public class PlasmaForgeRecipes implements Runnable {
             .itemInputs()
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(1000),
-                GGMaterial.metastableOganesson.getMolten(144 * 4),
+                GGMaterial.metastableOganesson.getMolten(288 * 4),
                 Materials.Grade8PurifiedWater.getFluid(1600),
-                new FluidStack(celestialTungstenPlasma, 64 * 144),
+                new FluidStack(celestialTungstenPlasma, 128 * 144),
                 Materials.RadoxHeavy.getFluid(8000),
                 MaterialsUEVplus.ExcitedDTRC.getFluid(4000))
             .fluidOutputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(20400),
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(30000),
                 MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2000))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
