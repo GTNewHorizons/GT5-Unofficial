@@ -576,6 +576,7 @@ GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.meteor_mining=§dCurrently Mining!
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
