@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -29,6 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
@@ -38,6 +40,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static IStructureDefinition<MTEMeteorMiner> STRUCTURE_DEFINITION = null;
     private static final int BASE_CASING_COUNT = 469;
+    private int xDrill, yDrill, zDrill;
+    private int xStart, yStart, zStart;
 
     @Override
     public IStructureDefinition<MTEMeteorMiner> getStructureDefinition() {
@@ -68,7 +72,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     {"               ","               ","               ","               ","       I       ","       A       "," HHH   A   HHH "," HHH   A   HHH "," HHH       HHH ","               ","               ","      HHH      ","      HHH      ","      HHH      ","               "}
                 // spotless:on
                         })))
-                .addElement('A', ofBlock(ModBlocks.blockCasings4Misc, 2))// Glasses.chainAllGlasses())
+                .addElement('A', Glasses.chainAllGlasses())
                 .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
                 .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
                 .addElement('D', ofFrame(Materials.StainlessSteel))
@@ -95,6 +99,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 .build();
         }
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
+            && !f.isVerticallyFliped();
     }
 
     public MTEMeteorMiner(int aID, String aName, String aNameRegional) {
@@ -172,8 +182,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
-            .addInfo("Controller Block for the Meteor Miner")
-            .addInfo(EnumChatFormatting.BLUE + "Finally some good Meteors!")
+            .addInfo("Controller Block for the Meteor Miner!")
+            .addInfo(
+                "To work properly the Superconducting Coils must be placed 32 blocks below the center of the meteor,")
+            .addInfo("it will mine in a radius of 24 blocks in each direction from the center of the meteor.")
+            .addInfo("All the chunks involved must be chunkloaded.")
+            .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Finally some good Meteors!")
             .addInfo(AuthorTotto)
             .addSeparator()
             .beginStructureBlock(15, 18, 15, false)
@@ -210,5 +224,58 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    protected int getBaseProgressTime() {
+        return 1;
+    };
+
+    protected int getXDrill() {
+        return xDrill;
+    }
+
+    protected int getYDrill() {
+        return yDrill;
+    }
+
+    protected int getZDrill() {
+        return zDrill;
+    }
+
+    private void setStartCoords() {
+        this.yStart = this.getBaseMetaTileEntity()
+            .getYCoord() + 24; // Controller + 16 (end of multi) + 32 (end of multi to meteor center) - 24 (range of max
+                               // meteor)
+        ForgeDirection facing = this.getBaseMetaTileEntity()
+            .getBackFacing();
+        switch (facing) {
+            case EAST:
+                this.xStart = this.getBaseMetaTileEntity()
+                    .getXCoord() - 3;
+                this.zStart = this.getBaseMetaTileEntity()
+                    .getZCoord();
+                break;
+            case NORTH:
+                this.xStart = this.getBaseMetaTileEntity()
+                    .getXCoord();
+                this.zStart = this.getBaseMetaTileEntity()
+                    .getZCoord() + 3;
+                break;
+            case SOUTH:
+                this.xStart = this.getBaseMetaTileEntity()
+                    .getXCoord();
+                this.zStart = this.getBaseMetaTileEntity()
+                    .getZCoord() - 3;
+                break;
+            case WEST:
+                this.xStart = this.getBaseMetaTileEntity()
+                    .getXCoord() + 3;
+                this.zStart = this.getBaseMetaTileEntity()
+                    .getZCoord();
+                break;
+            default:
+                break;
+
+        }
     }
 }
