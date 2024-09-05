@@ -197,16 +197,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                                 1));
                     }
                 }
-                case UnifiedBlock -> {
-                    // Unified ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
-                case PerDimBlock -> {
-                    // Per Dimension ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
-                case Block -> {
-                    // Regular ore
+                case UnifiedBlock, PerDimBlock, Block -> {
                     drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
                 }
             }

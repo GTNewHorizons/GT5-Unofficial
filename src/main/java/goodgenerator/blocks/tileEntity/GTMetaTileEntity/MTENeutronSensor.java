@@ -114,24 +114,16 @@ public class MTENeutronSensor extends MTEHatch {
                 threshold = newThreshold;
                 inverted = true;
                 break;
-            case ">":
+            case ">", "!=":
                 threshold = newThreshold + 1;
                 inverted = false;
                 break;
-            case "<=":
+            case "<=", "==":
                 threshold = newThreshold + 1;
                 inverted = true;
                 break;
             case ">=":
                 threshold = newThreshold;
-                inverted = false;
-                break;
-            case "==": // Interpret as <= to keep "==0eV" working as before.
-                threshold = newThreshold + 1;
-                inverted = true;
-                break;
-            case "!=": // Interpret as > to keep "!=0eV" working as before.
-                threshold = newThreshold + 1;
                 inverted = false;
                 break;
         }

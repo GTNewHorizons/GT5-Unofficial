@@ -97,16 +97,7 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
                         rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                     }
                 }
-                case UnifiedBlock -> {
-                    // Unified ore
-                    rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
-                }
-                case PerDimBlock -> {
-                    // Per Dimension ore
-                    rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
-                }
-                case Block -> {
-                    // Regular ore
+                case UnifiedBlock, PerDimBlock, Block -> {
                     rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
                 }
             }

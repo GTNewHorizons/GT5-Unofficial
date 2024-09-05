@@ -636,16 +636,12 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                     case armor_feet:
                     case armor_head:
                     case armor_legs:
-                    case armor_torso:
+                    case armor_torso, breakable, fishing_rod:
                         break;
                     case bow:
                         if (tStats.isRangedWeapon()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
-                    case breakable:
-                        break;
-                    case fishing_rod:
                         break;
                     case digger:
                         if (tStats.isMiningTool()) {

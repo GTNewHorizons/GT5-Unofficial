@@ -14,9 +14,8 @@ public abstract class BaseHarvestableCrop extends BaseCrop {
     public int stat(int n) {
         return switch (n) {
             case 0 -> 0;
-            case 1 -> 4;
+            case 1, 3 -> 4;
             case 2 -> 0;
-            case 3 -> 4;
             case 4 -> 0;
             default -> 0;
         };

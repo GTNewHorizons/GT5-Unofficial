@@ -67,16 +67,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                 case 4 -> {
                     return TexturesGtBlock.Casing_Coil_QFT.getIcon();
                 }
-                case 5 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                }
-                case 6 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                }
-                case 7 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                }
-                case 8 -> {
+                case 5, 6, 7, 8, 12, 13, 14, 15 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 }
                 case 9 -> {
@@ -91,18 +82,6 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                 }
                 case 11 -> {
                     return TexturesGtBlock.TEXTURE_CASING_ROCKETDYNE.getIcon();
-                }
-                case 12 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                }
-                case 13 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                }
-                case 14 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                }
-                case 15 -> {
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 }
                 default -> {
                     return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
