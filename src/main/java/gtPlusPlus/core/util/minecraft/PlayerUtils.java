@@ -75,63 +75,25 @@ public class PlayerUtils {
     }
 
     public static boolean isPlayerOP(final EntityPlayer player) {
-        if (player.canCommandSenderUseCommand(2, "")) {
-            return true;
-        }
-        return false;
+        return player.canCommandSenderUseCommand(2, "");
     }
 
     // Not Clientside
     public static ItemStack getItemStackInPlayersHand(final World world, final String Name) {
-        final EntityPlayer thePlayer = getPlayer(Name);
-        ItemStack heldItem = null;
-        try {
-            heldItem = thePlayer.getHeldItem();
-        } catch (final NullPointerException e) {
-            return null;
-        }
-        if (heldItem != null) {
-            return heldItem;
-        }
-        return null;
+        return PlayerUtils.getItemStackInPlayersHand(getPlayer(Name));
     }
 
     @SideOnly(Side.CLIENT)
     public static ItemStack getItemStackInPlayersHand() {
-        final Minecraft mc = Minecraft.getMinecraft();
-        ItemStack heldItem;
-        try {
-            heldItem = mc.thePlayer.getHeldItem();
-        } catch (final NullPointerException e) {
-            return null;
-        }
-        if (heldItem != null) {
-            return heldItem;
-        }
-        return null;
+        return PlayerUtils.getItemStackInPlayersHand(Minecraft.getMinecraft().thePlayer);
     }
 
     public static ItemStack getItemStackInPlayersHand(final EntityPlayer player) {
-        ItemStack heldItem;
-        try {
-            heldItem = player.getHeldItem();
-        } catch (final NullPointerException e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (heldItem != null) {
-            return heldItem;
-        } else {
-            if (Utils.isClient()) {
-                heldItem = player.getItemInUse();
-            } else {
-                heldItem = player.getCurrentEquippedItem();
-            }
-        }
-        return heldItem;
+        if (player == null) return null;
+        return player.getHeldItem();
     }
 
-    public static final UUID getPlayersUUIDByName(final String aPlayerName) {
+    public static UUID getPlayersUUIDByName(final String aPlayerName) {
         final EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
         if (player != null) {
             return player.getUniqueID();
@@ -157,7 +119,7 @@ public class PlayerUtils {
         if (aPlayer instanceof FakePlayer
             || (mThaumcraftFakePlayer != null && mThaumcraftFakePlayer.isInstance(aPlayer))
             || (aPlayer.getCommandSenderName() == null || aPlayer.getCommandSenderName()
-                .length() <= 0)
+                .isEmpty())
             || (aPlayer.isEntityInvulnerable() && !aPlayer.canCommandSenderUseCommand(0, "") && (aChunkLocation == null)
                 || (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0))) {
             mCachedFakePlayers.put(
@@ -187,7 +149,7 @@ public class PlayerUtils {
                 return false;
             }
             if (p.getCommandSenderName()
-                .length() <= 0) {
+                .isEmpty()) {
                 cacheFakePlayer(p);
                 return false;
             }
@@ -196,11 +158,9 @@ public class PlayerUtils {
                 cacheFakePlayer(p);
                 return false;
             }
-            if (!isCachedFakePlayer(
+            return !isCachedFakePlayer(
                 p.getUniqueID()
-                    .toString())) {
-                return true;
-            }
+                    .toString());
         }
         return false;
     }

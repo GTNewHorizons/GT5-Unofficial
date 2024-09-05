@@ -300,12 +300,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                         .getMass() > 128 ? 64 : 30)
                 .addTo(fluidSolidifierRecipes);
 
-            // No Spring Molds
-
-            if (WerkstoffLoader.rotorMold == null) {
-                return;
-            }
-
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Rotor.get(0))
                 .itemOutputs(werkstoff.get(rotor))
