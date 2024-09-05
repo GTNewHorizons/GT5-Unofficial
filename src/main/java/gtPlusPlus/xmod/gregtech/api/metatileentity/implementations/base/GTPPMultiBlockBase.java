@@ -208,7 +208,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                         + ": "
                         + EnumChatFormatting.YELLOW
                         + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
-                        + EnumChatFormatting.RESET));;
+                        + EnumChatFormatting.RESET));
         }
         if (!this.mAllDynamoHatches.isEmpty()) {
             long storedEnergy = getStoredEnergyInAllDynamoHatches();

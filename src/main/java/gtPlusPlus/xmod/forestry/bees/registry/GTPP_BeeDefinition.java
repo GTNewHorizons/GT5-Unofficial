@@ -86,11 +86,8 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
             AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         }, dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(
-                GTBeeDefinition.STEEL.getSpecies(),
-                GTBeeDefinition.GOLD.getSpecies(),
-                10,
-                1f);
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(GTBeeDefinition.STEEL.getSpecies(), GTBeeDefinition.GOLD.getSpecies(), 10, 1f);
             tMutation.restrictHumidity(ARID);
             tMutation.restrictBiomeType(BiomeDictionary.Type.HOT);
         }),;
