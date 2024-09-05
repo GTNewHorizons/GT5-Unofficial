@@ -232,8 +232,7 @@ public enum IDMetaItem03 {
     Transdimensional_Alignment_Matrix(758),
     Thermal_Superconductor(759),
     Relativistic_Heat_Capacitor(760),
-    Phononic_Seed_Crystal(761),
-    Superdense_ProtoHalkonite_Plate(762);
+    Phononic_Seed_Crystal(761),;
 
     public final int ID;
 

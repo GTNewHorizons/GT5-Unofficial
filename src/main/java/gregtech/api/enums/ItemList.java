@@ -2554,7 +2554,6 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_EV,
     BetterJukebox_IV,
     WirelessHeadphones,
-    Superdense_ProtoHalkonite_Plate,
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,

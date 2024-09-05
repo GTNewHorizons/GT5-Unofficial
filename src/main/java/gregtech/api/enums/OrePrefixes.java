@@ -776,6 +776,10 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
 
+        // When Exo-Halkonite is added, remove this.
+        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+
         cell.disableComponent(MaterialsUEVplus.GravitonShard);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);

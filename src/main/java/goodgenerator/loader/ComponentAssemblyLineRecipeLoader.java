@@ -389,7 +389,9 @@ public class ComponentAssemblyLineRecipeLoader {
                 // Superdense plate is 64 plates
                 int superDensePlateAmount = (int) (((totalItems * OrePrefixes.wireFine.mMaterialAmount) / M) / 64);
                 stacks.addAll(
-                    multiplyAndSplitIntoStacks(ItemList.Superdense_ProtoHalkonite_Plate.get(1), superDensePlateAmount));
+                    multiplyAndSplitIntoStacks(
+                        GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.ProtoHalkonite, 1),
+                        superDensePlateAmount));
                 isCompacted = true;
             }
             if (!isCompacted) stacks.addAll(multiplyAndSplitIntoStacks(itemstack, totalItems));

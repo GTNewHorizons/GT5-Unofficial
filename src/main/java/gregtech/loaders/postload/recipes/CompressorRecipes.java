@@ -15,7 +15,10 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -263,18 +266,15 @@ public class CompressorRecipes implements Runnable {
             .eut(4)
             .addTo(compressorRecipes);
 
-        // TODO: Uncomment when superdense infinity plates are added
-        /*
-         * GTValues.RA.stdBuilder()
-         * .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
-         * .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(64 * 144))
-         * .itemOutputs(ItemList.Superdense_ProtoHalkonite_Plate.get(1))
-         * // Require stabilized black hole
-         * .metadata(CompressionTierKey.INSTANCE, 2)
-         * .duration(45 * SECONDS)
-         * .eut(TierEU.RECIPE_UIV)
-         * .addTo(compressorRecipes);
-         */
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(64 * 144))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
+            // Require stabilized black hole
+            .metadata(CompressionTierKey.INSTANCE, 2)
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.gem, 9))

@@ -427,6 +427,7 @@ public class VacuumFreezerRecipes implements Runnable {
         this.addProtoHalkonitePartRecipe(OrePrefixes.stickLong, 1);
         this.addProtoHalkonitePartRecipe(OrePrefixes.gearGt, 1);
         this.addProtoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.plateSuperdense, 1);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 9L))
@@ -447,7 +448,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(
                 MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier),
                 Materials.SuperCoolant.getFluid(partFraction * multiplier * 10L))
-            .duration((int) (multiplier * (15 * SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (10 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UIV)
             .noOptimize()
             .addTo(vacuumFreezerRecipes);
