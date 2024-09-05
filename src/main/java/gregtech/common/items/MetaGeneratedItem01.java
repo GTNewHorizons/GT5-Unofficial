@@ -252,6 +252,8 @@ import static gregtech.common.items.IDMetaItem01.FluidRegulator_IV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_LV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_LuV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_MV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UEV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UHV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_UV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_ZPM;
 import static gregtech.common.items.IDMetaItem01.Fuel_Can_Plastic_Empty;
@@ -2065,6 +2067,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 FluidRegulator_UV.ID,
                 "Fluid Regulator (UV)",
                 FRText1 + GTUtility.formatNumbers(10485760) + FRText2));
+        ItemList.FluidRegulator_UHV.set(
+            addItem(
+                FluidRegulator_UHV.ID,
+                "Fluid Regulator (UHV)",
+                FRText1 + GTUtility.formatNumbers(20971520) + FRText2));
+        ItemList.FluidRegulator_UEV.set(
+            addItem(
+                FluidRegulator_UEV.ID,
+                "Fluid Regulator (UEV)",
+                FRText1 + GTUtility.formatNumbers(41943040) + FRText2));
 
         ItemList.FluidFilter.set(
             addItem(FluidFilter.ID, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
@@ -3685,6 +3697,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.FluidRegulator_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
             new CoverFluidRegulator(524288, TextureFactory.of(OVERLAY_PUMP)));
+        GregTechAPI.registerCover(
+            ItemList.FluidRegulator_UHV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
+            new CoverFluidRegulator(1048576, TextureFactory.of(OVERLAY_PUMP)));
+        GregTechAPI.registerCover(
+            ItemList.FluidRegulator_UV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
+            new CoverFluidRegulator(2097152, TextureFactory.of(OVERLAY_PUMP)));
 
         GregTechAPI.registerCover(
             ItemList.FluidFilter.get(1L),

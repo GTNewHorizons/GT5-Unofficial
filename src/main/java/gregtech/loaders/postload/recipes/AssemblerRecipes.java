@@ -815,6 +815,26 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                ItemList.Electric_Pump_UHV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2),
+                GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.FluidRegulator_UHV.get(1))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Electric_Pump_UEV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UEV), 2),
+                GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.FluidRegulator_UEV.get(1))
+            .duration(1 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 ItemList.Steam_Valve_LV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.LV), 2),
                 GTUtility.getIntegratedCircuit(3))

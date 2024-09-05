@@ -445,6 +445,8 @@ public enum ItemList implements IItemContainer {
     FluidRegulator_LuV,
     FluidRegulator_ZPM,
     FluidRegulator_UV,
+    FluidRegulator_UHV,
+    FluidRegulator_UEV,
 
     Conveyor_Module_LV,
     Conveyor_Module_MV,
