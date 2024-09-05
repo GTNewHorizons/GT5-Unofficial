@@ -365,21 +365,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
-            int maxEff = getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000);
-            if (this.mSuperEfficencyIncrease > 0 && mEfficiency <= maxEff) {
+            int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
+            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
-                if (mEfficiency == maxEff) {
-                    // Adjust the burntime dynamically to account for circuit program
-                    // This is to account for the dramatic issue where the machine outputs the throttled
-                    // amount but the burntime is not throttled.
-                    // This is very apparent when burning blocks with super high burntimes
-                    int oldProgressTime = mProgresstime;
-                    int oldMaxProgressTime = mMaxProgresstime;
-                    int maxProgressTime = adjustBurnTimeForConfig(oldMaxProgressTime);
-                    double progressRatio = (double) oldProgressTime / oldMaxProgressTime;
-                    int progressTime = (int) Math.ceil(maxProgressTime * progressRatio);
-                    mMaxProgresstime = maxProgressTime - (progressTime - oldProgressTime);
-                }
             }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
@@ -488,8 +476,15 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return Math.max(adjustedSteamOutput, 25);
     }
 
+    private int getCorrectedMaxEfficiency(ItemStack itemStack) {
+        return getMaxEfficiency(itemStack) - ((getIdealStatus() - getRepairStatus()) * 1000);
+    }
+
     private int adjustBurnTimeForConfig(int rawBurnTime) {
-        if (mEfficiency < getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)) {
+        // Checks if the fuel is eligible for a super efficiency increase and if so, we want to immediately apply the
+        // adjustment!
+        // We also want to check that the fuel
+        if (rawBurnTime * getEfficiencyIncrease() <= 5000 && mEfficiency < getCorrectedMaxEfficiency(mInventory[1])) {
             return rawBurnTime;
         }
         int adjustedEUt = Math.max(25, getEUt() - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
