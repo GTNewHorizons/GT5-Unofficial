@@ -236,6 +236,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * Projectile Tag for Arrows
      */
     public static final SubTag PROJECTILE_ARROW = getNewSubTag("PROJECTILE_ARROW");
+    /**
+     * If this material cannot be made superdense using the HIP unit
+     */
+    public static final SubTag BLACK_HOLE = getNewSubTag("BLACK_HOLE");
 
     public final Collection<ISubTagContainer> mRelevantTaggedItems = new HashSet<>(1);
 
