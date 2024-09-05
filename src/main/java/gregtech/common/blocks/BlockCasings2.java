@@ -73,7 +73,6 @@ public class BlockCasings2 extends BlockCasingsAbstract {
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();

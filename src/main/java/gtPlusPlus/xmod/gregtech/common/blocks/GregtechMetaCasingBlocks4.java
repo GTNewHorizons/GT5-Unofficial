@@ -70,9 +70,6 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                 case 5, 6, 7, 8, 12, 13, 14, 15 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 }
-                case 9 -> {
-                    return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
-                }
                 case 10 -> {
                     if (aSide < 2) {
                         return TexturesGtBlock.TEXTURE_STONE_RED_B.getIcon();

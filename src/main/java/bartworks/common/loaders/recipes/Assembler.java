@@ -152,7 +152,6 @@ public class Assembler implements Runnable {
                 ItemStack eInput = input[j][i];
                 ItemStack eDynamo = dynamo[j][i];
                 long recipeConsumption = switch (i) {
-                    case 0 -> TierEU.RECIPE_EV;
                     case 1 -> TierEU.RECIPE_IV;
                     case 2 -> TierEU.RECIPE_LuV;
                     case 3 -> TierEU.RECIPE_ZPM;

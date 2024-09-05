@@ -78,7 +78,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil 
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
@@ -121,7 +120,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil 
 
     public static int getMetaFromCoilHeat(HeatingCoilLevel level) {
         return switch (level) {
-            case LV -> 0;
             case MV -> 1;
             case HV -> 2;
             case EV -> 3;

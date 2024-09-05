@@ -198,7 +198,6 @@ public class MTEHatchInputBattery extends MTEHatch {
     public int rechargerSlotCount() {
         return switch (mTier) {
             case 2 -> 4;
-            case 4 -> 16;
             default -> 16;
         };
     }
