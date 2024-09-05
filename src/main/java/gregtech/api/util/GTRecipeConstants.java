@@ -10,16 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-<<<<<<< HEAD:src/main/java/gregtech/api/util/GT_RecipeConstants.java
-import com.elisis.gtnhlanth.common.item.MaskList;
-import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
-
-=======
->>>>>>> master:src/main/java/gregtech/api/util/GTRecipeConstants.java
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -32,16 +22,14 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-<<<<<<< HEAD:src/main/java/gregtech/api/util/GT_RecipeConstants.java
-import gregtech.common.items.GT_MetaGenerated_Item_03;
-import gregtech.common.items.ID_MetaItem_03;
-=======
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
->>>>>>> master:src/main/java/gregtech/api/util/GTRecipeConstants.java
 import gtnhlanth.common.register.LanthItemList;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!

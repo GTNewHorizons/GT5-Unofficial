@@ -18,15 +18,6 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -57,6 +48,14 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
 
@@ -769,10 +768,6 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
 
         inputRate = this.getInputInformation()
             .getRate();
-        
-        GT_Log.out.print("Factor " + voltageFactor + "\n");
-        GT_Log.out.print("Ratio: " + getOutputRatetio(voltageFactor, this.antennaeTier) + "\n");
-        
 
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor, this.antennaeTier));
 
