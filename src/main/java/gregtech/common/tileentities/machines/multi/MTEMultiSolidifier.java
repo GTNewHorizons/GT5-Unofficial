@@ -2,25 +2,22 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
-import static gregtech.api.enums.GT_Values.AuthorOmdaCZ;
-import static gregtech.api.enums.GT_Values.authorBaps;
-import static gregtech.api.enums.Mods.BuildCraftFactory;
-import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
+import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
+import static gregtech.api.enums.GTValues.authorBaps;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -39,14 +35,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -54,37 +49,38 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings1;
-import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public class GT_MetaTileEntity_MultiSolidifier extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiSolidifier> implements ISurvivalConstructable {
+public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiSolidifier>
+    implements ISurvivalConstructable {
 
     protected final String MS_LEFT_MID = mName + "leftmid";
     protected final String MS_RIGHT_MID = mName + "rightmid";
@@ -98,19 +94,19 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     private int pipeCasingTier = -1;
     private int pipeMeta = -1;
     private int machineTier = 0;
-    private static final int SOLIDIFIER_CASING_INDEX = ((GT_Block_Casings10) GregTech_API.sBlockCasings10)
-        .getTextureIndex(3);
-    private static final int DTPF_CASING_INDEX = ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(12);
+    private static final int SOLIDIFIER_CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10)
+        .getTextureIndex(13);
+    private static final int DTPF_CASING_INDEX = ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12);
 
     private final Map<Integer, Pair<Block, Integer>> tieredFluidSolidifierCasings = new HashMap<>() {
 
         {
             // Solidifier Casing
-            put(3, Pair.of(GregTech_API.sBlockCasings10, 0));
+            put(13, Pair.of(GregTechAPI.sBlockCasings10, 0));
             // Laurenium Casing
             put(2, Pair.of(ModBlocks.blockCustomMachineCasings, 1));
             // Dimensionally Transcendent Casing
-            put(12, Pair.of(GregTech_API.sBlockCasings1, 2));
+            put(12, Pair.of(GregTechAPI.sBlockCasings1, 2));
 
         }
     };
@@ -119,7 +115,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
         {
             // Solidifier Radiator
-            put(4, Pair.of(GregTech_API.sBlockCasings10, 0));
+            put(14, Pair.of(GregTechAPI.sBlockCasings10, 0));
             // Cinobite Pipe Casing
             put(13, Pair.of(ModBlocks.blockCustomPipeGearCasings, 1));
             // Abyssal Pipe Casing
@@ -132,8 +128,8 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         Arrays.asList(SOLIDIFIER_CASING_INDEX, 84, DTPF_CASING_INDEX));
 
     private final String STRUCTURE_PIECE_MAIN = "main";
-    private final IStructureDefinition<GT_MetaTileEntity_MultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_MultiSolidifier>builder()
+    private final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMultiSolidifier>builder()
         .addShape(
             MS_LEFT_MID,
             (transpose(
@@ -160,9 +156,9 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
-            GT_HatchElementBuilder.<GT_MetaTileEntity_MultiSolidifier>builder()
+            HatchElementBuilder.<MTEMultiSolidifier>builder()
                 .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch)
-                .adder(GT_MetaTileEntity_MultiSolidifier::addToSolidifierList)
+                .adder(MTEMultiSolidifier::addToSolidifierList)
                 .casingIndex(SOLIDIFIER_CASING_INDEX)
                 .dot(1)
                 .buildAndChain(
@@ -173,12 +169,12 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                             ofBlocksTiered(
                                 this::casingTierExtractor,
                                 ImmutableList.of(
-                                    Pair.of(GregTech_API.sBlockCasings10, 3),
+                                    Pair.of(GregTechAPI.sBlockCasings10, 13),
                                     Pair.of(ModBlocks.blockCustomMachineCasings, 2),
-                                    Pair.of(GregTech_API.sBlockCasings1, 12)),
+                                    Pair.of(GregTechAPI.sBlockCasings1, 12)),
                                 -1,
-                                GT_MetaTileEntity_MultiSolidifier::setCasingTier,
-                                GT_MetaTileEntity_MultiSolidifier::getCasingTier)))))
+                                MTEMultiSolidifier::setCasingTier,
+                                MTEMultiSolidifier::getCasingTier)))))
         .addElement(
             'C',
             onElementPass(
@@ -186,39 +182,37 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                 ofBlocksTiered(
                     this::pipeTierExtractor,
                     ImmutableList.of(
-                        Pair.of(GregTech_API.sBlockCasings10, 4),
+                        Pair.of(GregTechAPI.sBlockCasings10, 14),
                         Pair.of(ModBlocks.blockCustomPipeGearCasings, 13),
                         Pair.of(ModBlocks.blockCustomPipeGearCasings, 15)),
                     -1,
-                    GT_MetaTileEntity_MultiSolidifier::setPipeCasingTier,
-                    GT_MetaTileEntity_MultiSolidifier::getPipeCasingTier)))
-        .addElement(
-            'F',
-            ofBlock(GregTech_API.sBlockCasings1, 11))
-            /*TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
-                ? ofChain(ofBlock(Block.getBlockFromName("TConstruct:SearedBlock"), 0))
-                : ofChain(ofBlock(Blocks.cauldron, 0)))
-        */
-        .addElement(
-            'D',
-            ofBlock(GregTech_API.sBlockCasings4, 1))
-        /*    BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
-                ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:blockHopper"), 10))
-                : ofChain(ofBlock(Blocks.hopper, 0)))
-        */
+                    MTEMultiSolidifier::setPipeCasingTier,
+                    MTEMultiSolidifier::getPipeCasingTier)))
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings1, 11))
+        /*
+         * TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
+         * ? ofChain(ofBlock(Block.getBlockFromName("TConstruct:SearedBlock"), 0))
+         * : ofChain(ofBlock(Blocks.cauldron, 0)))
+         */
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        /*
+         * BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
+         * ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:blockHopper"), 10))
+         * : ofChain(ofBlock(Blocks.hopper, 0)))
+         */
         .build();
 
-    public GT_MetaTileEntity_MultiSolidifier(final int aID, final String aName, final String aNameRegional) {
+    public MTEMultiSolidifier(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_MultiSolidifier(String aName) {
+    public MTEMultiSolidifier(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_MultiSolidifier(this.mName);
+        return new MTEMultiSolidifier(this.mName);
     }
 
     @Override
@@ -257,14 +251,14 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)) };
         }
         return rTexture;
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper 2024")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
@@ -315,7 +309,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         buildPiece(MS_END, stackSize, hintsOnly, (-tTotalWidth - 2) * 2 + 4, 4, 0);
     }
 
-    protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
+    protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mWidth;
     protected int nWidth;
 
@@ -359,21 +353,22 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
     private int mCasingAmount;
 
-    int mTier; {
-        if (casingTier>pipeCasingTier) {
+    int mTier;
+    {
+        if (casingTier > pipeCasingTier) {
             mTier = pipeCasingTier;
-        }
-        else if (casingTier<=pipeCasingTier) {
+        } else if (casingTier <= pipeCasingTier) {
             mTier = casingTier;
         }
 
     }
+
     private void onCasingAdded() {
         mCasingAmount++;
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_MultiSolidifier> getStructureDefinition() {
+    public IStructureDefinition<MTEMultiSolidifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -424,7 +419,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
             }
@@ -499,35 +494,32 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
+        if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            return mInputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            return mDualInputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof IDualInputHatch) {
-            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus hatch) {
+            return mInputBusses.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
+            return mOutputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) {
+            return mOutputBusses.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+            return mEnergyHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+            return mMaintenanceHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMuffler hatch) {
+            return mMufflerHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            return mExoticEnergyHatches.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
+            return mExoticEnergyHatches.add(hatch);
         }
         return false;
     }
@@ -538,28 +530,28 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                 hatch.updateTexture(texture);
             }
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mInputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatch hatch : filterValidMTEs(mInputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mOutputHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mOutputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatch hatch : filterValidMTEs(mOutputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mEnergyHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mMaintenanceHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mMaintenanceHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mMufflerHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
             hatch.updateTexture(texture);
         }
     }
@@ -632,9 +624,9 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         }
 
         // Logic for GT_MetaTileEntity_Hatch_Solidifier
-        for (GT_MetaTileEntity_Hatch_Input solidifierHatch : mInputHatches) {
-            if (solidifierHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
-                ItemStack mold = ((GT_MetaTileEntity_Hatch_Solidifier) solidifierHatch).getMold();
+        for (MTEHatchInput solidifierHatch : mInputHatches) {
+            if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+                ItemStack mold = hatch.getMold();
                 FluidStack fluid = solidifierHatch.getFluid();
 
                 if (mold != null && fluid != null) {
@@ -658,8 +650,8 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         processingLogic.clear();
         processingLogic.setInputFluids(getStoredFluids());
         // Default logic
-        for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-            if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+        for (MTEHatchInputBus bus : mInputBusses) {
+            if (bus instanceof MTEHatchCraftingInputME) {
                 continue;
             }
             List<ItemStack> inputItems = new ArrayList<>();
