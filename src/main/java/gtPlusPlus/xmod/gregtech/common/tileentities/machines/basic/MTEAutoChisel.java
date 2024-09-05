@@ -40,14 +40,14 @@ public class MTEAutoChisel extends MTEBasicMachine {
             "Chisels things, Gregtech style",
             1,
             1,
-            new ITexture[] { new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
                 new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
                 new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
                 new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
                 new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
                 new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
                 new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
+                new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB));
     }
 
     public MTEAutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

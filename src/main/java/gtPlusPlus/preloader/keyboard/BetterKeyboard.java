@@ -116,7 +116,7 @@ public class BetterKeyboard {
 
     /**
      * Gets a key's name
-     * 
+     *
      * @param key The key
      * @return a String with the key's human readable name in it or null if the key is unnamed
      */
@@ -128,7 +128,7 @@ public class BetterKeyboard {
      * Represents a key or mouse button as a string. Args: key
      */
     public static String getKeyDisplayString(int aKeyValue) {
-        return aKeyValue < 0 ? I18n.format("key.mouseButton", new Object[] { Integer.valueOf(aKeyValue + 101) })
+        return aKeyValue < 0 ? I18n.format("key.mouseButton", Integer.valueOf(aKeyValue + 101))
             : getKeyName(aKeyValue);
     }
 }

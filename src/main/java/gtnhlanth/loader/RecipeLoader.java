@@ -388,15 +388,15 @@ public class RecipeLoader {
         // Target Holder
         GameRegistry.addShapedRecipe(
             new ItemStack(LanthItemList.TARGET_HOLDER),
-            new Object[] { "MCM", "MHM", "MCM", 'M', WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1), 'H',
-                ItemList.Hull_LuV.get(1), 'C', ItemList.Conveyor_Module_LuV.get(1) });
+                "MCM", "MHM", "MCM", 'M', WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1), 'H',
+                ItemList.Hull_LuV.get(1), 'C', ItemList.Conveyor_Module_LuV.get(1));
 
         GameRegistry.addShapedRecipe(
 
             new ItemStack(LanthItemList.FOCUS_HOLDER),
-            new Object[] { "MCM", "R R", "MHM", 'M', WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1), 'C',
+                "MCM", "R R", "MHM", 'M', WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1), 'C',
                 ItemList.Conveyor_Module_LuV.get(1), 'R', ItemList.Robot_Arm_LuV.get(1), 'H',
-                ItemList.Hull_LuV.get(1) });
+                ItemList.Hull_LuV.get(1));
 
         // Focus Input Bus
         GameRegistry.addShapedRecipe(

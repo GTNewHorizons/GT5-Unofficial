@@ -105,7 +105,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 false,
                 9223372036854775807L,
                 null,
-                new ItemStack[] { lastUsedFuel });
+                    lastUsedFuel);
         }
     }
 
@@ -185,7 +185,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     }
 
     public MTERTGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires RTG Pellets", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires RTG Pellets");
     }
 
     private byte getTier() {
@@ -307,7 +307,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     public int getFuelValue(ItemStack aStack) {
         if ((GTUtility.isStackInvalid(aStack)) || (getRecipeMap() == null)) return 0;
         GTRecipe tFuel = getRecipeMap()
-            .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, new ItemStack[] { aStack });
+            .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, aStack);
         if (tFuel != null) {
             this.mCurrentRecipe = tFuel;
             int voltage = tFuel.mEUt;

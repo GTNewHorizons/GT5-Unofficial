@@ -66,14 +66,14 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             "Making sure you don't live in Gwalior - Uses 2A",
             3,
             0,
-            new ITexture[] { new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
                 new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
                 new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
                 new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
                 new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
+                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB));
         mPollutionEnabled = PollutionUtils.isPollutionEnabled();
     }
 

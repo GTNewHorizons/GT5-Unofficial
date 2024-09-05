@@ -39,7 +39,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(handlerClass, messageClass, packetId++, side);
         if (AbstractPacket.class.isInstance(messageClass.getClass())) {
             AbstractPacket aPacket = ReflectionUtils.createNewInstanceFromConstructor(
-                ReflectionUtils.getConstructor(messageClass, new Class[] {}),
+                ReflectionUtils.getConstructor(messageClass),
                 new Object[] {});
             if (aPacket != null) {
                 Logger.INFO("Registered Packet: " + aPacket.getPacketName());

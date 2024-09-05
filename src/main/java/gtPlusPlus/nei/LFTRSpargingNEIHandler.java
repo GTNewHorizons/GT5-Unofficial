@@ -41,8 +41,8 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
         this.transferRects.add(
             new TemplateRecipeHandler.RecipeTransferRect(
                 new Rectangle(65, 13, 36, 18),
-                this.getOverlayIdentifier(),
-                new Object[0]));
+                this.getOverlayIdentifier()
+            ));
         if (!GTPPNEIConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                 GTValues.GT,
@@ -84,7 +84,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
     @Override
     public void loadTransferRects() {
         this.transferRects
-            .add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier(), new Object[0]));
+            .add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier()));
     }
 
     public List<GasSpargingRecipeNEI> getCache() {

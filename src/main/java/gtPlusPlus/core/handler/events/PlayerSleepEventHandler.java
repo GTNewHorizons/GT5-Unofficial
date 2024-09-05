@@ -104,6 +104,6 @@ public class PlayerSleepEventHandler {
     }
 
     private static void messagePlayer(EntityPlayer aPlayer, String aChatKey) {
-        PlayerUtils.messagePlayer(aPlayer, new ChatComponentTranslation(aChatKey, new Object[0]));
+        PlayerUtils.messagePlayer(aPlayer, new ChatComponentTranslation(aChatKey));
     }
 }

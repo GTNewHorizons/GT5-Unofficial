@@ -26,7 +26,7 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     public int mEfficiency;
 
     public MTESemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires semi-fluid Fuel", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires semi-fluid Fuel");
         this.mEfficiency = 100 - (this.mTier * 5);
     }
 

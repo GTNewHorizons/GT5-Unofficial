@@ -89,7 +89,7 @@ public class TinkersUtils {
 
     /**
      * Add a new fluid as a valid Smeltery fuel.
-     * 
+     *
      * @param fluid    The fluid.
      * @param power    The temperature of the fluid. This also influences the melting speed. Lava is 1000.
      * @param duration How long one "portion" of liquid fuels the smeltery. Lava is 10.
@@ -195,7 +195,7 @@ public class TinkersUtils {
 
     /**
      * 0 For Table, 1 For Basin.
-     * 
+     *
      * @param aType - Casting Type
      * @return - The casting instance.
      */
@@ -212,7 +212,7 @@ public class TinkersUtils {
 
         if (m != null) {
             try {
-                return m.invoke(mTinkersRegistryInstance, new Object[] {});
+                return m.invoke(mTinkersRegistryInstance);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 e.printStackTrace();
             }

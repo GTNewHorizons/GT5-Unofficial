@@ -264,7 +264,7 @@ public class RecipeGenRecycling implements Runnable {
         }
         return GTUtility.copyAmount(
             aAmount,
-            new Object[] { mNameMap.get(aName.toString()), getFirstOre(aName, aAmount), aReplacement });
+                mNameMap.get(aName.toString()), getFirstOre(aName, aAmount), aReplacement);
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {

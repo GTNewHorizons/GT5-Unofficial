@@ -180,7 +180,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                                 128,
                                 null,
                                 null,
-                                new ItemStack[] { ((EntityItem) entity).getEntityItem() });
+                                    ((EntityItem) entity).getEntityItem());
                             if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
                                 itemsToOutput.add(((EntityItem) entity).getEntityItem());
                             } else {

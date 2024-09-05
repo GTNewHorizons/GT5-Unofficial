@@ -20,10 +20,10 @@ public class MaterialsFluorides {
         false, // Uses Blast furnace?
         false, // Generate cells
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().CALCIUM, 16),
+            new MaterialStack(MaterialsElements.getInstance().CALCIUM, 16),
             new MaterialStack(MaterialsElements.getInstance().FLUORINE, 32),
             new MaterialStack(MaterialsElements.getInstance().IRON, 4),
-            new MaterialStack(MaterialsElements.getInstance().CARBON, 2) });
+            new MaterialStack(MaterialsElements.getInstance().CARBON, 2));
 
     // ThF4
     public static final Material THORIUM_TETRAFLUORIDE = new Material(
@@ -36,8 +36,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().THORIUM232, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4) });
+            new MaterialStack(MaterialsElements.getInstance().THORIUM232, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4));
 
     // ThF6
     public static final Material THORIUM_HEXAFLUORIDE = new Material(
@@ -50,9 +50,9 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().THORIUM232, 1),
+            new MaterialStack(MaterialsElements.getInstance().THORIUM232, 1),
             new MaterialStack(MaterialsElements.getInstance().THORIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 12) });
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 12));
 
     // UF4
     public static final Material URANIUM_TETRAFLUORIDE = new Material(
@@ -65,8 +65,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().URANIUM233, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4) });
+            new MaterialStack(MaterialsElements.getInstance().URANIUM233, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4));
 
     // UF6
     public static final Material URANIUM_HEXAFLUORIDE = new Material(
@@ -79,8 +79,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsFluorides.URANIUM_TETRAFLUORIDE, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2) });
+            new MaterialStack(MaterialsFluorides.URANIUM_TETRAFLUORIDE, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
 
     // ZrF4
 
@@ -99,8 +99,8 @@ public class MaterialsFluorides {
         -1,
         true,
         false,
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().ZIRCONIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4) });
+            new MaterialStack(MaterialsElements.getInstance().ZIRCONIUM, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4));
 
     /*
      * public static final Material ZIRCONIUM_TETRAFLUORIDE = new Material( "Zirconium Tetrafluoride", //Material Name
@@ -121,8 +121,8 @@ public class MaterialsFluorides {
         -1,
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2) });
+            new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
 
     // LiF
     public static final Material LITHIUM_FLUORIDE = new Material(
@@ -135,8 +135,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().LITHIUM7, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1) });
+            new MaterialStack(MaterialsElements.getInstance().LITHIUM7, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1));
 
     // LFTR sub components
 
@@ -151,9 +151,9 @@ public class MaterialsFluorides {
         -1,
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialMisc.AMMONIUM, 1),
+            new MaterialStack(MaterialMisc.AMMONIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2) });
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
 
     // Be(OH)2
     public static final Material BERYLLIUM_HYDROXIDE = new Material(
@@ -166,8 +166,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
-            new MaterialStack(MaterialMisc.HYDROXIDE, 2) });
+            new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
+            new MaterialStack(MaterialMisc.HYDROXIDE, 2));
 
     // (NH4)2BeF4
     public static final Material AMMONIUM_TETRAFLUOROBERYLLATE = new Material(
@@ -180,9 +180,9 @@ public class MaterialsFluorides {
         -1,
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialMisc.AMMONIUM, 2),
+            new MaterialStack(MaterialMisc.AMMONIUM, 2),
             new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4) });
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 4));
 
     // LFTR Output
     public static final Material NEPTUNIUM_HEXAFLUORIDE = new Material(
@@ -195,8 +195,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().NEPTUNIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6) });
+            new MaterialStack(MaterialsElements.getInstance().NEPTUNIUM, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6));
 
     public static final Material TECHNETIUM_HEXAFLUORIDE = new Material(
         "Technetium Hexafluoride", // Material Name
@@ -208,8 +208,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().TECHNETIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6) });
+            new MaterialStack(MaterialsElements.getInstance().TECHNETIUM, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6));
 
     public static final Material SELENIUM_HEXAFLUORIDE = new Material(
         "Selenium Hexafluoride", // Material Name
@@ -221,8 +221,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().SELENIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6) });
+            new MaterialStack(MaterialsElements.getInstance().SELENIUM, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6));
 
     public static final Material SODIUM_FLUORIDE = new Material(
         "Sodium Fluoride", // Material Name
@@ -234,8 +234,8 @@ public class MaterialsFluorides {
         -1, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().SODIUM, 1),
-            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1) });
+            new MaterialStack(MaterialsElements.getInstance().SODIUM, 1),
+            new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1));
 
     private static final MaterialsFluorides INSTANCE = new MaterialsFluorides();
 
