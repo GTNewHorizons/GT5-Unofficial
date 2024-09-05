@@ -91,8 +91,6 @@ public class BaseItemIngotOld extends Item {
                         .addTo(compressorRecipes);
                 }
             }
-        } else if (this.unlocalName.contains("itemHotIngot")) {
-            return;
         }
     }
 

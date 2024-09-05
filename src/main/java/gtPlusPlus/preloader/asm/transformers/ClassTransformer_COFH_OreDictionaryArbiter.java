@@ -180,7 +180,6 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
                     stackNames.get(arg2).add(arg0);
                 }
             } catch (Throwable t) {
-                return;
             }
         }
     }

@@ -130,9 +130,7 @@ public class BlockWitherProof extends Block {
         if ((entity == null) || !entity.isEntityAlive()) {
             return;
         }
-        if ((entity instanceof IBossDisplayData)) {
-            return;
-        } else {
+        if (!(entity instanceof IBossDisplayData)) {
             super.onEntityCollidedWithBlock(world, x, y, z, entity);
         }
     }

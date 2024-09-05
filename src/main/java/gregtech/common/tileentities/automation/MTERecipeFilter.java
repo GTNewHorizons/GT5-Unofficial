@@ -115,7 +115,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
         this.mInventory[FILTER_SLOT_INDEX] = GTUtility.copyAmount(
             1,
             this.filteredMachines.get(this.mRotationIndex = (this.mRotationIndex + 1) % this.filteredMachines.size()));
-        if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
     }
 
     @Override

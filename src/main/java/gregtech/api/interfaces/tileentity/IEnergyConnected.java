@@ -170,7 +170,6 @@ public interface IEnergyConnected extends IColoredTileEntity {
                     receiver.receiveEnergy(oppositeSide, rfOut, false);
                     usedAmperes++;
                     emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
-                    return;
                 }
             }
         }

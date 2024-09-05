@@ -235,7 +235,6 @@ public class DynamicInventory<T> {
                             player.inventory.setItemStack(stack);
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
-                            return;
                         }
                     } else if (clickData.shift) {
                         if (inventoryExtractor == null) return;
@@ -247,7 +246,6 @@ public class DynamicInventory<T> {
                             if (player.inventory.addItemStackToInventory(stack))
                                 player.inventoryContainer.detectAndSendChanges();
                             else player.entityDropItem(stack, 0.f);
-                            return;
                         }
                     } else {
                         ItemStack input = player.inventory.getItemStack();
@@ -294,7 +292,6 @@ public class DynamicInventory<T> {
                                 player.inventory.setItemStack(stack);
                                 ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                                 ((EntityPlayerMP) player).updateHeldItem();
-                                return;
                             }
                         }
                     }
@@ -383,7 +380,6 @@ public class DynamicInventory<T> {
                     }
                     ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                     ((EntityPlayerMP) player).updateHeldItem();
-                    return;
                 }
             })
             .setBackground(
