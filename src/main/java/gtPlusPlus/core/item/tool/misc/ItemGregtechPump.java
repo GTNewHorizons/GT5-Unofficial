@@ -816,12 +816,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             if (aStoredFluid == null) {
                 Logger.INFO("Pump is empty, filling with tank fluids.");
                 FluidStack toConsume;
-                int amountToConsume = 0;
-                if (resource.amount >= aCapacity) {
-                    amountToConsume = aCapacity;
-                } else {
-                    amountToConsume = resource.amount;
-                }
+                int amountToConsume = Math.min(resource.amount, aCapacity);
                 toConsume = FluidUtils.getFluidStack(resource, amountToConsume);
                 if (toConsume != null && amountToConsume > 0) {
                     storeFluid(container, toConsume);

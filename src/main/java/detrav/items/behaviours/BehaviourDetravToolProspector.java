@@ -64,7 +64,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
         SplittableRandom aRandom = new SplittableRandom();
-        int chance = ((1 + aStack.getItemDamage()) * 8) > 100 ? 100 : (1 + aStack.getItemDamage()) * 8;
+        int chance = Math.min(((1 + aStack.getItemDamage()) * 8), 100);
 
         if (aWorld.isRemote) return false;
 
