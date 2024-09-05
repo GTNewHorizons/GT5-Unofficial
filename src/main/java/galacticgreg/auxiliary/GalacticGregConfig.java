@@ -1,6 +1,7 @@
 package galacticgreg.auxiliary;
 
 import java.io.File;
+import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -108,7 +109,7 @@ public class GalacticGregConfig extends ConfigManager {
     public boolean serverPostInit() {
         CustomLootChest = new BlockMetaComb(Blocks.chest);
         try {
-            if (LootChestItemOverride != "") {
+            if (!Objects.equals(LootChestItemOverride, "")) {
                 String[] args = LootChestItemOverride.split(":");
                 String tMod;
                 String tName;

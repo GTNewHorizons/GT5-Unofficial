@@ -72,7 +72,7 @@ public class DetravScannerCommand implements ICommand {
             case 0:
                 break;
             case 1:
-                if (args[0].toLowerCase() == "help") {
+                if (args[0].equalsIgnoreCase("help")) {
                     sendHelpMessage(sender);
                     return;
                 }
