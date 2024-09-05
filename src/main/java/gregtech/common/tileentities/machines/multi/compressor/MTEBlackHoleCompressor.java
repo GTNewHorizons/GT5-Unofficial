@@ -380,19 +380,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        aNBT.setInteger("catalyzingCounter", catalyzingCounter);
-        aNBT.setInteger("catalyzingCostModifier", catalyzingCostModifier);
-        aNBT.setByte("blackHoleStatus", blackHoleStatus);
-        aNBT.setFloat("blackHoleStability", blackHoleStability);
+        if (aNBT.hasKey("catalyzingCounter")) catalyzingCounter = aNBT.getInteger("catalyzingCounter");
+        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
+        if (aNBT.hasKey("blackHoleStatus")) blackHoleStatus = aNBT.getByte("blackHoleStatus");
+        if (aNBT.hasKey("blackHoleStability")) blackHoleStability = aNBT.getFloat("blackHoleStability");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (aNBT.hasKey("catalyzingCounter")) catalyzingCounter = aNBT.getInteger("catalyzingCounter");
-        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
-        if (aNBT.hasKey("blackHoleStatus")) blackHoleStatus = aNBT.getByte("blackHoleStatus");
-        if (aNBT.hasKey("blackHoleStability")) blackHoleStability = aNBT.getFloat("blackHoleStability");
+        aNBT.setInteger("catalyzingCounter", catalyzingCounter);
+        aNBT.setInteger("catalyzingCostModifier", catalyzingCostModifier);
+        aNBT.setByte("blackHoleStatus", blackHoleStatus);
+        aNBT.setFloat("blackHoleStability", blackHoleStability);
     }
 
     @Override
