@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.common.item.MaskList;
 import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
-import com.elisis.gtnhlanth.common.register.LanthItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
@@ -32,6 +31,7 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.common.items.ID_MetaItem_03;
+import gtnhlanth.common.register.LanthItemList;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
