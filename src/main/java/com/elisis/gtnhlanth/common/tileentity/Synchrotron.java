@@ -18,15 +18,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -53,10 +44,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchrotron>
     implements ISurvivalConstructable {
@@ -770,6 +770,10 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         inputRate = this.getInputInformation()
             .getRate();
+        
+        GT_Log.out.print("Factor " + voltageFactor + "\n");
+        GT_Log.out.print("Ratio: " + getOutputRatetio(voltageFactor, this.antennaeTier) + "\n");
+        
 
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor, this.antennaeTier));
 
@@ -859,10 +863,12 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     private static float getVoltageFactor(long mEU, int antennaTier) {
 
         // float factor = (float) Math.pow(1.00004, -mEU * Math.pow(antennaTier, 1.0/3.0) + 80000);
-        float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly improves
+        //float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly improves
                                                                                                    // with higher tier
                                                                                                    // antenna
-        return (float) Math.max(1.0, factor);
+    	float factor = (float) (Math.sqrt(mEU) / 1500);
+    	
+        return factor;
 
     }
 
@@ -898,7 +904,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     // Punny, right?
     private static float getOutputRatetio(float voltageFactor, int antennaTier) {
-        return (float) (voltageFactor / (10 / Math.pow(2.5, antennaTier))); // Scale ratio with antenna tier, such a
+        return (float) (voltageFactor / (10.0 / Math.pow(2.5, antennaTier))); // Scale ratio with antenna tier, such a
                                                                             // high
                                                                             // exponential should be fine so long as
                                                                             // there
