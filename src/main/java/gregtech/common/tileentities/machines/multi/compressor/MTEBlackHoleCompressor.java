@@ -128,8 +128,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .adder(MTEBlackHoleCompressor::addSpacetimeInput)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(11))
                 .dot(1)
-                .buildAndChain(
-                    onElementPass(MTEBlackHoleCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 11))))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
 
         .build();
 
@@ -339,7 +338,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
-            .addCasingInfoMin("Background Radiation Absorbent Casing", 985, false)
+            .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
             .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
             .addCasingInfoExactly("Hawking Radiation Realignment Focus", 64, false)
             .addCasingInfoExactly("Naquadah Alloy Frame Box", 144, false)
@@ -377,7 +376,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
-        if (mCasingAmount < 0) return false;
+        if (mCasingAmount < 950) return false;
 
         return true;
     }
@@ -479,7 +478,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 // If recipe needs a black hole and one is active but unstable, continuously void items
-                if (blackHoleStability <= 0 && recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 1) > 0) {
+                if ((blackHoleStatus == 3) && recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
                     return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
