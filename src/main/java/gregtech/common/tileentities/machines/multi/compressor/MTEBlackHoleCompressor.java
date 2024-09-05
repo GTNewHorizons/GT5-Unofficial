@@ -281,12 +281,13 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " to open a black hole")
             .addInfo(
                 "The black hole will begin its life at " + EnumChatFormatting.RED
-                    + "100%"
+                    + "100"
                     + EnumChatFormatting.GRAY
                     + " stability and slowly decay")
+            .addInfo("Stability decays by " + EnumChatFormatting.RED + "1/s" + EnumChatFormatting.GRAY + " until it reaches 0")
+            .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
             .addSeparator()
-            .addInfo("Natural decay takes " + EnumChatFormatting.RED + "100" + EnumChatFormatting.GRAY + " seconds")
-            .addInfo("Running recipes in the machine will slow the decay by " + EnumChatFormatting.RED + "25%")
+            .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
             .addInfo(
                 "The decay can be " + EnumChatFormatting.BOLD
                     + "halted"
