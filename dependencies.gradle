@@ -39,7 +39,7 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughItems:2.6.34-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.0:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.5.5:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.2.1:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.2.2:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.1.4-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.1:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-450-GTNH:dev")
@@ -49,7 +49,7 @@ dependencies {
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.10.1:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.4.6-GTNH:dev")
-    compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.6:dev")
+    compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.10:dev")
     implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
