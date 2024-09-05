@@ -44,19 +44,19 @@ public class CoverOverflow extends CoverBehavior {
         for (FluidStack fluid : fluids) doOverflowThing(fluid, amountLimit);
     }
 
-    public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int aAmountLimit,
-        ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(ForgeDirection mOutMachine, byte aInputRedstone, int aCoverID, int amountLimit,
+                             ICoverable aTileEntity, long aTimer) {
 
-        if (aAmountLimit == 0) return aAmountLimit;
+        if (amountLimit == 0) return amountLimit;
 
-        if (aTileEntity instanceof BaseMetaTileEntity mBMTE) {
-            IMetaTileEntity mIMTE = mBMTE.getMetaTileEntity();
-            if (mIMTE instanceof MTEBasicTank mMTEBT)
-                mMTEBT.setDrainableStack(doOverflowThing(mMTEBT.getDrainableStack(), aAmountLimit));
-            else if (mIMTE instanceof MTEFluid mMTEF) doOverflowThings(mMTEF.mFluids, aAmountLimit);
+        if (aTileEntity instanceof BaseMetaTileEntity baseMetaTileEntity) {
+            IMetaTileEntity iMetaTileEntity = baseMetaTileEntity.getMetaTileEntity();
+            if (iMetaTileEntity instanceof MTEBasicTank mteBasicTank)
+                mteBasicTank.setDrainableStack(doOverflowThing(mteBasicTank.getDrainableStack(), amountLimit));
+            else if (iMetaTileEntity instanceof MTEFluid mteFluid) doOverflowThings(mteFluid.mFluids, amountLimit);
         }
 
-        return aAmountLimit;
+        return amountLimit;
     }
 
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
