@@ -62,20 +62,7 @@ public class CommandMath implements ICommand {
 
     @Override
     public boolean canCommandSenderUseCommand(final ICommandSender var1) {
-        final EntityPlayer P = CommandUtils.getPlayer(var1);
-        if (P == null) {
-            return false;
-        }
-        if (P.getDisplayName()
-            .toLowerCase()
-            .equals("draknyte1")
-            || P.getCommandSenderName()
-                .toLowerCase()
-                .equals("draknyte1")
-            || GTPPCore.DEVENV) {
-            return true;
-        }
-        return false;
+        return GTPPCore.DEVENV;
     }
 
     @Override

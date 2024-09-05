@@ -71,8 +71,7 @@ public class TinkersDryingRecipe {
                 for (Class h : y) {
                     Logger.INFO("Found hidden inner class: " + h.getCanonicalName());
                     if (h.getSimpleName()
-                        .toLowerCase()
-                        .equals("dryingrecipe")) {
+                        .equalsIgnoreCase("dryingrecipe")) {
                         Logger.INFO("Found correct recipe. Caching at correct location.");
                         ReflectionUtils.mCachedClasses
                             .put("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe", h);

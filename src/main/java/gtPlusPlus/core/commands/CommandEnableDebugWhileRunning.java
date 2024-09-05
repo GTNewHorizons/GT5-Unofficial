@@ -66,8 +66,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
         int aMaxArgumentsAllowed = 2;
 
         if ((argString == null || argString.length == 0 || argString.length > aMaxArgumentsAllowed)
-            || argString[0].toLowerCase()
-                .equals("?")) {
+            || argString[0]
+                .equalsIgnoreCase("?")) {
             Logger.INFO("Listing commands and their uses.");
             final EntityPlayer P = CommandUtils.getPlayer(S);
             AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
@@ -79,16 +79,16 @@ public class CommandEnableDebugWhileRunning implements ICommand {
             PlayerUtils.messagePlayer(
                 P,
                 "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
-        } else if (argString[0].toLowerCase()
-            .equals("debug")) {
+        } else if (argString[0]
+            .equalsIgnoreCase("debug")) {
                 Logger.INFO("Toggling Debug Mode.");
                 final EntityPlayer P = CommandUtils.getPlayer(S);
                 if (PlayerUtils.isPlayerOP(P)) {
                     PreloaderCore.DEBUG_MODE = !PreloaderCore.DEBUG_MODE;
                     PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: " + PreloaderCore.DEBUG_MODE);
                 }
-            } else if (argString[0].toLowerCase()
-                .equals("logging")) {
+            } else if (argString[0]
+                .equalsIgnoreCase("logging")) {
                     Logger.INFO("Toggling Logging.");
                     final EntityPlayer P = CommandUtils.getPlayer(S);
                     AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
@@ -100,8 +100,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
          * if(mSemiFluidgen != null) { PlayerUtils.messagePlayer(P, ItemUtils.getItemName(mSemiFluidgen)); } }
          */
 
-        else if (argString[0].toLowerCase()
-            .equals("inv")) {
+        else if (argString[0]
+            .equalsIgnoreCase("inv")) {
                 final EntityPlayer P = CommandUtils.getPlayer(S);
                 if (P != null && !P.worldObj.isRemote) {
                     ItemStack[] aInv = P.inventory.mainInventory;
@@ -120,8 +120,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     }
                     PlayerUtils.messagePlayer(P, "Dumped Inventory.");
                 }
-            } else if (argString[0].toLowerCase()
-                .equals("hand")) {
+            } else if (argString[0]
+                .equalsIgnoreCase("hand")) {
                     final EntityPlayer P = CommandUtils.getPlayer(S);
                     if (P != null) {
                         ItemStack aHeldItem = PlayerUtils.getItemStackInPlayersHand(P);
@@ -181,8 +181,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                             PlayerUtils.messagePlayer(P, "No item held.");
                         }
                     }
-                } else if (argString[0].toLowerCase()
-                    .equals("fluid")) {
+                } else if (argString[0]
+                    .equalsIgnoreCase("fluid")) {
                         if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {
                             final EntityPlayer P = CommandUtils.getPlayer(S);
                             FluidStack aFluid = FluidUtils.getWildcardFluidStack(argString[1], 1);
@@ -193,8 +193,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                                 PlayerUtils.messagePlayer(P, "Could not find any fluids.");
                             }
                         }
-                    } else if (argString[0].toLowerCase()
-                        .equals("item")) {
+                    } else if (argString[0]
+                        .equalsIgnoreCase("item")) {
                             if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {
                                 final EntityPlayer P = CommandUtils.getPlayer(S);
                                 ItemStack aTest = ItemUtils.getItemStackFromFQRN(argString[1], 1);

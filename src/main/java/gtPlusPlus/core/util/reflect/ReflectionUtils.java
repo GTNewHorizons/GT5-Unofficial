@@ -642,8 +642,7 @@ public class ReflectionUtils {
                         for (Class<?> h : y) {
                             Logger.REFLECTION("Found hidden inner class: " + h.getCanonicalName());
                             if (h.getSimpleName()
-                                .toLowerCase()
-                                .equals(aData[aData.length - 1].toLowerCase())) {
+                                .equalsIgnoreCase(aData[aData.length - 1])) {
                                 Logger.REFLECTION(
                                     "Found correct class. [" + aData[aData.length - 1]
                                         + "] Caching at correct location: "
@@ -716,8 +715,7 @@ public class ReflectionUtils {
             Object[] aValues = sgtbees.getEnumConstants();
             for (Object o : aValues) {
                 if (o.toString()
-                    .toLowerCase()
-                    .equals(name.toLowerCase())) {
+                    .equalsIgnoreCase(name)) {
                     return (Enum) o;
                 }
             }

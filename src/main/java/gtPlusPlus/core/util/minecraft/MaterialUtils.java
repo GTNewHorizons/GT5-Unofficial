@@ -234,8 +234,7 @@ public class MaterialUtils {
     private static Materials getMaterialByName(String materialName) {
         for (Materials m : Materials.values()) {
             if (MaterialUtils.getMaterialName(m)
-                .toLowerCase()
-                .equals(materialName.toLowerCase())) {
+                .equalsIgnoreCase(materialName)) {
                 return m;
             }
         }

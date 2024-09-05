@@ -43,8 +43,8 @@ public class StandardBaseParticles extends BaseItemParticle {
             MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
             for (Particle o : Particle.aMap) {
                 int aColour = 0;
-                if (o.mParticleName.toLowerCase()
-                    .equals(s.toLowerCase())) {
+                if (o.mParticleName
+                    .equalsIgnoreCase(s)) {
                     if (o.mParticleType == ElementaryGroup.BARYON) {
                         aColour = Utils.rgbtoHexValue(174, 226, 156);
                         aColourMap.put(key++, aColour);

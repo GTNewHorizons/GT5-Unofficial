@@ -152,10 +152,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
                     .equals("")) {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .toLowerCase()
-                    .equals(
-                        aPlayer.getDisplayName()
-                            .toLowerCase())) {
+                    .equalsIgnoreCase(
+                        aPlayer.getDisplayName())) {
                     this.mOwner = PlayerUtils.getPlayersUUIDByName(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
