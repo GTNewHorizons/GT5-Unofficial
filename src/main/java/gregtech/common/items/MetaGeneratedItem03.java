@@ -1483,7 +1483,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        String pref = aPrefix.toString().toLowerCase();
+        String pref = aPrefix.toString()
+            .toLowerCase();
         return aDoShowAllItems || pref.contains("nanite")
             || pref.contains("rawore")
             || pref.contains("platesuperdense");

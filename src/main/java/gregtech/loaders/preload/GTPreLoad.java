@@ -267,9 +267,9 @@ public class GTPreLoad {
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
                                     "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-                                    "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor",
-                                    "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped",
-                                    "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
+                                    "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall",
+                                    "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic",
+                                    "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
                                 if (mIt == 3) tags = new String[] { "rawOre", "nanite", "plateSuperdense" };
                                 if (tags.length > prefix) tag = tags[prefix];
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
