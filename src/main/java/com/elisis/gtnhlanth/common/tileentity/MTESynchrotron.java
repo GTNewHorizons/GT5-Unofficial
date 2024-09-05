@@ -23,7 +23,7 @@ import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
 import com.elisis.gtnhlanth.common.block.AntennaCasing;
 import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
+import com.elisis.gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
@@ -58,10 +58,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchrotron>
+public class MTESynchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTESynchrotron>
     implements ISurvivalConstructable {
 
-    private static final IStructureDefinition<Synchrotron> STRUCTURE_DEFINITION;
+    private static final IStructureDefinition<MTESynchrotron> STRUCTURE_DEFINITION;
 
     protected static final String STRUCTURE_PIECE_ENTRANCE = "entrance";
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -70,7 +70,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     public static final int MIN_INPUT_FOCUS = 25; // Inclusive
 
     private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     public ArrayList<AntennaCasing> mAntennaCasings = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     // spotless:off
     static {
 
-        STRUCTURE_DEFINITION = StructureDefinition.<Synchrotron>builder().addShape(
+        STRUCTURE_DEFINITION = StructureDefinition.<MTESynchrotron>builder().addShape(
                 STRUCTURE_PIECE_ENTRANCE,
 
                 
@@ -441,18 +441,18 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                 ).addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
                 .addElement('k', ofBlock(GregTech_API.sBlockCasings1, 15)) // Superconducting coils
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-                .addElement('e', buildHatchAdder(Synchrotron.class).atLeast(ImmutableMap.of(Energy, 4)).dot(6).casingIndex(CASING_INDEX).build())
+                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy, 4)).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-                .addElement('a', ofBlockAdder(Synchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 0)) //Antenna Casings
-                .addElement('i', buildHatchAdder(Synchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
-                .addElement('o', buildHatchAdder(Synchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
-                .addElement('v', buildHatchAdder(Synchrotron.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX)
-                        .dot(1).adder(Synchrotron::addBeamlineInputHatch).build())
-                .addElement('b', buildHatchAdder(Synchrotron.class).hatchClass(TileHatchOutputBeamline.class).casingIndex(CASING_INDEX)
-                        .dot(2).adder(Synchrotron::addBeamlineOutputHatch).build())
+                .addElement('a', ofBlockAdder(MTESynchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 0)) //Antenna Casings
+                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
+                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
+                .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX)
+                        .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
+                .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
+                        .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
                 .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
                 .addElement('j', 
-                		buildHatchAdder(Synchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
+                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
                 
                 .build();
@@ -476,17 +476,17 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     private int machineTemp;
 
-    public Synchrotron(String aName) {
+    public MTESynchrotron(String aName) {
         super(aName);
     }
 
-    public Synchrotron(int id, String name, String nameRegional) {
+    public MTESynchrotron(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new Synchrotron(this.mName);
+        return new MTESynchrotron(this.mName);
     }
 
     @Override
@@ -557,8 +557,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         if (mte == null) return false;
 
-        if (mte instanceof TileHatchOutputBeamline) {
-            return this.mOutputBeamline.add((TileHatchOutputBeamline) mte);
+        if (mte instanceof MTEHatchOutputBeamline) {
+            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
         }
 
         return false;
@@ -614,7 +614,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     }
 
     @Override
-    public IStructureDefinition<Synchrotron> getStructureDefinition() {
+    public IStructureDefinition<MTESynchrotron> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -815,7 +815,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
 
-            for (TileHatchOutputBeamline o : mOutputBeamline) {
+            for (MTEHatchOutputBeamline o : mOutputBeamline) {
 
                 o.q = packet;
             }

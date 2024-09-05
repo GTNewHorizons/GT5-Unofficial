@@ -29,7 +29,7 @@ import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
 import com.elisis.gtnhlanth.common.hatch.TileHatchInputBeamline;
-import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
+import com.elisis.gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
@@ -55,9 +55,9 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
-public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> implements ISurvivalConstructable {
+public class MTELINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTELINAC> implements ISurvivalConstructable {
 
-    private static final IStructureDefinition<LINAC> STRUCTURE_DEFINITION;
+    private static final IStructureDefinition<MTELINAC> STRUCTURE_DEFINITION;
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
@@ -70,7 +70,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     private int machineTemp = 0; // Coolant temperature
 
     private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14);
 
@@ -82,7 +82,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
      */
 
     static {
-        STRUCTURE_DEFINITION = StructureDefinition.<LINAC>builder()
+        STRUCTURE_DEFINITION = StructureDefinition.<MTELINAC>builder()
             .addShape(
                 STRUCTURE_PIECE_BASE,
                 new String[][] { { "ggggggg", "gbbbbbg", "gbbbbbg", "gbbibbg", "gbbbbbg", "gbbbbbg", "ggg~ggg" },
@@ -120,17 +120,17 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                     te -> te.glassTier))
             .addElement(
                 'i',
-                buildHatchAdder(LINAC.class).hatchClass(TileHatchInputBeamline.class)
+                buildHatchAdder(MTELINAC.class).hatchClass(TileHatchInputBeamline.class)
                     .casingIndex(CASING_INDEX)
                     .dot(3)
-                    .adder(LINAC::addBeamLineInputHatch)
+                    .adder(MTELINAC::addBeamLineInputHatch)
                     .build())
             .addElement(
                 'o',
-                buildHatchAdder(LINAC.class).hatchClass(TileHatchOutputBeamline.class)
+                buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
                     .dot(4)
-                    .adder(LINAC::addBeamLineOutputHatch)
+                    .adder(MTELINAC::addBeamLineOutputHatch)
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -138,14 +138,14 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             .addElement('y', ofBlock(GregTech_API.sBlockCasings1, 15)) // Superconducting coil
             .addElement(
                 'h',
-                buildHatchAdder(LINAC.class).atLeast(InputHatch, OutputHatch)
+                buildHatchAdder(MTELINAC.class).atLeast(InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
                     .dot(2)
                     .build())
 
             .addElement(
                 'j',
-                buildHatchAdder(LINAC.class).atLeast(Maintenance, Energy)
+                buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
@@ -160,17 +160,17 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
     private int length;
 
-    public LINAC(int id, String name, String nameRegional) {
+    public MTELINAC(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
-    public LINAC(String name) {
+    public MTELINAC(String name) {
         super(name);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity te) {
-        return new LINAC(this.mName);
+        return new MTELINAC(this.mName);
     }
 
     @Override
@@ -241,8 +241,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         if (mte == null) return false;
 
-        if (mte instanceof TileHatchOutputBeamline) {
-            return this.mOutputBeamline.add((TileHatchOutputBeamline) mte);
+        if (mte instanceof MTEHatchOutputBeamline) {
+            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
         }
 
         return false;
@@ -401,7 +401,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
 
-            for (TileHatchOutputBeamline o : mOutputBeamline) {
+            for (MTEHatchOutputBeamline o : mOutputBeamline) {
 
                 o.q = packet;
             }
@@ -721,7 +721,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     }
 
     @Override
-    public IStructureDefinition<LINAC> getStructureDefinition() {
+    public IStructureDefinition<MTELINAC> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 

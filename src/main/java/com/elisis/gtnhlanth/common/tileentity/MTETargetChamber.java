@@ -52,10 +52,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<TargetChamber>
+public class MTETargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTETargetChamber>
     implements ISurvivalConstructable {
 
-    private static final IStructureDefinition<TargetChamber> STRUCTURE_DEFINITION;
+    private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
 
     private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
     // spotless:off
     static {
-    	STRUCTURE_DEFINITION = StructureDefinition.<TargetChamber>builder()
+    	STRUCTURE_DEFINITION = StructureDefinition.<MTETargetChamber>builder()
     			.addShape(
     					"base",
     					new String[][] {
@@ -86,22 +86,22 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     			.addElement('g', ofBlock(GregTech_API.sBlockCasings3, 10)) //Grate casing
     			.addElement(
     					'f', 
-    					buildHatchAdder(TargetChamber.class).atLeast(Maintenance, Energy)
+    					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
     					.casingIndex(CASING_INDEX_FRONT).dot(2).buildAndChain(ofBlock(GregTech_API.sBlockCasings3, 10)))
     			
-    			.addElement('j', ofBlockAdder(TargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(TargetChamber.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(TargetChamber::addBeamLineInputHatch).build())
+    			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).dot(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
     			.addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
     			
-    			.addElement('l', buildHatchAdder(TargetChamber.class).hatchClass(TileBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(TargetChamber::addFocusInputHatch).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(TileBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).dot(1).adder(MTETargetChamber::addFocusInputHatch).build())
     			
-    			.addElement('t', buildHatchAdder(TargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).dot(3).build())
+    			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).dot(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
     			.addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
     			.addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
-    			.addElement('o', buildHatchAdder(TargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
+    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
     			
     			.build();
     }
@@ -141,17 +141,17 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
         return false;
     }
 
-    public TargetChamber(int id, String name, String nameRegional) {
+    public MTETargetChamber(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
-    public TargetChamber(String name) {
+    public MTETargetChamber(String name) {
         super(name);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity te) {
-        return new TargetChamber(this.mName);
+        return new MTETargetChamber(this.mName);
     }
 
     @Override
@@ -224,7 +224,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     }
 
     @Override
-    public IStructureDefinition<TargetChamber> getStructureDefinition() {
+    public IStructureDefinition<MTETargetChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
