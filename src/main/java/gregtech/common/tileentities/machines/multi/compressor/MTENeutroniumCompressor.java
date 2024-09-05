@@ -13,6 +13,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -115,11 +119,11 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -128,11 +132,11 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
