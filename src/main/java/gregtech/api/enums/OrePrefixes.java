@@ -704,7 +704,6 @@ public enum OrePrefixes {
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
@@ -722,7 +721,6 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);

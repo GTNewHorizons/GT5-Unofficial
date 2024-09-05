@@ -648,7 +648,7 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UIV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                     GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
@@ -669,7 +669,7 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UMV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 10))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
