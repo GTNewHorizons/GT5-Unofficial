@@ -35,8 +35,8 @@ public class CoverOverflow extends CoverBehavior {
     }
 
     private FluidStack doOverflowThing(FluidStack mFluid, int aAmountLimit) {
-        if (mFluid != null)
-            while (mFluid.amount > aAmountLimit) mFluid.amount -= Math.min(mFluid.amount - aAmountLimit, mTransferRate);
+        if (mFluid != null && mFluid.amount > aAmountLimit)
+            mFluid.amount -= Math.min(mFluid.amount - aAmountLimit, mTransferRate);
         return mFluid;
     }
 
