@@ -65,7 +65,7 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
                 short1 = -90;
             }
 
-            GL11.glRotatef((float) short1, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             float f1 = p_147500_1_.prevLidAngle + (p_147500_1_.lidAngle - p_147500_1_.prevLidAngle) * p_147500_8_;
 

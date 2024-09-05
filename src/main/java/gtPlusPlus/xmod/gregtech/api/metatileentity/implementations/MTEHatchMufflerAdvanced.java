@@ -299,8 +299,8 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         float zSpd;
         if (aDir.offsetY == -1) {
             float temp = GTPPCore.RANDOM.nextFloat() * 2.0F * GTPPCore.PI;
-            xSpd = (float) Math.sin((double) temp) * 0.1F;
-            zSpd = (float) Math.cos((double) temp) * 0.1F;
+            xSpd = (float) Math.sin(temp) * 0.1F;
+            zSpd = (float) Math.cos(temp) * 0.1F;
         } else {
             xSpd = (float) aDir.offsetX * (0.1F + 0.2F * GTPPCore.RANDOM.nextFloat());
             zSpd = (float) aDir.offsetZ * (0.1F + 0.2F * GTPPCore.RANDOM.nextFloat());
@@ -309,34 +309,34 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (chk1) {
             aWorld.spawnParticle(
                 name,
-                (double) (xPos + ran1 * 0.5F),
-                (double) (yPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) (zPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) xSpd,
-                (double) ySpd,
-                (double) zSpd);
+                    xPos + ran1 * 0.5F,
+                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                    xSpd,
+                    ySpd,
+                    zSpd);
         }
 
         if (chk2) {
             aWorld.spawnParticle(
                 name,
-                (double) (xPos + ran2 * 0.5F),
-                (double) (yPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) (zPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) xSpd,
-                (double) ySpd,
-                (double) zSpd);
+                    xPos + ran2 * 0.5F,
+                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                    xSpd,
+                    ySpd,
+                    zSpd);
         }
 
         if (chk3) {
             aWorld.spawnParticle(
                 name,
-                (double) (xPos + ran3 * 0.5F),
-                (double) (yPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) (zPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) xSpd,
-                (double) ySpd,
-                (double) zSpd);
+                    xPos + ran3 * 0.5F,
+                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                    xSpd,
+                    ySpd,
+                    zSpd);
         }
     }
 

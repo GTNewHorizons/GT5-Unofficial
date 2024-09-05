@@ -23,7 +23,7 @@ public class ArrayUtils {
 
     public static Object[] removeNulls(final Object[] v) {
         List<Object> list = new ArrayList<>(Arrays.asList(v));
-        list.removeAll(Collections.singleton((Object) null));
+        list.removeAll(Collections.singleton(null));
         return list.toArray(new Object[list.size()]);
     }
 

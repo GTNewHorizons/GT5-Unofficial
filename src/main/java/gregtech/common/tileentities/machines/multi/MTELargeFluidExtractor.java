@@ -202,9 +202,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         super.setProcessingLogicPower(logic);
         logic.setAvailableAmperage(mEnergyHatches.size());
-        logic.setEuModifier((float) (getEUMultiplier()));
+        logic.setEuModifier(getEUMultiplier());
         logic.setMaxParallel(getParallels());
-        logic.setSpeedBonus(1.0f / (float) (getSpeedBonus()));
+        logic.setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
@@ -286,7 +286,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             ))
             .addInfo(String.format(
                 "Every solenoid tier gives +%d parallels",
-                (int) PARALLELS_PER_SOLENOID
+                    PARALLELS_PER_SOLENOID
             ))
             .addInfo(String.format(
                 "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",

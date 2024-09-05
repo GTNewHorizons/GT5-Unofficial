@@ -213,7 +213,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         // Check TextBox Value is correct
         if (getText().length() > 0) {
             int aCustomValue = parse(getText());
-            int aTileValue = ((ContainerVolumetricFlaskSetter) mContainer).mCustomValue;
+            int aTileValue = mContainer.mCustomValue;
             if (mContainer != null) {
                 if (aTileValue != aCustomValue) {
                     setText(aTileValue);

@@ -31,7 +31,7 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public float dropGainChance() {
-        return (float) (Math.pow(0.95D, (double) ((float) this.tier())) * (double) 1f);
+        return (float) (Math.pow(0.95D, (float) this.tier()) * (double) 1f);
     }
 
     @Override

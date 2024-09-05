@@ -499,7 +499,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 return;
             }
             // noinspection unchecked
-            attackDamage = ((Multimap<String, AttributeModifier>) stack.getAttributeModifiers())
+            attackDamage = stack.getAttributeModifiers()
                 .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
                 .stream()
                 .mapToDouble(

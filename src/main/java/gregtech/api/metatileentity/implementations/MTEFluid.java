@@ -561,7 +561,7 @@ public class MTEFluid extends MetaPipeEntity {
 
                     wasActionPerformed = true;
 
-                    currentPipeBase = (IGregTechTileEntity) nextPipeBase;
+                    currentPipeBase = nextPipeBase;
                     currentPipe = nextPipe;
 
                 }

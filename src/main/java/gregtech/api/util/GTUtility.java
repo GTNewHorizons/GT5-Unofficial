@@ -2948,7 +2948,7 @@ public class GTUtility {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
         else if (aAmount < 0) aAmount = 0;
-        rStack.stackSize = (int) aAmount;
+        rStack.stackSize = aAmount;
         return rStack;
     }
 

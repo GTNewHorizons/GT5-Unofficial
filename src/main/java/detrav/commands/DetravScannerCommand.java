@@ -57,7 +57,7 @@ public class DetravScannerCommand implements ICommand {
             strs.add(args[i]);
             if (args[i].startsWith("\"")) {
                 for (i++; i < args.length; i++) {
-                    String temp = (String) strs.get(strs.size() - 1);
+                    String temp = strs.get(strs.size() - 1);
                     temp = temp + " " + args[i];
                     temp = temp.replace("\"", "");
                     strs.set(strs.size() - 1, temp);

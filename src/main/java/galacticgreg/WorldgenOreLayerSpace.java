@@ -127,7 +127,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
 
             GTWorldgen tGen = null;
             for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) if (tWorldGen instanceof WorldgenOreLayerSpace
-                && ((WorldgenOreLayerSpace) tWorldGen).mWorldGenName.equals(tVeinName)) tGen = tWorldGen;
+                && tWorldGen.mWorldGenName.equals(tVeinName)) tGen = tWorldGen;
 
             if (tGen != null) {
                 // GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.get(tRndMix);

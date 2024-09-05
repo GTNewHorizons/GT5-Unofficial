@@ -125,7 +125,7 @@ public class ZPMRubberChanges implements Runnable {
                     || customItemList.toString()
                         .contains("UEV"))
                     && (boolean) hasnotBeenSet.invoke(customItemList))
-                    ZPMPlusComponents.add((ItemStack) get.invoke(customItemList, 1, new Object[0]));
+                    ZPMPlusComponents.add(get.invoke(customItemList, 1, new Object[0]));
             }
         } catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
             e.printStackTrace();

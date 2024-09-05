@@ -284,7 +284,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
         if (!hasSolarTower()) {
             this.mTX = aTowerTile.getBaseMetaTileEntity()
                 .getXCoord();
-            this.mTY = (int) aTowerTile.getBaseMetaTileEntity()
+            this.mTY = aTowerTile.getBaseMetaTileEntity()
                 .getYCoord();
             this.mTZ = aTowerTile.getBaseMetaTileEntity()
                 .getZCoord();

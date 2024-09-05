@@ -59,13 +59,13 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
+            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
+            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
     @Override

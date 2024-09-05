@@ -227,7 +227,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         final long notAdded = itemCount + toAdd - maxCapacity;
 
         if (mode == appeng.api.config.Actionable.MODULATE) {
-            final int newCount = (int) Math.min((long) maxCapacity, itemCount + toAdd);
+            final int newCount = (int) Math.min(maxCapacity, itemCount + toAdd);
 
             if (storedStack == null) {
                 setItemStack(inputStack.copy());

@@ -298,7 +298,7 @@ public class RecipeUtils {
             int tList_sS = tList.size();
 
             for (int i = 0; i < tList_sS; ++i) {
-                IRecipe tRecipe = (IRecipe) tList.get(i);
+                IRecipe tRecipe = tList.get(i);
                 if (!aNotRemoveShapelessRecipes
                     || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {

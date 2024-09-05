@@ -52,13 +52,13 @@ public class MTEHatchNaquadah extends MTEHatchInput {
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
+            new GTRenderedTexture(BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
+            new GTRenderedTexture(BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
     }
 
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
@@ -187,7 +187,7 @@ public class MTEHatchNaquadah extends MTEHatchInput {
                 : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
 
             return new ITexture[] { g,
-                new GTRenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
+                new GTRenderedTexture(BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
         }
 
         return side != facing

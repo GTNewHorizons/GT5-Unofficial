@@ -55,7 +55,7 @@ public class CrackRecipeAdder {
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(inputFluid, cracker)
             .fluidOutputs(FluidRegistry.getFluidStack("moderatelycracked" + name, 1000))
-            .duration(Math.max((long) (Duration), 1L) * TICKS)
+            .duration(Math.max(Duration, 1L) * TICKS)
             .eut(EUt)
             .addTo(crackingRecipes);
 

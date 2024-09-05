@@ -200,8 +200,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 int aDam = aStack.getItemDamage();
                 aTemp = (byte) (aDam == 3 ? 0 : aDam == 4 ? 2 : 1);
                 aLifespan = (byte) (aDam == 3 ? 1 : aDam == 4 ? 3f : 2f);
-                aFert = (float) (aDam == 3 ? 2f : aDam == 4 ? 1f : 1.75f);
-                aSpeed = (float) (aDam == 3 ? 1f : aDam == 4 ? 1.5f : 2f);
+                aFert = aDam == 3 ? 2f : aDam == 4 ? 1f : 1.75f;
+                aSpeed = aDam == 3 ? 1f : aDam == 4 ? 1.5f : 2f;
 
                 aGenes = new AlgaeGeneticData(
                     true,

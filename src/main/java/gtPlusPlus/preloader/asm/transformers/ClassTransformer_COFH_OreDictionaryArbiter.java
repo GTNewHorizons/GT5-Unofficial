@@ -170,14 +170,14 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
                     if (!oreStacks.containsKey(Integer.valueOf(arg1))) {
                         oreStacks.put(Integer.valueOf(arg1), new ArrayList<>());
                     }
-                    ((ArrayList<ItemStack>) oreStacks.get(Integer.valueOf(arg1))).add(arg);
+                    oreStacks.get(Integer.valueOf(arg1)).add(arg);
                     ItemWrapper arg2 = ItemWrapper.fromItemStack(arg);
                     if (!stackIDs.containsKey(arg2)) {
                         stackIDs.put(arg2, new ArrayList<>());
                         stackNames.put(arg2, new ArrayList<>());
                     }
-                    ((ArrayList<Integer>) stackIDs.get(arg2)).add(Integer.valueOf(arg1));
-                    ((ArrayList<String>) stackNames.get(arg2)).add(arg0);
+                    stackIDs.get(arg2).add(Integer.valueOf(arg1));
+                    stackNames.get(arg2).add(arg0);
                 }
             } catch (Throwable t) {
                 return;

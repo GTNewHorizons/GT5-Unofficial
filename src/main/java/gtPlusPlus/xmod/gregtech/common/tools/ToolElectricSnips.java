@@ -65,7 +65,7 @@ public class ToolElectricSnips extends ToolWireCutter {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return (IIconContainer) (aIsToolHead ? TexturesGtTools.ELECTRIC_SNIPS : ItemIcons.POWER_UNIT_MV);
+        return aIsToolHead ? TexturesGtTools.ELECTRIC_SNIPS : ItemIcons.POWER_UNIT_MV;
     }
 
     @Override

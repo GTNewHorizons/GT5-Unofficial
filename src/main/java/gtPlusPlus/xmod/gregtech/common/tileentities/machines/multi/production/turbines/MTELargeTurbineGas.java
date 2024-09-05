@@ -126,7 +126,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 // wastes the extra fuel and generate aOptFlow directly
                 depleteInput(new FluidStack(firstFuelType, 1));
                 this.storedFluid += 1;
-                return GTUtility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
+                return GTUtility.safeInt(aOptFlow * (long) aBaseEff / 10000L);
             }
 
             actualOptimalFlow = GTUtility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));

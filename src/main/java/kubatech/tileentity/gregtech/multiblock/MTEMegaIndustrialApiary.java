@@ -246,7 +246,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void onRemoval() {
         super.onRemoval();
         if (getBaseMetaTileEntity().isServerSide())
-            tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack));
+            tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack));
     }
 
     private boolean isCacheDirty = true;
@@ -466,7 +466,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 }
                 updateSlots();
             } else if (mPrimaryMode == 1 && mStorage.size() > 0) {
-                if (tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack)))
+                if (tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack)))
                     isCacheDirty = true;
             } else return CheckRecipeResultRegistry.NO_RECIPE;
             mMaxProgresstime = 10;

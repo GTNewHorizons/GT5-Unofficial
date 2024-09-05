@@ -115,7 +115,7 @@ public class TinkersDryingRecipe {
                 .removeTag("frypanKill");
             if (input.getTagCompound()
                 .hasNoTags()) {
-                input.setTagCompound((NBTTagCompound) null);
+                input.setTagCompound(null);
             }
         }
         return ItemStack.areItemStacksEqual(this.input, input);

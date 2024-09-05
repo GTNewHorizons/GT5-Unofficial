@@ -176,7 +176,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
      * Spawns the creature specified by the egg's type in the location specified by
      *
      * the last three parameters. Parameters: world, entityID, x, y, z.
-     * 
+     *
      * @param par1ItemStack
      */
     public Entity spawnEntity(ItemStack par1ItemStack, World parWorld, double parX, double parY, double parZ) {
@@ -196,7 +196,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
                     MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
                     0.0F);
                 parWorld.spawnEntityInWorld(entityToSpawn);
-                entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
+                entityToSpawn.onSpawnWithEgg(null);
                 entityToSpawn.playLivingSound();
             } else {
                 // DEBUG

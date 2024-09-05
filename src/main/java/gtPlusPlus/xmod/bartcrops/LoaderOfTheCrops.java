@@ -14,7 +14,7 @@ import ic2.api.crops.Crops;
 
 /**
  * Mostly borrowed from the Crops++ Crop Loader.
- * 
+ *
  * @author Alkalus
  */
 public class LoaderOfTheCrops {
@@ -57,7 +57,7 @@ public class LoaderOfTheCrops {
         List<CropCard> p = new ArrayList<>();
 
         for (LoaderOfTheCrops loaderOfTheCrops : mCropList) {
-            p.add(cropUnpackerCC((LoaderOfTheCrops) loaderOfTheCrops));
+            p.add(cropUnpackerCC(loaderOfTheCrops));
         }
 
         return p;
@@ -67,7 +67,7 @@ public class LoaderOfTheCrops {
         List<ItemStack> p = new ArrayList<>();
 
         for (LoaderOfTheCrops loaderOfTheCrops : mCropList) {
-            p.add(cropUnpackerCG((LoaderOfTheCrops) loaderOfTheCrops));
+            p.add(cropUnpackerCG(loaderOfTheCrops));
         }
 
         return p;
@@ -77,7 +77,7 @@ public class LoaderOfTheCrops {
         List<String> s = new ArrayList<>();
 
         for (int i = 0; i < mCropList.size(); ++i) {
-            s.add(((CropCard) cropObjs().get(i)).name());
+            s.add(cropObjs().get(i).name());
         }
 
         return s;
@@ -91,8 +91,8 @@ public class LoaderOfTheCrops {
 
     public static void register() {
         for (int i = 0; i < mCropList.size(); ++i) {
-            if ((Boolean) mHasCropObj.get(i) && cropObjs().get(i) != null) {
-                Crops.instance.registerCrop((CropCard) cropObjs().get(i));
+            if (mHasCropObj.get(i) && cropObjs().get(i) != null) {
+                Crops.instance.registerCrop(cropObjs().get(i));
             }
         }
     }
@@ -102,7 +102,7 @@ public class LoaderOfTheCrops {
 
         for (int i = 0; i < mCropList.size(); ++i) {
             if (baseseed.get(i) != null && cropObjs().get(i) != null) {
-                Crops.instance.registerBaseSeed((ItemStack) baseseed.get(i), (CropCard) cropObjs().get(i), 1, 1, 1, 1);
+                Crops.instance.registerBaseSeed(baseseed.get(i), cropObjs().get(i), 1, 1, 1, 1);
             }
         }
     }

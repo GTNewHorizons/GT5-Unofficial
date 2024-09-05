@@ -75,12 +75,12 @@ public class BTF_Inventory implements ISidedInventory {
                 if (this.setStackToZeroInsteadOfNull(aIndex)) {
                     tStack.stackSize = 0;
                 } else {
-                    this.setInventorySlotContents(aIndex, (ItemStack) null);
+                    this.setInventorySlotContents(aIndex, null);
                 }
             } else {
                 rStack = tStack.splitStack(aAmount);
                 if (tStack.stackSize == 0 && !this.setStackToZeroInsteadOfNull(aIndex)) {
-                    this.setInventorySlotContents(aIndex, (ItemStack) null);
+                    this.setInventorySlotContents(aIndex, null);
                 }
             }
         }

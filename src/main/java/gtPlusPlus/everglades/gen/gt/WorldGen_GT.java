@@ -36,7 +36,7 @@ public abstract class WorldGen_GT {
 
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
         String aDimName = aWorld.provider.getDimensionName();
-        Boolean tAllowed = (Boolean) this.mDimensionMap.get(aDimName);
+        Boolean tAllowed = this.mDimensionMap.get(aDimName);
         if (tAllowed == null) {
             boolean tValue = HandlerGT.sCustomWorldgenFile
                 .get("worldgen.dimensions." + this.mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);

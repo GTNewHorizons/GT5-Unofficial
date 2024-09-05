@@ -44,7 +44,7 @@ public class GuiValueField extends GuiTextField {
         Field lineScrollOffset = ReflectionUtils
             .getField(GuiTextField.class, !PreloaderCore.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
         if (lineScrollOffset != null) {
-            return (int) ReflectionUtils.getFieldValue(lineScrollOffset, this);
+            return ReflectionUtils.getFieldValue(lineScrollOffset, this);
         }
         return 0;
     }

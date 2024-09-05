@@ -39,7 +39,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             aNameRegional,
             aTier,
             3,
-            "This Chest stores " + (int) (Math.pow(6.0D, (double) aTier) * mStorageFactor) + " Items"
+            "This Chest stores " + (int) (Math.pow(6.0D, aTier) * mStorageFactor) + " Items"
         );
     }
 
@@ -151,7 +151,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
 
     @Override
     public int getMaxItemCount() {
-        return (int) (Math.pow(6.0D, (double) this.mTier) * mStorageFactor - 128.0D);
+        return (int) (Math.pow(6.0D, this.mTier) * mStorageFactor - 128.0D);
     }
 
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,

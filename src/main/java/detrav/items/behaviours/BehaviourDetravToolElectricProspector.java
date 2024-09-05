@@ -69,7 +69,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                             new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode.error")));
                         break;
                 }
-                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long) data);
+                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
             }
 
@@ -106,7 +106,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
                                     if ((tTileEntity instanceof TileEntityOres)
                                         && ((TileEntityOres) tTileEntity).mNatural) {
-                                        tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
+                                        tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                                         try {
                                             String name = GTLanguageManager
                                                 .getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
@@ -177,7 +177,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                     }
                 }
             }
-            packet.level = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack, "");
+            packet.level = aItem.getHarvestLevel(aStack, "");
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
 
@@ -231,7 +231,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 return true;
             } else {
                 if (!aWorld.isRemote) {
-                    prospectSingleChunk((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ);
+                    prospectSingleChunk(aItem, aStack, aPlayer, aWorld, aX, aY, aZ);
                 }
                 return true;
             }

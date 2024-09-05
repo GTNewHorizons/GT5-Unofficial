@@ -389,7 +389,7 @@ public class LargeTurbineTextureHandler {
             if (aTile != null) {
                 final IMetaTileEntity aMetaTileEntity = aTile.getMetaTileEntity();
                 if (aMetaTileEntity instanceof MTEHatchTurbine) {
-                    aVal = ((MTEHatchTurbine) aMetaTileEntity).getBaseMetaTileEntity()
+                    aVal = aMetaTileEntity.getBaseMetaTileEntity()
                         .isActive();
                     // Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
                 }

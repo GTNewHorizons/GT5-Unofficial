@@ -98,7 +98,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 .getMaterial() == Material.ground
             || aWorld.getBlock(aX, aY, aZ) == GregTechAPI.sBlockOres1) {
             if (!aWorld.isRemote) {
-                prospectChunks((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
+                prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
             }
             return true;
         }
@@ -113,7 +113,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         badluck = 0;
         ores = new HashMap<>();
 
-        int range = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
+        int range = aItem.getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
         if ((range % 2) == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
                         // loop
@@ -298,7 +298,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                     if (tBlock instanceof BlockOresAbstract) {
                         TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x, y, z);
                         if ((tTileEntity instanceof TileEntityOres) && ((TileEntityOres) tTileEntity).mNatural) {
-                            tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
+                            tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                             try {
                                 String format = LanguageRegistry.instance()
                                     .getStringLocalization(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");

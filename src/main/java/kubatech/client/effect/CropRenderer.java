@@ -39,7 +39,7 @@ public class CropRenderer extends EntityFX {
     int[] meta = new int[8];
 
     public CropRenderer(World world, int x, int y, int z, int age) {
-        super(world, (double) x, ((double) y - 0.0625d), (double) z);
+        super(world, x, ((double) y - 0.0625d), z);
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;

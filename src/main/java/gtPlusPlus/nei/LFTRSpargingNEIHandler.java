@@ -178,7 +178,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
     public void drawExtras(int aRecipeIndex) {
         final long tEUt = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
         final long tDuration = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-        drawText(10, 73, "Total: " + MathUtils.formatNumbers((long) (tDuration * tEUt)) + " EU", -16777216);
+        drawText(10, 73, "Total: " + MathUtils.formatNumbers(tDuration * tEUt) + " EU", -16777216);
         drawText(10, 83, "Usage: " + MathUtils.formatNumbers(tEUt) + " EU/t", -16777216);
         drawText(
             10,

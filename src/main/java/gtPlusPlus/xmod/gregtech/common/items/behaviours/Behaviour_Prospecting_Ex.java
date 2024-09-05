@@ -69,7 +69,7 @@ public class Behaviour_Prospecting_Ex extends BehaviourProspecting {
                 int tZ = aZ;
                 int tMetaID = 0;
                 final int tQuality = ((aItem instanceof MetaGeneratedTool)
-                    ? ((MetaGeneratedTool) aItem).getHarvestLevel(aStack, "")
+                    ? aItem.getHarvestLevel(aStack, "")
                     : 0) * 3;
 
                 int i = 0;

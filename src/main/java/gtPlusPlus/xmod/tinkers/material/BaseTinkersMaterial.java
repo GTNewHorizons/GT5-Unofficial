@@ -188,7 +188,7 @@ public class BaseTinkersMaterial {
         if (aMelt <= 3600) {
             ItemStack ingotcast = TinkersUtils.getPattern(1);
             TinkersUtils
-                .addBasinRecipe(aMaterial.getBlock(1), aMaterial.getFluidStack(144 * 9), (ItemStack) null, true, 100);
+                .addBasinRecipe(aMaterial.getBlock(1), aMaterial.getFluidStack(144 * 9), null, true, 100);
             TinkersUtils
                 .addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
         }

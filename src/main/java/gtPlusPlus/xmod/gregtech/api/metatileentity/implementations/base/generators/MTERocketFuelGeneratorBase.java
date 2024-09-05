@@ -231,7 +231,7 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
                     if ((tFluidAmountToUse > 0)
                         && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
                         int aSafeFloor = (int) Math.max(((tFluidAmountToUse * tConsumed) / 3), 1);
-                        this.mFluid.amount -= (int) aSafeFloor;
+                        this.mFluid.amount -= aSafeFloor;
                         PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
                     }
                 }
