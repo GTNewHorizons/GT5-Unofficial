@@ -159,7 +159,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (aTileEntity != null) {
             if (aTileEntity.getMetaTileEntity() instanceof MTEHatchInput hatch) {
                 hatch.updateTexture(aBaseCasingIndex);
-                setHatchRecipeMap(hatch);
                 spacetimeHatches.add(hatch);
                 return true;
             }
