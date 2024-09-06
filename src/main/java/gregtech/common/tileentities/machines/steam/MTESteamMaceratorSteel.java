@@ -78,8 +78,11 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
 
     @Override
     public int checkRecipe() {
-        GTRecipe tRecipe = getRecipeMap()
-            .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, TierEU.LV, null, null, getAllInputs());
+        GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
+            .items(getAllInputs())
+            .voltage(TierEU.LV)
+            .cachedRecipe(mLastRecipe)
+            .find();
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
         if (!canOutput(tRecipe)) {

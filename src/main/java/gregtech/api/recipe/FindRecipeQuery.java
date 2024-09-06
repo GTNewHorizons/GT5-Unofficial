@@ -142,7 +142,7 @@ public final class FindRecipeQuery {
 
     /**
      * @param voltage Recipes that exceed this voltage won't match. It will be automatically multiplied by amperage
-     *                of the recipemap.
+     *                of the recipemap. By default, voltage is set to max Integer, meaning no voltage check.
      */
     public FindRecipeQuery voltage(long voltage) {
         this.voltage = voltage;

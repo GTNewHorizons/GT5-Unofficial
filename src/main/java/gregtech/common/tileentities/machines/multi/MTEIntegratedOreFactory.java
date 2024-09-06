@@ -46,7 +46,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -463,8 +462,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.maceratorRecipes
-                        .findRecipe(getBaseMetaTileEntity(), false, GTValues.V[15], null, aStack);
+                    GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -485,12 +485,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipe(
-                        getBaseMetaTileEntity(),
-                        false,
-                        GTValues.V[15],
-                        new FluidStack[] { GTModHandler.getDistilledWater(Integer.MAX_VALUE) },
-                        aStack);
+                    GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE))
+                        .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -511,8 +509,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes
-                        .findRecipe(getBaseMetaTileEntity(), false, GTValues.V[15], null, aStack);
+                    GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -533,8 +532,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.centrifugeRecipes
-                        .findRecipe(getBaseMetaTileEntity(), false, GTValues.V[15], null, aStack);
+                    GTRecipe tRecipe = RecipeMaps.centrifugeRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -555,8 +555,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.sifterRecipes
-                        .findRecipe(getBaseMetaTileEntity(), false, GTValues.V[15], null, aStack);
+                    GTRecipe tRecipe = RecipeMaps.sifterRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -577,12 +578,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.chemicalBathRecipes.findRecipe(
-                        getBaseMetaTileEntity(),
-                        false,
-                        GTValues.V[15],
-                        getStoredFluids().toArray(new FluidStack[0]),
-                        aStack);
+                    GTRecipe tRecipe = RecipeMaps.chemicalBathRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .fluids(getStoredFluids().toArray(new FluidStack[0]))
+                        .find();
                     if (tRecipe != null && tRecipe.getRepresentativeFluidInput(0) != null) {
                         FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0)
                             .copy();
