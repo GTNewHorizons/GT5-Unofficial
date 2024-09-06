@@ -2875,18 +2875,20 @@ public class RecipesMachines {
                 "plateStaballoy",
                 GregtechItemList.Industrial_Mixer.get(1));
 
-            static final ItemStack plate = MaterialsAlloy.STABALLOY.getPlate(1);
+            final ItemStack staballoyPlate = MaterialsAlloy.STABALLOY.getPlate(1);
+            
             RecipeUtils.addShapedRecipe(
-                plate,
+                staballoyPlate,
                 CI.craftingToolHammer_Hard,
-                plate,
+                staballoyPlate,
                 "plateStainlessSteel",
                 "frameGtZirconiumCarbide",
                 "plateStainlessSteel",
-                plate,
+                staballoyPlate,
                 CI.craftingToolWrench,
-                plate,
+                staballoyPlate,
                 GregtechItemList.Casing_Multi_Use.get(1));
+            
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialsAlloy.STABALLOY.getPlate(4),
