@@ -2276,6 +2276,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             TengamAttuned,
             MaterialsUEVplus.Eternity,
             MaterialsUEVplus.MagMatter,
+            MaterialsUEVplus.Creon,
+            MaterialsUEVplus.Mellion,
             MaterialsUEVplus.HotProtoHalkonite,
             MaterialsUEVplus.ProtoHalkonite,
             MaterialsUEVplus.HotExoHalkonite,
@@ -2546,6 +2548,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ExoHalkonite);
     }
 
     /**
