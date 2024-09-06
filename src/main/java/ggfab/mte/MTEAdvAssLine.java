@@ -715,20 +715,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (GTUtility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (MTEHatchDataAccess tHatch : mDataAccessHatches) {
-            if (tHatch.isValid()) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                    .getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i) != null && isCorrectDataItem(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i),
-                            state))
-                        rList.add(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i));
-                }
-            }
+        for (MTEHatchDataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+            rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
         }
         return rList;
     }
