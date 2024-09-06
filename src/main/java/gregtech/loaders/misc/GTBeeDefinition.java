@@ -710,6 +710,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 1);
         tMutation.requireResource("blockIndium");
+        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
     }),
 
     // IC2
