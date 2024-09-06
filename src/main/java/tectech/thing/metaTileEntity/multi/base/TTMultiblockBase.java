@@ -54,6 +54,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
@@ -2402,7 +2403,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
-        builder.widget(screenElements.setPos(7, 8));
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements)
+                .setPos(0, 7)
+                .setSize(190, doesBindPlayerInventory() ? 79 : 165));
 
         Widget powerPassButton = createPowerPassButton();
         builder.widget(powerPassButton)
