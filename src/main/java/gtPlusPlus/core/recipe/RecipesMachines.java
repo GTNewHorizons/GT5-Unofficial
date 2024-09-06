@@ -2876,7 +2876,7 @@ public class RecipesMachines {
                 GregtechItemList.Industrial_Mixer.get(1));
 
             final ItemStack staballoyPlate = MaterialsAlloy.STABALLOY.getPlate(1);
-            
+
             RecipeUtils.addShapedRecipe(
                 staballoyPlate,
                 CI.craftingToolHammer_Hard,
@@ -2888,7 +2888,7 @@ public class RecipesMachines {
                 CI.craftingToolWrench,
                 staballoyPlate,
                 GregtechItemList.Casing_Multi_Use.get(1));
-            
+
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialsAlloy.STABALLOY.getPlate(4),
