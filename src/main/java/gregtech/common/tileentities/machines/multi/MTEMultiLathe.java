@@ -73,6 +73,9 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
 
     public enum PipeTiers {
 
+        Tin(1, 0.75F),
+        Brass(1, 0.8F),
+        Electrum(2, 0.9F),
         Platinum(4, 1F),
         Osmium(8, 1.25F),
         Quantium(12, 1.5F),
@@ -91,19 +94,22 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
     private PipeTiers getPipeData() {
         pipeTier = getPipeTier();
         return switch (pipeTier) {
-            case 2 -> PipeTiers.Osmium;
-            case 3 -> PipeTiers.Quantium;
-            case 4 -> PipeTiers.FluxedElectrum;
-            case 5 -> PipeTiers.BlackPlutonium;
-            default -> PipeTiers.Platinum;
+            case 2 -> PipeTiers.Brass;
+            case 3 -> PipeTiers.Electrum;
+            case 4 -> PipeTiers.Platinum;
+            case 5 -> PipeTiers.Osmium;
+            case 6 -> PipeTiers.Quantium;
+            case 7 -> PipeTiers.FluxedElectrum;
+            case 8 -> PipeTiers.BlackPlutonium;
+            default -> PipeTiers.Tin;
         };
     }
 
     // get tier from block meta
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 3 || metaID > 7) return -1;
-        return (metaID - 2);
+        if (metaID < 0 || metaID > 7) return -1;
+        return metaID + 1;
     }
 
     private void setPipeTier(int tier) {
@@ -150,6 +156,9 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
             ofBlocksTiered(
                 MTEMultiLathe::getTierFromMeta,
                 ImmutableList.of(
+                    Pair.of(GregTechAPI.sBlockCasings11, 0),
+                    Pair.of(GregTechAPI.sBlockCasings11, 1),
+                    Pair.of(GregTechAPI.sBlockCasings11, 2),
                     Pair.of(GregTechAPI.sBlockCasings11, 3),
                     Pair.of(GregTechAPI.sBlockCasings11, 4),
                     Pair.of(GregTechAPI.sBlockCasings11, 5),
@@ -220,8 +229,8 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
         tt.addMachineType("Lathe")
             .addInfo("Controller Block for the Industrial Precision Lathe")
             .addInfo("Gains 2 parallels per voltage tier,")
-            .addInfo("and 4 parallels per pipe casing tier (16 for Black Plutonium)")
-            .addInfo("Better pipe casings increase speed")
+            .addInfo("and 4 parallels per pipe casing tier starting at Platinum, 16 for Black Plutonium")
+            .addInfo("Better item pipe casings increase speed")
             .addInfo("Only uses 80% of the recipe's required energy")
             .addInfo(AuthorVolence)
             .addSeparator()
@@ -270,9 +279,8 @@ public class MTEMultiLathe extends MTEEnhancedMultiBlockBase<MTEMultiLathe> impl
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
             return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier >= -1
+        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0
             && mEnergyHatches.size() >= 1
-            && mInputBusses.size() >= 1
             && mMufflerHatches.size() == 1;
     }
 
