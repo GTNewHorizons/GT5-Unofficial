@@ -88,11 +88,9 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     protected int casingAmount = 0;
     protected int pipeCasingAmount = 0;
-    protected int Width = 0;
-    protected int eV = 0, mCeil = 0, mFloor = 0;
+    protected int eV = 0;
     private int casingTier = -1;
     private int pipeCasingTier = -1;
-    private int pipeMeta = -1;
     private int machineTier = 0;
     private static final int SOLIDIFIER_CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10)
         .getTextureIndex(13);
@@ -309,7 +307,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         buildPiece(MS_END, stackSize, hintsOnly, (-tTotalWidth - 2) * 2 + 4, 4, 0);
     }
 
-    protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mWidth;
     protected int nWidth;
 
@@ -351,8 +348,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             true);
     }
 
-    private int mCasingAmount;
-
     int mTier;
     {
         if (casingTier > pipeCasingTier) {
@@ -363,26 +358,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     }
 
-    private void onCasingAdded() {
-        mCasingAmount++;
-    }
-
     @Override
     public IStructureDefinition<MTEMultiSolidifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
-    protected boolean mTopLayerFound;
     protected int mCasing;
-
-    protected void onCasingFound() {
-        mCasing++;
-    }
-
-    protected void onTopLayerFound(boolean aIsCasing) {
-        mTopLayerFound = true;
-        if (aIsCasing) onCasingFound();
-    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
