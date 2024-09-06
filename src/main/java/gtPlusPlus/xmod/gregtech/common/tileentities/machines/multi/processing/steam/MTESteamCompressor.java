@@ -253,8 +253,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F)
-                    .setSpeedBoost(1.5F);
+                    .setEUtDiscount(1.33)
+                    .setSpeedBoost(1.5);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
@@ -269,8 +269,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Compressor")
-            .addInfo("33.3% faster than using a single block Steam Compressor.")
-            .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
+            .addInfo("33.3% faster than the single block Steam Compressor")
+            .addInfo("Uses only 66.6% of the steam/s that the single block Steam Compressor uses")
             .addInfo("Bronze tier runs recipes up to LV tier")
             .addInfo("Steel tier runs recipes up to MV tier")
             .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")

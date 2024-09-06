@@ -2815,4 +2815,8 @@ public enum GTBeeDefinition implements IBeeDefinition {
     public final ItemStack getMemberStack(EnumBeeType beeType) {
         return BeeManager.beeRoot.getMemberStack(getIndividual(), beeType.ordinal());
     }
+
+    public GTAlleleBeeSpecies getSpecies() {
+        return species;
+    }
 }

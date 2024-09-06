@@ -251,7 +251,7 @@ public class OverclockCalculator {
      * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
      */
     @Nonnull
-    public OverclockCalculator setEUtDiscount(float aEUtDiscount) {
+    public OverclockCalculator setEUtDiscount(double aEUtDiscount) {
         this.eutDiscount = aEUtDiscount;
         return this;
     }
@@ -260,7 +260,7 @@ public class OverclockCalculator {
      * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
      */
     @Nonnull
-    public OverclockCalculator setSpeedBoost(float aSpeedBoost) {
+    public OverclockCalculator setSpeedBoost(double aSpeedBoost) {
         this.speedBoost = aSpeedBoost;
         return this;
     }
@@ -279,7 +279,7 @@ public class OverclockCalculator {
      * Discount
      */
     @Nonnull
-    public OverclockCalculator setHeatDiscountMultiplier(float heatDiscountExponent) {
+    public OverclockCalculator setHeatDiscountMultiplier(double heatDiscountExponent) {
         this.heatDiscountExponent = heatDiscountExponent;
         return this;
     }
@@ -436,6 +436,7 @@ public class OverclockCalculator {
             while (machinePower > currentConsumption * currentEutIncrease
                 && requiredUnderOneTickMultiplier > currentUnderOneTickMultiplier
                 && (!limitOverclocks || overclockCount < maxOverclocks)) {
+                currentUnderOneTickMultiplier *= currentDurationDecrease;
                 currentConsumption *= currentEutIncrease;
                 durationInDouble /= currentDurationDecrease;
                 overclockCount++;

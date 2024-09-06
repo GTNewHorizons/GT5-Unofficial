@@ -36,7 +36,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
     protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
         boolean stdOrient, boolean extFacing) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;

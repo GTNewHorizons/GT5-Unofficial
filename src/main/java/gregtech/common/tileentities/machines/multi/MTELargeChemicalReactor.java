@@ -288,4 +288,9 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             return ret;
         }
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }

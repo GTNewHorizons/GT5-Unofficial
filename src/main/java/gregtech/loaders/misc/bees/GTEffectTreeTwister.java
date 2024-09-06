@@ -32,10 +32,10 @@ public class GTEffectTreeTwister extends GTAlleleEffect {
 
     static {
         if (TF_TRANS_SAPLING == null) {
-            GTMod.GT_FML_LOGGER.info("GT_EffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
+            GTMod.GT_FML_LOGGER.info("GTEffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
         }
         if (BARN_SAPLING == null) {
-            GTMod.GT_FML_LOGGER.info("GT_EffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
+            GTMod.GT_FML_LOGGER.info("GTEffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
         }
     }
 

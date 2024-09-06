@@ -74,6 +74,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.WirelessNetworkManager;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import kekztech.client.gui.KTUITextures;
 import kekztech.common.Blocks;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
@@ -93,7 +94,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private boolean canUseWireless = false;
     private boolean wireless_mode = false;
-    private boolean not_processed_lsc = true;
     private int counter = 1;
     private boolean balanced = false;
 
@@ -511,19 +511,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private UUID global_energy_user_uuid;
 
     @Override
-    public void onPreTick(IGregTechTileEntity tileEntity, long aTick) {
-        super.onPreTick(tileEntity, aTick);
+    public void onFirstTick(IGregTechTileEntity tileEntity) {
+        super.onFirstTick(tileEntity);
 
-        // On first tick (aTick restarts from 0 upon world reload).
-        if (not_processed_lsc && tileEntity.isServerSide()) {
-            // Add user to wireless network.
-            WirelessNetworkManager.strongCheckOrAddUser(tileEntity.getOwnerUuid());
+        if (!tileEntity.isServerSide()) return;
 
-            // Get team UUID.
-            global_energy_user_uuid = tileEntity.getOwnerUuid();
-
-            not_processed_lsc = false;
-        }
+        global_energy_user_uuid = tileEntity.getOwnerUuid();
+        SpaceProjectManager.checkOrCreateTeam(global_energy_user_uuid);
     }
 
     @Override
@@ -542,8 +536,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-        WirelessNetworkManager.strongCheckOrAddUser(thisController.getOwnerUuid());
-
         // Reset capacitor counts
         Arrays.fill(capacitors, 0);
         // Clear TT hatches
