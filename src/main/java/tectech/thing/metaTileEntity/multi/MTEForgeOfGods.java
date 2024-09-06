@@ -669,7 +669,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
-        destroyRenderer();
+        if (isRenderActive) {
+            destroyRenderer();
+        }
     }
 
     @Override
