@@ -19,7 +19,6 @@ import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,13 +52,14 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static IStructureDefinition<MTEMeteorMiner> STRUCTURE_DEFINITION = null;
     private static final int BASE_CASING_COUNT = 469;
-    private static final int RADIUS = 24;
+    private static final int MAX_RADIUS = 24;
+    private int currentRadius = MAX_RADIUS;
     private int xDrill, yDrill, zDrill;
     private int xStart, yStart, zStart;
     private boolean isStartInitialized = false;
-    private boolean shouldMine = false;
+    private boolean hasFinished = true;
+    private boolean isObserving = true;
     Collection<ItemStack> res = new HashSet<>();
-    private FakePlayer mFakePlayer = null;
 
     @Override
     public IStructureDefinition<MTEMeteorMiner> getStructureDefinition() {
@@ -268,11 +268,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
         zStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
         yStart = 48 + getBaseMetaTileEntity().getYCoord();
-        this.xDrill = this.xStart - RADIUS;
+    }
+
+    private void initializeDrillPos() {
+        this.xDrill = this.xStart - currentRadius;
         this.yDrill = this.yStart;
-        this.zDrill = this.zStart - RADIUS;
+        this.zDrill = this.zStart - currentRadius;
+
         this.isStartInitialized = true;
-        this.shouldMine = true;
+        this.hasFinished = false;
     }
 
     @Override
@@ -283,10 +287,13 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
         }
+
         if (!isStartInitialized) {
             this.setStartCoords();
+            this.initializeDrillPos();
         }
-        if (shouldMine) {
+
+        if (!hasFinished) {
             this.startMining(this.xDrill, this.zDrill);
             mOutputItems = res.toArray(new ItemStack[0]);
             res.clear();
@@ -296,6 +303,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("drill_exhausted");
         }
+
         return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
     }
 
@@ -313,43 +321,52 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             .isAirBlock(currentX, this.yStart, currentZ)) {
             return;
         }
-        for (int y = -RADIUS; y <= RADIUS; y++) {
+
+        for (int y = -currentRadius; y <= currentRadius; y++) {
+
             int currentY = this.yStart + y;
-            System.out // DEBUG
-                .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (currentY) + "\nZ: " + (currentZ));
+
             if (!getBaseMetaTileEntity().getWorld()
                 .isAirBlock(currentX, currentY, currentZ)) {
+
                 Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
+
                 if (target.getBlockHardness(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ) > 0) {
+
                     final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
+
                     addToOutput(
                         target
                             .getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 3));
+
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
+
             }
         }
     }
 
     private void moveToNextColumn() {
-        if (this.xDrill <= this.xStart + RADIUS) {
+        if (this.xDrill <= this.xStart + currentRadius) {
             this.xDrill++;
-        } else if (this.zDrill <= this.zStart + RADIUS) {
-            this.xDrill = this.xStart - RADIUS;
+        } else if (this.zDrill <= this.zStart + currentRadius) {
+            this.xDrill = this.xStart - currentRadius;
             this.zDrill++;
         } else {
-            this.shouldMine = false;
+            this.hasFinished = true;
         }
     }
 
     protected void setElectricityStats() {
         this.mOutputItems = new ItemStack[0];
+
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
+
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -3 * (1 << (tier << 1));
-        this.mMaxProgresstime = calculateMaxProgressTime(tier);
+        this.mMaxProgresstime = isObserving ? 800 : calculateMaxProgressTime(tier);
     }
 
     private void reset() {
@@ -374,20 +391,32 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
         for (ItemStack d : drops) {
             boolean found = false;
-            // Check if the item exists in the res list
+
             for (ItemStack r : res) {
                 if (d.isItemEqual(r)) {
                     r.stackSize += d.stackSize; // Combine stack sizes
                     found = true;
                 }
             }
-            // If the item wasn't found in res, prepare to add it after the loop
+
             if (!found) {
                 newItems.add(d);
             }
         }
 
-        // Add all new items to res after the iteration
         res.addAll(newItems);
+    }
+
+    private void findBestRadius() {
+        int delta = 0;
+        for (int zCoord = zDrill; zCoord > 0; zCoord++) {
+            if (!getBaseMetaTileEntity().getWorld()
+                .isAirBlock(xStart, yStart, zCoord)) {
+                break;
+            }
+            delta++;
+        }
+        currentRadius -= delta;
+        System.out.println("New Radius: " + currentRadius);
     }
 }
