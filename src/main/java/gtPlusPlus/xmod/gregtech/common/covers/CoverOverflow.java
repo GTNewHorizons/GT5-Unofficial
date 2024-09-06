@@ -13,8 +13,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluid;
 import gregtech.api.util.CoverBehavior;
@@ -46,18 +45,16 @@ public class CoverOverflow extends CoverBehavior {
     }
 
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int amountLimit,
-        ICoverable aTileEntity, long aTimer) {
+        ICoverable coverable, long aTimer) {
 
         if (amountLimit == 0) return amountLimit;
 
-        if (aTileEntity instanceof BaseMetaTileEntity baseMetaTileEntity) {
-            IMetaTileEntity iMetaTileEntity = baseMetaTileEntity.getMetaTileEntity();
-            if (iMetaTileEntity instanceof MTEBasicTank mteBasicTank)
-                mteBasicTank.setDrainableStack(doOverflowThing(mteBasicTank.getDrainableStack(), amountLimit));
-        } else if (aTileEntity instanceof BaseMetaPipeEntity baseMetaPipeEntity) {
-            IMetaTileEntity iMetaTileEntity = baseMetaPipeEntity.getMetaTileEntity();
-            if (iMetaTileEntity instanceof MTEFluid mteFluid && mteFluid.isConnectedAtSide(side))
-                doOverflowThings(mteFluid.mFluids, amountLimit);
+        if (coverable instanceof CommonMetaTileEntity common) {
+            IMetaTileEntity tile = common.getMetaTileEntity();
+            if (tile instanceof MTEBasicTank basicTank)
+                basicTank.setDrainableStack(doOverflowThing(basicTank.getDrainableStack(), amountLimit));
+            else if (tile instanceof MTEFluid fluidPipe && fluidPipe.isConnectedAtSide(side))
+                doOverflowThings(fluidPipe.mFluids, amountLimit);
         }
 
         return amountLimit;
