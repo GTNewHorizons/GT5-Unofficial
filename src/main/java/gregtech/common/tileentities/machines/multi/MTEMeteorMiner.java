@@ -300,7 +300,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     /*
      * TODO
-     * Drop blocks instead of ores
+     * Drop blocks instead of ores UNDOABLE
+     * Check if block is breakable
      * Redstone compatibility
      * Restart Button
      * Parallels
@@ -312,16 +313,17 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             return;
         }
         for (int y = -RADIUS; y <= RADIUS; y++) {
+            int currentY = this.yStart + y;
             System.out // DEBUG
-                .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (this.yStart + y) + "\nZ: " + (currentZ));
+                .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (currentY) + "\nZ: " + (currentZ));
             if (!getBaseMetaTileEntity().getWorld()
-                .isAirBlock(currentX, this.yStart + y, currentZ)) {
-                Block target = getBaseMetaTileEntity().getWorld()
-                    .getBlock(currentX, this.yStart + y, currentZ);
-                res.add(
-                    new ItemStack(target, 1, getBaseMetaTileEntity().getWorld().getBlockMetadata(currentX, this.yStart + y, currentZ)));
+                .isAirBlock(currentX, currentY, currentZ)) {
+                Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
+                final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
+                res.addAll(
+                    target.getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 3));
                 getBaseMetaTileEntity().getWorld()
-                    .setBlockToAir(currentX, this.yStart + y, currentZ);
+                    .setBlockToAir(currentX, currentY, currentZ);
             }
         }
     }
