@@ -62,8 +62,6 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
     public CoverFluidRegulator(int aTransferRate, ITexture coverTexture) {
         super(FluidRegulatorData.class, coverTexture);
-        if (aTransferRate > (-1 >>> (Integer.SIZE - SPEED_LENGTH)))
-            throw new IllegalArgumentException("aTransferRate too big: " + aTransferRate);
         this.mTransferRate = aTransferRate;
     }
 
