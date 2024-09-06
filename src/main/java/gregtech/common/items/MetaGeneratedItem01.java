@@ -1043,7 +1043,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Contains all sixteen colors, as well as solvent!",
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8)));
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
+                new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 4)));
 
         ItemList.Tool_Matches.set(
             addItem(
