@@ -42,7 +42,6 @@ public class BaseRecipeLoader {
             new Crafting().run();
             new Extractor().run();
             new ResearchStationAssemblyLine().run();
-        } else {
             new Godforge().run();
         }
     }
