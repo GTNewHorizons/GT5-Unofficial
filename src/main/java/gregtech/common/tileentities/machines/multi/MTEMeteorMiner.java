@@ -301,6 +301,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      * Restart Button
      */
     private void startMining(int currentX, int currentZ) {
+        res.clear();
         for (int y = -RADIUS; y <= RADIUS; y++) {
             System.out // DEBUG
                 .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (this.yStart + y) + "\nZ: " + (currentZ));
