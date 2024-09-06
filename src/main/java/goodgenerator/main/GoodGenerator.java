@@ -72,7 +72,6 @@ public final class GoodGenerator {
 
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        // NaquadahReworkRecipeLoader.SmallRecipeChange();
         NaquadahReworkRecipeLoader.Remover();
         Loaders.completeLoad();
     }

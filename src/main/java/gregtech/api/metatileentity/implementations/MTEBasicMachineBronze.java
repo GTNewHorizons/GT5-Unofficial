@@ -189,7 +189,10 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public int checkRecipe() {
-        GTRecipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
+        GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
+            .items(getAllInputs())
+            .voltage(TierEU.LV)
+            .find();
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);

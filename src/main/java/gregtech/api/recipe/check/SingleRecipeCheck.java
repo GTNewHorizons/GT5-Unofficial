@@ -302,7 +302,11 @@ public class SingleRecipeCheck {
             .map(FluidStack::loadFluidStackFromNBT)
             .toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
-        GTRecipe found = recipeMap.findRecipe(null, false, GTValues.V[GTUtility.getTier(eut)], fInputs, inputs);
+        GTRecipe found = recipeMap.findRecipeQuery()
+            .items(inputs)
+            .fluids(fInputs)
+            .voltage(GTValues.V[GTUtility.getTier(eut)])
+            .find();
         int[] chances = tag.getIntArray("chances");
         if (chances.length == 0) chances = null;
         if (found == null || !GTUtility.equals(inputs, found.mInputs)

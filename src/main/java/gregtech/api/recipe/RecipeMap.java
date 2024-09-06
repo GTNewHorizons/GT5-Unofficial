@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Unmodifiable;
 
 import gregtech.api.interfaces.IRecipeMap;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
@@ -207,49 +206,12 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         return aFluid != null && backend.containsInput(aFluid);
     }
 
-    // region find recipe
-
     /**
      * @return Entrypoint for fluent API for finding recipe.
      */
     public FindRecipeQuery findRecipeQuery() {
         return new FindRecipeQuery(this);
     }
-
-    @Nullable
-    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage,
-        @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
-        return findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, null, aInputs);
-    }
-
-    @Nullable
-    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated,
-        boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
-        return findRecipe(aTileEntity, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, null, aInputs);
-    }
-
-    @Nullable
-    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GTRecipe aRecipe,
-        boolean aNotUnificated, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack aSpecialSlot,
-        @Nullable ItemStack... aInputs) {
-        return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
-    }
-
-    @Nullable
-    public GTRecipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GTRecipe aRecipe,
-        boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids,
-        @Nullable ItemStack aSpecialSlot, @Nullable ItemStack... aInputs) {
-        return findRecipeQuery().items(aInputs != null ? aInputs : new ItemStack[0])
-            .fluids(aFluids != null ? aFluids : new FluidStack[0])
-            .specialSlot(aSpecialSlot)
-            .voltage(aVoltage)
-            .cachedRecipe(aRecipe)
-            .notUnificated(aNotUnificated)
-            .dontCheckStackSizes(aDontCheckStackSizes)
-            .find();
-    }
-
-    // endregion
 
     @Override
     public String toString() {

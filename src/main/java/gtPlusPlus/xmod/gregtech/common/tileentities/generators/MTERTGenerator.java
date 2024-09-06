@@ -100,12 +100,9 @@ public class MTERTGenerator extends MTEBasicGenerator {
         final NBTTagCompound data = list.getCompoundTagAt(0);
         ItemStack lastUsedFuel = ItemStack.loadItemStackFromNBT(data);
         if (lastUsedFuel != null) {
-            this.mCurrentRecipe = getRecipeMap().findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                9223372036854775807L,
-                null,
-                new ItemStack[] { lastUsedFuel });
+            this.mCurrentRecipe = getRecipeMap().findRecipeQuery()
+                .items(lastUsedFuel)
+                .find();
         }
     }
 
@@ -306,8 +303,9 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public int getFuelValue(ItemStack aStack) {
         if ((GTUtility.isStackInvalid(aStack)) || (getRecipeMap() == null)) return 0;
-        GTRecipe tFuel = getRecipeMap()
-            .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, new ItemStack[] { aStack });
+        GTRecipe tFuel = getRecipeMap().findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel != null) {
             this.mCurrentRecipe = tFuel;
             int voltage = tFuel.mEUt;
