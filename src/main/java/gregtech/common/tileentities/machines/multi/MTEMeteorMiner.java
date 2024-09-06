@@ -59,6 +59,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private boolean isStartInitialized = false;
     private boolean hasFinished = true;
     private boolean isObserving = true;
+    private boolean isWaiting = false;
     Collection<ItemStack> res = new HashSet<>();
 
     @Override
@@ -275,9 +276,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         }
 
         if (hasFinished && isObserving) {
+            this.isWaiting = true;
             this.setElectricityStats();
             boolean isReady = checkCenter();
             if (isReady) {
+                this.isWaiting = false;
+                this.setElectricityStats();
                 this.setReady();
                 this.hasFinished = false;
             } else return SimpleCheckRecipeResult.ofSuccess("meteor_waiting");
@@ -299,8 +303,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     /*
      * TODO
-     * Drop blocks instead of ores UNDOABLE
-     * Check if block is breakable
      * Redstone compatibility
      * Restart Button
      * Parallels
@@ -389,9 +391,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         this.mEfficiencyIncrease = 10000;
 
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
-        this.mEUt = (-3 * (1 << (tier << 1))) / ((isObserving && hasFinished && isStartInitialized) ? 8 : 1);
-        this.mMaxProgresstime = (isObserving && hasFinished && isStartInitialized) ? 200
-            : calculateMaxProgressTime(tier);
+        this.mEUt = (-3 * (1 << (tier << 1))) / ((isWaiting) ? 8 : 1);
+        this.mMaxProgresstime = (isWaiting) ? 200 : calculateMaxProgressTime(tier);
     }
 
     private int calculateMaxProgressTime(int tier) {
