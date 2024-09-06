@@ -298,7 +298,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             if (isReady) {
                 this.setReady();
                 this.hasFinished = false;
-            }
+            } else return SimpleCheckRecipeResult.ofSuccess("meteor_waiting");
         }
 
         if (!hasFinished) {
@@ -379,7 +379,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -3 * (1 << (tier << 1));
-        this.mMaxProgresstime = isObserving ? 800 : calculateMaxProgressTime(tier);
+        this.mMaxProgresstime = (isObserving && hasFinished) ? 200 : calculateMaxProgressTime(tier);
     }
 
     private void setReady() {
