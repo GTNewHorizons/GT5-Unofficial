@@ -127,6 +127,8 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Industrial Multi-Machine")
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED! This machine will be removed in the next major update.")
+            .addInfo(EnumChatFormatting.RED + "A variety of multiblocks have been added to replace these machines!")
             .addInfo("250% faster than using single block machines of the same voltage")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Processes two items per voltage tier")
