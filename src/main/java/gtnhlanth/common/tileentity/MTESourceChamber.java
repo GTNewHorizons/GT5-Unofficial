@@ -126,6 +126,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Source")
             .addInfo("Controller block for the Source Chamber")
+            .addInfo("Output energy scales with EU/t up to the point shown in the recipe")
             .addInfo(BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addSeparator()
