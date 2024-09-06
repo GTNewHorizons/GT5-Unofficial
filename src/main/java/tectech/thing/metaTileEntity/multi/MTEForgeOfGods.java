@@ -179,7 +179,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
 
-    private final boolean debugMode = true;
+    private final boolean debugMode = false;
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
