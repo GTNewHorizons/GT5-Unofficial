@@ -1,19 +1,19 @@
 package tectech.util;
 
-import net.minecraft.util.IIcon;
 import net.minecraft.block.Block;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class FaceCulledRenderBlocks extends RenderBlocks {
 
     FaceVisibility faceVisibility;
 
-    public FaceCulledRenderBlocks(IBlockAccess world){
+    public FaceCulledRenderBlocks(IBlockAccess world) {
         super(world);
     }
 
-        public void setFaceVisibility(FaceVisibility faceVisibility) {
+    public void setFaceVisibility(FaceVisibility faceVisibility) {
         this.faceVisibility = faceVisibility;
     }
 

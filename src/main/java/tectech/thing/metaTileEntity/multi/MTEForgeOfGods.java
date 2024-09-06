@@ -555,7 +555,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
-
         TileEntity tile = this.getBaseMetaTileEntity()
             .getWorld()
             .getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
@@ -566,7 +565,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return null;
     }
 
-    private void UpdateRenderer(){
+    private void UpdateRenderer() {
         TileEntityForgeOfGods tile = getRenderer();
         if (tile == null) return;
 
@@ -614,7 +613,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         }
 
-        rendererTileEntity.setRenderRotation(getRotation(),getDirection());
+        rendererTileEntity.setRenderRotation(getRotation(), getDirection());
         UpdateRenderer();
 
         isRenderActive = true;
@@ -656,10 +655,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (isRenderActive){
+        if (isRenderActive) {
             destroyRenderer();
             isRenderActive = false;
-        }else{
+        } else {
             ringAmount = 3;
             createRenderer();
             isRenderActive = true;
