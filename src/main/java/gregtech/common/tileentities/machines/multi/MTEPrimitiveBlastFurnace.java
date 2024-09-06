@@ -370,7 +370,9 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
         }
         ItemStack[] inputs = new ItemStack[INPUT_SLOTS];
         System.arraycopy(mInventory, 0, inputs, 0, INPUT_SLOTS);
-        GTRecipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, 0, null, inputs);
+        GTRecipe recipe = getRecipeMap().findRecipeQuery()
+            .items(inputs)
+            .find();
         if (recipe == null) {
             this.mOutputItems = null;
             return false;

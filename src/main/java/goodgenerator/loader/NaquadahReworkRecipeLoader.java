@@ -580,67 +580,6 @@ public class NaquadahReworkRecipeLoader {
             .addTo(vacuumFreezerRecipes);
     }
 
-    public static void SmallRecipeChange() {
-
-        GTRecipe tRecipe;
-
-        tRecipe = RecipeMaps.chemicalReactorRecipes.findRecipe(
-            null,
-            false,
-            1 << 30,
-            new FluidStack[] { Materials.SulfuricAcid.getFluid(500) },
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
-            ItemList.Empty_Board_Elite.get(2));
-        if (tRecipe != null) {
-            RecipeMaps.chemicalReactorRecipes.getBackend()
-                .removeRecipe(tRecipe);
-            GTRecipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
-                ItemList.Empty_Board_Elite.get(2) };
-            RecipeMaps.chemicalReactorRecipes.add(tRecipe2);
-            RecipeMaps.chemicalReactorRecipes.getBackend()
-                .reInit();
-        }
-
-        tRecipe = RecipeMaps.multiblockChemicalReactorRecipes.findRecipe(
-            null,
-            false,
-            1 << 30,
-            new FluidStack[] { Materials.SulfuricAcid.getFluid(500) },
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
-            ItemList.Empty_Board_Elite.get(2));
-        if (tRecipe != null) {
-            RecipeMaps.multiblockChemicalReactorRecipes.getBackend()
-                .removeRecipe(tRecipe);
-            GTRecipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
-                ItemList.Empty_Board_Elite.get(2) };
-            RecipeMaps.multiblockChemicalReactorRecipes.add(tRecipe2);
-            RecipeMaps.multiblockChemicalReactorRecipes.getBackend()
-                .reInit();
-        }
-
-        tRecipe = RecipeMaps.assemblerRecipes.findRecipe(
-            null,
-            false,
-            1 << 30,
-            new FluidStack[] { Materials.Polybenzimidazole.getMolten(36) },
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 1),
-            GTUtility.getIntegratedCircuit(1));
-        if (tRecipe != null) {
-            RecipeMaps.assemblerRecipes.getBackend()
-                .removeRecipe(tRecipe);
-            GTRecipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[] {
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahEnriched, 1) };
-            RecipeMaps.assemblerRecipes.add(tRecipe2);
-            RecipeMaps.assemblerRecipes.getBackend()
-                .reInit();
-        }
-    }
-
     public static void Remover() {
 
         if (!EnableNaquadahRework) return;

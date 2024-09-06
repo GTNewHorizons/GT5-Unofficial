@@ -295,7 +295,9 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
             return 0;
         }
         final GTRecipe tFuel = this.getRecipeMap()
-            .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+            .findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel != null) {
             return (int) ((tFuel.mSpecialValue * 1000L * this.getEfficiency()) / 100);
         }
@@ -307,7 +309,9 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
             return null;
         }
         final GTRecipe tFuel = this.getRecipeMap()
-            .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+            .findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel != null) {
             return GTUtility.copy(tFuel.getOutput(0));
         }

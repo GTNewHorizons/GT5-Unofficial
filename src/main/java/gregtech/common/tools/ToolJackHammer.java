@@ -78,12 +78,16 @@ public class ToolJackHammer extends ToolDrillLV {
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GTRecipe tRecipe = RecipeMaps.hammerRecipes
-            .findRecipe(null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
+        GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
+            .items(new ItemStack(aBlock, 1, aMetaData))
+            .notUnificated(true)
+            .find();
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = RecipeMaps.hammerRecipes
-                    .findRecipe(null, true, 2147483647L, null, GTUtility.copyAmount(1, tDrop));
+                tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
+                    .items(GTUtility.copyAmount(1, tDrop))
+                    .notUnificated(true)
+                    .find();
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {

@@ -240,7 +240,6 @@ public class GTMod implements IGTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
 
-    public static int MAX_IC2 = 2147483647;
     public static GTAchievements achievements;
     @Deprecated
     public static final String aTextGeneral = "general";

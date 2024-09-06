@@ -225,8 +225,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             }
         }
 
-        GTRecipe tRecipe = GoodGeneratorRecipeMaps.naquadahReactorFuels
-            .findRecipe(this.getBaseMetaTileEntity(), true, 1 << 30, tFluids.toArray(new FluidStack[0]));
+        GTRecipe tRecipe = GoodGeneratorRecipeMaps.naquadahReactorFuels.findRecipeQuery()
+            .fluids(tFluids.toArray(new FluidStack[0]))
+            .find();
         if (tRecipe != null) {
             Pair<FluidStack, Integer> excitedInfo = getExcited(tFluids.toArray(new FluidStack[0]), false);
             int pall = excitedInfo == null ? 1 : excitedInfo.getValue();

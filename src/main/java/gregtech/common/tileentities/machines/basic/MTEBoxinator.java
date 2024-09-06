@@ -206,13 +206,11 @@ public class MTEBoxinator extends MTEBasicMachine {
         if ((ItemList.Schematic_1by1.isStackEqual(tInput1)) || (ItemList.Schematic_2by2.isStackEqual(tInput1))
             || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
             if (hasValidCache(aStack, aTypeCache, false)) return true;
-            if (RecipeMaps.packagerRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                true,
-                GTValues.V[mTier],
-                null,
-                GTUtility.copyAmount(64, aStack),
-                tInput1) != null) {
+            if (RecipeMaps.packagerRecipes.findRecipeQuery()
+                .items(GTUtility.copyAmount(64, aStack), tInput1)
+                .voltage(GTValues.V[mTier])
+                .notUnificated(true)
+                .find() != null) {
                 return true;
             }
             if (ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) && GTModHandler.getRecipeOutput(aStack) != null)
