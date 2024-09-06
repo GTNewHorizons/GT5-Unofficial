@@ -1,16 +1,16 @@
 package kekztech.common;
 
-import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static thaumcraft.api.ThaumcraftApi.addArcaneCraftingRecipe;
 
 import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import kekztech.KekzCore;
 import kekztech.common.recipeLoaders.AlloySmelter;
@@ -27,10 +27,12 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.crafting.ShapedArcaneRecipe;
 
 public class Recipes {
 
     public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
+    public static final HashMap<String, ShapedArcaneRecipe> shapedArcaneRecipes = new HashMap<>();
 
     public static void postInit() {
         KekzCore.LOGGER.info("Registering recipes...");
@@ -55,32 +57,23 @@ public class Recipes {
     private static void registerRecipes_Jars() {
 
         // Thaumium Reinforced Jar
-        final ItemStack[] recipe_jarthaumiumreinforced = {
-            GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 1, null),
-            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
-            new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
-            new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
-            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
-            new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1),
-            new ItemStack(net.minecraft.init.Blocks.glass_pane), };
-        final AspectList aspects_jarthaumiumreinforced = new AspectList().add(Aspect.ARMOR, 64)
-            .add(Aspect.ORDER, 32)
-            .add(Aspect.WATER, 32)
-            .add(Aspect.GREED, 16)
-            .add(Aspect.VOID, 16)
-            .add(Aspect.AIR, 8);
-        infusionRecipes.put(
+        shapedArcaneRecipes.put(
             "THAUMIUMREINFORCEDJAR",
-            ThaumcraftApi.addInfusionCraftingRecipe(
+            addArcaneCraftingRecipe(
                 "THAUMIUMREINFORCEDJAR",
                 new ItemStack(Blocks.jarThaumiumReinforced, 1, 0),
-                5,
-                aspects_jarthaumiumreinforced,
-                ItemApi.getBlock("blockJar", 0),
-                recipe_jarthaumiumreinforced));
+                new AspectList().add(Aspect.WATER, 30),
+                "MTM",
+                "TJT",
+                "GGG",
+                "M",
+                getModItem(Botania.ID, "manaGlass", 1, 0),
+                "T",
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Thaumium, 1L),
+                "J",
+                getModItem(Thaumcraft.ID, "blockJar", 1, 0),
+                "G",
+                getModItem(Minecraft.ID, "glass", 1, 0)));
         // Thaumium Reinforced Void Jar
         final ItemStack[] recipe_voidjarupgrade = {
             GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
@@ -100,7 +93,7 @@ public class Recipes {
                 new ItemStack(Blocks.jarThaumiumReinforced, 1, 0),
                 recipe_voidjarupgrade));
 
-        final ItemStack[] recipe_jarichor = { GTModHandler.getModItem(ThaumicTinkerer.ID, "kamiResource", 1, 0),
+        final ItemStack[] recipe_jarichor = { getModItem(ThaumicTinkerer.ID, "kamiResource", 1, 0),
             GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
             GTOreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),
