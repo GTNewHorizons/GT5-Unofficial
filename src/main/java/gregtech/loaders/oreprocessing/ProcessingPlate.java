@@ -441,7 +441,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
         if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
-            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UIV
+            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UEV
                 || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
