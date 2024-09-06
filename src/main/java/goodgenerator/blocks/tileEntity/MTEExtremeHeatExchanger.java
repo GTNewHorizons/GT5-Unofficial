@@ -210,10 +210,10 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
             .addController("Front bottom")
-            .addOtherStructurePart("Input Hatch", "Distilled water. Any bottom left/right side casing", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam. Any top layer casing", 2)
-            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma. Front middle on 4th layer", 3)
-            .addOtherStructurePart("Output Hatch", "Cold fluid. Back middle on 4th layer", 4)
+            .addOtherStructurePart("Input Hatch", "distilled water", 1)
+            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
+            .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
             .toolTipFinisher("Good Generator");
@@ -268,8 +268,15 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             Fluid tReadySteam = transformed ? tRunningRecipe.getHeatedSteam() : tRunningRecipe.getNormalSteam();
             int waterAmount = (int) (this.mEUt / getUnitSteamPower(tReadySteam.getName())) / 160;
             if (waterAmount < 0) return false;
+            int steamToOutput;
             if (depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
-                addOutput(new FluidStack(tReadySteam, waterAmount * 160));
+                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
+                    .contains("plasma")) {
+                    steamToOutput = waterAmount * 160 / 1000;
+                } else {
+                    steamToOutput = waterAmount * 160;
+                }
+                addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GTLog.exp.println(this.mName + " had no more Distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
@@ -281,16 +288,13 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     public double getUnitSteamPower(String steam) {
-        switch (steam) {
-            case "steam":
-                return 0.5;
-            case "ic2superheatedsteam":
-                return 1;
-            case "supercriticalsteam":
-                return 100;
-            default:
-                return -1;
-        }
+        return switch (steam) {
+            case "steam" -> 0.5;
+            case "ic2superheatedsteam" -> 1;
+            case "supercriticalsteam" -> 100;
+            case "densesupercriticalsteam" -> 1;
+            default -> -1;
+        };
     }
 
     @Override

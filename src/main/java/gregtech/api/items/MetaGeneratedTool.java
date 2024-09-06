@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam.calculateLooseFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +54,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.tools.ToolTurbine;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mrtjp.projectred.api.IScrewdriver;
@@ -428,165 +428,144 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 // EU/t -> toolCombatDamage, toolSpeed
                 // Overflow Tier -> toolQuality
                 float aBaseEff = (5f + getToolCombatDamage(aStack)) * 1000f;
-
+                TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
                 // It was noted by IntelliJ that replacing ((GT_MetaGenerated_Tool) aStack.getItem()) with
                 // GT_MetaGenerated_Tool can have side effects. This refactoring will need tests.
                 @SuppressWarnings("AccessStaticViaInstance")
-                float aOptFlow = (Math.max(
-                    Float.MIN_NORMAL,
-                    ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
-                        .getSpeedMultiplier()
-                        * ((MetaGeneratedTool) aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed
-                        * 50F));
+                float aOptFlow = (Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
                 aList.add(
                     tOffset + 0,
                     EnumChatFormatting.GRAY + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
-                        " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
+                        "" + EnumChatFormatting.GREEN + formatNumbers(turbine.getMaxDurability()) + " ",
+                        " " + formatNumbers(turbine.getCurrentDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY + String.format(
-                        transItem("002", "%s lvl %s"),
-                        tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
+                        transItem("002", "%s Tier %s"),
+                        tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
                         + String.format(
-                            transItem("005", "Turbine Efficiency: %s"),
-                            "" + EnumChatFormatting.BLUE + (50.0F + (10.0F * getToolCombatDamage(aStack))))
+                            transItem("005", "Base Efficiency: %s"),
+                            "" + EnumChatFormatting.BLUE + (int) (turbine.getEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("006", "Optimal Steam flow: %s L/t"),
-                        "" + EnumChatFormatting.GOLD
-                            + formatNumbers(
-                                GTUtility.safeInt(
-                                    (long) (Math.max(
-                                        Float.MIN_NORMAL,
-                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * (1000 * getPrimaryMaterial(aStack).mSteamMultiplier / 20)))))
-                            + EnumChatFormatting.GRAY));
+                    EnumChatFormatting.GRAY + transItem("006", "Fuel | Optimal Flow > EU/t Produced | Efficiency"));
                 aList.add(
                     tOffset + 4,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("900", "Energy from Optimal Steam Flow: %s EU/t"),
-                        "" + EnumChatFormatting.GOLD
-                            + formatNumbers(
-                                GTUtility.safeInt(
-                                    (long) (Math.max(
-                                        Float.MIN_NORMAL,
-                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * (1000 * getPrimaryMaterial(aStack).mSteamMultiplier / 20))
-                                        * (50.0F + (10.0F * getToolCombatDamage(aStack)))
-                                        / 200)))
-                            + EnumChatFormatting.GRAY));
-                {
-                    float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-                    float aOptFlowLoose = calculatedFlow[0];
-                    float aBaseEffLoose = calculatedFlow[1];
-
-                    aList.add(
-                        tOffset + 5,
-                        EnumChatFormatting.AQUA + String.format(
-                            transItem("500", "Turbine Efficiency (Loose): %s"),
-                            "" + EnumChatFormatting.BLUE + (long) aBaseEffLoose / 100 + "%" + EnumChatFormatting.GRAY));
-                    aList.add(
-                        tOffset + 6,
-                        EnumChatFormatting.AQUA + String.format(
-                            transItem("501", "Optimal Steam flow (Loose): %s L/t"),
+                    EnumChatFormatting.WHITE + "  Steam "
+                        + EnumChatFormatting.GRAY
+                        + " | "
+                        + String.format(
+                            "%s L/t > %s EU/t | %s",
                             "" + EnumChatFormatting.GOLD
-                                + formatNumbers(((long) aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier))
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamFlow())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.DARK_GREEN
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamEUt())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.BLUE
+                                + (int) (turbine.getSteamEfficiency() * 100)
+                                + "%"
                                 + EnumChatFormatting.GRAY));
-                    aList.add(
-                        tOffset + 7,
-                        EnumChatFormatting.AQUA + String.format(
-                            transItem("901", "Energy from Optimal Steam Flow (Loose): %s EU/t"),
+                aList.add(
+                    tOffset + 5,
+                    EnumChatFormatting.WHITE + "  Loose "
+                        + EnumChatFormatting.GRAY
+                        + " | "
+                        + String.format(
+                            "%s L/t > %s EU/t | %s",
                             "" + EnumChatFormatting.GOLD
-                                + formatNumbers(
-                                    ((long) aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier / 10000)
-                                        * ((long) aBaseEffLoose / 2))
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamFlow())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.DARK_GREEN
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamEUt())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.BLUE
+                                + (int) (turbine.getLooseSteamEfficiency() * 100)
+                                + "%"
                                 + EnumChatFormatting.GRAY));
-                    aList.add(
-                        tOffset + 8,
-                        EnumChatFormatting.GRAY + "(Superheated Steam EU values are 2x those of Steam)");
-                }
+                aList.add(
+                    tOffset + 6,
+                    EnumChatFormatting.DARK_GRAY + "  Supercritical and Superheated EU values are 2x");
+                aList.add(
+                    tOffset + 7,
+                    EnumChatFormatting.AQUA + "  Gas "
+                        + EnumChatFormatting.GRAY
+                        + " | "
+                        + String.format(
+                            "%s EU/t > %s EU/t | %s",
+                            "" + EnumChatFormatting.GOLD
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasFlow())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.DARK_GREEN
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasEUt())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.BLUE
+                                + (int) (turbine.getGasEfficiency() * 100)
+                                + "%"
+                                + EnumChatFormatting.GRAY));
+                aList.add(
+                    tOffset + 8,
+                    EnumChatFormatting.AQUA + "  Loose "
+                        + EnumChatFormatting.GRAY
+                        + " | "
+                        + String.format(
+                            "%s EU/t > %s EU/t | %s",
+                            "" + EnumChatFormatting.GOLD
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasFlow())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.DARK_GREEN
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasEUt())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.BLUE
+                                + (int) (turbine.getLooseGasEfficiency() * 100)
+                                + "%"
+                                + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 9,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("902", "Optimal SC Steam flow: %s L/t"),
-                        "" + EnumChatFormatting.GOLD
-                            + formatNumbers(
-                                GTUtility.safeInt(
-                                    (long) (Math.max(
-                                        Float.MIN_NORMAL,
-                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * (1000f / 20f)))))
-                            + EnumChatFormatting.GRAY));
+                    EnumChatFormatting.LIGHT_PURPLE + "  Plasma"
+                        + EnumChatFormatting.GRAY
+                        + " | "
+                        + String.format(
+                            "%s EU/t > %s EU/t | %s",
+                            "" + EnumChatFormatting.GOLD
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaFlow())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.DARK_GREEN
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaEUt())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.BLUE
+                                + (int) (turbine.getPlasmaEfficiency() * 100)
+                                + "%"
+                                + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 10,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("903", "Energy from Optimal SC Steam Flow: %s EU/t"),
-                        "" + EnumChatFormatting.GOLD
-                            + formatNumbers(
-                                GTUtility.safeInt(
-                                    (long) (Math.max(
-                                        Float.MIN_NORMAL,
-                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * (1000f / 20f))
-                                        * (50.0F + (10.0F * getToolCombatDamage(aStack))))))
-                            + EnumChatFormatting.GRAY));
+                    EnumChatFormatting.LIGHT_PURPLE + "  Loose"
+                        + EnumChatFormatting.GRAY
+                        + " | "
+                        + String.format(
+                            "%s EU/t > %s EU/t | %s",
+                            "" + EnumChatFormatting.GOLD
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaFlow())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.DARK_GREEN
+                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaEUt())))
+                                + EnumChatFormatting.GRAY,
+                            "" + EnumChatFormatting.BLUE
+                                + (int) (turbine.getLoosePlasmaEfficiency() * 100)
+                                + "%"
+                                + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 11,
                     EnumChatFormatting.LIGHT_PURPLE + String.format(
-                        transItem("007", "Energy from Optimal Gas Flow: %s EU/t"),
-                        "" + EnumChatFormatting.GOLD
-                            + formatNumbers(
-                                GTUtility.safeInt(
-                                    (long) (Math.max(
-                                        Float.MIN_NORMAL,
-                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * 50
-                                            * getPrimaryMaterial(aStack).mGasMultiplier)
-                                        * (50.0F + (10.0F * getToolCombatDamage(aStack)))
-                                        / 100)))
-                            + EnumChatFormatting.GRAY));
-                aList.add(
-                    tOffset + 12,
-                    EnumChatFormatting.LIGHT_PURPLE + String.format(
-                        transItem("008", "Energy from Optimal Plasma Flow: %s EU/t"),
-                        "" + EnumChatFormatting.GOLD
-                            + formatNumbers(
-                                GTUtility.safeInt(
-                                    (long) (Math.max(
-                                        Float.MIN_NORMAL,
-                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * 2000
-                                            * getPrimaryMaterial(aStack).mPlasmaMultiplier)
-                                        * (50.0F + (10.0F * getToolCombatDamage(aStack)))
-                                        * (1.05 / 100))))
-                            + EnumChatFormatting.GRAY));
-                aList.add(
-                    tOffset + 14,
-                    EnumChatFormatting.GRAY + "(EU/t values include efficiency and are not 100% accurate)");
-                int toolQualityLevel = MetaGeneratedTool.getPrimaryMaterial(aStack).mToolQuality;
-                int overflowMultiplier = 0;
-                if (toolQualityLevel >= 6) {
-                    overflowMultiplier = 3;
-                } else if (toolQualityLevel >= 3) {
-                    overflowMultiplier = 2;
-                } else {
-                    overflowMultiplier = 1;
-                }
-                aList.add(
-                    tOffset + 13,
-                    EnumChatFormatting.LIGHT_PURPLE + String.format(
                         transItem("502", "Overflow Efficiency Tier: %s"),
-                        "" + EnumChatFormatting.GOLD + overflowMultiplier + EnumChatFormatting.GRAY));
-
+                        "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
             } else {
                 aList.add(
                     tOffset,

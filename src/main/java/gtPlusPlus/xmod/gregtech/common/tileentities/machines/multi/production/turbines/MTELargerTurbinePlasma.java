@@ -23,27 +23,28 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
-public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
+public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
 
-    public MTELargeTurbinePlasma(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbinePlasma(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargeTurbinePlasma(String aName) {
+    public MTELargerTurbinePlasma(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeTurbinePlasma(mName);
+        return new MTELargerTurbinePlasma(mName);
     }
 
     @Override
@@ -119,6 +120,14 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
+            // At this point all turbines are equivalent in all hatches, use the stats of the first turbine for
+            // calculations
+            ItemStack turbineItem = mTurbineRotorHatches.get(0)
+                .getTurbine();
+            TurbineStatCalculator turbine = new TurbineStatCalculator(
+                (MetaGeneratedTool) turbineItem.getItem(),
+                turbineItem);
+
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             if (tFluids.size() > 0) {
@@ -140,21 +149,11 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
 
                     ItemStack aStack = getFullTurbineAssemblies().get(0)
                         .getTurbine();
-                    aTotalBaseEff += GTUtility.safeInt(
-                        (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                    aTotalOptimalFlow += GTUtility
-                        .safeInt(
-                            (long) Math.max(
-                                Float.MIN_NORMAL,
-                                ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
-                                    .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed
-                                    * 50));
+                    aTotalBaseEff += turbine.getPlasmaEfficiency() * 10000;
+                    aTotalOptimalFlow += turbine.getOptimalPlasmaFlow();
 
                     // Calculate total EU/t (as shown on turbine tooltip (Fast mode doesn't affect))
-                    double aEUPerTurbine = aTotalOptimalFlow * 40
-                        * 0.0105
-                        * MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier
-                        * (50.0f + (10.0f * ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)));
+                    double aEUPerTurbine = turbine.getOptimalPlasmaEUt();
                     aTotalOptimalFlow *= getSpeedMultiplier();
 
                     if (aTotalOptimalFlow < 0) {
@@ -177,7 +176,7 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
             }
 
             // How much the turbine should be producing with this flow
-            long newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
+            long newPower = fluidIntoPower(tFluids, turbine);
 
             // Reduce produced power depending on the ratio between fuel value and turbine EU/t with the following
             // formula:
@@ -198,7 +197,7 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
             int maxChangeAllowed = Math.max(10, GTUtility.safeInt((long) Math.abs(difference) / 100));
 
             if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
-                                                           // change
+                // change
                 int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
                 this.lEUt += change; // Apply the change
             } else {
@@ -222,24 +221,24 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
-    @Override
-    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
+    long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (aFluids.size() >= 1) {
-            aOptFlow *= 800; // CHANGED THINGS HERE, check recipe runs once per 20 ticks
             int tEU = 0;
 
             int actualOptimalFlow = 0;
 
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
-                                                                          // Doesn't matter which one. Ignore the rest!
+            // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = GTUtility
-                .safeInt((long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
+            actualOptimalFlow = GTUtility.safeInt(
+                (long) Math.ceil(
+                    (isLooseMode() ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20
+                        / (double) fuelValue)); // Check recipe runs once every 20 ticks
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
-                                                                                       // optimal flow. Variable
-                                                                                       // required outside of loop for
+            // optimal flow. Variable
+            // required outside of loop for
             // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;
@@ -270,12 +269,16 @@ public class MTELargeTurbinePlasma extends MTELargerTurbineBase {
             tEU = GTUtility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
 
             if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt((long) (aBaseEff / 10000D * tEU));
+                tEU = GTUtility.safeInt(
+                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
+                        * tEU));
             } else {
                 double efficiency = 1.0D - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
 
                 tEU = (int) (tEU * efficiency);
-                tEU = GTUtility.safeInt((long) (aBaseEff / 10000D * tEU));
+                tEU = GTUtility.safeInt(
+                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
+                        * tEU));
             }
 
             return tEU;
