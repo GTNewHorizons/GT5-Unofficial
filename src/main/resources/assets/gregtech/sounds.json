@@ -123,5 +123,22 @@
         "stream": false
       }
     ]
+  },
+  "items.spraycan": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "spraycan",
+        "stream": false,
+        "licensing": {
+          "sound_url": "https://freesound.org/people/J-La/sounds/38025/",
+          "sound_name": "spraycan.wav",
+          "author_url": "https://freesound.org/people/J-La/",
+          "author_name": "J-La",
+          "license_url": "https://creativecommons.org/licenses/by/3.0/",
+          "license_name": "Attribution 3.0"
+        }
+      }
+    ]
   }
 }

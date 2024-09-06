@@ -398,6 +398,7 @@ import static gregtech.common.items.IDMetaItem01.Spray_Color_6;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_7;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_8;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_9;
+import static gregtech.common.items.IDMetaItem01.Spray_Color_Infinite;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_Remover;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_Remover_Empty;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_Used_0;
@@ -532,6 +533,7 @@ import gregtech.common.items.behaviors.BehaviourScanner;
 import gregtech.common.items.behaviors.BehaviourSensorKit;
 import gregtech.common.items.behaviors.BehaviourSonictron;
 import gregtech.common.items.behaviors.BehaviourSprayColor;
+import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
@@ -1026,7 +1028,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.Spray_Color_Remover_Empty.set(
             addItem(
                 Spray_Color_Remover_Empty.ID,
-                "Empty Spray Can Solvent Cannister",
+                "Empty Spray Can Solvent Canister",
                 "Used for making Spray Can Solvent",
                 new ItemData(
                     Materials.Aluminium,
@@ -1035,6 +1037,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                     OrePrefixes.dust.mMaterialAmount),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+
+        ItemList.Spray_Color_Infinite.set(
+            addItem(
+                Spray_Color_Infinite.ID,
+                "Infinite Spray Can",
+                "Contains all sixteen colors, as well as solvent!",
+                new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
+                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
+                new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 4)));
 
         ItemList.Tool_Matches.set(
             addItem(
@@ -4510,6 +4522,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             1024L);
         addItemBehavior(32000 + Spray_Color_Remover.ID, behaviourSprayColorRemover);
         addItemBehavior(32000 + Spray_Color_Used_Remover.ID, behaviourSprayColorRemover);
+
+        addItemBehavior(
+            32000 + Spray_Color_Infinite.ID,
+            new BehaviourSprayColorInfinite(ItemList.Spray_Color_Infinite.get(1L)));
 
         IItemBehaviour<MetaBaseItem> behaviourMatches = new BehaviourLighter(
             null,
