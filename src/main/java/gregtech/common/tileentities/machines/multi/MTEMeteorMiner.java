@@ -370,14 +370,24 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     private void addToOutput(ArrayList<ItemStack> drops) {
+        ArrayList<ItemStack> newItems = new ArrayList<>();
+
         for (ItemStack d : drops) {
-            if (!res.isEmpty()) {
-                for (ItemStack r : res) {
-                    if (d.isItemEqual(r)) {
-                        r.stackSize += d.stackSize;
-                    } else res.add(d);
+            boolean found = false;
+            // Check if the item exists in the res list
+            for (ItemStack r : res) {
+                if (d.isItemEqual(r)) {
+                    r.stackSize += d.stackSize; // Combine stack sizes
+                    found = true;
                 }
-            } else res.add(d);
+            }
+            // If the item wasn't found in res, prepare to add it after the loop
+            if (!found) {
+                newItems.add(d);
+            }
         }
+
+        // Add all new items to res after the iteration
+        res.addAll(newItems);
     }
 }
