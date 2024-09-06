@@ -1,7 +1,21 @@
 package gtneioreplugin.plugin;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
+import codechicken.nei.recipe.HandlerInfo;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gtneioreplugin.GTNEIOrePlugin;
 import gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat;
 import gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid;
@@ -31,5 +45,35 @@ public class NEIPluginConfig implements IConfigureNEI {
         API.registerUsageHandler(pluginSmallOreStat);
         API.registerRecipeHandler(pluginGT5UndergroundFluid);
         API.registerUsageHandler(pluginGT5UndergroundFluid);
+
+        List<ItemList> catalysts = Arrays.asList(
+            ItemList.OilDrill1,
+            ItemList.OilDrill2,
+            ItemList.OilDrill3,
+            ItemList.OilDrill4,
+            ItemList.OilDrillInfinite);
+        for (ItemList catalyst : catalysts) {
+            API.addRecipeCatalyst(catalyst.get(1), pluginGT5UndergroundFluid);
+        }
+    }
+
+    @SubscribeEvent
+    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+        // Though first two handlers are already registered in NEI jar, we need to re-register
+        // because new DimensionDisplayItems made tabs a bit taller.
+        Map<String, ItemStack> handlers = new HashMap<>();
+        handlers.put("PluginGT5VeinStat", GTOreDictUnificator.get(OrePrefixes.ore, Materials.Manyullyn, 1));
+        handlers.put("PluginGT5SmallOreStat", GTOreDictUnificator.get(OrePrefixes.ore, Materials.Platinum, 1));
+        handlers.put("PluginGT5UndergroundFluid", ItemList.Electric_Pump_UEV.get(1));
+        for (Map.Entry<String, ItemStack> handler : handlers.entrySet()) {
+            event.registerHandlerInfo(
+                new HandlerInfo.Builder(
+                    "gtneioreplugin.plugin.gregtech5." + handler.getKey(),
+                    GTNEIOrePlugin.NAME,
+                    GTNEIOrePlugin.MODID).setHeight(160)
+                        .setMaxRecipesPerPage(2)
+                        .setDisplayStack(handler.getValue())
+                        .build());
+        }
     }
 }
