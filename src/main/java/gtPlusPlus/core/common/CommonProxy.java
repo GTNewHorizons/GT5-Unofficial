@@ -56,12 +56,10 @@ public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         Logger.INFO("Doing some house cleaning.");
-        if (!PreloaderCore.DEBUG_MODE) {
-            Logger.WARNING("Development mode not enabled.");
-        } else if (PreloaderCore.DEBUG_MODE) {
+        if (PreloaderCore.DEBUG_MODE) {
             Logger.INFO("Development mode enabled.");
         } else {
-            Logger.WARNING("Development mode not set.");
+            Logger.WARNING("Development mode not enabled.");
         }
 
         AddToCreativeTab.initialiseTabs();
