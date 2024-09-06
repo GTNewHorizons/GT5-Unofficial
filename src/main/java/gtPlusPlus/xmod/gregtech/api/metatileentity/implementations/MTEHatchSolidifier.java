@@ -39,9 +39,7 @@ public class MTEHatchSolidifier extends MTEHatchInput {
     @Override
     public String[] getDescription() {
         return new String[] {
-            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
-                + "Fluid Shaper"
-                + EnumChatFormatting.RESET,
+            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
             "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l"
