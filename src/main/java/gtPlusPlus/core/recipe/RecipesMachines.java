@@ -2875,6 +2875,7 @@ public class RecipesMachines {
                 "plateStaballoy",
                 GregtechItemList.Industrial_Mixer.get(1));
 
+            static final ItemStack plate = MaterialsAlloy.STABALLOY.getPlate(1);
             RecipeUtils.addShapedRecipe(
                 plate,
                 CI.craftingToolHammer_Hard,
