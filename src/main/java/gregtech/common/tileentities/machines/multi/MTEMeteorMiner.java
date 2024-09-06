@@ -290,7 +290,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
         if (!isStartInitialized) {
             this.setStartCoords();
-            this.initializeDrillPos();
+            this.setReady();
+        }
+
+        if (hasFinished && isObserving) {
+            boolean isReady = checkCenter();
+            if (isReady) {
+                this.setReady();
+                this.hasFinished = false;
+            }
         }
 
         if (!hasFinished) {
@@ -358,6 +366,11 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         }
     }
 
+    private boolean checkCenter() {
+        return !getBaseMetaTileEntity().getWorld()
+            .isAirBlock(xStart, yStart + 1, zStart);
+    }
+
     protected void setElectricityStats() {
         this.mOutputItems = new ItemStack[0];
 
@@ -369,8 +382,9 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         this.mMaxProgresstime = isObserving ? 800 : calculateMaxProgressTime(tier);
     }
 
-    private void reset() {
-        this.isStartInitialized = false;
+    private void setReady() {
+        this.findBestRadius();
+        this.initializeDrillPos();
     }
 
     private int calculateMaxProgressTime(int tier) {
@@ -410,7 +424,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private void findBestRadius() {
         currentRadius = MAX_RADIUS;
         int delta = 0;
-        for (int zCoord = zDrill; zCoord > 0; zCoord++) {
+        for (int zCoord = zDrill; zCoord - zStart > 0; zCoord++) {
             if (!getBaseMetaTileEntity().getWorld()
                 .isAirBlock(xStart, yStart, zCoord)) {
                 break;
