@@ -63,10 +63,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import ggfab.ConfigurationHandler;
 import ggfab.GGConstants;
 import ggfab.mui.ClickableTextWidget;
-import ggfab.util.OverclockHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -93,6 +91,7 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -673,24 +672,30 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return tRecipe;
     }
 
-    private boolean hasAllItems(GTRecipe.RecipeAssemblyLine tRecipe, int parallel) {
+    private int maxParallelCalculatedByInputItems(GTRecipe.RecipeAssemblyLine tRecipe, int maxParallel) {
         int aItemCount = tRecipe.mInputs.length;
-        if (mInputBusses.size() < aItemCount) return false;
+        if (mInputBusses.size() < aItemCount) return 0;
         int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
         if (itemConsumptions == null || itemConsumptions.length == 0) {
-            return false;
+            return 0;
         }
-        int maxParallel = (int) GTRecipe.RecipeAssemblyLine
-            .maxParallelCalculatedByInputItems(mInputBusses, parallel, itemConsumptions, curBatchItemsFromME);
-        return maxParallel >= parallel;
+        return (int) GTRecipe.RecipeAssemblyLine
+            .maxParallelCalculatedByInputItems(mInputBusses, maxParallel, itemConsumptions, curBatchItemsFromME);
+    }
+
+    private int maxParallelCalculatedByInputFluids(GTRecipe.RecipeAssemblyLine tRecipe, int maxParallel) {
+        int aFluidCount = tRecipe.mFluidInputs.length;
+        if (mInputHatches.size() < aFluidCount) return 0;
+        return (int) GTRecipe.RecipeAssemblyLine
+            .maxParallelCalculatedByInputFluids(mInputHatches, maxParallel, tRecipe.mFluidInputs, curBatchFluidsFromME);
+    }
+
+    private boolean hasAllItems(GTRecipe.RecipeAssemblyLine tRecipe, int parallel) {
+        return maxParallelCalculatedByInputItems(tRecipe, parallel) >= parallel;
     }
 
     private boolean hasAllFluids(GTRecipe.RecipeAssemblyLine tRecipe, int parallel) {
-        int aFluidCount = tRecipe.mFluidInputs.length;
-        if (mInputHatches.size() < aFluidCount) return false;
-        int maxParallel = (int) GTRecipe.RecipeAssemblyLine
-            .maxParallelCalculatedByInputFluids(mInputHatches, parallel, tRecipe.mFluidInputs, curBatchFluidsFromME);
-        return maxParallel >= parallel;
+        return maxParallelCalculatedByInputFluids(tRecipe, parallel) >= parallel;
     }
 
     /**
@@ -710,20 +715,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (GTUtility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (MTEHatchDataAccess tHatch : mDataAccessHatches) {
-            if (tHatch.isValid()) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                    .getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i) != null && isCorrectDataItem(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i),
-                            state))
-                        rList.add(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i));
-                }
-            }
+        for (MTEHatchDataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+            rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
         }
         return rList;
     }
@@ -747,10 +740,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             GT_FML_LOGGER.info("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
         }
 
-        GTRecipe.RecipeAssemblyLine recipe = null;
-
         for (ItemStack stack : tDataStickList) {
-            recipe = findRecipe(stack);
+            GTRecipe.RecipeAssemblyLine recipe = findRecipe(stack);
             if (recipe == null) {
                 result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
@@ -760,70 +751,98 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 continue;
             }
 
-            setCurrentRecipe(stack, recipe);
-            // first overclock normally
-            // we use the new oc calculator instead
-            // calculateOverclockedNessMulti from super class has a mysterious 5% cable loss thing at the moment
-            // of writing
-            OverclockCalculator ocCalc = new OverclockCalculator().setRecipeEUt(currentRecipe.mEUt)
-                .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1))
-                .setEUt(inputVoltage)
-                .calculate();
-            // since we already checked mEUt <= inputVoltage, no need to check if recipe is too OP
-            lEUt = ocCalc.getConsumption();
-            mMaxProgresstime = ocCalc.getDuration();
-            // then laser overclock if needed
+            int originalMaxParallel = 1;
+            int maxParallel = originalMaxParallel;
+
+            OverclockCalculator calculator;
+
+            OverclockCalculator normalOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
+                .setParallel(originalMaxParallel)
+                .setEUt(inputVoltage);
+
             if (!mExoticEnergyHatches.isEmpty()) {
-                OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(
-                    lEUt,
-                    mMaxProgresstime,
-                    inputEUt / recipe.mInputs.length,
-                    ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor());
-                if (laserOverclock != null) {
-                    lEUt = laserOverclock.getEUt();
-                    mMaxProgresstime = laserOverclock.getDuration();
+                normalOCCalculator.setCurrentParallel((int) (1 / normalOCCalculator.calculateDurationUnderOneTick()))
+                    .calculate();
+                int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
+
+                OverclockCalculator laserOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                    .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
+                    .setEutIncreasePerOCSupplier(overclock -> 4 + 0.3 * Math.max(overclock - normalOverclockCount, 0))
+                    .setParallel(originalMaxParallel)
+                    .setEUt(inputEUt / recipe.mInputs.length);
+
+                calculator = laserOCCalculator;
+            } else {
+                calculator = normalOCCalculator;
+            }
+
+            // Disabled to disable overclocking under one tick.
+            /*
+             * double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+             * if (tickTimeAfterOC < 1) {
+             * maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
+             * }
+             */
+
+            int maxParallelBeforeBatchMode = maxParallel;
+            if (isBatchModeEnabled()) {
+                maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
+            }
+
+            if (protectsExcessItem()) {
+                VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
+                voidProtectionHelper.setMachine(this)
+                    .setItemOutputs(new ItemStack[] { recipe.mOutput })
+                    .setMaxParallel(maxParallel)
+                    .build();
+                maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
+                if (voidProtectionHelper.isItemFull()) {
+                    result = CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+                    continue;
                 }
             }
-            // Save this for batch mode parallel calculations
-            int timePerSlice = mMaxProgresstime;
-            // correct the recipe duration
-            mMaxProgresstime *= recipe.mInputs.length;
 
-            // Finally apply batch mode parallels if possible.
-            // For this we need to verify the first item slot and all fluids slots have enough resources
-            // to execute parallels.
-            // Note that we skip this entirely if the time for each slice is more than
-            // BATCH_MODE_DESIRED_TICKS_PER_SLICE ticks, since in this case the amount of batches will always be 1
-            if (super.isBatchModeEnabled() && timePerSlice < BATCH_MODE_DESIRED_TICKS_PER_SLICE) {
-                // Calculate parallel based on time per slice, and the amount of fluid in the first fluid slot.
-                // We use fluid, since this way players can limit parallel by controlling how much fluid
-                // ends up in each AAL. This way, batch mode will not slow down setups where multiple AAL
-                // are connected to the same set of input items. Note that this will still suffer from the same
-                // issue if using stocking hatch, but in this case increasing pattern size can help.
+            FluidStack firstFluidSlot = getInputHatchContent(0);
+            if (firstFluidSlot == null) {
+                result = CheckRecipeResultRegistry.INTERNAL_ERROR;
+                break;
+            }
 
-                // Note that every assline recipe has a fluid ingredient.
-                FluidStack firstFluidSlot = getInputHatchContent(0);
-                if (firstFluidSlot == null) {
-                    result = CheckRecipeResultRegistry.INTERNAL_ERROR;
-                    break;
-                }
-                int recipesAvailable = Math.floorDiv(firstFluidSlot.amount, recipe.mFluidInputs[0].amount);
+            int currentParallel = firstFluidSlot.amount / recipe.mFluidInputs[0].amount;
+            if (isBatchModeEnabled()) {
                 // Divide recipes available by the amount of slices in the recipe. This will prevent the AAL from
                 // batching instead of parallelizing, which would make it effectively slower.
-                recipesAvailable = Math.floorDiv(recipesAvailable, recipe.mInputs.length);
-                // Sanity check to avoid this being zero when there is only one recipe available.
-                recipesAvailable = Math.max(recipesAvailable, 1);
-                int desiredBatches = Math.floorDiv(BATCH_MODE_DESIRED_TICKS_PER_SLICE, timePerSlice);
-                // Limit the amount of parallel to both the amount of recipes available and the maximum number
-                // of batches we want to run. The latter is done to prevent batch mode from ever going above
-                // BATCH_MODE_DESIRED_TICKS_PER_SLICE ticks per slice (see also where it is defined above).
-                int parallel = Math.min(recipesAvailable, desiredBatches);
-                if (hasAllFluids(recipe, parallel) && hasAllItems(recipe, parallel)) {
-                    this.currentRecipeParallel = parallel;
-                    // Update recipe duration with final batch mode multiplier
-                    mMaxProgresstime *= this.currentRecipeParallel;
-                }
+                currentParallel /= recipe.mInputs.length;
             }
+            currentParallel = Math.min(currentParallel, maxParallel);
+            // Sanity check to avoid this being zero when there is only one recipe available.
+            currentParallel = Math.max(currentParallel, 1);
+
+            currentParallel = Math.min(currentParallel, maxParallelCalculatedByInputItems(recipe, currentParallel));
+            currentParallel = Math.min(currentParallel, maxParallelCalculatedByInputFluids(recipe, currentParallel));
+
+            if (currentParallel <= 0) {
+                result = CheckRecipeResultRegistry.INTERNAL_ERROR;
+                continue;
+            }
+
+            int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
+
+            calculator.setCurrentParallel(currentParallelBeforeBatchMode)
+                .calculate();
+
+            double batchMultiplierMax = 1;
+            // In case batch mode enabled
+            if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
+                batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
+                batchMultiplierMax = Math
+                    .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
+            }
+            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMax);
+            lEUt = calculator.getConsumption();
+            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax) * recipe.mInputs.length;
+            setCurrentRecipe(stack, recipe);
             result = CheckRecipeResultRegistry.SUCCESSFUL;
             break;
         }
@@ -831,7 +850,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             clearCurrentRecipe();
             return result;
         }
-        if (recipe == null || !slices[0].start() || currentRecipeParallel <= 0) {
+        if (currentRecipe == null || !slices[0].start() || currentRecipeParallel <= 0) {
             clearCurrentRecipe();
             // something very very wrong...
             return CheckRecipeResultRegistry.INTERNAL_ERROR;
@@ -840,10 +859,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (GTValues.D1) {
             GT_FML_LOGGER.info("All checked start consuming inputs");
         }
-        drainAllFluids(recipe, this.currentRecipeParallel);
+        drainAllFluids(currentRecipe, this.currentRecipeParallel);
 
         // Apply parallel
-        mOutputItems = new ItemStack[] { recipe.mOutput.copy() };
+        mOutputItems = new ItemStack[] { currentRecipe.mOutput.copy() };
         mOutputItems[0].stackSize *= this.currentRecipeParallel;
 
         if (this.lEUt > 0) {

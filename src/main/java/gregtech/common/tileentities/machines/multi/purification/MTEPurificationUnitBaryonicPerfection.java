@@ -293,6 +293,9 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
             .addInfo(
                 "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
+                    + EnumChatFormatting.RED
+                    + BARYONIC_MATTER_OUTPUT
+                    + "L "
                     + EnumChatFormatting.WHITE
                     + "Stabilised Baryonic Matter")
             .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
