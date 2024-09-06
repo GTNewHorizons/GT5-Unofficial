@@ -2874,6 +2874,28 @@ public class RecipesMachines {
                 CI.getTieredCircuit(5),
                 "plateStaballoy",
                 GregtechItemList.Industrial_Mixer.get(1));
+
+            RecipeUtils.addShapedRecipe(
+                plate,
+                CI.craftingToolHammer_Hard,
+                plate,
+                "plateStainlessSteel",
+                "frameGtZirconiumCarbide",
+                "plateStainlessSteel",
+                plate,
+                CI.craftingToolWrench,
+                plate,
+                GregtechItemList.Casing_Multi_Use.get(1));
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    MaterialsAlloy.STABALLOY.getPlate(4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2),
+                    MaterialsAlloy.ZIRCONIUM_CARBIDE.getFrameBox(1),
+                    GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(GregtechItemList.Casing_Multi_Use.get(1L))
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(assemblerRecipes);
         }
 
         // Drilling Platform Casings
