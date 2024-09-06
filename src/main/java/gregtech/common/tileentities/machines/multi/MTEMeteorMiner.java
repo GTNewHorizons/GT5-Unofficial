@@ -301,6 +301,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      * Restart Button
      */
     private void startMining(int currentX, int currentZ) {
+        if (getBaseMetaTileEntity().getWorld()
+        .isAirBlock(currentX, this.yStart, currentZ)) return;
         res.clear();
         for (int y = -RADIUS; y <= RADIUS; y++) {
             System.out // DEBUG
