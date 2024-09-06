@@ -700,8 +700,8 @@ public class GregtechConduits {
             OrePrefixes.pipeMedium.get(material),
             new MTEFluid(
                 startID + 2,
-                "GT_Pipe_" + material.mDefaultLocalName + "",
-                "" + material.mDefaultLocalName + " Fluid Pipe",
+                "GT_Pipe_" + material.mDefaultLocalName,
+                material.mDefaultLocalName + " Fluid Pipe",
                 0.5F,
                 material,
                 transferRatePerTick * 12,
@@ -761,8 +761,8 @@ public class GregtechConduits {
             OrePrefixes.pipeMedium.get(material),
             new GTPPMTEFluid(
                 startID + 2,
-                "GT_Pipe_" + material.mDefaultLocalName + "",
-                "" + material.mDefaultLocalName + " Fluid Pipe",
+                "GT_Pipe_" + material.mDefaultLocalName,
+                material.mDefaultLocalName + " Fluid Pipe",
                 0.5F,
                 material,
                 transferRatePerTick * 12,

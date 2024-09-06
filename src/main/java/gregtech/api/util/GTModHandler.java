@@ -82,6 +82,8 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import ic2.api.recipe.Recipes;
+import ic2.core.IC2;
 import ic2.core.item.ItemToolbox;
 
 /**
@@ -459,11 +461,11 @@ public class GTModHandler {
     public static boolean addValuableOre(Block aBlock, int aMeta, int aValue) {
         if (aValue <= 0) return false;
         try {
-            Class.forName("ic2.core.IC2")
-                .getMethod("addValuableOre", IRecipeInput.class, int.class)
-                .invoke(null, new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
-        } catch (Throwable e) {
-            /* Do nothing */
+            IC2.addValuableOre(new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
+        } catch (Exception e) {
+            // TODO remove try catch
+            // TODO fix : why is bartworks registering items stacks with .getItem() == null
+            GTLog.err.println("Caught exception when calling IC2.addValuableOre");
         }
         return true;
     }
@@ -476,11 +478,7 @@ public class GTModHandler {
         if (aOutput == null || aChance <= 0) return false;
         aOutput.stackSize = 1;
         if (GTConfig.troll && !GTUtility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
-        try {
-            ic2.api.recipe.Recipes.scrapboxDrops.addDrop(GTUtility.copyOrNull(aOutput), aChance);
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
+        Recipes.scrapboxDrops.addDrop(GTUtility.copyOrNull(aOutput), aChance);
         return true;
     }
 
@@ -489,11 +487,7 @@ public class GTModHandler {
      */
     public static boolean addToRecyclerBlackList(ItemStack aRecycledStack) {
         if (aRecycledStack == null) return false;
-        try {
-            ic2.api.recipe.Recipes.recyclerBlacklist.add(new RecipeInputItemStack(aRecycledStack));
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
+        Recipes.recyclerBlacklist.add(new RecipeInputItemStack(aRecycledStack));
         return true;
     }
 
@@ -626,48 +620,23 @@ public class GTModHandler {
     }
 
     public static Map<IRecipeInput, RecipeOutput> getExtractorRecipeList() {
-        try {
-            return ic2.api.recipe.Recipes.extractor.getRecipes();
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return emptyRecipeMap;
+        return Recipes.extractor.getRecipes();
     }
 
     public static Map<IRecipeInput, RecipeOutput> getCompressorRecipeList() {
-        try {
-            return ic2.api.recipe.Recipes.compressor.getRecipes();
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return emptyRecipeMap;
+        return Recipes.compressor.getRecipes();
     }
 
     public static Map<IRecipeInput, RecipeOutput> getMaceratorRecipeList() {
-        try {
-            return ic2.api.recipe.Recipes.macerator.getRecipes();
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return emptyRecipeMap;
+        return Recipes.macerator.getRecipes();
     }
 
     public static Map<IRecipeInput, RecipeOutput> getThermalCentrifugeRecipeList() {
-        try {
-            return ic2.api.recipe.Recipes.centrifuge.getRecipes();
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return emptyRecipeMap;
+        return Recipes.centrifuge.getRecipes();
     }
 
     public static Map<IRecipeInput, RecipeOutput> getOreWashingRecipeList() {
-        try {
-            return ic2.api.recipe.Recipes.oreWashing.getRecipes();
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return emptyRecipeMap;
+        return Recipes.oreWashing.getRecipes();
     }
 
     /**
@@ -1997,13 +1966,13 @@ public class GTModHandler {
 
     private static void generateRecyclerCache() {
         recyclerWhitelist = new HashSet<>();
-        for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerWhitelist) {
+        for (IRecipeInput input : Recipes.recyclerWhitelist) {
             for (ItemStack stack : input.getInputs()) {
                 recyclerWhitelist.add(GTUtility.ItemId.create(stack.getItem(), stack.getItemDamage(), null));
             }
         }
         recyclerBlacklist = new HashSet<>();
-        for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerBlacklist) {
+        for (IRecipeInput input : Recipes.recyclerBlacklist) {
             for (ItemStack stack : input.getInputs()) {
                 recyclerBlacklist.add(GTUtility.ItemId.create(stack.getItem(), stack.getItemDamage(), null));
             }
@@ -2022,7 +1991,7 @@ public class GTModHandler {
      * For the Scrapboxinator
      */
     public static ItemStack getRandomScrapboxDrop() {
-        return ic2.api.recipe.Recipes.scrapboxDrops.getDrop(ItemList.IC2_Scrapbox.get(1), false);
+        return Recipes.scrapboxDrops.getDrop(ItemList.IC2_Scrapbox.get(1), false);
     }
 
     /**
