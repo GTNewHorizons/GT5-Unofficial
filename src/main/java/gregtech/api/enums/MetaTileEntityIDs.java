@@ -1887,7 +1887,7 @@ public enum MetaTileEntityIDs {
     ComponentAssemblyLine(32026),
     WireLumiium(32737),
     WireSignalium(32749),
-    ChargingBus(32750);
+    ChargingBus(31785);
 
     public final int ID;
 
