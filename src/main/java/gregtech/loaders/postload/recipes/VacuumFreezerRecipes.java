@@ -415,6 +415,7 @@ public class VacuumFreezerRecipes implements Runnable {
         this.addProtoHalkonitePartRecipe(OrePrefixes.frameGt, 1);
         this.addProtoHalkonitePartRecipe(OrePrefixes.ingot, 1);
         this.addProtoHalkonitePartRecipe(OrePrefixes.plate, 1);
+        this.addProtoHalkonitePartRecipe(OrePrefixes.plateDouble, 1);
         this.addProtoHalkonitePartRecipe(OrePrefixes.plateDense, 1);
         this.addProtoHalkonitePartRecipe(OrePrefixes.stick, 2);
         this.addProtoHalkonitePartRecipe(OrePrefixes.round, 8);
