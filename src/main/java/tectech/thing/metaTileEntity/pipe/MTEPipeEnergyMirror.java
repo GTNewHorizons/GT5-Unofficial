@@ -141,6 +141,7 @@ public class MTEPipeEnergyMirror extends MTEPipeEnergy {
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
+        if (dir == null) return null;
         for (ForgeDirection bendDir : connectedSides) {
             if (bendDir != dir) {
                 chainedFrontFacing = bendDir.getOpposite();
