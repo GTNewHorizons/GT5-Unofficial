@@ -1,41 +1,32 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.GTValues.authorBaps;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import net.minecraft.block.Block;
+import bartworks.API.BorosilicateGlass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -47,18 +38,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -66,18 +48,14 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiSolidifier>
     implements ISurvivalConstructable {
@@ -86,44 +64,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected final String MS_RIGHT_MID = mName + "rightmid";
     protected final String MS_END = mName + "end";
 
-    protected int casingAmount = 0;
-    protected int pipeCasingAmount = 0;
-    protected int eV = 0;
-    private int casingTier = -1;
-    private int pipeCasingTier = -1;
-    private int machineTier = 0;
-    private static final int SOLIDIFIER_CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10)
-        .getTextureIndex(13);
-    private static final int DTPF_CASING_INDEX = ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12);
-
-    private final Map<Integer, Pair<Block, Integer>> tieredFluidSolidifierCasings = new HashMap<>() {
-
-        {
-            // Solidifier Casing
-            put(13, Pair.of(GregTechAPI.sBlockCasings10, 0));
-            // Laurenium Casing
-            put(2, Pair.of(ModBlocks.blockCustomMachineCasings, 1));
-            // Dimensionally Transcendent Casing
-            put(12, Pair.of(GregTechAPI.sBlockCasings1, 2));
-
-        }
-    };
-
-    private final Map<Integer, Pair<Block, Integer>> tieredPipeCasings = new HashMap<>() {
-
-        {
-            // Solidifier Radiator
-            put(14, Pair.of(GregTechAPI.sBlockCasings10, 0));
-            // Cinobite Pipe Casing
-            put(13, Pair.of(ModBlocks.blockCustomPipeGearCasings, 1));
-            // Abyssal Pipe Casing
-            put(15, Pair.of(ModBlocks.blockCustomPipeGearCasings, 2));
-
-        }
-    };
-
-    private final List<Integer> casingIndices = new ArrayList<>(
-        Arrays.asList(SOLIDIFIER_CASING_INDEX, 84, DTPF_CASING_INDEX));
+    private byte glassTier = 0;
 
     private final String STRUCTURE_PIECE_MAIN = "main";
     private final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
@@ -151,53 +92,18 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
                     { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'B',
-            HatchElementBuilder.<MTEMultiSolidifier>builder()
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch)
-                .adder(MTEMultiSolidifier::addToSolidifierList)
-                .casingIndex(SOLIDIFIER_CASING_INDEX)
+            buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .dot(1)
                 .buildAndChain(
-                    withChannel(
-                        "casing",
-                        onElementPass(
-                            x -> x.casingAmount++,
-                            ofBlocksTiered(
-                                this::casingTierExtractor,
-                                ImmutableList.of(
-                                    Pair.of(GregTechAPI.sBlockCasings10, 13),
-                                    Pair.of(ModBlocks.blockCustomMachineCasings, 2),
-                                    Pair.of(GregTechAPI.sBlockCasings1, 12)),
-                                -1,
-                                MTEMultiSolidifier::setCasingTier,
-                                MTEMultiSolidifier::getCasingTier)))))
-        .addElement(
-            'C',
-            onElementPass(
-                x -> x.pipeCasingAmount++,
-                ofBlocksTiered(
-                    this::pipeTierExtractor,
-                    ImmutableList.of(
-                        Pair.of(GregTechAPI.sBlockCasings10, 14),
-                        Pair.of(ModBlocks.blockCustomPipeGearCasings, 13),
-                        Pair.of(ModBlocks.blockCustomPipeGearCasings, 15)),
-                    -1,
-                    MTEMultiSolidifier::setPipeCasingTier,
-                    MTEMultiSolidifier::getPipeCasingTier)))
+                    onElementPass(MTEMultiSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        /*
-         * TinkerConstruct.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
-         * ? ofChain(ofBlock(Block.getBlockFromName("TConstruct:SearedBlock"), 0))
-         * : ofChain(ofBlock(Blocks.cauldron, 0)))
-         */
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        /*
-         * BuildCraftFactory.isModLoaded()// maybe temporary if someone makes textures for new special decorative block
-         * ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:blockHopper"), 10))
-         * : ofChain(ofBlock(Blocks.hopper, 0)))
-         */
         .build();
 
     public MTEMultiSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -222,10 +128,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
-        int casingIndex = casingTier > -1 ? casingIndices.get(casingTier) : SOLIDIFIER_CASING_INDEX;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(casingIndex),
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
@@ -236,7 +143,9 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(casingIndex),
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
@@ -273,20 +182,15 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addSeparator()
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Tier 1: Solidifier Casing", 146, true)
-            .addCasingInfoMin("Tier 2: Laurenium Casing", 146, true)
-            .addCasingInfoMin("Tier 3: DTPF Casing", 146, true)
-            .addCasingInfoMin("Tier 1: Radiator Casing", 18, true)
-            .addCasingInfoMin("Tier 2: Cinobite Pipe Casing", 18, true)
-            .addCasingInfoMin("Tier 3: Abyssal Alloy Pipe Casing", 18, true)
+            .addCasingInfoMin("Solidifier Casing", 146, true)
+            .addCasingInfoMin("Radiator Casing", 18, true)
             .addCasingInfoMin("Heat Proof Casing", 4, false)
             .addCasingInfoMin("Solid Steel Casing", 4, false)
-            .addInfo("Tier limits maximal width 2; 4; 6")
-            .addInputBus("Any Tiered Casing", 1)
-            .addOutputBus("Any Tiered Casing", 1)
-            .addInputHatch("Any Tiered Casing", 1)
-            .addEnergyHatch("Any Tiered Casing", 1)
-            .addMaintenanceHatch("Any Tiered Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -294,7 +198,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
-        // max Width, minimal mid pieces to build on each side
+        // max Width, minimal mid-pieces to build on each side
         int tTotalWidth = Math.min(6, stackSize.stackSize + 3);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             // horizontal offset 3 from controller and number of pieces times width of each piece
@@ -317,7 +221,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalWidth = Math.min(3 + machineTier, stackSize.stackSize + 3);
+        int tTotalWidth = Math.min(stackSize.stackSize + 1, 6);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             mWidth = i;
             nWidth = i;
@@ -348,15 +252,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             true);
     }
 
-    int mTier;
-    {
-        if (casingTier > pipeCasingTier) {
-            mTier = pipeCasingTier;
-        } else if (casingTier <= pipeCasingTier) {
-            mTier = casingTier;
-        }
-
-    }
 
     @Override
     public IStructureDefinition<MTEMultiSolidifier> getStructureDefinition() {
@@ -364,12 +259,16 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     protected int mCasing;
+    private int mCasingAmount;
+    private void onCasingAdded() {
+        mCasingAmount++;
+    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mWidth = 0;
-        casingTier = -1;
-        pipeCasingTier = -1;
+        mCasingAmount = 0;
+
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
             while (mWidth < (6)) {
                 if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0)
@@ -381,20 +280,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         if (!checkPiece(MS_END, (-2 * mWidth) - 4, 4, 0) || !checkPiece(MS_END, (mWidth * 2) + 4, 4, 0)) {
             return false;
         }
-        if (casingAmount < (100 + mWidth * 23)) {
-            casingAmount = 0;
-            return false;
-        } else casingAmount = 0;
-        machineTier = Math.min(pipeCasingTier, casingTier);
-        if (mWidth > (2 * (machineTier + 1))) {
-            return false;
-        }
-        if (casingTier > -1) {
-            updateHatchTextures(casingIndices.get(casingTier));
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        }
-        return true;
 
+            for (int i = 0; i < this.mEnergyHatches.size(); ++i) {
+        if (this.glassTier < this.mEnergyHatches.get(i).mTier) {
+            return false;
+        }
+    }
+        return mCasingAmount >= (100 + mWidth * 23);
     }
 
     @Override
@@ -424,120 +316,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     public int getMaxParallelRecipes() {
         return 4 + (mWidth * 10);
-    }
-
-    private void setCasingTier(int tier) {
-        casingTier = tier;
-    }
-
-    private int getCasingTier() {
-        return casingTier;
-    }
-
-    private void setPipeCasingTier(int tier) {
-        pipeCasingTier = tier;
-    }
-
-    private int getPipeCasingTier() {
-        return pipeCasingTier;
-    }
-
-    @Override
-    public byte getUpdateData() {
-        return (byte) casingTier;
-    }
-
-    @Override
-    public void receiveClientEvent(byte aEventID, byte aValue) {
-        super.receiveClientEvent(aEventID, aValue);
-        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
-            casingTier = aValue;
-        }
-    }
-
-    private int casingTierExtractor(Block block, int meta) {
-        if (!tieredFluidSolidifierCasings.containsKey(meta) || !(tieredFluidSolidifierCasings.get(meta)
-            .getLeft() == block)) {
-            return -1;
-        }
-        return tieredFluidSolidifierCasings.get(meta)
-            .getRight();
-    }
-
-    private int pipeTierExtractor(Block block, int meta) {
-        if (!tieredPipeCasings.containsKey(meta) || !(tieredPipeCasings.get(meta)
-            .getLeft() == block)) {
-            return -1;
-        }
-        return tieredPipeCasings.get(meta)
-            .getRight();
-    }
-
-    private boolean addToSolidifierList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchInput hatch) {
-            return mInputHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
-            return mDualInputHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus hatch) {
-            return mInputBusses.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
-            return mOutputHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) {
-            return mOutputBusses.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
-            return mEnergyHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
-            return mMaintenanceHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMuffler hatch) {
-            return mMufflerHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
-            return mExoticEnergyHatches.add(hatch);
-        }
-        return false;
-    }
-
-    private void updateHatchTextures(int texture) {
-        for (IDualInputHatch hatch : mDualInputHatches) {
-            if (((MetaTileEntity) hatch).isValid()) {
-                hatch.updateTexture(texture);
-            }
-        }
-        for (MTEHatch hatch : filterValidMTEs(mInputHatches)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mInputBusses)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mOutputHatches)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mOutputBusses)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mEnergyHatches)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mMaintenanceHatches)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mMufflerHatches)) {
-            hatch.updateTexture(texture);
-        }
-        for (MTEHatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
-            hatch.updateTexture(texture);
-        }
     }
 
     @Override
