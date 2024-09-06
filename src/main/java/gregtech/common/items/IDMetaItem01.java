@@ -423,7 +423,9 @@ public enum IDMetaItem01 {
     Tool_Scanner(762),
     NC_SensorKit(763),
     Duct_Tape(764),
-    McGuffium_239(765);
+    McGuffium_239(765),
+    FluidRegulator_UHV(766),
+    FluidRegulator_UEV(767);
 
     public final int ID;
 
