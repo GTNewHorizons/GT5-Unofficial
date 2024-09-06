@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private boolean isStartInitialized = false;
     private boolean shouldMine = false;
     ArrayList<ItemStack> res = new ArrayList<ItemStack>();
+    private FakePlayer mFakePlayer = null;
 
     @Override
     public IStructureDefinition<MTEMeteorMiner> getStructureDefinition() {
@@ -299,16 +301,21 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      * Drop blocks instead of ores
      * Redstone compatibility
      * Restart Button
+     * Parallels
+     * Drones in input
      */
     private void startMining(int currentX, int currentZ) {
         if (getBaseMetaTileEntity().getWorld()
-        .isAirBlock(currentX, this.yStart, currentZ)) return;
+            .isAirBlock(currentX, this.yStart, currentZ)) return;
+        IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
         res.clear();
         for (int y = -RADIUS; y <= RADIUS; y++) {
             System.out // DEBUG
                 .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (this.yStart + y) + "\nZ: " + (currentZ));
             if (!getBaseMetaTileEntity().getWorld()
-                .isAirBlock(currentX, this.yStart + y, currentZ)) {
+                .isAirBlock(currentX, this.yStart + y, currentZ)
+                && GTUtility
+                    .eraseBlockByFakePlayer(getFakePlayer(aBaseTile), currentX, this.yStart + y, currentZ, true)) {
                 Block target = getBaseMetaTileEntity().getWorld()
                     .getBlock(currentX, this.yStart + y, currentZ);
                 res.add(
@@ -353,5 +360,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             if (requiredEnergy <= 0) return true;
         }
         return false;
+    }
+
+    protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
+        if (mFakePlayer == null) mFakePlayer = GTUtility.getFakePlayer(aBaseTile);
+        mFakePlayer.setWorld(aBaseTile.getWorld());
+        mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
+        return mFakePlayer;
     }
 }
