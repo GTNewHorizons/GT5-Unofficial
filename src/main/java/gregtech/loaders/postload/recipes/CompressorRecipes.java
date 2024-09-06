@@ -15,7 +15,10 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -25,6 +28,14 @@ public class CompressorRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getIC2Item("mixedMetalIngot", 1L))
+            .itemOutputs(GTModHandler.getIC2Item("advancedAlloy", 1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1L))
@@ -253,6 +264,36 @@ public class CompressorRecipes implements Runnable {
             .itemOutputs(ItemList.CompressedFireclay.get(1))
             .duration(4 * SECONDS)
             .eut(4)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(64 * 144))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
+            // Require stabilized black hole
+            .metadata(CompressionTierKey.INSTANCE, 2)
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.Creon, 1))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(32 * 144))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
+            // Require stabilized black hole
+            .metadata(CompressionTierKey.INSTANCE, 2)
+            .duration(45 * SECONDS / 4)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.Mellion, 1))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(32 * 144))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
+            // Require stabilized black hole
+            .metadata(CompressionTierKey.INSTANCE, 2)
+            .duration(45 * SECONDS / 4)
+            .eut(TierEU.RECIPE_UIV)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()

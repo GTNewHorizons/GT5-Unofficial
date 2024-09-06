@@ -109,7 +109,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Quantum_Tank_IV.get(4),
                 GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.ProtoHalkonite, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
                 HYPOGEN.getRotor(6),
