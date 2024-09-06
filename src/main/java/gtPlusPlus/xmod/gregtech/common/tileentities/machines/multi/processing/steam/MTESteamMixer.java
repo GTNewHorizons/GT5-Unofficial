@@ -353,8 +353,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F)
-                    .setSpeedBoost(1.5F);
+                    .setEUtDiscount(1.33)
+                    .setSpeedBoost(1.5);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
@@ -369,6 +369,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Mixer")
+            .addInfo("33.3% faster than a single block steam machine would run")
+            .addInfo("Uses only 66.6% of the steam/s that a single block steam machine would use")
             .addInfo("Bronze tier runs recipes up to LV tier")
             .addInfo("Steel tier runs recipes up to MV tier")
             .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
