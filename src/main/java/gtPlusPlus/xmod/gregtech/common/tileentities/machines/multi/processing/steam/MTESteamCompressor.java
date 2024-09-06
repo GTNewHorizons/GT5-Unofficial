@@ -48,6 +48,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -246,6 +247,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
                 if (availableVoltage < recipe.mEUt) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
+                    return CheckRecipeResultRegistry.NO_RECIPE;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 

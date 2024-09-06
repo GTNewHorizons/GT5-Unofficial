@@ -31,8 +31,8 @@ public class MTEHeatSensor extends MTEHatch {
     protected boolean inverted = false;
     private boolean isOn = false;
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_BLACKHOLE;
-    private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_BLACKHOLE_GLOW;
+    private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
+    private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     public MTEHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads heat from HIP Unit.");
