@@ -73,7 +73,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.10.2-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.12:dev") { transitive = false }
 
-    compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.26:deobf") {transitive = false}
+    compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.7.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.3.13:dev') { transitive = false }
