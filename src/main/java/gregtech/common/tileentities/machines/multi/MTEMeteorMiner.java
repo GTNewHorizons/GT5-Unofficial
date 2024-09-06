@@ -408,6 +408,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     private void findBestRadius() {
+        currentRadius = MAX_RADIUS;
         int delta = 0;
         for (int zCoord = zDrill; zCoord > 0; zCoord++) {
             if (!getBaseMetaTileEntity().getWorld()
