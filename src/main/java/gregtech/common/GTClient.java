@@ -88,6 +88,7 @@ import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
@@ -643,6 +644,7 @@ public class GTClient extends GTProxy implements Runnable {
         new FlaskRenderer();
         new FluidDisplayStackRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
+        MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
     }
 
     @Override

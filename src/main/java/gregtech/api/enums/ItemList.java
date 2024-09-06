@@ -2559,6 +2559,7 @@ public enum ItemList implements IItemContainer {
     Phononic_Seed_Crystal,
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
+    Spray_Color_Infinite,
     // semicolon after the comment to reduce merge conflicts
     ;
 

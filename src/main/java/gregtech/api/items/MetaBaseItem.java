@@ -7,6 +7,7 @@ import static gregtech.api.util.GTUtility.formatNumbers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -116,6 +117,10 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
             if (!tBehavior.isItemStackUsable(this, aStack)) return false;
         return super.isItemStackUsable(aStack);
+    }
+
+    public boolean onLeftClick(ItemStack aStack, EntityPlayer aPlayer) {
+        return forEachBehavior(aStack, behavior -> behavior.onLeftClick(this, aStack, aPlayer));
     }
 
     @Override
@@ -619,4 +624,25 @@ public abstract class MetaBaseItem extends GTGenericItem
     public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
     }
+
+    public boolean forEachBehavior(ItemStack aStack, Predicate<IItemBehaviour<MetaBaseItem>> predicate) {
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(aStack));
+        if (behaviorList == null) {
+            return false;
+        }
+
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                if (predicate.test(behavior)) {
+                    // Returning true short circuits the loop, and false continues it.
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return false;
+    }
+
 }

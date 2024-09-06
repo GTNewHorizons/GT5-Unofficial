@@ -24,6 +24,10 @@ public class BehaviourSprayColorRemover extends BehaviourSprayColor {
 
     @Override
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
+        return removeColor(aWorld, aX, aY, aZ, side, player);
+    }
+
+    public static boolean removeColor(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock != Blocks.air) {
             if (aBlock instanceof IColorableTile) {
