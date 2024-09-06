@@ -241,7 +241,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             HatchElementBuilder.<MTEForgeOfGods>builder()
                 .atLeast(moduleElement.Module)
                 .casingIndex(TEXTURE_INDEX)
-                .dot(3)
+                .dot(2)
                 .buildAndChain(GodforgeCasings, 0))
         .addElement('K', ofBlock(GodforgeCasings, 6))
         .addElement('L', ofBlock(Blocks.air, 0))
