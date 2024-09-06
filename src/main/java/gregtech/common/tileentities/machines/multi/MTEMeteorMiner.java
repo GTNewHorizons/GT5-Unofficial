@@ -12,7 +12,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -56,7 +57,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private int xStart, yStart, zStart;
     private boolean isStartInitialized = false;
     private boolean shouldMine = false;
-    ArrayList<ItemStack> res = new ArrayList<ItemStack>();
+    Collection<ItemStack> res = new HashSet<>();
     private FakePlayer mFakePlayer = null;
 
     @Override
@@ -287,6 +288,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         if (shouldMine) {
             this.startMining(this.xDrill, this.zDrill);
             mOutputItems = res.toArray(new ItemStack[0]);
+            res.clear();
             this.moveToNextColumn();
         } else {
             this.isStartInitialized = false;
@@ -306,20 +308,18 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      */
     private void startMining(int currentX, int currentZ) {
         if (getBaseMetaTileEntity().getWorld()
-            .isAirBlock(currentX, this.yStart, currentZ)) return;
-        IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        res.clear();
+            .isAirBlock(currentX, this.yStart, currentZ)) {
+            return;
+        }
         for (int y = -RADIUS; y <= RADIUS; y++) {
             System.out // DEBUG
                 .println("Coordinates:" + "\nX: " + (currentX) + "\nY: " + (this.yStart + y) + "\nZ: " + (currentZ));
             if (!getBaseMetaTileEntity().getWorld()
-                .isAirBlock(currentX, this.yStart + y, currentZ)
-                && GTUtility
-                    .eraseBlockByFakePlayer(getFakePlayer(aBaseTile), currentX, this.yStart + y, currentZ, true)) {
+                .isAirBlock(currentX, this.yStart + y, currentZ)) {
                 Block target = getBaseMetaTileEntity().getWorld()
                     .getBlock(currentX, this.yStart + y, currentZ);
                 res.add(
-                    new ItemStack(target, 1, getBaseMetaTileEntity().getMetaID(currentX, this.yStart + y, currentZ)));
+                    new ItemStack(target, 1, getBaseMetaTileEntity().getWorld().getBlockMetadata(currentX, this.yStart + y, currentZ)));
                 getBaseMetaTileEntity().getWorld()
                     .setBlockToAir(currentX, this.yStart + y, currentZ);
             }
@@ -338,6 +338,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     protected void setElectricityStats() {
+        this.mOutputItems = new ItemStack[0];
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
@@ -350,7 +351,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     private int calculateMaxProgressTime(int tier) {
-        return Math.max(1, getBaseProgressTime() / (1 << tier));
+        return Math.max(1, getBaseProgressTime() / (2 << tier));
     }
 
     private boolean isEnergyEnough() {
