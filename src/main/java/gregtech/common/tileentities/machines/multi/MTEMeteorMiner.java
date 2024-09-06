@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -319,11 +320,14 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             if (!getBaseMetaTileEntity().getWorld()
                 .isAirBlock(currentX, currentY, currentZ)) {
                 Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
-                final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
-                res.addAll(
-                    target.getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 3));
-                getBaseMetaTileEntity().getWorld()
-                    .setBlockToAir(currentX, currentY, currentZ);
+                if (target.getBlockHardness(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ) > 0) {
+                    final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
+                    addToOutput(
+                        target
+                            .getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 3));
+                    getBaseMetaTileEntity().getWorld()
+                        .setBlockToAir(currentX, currentY, currentZ);
+                }
             }
         }
     }
@@ -365,10 +369,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         return false;
     }
 
-    protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
-        if (mFakePlayer == null) mFakePlayer = GTUtility.getFakePlayer(aBaseTile);
-        mFakePlayer.setWorld(aBaseTile.getWorld());
-        mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
-        return mFakePlayer;
+    private void addToOutput(ArrayList<ItemStack> drops) {
+        for (ItemStack d : drops) {
+            if (!res.isEmpty()) {
+                for (ItemStack r : res) {
+                    if (d.isItemEqual(r)) {
+                        r.stackSize += d.stackSize;
+                    } else res.add(d);
+                }
+            } else res.add(d);
+        }
     }
 }
