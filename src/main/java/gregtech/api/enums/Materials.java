@@ -2276,6 +2276,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             TengamAttuned,
             MaterialsUEVplus.Eternity,
             MaterialsUEVplus.MagMatter,
+            MaterialsUEVplus.Creon,
+            MaterialsUEVplus.Mellion,
             MaterialsUEVplus.HotProtoHalkonite,
             MaterialsUEVplus.ProtoHalkonite,
             MaterialsUEVplus.HotExoHalkonite,
