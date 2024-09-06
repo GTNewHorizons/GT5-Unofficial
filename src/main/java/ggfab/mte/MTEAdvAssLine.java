@@ -22,6 +22,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -63,6 +65,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import ggfab.ConfigurationHandler;
 import ggfab.GGConstants;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
@@ -104,6 +107,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine> implements ISurvivalConstructable {
 
     private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
+    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor();
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -305,10 +309,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         tt.addMachineType("Assembling Line")
             .addInfo("Controller block for the Advanced Assembling Line")
             .addInfo("Built exactly the same as standard Assembling Line")
-            .addInfo("Place in world to get more info. It will be a lengthy read.")
             .addInfo("Assembling Line with item pipelining")
             .addInfo("All fluids are however consumed at start")
             .addInfo("Use voltage of worst energy hatch for overclocking")
+            .addInfo("Perform normal overclock with given voltage")
+            .addInfo("Perform laser overclock with extra amperages from multi-amp energy hatches")
+            .addInfo("Each laser overclock reduces recipe time by 50%")
+            .addInfo(
+                "and multiplies power by (4 + " + formatNumbers(LASER_OVERCLOCK_PENALTY_FACTOR)
+                    + " * total laser overclock count)")
+            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
             .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
             .addSeparator()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
@@ -768,7 +778,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
                 OverclockCalculator laserOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
-                    .setEutIncreasePerOCSupplier(overclock -> 4 + 0.3 * Math.max(overclock - normalOverclockCount, 0))
+                    .setEutIncreasePerOCSupplier(
+                        overclock -> 4 + LASER_OVERCLOCK_PENALTY_FACTOR * Math.max(overclock - normalOverclockCount, 0))
                     .setParallel(originalMaxParallel)
                     .setEUt(inputEUt / recipe.mInputs.length);
 
