@@ -710,12 +710,6 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 1);
         tMutation.requireResource("blockIndium");
-        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(39, "Venus")); // Venus Dim
-        // Harder mutation that isn't dim locked
-        tMutation = dis.registerMutation(SILVER, OSMIUM, 1);
-        tMutation.requireResource("blockCinobiteA243");
-        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(60, "Bedrock")); // Thaumic Tinkerer
-                                                                                              // Bedrock Dim
     }),
 
     // IC2
