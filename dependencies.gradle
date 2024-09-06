@@ -99,6 +99,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.6.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
+    compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.2.0:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
