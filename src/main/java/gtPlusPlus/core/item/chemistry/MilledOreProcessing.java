@@ -14,6 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
+import biomesoplenty.api.content.BOPCBlocks;
+import biomesoplenty.api.content.BOPCItems;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -33,7 +35,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.xmod.bop.BiomesOPlentyHandler;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 
@@ -654,10 +655,10 @@ public class MilledOreProcessing extends ItemPackage {
         aPinecones.add(ItemUtils.getSimpleStack(AgriculturalChem.mPinecone, 1));
 
         if (BiomesOPlenty.isModLoaded()) {
-            aLogs.add(BiomesOPlentyHandler.getStack(BiomesOPlentyHandler.logs4, 0, 1));
-            aLeaves.add(BiomesOPlentyHandler.getStack(BiomesOPlentyHandler.colorizedLeaves2, 1, 1));
-            aSaplings.add(BiomesOPlentyHandler.getStack(BiomesOPlentyHandler.colorizedSaplings, 5, 1));
-            aPinecones.add(ItemUtils.simpleMetaStack(BiomesOPlentyHandler.mPineCone, 13, 1));
+            aLogs.add(ItemUtils.simpleMetaStack(BOPCBlocks.logs4, 0, 1));
+            aLeaves.add(ItemUtils.simpleMetaStack(BOPCBlocks.colorizedLeaves2, 1, 1));
+            aSaplings.add(ItemUtils.simpleMetaStack(BOPCBlocks.colorizedSaplings, 5, 1));
+            aPinecones.add(ItemUtils.simpleMetaStack(BOPCItems.misc, 13, 1));
         }
         if (Forestry.isModLoaded()) {
             ItemStack aForestryLog = ItemUtils.getItemStackFromFQRN("Forestry:logs", 1);

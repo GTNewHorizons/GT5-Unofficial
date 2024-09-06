@@ -41,13 +41,13 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     /**
      * Generates an AutoMap from the List.
-     * 
+     *
      * @param aList - Data to be inserted into the AutoMap.
      */
     public AutoMap(List<V> aList) {
         mInternalMap = new LinkedHashMap<>();
         mInternalNameMap = new LinkedHashMap<>();
-        if (aList != null && aList.size() > 0) {
+        if (aList != null && !aList.isEmpty()) {
             for (V obj : aList) {
                 add(obj);
             }
@@ -56,13 +56,13 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     /**
      * Generates an AutoMap from a Set.
-     * 
+     *
      * @param aList - Data to be inserted into the AutoMap.
      */
     public AutoMap(Set<V> aList) {
         mInternalMap = new LinkedHashMap<>();
         mInternalNameMap = new LinkedHashMap<>();
-        if (aList != null && aList.size() > 0) {
+        if (aList != null && !aList.isEmpty()) {
             for (V obj : aList) {
                 add(obj);
             }
@@ -71,13 +71,13 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     /**
      * Generates an AutoMap from a Collection.
-     * 
+     *
      * @param aList - Data to be inserted into the AutoMap.
      */
     public AutoMap(Collection<V> aList) {
         mInternalMap = new LinkedHashMap<>();
         mInternalNameMap = new LinkedHashMap<>();
-        if (aList != null && aList.size() > 0) {
+        if (aList != null && !aList.isEmpty()) {
             for (V obj : aList) {
                 add(obj);
             }
@@ -86,13 +86,13 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     /**
      * Generates an AutoMap from a Array.
-     * 
+     *
      * @param aArray - Data to be inserted into the AutoMap.
      */
     public AutoMap(V[] aArray) {
         mInternalMap = new LinkedHashMap<>();
         mInternalNameMap = new LinkedHashMap<>();
-        if (aArray != null && aArray.length > 0) {
+        if (aArray != null) {
             for (V obj : aArray) {
                 add(obj);
             }
@@ -107,12 +107,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
     public synchronized boolean setValue(V object) {
         int mOriginalID = this.mInternalID;
         put(object);
-        if (this.mInternalMap.get(mOriginalID)
-            .equals(object) || mOriginalID > this.mInternalID) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.mInternalMap.get(mOriginalID)
+            .equals(object) || mOriginalID > this.mInternalID;
     }
 
     public synchronized V put(V object) {
@@ -168,7 +164,6 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         this.mInternalID = 0;
         this.mInternalMap.clear();
         this.mInternalNameMap.clear();
-        return;
     }
 
     @Override
@@ -322,7 +317,6 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         for (V of : mInternalMap.values()) {
             if (of != o) {
                 aCount++;
-                continue;
             } else {
                 return aCount;
             }
@@ -353,9 +347,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         AutoMap<V> aNewSubList = new AutoMap<>();
         for (int slot = fromIndex; slot <= toIndex; slot++) {
             V obj = mInternalMap.get(slot);
-            if (obj == null) {
-                continue;
-            } else {
+            if (obj != null) {
                 aNewSubList.put(obj);
             }
         }

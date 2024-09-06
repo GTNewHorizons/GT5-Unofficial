@@ -1,7 +1,5 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import static gregtech.api.enums.Mods.Forestry;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +25,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import forestry.lepidopterology.entities.EntityButterfly;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
@@ -36,7 +36,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class TileEntityPestKiller extends TileEntity implements ISidedInventory, IFluidHandler {
 
@@ -56,8 +55,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     static {
         mEntityMap.put(EntityBat.class);
-        if (Forestry.isModLoaded()) {
-            mEntityMap.put(ReflectionUtils.getClass("forestry.lepidopterology.entities.EntityButterfly"));
+        if (Mods.Forestry.isModLoaded()) {
+            mEntityMap.put(EntityButterfly.class);
         }
     }
 
