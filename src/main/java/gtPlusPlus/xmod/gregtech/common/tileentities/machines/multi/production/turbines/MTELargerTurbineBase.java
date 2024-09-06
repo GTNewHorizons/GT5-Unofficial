@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
@@ -53,7 +54,6 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -67,7 +67,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
-    protected boolean mFastMode = false;
+    protected boolean looseFit = false;
     protected double mufflerReduction = 1;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
@@ -104,10 +104,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the XL " + getTurbineType() + " Turbine")
             .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
-            .addInfo("Right-click with screwdriver to enable Fast Mode, to run it even faster")
-            .addInfo("Optimal flow will increase or decrease accordingly on mode switch")
-            .addInfo("Fast Mode increases speed to 48x instead of 16x, with some penalties")
-            .addInfo("Maintenance problems and turbine damage happen 12x as often in Fast Mode");
+            .addInfo("Right-click with screwdriver to enable loose fit")
+            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Loose fit increases flow in exchange for efficiency");
         if (getTurbineType().contains("Steam")) {
             tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
         }
@@ -116,7 +115,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
         tt.addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo("Pollution is 3x higher in Fast Mode")
             .addSeparator()
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top Middle")
@@ -450,6 +448,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
+            ItemStack aStack = getFullTurbineAssemblies().get(0)
+                .getTurbine();
+
+            TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+
             if (tFluids.size() > 0) {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
@@ -461,25 +464,15 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    ItemStack aStack = getFullTurbineAssemblies().get(0)
-                        .getTurbine();
-                    aTotalBaseEff += GTUtility.safeInt(
-                        (long) ((5F + ((MetaGeneratedTool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                    aTotalOptimalFlow += GTUtility.safeInt(
-                        (long) Math.max(
-                            Float.MIN_NORMAL,
-                            ((MetaGeneratedTool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStack).mToolSpeed * 50)
-                            * getSpeedMultiplier());
+                    aTotalBaseEff += turbine.getEfficiency();
+                    aTotalOptimalFlow += GTUtility
+                        .safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
+                    baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
+                    optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
-                    baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
-                    optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
                         stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -490,7 +483,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             }
 
             // How much the turbine should be producing with this flow
-            long newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
+            long newPower = fluidIntoPower(tFluids, turbine);
             long difference = newPower - this.lEUt; // difference between current output and new output
 
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
@@ -554,7 +547,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         return (getFullTurbineAssemblies().size());
     }
 
-    abstract long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers);
+    abstract long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
@@ -572,7 +565,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     public boolean isLooseMode() {
-        return false;
+        return looseFit;
     }
 
     @Override
@@ -694,33 +687,28 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public long maxAmperesOut() {
-        // This should not be a hard limit, due to TecTech dynamos
-        if (mFastMode) {
-            return 64;
-        } else {
-            return 16;
-        }
+        return 16;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mFastMode", mFastMode);
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("turbineFitting", looseFit);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mFastMode = aNBT.getBoolean("mFastMode");
         super.loadNBTData(aNBT);
+        looseFit = aNBT.getBoolean("turbineFitting");
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mFastMode = !mFastMode;
-        if (mFastMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+            looseFit ^= true;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         }
     }
 
@@ -862,19 +850,19 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     public int getSpeedMultiplier() {
-        return mFastMode ? 48 : 16;
+        return 16;
     }
 
     public int getMaintenanceThreshold() {
-        return mFastMode ? 12 : 1;
+        return 1;
     }
 
     public int getPollutionMultiplier() {
-        return mFastMode ? 3 : 1;
+        return 1;
     }
 
     public int getTurbineDamageMultiplier() {
-        return mFastMode ? 3 : 1;
+        return 1;
     }
 
     @Override
