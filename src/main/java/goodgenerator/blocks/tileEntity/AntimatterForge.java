@@ -2,21 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import static gregtech.api.util.GTStructureUtility.filterByMTETier;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
-=======
-import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-
-=======
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,22 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-<<<<<<< HEAD
-import org.jetbrains.annotations.NotNull;
-
 import bartworks.common.loaders.ItemRegistry;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
-import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
-=======
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -60,29 +31,11 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-<<<<<<< HEAD
-import goodgenerator.loader.Loaders;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.GTValues;
-=======
-=======
-import goodgenerator.items.MyMaterial;
->>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
-=======
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import goodgenerator.items.MyMaterial;
+import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.api.enums.GT_HatchElement;
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
@@ -90,72 +43,36 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
-<<<<<<< HEAD
-import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
-=======
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.GT_ItemStack;
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-<<<<<<< HEAD
-<<<<<<< HEAD
+import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockCasingsAbstract;
-=======
-=======
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-<<<<<<< HEAD
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
->>>>>>> ef58e42a27 (Add antimatter)
-=======
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
-<<<<<<< HEAD
-public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
-    implements ISurvivalConstructable, IOverclockDescriptionProvider {
-
-    public static final String MAINNAME = "antimatterForge";
-    public static final int M = 1000000;
-=======
-public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<AntimatterForge>
+public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = { Materials.TengamAttuned.getMolten(1L),
         MaterialsUEVplus.Time.getMolten(1L) };
     private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L),
         MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
-    private static final FluidStack[] containmentUpgrades = { MyMaterial.shirabon.getMolten(1),
+    private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
         MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
-    private static final FluidStack[] activationUpgrades = { MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
-        MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
+    private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
+        GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
 
     private static final int MAGNETIC_ID = 0;
     private static final int GRAVITY_ID = 1;
@@ -177,56 +94,18 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     public static final String MAIN_NAME = "antimatterForge";
     public static final int M = 1_000_000;
     private int speed = 100;
-<<<<<<< HEAD
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
-=======
     private long rollingCost = 0L;
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
     private boolean isLoadedChunk;
     public GTRecipe mLastRecipe;
     public int para;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    protected OverclockDescriber overclockDescriber;
-    private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTUREDEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
-=======
-    private List<AntimatterOutputHatch> antimatterOutputHatches = new ArrayList<>(16);
-=======
-=======
     private Random r = new Random();
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
     private List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
->>>>>>> fa2399b90b (Add new structure for Antimatter Forge)
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
 
         @Override
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                .addShape(MAINNAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
-                .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
-=======
-                .addShape(MAIN_NAME, transpose(ForgeStructure))
-                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCoilMeta())))
-                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta())))
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
-                .addElement(
-                    'F',
-                    lazy(
-                        x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .atLeast(
-                                HatchElement.InputHatch.or(HatchElement.InputBus))
-=======
-                .addShape(MAIN_NAME, ForgeStructure)
-=======
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_FORGE)
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
                 .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
                 .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
                 .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
@@ -234,46 +113,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 .addElement(
                     'F',
                     lazy(
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-<<<<<<< HEAD
-                            .anyOf(
-<<<<<<< HEAD
-                                GT_HatchElement.InputHatch.or(GT_HatchElement.InputBus))
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-=======
-                                GT_HatchElement.InputHatch)
->>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
-=======
-                            .anyOf(GT_HatchElement.InputHatch)
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
+                        x -> HatchElementBuilder.<AntimatterForge>builder()
+                            .anyOf(HatchElement.InputHatch)
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex(2))
                             .dot(1)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
-<<<<<<< HEAD
-                    'G',
-                    lazy(
-<<<<<<< HEAD
-                        x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .atLeast(
-<<<<<<< HEAD
-                                HatchElement.OutputHatch)
-=======
-                                GT_HatchElement.InputHatch)
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
-=======
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(
-                                GT_HatchElement.OutputHatch)
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-                            .adder(AntimatterForge::addFluidIO)
-                            .casingIndex(x.textureIndex(2))
-                            .dot(2)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
-                .addElement(
-=======
->>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
                     'E',
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
@@ -284,13 +130,8 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 .addElement(
                     'H',
                     lazy(
-<<<<<<< HEAD
                         x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(HatchElement.Energy)
-=======
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(GT_HatchElement.Energy.or(GT_HatchElement.ExoticEnergy))
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
+                            .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
                             .dot(4)
@@ -324,15 +165,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-<<<<<<< HEAD
-        return new AntimatterForge(this.MAINNAME);
-    }
-
-    protected OverclockDescriber createOverclockDescriber() {
-        return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
-=======
         return new AntimatterForge(MAIN_NAME);
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
     }
 
     /*
@@ -375,7 +208,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             .addInputHatch("1-16, Hint block with dot 1", 1)
             .addOutputHatch("1-16, Hint block with dot 1", 1)
             .addStructureInfo(
-                "ALL Hatches must be " + GT_Utility.getColoredTierNameFromTier((byte) hatchTier())
+                "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
             .toolTipFinisher("Good Generator");
@@ -384,7 +217,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public IStructureDefinition<AntimatterForge> getStructureDefinition() {
-        return STRUCTUREDEFINITION.get(getClass());
+        return STRUCTURE_DEFINITION.get(getClass());
     }
 
     public int tier() {
@@ -393,25 +226,9 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public long maxEUStore() {
-        return 100000000;
+        return 100_000_000;
     }
 
-<<<<<<< HEAD
-    /**
-     * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
-     * hatches nor the room for extra energy. Intended for simulation.
-     */
-
-    public long capableStartupCanonical() {
-        return 160000000;
-    }
-
-<<<<<<< HEAD
-=======
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
-    public Block getCasingBlock() {
-        return Loaders.antimatterContainmentCasing;
-=======
     public Block getCasingBlock(int type) {
         switch (type) {
             case 1:
@@ -421,7 +238,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             default:
                 return Loaders.magneticFluxCasing;
         }
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
     }
 
     public int getCasingMeta(int type) {
@@ -496,197 +312,21 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-<<<<<<< HEAD
-        return checkPiece(MAINNAME, 23, 3, 40);
-=======
         return checkPiece(MAIN_NAME, 26, 26, 4);
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-<<<<<<< HEAD
-        buildPiece(MAINNAME, itemStack, b, 23, 3, 40);
-=======
         buildPiece(MAIN_NAME, itemStack, b, 26, 26, 4);
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-<<<<<<< HEAD
-        return survivialBuildPiece(MAINNAME, stackSize, 23, 3, 40, realBudget, env, false, true);
-=======
         return survivialBuildPiece(MAIN_NAME, stackSize, 26, 26, 4, realBudget, env, false, true);
->>>>>>> aa1036fda0 (Add new structure check (It's broken))
     }
 
-<<<<<<< HEAD
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // if machine has stopped, stop chunkloading
-            this.isLoadedChunk = false;
-        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
-            // load a 3x3 area when machine is running
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
-            int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() - 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() - 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() - 1 + offZ));
-            this.isLoadedChunk = true;
-        }
-
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (mEfficiency < 0) mEfficiency = 0;
-            if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
-                checkRecipe();
-            }
-            if (mUpdated) {
-                mUpdate = 50;
-                mUpdated = false;
-            }
-            if (--mUpdate == 0 || --mStartUpCheck == 0
-                || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-                if (mUpdate <= -1000) {
-                    mUpdate = 5000;
-                }
-                checkStructure(true, aBaseMetaTileEntity);
-            }
-            if (mStartUpCheck < 0) {
-                if (mMachine) {
-                    if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
-                        criticalStopMachine();
-                    }
-
-                    long energyLimit = getSingleHatchPower();
-                    List<MTEHatch> hatches = getExoticAndNormalEnergyHatchList();
-                    for (MTEHatch hatch : filterValidMTEs(hatches)) {
-                        long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
-                        long receivedEnergy = Math
-                            .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());
-                        if (receivedEnergy > 0) {
-                            hatch.getBaseMetaTileEntity()
-                                .decreaseStoredEnergyUnits(receivedEnergy, false);
-                            aBaseMetaTileEntity.increaseStoredEnergyUnits(receivedEnergy, true);
-                        }
-                    }
-
-                    if (mMaxProgresstime > 0) {
-                        this.getBaseMetaTileEntity()
-                            .decreaseStoredEnergyUnits(-lEUt, true);
-                        if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
-                            if (mOutputFluids != null)
-                                for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
-                            mEfficiency = Math
-                                .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
-                            mOutputItems = null;
-                            mOutputFluids = null;
-                            mProgresstime = 0;
-                            mMaxProgresstime = 0;
-                            mEfficiencyIncrease = 0;
-                            para = 0;
-                            if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
-                        }
-                    } else {
-                        if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                            || aBaseMetaTileEntity.hasInventoryBeenModified()) {
-                            turnCasingActive(mMaxProgresstime > 0);
-                            if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                if (checkRecipe()) {
-                                    if (aBaseMetaTileEntity.getStoredEU()
-                                        < this.mLastRecipe.mSpecialValue + this.lEUt) {
-                                        mMaxProgresstime = 0;
-                                        turnCasingActive(false);
-                                        criticalStopMachine();
-                                    }
-                                    getBaseMetaTileEntity()
-                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.lEUt, false);
-                                }
-                            }
-                            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
-                        }
-                    }
-                } else {
-                    turnCasingActive(false);
-                    this.mLastRecipe = null;
-                    stopMachine();
-                }
-            }
-            aBaseMetaTileEntity
-                .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
-            aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-        }
-    }
-
-    /**
-     * @return The power one hatch can deliver to the reactor
-     */
-    protected long getSingleHatchPower() {
-        return GTValues.V[tier()] * getMaxPara() * extraPara(100) / 32;
-    }
-
-<<<<<<< HEAD
-=======
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
-    public boolean turnCasingActive(boolean status) {
-        if (this.mEnergyHatches != null) {
-            for (MTEHatchEnergy hatch : this.mEnergyHatches) {
-        }
-        //if (this.eEnergyMulti != null) {
-        //    for (MTEHatchEnergyMulti hatch : this.eEnergyMulti) {
-        //        hatch.updateTexture(status ? 52 : 53);
-        //    }
-        //}
-        if (this.mOutputHatches != null) {
-            for (MTEHatchOutput hatch : this.mOutputHatches) {
-                hatch.updateTexture(status ? 52 : 53);
-            }
-        }
-        if (this.mInputHatches != null) {
-            for (MTEHatchInput hatch : this.mInputHatches) {
-                hatch.updateTexture(status ? 52 : 53);
-            }
-        }
-        if (this.mDualInputHatches != null) {
-            for (IDualInputHatch hatch : this.mDualInputHatches) {
-                hatch.updateTexture(status ? 52 : 53);
-            }
-        }
-        return true;
-    }
-
-=======
->>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
@@ -757,91 +397,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                // When the fusion first loads and is still processing, it does the recipe check without consuming.
-                return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
-            }
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
-=======
-        for (int i = 0; i < antimatterOutputHatches.size(); i++) {
-            if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
-        }
-
-<<<<<<< HEAD
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (!mRunningOnLoad) {
-                    if (recipe.mSpecialValue > maxEUStore()) {
-                        return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
-                    }
-                    if (recipe.mEUt > GTValues.V[tier()]) {
-                        return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                    }
-                }
-                maxParallel = getMaxPara() * extraPara(recipe.mSpecialValue);
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-<<<<<<< HEAD
-=======
-=======
-            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-            return CheckRecipeResultRegistry.insufficientPower(energyCost);
-        }
-
-        long protomatterCost = calculateProtoMatterCost(totalAntimatterAmount);
-        long containedProtomatter = 0;
-        List<FluidStack> inputFluids = getStoredFluids();
-        for (int i = 0; i < inputFluids.size(); i++) {
-            if (inputFluids.get(i).isFluidEqual(Materials.Antimatter.getFluid(1))) {
-                containedProtomatter += Math.min(inputFluids.get(i).amount, protomatterCost - containedProtomatter);
-                inputFluids.get(i).amount -= Math.min(protomatterCost - containedProtomatter, inputFluids.get(i).amount);
-            }
-        }
-
-        distributeAntimatterToHatch(antimatterOutputHatches, totalAntimatterAmount, ((float) containedProtomatter)/((float) protomatterCost));
-        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        mEfficiencyIncrease = 10000;
-        mMaxProgresstime = speed;
-
->>>>>>> 579cb15fe5 (implement skeleton for antimatter production)
-        return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
->>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
-
-=======
-        for (int i = 0; i < antimatterOutputHatches.size(); i++) {
-            if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
-            FluidStack fluid = antimatterOutputHatches.get(i).getFluid().copy();
-            antimatterOutputHatches.get(i).drain((int)((fluid.amount - minAntimatterAmount) / 2), true);
-=======
-        for (int i = 0; i < amOutputHatches.size(); i++) {
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
-            FluidStack fluid = amOutputHatches.get(i).getFluid().copy();
-            amOutputHatches.get(i).drain((int)((fluid.amount - minAntimatterAmount) / 2), true);
->>>>>>> fa2399b90b (Add new structure for Antimatter Forge)
-=======
-        //Reduce the amount of antimatter in each hatch by half of the difference between the lowest amount and current hatch contents 
-        for (int i = 0; i < amOutputHatches.size(); i++) {
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
-            FluidStack fluid = amOutputHatches.get(i).getFluid().copy();
-            amOutputHatches.get(i).drain((int)((fluid.amount - minAntimatterAmount) * 0.5), true);
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-=======
         // Reduce the amount of antimatter in each hatch by half of the difference between the lowest amount and current
         // hatch contents
         for (int i = 0; i < amOutputHatches.size(); i++) {
@@ -855,7 +410,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 .copy();
             amOutputHatches.get(i)
                 .drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true);
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
         }
 
         // Check for upgrade fluids
@@ -966,18 +520,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
-=======
-    /* How much passive energy is drained every tick
-    *  Base containment cost: 10M EU/t
-    *  The containment cost ramps up by the amount of antimatter each tick, up to 1000 times
-    *  If the current cost is more than 1000 times the amount of antimatter, or
-    *  if no antimatter is in the hatches, the value will decay by 1% every tick
-    */
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-=======
     /*
      * How much passive energy is drained every tick
      * Base containment cost: 10M EU/t
@@ -985,7 +527,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
      * If the current cost is more than 1000 times the amount of antimatter, or
      * if no antimatter is in the hatches, the value will decay by 1% every tick
      */
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
     private long calculateEnergyContainmentCost(long antimatterAmount) {
         if (antimatterAmount == 0) {
             rollingCost *= 0.995;
@@ -1004,18 +545,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return (long) Math.pow(antimatterAmount * activeBaseMult, activeBaseExp + modifiers[GRAVITY_ID]);
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> dd4a3d69ac (implement skeleton for antimatter production)
-=======
-    //How much protomatter is required to do one operation
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
-=======
     // How much protomatter is required to do one operation
->>>>>>> 3bd491c92e (Generator structure def do be crashing)
     private long calculateProtoMatterCost(long antimatterAmount) {
         return antimatterAmount + 1;
     }
@@ -1055,36 +585,10 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return difference;
     }
 
-<<<<<<< HEAD
-=======
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
-=======
->>>>>>> dd4a3d69ac (implement skeleton for antimatter production)
     @Override
-    protected boolean shouldCheckRecipeThisTick(long aTick) {
-        return (aTick % speed) == 0;
-    }
-
-    @Override
-<<<<<<< HEAD
-<<<<<<< HEAD
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTValues.V[tier()]);
-        logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
-=======
     public void clearHatches() {
         super.clearHatches();
-<<<<<<< HEAD
-        antimatterOutputHatches.clear();
->>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
-=======
-    public void clearHatches() {
-        super.clearHatches();
-        antimatterOutputHatches.clear();
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
-=======
         amOutputHatches.clear();
->>>>>>> fa2399b90b (Add new structure for Antimatter Forge)
     }
 
     @Override
@@ -1104,22 +608,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-<<<<<<< HEAD
-        if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            //return eEnergyMulti.add(tHatch);
-=======
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch
-            && GT_ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
+        if (aMetaTileEntity instanceof MTEHatch hatch
+            && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mExoticEnergyHatches.add(hatch);
->>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
         }
         return false;
     }
@@ -1136,16 +629,10 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
-<<<<<<< HEAD
-
-        if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
-
-=======
->>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
             return amOutputHatches.add(tAntimatter);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
+        if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
             if (tOutput.getTierForStructure() < hatchTier()) return false;
             return mOutputHatches.add(tOutput);
         }
@@ -1159,7 +646,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     private boolean addAntimatterHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch) {
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }

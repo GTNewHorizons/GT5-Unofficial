@@ -4,9 +4,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.filterByMTETier;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -29,7 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -43,31 +43,31 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 
-import client.gui.KT_UITextures;
+import kekztech.client.gui.KTUITextures;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
-import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 
-public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     implements IConstructable, ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
@@ -93,8 +93,8 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                 .addElement(
                     'F',
                     lazy(
-                        x -> GT_HatchElementBuilder.<AntimatterGenerator>builder()
-                            .anyOf(GT_HatchElement.ExoticEnergy)
+                        x -> HatchElementBuilder.<AntimatterGenerator>builder()
+                            .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterGenerator::addLaserSource)
                             .casingIndex(x.textureIndex(2))
                             .dot(1)
@@ -102,7 +102,7 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                 .addElement(
                     'G',
                     lazy(
-                        x -> buildHatchAdder(AntimatterGenerator.class).atLeast(GT_HatchElement.InputHatch)
+                        x -> buildHatchAdder(AntimatterGenerator.class).atLeast(HatchElement.InputHatch)
                             .casingIndex(x.textureIndex(1))
                             .dot(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
@@ -128,7 +128,7 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel tHatch) {
+        if (aMetaTileEntity instanceof MTEHatchDynamoTunnel tHatch) {
             if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mExoticEnergyHatches.add(tHatch);
@@ -158,7 +158,7 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
-            + GT_Utility.formatNumbers(Math.abs(this.trueOutput))
+            + GTUtility.formatNumbers(Math.abs(this.trueOutput))
             + EnumChatFormatting.RESET
             + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED
@@ -202,12 +202,6 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-
-    @Override
-    protected boolean shouldCheckRecipeThisTick(long aTick) {
-        return (aTick % 20) == 0;
-    }
-
     // (Antimatter^(EXP) * 1e12 )/(Math.min((Antimatter/Matter),(Matter/Antimatter)))
     public void createEU(long antimatter, FluidStack catalyst) {
         Float modifier = null;
@@ -236,8 +230,8 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
         if (wirelessEnabled && modifier >= 1.03F) {
             //Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
             long euCapacity = 0;
-            for (GT_MetaTileEntity_Hatch tHatch : getExoticEnergyHatches()) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel tLaserSource) {
+            for (MTEHatch tHatch : getExoticEnergyHatches()) {
+                if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
                     euCapacity += tLaserSource.maxEUStore();
                 }
             }
@@ -246,8 +240,8 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
             System.out.format("Clamped to %d EU\n", generatedEU);
         } else {
             float invHatchCount = 1.0F / (float)mExoticEnergyHatches.size();
-            for (GT_MetaTileEntity_Hatch tHatch : getExoticEnergyHatches()) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel tLaserSource) {
+            for (MTEHatch tHatch : getExoticEnergyHatches()) {
+                if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
                     tLaserSource.setEUVar(tLaserSource.getEUVar() + (long) (generatedEU * invHatchCount));
                 }
             }
@@ -313,9 +307,9 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         wirelessEnabled = !wirelessEnabled;
-        GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wirelessEnabled ? "enabled." : "disabled."));
+        GTUtility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wirelessEnabled ? "enabled." : "disabled."));
         if (wirelessEnabled) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Wireless only works with UMV Superconductor or better.");
+            GTUtility.sendChatToPlayer(aPlayer, "Wireless only works with UMV Superconductor or better.");
         }
     }
 
@@ -337,8 +331,8 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Antimatter Generator")
             .addInfo("Controller block for the Shielded Lagrangian Annihilation Matrix")
             .addInfo("The structure is too complex!")
@@ -369,15 +363,15 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.BUTTON_STANDARD);
                 if (canUseWireless) {
                     if (wirelessEnabled) {
-                        ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_ON);
+                        ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_ON);
                     } else {
-                        ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF);
+                        ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_OFF);
                     }
                 } else {
-                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
+                    ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
