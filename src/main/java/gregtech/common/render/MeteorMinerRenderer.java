@@ -58,7 +58,7 @@ public class MeteorMinerRenderer extends TileEntitySpecialRenderer {
             GL11.glRotated(ltile.rotationAngle, ltile.rotAxisX, ltile.rotAxisY, ltile.rotAxisZ);
             GL11.glTranslated(-x - 0.5, -y - 0.5, -z - 0.5);
 
-            renderFakeLine(ltile, x + 0.5, y + 36.0, z + 0.5, x + 0.5, y + 0.5, z + 0.5);
+            renderFakeLine(ltile, x + 0.5, y + 35.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5);
 
             GL11.glPopAttrib();
             GL11.glPopMatrix();

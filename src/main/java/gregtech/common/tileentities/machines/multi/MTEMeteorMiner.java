@@ -17,9 +17,11 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,12 +54,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.render.TileEntityLaserBeacon;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static IStructureDefinition<MTEMeteorMiner> STRUCTURE_DEFINITION = null;
+    protected TileEntityLaserBeacon renderer;
     private static final int BASE_CASING_COUNT = 469;
     private static final int MAX_RADIUS = 24;
     private int currentRadius = MAX_RADIUS;
@@ -82,7 +87,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     {"               ","               ","               ","               ","               ","               ","       D       ","      D D      ","       D       ","               ","               ","               ","               ","               ","               "},
                     {"               ","               ","               ","               ","               ","       D       ","      D D      ","     D   D     ","      D D      ","       D       ","               ","               ","               ","               ","               "},
                     {"               ","               ","               ","               ","       D       ","     D   D     ","               ","    D     D    ","               ","     D   D     ","       D       ","               ","               ","               ","               "},
-                    {"               ","               ","               ","       D       ","    D     D    ","               ","               ","   D   B   D   ","               ","               ","    D     D    ","       D       ","               ","               ","               "},
+                    {"               ","               ","               ","       D       ","    D     D    ","               ","               ","   D   R   D   ","               ","               ","    D     D    ","       D       ","               ","               ","               "},
                     {"               ","               ","       D       ","   D       D   ","               ","               ","               ","  D    B    D  ","               ","               ","               ","   D       D   ","       D       ","               ","               "},
                     {"               ","       D       ","  D         D  ","               ","               ","               ","       C       "," D    CBC    D ","       C       ","               ","               ","               ","  D         D  ","       D       ","               "},
                     {"  DDDDDDDDDDD  "," DDFFFFFFFFFDD ","DDFF       FFDD","DFF         FFD","DF           FD","DF           FD","DF     C     FD","DF    CBC    FD","DF     C     FD","DF           FD","DF           FD","DFF         FFD","DDFF       FFDD"," DDFFFFFFFFFDD ","  DDDDDDDDDDD  "},
@@ -123,6 +128,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                         .buildAndChain(
                             onElementPass(MTEMeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockCasings4Misc, 2))))
                 .addElement('J', ofBlock(ModBlocks.blockCasings4Misc, 2))
+                .addElement('R', ofBlock(GregTechAPI.sLaserBeaconRender, 0))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -149,6 +155,18 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         super.clearHatches();
 
         aCasingAmount = 0;
+    }
+
+    @Override
+    public void onDisableWorking() {
+        if (renderer != null) renderer.setShouldRender(false);
+        super.onDisableWorking();
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        if (renderer != null) renderer.setShouldRender(false);
+        super.onBlockDestroyed();
     }
 
     private void onCasingAdded() {
@@ -214,6 +232,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 "To work properly the Superconducting Coils must be placed 32 blocks below the center of the meteor,")
             .addInfo("it will mine in a radius of 24 blocks in each direction from the center of the meteor.")
             .addInfo("All the chunks involved must be chunkloaded.")
+            .addInfo("The multi will autoset its radius based on the meteorite,")
+            .addInfo("if it doesn't find any it will wait for a meteor to spawn, considering the block")
+            .addInfo("right above the center of the meteor (like Warded Glass).")
+            .addInfo("The reset button will restart the machine without optimizing the radius.")
             .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Finally some good Meteors!")
             .addInfo(AuthorTotto)
             .addSeparator()
@@ -226,6 +248,30 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         return tt;
     }
 
+    private boolean findLaserRenderer(World w) {
+        this.setStartCoords();
+        if (w.getTileEntity(
+            xStart,
+            getBaseMetaTileEntity().getYCoord() + 13,
+            zStart) instanceof TileEntityLaserBeacon laser) {
+            renderer = laser;
+            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean stopAllRendering = false;
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        stopAllRendering = !stopAllRendering;
+        if (stopAllRendering) {
+            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            if (renderer != null) renderer.setShouldRender(false);
+        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+    }
+
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
@@ -235,7 +281,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         aCasingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 7, 16, 4) && !mEnergyHatches.isEmpty()
-            && mMaintenanceHatches.size() == 1;
+            && mMaintenanceHatches.size() == 1
+            && findLaserRenderer(getBaseMetaTileEntity().getWorld());
     }
 
     @Override
@@ -283,6 +330,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         aNBT.setBoolean("hasFinished", hasFinished);
         aNBT.setBoolean("isObserving", isObserving);
         aNBT.setBoolean("isWaiting", isWaiting);
+        aNBT.setBoolean("stopAllRendering", stopAllRendering);
     }
 
     @Override
@@ -299,6 +347,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         hasFinished = aNBT.getBoolean("hasFinished");
         isObserving = aNBT.getBoolean("isObserving");
         isWaiting = aNBT.getBoolean("isWaiting");
+        stopAllRendering = aNBT.getBoolean("stopAllRendering");
     }
 
     private void reset() {
@@ -319,6 +368,9 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
+        if (renderer != null) {
+            renderer.setColors(1, 0, 0);
+        }
         if (isResetting) {
             this.reset();
             return SimpleCheckRecipeResult.ofSuccess("meteor_reset");
@@ -337,6 +389,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         }
 
         if (hasFinished && isObserving) {
+            renderer.setShouldRender(false);
             this.isWaiting = true;
             this.setElectricityStats();
             boolean isReady = checkCenter();
@@ -349,11 +402,13 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         }
 
         if (!hasFinished) {
+            renderer.setShouldRender(true);
             this.startMining(this.xDrill, this.zDrill);
             mOutputItems = res.toArray(new ItemStack[0]);
             res.clear();
             this.moveToNextColumn();
         } else {
+            renderer.setShouldRender(false);
             this.isStartInitialized = false;
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("drill_exhausted");
