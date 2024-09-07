@@ -1,11 +1,20 @@
 package bartworks.API.recipe;
 
+import static gregtech.api.enums.TickTime.TICK;
+import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
+
 import bartworks.API.modularUI.BWUITextures;
+import bartworks.common.loaders.BioCultureLoader;
+import bartworks.common.loaders.BioItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.maps.FuelBackend;
+import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 
 public class BartWorksRecipeMaps {
@@ -86,4 +95,18 @@ public class BartWorksRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> htgrFakeRecipes = RecipeMapBuilder.of("bw.recipe.htgr")
         .maxIO(1, 1, 0, 0)
         .build();
+    static {
+        RecipeMaps.fermentingRecipes.addDownstream(
+            IRecipeMap.newRecipeMap(
+                b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
+                    b.copy()
+                        .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
+                        .metadata(SIEVERTS, (int) GTUtility.getTier(b.getEUt())))));
+        RecipeMaps.implosionRecipes.addDownstream(
+            IRecipeMap.newRecipeMap(
+                b -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.doAdd(
+                    b.copy()
+                        .duration(1 * TICK)
+                        .eut(TierEU.RECIPE_UEV))));
+    }
 }

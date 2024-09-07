@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -288,36 +289,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Block_Powderbarrel.get(4))
+                .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(implosionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), GTModHandler.getIC2Item("dynamite", 1, null))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(implosionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.tnt, 2))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(implosionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), GTModHandler.getIC2Item("industrialTnt", 1))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
+                .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(implosionRecipes);
         }
     }
