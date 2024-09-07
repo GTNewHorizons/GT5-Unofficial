@@ -91,7 +91,7 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
 
     @Override
     protected long getActualEnergyUsage() {
-        return (-this.lEUt * 10000) / Math.max(1000, mEfficiency);
+        return -this.lEUt * (10000 / Math.max(1000, mEfficiency));
     }
 
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
