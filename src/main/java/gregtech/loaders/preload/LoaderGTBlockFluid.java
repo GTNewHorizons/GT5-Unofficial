@@ -68,6 +68,7 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
+import gregtech.common.blocks.BlockLaserBeacon;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockOres;
@@ -91,6 +92,7 @@ import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityLaserBeacon;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 
 public class LoaderGTBlockFluid implements Runnable {
@@ -557,6 +559,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
+        GregTechAPI.sLaserBeaconRender = new BlockLaserBeacon();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
 
         // meta ID order, DO NOT CHANGE ORDER
@@ -687,6 +690,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(TileEntityLaser.class, "LaserRenderer");
+
+        GTLog.out.println("GTMod: Registering the MeteorMinerRender.");
+        GameRegistry.registerTileEntity(TileEntityLaserBeacon.class, "MeteorMinerRenderer");
 
         GTLog.out.println("GTMod: Registering the WormholeRender.");
         GameRegistry.registerTileEntity(TileEntityWormhole.class, "WormholeRender");

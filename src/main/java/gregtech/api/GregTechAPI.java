@@ -250,6 +250,7 @@ public class GregTechAPI {
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
+    public static Block sLaserBeaconRender;
     public static Block sWormholeRender;
     /**
      * Getting assigned by the Config
