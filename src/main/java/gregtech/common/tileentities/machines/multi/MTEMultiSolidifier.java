@@ -173,7 +173,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
             .addInfo("Starts with 4 Parallels")
-            .addInfo("Gain 8 Parallels per Width Expansion and Multiplied by Voltage Tier")
+            .addInfo("Gain 1.5 Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addInfo(
@@ -317,7 +317,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * 8) * GTUtility.getTier(this.getMaxInputVoltage());
+        return 4 + (mWidth * 3/2) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
