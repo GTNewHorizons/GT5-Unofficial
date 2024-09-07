@@ -165,20 +165,12 @@ public class BaseTinkersMaterial {
 
     private boolean generateRecipes(Material aMaterial, int aID) {
 
-        Block aMatBlock;
-        Integer aMelt;
-        Fluid aFluid;
+        Block aMatBlock = aMaterial.getBlock();
+        int aMelt = aMaterial.getMeltingPointC();
+        Fluid aFluid = aMaterial.getFluidStack(0)
+            .getFluid();
 
-        try {
-            aMatBlock = aMaterial.getBlock();
-            aMelt = aMaterial.getMeltingPointC();
-            aFluid = aMaterial.getFluidStack(0)
-                .getFluid();
-        } catch (Throwable t) {
-            return false;
-        }
-
-        if (aMatBlock == null || aMelt == null || aFluid == null) {
+        if (aMatBlock == null || aFluid == null) {
             return false;
         }
 
@@ -192,7 +184,6 @@ public class BaseTinkersMaterial {
             TinkersUtils
                 .addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
         }
-
         TinkersUtils.generateCastingRecipes(aMaterial, aID);
 
         return true;

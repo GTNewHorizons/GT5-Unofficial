@@ -1238,7 +1238,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (aTileEntity == null) {
             return null;
         }
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
+        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null || aMetaTileEntity instanceof MTEHatchMultiInput) {
             // blacklist multiinput hatch as it's too complex
             return null;
