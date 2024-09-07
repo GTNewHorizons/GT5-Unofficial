@@ -520,29 +520,27 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         stabilityDecrease = 0.75F;
                     }
 
-                    if (!spacetimeHatches.isEmpty()) {
-                        // Search all hatches for catalyst fluid
-                        // If found enough, drain it and reduce stability loss to 0
-                        // Every 30 drains, double the cost
-                        FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+                    // Search all hatches for catalyst fluid
+                    // If found enough, drain it and reduce stability loss to 0
+                    // Every 30 drains, double the cost
+                    FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
 
-                        boolean didDrain = false;
-                        for (MTEHatchInput hatch : spacetimeHatches) {
-                            if (drain(hatch, totalCost, false)) {
-                                drain(hatch, totalCost, true);
-                                catalyzingCounter += 1;
-                                stabilityDecrease = 0;
-                                if (catalyzingCounter >= 30) {
-                                    catalyzingCostModifier *= 2;
-                                    catalyzingCounter = 0;
-                                }
-                                didDrain = true;
-                                break;
+                    boolean didDrain = false;
+                    for (MTEHatchInput hatch : spacetimeHatches) {
+                        if (drain(hatch, totalCost, false)) {
+                            drain(hatch, totalCost, true);
+                            catalyzingCounter += 1;
+                            stabilityDecrease = 0;
+                            if (catalyzingCounter >= 30) {
+                                catalyzingCostModifier *= 2;
+                                catalyzingCounter = 0;
                             }
+                            didDrain = true;
+                            break;
                         }
-                        if (rendererTileEntity == null) createRenderBlock();
-                        rendererTileEntity.toggleLaser(didDrain);
                     }
+                    if (rendererTileEntity == null) createRenderBlock();
+                    rendererTileEntity.toggleLaser(didDrain);
                     if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
                     else blackHoleStability = 0;
                 } else blackHoleStatus = 3;
@@ -631,14 +629,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         int z = 7 * opposite.offsetZ;
         int y = 11;
 
-        this.getBaseMetaTileEntity()
-            .getWorld()
+        base.getWorld()
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
-        this.getBaseMetaTileEntity()
-            .getWorld()
+        base.getWorld()
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, GregTechAPI.sBlackholeRender);
-        rendererTileEntity = (TileEntityBlackhole) this.getBaseMetaTileEntity()
-            .getWorld()
+        rendererTileEntity = (TileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
         rendererTileEntity.setStability(blackHoleStability / 100F);
