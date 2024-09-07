@@ -6,9 +6,9 @@ import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.GTValues.authorBaps;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
@@ -18,8 +18,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import bartworks.API.BorosilicateGlass;
-import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,8 +30,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.API.BorosilicateGlass;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -92,7 +92,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
                     { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
-        .addElement('A', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement(
+            'A',
+            BorosilicateGlass
+                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'B',
             buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
@@ -253,7 +256,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             true);
     }
 
-
     @Override
     public IStructureDefinition<MTEMultiSolidifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
@@ -261,6 +263,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     protected int mCasing;
     private int mCasingAmount;
+
     private void onCasingAdded() {
         mCasingAmount++;
     }
@@ -283,7 +286,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         }
         if (glassTier >= VoltageIndex.UMV) return true;
         for (int i = 0; i < this.mEnergyHatches.size(); ++i)
-        if (this.mEnergyHatches.get(i).mTier > glassTier) return false;
+            if (this.mEnergyHatches.get(i).mTier > glassTier) return false;
 
         return mCasingAmount >= (100 + mWidth * 23);
     }
