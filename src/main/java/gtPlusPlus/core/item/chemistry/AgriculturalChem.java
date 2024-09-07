@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -12,7 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +21,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import forestry.core.items.ItemForestryBonemeal;
+import forestry.core.items.ItemRegistryCore;
+import forestry.plugins.PluginCore;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -37,7 +39,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
@@ -543,33 +544,19 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
 
         // Dehydrate Organise Fert to Normal Fert.
+        if (Mods.Forestry.isModLoaded()) {
+            ItemRegistryCore aItemRegInstance = PluginCore.items;
+            if (aItemRegInstance != null) {
+                ItemForestryBonemeal fertilizerCompound = aItemRegInstance.fertilizerCompound;
+                aFertForestry = ItemUtils.getSimpleStack(fertilizerCompound);
 
-        /*
-         * Forestry Support
-         */
-        if (Forestry.isModLoaded()) {
-            Field aItemField = ReflectionUtils
-                .getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
-            try {
-                Object aItemRegInstance = aItemField != null ? aItemField.get(aItemField) : null;
-                if (aItemRegInstance != null) {
-                    Field aFertField = ReflectionUtils.getField(aItemRegInstance.getClass(), "fertilizerCompound");
-                    Object aItemInstance = aFertField.get(aItemRegInstance);
-                    if (aItemInstance instanceof Item aForestryFert) {
-                        aFertForestry = ItemUtils.getSimpleStack((Item) aItemInstance);
-
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(
-                                GTUtility.getIntegratedCircuit(11),
-                                ItemUtils.getSimpleStack(aDustOrganicFert, 4))
-                            .itemOutputs(ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod)
-                            .outputChances(100_00, 20_00, 20_00)
-                            .eut(240)
-                            .duration(20 * SECONDS)
-                            .addTo(chemicalDehydratorRecipes);
-                    }
-                }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+                    .itemOutputs(ItemUtils.getSimpleStack(fertilizerCompound, 3), aManureByprod, aManureByprod)
+                    .outputChances(100_00, 20_00, 20_00)
+                    .eut(240)
+                    .duration(20 * SECONDS)
+                    .addTo(chemicalDehydratorRecipes);
 
             }
         }
