@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -262,6 +263,38 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("currentRadius", currentRadius);
+        aNBT.setInteger("xDrill", xDrill);
+        aNBT.setInteger("yDrill", yDrill);
+        aNBT.setInteger("zDrill", zDrill);
+        aNBT.setInteger("xStart", xStart);
+        aNBT.setInteger("yStart", yStart);
+        aNBT.setInteger("zStart", zStart);
+        aNBT.setBoolean("isStartInitialized", isStartInitialized);
+        aNBT.setBoolean("hasFinished", hasFinished);
+        aNBT.setBoolean("isObserving", isObserving);
+        aNBT.setBoolean("isWaiting", isWaiting);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        currentRadius = aNBT.getInteger("currentRadius");
+        xDrill = aNBT.getInteger("xDrill");
+        yDrill = aNBT.getInteger("yDrill");
+        zDrill = aNBT.getInteger("zDrill");
+        xStart = aNBT.getInteger("xStart");
+        yStart = aNBT.getInteger("yStart");
+        zStart = aNBT.getInteger("zStart");
+        isStartInitialized = aNBT.getBoolean("isStartInitialized");
+        hasFinished = aNBT.getBoolean("hasFinished");
+        isObserving = aNBT.getBoolean("isObserving");
+        isWaiting = aNBT.getBoolean("isWaiting");
+    }
+
+    @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
@@ -303,10 +336,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     /*
      * TODO
-     * Redstone compatibility
      * Restart Button
      * Parallels
      * Drones in input
+     * Save states on server restart
      */
     private void startMining(int currentX, int currentZ) {
         if (getBaseMetaTileEntity().getWorld()
