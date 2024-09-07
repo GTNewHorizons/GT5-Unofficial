@@ -344,8 +344,14 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      * 
      */
     private void setStartCoords() {
-        xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
-        zStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+        ForgeDirection facing = getBaseMetaTileEntity().getBackFacing();
+        if (facing == ForgeDirection.NORTH || facing == ForgeDirection.SOUTH) {
+            xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
+            zStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+        } else {
+            xStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
+            zStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+        }
         yStart = 48 + getBaseMetaTileEntity().getYCoord();
         System.out.println("Coords:" + "\nX: " + xStart + "\nY: " + yStart + "\nZ: " + zStart);
     }
