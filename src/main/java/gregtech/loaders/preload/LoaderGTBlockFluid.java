@@ -19,8 +19,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import gregtech.common.blocks.BlockBlackholeRenderer;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -53,6 +51,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockBlackholeRenderer;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
@@ -91,6 +90,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
 import gregtech.common.tileentities.render.TileEntityWormhole;
