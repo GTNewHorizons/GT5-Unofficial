@@ -153,7 +153,6 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         float cz = ((float) z + .5f);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_DEPTH_WRITEMASK);
         GL11.glPushMatrix();
         GL20.glUniform3f(u_LaserColor, tile.getLaserR(), tile.getLaserG(), tile.getLaserB());
 
@@ -200,7 +199,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             init();
             if (!initialized) return;
         }
-        if (((TileEntityBlackhole)tile).getShouldRender()) {
+        if (((TileEntityBlackhole) tile).getLaserRender()) {
             renderLasers(
                 blackhole,
                 x,

@@ -21,8 +21,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -66,12 +64,10 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.recipe.EyeOfHarmonyRecipe;
-import tectech.thing.block.TileEntityEyeOfHarmony;
-import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
@@ -516,8 +512,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         if (aTick % 20 == 0) {
             if (blackHoleStatus == 2) {
-                if (rendererTileEntity != null) rendererTileEntity.setStability(blackHoleStability);
                 if (blackHoleStability >= 0) {
+                    if (rendererTileEntity != null) rendererTileEntity.setStability(blackHoleStability / 100F);
                     float stabilityDecrease = 1F;
                     // If the machine is running, reduce stability loss by 25%
                     if (this.maxProgresstime() != 0) {
@@ -640,8 +636,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
-        rendererTileEntity.setLaserColor(100, 0, 100);
-        rendererTileEntity.setStability(blackHoleStability);
+        rendererTileEntity.setStability(blackHoleStability / 100F);
     }
 
     private void destroyRenderBlock() {
