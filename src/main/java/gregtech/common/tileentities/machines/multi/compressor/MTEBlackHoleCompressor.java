@@ -117,7 +117,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 4))
         .addElement(
             'B',
-            buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(Maintenance, Energy, InputBus, OutputBus, InputHatch)
+            buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(Energy, InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(12))
                 .dot(2)
                 .buildAndChain(
@@ -361,7 +361,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addOutputBus("Any Radiation Absorbent Casing", 1)
             .addInputHatch("Any Radiation Absorbent Casing", 1)
             .addEnergyHatch("Any Radiation Absorbent Casing", 1)
-            .addMaintenanceHatch("Any Radiation Absorbent Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -649,5 +648,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         this.getBaseMetaTileEntity()
             .getWorld()
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }
