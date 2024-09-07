@@ -362,13 +362,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
     }
 
-    /*
-     * TODO
-     * Restart Button
-     * Parallels
-     * Drones in input
-     * Save states on server restart
-     */
     private void startMining(int currentX, int currentZ) {
         while (getBaseMetaTileEntity().getWorld()
             .isAirBlock(currentX, this.yStart, currentZ)) {
@@ -420,7 +413,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             zStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
         }
         yStart = 48 + getBaseMetaTileEntity().getYCoord();
-        System.out.println("Coords:" + "\nX: " + xStart + "\nY: " + yStart + "\nZ: " + zStart);
     }
 
     private void setReady() {
@@ -445,7 +437,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private void findBestRadius() {
         currentRadius = MAX_RADIUS;
         int delta = 0;
-        System.out.println("zStart = " + zStart);
         for (int zCoord = zStart - currentRadius; delta < MAX_RADIUS - 1; zCoord++) {
             if (!getBaseMetaTileEntity().getWorld()
                 .isAirBlock(xStart, yStart, zCoord)) {
@@ -454,7 +445,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             delta++;
         }
         currentRadius -= delta;
-        System.out.println("New Radius: " + currentRadius);
     }
 
     protected void setElectricityStats() {
