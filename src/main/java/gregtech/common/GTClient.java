@@ -91,6 +91,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
@@ -631,6 +632,7 @@ public class GTClient extends GTProxy implements Runnable {
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();
+        new BlackholeRenderer();
 
         metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
