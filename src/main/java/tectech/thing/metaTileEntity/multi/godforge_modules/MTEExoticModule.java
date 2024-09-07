@@ -120,10 +120,9 @@ public class MTEExoticModule extends MTEBaseModule {
                         randomizedFluidInput = new FluidStack[] { MaterialsUEVplus.Time.getMolten(timeAmount * 1000L),
                             MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
                         inputPlasmas = new ArrayList<>(
-                            Arrays.asList(
-                                convertItemToPlasma(randomizedItemInput, (spaceAmount - timeAmount) * actualParallel)));
-                        inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount * actualParallel));
-                        inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount * actualParallel));
+                            Arrays.asList(convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount)));
+                        inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount));
+                        inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount));
                         outputFluid = MaterialsUEVplus.MagMatter.getMolten(144 * actualParallel);
                     } else {
                         numberOfFluids = GodforgeMath.getRandomIntInRange(0, NUMBER_OF_INPUTS);
@@ -139,13 +138,12 @@ public class MTEExoticModule extends MTEBaseModule {
 
                         if (numberOfItems != 0) {
                             for (ItemStack itemStack : randomizedItemInput) {
-                                itemStack.stackSize = GodforgeMath.getRandomIntInRange(1, 64);
+                                itemStack.stackSize = 9 * GodforgeMath.getRandomIntInRange(1, 7);
                             }
                         }
 
-                        inputPlasmas = new ArrayList<>(
-                            Arrays.asList(convertItemToPlasma(randomizedItemInput, actualParallel)));
-                        inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, actualParallel)));
+                        inputPlasmas = new ArrayList<>(Arrays.asList(convertItemToPlasma(randomizedItemInput, 1)));
+                        inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, 1)));
                     }
                     plasmaRecipe = new GTRecipe(
                         false,
@@ -155,7 +153,7 @@ public class MTEExoticModule extends MTEBaseModule {
                         null,
                         inputPlasmas.toArray(new FluidStack[0]),
                         new FluidStack[] { outputFluid },
-                        10 * SECONDS * (int) actualParallel,
+                        10 * SECONDS,
                         (int) TierEU.RECIPE_MAX,
                         0);
 
@@ -180,30 +178,14 @@ public class MTEExoticModule extends MTEBaseModule {
                         for (FluidStack fluidStack : randomizedFluidInput) {
                             dumpFluid(
                                 mOutputHatches,
-                                new FluidStack(
-                                    fluidStack.getFluid(),
-                                    (int) (fluidStack.amount / 1000 * actualParallel)),
+                                new FluidStack(fluidStack.getFluid(), fluidStack.amount / 1000),
                                 false);
                         }
                     }
 
                     if (numberOfItems != 0) {
-                        long multiplier = actualParallel;
-                        if (magmatterMode) {
-                            multiplier = 1;
-                        }
                         for (ItemStack itemStack : randomizedItemInput) {
-                            int stacksize = (int) (itemStack.stackSize * multiplier);
-                            ItemStack tmpItem = itemStack.copy();
-                            // split itemStacks > 64
-                            while (stacksize >= 64) {
-                                tmpItem.stackSize = 64;
-                                addOutput(tmpItem);
-                                stacksize -= 64;
-                            }
-                            tmpItem.stackSize = stacksize;
-                            addOutput(tmpItem);
-
+                            addOutput(itemStack);
                         }
                     }
 
