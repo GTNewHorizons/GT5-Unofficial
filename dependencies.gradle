@@ -40,7 +40,7 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.0:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.5.5:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.2:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.1.5-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.1.4-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.1:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-452-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.35-gtnh:dev")
@@ -99,6 +99,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.6.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
+    compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.2.0:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
