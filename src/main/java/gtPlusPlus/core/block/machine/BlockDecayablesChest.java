@@ -140,7 +140,7 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
 
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityDecayablesChest) {
-            TileEntityGuiFactory.open(player, x, y, z);
+            TileEntityGuiFactory.INSTANCE.open(player, x, y, z);
             return true;
         }
         return false;
