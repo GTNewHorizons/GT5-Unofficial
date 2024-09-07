@@ -533,7 +533,7 @@ public class GTPreLoad {
         // ore_drop_behavior
         try {
             GTLog.out.println("Trying to set it to: " + ConfigOreDropBehavior.setting);
-            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(ConfigOreDropBehavior.setting);;
+            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(ConfigOreDropBehavior.setting);
         } catch (IllegalArgumentException e) {
             GTLog.err.println(e);
             GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.FortuneItem;
