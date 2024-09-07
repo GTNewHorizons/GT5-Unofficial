@@ -221,13 +221,14 @@ public class Godforge implements Runnable {
                     MaterialsElements.STANDALONE.DRAGON_METAL.getDust(1),
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), Materials.CosmicNeutronium.getDust(1),
                     Materials.Draconium.getDust(1), Materials.DraconiumAwakened.getDust(1),
-                    Materials.Ichorium.getDust(1) };
+                    Materials.Ichorium.getDust(1), Materials.Bedrockium.getDust(1) };
                 FluidStack[] solid_plasmas_t2_1step = {
                     new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 144),
                     new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 144),
                     new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 144),
                     Materials.CosmicNeutronium.getPlasma(144), Materials.Draconium.getPlasma(144),
-                    Materials.DraconiumAwakened.getPlasma(144), Materials.Ichorium.getPlasma(144) };
+                    Materials.DraconiumAwakened.getPlasma(144), Materials.Ichorium.getPlasma(144),
+                    Materials.Bedrockium.getPlasma(144), };
 
                 for (int i = 0; i < solids_t2_1step.length; i++) {
                     boolean multistep = false;
@@ -244,11 +245,13 @@ public class Godforge implements Runnable {
 
                 // Multi-step
                 ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
-                    Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1), };
+                    Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1),
+                    Materials.Infinity.getDust(1), MaterialsUEVplus.SixPhasedCopper.getDust(1), };
                 FluidStack[] solid_plasmas_t2_xstep = {
                     new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
                     Materials.Tritanium.getPlasma(144), Materials.Flerovium.getPlasma(144),
-                    Materials.Neutronium.getPlasma(144), };
+                    Materials.Neutronium.getPlasma(144), Materials.Infinity.getPlasma(144),
+                    MaterialsUEVplus.SixPhasedCopper.getPlasma(144) };
 
                 for (int i = 0; i < solids_t2_xstep.length; i++) {
                     boolean multistep = true;
