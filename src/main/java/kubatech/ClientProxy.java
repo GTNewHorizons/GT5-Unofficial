@@ -30,7 +30,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import kubatech.api.utils.ModUtils;
-import kubatech.nei.IMCForNEI;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
@@ -42,7 +41,6 @@ public class ClientProxy extends CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        IMCForNEI.IMCSender();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
