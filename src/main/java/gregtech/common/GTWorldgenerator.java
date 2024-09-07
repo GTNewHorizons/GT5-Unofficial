@@ -71,7 +71,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         mEndAsteroidProbability = ConfigEndAsteroids.EndAsteroidProbability;
         GameRegistry.registerWorldGenerator(this, 1073741823);
         if (debugWorldGen) {
-            GTLog.out.println("GT_Worldgenerator created");
+            GTLog.out.println("GTWorldgenerator created");
         }
     }
 

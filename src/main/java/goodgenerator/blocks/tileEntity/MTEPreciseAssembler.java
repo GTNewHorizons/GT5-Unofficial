@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static bartworks.util.BWTooltipReference.TT;
 import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
@@ -340,6 +341,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("But gives more parallel with more advanced one.")
             .addInfo("It is 100% faster in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
+            .addInfo("Supports " + TT + " energy hatches")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)

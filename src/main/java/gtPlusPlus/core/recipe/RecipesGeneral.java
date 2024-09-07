@@ -403,15 +403,15 @@ public class RecipesGeneral {
             GregtechItemList.Hatch_Input_Cryotheum.get(1L));
 
         RecipeUtils.addShapedGregtechRecipe(
-            CI.component_Plate[6],
+            MaterialsAlloy.MARAGING250.getPlate(1),
             MaterialsAlloy.MARAGING300.getGear(1),
-            CI.component_Plate[6],
+            MaterialsAlloy.MARAGING250.getPlate(1),
             CI.getTieredCircuitOreDictName(5),
             GregtechItemList.Casing_Adv_BlastFurnace.get(1),
             CI.getTieredCircuitOreDictName(5),
-            CI.component_Plate[6],
+            MaterialsAlloy.MARAGING250.getPlate(1),
             ItemList.Hatch_Input_IV.get(1),
-            CI.component_Plate[6],
+            MaterialsAlloy.MARAGING250.getPlate(1),
             GregtechItemList.Hatch_Input_Pyrotheum.get(1L));
 
         RecipeUtils.addShapedGregtechRecipe(

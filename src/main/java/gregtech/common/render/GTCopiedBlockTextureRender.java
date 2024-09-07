@@ -15,7 +15,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     private final byte mSide, mMeta;
 
     protected GTCopiedBlockTextureRender(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_CopiedBlockTexture");
+        if (aRGBa.length != 4)
+            throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTCopiedBlockTextureRender");
         mBlock = aBlock;
         mSide = (byte) ordinalSide;
         mMeta = (byte) aMeta;

@@ -7,6 +7,7 @@ import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -17,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -37,6 +39,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -53,6 +56,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.plateQuadruple.add(this);
         OrePrefixes.plateQuintuple.add(this);
         OrePrefixes.plateDense.add(this);
+        OrePrefixes.plateSuperdense.add(this);
         OrePrefixes.plateAlloy.add(this);
         OrePrefixes.itemCasing.add(this);
     }
@@ -82,6 +86,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case plateQuadruple -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
             case plateQuintuple -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
             case plateDense -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case plateSuperdense -> registerPlateSuperdense(aMaterial, aStack, aNoSmashing, aMaterialMass);
             case itemCasing -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
             case plateAlloy -> registerPlateAlloy(aOreDictName, aStack);
             default -> {}
@@ -426,6 +431,25 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .addTo(benderRecipes);
+        }
+    }
+
+    final CompressionTierKey COMPRESSION_TIER = CompressionTierKey.INSTANCE;
+
+    private void registerPlateSuperdense(final Materials aMaterial, final ItemStack aStack, final boolean aNoSmashing,
+        final long aMaterialMass) {
+        GTModHandler.removeRecipeByOutputDelayed(aStack);
+
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UIV
+                || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
+                .itemOutputs(GTUtility.copyAmount(1, aStack))
+                .duration(Math.max(aMaterialMass * 64L, 1L))
+                .eut(calculateRecipeEU(aMaterial, 96))
+                .metadata(COMPRESSION_TIER, compression_tier)
+                .addTo(compressorRecipes);
         }
     }
 

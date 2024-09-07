@@ -37,6 +37,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -44,6 +45,7 @@ import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemBreederCell;
+import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -196,29 +198,28 @@ public class LoaderGTBlockFluid implements Runnable {
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
-            .set(GregTechAPI.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
+            .set(new ItemCoolantCellIC("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
         ItemList.Reactor_Coolant_He_3
-            .set(GregTechAPI.constructCoolantCellItem("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
+            .set(new ItemCoolantCellIC("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
         ItemList.Reactor_Coolant_He_6
-            .set(GregTechAPI.constructCoolantCellItem("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
-        ItemList.Reactor_Coolant_NaK_1
-            .set(GregTechAPI.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
+            .set(new ItemCoolantCellIC("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
+        ItemList.Reactor_Coolant_NaK_1.set(new ItemCoolantCellIC("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
         ItemList.Reactor_Coolant_NaK_3
-            .set(GregTechAPI.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
+            .set(new ItemCoolantCellIC("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
         ItemList.Reactor_Coolant_NaK_6
-            .set(GregTechAPI.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
+            .set(new ItemCoolantCellIC("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
 
         ItemList.Reactor_Coolant_Sp_1
-            .set(GregTechAPI.constructCoolantCellItem("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180000));
+            .set(new ItemCoolantCellIC("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180000));
 
         ItemList.Reactor_Coolant_Sp_2
-            .set(GregTechAPI.constructCoolantCellItem("360k_Space_Coolantcell", "360k Sp Coolant Cell", 360000));
+            .set(new ItemCoolantCellIC("360k_Space_Coolantcell", "360k Sp Coolant Cell", 360000));
 
         ItemList.Reactor_Coolant_Sp_3
-            .set(GregTechAPI.constructCoolantCellItem("540k_Space_Coolantcell", "540k Sp Coolant Cell", 540000));
+            .set(new ItemCoolantCellIC("540k_Space_Coolantcell", "540k Sp Coolant Cell", 540000));
 
         ItemList.Reactor_Coolant_Sp_6
-            .set(GregTechAPI.constructCoolantCellItem("1080k_Space_Coolantcell", "1080k Sp Coolant Cell", 1080000));
+            .set(new ItemCoolantCellIC("1080k_Space_Coolantcell", "1080k Sp Coolant Cell", 1080000));
 
         ItemList.GlowstoneCell.set(
             new ItemBreederCell(
@@ -231,9 +232,8 @@ public class LoaderGTBlockFluid implements Runnable {
                 () -> ItemList.SunnariumCell.get(1)));
         ItemList.SunnariumCell.set(new ItemDepletedCell("sunnariumCell", "Sunnarium Fuel Rod", 1));
 
-        ItemList.neutroniumHeatCapacitor.set(
-            GregTechAPI
-                .constructCoolantCellItem("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1000000000));
+        ItemList.neutroniumHeatCapacitor
+            .set(new ItemCoolantCellIC("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1000000000));
 
         ItemList.Depleted_Thorium_1.set(new ItemDepletedCell("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
         ItemList.Depleted_Thorium_2
@@ -1987,14 +1987,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Spray_Empty.get(1L)));
 
         if (!GTValues.D1) {
-            try {
-                Class.forName("codechicken.nei.api.API");
+            if (Mods.NotEnoughItems.isModLoaded()) {
                 GTLog.out.println("GTMod: Hiding certain Items from NEI.");
                 API.hideItem(ItemList.Display_Fluid.getWildcard(1L));
-            } catch (Throwable e) {
-                if (GTValues.D1) {
-                    e.printStackTrace(GTLog.err);
-                }
             }
         }
 

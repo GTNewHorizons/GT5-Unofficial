@@ -32,9 +32,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import com.kuba6000.mobsinfo.api.utils.ItemID;
-
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.enums.ItemList;
 import kubatech.loaders.item.items.ItemTeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
@@ -84,8 +83,8 @@ public class TCLoader {
             ItemList.MilkTea.get(1), ItemList.OolongTea.get(1), ItemList.PeppermintTea.get(1), ItemList.PuerhTea.get(1),
             ItemList.WhiteTea.get(1), ItemList.YellowTea.get(1) };
 
-        final HashSet<ItemID> componentsHashed = Arrays.stream(components)
-            .map(stack -> ItemID.createNoCopy(stack, true, false, true))
+        final HashSet<ItemId> componentsHashed = Arrays.stream(components)
+            .map(ItemId::createWithoutNBT)
             .collect(Collectors.toCollection(HashSet::new));
 
         // noinspection unchecked
@@ -109,8 +108,8 @@ public class TCLoader {
                         if (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research))
                             return false;
                         if (componentsHashed.size() > input.size()) return false;
-                        HashSet<ItemID> hashedInputs = input.stream()
-                            .map(stack -> ItemID.createNoCopy(stack, true, false, true))
+                        HashSet<ItemId> hashedInputs = input.stream()
+                            .map(ItemId::createWithoutNBT)
                             .collect(Collectors.toCollection(HashSet::new));
                         return hashedInputs.containsAll(componentsHashed);
                     }

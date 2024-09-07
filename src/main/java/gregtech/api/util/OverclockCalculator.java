@@ -436,6 +436,7 @@ public class OverclockCalculator {
             while (machinePower > currentConsumption * currentEutIncrease
                 && requiredUnderOneTickMultiplier > currentUnderOneTickMultiplier
                 && (!limitOverclocks || overclockCount < maxOverclocks)) {
+                currentUnderOneTickMultiplier *= currentDurationDecrease;
                 currentConsumption *= currentEutIncrease;
                 durationInDouble /= currentDurationDecrease;
                 overclockCount++;

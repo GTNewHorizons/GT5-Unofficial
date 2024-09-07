@@ -271,8 +271,8 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Macerator")
-            .addInfo("33.3% faster than using a single block Steam Macerator.")
-            .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator on Tier 1.")
+            .addInfo("33.3% faster than the single block Steam Macerator")
+            .addInfo("Uses only 66.6% of the steam/s that the single block Steam Macerator uses")
             .addInfo("Bronze tier runs recipes up to LV tier")
             .addInfo("Steel tier runs recipes up to MV tier")
             .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")

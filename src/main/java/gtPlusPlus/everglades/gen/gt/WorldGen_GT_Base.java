@@ -296,9 +296,9 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                         + (WorldGen_GT_Ore_Layer.sWeight > 0));
                 Logger.INFO(
                     "[World Generation Debug] WorldGen_GT_Ore_Layer.sList.size() > 0? "
-                        + (WorldGen_GT_Ore_Layer.sList.size() > 0));
+                        + (!WorldGen_GT_Ore_Layer.sList.isEmpty()));
                 if ((oreveinPercentageRoll < oreveinPercentage) && (WorldGen_GT_Ore_Layer.sWeight > 0)
-                    && (WorldGen_GT_Ore_Layer.sList.size() > 0)) {
+                    && (!WorldGen_GT_Ore_Layer.sList.isEmpty())) {
                     int placementAttempts = 0;
                     boolean oreveinFound = false;
                     int i;

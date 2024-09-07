@@ -4741,7 +4741,8 @@ public class GTUtility {
             return new AutoValue_GTUtility_ItemId(
                 Item.getItemById(tag.getShort("item")),
                 tag.getShort("meta"),
-                tag.hasKey("tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("tag") : null);
+                tag.hasKey("tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("tag") : null,
+                tag.hasKey("stackSize", Constants.NBT.TAG_INT) ? tag.getInteger("stackSize") : null);
         }
 
         /**
@@ -4753,7 +4754,23 @@ public class GTUtility {
                 nbt = (NBTTagCompound) nbt.copy();
             }
 
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), nbt);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), nbt, null);
+        }
+
+        /**
+         * This method copies NBT, as it is mutable.
+         */
+        public static ItemId createWithStackSize(ItemStack itemStack) {
+            NBTTagCompound nbt = itemStack.getTagCompound();
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+
+            return new AutoValue_GTUtility_ItemId(
+                itemStack.getItem(),
+                Items.feather.getDamage(itemStack),
+                nbt,
+                itemStack.stackSize);
         }
 
         /**
@@ -4763,21 +4780,32 @@ public class GTUtility {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
-            return new AutoValue_GTUtility_ItemId(item, metaData, nbt);
+            return new AutoValue_GTUtility_ItemId(item, metaData, nbt, null);
+        }
+
+        /**
+         * This method copies NBT, as it is mutable.
+         */
+        public static ItemId create(Item item, int metaData, @Nullable NBTTagCompound nbt,
+            @Nullable Integer stackSize) {
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_ItemId(item, metaData, nbt, stackSize);
         }
 
         /**
          * This method stores metadata as wildcard and NBT as null.
          */
         public static ItemId createAsWildcard(ItemStack itemStack) {
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
         }
 
         /**
          * This method stores NBT as null.
          */
         public static ItemId createWithoutNBT(ItemStack itemStack) {
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), null, null);
         }
 
         /**
@@ -4787,14 +4815,26 @@ public class GTUtility {
             return new AutoValue_GTUtility_ItemId(
                 itemStack.getItem(),
                 Items.feather.getDamage(itemStack),
-                itemStack.getTagCompound());
+                itemStack.getTagCompound(),
+                null);
+        }
+
+        /**
+         * This method does not copy NBT in order to save time. Make sure not to mutate it!
+         */
+        public static ItemId createNoCopyWithStackSize(ItemStack itemStack) {
+            return new AutoValue_GTUtility_ItemId(
+                itemStack.getItem(),
+                Items.feather.getDamage(itemStack),
+                itemStack.getTagCompound(),
+                itemStack.stackSize);
         }
 
         /**
          * This method does not copy NBT in order to save time. Make sure not to mutate it!
          */
         public static ItemId createNoCopy(Item item, int metaData, @Nullable NBTTagCompound nbt) {
-            return new AutoValue_GTUtility_ItemId(item, metaData, nbt);
+            return new AutoValue_GTUtility_ItemId(item, metaData, nbt, null);
         }
 
         protected abstract Item item();
@@ -4804,11 +4844,15 @@ public class GTUtility {
         @Nullable
         protected abstract NBTTagCompound nbt();
 
+        @Nullable
+        protected abstract Integer stackSize();
+
         public NBTTagCompound writeToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setShort("item", (short) Item.getIdFromItem(item()));
             tag.setShort("meta", (short) metaData());
             if (nbt() != null) tag.setTag("tag", nbt());
+            if (stackSize() != null) tag.setInteger("stackSize", stackSize());
             return tag;
         }
 

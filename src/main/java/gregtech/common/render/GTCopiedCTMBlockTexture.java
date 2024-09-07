@@ -17,7 +17,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
 
     GTCopiedCTMBlockTexture(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
         if (aRGBa.length != 4)
-            throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_CopiedCTMBlockTexture");
+            throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTCopiedCTMBlockTexture");
         mBlock = aBlock;
         mSide = (byte) ordinalSide;
         mMeta = (byte) aMeta;

@@ -46,7 +46,6 @@ public class GT5OreSmallHelper {
     }
 
     public static void init() {
-        checkExtraSupport();
         ItemStack stack;
         Materials material;
         short meta;
@@ -141,19 +140,6 @@ public class GT5OreSmallHelper {
             }
         });
         // --- End of handling for dimToOreWrapper ---
-    }
-
-    private static void checkExtraSupport() {
-        Class<?> clazzGTOreSmall = null;
-        try {
-            clazzGTOreSmall = Class.forName("gregtech.common" + ".GT_Worldgen_GT_Ore_SmallPieces");
-        } catch (ClassNotFoundException ignored) {}
-        if (clazzGTOreSmall != null) {
-            try {
-                clazzGTOreSmall.getField("mRestrictBiome");
-                restrictBiomeSupport = true;
-            } catch (Exception ignored) {}
-        }
     }
 
     public static Materials[] getDroppedDusts() {
