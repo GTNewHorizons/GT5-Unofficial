@@ -29,11 +29,17 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -61,6 +67,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private boolean hasFinished = true;
     private boolean isObserving = true;
     private boolean isWaiting = false;
+    private boolean isResetting = false;
     Collection<ItemStack> res = new HashSet<>();
 
     @Override
@@ -294,9 +301,28 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         isWaiting = aNBT.getBoolean("isWaiting");
     }
 
+    private void reset() {
+        this.isResetting = false;
+        this.isStartInitialized = false;
+        this.hasFinished = true;
+        this.isObserving = true;
+        this.isWaiting = false;
+    }
+
+    private void startReset() {
+        this.isResetting = true;
+        stopMachine(ShutDownReasonRegistry.NONE);
+        enableWorking();
+    }
+
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
+        if (isResetting) {
+            this.reset();
+            return SimpleCheckRecipeResult.ofSuccess("meteor_reset");
+        }
+
         setElectricityStats();
         if (!isEnergyEnough()) {
             stopMachine(ShutDownReasonRegistry.NONE);
@@ -466,5 +492,20 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         }
 
         res.addAll(newItems);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> this.startReset())
+                .setPlayClickSound(true)
+                .setBackground(
+                    () -> {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC };
+                    })
+                .setPos(new Pos2d(174, 112))
+                .setSize(16, 16));
     }
 }
