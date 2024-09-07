@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.bartworks.BWUtils;
 
 public class MaterialStack {
@@ -69,11 +68,7 @@ public class MaterialStack {
 
     public Material getStackMaterial() {
         if (this.stackMaterial == null) {
-            Logger.MATERIALS("Tried getStackMaterial, got an invalid material.");
-            Logger.MATERIALS(ReflectionUtils.getMethodName(0));
-            Logger.MATERIALS(ReflectionUtils.getMethodName(1));
-            Logger.MATERIALS(ReflectionUtils.getMethodName(2));
-            Logger.MATERIALS(ReflectionUtils.getMethodName(3));
+            Logger.modLogger.error("Tried getStackMaterial, got an invalid material.", new Exception());
             return null;
         }
         return this.stackMaterial;

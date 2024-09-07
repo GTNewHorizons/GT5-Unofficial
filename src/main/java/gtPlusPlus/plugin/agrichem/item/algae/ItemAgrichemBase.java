@@ -2,12 +2,9 @@ package gtPlusPlus.plugin.agrichem.item.algae;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +20,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.OreDictUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ItemAgrichemBase extends Item {
 
@@ -148,24 +144,6 @@ public class ItemAgrichemBase extends Item {
             String aPath = GTPlusPlus.ID + ":" + "bioscience/MetaItem1/" + i;
             this.base[i] = u.registerIcon(aPath);
         }
-    }
-
-    private boolean isTextureValid(String aPath) {
-        if (aPath == null) {
-            return false;
-        } else if (aPath.indexOf(92) == -1) {
-            Constructor aTextureAtlasSprite = ReflectionUtils.getConstructor(TextureAtlasSprite.class, String.class);
-            if (aTextureAtlasSprite != null) {
-                try {
-                    TextureAtlasSprite aTestAtlas = (TextureAtlasSprite) aTextureAtlasSprite.newInstance(aPath);
-                    if (aTestAtlas != null) {
-                        return true;
-                    }
-                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {}
-            }
-        }
-        return false;
     }
 
     @Override

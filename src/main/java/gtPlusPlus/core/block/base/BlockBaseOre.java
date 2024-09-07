@@ -1,6 +1,5 @@
 package gtPlusPlus.core.block.base;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,7 +20,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
@@ -30,7 +28,6 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPPRenderedTexture;
 
@@ -100,13 +97,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         return Blocks.stone.getIcon(0, 0);
     }
 
-    /**
-     * GT Texture Handler
-     */
-
-    // .08 compat
-    public static IIconContainer[] hiddenTextureArray;
-
     @Override
     public ITexture[] getTexture(ForgeDirection side) {
         return getTexture(null, side);
@@ -120,21 +110,8 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 this.blockMaterial.getRGBA());
             return new ITexture[] { new GTPPCopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
         }
-
-        if (hiddenTextureArray == null) {
-            try {
-                Field o = ReflectionUtils.getField(Textures.BlockIcons.class, "STONES");
-                if (o != null) {
-                    hiddenTextureArray = (IIconContainer[]) o.get(Textures.BlockIcons.class);
-                }
-                if (hiddenTextureArray == null) {
-                    hiddenTextureArray = new IIconContainer[6];
-                }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                hiddenTextureArray = new IIconContainer[6];
-            }
-        }
-        return new ITexture[] { new GTPPRenderedTexture(hiddenTextureArray[0], new short[] { 240, 240, 240, 0 }) };
+        return new ITexture[] {
+            new GTPPRenderedTexture(Textures.BlockIcons.STONES[0], new short[] { 240, 240, 240, 0 }) };
     }
 
     @Override
