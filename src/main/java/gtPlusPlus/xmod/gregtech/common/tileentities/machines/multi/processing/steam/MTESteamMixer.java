@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -112,10 +113,6 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     private int tierMachine = 1;
 
-    private int tierSimpleBlock = 0;
-
-    Map<Block, Integer> simpleBlockTiers = new HashMap<>();
-
     public int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
@@ -140,25 +137,6 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         return 0;
     }
 
-    private static List<Pair<Block, Integer>> getAllSimpleBlockTiers(Map<Block, Integer> simpleBlockTiers) {
-        return simpleBlockTiers.entrySet()
-            .stream()
-            .map(e -> Pair.of(e.getKey(), e.getValue()))
-            .collect(Collectors.toList());
-    }
-
-    private static ITierConverter<Integer> simpleBlockTierConverter(Map<Block, Integer> simpleBlockTiers) {
-        return (block, meta) -> block == null ? 0 : simpleBlockTiers.getOrDefault(block, 1);
-    }
-
-    private void setSimpleBlockTier(int tier) {
-        tierSimpleBlock = tier;
-    }
-
-    private int getSimpleBlockTier() {
-        return tierSimpleBlock;
-    }
-
     protected void updateHatchTexture() {
         for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
@@ -168,7 +146,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     }
 
     private int getCasingTextureID() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2 || tierSimpleBlock == 2)
+        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
             return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
@@ -206,11 +184,6 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     @Override
     public IStructureDefinition<MTESteamMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            simpleBlockTiers.put(Blocks.iron_block, 1);
-
-            if (EnderIO.isModLoaded()) {
-                simpleBlockTiers.put(GameRegistry.findBlock(EnderIO.ID, "blockIngotStorage"), 6);
-            } else simpleBlockTiers.put(Blocks.iron_block, 2);
 
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMixer>builder()
 
@@ -231,14 +204,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement(
-                    'D',
-                    ofBlocksTiered(
-                        simpleBlockTierConverter(simpleBlockTiers),
-                        getAllSimpleBlockTiers(simpleBlockTiers),
-                        -1,
-                        MTESteamMixer::setSimpleBlockTier,
-                        MTESteamMixer::getSimpleBlockTier))
+                .addElement('D', ofBlock(Blocks.iron_block, 0))
                 .addElement(
                     'A',
                     ofChain(
@@ -292,13 +258,11 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;
-        tierSimpleBlock = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
-            && tierSimpleBlock == 1
             && tierMachineCasing == 1
             && tCountCasing > 90
             && !mSteamInputFluids.isEmpty()
@@ -311,7 +275,6 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             return true;
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
-            && tierSimpleBlock == 2
             && tierMachineCasing == 2
             && tCountCasing > 90
             && !mSteamInputFluids.isEmpty()
@@ -328,7 +291,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @Override
     public int getMaxParallelRecipes() {
-        return tierMachine == 1 ? 8 : 16;
+        return 8;
     }
 
     @Override
@@ -354,14 +317,14 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.33)
-                    .setSpeedBoost(1.5);
+                    .setSpeedBoost(1.5 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getTierRecipes() {
-        return tierMachine == 1 ? 1 : 2;
+        return 1;
     }
 
     @Override
