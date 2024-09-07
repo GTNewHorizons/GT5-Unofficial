@@ -317,7 +317,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * 3/2) * GTUtility.getTier(this.getMaxInputVoltage());
+        return 4 + (mWidth * 3 / 2) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
