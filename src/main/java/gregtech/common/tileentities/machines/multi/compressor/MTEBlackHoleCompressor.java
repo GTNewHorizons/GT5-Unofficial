@@ -201,7 +201,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             shouldRender = !shouldRender;
-            if (shouldRender) {
+            if (!shouldRender) {
                 PlayerUtils.messagePlayer(aPlayer, "Rendering off");
                 rendererTileEntity = null;
                 destroyRenderBlock();
