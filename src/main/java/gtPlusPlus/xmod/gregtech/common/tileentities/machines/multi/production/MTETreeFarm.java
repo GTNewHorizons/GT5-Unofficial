@@ -28,6 +28,7 @@ import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
+import static java.lang.Long.max;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.tileentities.machines.MTEHatchChargingBus;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
@@ -529,6 +531,40 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
         // No saplings were found.
         return null;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        for (MTEHatchInputBus inputBus : this.mInputBusses){
+            if (inputBus instanceof MTEHatchChargingBus chargerBus){
+//                long tgsCurrentEU = getStoredEnergyInAllEnergyHatches();
+//                long busMaxEU = chargerBus.maxEUStore();
+//
+//                if (tgsCurrentEU > 0 && inputBus.getEUVar() < busMaxEU) {
+//                    long euToTransfer = max(busMaxEU - tgsCurrentEU, chargerBus.maxEUInput());
+//                    drainEnergyInput(tgsCurrentEU - euToTransfer);
+//                    chargerBus.setEUVar(chargerBus.getEUVar() + euToTransfer);
+//                }
+                long tgsCurrentEU = getStoredEnergyInAllEnergyHatches();
+                long busMaxEU = chargerBus.maxEUStore();
+
+                if (mProgresstime != 0) {
+                    if (getAverageInputVoltage() != 0 && getActualEnergyUsage() != 0) {
+                        long euToTransfer = getMaxInputEu() - getActualEnergyUsage();
+                        long euUsage = tgsCurrentEU - euToTransfer;
+
+                        if (tgsCurrentEU > getAverageInputVoltage() * 2) {
+                            if (chargerBus.getEUVar() <= busMaxEU) {
+                                drainEnergyInput(euUsage);
+                                chargerBus.setEUVar(chargerBus.getEUVar() + euToTransfer);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
