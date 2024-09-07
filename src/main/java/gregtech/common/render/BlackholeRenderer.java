@@ -200,13 +200,15 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             init();
             if (!initialized) return;
         }
-        renderLasers(
-            blackhole,
-            x,
-            y,
-            z,
-            tile.getWorldObj()
-                .getWorldTime() + timeSinceLastTick);
+        if (((TileEntityBlackhole)tile).getShouldRender()) {
+            renderLasers(
+                blackhole,
+                x,
+                y,
+                z,
+                tile.getWorldObj()
+                    .getWorldTime() + timeSinceLastTick);
+        }
 
         renderBlackHole(
             blackhole,

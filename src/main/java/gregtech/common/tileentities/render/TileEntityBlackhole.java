@@ -11,6 +11,7 @@ public class TileEntityBlackhole extends TileEntity {
     // Should run from 0 to 1, >.5 starts showing changes
     private float stability = 1;
     private float laserR = 0.318f, laserG = 0.157f, laserB = 0.533f;
+    private boolean shouldRender = true;
 
     private static final String NBT_TAG = "BLACKHOLE";
 
@@ -18,11 +19,17 @@ public class TileEntityBlackhole extends TileEntity {
     private static final String COLOR_RED_NBT_TAG = NBT_TAG + "COLOR_RED";
     private static final String COLOR_GREEN_NBT_TAG = NBT_TAG + "COLOR_GREEN";
     private static final String COLOR_BLUE_NBT_TAG = NBT_TAG + "COLOR_BLUE";
+    private static final String RENDER_NBT_TAG = NBT_TAG + "SHOULD_RENDER";
 
     public void setLaserColor(float r, float g, float b) {
         laserR = r;
         laserG = g;
         laserB = b;
+        updateToClient();
+    }
+
+    public void toggleLaser(boolean toggle) {
+        shouldRender = toggle;
         updateToClient();
     }
 
@@ -37,6 +44,8 @@ public class TileEntityBlackhole extends TileEntity {
     public float getLaserB() {
         return laserB;
     }
+
+    public boolean getShouldRender() { return shouldRender; }
 
     public void setStability(float stability) {
         // Can probably be simplified, maps stability > .5 as 1, and stability <.5 from 0 to 1
@@ -54,6 +63,7 @@ public class TileEntityBlackhole extends TileEntity {
         compound.setFloat(COLOR_RED_NBT_TAG, laserR);
         compound.setFloat(COLOR_GREEN_NBT_TAG, laserG);
         compound.setFloat(COLOR_BLUE_NBT_TAG, laserB);
+        compound.setBoolean(RENDER_NBT_TAG, shouldRender);
     }
 
     @Override
@@ -62,6 +72,7 @@ public class TileEntityBlackhole extends TileEntity {
         laserR = compound.getFloat(COLOR_RED_NBT_TAG);
         laserG = compound.getFloat(COLOR_GREEN_NBT_TAG);
         laserB = compound.getFloat(COLOR_BLUE_NBT_TAG);
+        shouldRender = compound.getBoolean(RENDER_NBT_TAG);
         super.readFromNBT(compound);
 
     }

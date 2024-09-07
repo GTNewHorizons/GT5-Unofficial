@@ -21,8 +21,11 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -66,6 +69,9 @@ import gregtech.common.items.MetaGeneratedItem01;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.recipe.EyeOfHarmonyRecipe;
+import tectech.thing.block.TileEntityEyeOfHarmony;
+import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
@@ -198,10 +204,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        if (aPlayer.isSneaking()) {
+            shouldRender = !shouldRender;
+            if (shouldRender) {
+                PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+                rendererTileEntity = null;
+                destroyRenderBlock();
+            } else {
+                if (blackHoleStatus != 1) createRenderBlock();
+                PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+            }
+        } else {
+            setMachineMode(nextMachineMode());
+            PlayerUtils.messagePlayer(
+                aPlayer,
+                String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        }
     }
 
     @Override
@@ -388,6 +406,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
         if (aNBT.hasKey("blackHoleStatus")) blackHoleStatus = aNBT.getByte("blackHoleStatus");
         if (aNBT.hasKey("blackHoleStability")) blackHoleStability = aNBT.getFloat("blackHoleStability");
+        if (aNBT.hasKey("shouldRender")) shouldRender = aNBT.getBoolean("shouldRender");
     }
 
     @Override
@@ -397,6 +416,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         aNBT.setInteger("catalyzingCostModifier", catalyzingCostModifier);
         aNBT.setByte("blackHoleStatus", blackHoleStatus);
         aNBT.setFloat("blackHoleStability", blackHoleStability);
+        aNBT.setBoolean("shouldRender", shouldRender);
     }
 
     @Override
@@ -447,12 +467,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
                             inputItem.stackSize -= 1;
                             blackHoleStatus = 2;
+                            createRenderBlock();
                             break;
                         } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
                             inputItem.stackSize -= 1;
                             blackHoleStatus = 1;
                             blackHoleStability = 100;
                             catalyzingCostModifier = 1;
+                            rendererTileEntity = null;
+                            destroyRenderBlock();
                             break;
                         }
                     }
@@ -493,6 +516,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         if (aTick % 20 == 0) {
             if (blackHoleStatus == 2) {
+                if (rendererTileEntity != null) rendererTileEntity.setStability(blackHoleStability);
                 if (blackHoleStability >= 0) {
                     float stabilityDecrease = 1F;
                     // If the machine is running, reduce stability loss by 25%
@@ -503,6 +527,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     // If found enough, drain it and reduce stability loss to 0
                     // Every 30 drains, double the cost
                     FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+                    boolean didDrain = false;
                     for (MTEHatchInput hatch : spacetimeHatches) {
                         if (drain(hatch, totalCost, false)) {
                             drain(hatch, totalCost, true);
@@ -512,9 +537,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                                 catalyzingCostModifier *= 2;
                                 catalyzingCounter = 0;
                             }
+                            didDrain = true;
                             break;
                         }
                     }
+                    if (rendererTileEntity != null) rendererTileEntity.toggleLaser(didDrain);
                     if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
                     else blackHoleStability = 0;
                 } else blackHoleStatus = 3;
@@ -579,5 +606,53 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        destroyRenderBlock();
+        super.onBlockDestroyed();
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
+    }
+
+    private boolean shouldRender = true;
+    private TileEntityBlackhole rendererTileEntity = null;
+
+    private void createRenderBlock() {
+        if (!shouldRender) return;
+        IGregTechTileEntity base = this.getBaseMetaTileEntity();
+        ForgeDirection opposite = getDirection().getOpposite();
+        int x = 7 * opposite.offsetX;
+        int z = 7 * opposite.offsetZ;
+        int y = 11;
+
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, GregTechAPI.sBlackholeRender);
+        rendererTileEntity = (TileEntityBlackhole) this.getBaseMetaTileEntity()
+            .getWorld()
+            .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
+
+        rendererTileEntity.setLaserColor(100, 0, 100);
+        rendererTileEntity.setStability(blackHoleStability);
+    }
+
+    private void destroyRenderBlock() {
+        IGregTechTileEntity base = this.getBaseMetaTileEntity();
+        ForgeDirection opposite = getDirection().getOpposite();
+        int x = 7 * opposite.offsetX;
+        int z = 7 * opposite.offsetZ;
+        int y = 11;
+
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
     }
 }
