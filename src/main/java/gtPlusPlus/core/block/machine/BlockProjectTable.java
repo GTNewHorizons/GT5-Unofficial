@@ -1,7 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import static gregtech.api.enums.Mods.BuildCraftCore;
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import net.minecraft.block.BlockContainer;
@@ -27,7 +25,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.tool.ItemToolWrench;
 
 @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O)
@@ -121,40 +118,17 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
         if (item.getItem() instanceof ItemToolWrench) {
             return true;
         }
-        if (BuildCraftCore.isModLoaded()) {
-            return checkBuildcraftWrench(item);
+        if (Mods.BuildCraftCore.isModLoaded()) {
+            return item.getItem() instanceof buildcraft.api.tools.IToolWrench;
         }
-        if (EnderIO.isModLoaded()) {
-            return checkEnderIOWrench(item);
-        }
-        return false;
-    }
-
-    private static boolean checkEnderIOWrench(final ItemStack item) {
-        if (ReflectionUtils.doesClassExist("crazypants.enderio.api.tool.ITool")) {
-            Class<?> wrenchClass;
-            wrenchClass = ReflectionUtils.getClass("crazypants.enderio.api.tool.ITool");
-            if (wrenchClass.isInstance(item.getItem())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean checkBuildcraftWrench(final ItemStack item) {
-        if (ReflectionUtils.doesClassExist("buildcraft.api.tools.IToolWrench")) {
-            Class<?> wrenchClass;
-            wrenchClass = ReflectionUtils.getClass("buildcraft.api.tools.IToolWrench");
-            if (wrenchClass.isInstance(item.getItem())) {
-                return true;
-            }
+        if (Mods.EnderIO.isModLoaded()) {
+            return item.getItem() instanceof crazypants.enderio.api.tool.ITool;
         }
         return false;
     }
 
     @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
 }

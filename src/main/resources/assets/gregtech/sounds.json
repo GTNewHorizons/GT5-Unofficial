@@ -123,5 +123,23 @@
         "stream": false
       }
     ]
+  },
+  "machines.MultiLatheLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiLatheLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiAutoclaveLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiAutoclaveLoop",
+        "stream": false
+      }
+    ]
   }
 }

@@ -294,11 +294,11 @@ public class MaterialGenerator {
 
             if (!disableOptionalRecipes) {
                 new RecipeGenShapedCrafting(matInfo);
-                new RecipeGenFluids(matInfo);
                 new RecipeGenMaterialProcessing(matInfo);
                 new RecipeGenRecycling(matInfo);
             }
 
+            new RecipeGenFluids(matInfo);
             new RecipeGenMetalRecipe(matInfo);
             new RecipeGenDustGeneration(matInfo, disableOptionalRecipes);
             new RecipeGenPlasma(matInfo);

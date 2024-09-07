@@ -16,6 +16,7 @@ import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -280,7 +281,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
 
         ItemStack dStack;
-        if (DetravScannerMod.isDreamcraftLoaded) {
+        if (Mods.NewHorizonsCoreMod.isModLoaded()) {
             // Materials at tiers
             list.add(getToolWithStats(0, 1, Materials.Polycaprolactam, Materials.Polycaprolactam, null));
             list.add(getToolWithStats(2, 1, Materials.Steel, Materials.Steel, null));
@@ -327,7 +328,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         setCharge(dStack, 409600000L);
         list.add(dStack);
 
-        if (DetravScannerMod.isDreamcraftLoaded) {
+        if (Mods.NewHorizonsCoreMod.isModLoaded()) {
             dStack = getToolWithStats(
                 104,
                 1,

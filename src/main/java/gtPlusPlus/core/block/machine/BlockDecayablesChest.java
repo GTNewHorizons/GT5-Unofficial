@@ -15,7 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.cleanroommc.modularui.factory.TileEntityGuiFactory;
+import com.cleanroommc.modularui.factory.GuiFactories;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -140,7 +140,8 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
 
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityDecayablesChest) {
-            TileEntityGuiFactory.open(player, x, y, z);
+            GuiFactories.tileEntity()
+                .open(player, x, y, z);
             return true;
         }
         return false;

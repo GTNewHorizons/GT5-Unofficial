@@ -3,6 +3,8 @@ package galacticgreg.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
+
 /**
  * Defines a Mod where this Generator shall be active. Note: This will only work (obviously) for Dimensions where
  * either: - Gregtech has a hook in the OreGen or - For mods which are addons to GalactiCraft
@@ -10,38 +12,21 @@ import java.util.List;
  */
 public class ModContainer {
 
-    private String _mModName;
-    private List<ModDimensionDef> _mDimensionLookup;
-    private boolean _mEnabled = false;
-
-    /**
-     * Internal function
-     *
-     * @return The state if the Registry could find the mod or not
-     */
-    public boolean getEnabled() {
-        return _mEnabled;
-    }
-
-    /**
-     * Internal function
-     *
-     * Never set this to true. This is an internal marker which is set by the registry if the mod could be found or not
-     *
-     * @param pEnabled
-     */
-    public void setEnabled(boolean pEnabled) {
-        _mEnabled = pEnabled;
-    }
+    private final List<ModDimensionDef> _mDimensionLookup;
+    private final Mods mod;
 
     /**
      * Define a new Mod where GT OreGen shall be enabled
      *
-     * @param pModName The modID. Make sure to use the proper mod-id, or it won't load correctly
+     * @param mod The Mods enum value.
      */
-    public ModContainer(String pModName) {
-        _mModName = pModName;
+    public ModContainer(Mods mod) {
+        this.mod = mod;
         _mDimensionLookup = new ArrayList<>();
+    }
+
+    public boolean isModLoaded() {
+        return this.mod.isModLoaded();
     }
 
     /**
@@ -50,7 +35,7 @@ public class ModContainer {
      * @return The mods name
      */
     public String getModName() {
-        return _mModName;
+        return mod.ID;
     }
 
     /**
@@ -78,7 +63,7 @@ public class ModContainer {
         }
 
         // Set the parent modName of this dimension. This will finalize it
-        pDimDef.setParentModName(_mModName);
+        pDimDef.setParentModName(mod.ID);
         _mDimensionLookup.add(pDimDef);
         return true;
     }

@@ -163,8 +163,9 @@ public class GTRecipeBuilder {
             .toArray(FluidStack[]::new);
     }
 
-    private static ItemStack[] fix(ItemStack[] inputs) {
-        return GTOreDictUnificator.setStackArray(true, ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new));
+    private static ItemStack[] fix(ItemStack[] inputs, boolean aUnsafe) {
+        return GTOreDictUnificator
+            .setStackArray(true, aUnsafe, ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new));
     }
 
     public static GTRecipeBuilder builder() {
@@ -250,7 +251,19 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fix(inputs);
+        inputsBasic = fix(inputs, false);
+        inputsOreDict = null;
+        alts = null;
+        return this;
+    }
+
+    /**
+     * Non-OreDicted item inputs, allowing stack sizes greater than 64. Assumes input is not unified
+     */
+    public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
+        if (skip) return this;
+        if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
+        inputsBasic = fix(inputs, true);
         inputsOreDict = null;
         alts = null;
         return this;

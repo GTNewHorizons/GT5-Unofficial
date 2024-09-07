@@ -1,7 +1,5 @@
 package tectech;
 
-import static gregtech.api.enums.Mods.COFHCore;
-
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -13,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
+import gregtech.api.enums.Mods;
 import gregtech.api.objects.XSTR;
 import tectech.loader.MainLoader;
 import tectech.loader.TecTechConfig;
@@ -95,7 +94,7 @@ public class TecTech {
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void Load(FMLInitializationEvent event) {
-        hasCOFH = COFHCore.isModLoaded();
+        hasCOFH = Mods.COFHCore.isModLoaded();
 
         MainLoader.load();
         MainLoader.addAfterGregTechPostLoadRunner();

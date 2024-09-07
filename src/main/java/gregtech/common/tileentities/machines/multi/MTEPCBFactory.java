@@ -58,9 +58,9 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import blockrenderer6343.client.world.ClientFakePlayer;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -315,7 +315,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built = 0;
-        if (Loader.isModLoaded("blockrenderer6343") && env.getActor() instanceof ClientFakePlayer) {
+        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
             if (stackSize.stackSize < 3) {
                 built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, false);
                 if (stackSize.stackSize == 2) {
@@ -571,7 +571,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
-                    .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setEUtDiscount(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 4.0 : 2.0);
             }
@@ -590,8 +590,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return !mOCTier1 && !mOCTier2;
     }
 
-    private float getDurationMultiplierFromRoughness() {
-        return (float) Math.pow(mRoughnessMultiplier, 2);
+    private double getDurationMultiplierFromRoughness() {
+        return Math.pow(mRoughnessMultiplier, 2);
     }
 
     private int ticker = 0;

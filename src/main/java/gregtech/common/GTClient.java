@@ -91,6 +91,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
@@ -106,7 +107,7 @@ import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.nei.GTNEIConfig;
+import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
@@ -631,6 +632,7 @@ public class GTClient extends GTProxy implements Runnable {
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();
+        new BlackholeRenderer();
 
         metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
@@ -642,7 +644,7 @@ public class GTClient extends GTProxy implements Runnable {
         new MetaGeneratedToolRenderer();
         new FlaskRenderer();
         new FluidDisplayStackRenderer();
-        MinecraftForge.EVENT_BUS.register(new GTNEIConfig());
+        MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
     }
 
     @Override
@@ -775,7 +777,7 @@ public class GTClient extends GTProxy implements Runnable {
 
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
-        if (GregTech.ID.equals(e.modID) && "kekztech/client".equals(e.configID)) {
+        if (GregTech.ID.equals(e.modID) && "client".equals(e.configID)) {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
             GTPreLoad.loadClientConfig();

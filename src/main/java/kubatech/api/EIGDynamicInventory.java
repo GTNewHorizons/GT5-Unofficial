@@ -3,7 +3,6 @@ package kubatech.api;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +32,6 @@ import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.kuba6000.mobsinfo.api.utils.ItemID;
 
 import kubatech.api.gui.AutoScalingStackSizeText;
 import kubatech.api.helpers.GTHelper;
@@ -205,9 +203,6 @@ public class EIGDynamicInventory<T> {
         ArrayList<Widget> buttons = new ArrayList<>();
 
         if (!ModUtils.isClientThreaded()) {
-            HashMap<ItemID, Integer> itemMap = new HashMap<>();
-            HashMap<ItemID, ItemStack> stackMap = new HashMap<>();
-            HashMap<ItemID, ArrayList<Integer>> realSlotMap = new HashMap<>();
             drawables = new ArrayList<>();
             for (int i = 0, inventorySize = inventory.size(); i < inventorySize; i++) {
                 T slot = inventory.get(i);
@@ -215,8 +210,7 @@ public class EIGDynamicInventory<T> {
                     continue;
                 }
                 ItemStack stack = inventoryGetter.get(slot);
-                drawables
-                    .add(new GTHelper.StackableItemSlot(1, stack, new ArrayList<Integer>(Collections.singleton(i))));
+                drawables.add(new GTHelper.StackableItemSlot(1, stack, new ArrayList<>(Collections.singleton(i))));
             }
         }
 

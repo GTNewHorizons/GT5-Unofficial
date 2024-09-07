@@ -17,13 +17,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
-import cpw.mods.fml.common.Loader;
-import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.DetravNetwork;
 import detrav.net.ProspectingPacket;
 import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
+import gregtech.api.enums.Mods;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
@@ -119,13 +118,13 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                         }
                                     }
-                                } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock)) {
+                                } else if (GTppHelper.isGTppBlock(tBlock)) {
                                     packet.addBlock(
                                         c.xPosition * 16 + x,
                                         y,
                                         c.zPosition * 16 + z,
                                         GTppHelper.getGTppMeta(tBlock));
-                                } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)) {
+                                } else if (BartWorksHelper.isOre(tBlock)) {
                                     if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                                     packet.addBlock(
                                         c.xPosition * 16 + x,
@@ -182,7 +181,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
 
-            if (Loader.isModLoaded("visualprospecting")) {
+            if (Mods.VisualProspecting.isModLoaded()) {
                 if (data == 0 || data == 1) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,

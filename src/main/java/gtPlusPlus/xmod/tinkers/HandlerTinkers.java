@@ -1,10 +1,9 @@
 package gtPlusPlus.xmod.tinkers;
 
-import static gregtech.api.enums.Mods.TinkerConstruct;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import gtPlusPlus.xmod.tinkers.util.TinkersDryingRecipe;
@@ -15,7 +14,7 @@ public class HandlerTinkers {
     public static AutoMap<BaseTinkersMaterial> mTinkerMaterials = new AutoMap<>();
 
     public static void postInit() {
-        if (TinkerConstruct.isModLoaded()) {
+        if (Mods.TinkerConstruct.isModLoaded()) {
 
             Fluid pyrotheumFluid = FluidRegistry.getFluid("pyrotheum");
             if (pyrotheumFluid != null) {

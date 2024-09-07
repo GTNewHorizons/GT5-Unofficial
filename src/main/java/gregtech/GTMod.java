@@ -145,7 +145,7 @@ import ic2.api.recipe.RecipeOutput;
     modid = Mods.Names.GREG_TECH,
     name = "GregTech",
     version = "MC1710",
-    guiFactory = "gregtech.client.GT_GuiFactory",
+    guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
         + " required-after:gtnhlib@[0.2.1,);"
         + " required-after:modularui@[1.1.12,);"
@@ -238,7 +238,7 @@ public class GTMod implements IGTMod {
         clientSide = "gregtech.common.GTClient",
         serverSide = "gregtech.common.GTServer")
     public static GTProxy gregtechproxy;
-    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
+    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static int MAX_IC2 = 2147483647;
     public static GTAchievements achievements;

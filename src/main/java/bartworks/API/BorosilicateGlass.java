@@ -50,7 +50,7 @@ public class BorosilicateGlass {
     }
 
     public static Block getGlassBlock2() {
-        return ItemRegistry.bw_realglas;
+        return ItemRegistry.bw_realglas2;
     }
 
     private static void doRegister(byte level, Block block, int meta,

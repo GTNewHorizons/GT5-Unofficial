@@ -107,6 +107,9 @@ public class GTPostLoad {
     public static void registerFluidCannerRecipes() {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
+            if (tData.fluid.amount <= 0) {
+                continue;
+            }
             // lava clay bucket is registered with empty container with 0 stack size
             ItemStack emptyContainer = tData.emptyContainer.copy();
             emptyContainer.stackSize = 1;

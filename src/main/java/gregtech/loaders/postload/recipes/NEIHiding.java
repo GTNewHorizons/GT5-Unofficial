@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import gregtech.api.enums.ItemList;
-import gregtech.common.items.MetaGeneratedItem03;
 
 public class NEIHiding implements Runnable {
 
@@ -15,10 +14,6 @@ public class NEIHiding implements Runnable {
     public void run() {
         if (!NotEnoughItems.isModLoaded()) {
             return;
-        }
-
-        for (int i = 0; i < 16; i++) {
-            API.hideItem(new ItemStack(MetaGeneratedItem03.INSTANCE, 1, i));
         }
 
         if (Forestry.isModLoaded()) {

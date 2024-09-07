@@ -140,8 +140,16 @@ public class GTOreDictUnificator {
         return GTUtility.copyAmount(aAmount, aReplacement);
     }
 
+    /**
+     * Wrapper for setStackArray that assumes safe copying
+     */
     public static ItemStack[] setStackArray(boolean aUseBlackList, ItemStack... aStacks) {
-        for (int i = 0; i < aStacks.length; i++) aStacks[i] = get(aUseBlackList, GTUtility.copyOrNull(aStacks[i]));
+        return setStackArray(aUseBlackList, false, aStacks);
+    }
+
+    public static ItemStack[] setStackArray(boolean aUseBlackList, boolean aUnsafe, ItemStack... aStacks) {
+        for (int i = 0; i < aStacks.length; i++)
+            aStacks[i] = get(aUseBlackList, GTUtility.copyOrNull(aStacks[i]), aUnsafe);
         return aStacks;
     }
 

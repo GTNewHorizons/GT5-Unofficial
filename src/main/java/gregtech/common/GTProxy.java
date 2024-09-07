@@ -21,7 +21,6 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
-import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TaintedMagic;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -2701,43 +2700,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public void registerUnificationEntries() {
         GTOreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {
-            if ((!(tOre.mEvent.Ore.getItem() instanceof MetaGeneratedItem)) && (tOre.mPrefix != null)
-                && (tOre.mPrefix.mIsUnificatable)
-                && (tOre.mMaterial != null)) {
-                boolean checkModID = tOre.mModID != null;
-
-                if (checkModID) {
-                    if (tOre.mModID.equals(Names.ENDER_I_O)) {
-                        if (tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
-                            GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                            GTOreDictUnificator.set(
-                                tOre.mPrefix,
-                                tOre.mMaterial,
-                                tOre.mEvent.Ore,
-                                ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
-                                true);
-                            continue;
-                        }
-                    }
-                }
-                if (GTOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
-                    GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
-                } else {
-                    GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                    GTOreDictUnificator.set(
-                        tOre.mPrefix,
-                        tOre.mMaterial,
-                        tOre.mEvent.Ore,
-                        checkModID && ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
-                        true);
-                }
-            }
-        }
-
-        for (OreDictEventContainer tOre : this.mEvents) {
-            if (((tOre.mEvent.Ore.getItem() instanceof MetaGeneratedItem)) && (tOre.mPrefix != null)
-                && (tOre.mPrefix.mIsUnificatable)
-                && (tOre.mMaterial != null)) {
+            if ((tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
                 if (GTOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
                     GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
                 } else {

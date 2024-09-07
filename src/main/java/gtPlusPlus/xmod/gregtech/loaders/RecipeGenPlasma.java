@@ -47,34 +47,30 @@ public class RecipeGenPlasma extends RecipeGenBase {
                 : CI.emptyCells(1);
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 switch (material.getUnlocalizedName()) {
-                    case "Runite":
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1L, aPlasmaCell))
-                            .itemOutputs(aContainerItem)
-                            .metadata(FUEL_VALUE, 350_000)
-                            .metadata(FUEL_TYPE, GTRecipeConstants.FuelType.PlasmaTurbine.ordinal())
-                            .duration(0)
-                            .eut(0)
-                            .addTo(GTRecipeConstants.Fuel);
-                    case "CelestialTungsten":
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1L, aPlasmaCell))
-                            .itemOutputs(aContainerItem)
-                            .metadata(FUEL_VALUE, 720_000)
-                            .metadata(FUEL_TYPE, GTRecipeConstants.FuelType.PlasmaTurbine.ordinal())
-                            .duration(0)
-                            .eut(0)
-                            .addTo(GTRecipeConstants.Fuel);
-
-                    default:
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1L, aPlasmaCell))
-                            .itemOutputs(aContainerItem)
-                            .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * material.getMass()))
-                            .metadata(FUEL_TYPE, GTRecipeConstants.FuelType.PlasmaTurbine.ordinal())
-                            .duration(0)
-                            .eut(0)
-                            .addTo(GTRecipeConstants.Fuel);
+                    case "Runite" -> GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1L, aPlasmaCell))
+                        .itemOutputs(aContainerItem)
+                        .metadata(FUEL_VALUE, 350_000)
+                        .metadata(FUEL_TYPE, GTRecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GTRecipeConstants.Fuel);
+                    case "CelestialTungsten" -> GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1L, aPlasmaCell))
+                        .itemOutputs(aContainerItem)
+                        .metadata(FUEL_VALUE, 720_000)
+                        .metadata(FUEL_TYPE, GTRecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GTRecipeConstants.Fuel);
+                    default -> GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1L, aPlasmaCell))
+                        .itemOutputs(aContainerItem)
+                        .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * material.getMass()))
+                        .metadata(FUEL_TYPE, GTRecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GTRecipeConstants.Fuel);
                 }
             }
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCell, aPlasmaCell })) {

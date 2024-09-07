@@ -14,7 +14,7 @@ public class GTRenderedTexture extends gregtech.common.render.GTRenderedTexture
 
     public GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
         super(aIcon, aRGBa, aAllowAlpha, false, true, false);
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mRGBa = aRGBa;
     }
 

@@ -252,8 +252,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
         aFluidInputs = ArrayExt.withoutNulls(aFluidInputs, FluidStack[]::new);
         aFluidOutputs = ArrayExt.withoutNulls(aFluidOutputs, FluidStack[]::new);
 
-        GTOreDictUnificator.setStackArray(true, aInputs);
-        GTOreDictUnificator.setStackArray(true, aOutputs);
+        GTOreDictUnificator.setStackArray(true, true, aInputs);
+        GTOreDictUnificator.setStackArray(true, true, aOutputs);
 
         for (ItemStack tStack : aOutputs) GTUtility.updateItemStack(tStack);
 
