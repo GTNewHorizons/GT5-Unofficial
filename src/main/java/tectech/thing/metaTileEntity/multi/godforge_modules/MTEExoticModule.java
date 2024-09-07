@@ -123,7 +123,7 @@ public class MTEExoticModule extends MTEBaseModule {
                             Arrays.asList(convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount)));
                         inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount));
                         inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount));
-                        outputFluid = MaterialsUEVplus.MagMatter.getMolten(144 * actualParallel);
+                        outputFluid = MaterialsUEVplus.MagMatter.getMolten(576 * actualParallel);
                     } else {
                         numberOfFluids = GodforgeMath.getRandomIntInRange(0, NUMBER_OF_INPUTS);
                         numberOfItems = NUMBER_OF_INPUTS - numberOfFluids;

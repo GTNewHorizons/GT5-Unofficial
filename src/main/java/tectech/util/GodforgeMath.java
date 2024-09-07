@@ -138,7 +138,7 @@ public class GodforgeMath {
             baseParallel = 384;
         }
         if (module instanceof MTEExoticModule) {
-            baseParallel = 36;
+            baseParallel = 64;
         }
 
         if (module instanceof MTEMoltenModule
@@ -185,7 +185,7 @@ public class GodforgeMath {
 
         if (module instanceof MTEExoticModule) {
             if (godforge.isUpgradeActive(25)) {
-                maxParallel = (int) Math.max(9 * Math.floor(Math.sqrt(maxParallel) / 9), 36);
+                maxParallel = (int) Math.max(Math.sqrt(maxParallel), 36);
             } else {
                 maxParallel = baseParallel;
             }
