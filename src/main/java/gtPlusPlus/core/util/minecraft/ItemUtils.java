@@ -46,7 +46,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -309,11 +308,7 @@ public class ItemUtils {
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
         if (PreloaderCore.DEBUG_MODE) {
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(1));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(2));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(3));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(4));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(5));
+            Logger.modLogger.warn("Looking up: " + oredictName + " - from : ", new Exception());
         }
 
         try {

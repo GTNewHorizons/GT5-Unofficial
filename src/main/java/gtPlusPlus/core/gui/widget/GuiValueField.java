@@ -31,13 +31,7 @@ public class GuiValueField extends GuiTextField {
     }
 
     public boolean isBackgroundDrawingEnabled() {
-        Field enableBackgroundDrawing = ReflectionUtils.getField(
-            GuiTextField.class,
-            !PreloaderCore.DEV_ENVIRONMENT ? "field_146215_m" : "enableBackgroundDrawing");
-        if (enableBackgroundDrawing != null) {
-            return ReflectionUtils.getFieldValue(enableBackgroundDrawing, this);
-        }
-        return true;
+        return this.getEnableBackgroundDrawing();
     }
 
     public int getLineScrollOffset() {

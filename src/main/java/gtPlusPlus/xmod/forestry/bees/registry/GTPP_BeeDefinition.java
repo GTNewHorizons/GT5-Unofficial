@@ -8,7 +8,6 @@ import static forestry.api.apiculture.EnumBeeChromosome.TEMPERATURE_TOLERANCE;
 import static forestry.api.core.EnumHumidity.ARID;
 import static gregtech.api.enums.Mods.Forestry;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -47,7 +46,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements.STANDALONE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
 public enum GTPP_BeeDefinition implements IBeeDefinition {
@@ -65,7 +63,11 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_3);
             AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_3);
         }, dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation("DRAGONESSENCE", "NEUTRONIUM", 2);
+            IBeeMutationCustom tMutation = dis.registerMutation(
+                GTBeeDefinition.DRAGONESSENCE.getSpecies(),
+                GTBeeDefinition.NEUTRONIUM.getSpecies(),
+                2,
+                1f);
             tMutation.restrictHumidity(ARID);
             tMutation.requireResource(STANDALONE.DRAGON_METAL.getBlock(), 1);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
@@ -84,7 +86,8 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
             AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         }, dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation("STEEL", "GOLD", 10);
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(GTBeeDefinition.STEEL.getSpecies(), GTBeeDefinition.GOLD.getSpecies(), 10, 1f);
             tMutation.restrictHumidity(ARID);
             tMutation.restrictBiomeType(BiomeDictionary.Type.HOT);
         }),;
@@ -185,15 +188,15 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         return ret;
     }
 
-    private final void setSpeciesProperties(GTPPAlleleBeeSpecies species2) {
+    private void setSpeciesProperties(GTPPAlleleBeeSpecies species2) {
         this.mSpeciesProperties.accept(species2);
     }
 
-    private final void setAlleles(IAllele[] template) {
+    private void setAlleles(IAllele[] template) {
         this.mAlleles.accept(template);
     }
 
-    private final void registerMutations() {
+    private void registerMutations() {
         this.mMutations.accept(this);
     }
 
@@ -209,28 +212,20 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         BeeManager.beeRoot.registerTemplate(template);
     }
 
-    private final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2,
-        int chance) {
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
-    private final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2,
-        int chance) {
+    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
-    private final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2,
-        int chance) {
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
-    private final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2,
-        int chance) {
+    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
-    }
-
-    private final IBeeMutationCustom registerMutation(String parent1, String parent2, int chance) {
-        return registerMutation(getGregtechBeeType(parent1), getGregtechBeeType(parent2), chance, 1f);
     }
 
     /**
@@ -238,28 +233,24 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
      * chancedivider This new function allows Mutation percentages under 1%. Set them as a fraction with chance /
      * chancedivider
      */
-    private final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
         float chancedivider) {
         return new GTPPBeeMutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
     }
 
-    private final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,
+    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,
         float chancedivider) {
         return registerMutation(parent1.species, parent2, chance, chancedivider);
     }
 
-    private final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance,
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance,
         float chancedivider) {
         return registerMutation(parent1, parent2.species, chance, chancedivider);
     }
 
-    private final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2,
-        int chance, float chancedivider) {
+    private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance,
+        float chancedivider) {
         return registerMutation(parent1.species, parent2, chance, chancedivider);
-    }
-
-    private final IBeeMutationCustom registerMutation(String parent1, String parent2, int chance, float chancedivider) {
-        return registerMutation(getGregtechBeeType(parent1), getGregtechBeeType(parent2), chance, chancedivider);
     }
 
     @Override
@@ -284,17 +275,5 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
 
     public final IBeeDefinition getRainResist() {
         return new BeeVariation.RainResist(this);
-    }
-
-    public static IAlleleBeeSpecies getGregtechBeeType(String name) {
-        try {
-            // This is still cursed, but the species field is private and I don't want to go modify that right now
-            GTBeeDefinition aBeeObject = GTBeeDefinition.valueOf(name);
-            Field gtBeesField = ReflectionUtils.getField(GTBeeDefinition.class, "species");
-            return ReflectionUtils.getFieldValue(gtBeesField, aBeeObject);
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return null;
-        }
     }
 }
