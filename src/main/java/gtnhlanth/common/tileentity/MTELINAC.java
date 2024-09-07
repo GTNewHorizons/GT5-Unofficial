@@ -214,7 +214,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
 
-            .toolTipFinisher("GTNH: Lanthanides");;
+            .toolTipFinisher("GTNH: Lanthanides");
         return tt;
     }
 

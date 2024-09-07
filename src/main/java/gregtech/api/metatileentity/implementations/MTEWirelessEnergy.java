@@ -134,7 +134,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy implements IWirelessEnergy
         // UUID of the owner.
         owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
 
-        SpaceProjectManager.checkOrCreateTeam(owner_uuid);;
+        SpaceProjectManager.checkOrCreateTeam(owner_uuid);
 
         tryFetchingEnergy();
     }
