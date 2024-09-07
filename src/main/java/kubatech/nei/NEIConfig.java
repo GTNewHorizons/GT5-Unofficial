@@ -20,6 +20,8 @@
 
 package kubatech.nei;
 
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.MobsInfo;
 import static kubatech.api.enums.ItemList.LegendaryBlackTea;
 import static kubatech.api.enums.ItemList.LegendaryButterflyTea;
 import static kubatech.api.enums.ItemList.LegendaryEarlGrayTea;
@@ -37,11 +39,15 @@ import static kubatech.api.enums.ItemList.LegendaryYellowTea;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import kubatech.Tags;
+import kubatech.api.enums.ItemList;
 
 public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
+        if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
+            API.addRecipeCatalyst(ItemList.ExtremeEntityCrusher.get(1), "mobsinfo.mobhandler");
+        }
         API.hideItem(LegendaryBlackTea.get(1));
         API.hideItem(LegendaryButterflyTea.get(1));
         API.hideItem(LegendaryEarlGrayTea.get(1));
