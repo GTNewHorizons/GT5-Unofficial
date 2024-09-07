@@ -159,10 +159,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
             + GTUtility.formatNumbers(Math.abs(this.trueOutput))
+            + GT_Utility.formatNumbers(Math.abs(this.trueOutput))
             + EnumChatFormatting.RESET
-            + " EU/t";
-        info[6] = "Problems: " + EnumChatFormatting.RED
-            + (this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
             + " Efficiency: "
             + EnumChatFormatting.YELLOW
