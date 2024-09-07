@@ -7,7 +7,6 @@ import java.util.HashMap;
 import gregtech.GTMod;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPollenType;
@@ -45,7 +44,12 @@ public class GTPP_Bees {
             combs = new GTPPComb();
 
             Logger.BEES("Loading types.");
-            initTypes();
+            // call values() to force initialization of enum entries
+            GTPP_BeeDefinition.values();
+            GTPPCombType.values();
+            GTPPDropType.values();
+            GTPPPollenType.values();
+            GTPPPropolisType.values();
 
             Logger.BEES("Adding recipes.");
             GTPPDrop.initDropsRecipes();
@@ -57,14 +61,5 @@ public class GTPP_Bees {
 
             Logger.BEES("Done!");
         }
-    }
-
-    private static void initTypes() {
-        // This is stupid
-        ReflectionUtils.loadClass(GTPP_BeeDefinition.class.getName());
-        ReflectionUtils.loadClass(GTPPCombType.class.getName());
-        ReflectionUtils.loadClass(GTPPDropType.class.getName());
-        ReflectionUtils.loadClass(GTPPPollenType.class.getName());
-        ReflectionUtils.loadClass(GTPPPropolisType.class.getName());
     }
 }

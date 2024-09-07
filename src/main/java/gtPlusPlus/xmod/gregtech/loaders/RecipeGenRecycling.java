@@ -28,7 +28,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class RecipeGenRecycling implements Runnable {
 
@@ -252,11 +251,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final Object aName, final ItemStack aReplacement, final long aAmount,
         final boolean aMentionPossibleTypos, final boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && (aAmount < 1L)) {
-            Logger.WARNING("Returning Null. Method: " + ReflectionUtils.getMethodName(0));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(1));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(2));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(3));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(4));
+            Logger.modLogger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
         if (!mNameMap.containsKey(aName.toString()) && aMentionPossibleTypos) {
@@ -269,11 +264,7 @@ public class RecipeGenRecycling implements Runnable {
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {
         if (GTUtility.isStringInvalid(aName)) {
-            Logger.WARNING("Returning Null. Method: " + ReflectionUtils.getMethodName(0));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(1));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(2));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(3));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(4));
+            Logger.modLogger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
         final ItemStack tStack = mNameMap.get(aName.toString());
