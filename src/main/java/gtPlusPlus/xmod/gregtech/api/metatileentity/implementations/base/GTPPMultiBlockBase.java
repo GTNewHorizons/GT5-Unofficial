@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -208,7 +207,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                         + ": "
                         + EnumChatFormatting.YELLOW
                         + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
-                        + EnumChatFormatting.RESET));;
+                        + EnumChatFormatting.RESET));
         }
         if (!this.mAllDynamoHatches.isEmpty()) {
             long storedEnergy = getStoredEnergyInAllDynamoHatches();
@@ -843,43 +842,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
      * Enable Texture Casing Support if found in GT 5.09
      */
     public boolean updateTexture(final IMetaTileEntity aTileEntity, int aCasingID) {
-        try { // gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
-
-            final IMetaTileEntity aMetaTileEntity = aTileEntity;
-            if (aMetaTileEntity == null) {
-                return false;
-            }
-            Method mProper = ReflectionUtils.getMethod(MTEHatch.class, "updateTexture", int.class);
-            if (mProper != null) {
-                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
-                    mProper.setAccessible(true);
-                    mProper.invoke(aMetaTileEntity, aCasingID);
-                    // log("Good Method Call for updateTexture.");
-                    return true;
-                }
-            } else {
-                log("Bad Method Call for updateTexture.");
-                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
-                    if (aCasingID <= Byte.MAX_VALUE) {
-                        ((MTEHatch) aTileEntity).updateTexture(aCasingID);
-                        log(
-                            "Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
-                        return true;
-                    } else {
-                        log("updateTexture returning false. 1.2");
-                    }
-                } else {
-                    log("updateTexture returning false. 1.3");
-                }
-            }
-            log("updateTexture returning false. 1");
-            return false;
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            log("updateTexture returning false.");
-            log("updateTexture returning false. 2");
-            e.printStackTrace();
-            return false;
+        if (aTileEntity instanceof MTEHatch mteHatch) {
+            mteHatch.updateTexture(aCasingID);
+            return true;
         }
+        return false;
     }
 
     /**
