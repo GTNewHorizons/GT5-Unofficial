@@ -131,12 +131,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(11))
                 .dot(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
-
         .build();
 
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
-    private ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
 
     /**
      * 1: Off
@@ -350,6 +349,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.RED
                     + "20")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
+            .addInfo("Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade")
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
@@ -519,26 +519,30 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     if (this.maxProgresstime() != 0) {
                         stabilityDecrease = 0.75F;
                     }
-                    // Search all hatches for catalyst fluid
-                    // If found enough, drain it and reduce stability loss to 0
-                    // Every 30 drains, double the cost
-                    FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
-                    boolean didDrain = false;
-                    for (MTEHatchInput hatch : spacetimeHatches) {
-                        if (drain(hatch, totalCost, false)) {
-                            drain(hatch, totalCost, true);
-                            catalyzingCounter += 1;
-                            stabilityDecrease = 0;
-                            if (catalyzingCounter >= 30) {
-                                catalyzingCostModifier *= 2;
-                                catalyzingCounter = 0;
+
+                    if (!spacetimeHatches.isEmpty()) {
+                        // Search all hatches for catalyst fluid
+                        // If found enough, drain it and reduce stability loss to 0
+                        // Every 30 drains, double the cost
+                        FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+
+                        boolean didDrain = false;
+                        for (MTEHatchInput hatch : spacetimeHatches) {
+                            if (drain(hatch, totalCost, false)) {
+                                drain(hatch, totalCost, true);
+                                catalyzingCounter += 1;
+                                stabilityDecrease = 0;
+                                if (catalyzingCounter >= 30) {
+                                    catalyzingCostModifier *= 2;
+                                    catalyzingCounter = 0;
+                                }
+                                didDrain = true;
+                                break;
                             }
-                            didDrain = true;
-                            break;
                         }
+                        if (rendererTileEntity == null) createRenderBlock();
+                        rendererTileEntity.toggleLaser(didDrain);
                     }
-                    if (rendererTileEntity == null) createRenderBlock();
-                    rendererTileEntity.toggleLaser(didDrain);
                     if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
                     else blackHoleStability = 0;
                 } else blackHoleStatus = 3;
