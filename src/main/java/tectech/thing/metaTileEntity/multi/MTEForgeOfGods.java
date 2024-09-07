@@ -655,6 +655,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!debugMode) return;
         if (isRenderActive) {
             destroyRenderer();
             isRenderActive = false;
