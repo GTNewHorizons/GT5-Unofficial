@@ -238,7 +238,7 @@ public class GTMod implements IGTMod {
         clientSide = "gregtech.common.GTClient",
         serverSide = "gregtech.common.GTServer")
     public static GTProxy gregtechproxy;
-    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
+    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static GTAchievements achievements;
     @Deprecated

@@ -680,7 +680,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .widget(
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));;
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
 
         return row;
     }

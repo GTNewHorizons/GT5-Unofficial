@@ -472,7 +472,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 if (tFluid == null) continue;
                 if (isFluidLocked) {
                     if (mLockedFluid != null) {
-                        if (!tFluid.isFluidEqual(mLockedFluid)) continue;;
+                        if (!tFluid.isFluidEqual(mLockedFluid)) continue;
                     } else {
                         mLockedFluid = tFluid.copy();
                         mLockedFluid.amount = 1;
