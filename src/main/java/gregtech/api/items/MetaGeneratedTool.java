@@ -437,8 +437,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     tOffset + 0,
                     EnumChatFormatting.GRAY + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + EnumChatFormatting.GREEN + formatNumbers(turbine.getMaxDurability()) + " ",
-                        " " + formatNumbers(turbine.getCurrentDurability())) + EnumChatFormatting.GRAY);
+                        "" + EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
+                        " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY + String.format(
