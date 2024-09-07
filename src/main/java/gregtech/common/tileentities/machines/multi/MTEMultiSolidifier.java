@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bartworks.API.BorosilicateGlass;
+import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -169,8 +169,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
-            .addInfo("Has 4 parallels by default")
-            .addInfo("Gains an additional 10 parallels per width expansion")
+            .addInfo("Starts with 4 Parallels")
+            .addInfo("Gain 8 Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addInfo(
                 AuthorOmdaCZ + " with help of "
@@ -280,12 +280,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         if (!checkPiece(MS_END, (-2 * mWidth) - 4, 4, 0) || !checkPiece(MS_END, (mWidth * 2) + 4, 4, 0)) {
             return false;
         }
+        if (glassTier >= VoltageIndex.UMV) return true;
+        for (int i = 0; i < this.mEnergyHatches.size(); ++i)
+        if (this.mEnergyHatches.get(i).mTier > glassTier) return false;
 
-            for (int i = 0; i < this.mEnergyHatches.size(); ++i) {
-        if (this.glassTier < this.mEnergyHatches.get(i).mTier) {
-            return false;
-        }
-    }
         return mCasingAmount >= (100 + mWidth * 23);
     }
 
@@ -315,7 +313,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * 10);
+        return 4 + (mWidth * 8) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
@@ -332,7 +330,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
     }
 
     @Override
