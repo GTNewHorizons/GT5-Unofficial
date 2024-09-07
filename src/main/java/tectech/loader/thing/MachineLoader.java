@@ -2228,32 +2228,28 @@ public class MachineLoader implements Runnable {
             .set(new MTEEnergyInfuser(EnergyInfuser.ID, "multimachine.em.infuser", "Energy Infuser").getStackForm(1));
         Machine_Multi_EyeOfHarmony.set(
             new MTEEyeOfHarmony(EyeofHarmony.ID, "multimachine.em.eye_of_harmony", "Eye of Harmony").getStackForm(1L));
-        if (tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
-            Machine_Multi_ForgeOfGods.set(
-                new MTEForgeOfGods(ForgeoftheGods.ID, "multimachine.em.forge_of_gods", "Forge of the Gods")
-                    .getStackForm(1L));
-            addItemTooltip(Machine_Multi_ForgeOfGods.get(1), GTValues.AuthorCloud);
-            Machine_Multi_SmeltingModule.set(
-                new MTESmeltingModule(
-                    HelioflarePowerForge.ID,
-                    "multimachine.em.smelting_module",
-                    "Helioflare Power Forge").getStackForm(1L));
-            addItemTooltip(Machine_Multi_SmeltingModule.get(1), GTValues.AuthorCloud);
-            Machine_Multi_MoltenModule.set(
-                new MTEMoltenModule(HeliofluxMeltingCore.ID, "multimachine.em.molten_module", "Helioflux Melting Core")
-                    .getStackForm(1L));
-            addItemTooltip(Machine_Multi_MoltenModule.get(1), GTValues.AuthorCloud);
-            Machine_Multi_PlasmaModule.set(
-                new MTEPlasmaModule(
-                    HeliothermalPlasmaFabricator.ID,
-                    "multimachine.em.plasma_module",
-                    "Heliothermal Plasma Fabricator").getStackForm(1L));
-            addItemTooltip(Machine_Multi_PlasmaModule.get(1), GTValues.AuthorCloud);
-            Machine_Multi_QuarkGluonPlasmaModule.set(
-                new MTEExoticModule(HeliofusionExoticizer.ID, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
-                    .getStackForm(1L));
-            addItemTooltip(Machine_Multi_QuarkGluonPlasmaModule.get(1), GTValues.AuthorCloud);
-        }
+        Machine_Multi_ForgeOfGods.set(
+            new MTEForgeOfGods(ForgeoftheGods.ID, "multimachine.em.forge_of_gods", "Forge of the Gods")
+                .getStackForm(1L));
+        addItemTooltip(Machine_Multi_ForgeOfGods.get(1), GTValues.AuthorCloud);
+        Machine_Multi_SmeltingModule.set(
+            new MTESmeltingModule(HelioflarePowerForge.ID, "multimachine.em.smelting_module", "Helioflare Power Forge")
+                .getStackForm(1L));
+        addItemTooltip(Machine_Multi_SmeltingModule.get(1), GTValues.AuthorCloud);
+        Machine_Multi_MoltenModule.set(
+            new MTEMoltenModule(HeliofluxMeltingCore.ID, "multimachine.em.molten_module", "Helioflux Melting Core")
+                .getStackForm(1L));
+        addItemTooltip(Machine_Multi_MoltenModule.get(1), GTValues.AuthorCloud);
+        Machine_Multi_PlasmaModule.set(
+            new MTEPlasmaModule(
+                HeliothermalPlasmaFabricator.ID,
+                "multimachine.em.plasma_module",
+                "Heliothermal Plasma Fabricator").getStackForm(1L));
+        addItemTooltip(Machine_Multi_PlasmaModule.get(1), GTValues.AuthorCloud);
+        Machine_Multi_QuarkGluonPlasmaModule.set(
+            new MTEExoticModule(HeliofusionExoticizer.ID, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
+                .getStackForm(1L));
+        addItemTooltip(Machine_Multi_QuarkGluonPlasmaModule.get(1), GTValues.AuthorCloud);
 
         // ===================================================================================================
         // Hatches

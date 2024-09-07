@@ -44,14 +44,13 @@ public class ClientProxy extends CommonProxy {
             .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOHItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
 
-        if (tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) {
-            BlockGodforgeGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
-            RenderingRegistry.registerBlockHandler(BlockGodforgeGlass.renderID, new RenderGodforgeGlass());
+        BlockGodforgeGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(BlockGodforgeGlass.renderID, new RenderGodforgeGlass());
 
-            MinecraftForgeClient
-                .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
-            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForgeOfGods.class, new RenderForgeOfGods());
-        }
+        MinecraftForgeClient
+            .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForgeOfGods.class, new RenderForgeOfGods());
+
     }
 
     @Override

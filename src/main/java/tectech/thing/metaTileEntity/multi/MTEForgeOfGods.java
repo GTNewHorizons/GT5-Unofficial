@@ -38,6 +38,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -181,7 +182,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private final boolean debugMode = false;
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         // 1000 blocks max per placement.
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 14, 1, realBudget, env, false, true);
@@ -241,7 +241,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             HatchElementBuilder.<MTEForgeOfGods>builder()
                 .atLeast(moduleElement.Module)
                 .casingIndex(TEXTURE_INDEX)
-                .dot(3)
+                .dot(2)
                 .buildAndChain(GodforgeCasings, 0))
         .addElement('K', ofBlock(GodforgeCasings, 6))
         .addElement('L', ofBlock(Blocks.air, 0))
@@ -309,7 +309,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
 
         moduleHatches.clear();
-
         // Check structure of multi
         if (isRenderActive) {
             if (!structureCheck_EM(STRUCTURE_PIECE_SHAFT, 63, 14, 1)
@@ -324,7 +323,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (internalBattery != 0 && !isRenderActive) {
             createRenderer();
         }
-
         // Check there is 1 input bus
         if (mInputBusses.size() != 1) {
             return false;
@@ -340,7 +338,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 return false;
             }
         }
-
         // Make sure there are no energy hatches
         {
             if (mEnergyHatches.size() > 0) {
@@ -356,7 +353,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (mInputHatches.size() != 1) {
             return false;
         }
-
         if (isUpgradeActive(26)) {
             if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
                 ringAmount = 2;
@@ -548,6 +544,38 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
     }
 
+    private TileEntityForgeOfGods getRenderer() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        TileEntity tile = this.getBaseMetaTileEntity()
+            .getWorld()
+            .getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+
+        if (tile instanceof TileEntityForgeOfGods forgeTile) {
+            return forgeTile;
+        }
+        return null;
+    }
+
+    private void UpdateRenderer() {
+        TileEntityForgeOfGods tile = getRenderer();
+        if (tile == null) return;
+
+        tile.setRingCount(ringAmount);
+        tile.setStarRadius(20);
+        tile.setRotationSpeed(5);
+
+        tile.updateToClient();
+    }
+
     private void createRenderer() {
 
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
@@ -570,9 +598,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
 
-        rendererTileEntity.setRenderSize(20);
-        rendererTileEntity.setRenderRotationSpeed(5);
-
         switch (ringAmount) {
             case 2 -> {
                 buildPiece(STRUCTURE_PIECE_FIRST_RING_AIR, null, false, 63, 14, -59);
@@ -587,6 +612,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 buildPiece(STRUCTURE_PIECE_FIRST_RING_AIR, null, false, 63, 14, -59);
             }
         }
+
+        rendererTileEntity.setRenderRotation(getRotation(), getDirection());
+        UpdateRenderer();
 
         isRenderActive = true;
     }
@@ -626,9 +654,23 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (isRenderActive) {
+            destroyRenderer();
+            isRenderActive = false;
+        } else {
+            ringAmount = 3;
+            createRenderer();
+            isRenderActive = true;
+        }
+    }
+
+    @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
-        destroyRenderer();
+        if (isRenderActive) {
+            destroyRenderer();
+        }
     }
 
     @Override
@@ -2475,7 +2517,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfo("--------------------------------------------")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
             .addStructureInfo("--------------------------------------------")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
