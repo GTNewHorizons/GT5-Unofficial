@@ -13,6 +13,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.CapturingTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
+import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VBOManager;
 
 public class StructureVBO {
 
@@ -94,11 +95,9 @@ public class StructureVBO {
                 }
             }
         }
-
-        for (char value : values) {
-            System.out.println(value);
-        }
-
-        return TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
+        VertexBuffer vertexBuffer = TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
+        final int vboID = VBOManager.generateDisplayLists(1);
+        VBOManager.registerVBO(vboID, vertexBuffer);
+        return vertexBuffer;
     }
 }
