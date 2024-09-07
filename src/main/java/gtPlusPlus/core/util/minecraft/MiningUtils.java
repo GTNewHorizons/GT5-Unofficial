@@ -2,10 +2,14 @@ package gtPlusPlus.core.util.minecraft;
 
 import java.util.HashMap;
 
+import gregtech.api.enums.Mods;
 import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 
 public class MiningUtils {
 
@@ -48,42 +52,17 @@ public class MiningUtils {
     public static boolean findAndMapOreTypesFromGT() {
         // Gets Moon ID
 
-        boolean aEndAsteroids;
-        try {
-            if (ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore") != null
-                && mMoonID == -99) {
-                mMoonID = ReflectionUtils
-                    .getField(
-                        ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore"),
-                        "idDimensionMoon")
-                    .getInt(null);
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            if (mMoonID == -99) {
+                mMoonID = ConfigManagerCore.idDimensionMoon;
             }
-        } catch (IllegalArgumentException | IllegalAccessException ignored) {}
-
-        // Gets Mars ID
-        try {
-            if (ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars") != null
-                && mMarsID == -99) {
-                mMarsID = ReflectionUtils
-                    .getField(
-                        ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars"),
-                        "dimensionIDMars")
-                    .getInt(null);
+            if (mMarsID == -99) {
+                mMarsID = ConfigManagerMars.dimensionIDMars;
             }
-        } catch (IllegalArgumentException | IllegalAccessException ignored) {}
-
-        // Get Comets ID
-        try {
-            if (ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids")
-                != null && mCometsID == -99) {
-                mCometsID = ReflectionUtils
-                    .getField(
-                        ReflectionUtils
-                            .getClass("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids"),
-                        "dimensionIDAsteroids")
-                    .getInt(null);
+            if (mCometsID == -99) {
+                mCometsID = ConfigManagerAsteroids.dimensionIDAsteroids;
             }
-        } catch (IllegalArgumentException | IllegalAccessException ignored) {}
+        }
 
         // Clear Cache
         Ores_Overworld.clear();
@@ -91,32 +70,23 @@ public class MiningUtils {
         Ores_End.clear();
         Ores_Misc.clear();
 
-        for (WorldgenGTOreLayer x : WorldgenGTOreLayer.sList) {
-            if (x.mEnabled) {
-
-                try {
-                    aEndAsteroids = ReflectionUtils.getField(WorldgenGTOreLayer.class, "mEndAsteroid")
-                        .getBoolean(x);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    aEndAsteroids = false;
+        for (WorldgenGTOreLayer gtOreLayer : WorldgenGTOreLayer.sList) {
+            if (gtOreLayer.mEnabled) {
+                if (gtOreLayer.mOverworld) {
+                    Ores_Overworld.put(gtOreLayer);
                 }
-
-                if (x.mOverworld) {
-                    Ores_Overworld.put(x);
+                if (gtOreLayer.mNether) {
+                    Ores_Nether.put(gtOreLayer);
                 }
-                if (x.mNether) {
-                    Ores_Nether.put(x);
+                if (gtOreLayer.mEnd || gtOreLayer.mEndAsteroid) {
+                    Ores_End.put(gtOreLayer);
                 }
-                if (x.mEnd || aEndAsteroids) {
-                    Ores_End.put(x);
-                }
-                if (x.mOverworld || x.mNether || (x.mEnd || aEndAsteroids)) {
+                if (gtOreLayer.mOverworld || gtOreLayer.mNether || (gtOreLayer.mEnd || gtOreLayer.mEndAsteroid)) {
                     continue;
                 }
-
-                Ores_Misc.put(x);
+                Ores_Misc.put(gtOreLayer);
             } else {
-                Ores_Comets.put(x);
+                Ores_Comets.put(gtOreLayer);
             }
         }
 
