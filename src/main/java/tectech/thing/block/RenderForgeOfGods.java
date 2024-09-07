@@ -354,7 +354,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         bindTexture(TextureMap.locationBlocksTexture);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glPushMatrix();
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
@@ -403,9 +403,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             .getWorldTotalTime() % (20 * 36000) + timeSinceLastTick;
 
         RenderRings(forgeTile, x, y, z, timer);
-
         RenderEntireStar(forgeTile, x, y, z, timer);
-
         RenderBeamSegment(forgeTile, x, y, z, timer);
 
     }
