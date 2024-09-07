@@ -53,6 +53,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockBlackholeRenderer;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
@@ -91,6 +92,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
 import gregtech.common.tileentities.render.TileEntityWormhole;
@@ -558,6 +560,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
+        GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -690,6 +693,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the WormholeRender.");
         GameRegistry.registerTileEntity(TileEntityWormhole.class, "WormholeRender");
+
+        GTLog.out.println("GTMod: Registering the BlackholeRender.");
+        GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
