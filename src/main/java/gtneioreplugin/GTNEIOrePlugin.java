@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Version;
-import gtneioreplugin.plugin.IMCForNEI;
+import gtneioreplugin.plugin.NEIPluginConfig;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.CSVMaker;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -67,7 +68,7 @@ public class GTNEIOrePlugin {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ModBlocks.init();
-        IMCForNEI.IMCSender();
+        MinecraftForge.EVENT_BUS.register(new NEIPluginConfig());
     }
 
     @EventHandler
