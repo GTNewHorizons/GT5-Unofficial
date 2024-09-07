@@ -303,10 +303,11 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     private void reset() {
         this.isResetting = false;
-        this.isStartInitialized = false;
         this.hasFinished = true;
         this.isObserving = true;
         this.isWaiting = false;
+        currentRadius = MAX_RADIUS;
+        this.initializeDrillPos();
     }
 
     private void startReset() {
@@ -331,7 +332,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
         if (!isStartInitialized) {
             this.setStartCoords();
-            this.setReady();
+            this.findBestRadius();
+            this.initializeDrillPos();
         }
 
         if (hasFinished && isObserving) {
@@ -368,9 +370,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
      * Save states on server restart
      */
     private void startMining(int currentX, int currentZ) {
-        if (getBaseMetaTileEntity().getWorld()
-            .isAirBlock(currentX, this.yStart, currentZ)) return;
-        for (int y = -currentRadius; y <= currentRadius; y++) {
+        while (getBaseMetaTileEntity().getWorld()
+            .isAirBlock(currentX, this.yStart, currentZ)) {
+            this.moveToNextColumn();
+            if (this.hasFinished) return;
+            currentX = this.xDrill;
+            currentZ = this.zDrill;
+        }
+        int opposite = 0;
+        for (int y = -currentRadius; y <= (currentRadius - opposite); y++) {
             int currentY = this.yStart + y;
             if (!getBaseMetaTileEntity().getWorld()
                 .isAirBlock(currentX, currentY, currentZ)) {
@@ -383,7 +391,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
-            }
+            } else opposite++;
         }
     }
 
