@@ -4,7 +4,6 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorR
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -416,7 +415,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_ZPM.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 1L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 ItemList.Quantum_Tank_EV.get(32),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 8),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.InfinityCatalyst, 8),
@@ -436,7 +435,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UV.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_EV.get(64),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 16),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 24),
@@ -456,7 +455,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_IV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 36),
@@ -477,7 +476,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(4),
                 ItemList.Quantum_Tank_IV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 24),
