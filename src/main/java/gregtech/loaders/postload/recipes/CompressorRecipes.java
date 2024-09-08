@@ -297,6 +297,19 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator
+                    .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 64))
+            .itemOutputs(
+                GTOreDictUnificator
+                    .get(OrePrefixes.plateSuperdense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1))
+            // Require stabilized black hole
+            .metadata(CompressionTierKey.INSTANCE, 2)
+            .duration(180 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.gem, 9))
             .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 1))
             .duration(15 * SECONDS)
