@@ -31,6 +31,7 @@ import tectech.Reference;
 import tectech.thing.metaTileEntity.multi.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.ForgeOfGodsStructureString;
 import tectech.util.StructureVBO;
+import tectech.util.TextureUpdateRequester;
 
 public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
@@ -59,6 +60,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static final Vector3f ringThreeNudge = new Vector3f(.5f, -1, 0);
 
     private static ShaderProgram fadeBypassProgram;
+    private static TextureUpdateRequester textureUpdater;
 
     private void init() {
         try {
@@ -147,6 +149,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             Reference.MODID,
             "shaders/fadebypass.vert.glsl",
             "shaders/fadebypass.frag.glsl");
+
+        textureUpdater = ringStructure.getTextureUpdateRequestor();
     }
 
     public void RenderStarLayer(Vector4f color, ResourceLocation texture, float size, Vector3f rotationAxis,
@@ -362,6 +366,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        textureUpdater.requestUpdate();
         fadeBypassProgram.use();
 
         GL11.glPushMatrix();

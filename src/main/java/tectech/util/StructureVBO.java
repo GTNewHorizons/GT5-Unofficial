@@ -36,6 +36,15 @@ public class StructureVBO {
         return this;
     }
 
+    public TextureUpdateRequester getTextureUpdateRequestor() {
+        TextureUpdateRequester textureUpdateRequester = new TextureUpdateRequester();
+        for (char key : mapper.keySet()) {
+            Pair<Block, Integer> pair = mapper.get(key);
+            textureUpdateRequester.add(pair.getLeft(), pair.getRight());
+        }
+        return textureUpdateRequester;
+    }
+
     private boolean isOpaqueAt(int x, int y, int z) {
         char letter = structure[x][y].charAt(z);
         if (letter == ' ') return false;
