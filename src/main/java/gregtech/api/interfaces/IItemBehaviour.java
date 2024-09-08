@@ -17,6 +17,10 @@ import gregtech.api.items.MetaBaseItem;
 
 public interface IItemBehaviour<E extends Item> {
 
+    default boolean onLeftClick(E aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return false;
+    }
+
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
     boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
