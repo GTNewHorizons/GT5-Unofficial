@@ -142,7 +142,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     static {
         Textures.BlockIcons.setCasingTextureForId(
-            52,
+            53,
             TextureFactory.of(
                 TextureFactory.builder()
                     .addIcon(MACHINE_CASING_ANTIMATTER)
@@ -436,7 +436,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build(), getTextureOverlay() };
-        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
+        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(53) };
         return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
