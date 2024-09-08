@@ -42,6 +42,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import tectech.loader.TecTechConfig;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 
@@ -49,7 +50,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
-    private boolean debug = false;
+    private boolean debug = TecTechConfig.DEBUG_MODE;
     private int inputMaxParallel = 0;
 
     public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
