@@ -1690,15 +1690,22 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(PLANET_BLOCK)) {
-            tooltip.add(
-                1,
-                GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ") + AQUA
-                    + new ItemStack(
-                        ModBlocks.getBlock(
-                            stack.getTagCompound()
-                                .getString(PLANET_BLOCK))).getDisplayName());
+        if (stack.hasTagCompound()) {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt.hasKey(PLANET_BLOCK)) {
+                tooltip.add(
+                    1,
+                    GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ")
+                        + AQUA
+                        + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName());
+            }
+            if (nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG) > 0) {
+                tooltip.add(
+                    1,
+                    GTLanguageManager.addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Array: ")
+                        + AQUA
+                        + formatNumbers(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
+            }
         }
     }
 
