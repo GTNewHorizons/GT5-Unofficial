@@ -30,15 +30,15 @@ import io.netty.buffer.ByteBuf;
 
 public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.OverflowValveData> {
 
-    private final int minOverflowLimit = 0;
-    private final int maxOverflowLimit;
+    private final int minOverflowPoint = 0;
+    private final int maxOverflowPoint;
 
     private boolean allowfluidOutput = true;
     private boolean allowfluidInput = true;
 
-    public CoverOverflowValve(int maxOverflowLimit) {
+    public CoverOverflowValve(int maxOverflowPoint) {
         super(OverflowValveData.class);
-        this.maxOverflowLimit = maxOverflowLimit;
+        this.maxOverflowPoint = maxOverflowPoint;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
-        if (fluid != null && fluid.amount > data.overflowLimit)
+        if (fluid != null && fluid.amount > data.overflowPoint)
             fluid.amount -= Math.min(fluid.amount - data.voidingRate, data.voidingRate);
         return fluid;
     }
@@ -66,7 +66,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
         if (data == null) return new OverflowValveData(0, 0);
 
-        if (data.overflowLimit == 0) return data;
+        if (data.overflowPoint == 0) return data;
 
         if (aTileEntity instanceof CommonMetaTileEntity common) {
             IMetaTileEntity tile = common.getMetaTileEntity();
@@ -147,17 +147,17 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     protected OverflowValveData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            data.overflowLimit += (int) (maxOverflowLimit * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            data.overflowPoint += (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
-            data.overflowLimit -= (int) (maxOverflowLimit * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            data.overflowPoint -= (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         }
 
-        if (data.overflowLimit > maxOverflowLimit) data.overflowLimit = minOverflowLimit;
-        if (data.overflowLimit <= minOverflowLimit) data.overflowLimit = maxOverflowLimit;
+        if (data.overflowPoint > maxOverflowPoint) data.overflowPoint = minOverflowPoint;
+        if (data.overflowPoint <= minOverflowPoint) data.overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("322", "Overflow point: ") + data.overflowLimit + GTUtility.trans("323", "L"));
+            GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
         return data;
     }
 
@@ -167,18 +167,18 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         boolean aShift = aPlayer.isSneaking();
         int aAmount = aShift ? 128 : 8;
         if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            data.overflowLimit += aAmount;
+            data.overflowPoint += aAmount;
         } else {
-            data.overflowLimit -= aAmount;
+            data.overflowPoint -= aAmount;
         }
 
-        if (data.overflowLimit > maxOverflowLimit) data.overflowLimit = minOverflowLimit;
-        if (data.overflowLimit <= minOverflowLimit) data.overflowLimit = maxOverflowLimit;
+        if (data.overflowPoint > maxOverflowPoint) data.overflowPoint = minOverflowPoint;
+        if (data.overflowPoint <= minOverflowPoint) data.overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("322", "Overflow point: ") + data.overflowLimit + GTUtility.trans("323", "L"));
-        aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(data.overflowLimit));
+            GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
+        aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(data.overflowPoint));
         return true;
     }
 
@@ -219,12 +219,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
                             new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.overflowLimit,
+                            coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
-                                coverData.overflowLimit = state.intValue();
+                                coverData.overflowPoint = state.intValue();
                                 return coverData;
                             },
-                            widget -> widget.setBounds(minOverflowLimit, maxOverflowLimit)
+                            widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
                                 .setPos(startX, startY + spaceY * 1 - 2)
@@ -241,7 +241,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 coverData.voidingRate = state.intValue();
                                 return coverData;
                             },
-                            widget -> widget.setBounds(minOverflowLimit, maxOverflowLimit)
+                            widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
                                 .setPos(startX, startY + spaceY * 3 - 2)
@@ -251,39 +251,39 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     public static class OverflowValveData implements ISerializableObject {
 
-        public int overflowLimit;
+        public int overflowPoint;
         public int voidingRate;
 
-        public OverflowValveData(int overflowLimit, int voidingRate) {
-            this.overflowLimit = overflowLimit;
+        public OverflowValveData(int overflowPoint, int voidingRate) {
+            this.overflowPoint = overflowPoint;
             this.voidingRate = voidingRate;
         }
 
         @Override
         @NotNull
         public ISerializableObject copy() {
-            return new OverflowValveData(overflowLimit, voidingRate);
+            return new OverflowValveData(overflowPoint, voidingRate);
         }
 
         @Override
         @NotNull
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("overflowLimit", overflowLimit);
+            tag.setInteger("overflowPoint", overflowPoint);
             tag.setInteger("voidingRate", voidingRate);
             return tag;
         }
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(overflowLimit)
+            aBuf.writeInt(overflowPoint)
                 .writeInt(voidingRate);
         }
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
             if (aNBT instanceof NBTTagCompound tag) {
-                overflowLimit = tag.getInteger("overflowLimit");
+                overflowPoint = tag.getInteger("overflowPoint");
                 voidingRate = tag.getInteger("voidingRate");
             }
         }
@@ -291,7 +291,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         @Override
         @NotNull
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
-            overflowLimit = aBuf.readInt();
+            overflowPoint = aBuf.readInt();
             voidingRate = aBuf.readInt();
             return this;
         }
