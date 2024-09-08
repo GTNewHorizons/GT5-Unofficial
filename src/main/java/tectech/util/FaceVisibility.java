@@ -6,7 +6,7 @@ public class FaceVisibility {
     public boolean left = true, right = true;
     public boolean top = true, bottom = true;
 
-    public boolean isEntireObscured(){
+    public boolean isEntireObscured() {
         return !front && !back && !left && !right && !top && !bottom;
     }
 }

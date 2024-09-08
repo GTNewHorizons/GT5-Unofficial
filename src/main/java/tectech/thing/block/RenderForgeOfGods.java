@@ -7,9 +7,7 @@ import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.nio.FloatBuffer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +20,6 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -60,7 +57,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static final Vector3f ringOneNudge = new Vector3f(0, -1, 0);
     private static final Vector3f ringTwoNudge = new Vector3f(0, -1, 0);
     private static final Vector3f ringThreeNudge = new Vector3f(.5f, -1, 0);
-
 
     private static ShaderProgram fadeBypassProgram;
 
@@ -131,8 +127,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     }
 
     private void initRings() {
-        StructureVBO ringStructure = (new StructureVBO())
-            .addMapping('H', BlockGodforgeGlass.INSTANCE, 0)
+        StructureVBO ringStructure = (new StructureVBO()).addMapping('H', BlockGodforgeGlass.INSTANCE, 0)
             .addMapping('B', GodforgeCasings, 0)
             .addMapping('C', GodforgeCasings, 1)
             .addMapping('D', GodforgeCasings, 2)
@@ -368,7 +363,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         fadeBypassProgram.use();
-
 
         GL11.glPushMatrix();
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);

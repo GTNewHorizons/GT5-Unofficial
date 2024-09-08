@@ -11,7 +11,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.CapturingTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VBOManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
@@ -89,7 +88,6 @@ public class StructureVBO {
                     if (faceInfo.isEntireObscured()) continue;
 
                     renderer.setFaceVisibility(faceInfo);
-
 
                     // The floor division is intended to produce proper offsets
                     tess.setTranslation(
