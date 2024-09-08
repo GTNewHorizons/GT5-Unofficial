@@ -752,29 +752,45 @@ public class PlatinumSludgeOverHaul {
         // item inputs
         result.append("Item inputs: ");
         for (ItemStack itemstack : recipe.mInputs) {
-            result.append(itemstack.getUnlocalizedName());
-            result.append(", ");
+            if (itemstack == null) {
+                result.append("nullstack, ");
+            } else {
+                result.append(itemstack.getUnlocalizedName());
+                result.append(", ");
+            }
         }
 
         // fluid inputs
         result.append(" Fluid inputs: ");
         for (FluidStack fluidStack : recipe.mFluidInputs) {
-            result.append(fluidStack.getUnlocalizedName());
-            result.append(", ");
+            if (fluidStack == null) {
+                result.append("nullstack, ");
+            } else {
+                result.append(fluidStack.getUnlocalizedName());
+                result.append(", ");
+            }
         }
 
         // item outputs
         result.append(" Item outputs: ");
         for (ItemStack itemstack : recipe.mOutputs) {
-            result.append(itemstack.getUnlocalizedName());
-            result.append(", ");
+            if (itemstack == null) {
+                result.append("nullstack, ");
+            } else {
+                result.append(itemstack.getUnlocalizedName());
+                result.append(", ");
+            }
         }
 
         // fluid outputs
         result.append(" Fluid outputs: ");
         for (FluidStack fluidStack : recipe.mFluidOutputs) {
-            result.append(fluidStack.getUnlocalizedName());
-            result.append(", ");
+            if (fluidStack == null) {
+                result.append("nullstack, ");
+            } else {
+                result.append(fluidStack.getUnlocalizedName());
+                result.append(", ");
+            }
         }
 
         return result.toString();
