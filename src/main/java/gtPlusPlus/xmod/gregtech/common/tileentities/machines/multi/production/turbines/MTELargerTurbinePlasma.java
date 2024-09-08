@@ -231,8 +231,8 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             actualOptimalFlow = GTUtility.safeInt(
-                (long) Math.ceil(
-                    (isLooseMode() ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20
+                (long) ((getSpeedMultiplier() * 
+                    (isLooseMode() ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20)
                         / (double) fuelValue)); // Check recipe runs once every 20 ticks
             this.realOptFlow = actualOptimalFlow; // For scanner info
 

@@ -464,7 +464,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    aTotalBaseEff += turbine.getEfficiency();
+                    aTotalBaseEff += turbine.getEfficiency() * 100;
                     aTotalOptimalFlow += GTUtility
                         .safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
@@ -687,7 +687,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public long maxAmperesOut() {
-        return 16;
+        return g;
     }
 
     @Override
