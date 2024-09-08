@@ -322,9 +322,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Forge Hammer")
-            .addInfo("33.3% faster than a single block steam machine would run.")
-            .addInfo(
-                "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
+            .addInfo("33.3% faster than the single block Steam Forge Hammer")
+            .addInfo("Uses only 66.6% of the steam/s that the single block Forge Hammer uses")
             .addInfo("Bronze tier runs recipes up to LV tier")
             .addInfo("Steel tier runs recipes up to MV tier")
             .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")

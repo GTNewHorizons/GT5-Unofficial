@@ -24,6 +24,7 @@ public enum GTPacketTypes {
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     TOOL_SWITCH_MODE(20, new GTPacketToolSwitchMode()),
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
+    INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

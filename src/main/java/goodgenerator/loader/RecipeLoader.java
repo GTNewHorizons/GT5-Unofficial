@@ -769,7 +769,7 @@ public class RecipeLoader {
                 .fluidInputs(
                     WerkstoffLoader.Oganesson.getFluidOrGas(1000),
                     Materials.Neutronium.getMolten(9216),
-                    Materials.Lubricant.getFluid(128000))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(64000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T3.get(1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(1 * HOURS)
@@ -791,7 +791,7 @@ public class RecipeLoader {
                 .fluidInputs(
                     GGMaterial.metastableOganesson.getMolten(1000),
                     MaterialsUEVplus.TranscendentMetal.getMolten(9216),
-                    Materials.Lubricant.getFluid(128000))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(64000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(2 * HOURS)

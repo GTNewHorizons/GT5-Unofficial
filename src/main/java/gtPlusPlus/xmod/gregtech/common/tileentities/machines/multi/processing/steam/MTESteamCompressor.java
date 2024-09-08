@@ -48,6 +48,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -246,6 +247,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
                 if (availableVoltage < recipe.mEUt) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
+                    return CheckRecipeResultRegistry.NO_RECIPE;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -269,8 +272,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Compressor")
-            .addInfo("33.3% faster than using a single block Steam Compressor.")
-            .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
+            .addInfo("33.3% faster than the single block Steam Compressor")
+            .addInfo("Uses only 66.6% of the steam/s that the single block Steam Compressor uses")
             .addInfo("Bronze tier runs recipes up to LV tier")
             .addInfo("Steel tier runs recipes up to MV tier")
             .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")

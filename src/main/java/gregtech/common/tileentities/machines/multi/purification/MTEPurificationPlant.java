@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
@@ -36,6 +37,8 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -94,6 +97,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      * unlinked properly on block destruction/relinking.
      */
     private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
+
+    /**
+     * Debug mode is an operational mode that does not produce output or consume input, but cuts down
+     * processing time for players to more easily debug their automation setups.
+     */
+    private boolean debugMode = false;
+    public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;
 
     private static final IStructureDefinition<MTEPurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationPlant>builder()
@@ -206,7 +216,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addSeparator()
             .addInfo("Every purification unit has a configuration window to configure maximum parallel amount.")
             .addInfo(
-                "This will only scale purified water I/O and power usage. Other catalysts and outputs are unchanged.")
+                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged.")
+            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O.")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -339,6 +350,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         return mMaintenanceHatches.size() == 1;
     }
 
+    public boolean debugModeOn() {
+        return debugMode;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -417,7 +432,9 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     private void startCycle() {
         mProgresstime = 0;
-        mMaxProgresstime = CYCLE_TIME_TICKS;
+        // Debug mode uses shorter cycles
+        if (debugMode) mMaxProgresstime = CYCLE_TIME_IN_DEBUG;
+        else mMaxProgresstime = CYCLE_TIME_TICKS;
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 
         // Find active units and notify them that the cycle started
@@ -680,7 +697,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .widget(
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));;
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
 
         return row;
     }
@@ -705,7 +722,26 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Add status window button
         builder.widget(makeStatusWindowButton());
 
-        // Add parallel count number input
+        //
+        builder.widget(
+            new ButtonWidget().setPlayClickSound(true)
+                .setOnClick((c, w) -> debugMode = !debugMode)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (debugMode) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+                    } else {
+                        ret.add(GTUITextures.BUTTON_STANDARD);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
+                .addTooltip("Toggle debug mode.")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(174, 112)
+                .setSize(16, 16));
 
         builder.widget(createPowerSwitchButton(builder));
 

@@ -782,7 +782,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(4),
                 MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.ProtoHalkonite, 16),
                 ItemList.Field_Generator_UIV.get(1), GTOreDictUnificator.get("screwMetastableOganesson", 16),
                 ItemList.SuperconductorComposite.get(4) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(144 * 40), },

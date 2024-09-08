@@ -704,6 +704,80 @@ public enum OrePrefixes {
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        spring.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        spring.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        nugget.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+
+        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        spring.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+
+        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        spring.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        nugget.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+
+        // When Exo-Halkonite is added, remove this.
+        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+
         cell.disableComponent(MaterialsUEVplus.GravitonShard);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
@@ -793,6 +867,30 @@ public enum OrePrefixes {
         toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+
+        gear.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        frame.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+
+        gear.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        frame.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+
+        gear.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        frame.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+
+        gear.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        frame.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
 
         gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
 

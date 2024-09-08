@@ -1476,6 +1476,10 @@ public enum ItemList implements IItemContainer {
     Electromagnet_Tengam,
 
     Machine_Multi_Canner,
+    Machine_Multi_Solidifier,
+
+    Casing_Fluid_Solidifier,
+    Radiator_Fluid_Solidifier,
 
     Machine_Multi_IndustrialCompressor,
     Machine_Multi_HIPCompressor,
@@ -2559,6 +2563,7 @@ public enum ItemList implements IItemContainer {
     Phononic_Seed_Crystal,
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
+    Spray_Color_Infinite,
     // semicolon after the comment to reduce merge conflicts
     ;
 

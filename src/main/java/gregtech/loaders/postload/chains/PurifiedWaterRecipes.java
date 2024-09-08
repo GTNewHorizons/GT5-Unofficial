@@ -24,7 +24,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
-import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBaryonicPerfection.BARYONIC_MATTER_OUTPUT;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -277,7 +276,7 @@ public class PurifiedWaterRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
-                ItemList.Field_Generator_UEV.get(4))
+                ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
                 Materials.Neutronium.getMolten(16 * 144),
                 Materials.Infinity.getMolten(16 * 144),
@@ -292,9 +291,7 @@ public class PurifiedWaterRecipes {
             // Fake item inputs
             .itemInputs(ItemList.Quark_Creation_Catalyst_Charm.get(1), ItemList.Quark_Creation_Catalyst_Strange.get(1))
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
-            .fluidOutputs(
-                Materials.Grade8PurifiedWater.getFluid(900L),
-                Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
+            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900L), Materials.StableBaryonicMatter.getFluid(500))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()
@@ -307,7 +304,7 @@ public class PurifiedWaterRecipes {
         // real recipe
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900L))
+            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900L), Materials.StableBaryonicMatter.getFluid(500))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()

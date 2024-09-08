@@ -267,10 +267,10 @@ public class GTPreLoad {
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
                                     "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-                                    "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine", "gearGtSmall", "rotor",
-                                    "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped",
-                                    "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
-                                if (mIt == 3) tags = new String[] { "itemCasing", "nanite" };
+                                    "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall",
+                                    "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic",
+                                    "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
+                                if (mIt == 3) tags = new String[] { "rawOre", "nanite", "plateSuperdense" };
                                 if (tags.length > prefix) tag = tags[prefix];
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
                                     tag += GregTechAPI.sGeneratedMaterials[material].mName;
@@ -533,7 +533,7 @@ public class GTPreLoad {
         // ore_drop_behavior
         try {
             GTLog.out.println("Trying to set it to: " + ConfigOreDropBehavior.setting);
-            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(ConfigOreDropBehavior.setting);;
+            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(ConfigOreDropBehavior.setting);
         } catch (IllegalArgumentException e) {
             GTLog.err.println(e);
             GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.FortuneItem;

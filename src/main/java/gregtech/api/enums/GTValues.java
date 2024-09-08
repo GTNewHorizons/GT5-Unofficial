@@ -32,7 +32,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
-import gregtech.api.util.GTChunkAssociatedData;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -657,6 +656,10 @@ public class GTValues {
         + "Ba"
         + EnumChatFormatting.LIGHT_PURPLE
         + "ps";
+    public static final String AuthorOmdaCZ = "Author: " + EnumChatFormatting.BLUE
+        + "Omda"
+        + EnumChatFormatting.RED
+        + "CZ";
 
     public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
         + EnumChatFormatting.BOLD

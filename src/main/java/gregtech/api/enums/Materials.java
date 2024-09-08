@@ -1989,6 +1989,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
         MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
         MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
+        Tartarite.mChemicalFormula = "Tt";
+        MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
+        // I hate this
+        MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula = "("
+            + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
+            + ")\u2082"
+            + "(W\u2088Nq*\u2087("
+            + Materials.Bedrockium.mChemicalFormula
+            + ")\u2084C\u2084V\u2083SpPu)\u2082"
+            + Tartarite.mChemicalFormula
+            + "\u2082"
+            + "((CW)\u2087Ti\u2083)\u2083???"
+            + "If*";
+        MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
     }
 
     private static void initSubTags() {
@@ -1998,6 +2013,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
+        MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+        MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
+        SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
+        MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+        MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
@@ -2251,7 +2275,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             TengamPurified,
             TengamAttuned,
             MaterialsUEVplus.Eternity,
-            MaterialsUEVplus.MagMatter);
+            MaterialsUEVplus.MagMatter,
+            MaterialsUEVplus.Creon,
+            MaterialsUEVplus.Mellion,
+            MaterialsUEVplus.HotProtoHalkonite,
+            MaterialsUEVplus.ProtoHalkonite,
+            MaterialsUEVplus.HotExoHalkonite,
+            MaterialsUEVplus.ExoHalkonite);
 
         SubTag.FOOD.addTo(
             MeatRaw,
@@ -2518,6 +2548,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ExoHalkonite);
     }
 
     /**
@@ -2533,6 +2567,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
         MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
+        MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
+        MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {

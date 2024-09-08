@@ -118,7 +118,7 @@ public final class RecipeMaps {
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> compressorRecipes = RecipeMapBuilder.of("gt.recipe.compressor")
-        .maxIO(1, 1, 0, 0)
+        .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR

@@ -15,6 +15,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 import gtPlusPlus.preloader.PreloaderCore;
 
+// TODO move this as a mixin in hodgepodge
 public class VanillaBedHeightFix implements IBugFix {
 
     private final Method mSleepInBedAt;
