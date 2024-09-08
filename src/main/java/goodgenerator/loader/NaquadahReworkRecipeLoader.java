@@ -34,7 +34,6 @@ import static goodgenerator.items.GGMaterial.titaniumTrifluoride;
 import static goodgenerator.items.GGMaterial.towEthyl1Hexanol;
 import static goodgenerator.items.GGMaterial.triniumSulphate;
 import static goodgenerator.items.GGMaterial.wasteLiquid;
-import static goodgenerator.main.GGConfigLoader.EnableNaquadahRework;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -89,8 +88,6 @@ import gtPlusPlus.core.item.chemistry.GenericChem;
 public class NaquadahReworkRecipeLoader {
 
     public static void RecipeLoad() {
-
-        if (!EnableNaquadahRework) return;
 
         // Naquadah (UEV)
         GTValues.RA.stdBuilder()
@@ -580,8 +577,6 @@ public class NaquadahReworkRecipeLoader {
             .addTo(vacuumFreezerRecipes);
     }
     public static void Remover() {
-
-        if (!EnableNaquadahRework) return;
 
         GTLog.out.print(GoodGenerator.MOD_ID + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
 
