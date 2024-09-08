@@ -209,7 +209,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 return CheckRecipeResultRegistry.NO_FUEL_FOUND;
             } else {
                 this.mMaxProgresstime = 20;
-                this.mEfficiencyIncrease = 10;
+                this.mEfficiencyIncrease = 200;
                 // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
                 // Play sounds (GT++ addition - GT multiblocks play no sounds)
                 enableAllTurbineHatches();
