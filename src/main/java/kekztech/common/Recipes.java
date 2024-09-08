@@ -66,13 +66,13 @@ public class Recipes {
                 "MTM",
                 "TJT",
                 "GGG",
-                "M",
+                'M',
                 getModItem(Botania.ID, "manaGlass", 1, 0),
-                "T",
+                'T',
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Thaumium, 1L),
-                "J",
+                'J',
                 getModItem(Thaumcraft.ID, "blockJar", 1, 0),
-                "G",
+                'G',
                 getModItem(Minecraft.ID, "glass", 1, 0)));
         // Thaumium Reinforced Void Jar
         final ItemStack[] recipe_voidjarupgrade = {
