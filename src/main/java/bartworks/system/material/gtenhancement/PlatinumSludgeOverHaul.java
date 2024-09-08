@@ -78,8 +78,10 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.WHITE_METAL;
+import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -770,8 +772,8 @@ public class PlatinumSludgeOverHaul {
             if (map == fusionRecipes || map == unpackagerRecipes
                 || map == packagerRecipes
                 || map == replicatorRecipes
-                || "gt.recipe.eyeofharmony".equals(map.unlocalizedName)
-                || "gtpp.recipe.quantumforcesmelter".equals(map.unlocalizedName)) continue;
+                || map == eyeOfHarmonyRecipes
+                || map == quantumForceTransformerRecipes) continue;
             HashSet<GTRecipe> toDel = new HashSet<>();
             recipeloop: for (GTRecipe recipe : map.getAllRecipes()) {
                 if (recipe.mFakeRecipe) continue maploop;
