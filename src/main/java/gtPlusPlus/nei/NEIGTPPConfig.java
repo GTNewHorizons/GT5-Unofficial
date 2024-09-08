@@ -19,7 +19,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
-public class GTPPNEIConfig implements IConfigureNEI {
+public class NEIGTPPConfig implements IConfigureNEI {
 
     public static boolean sIsAdded = true;
 
