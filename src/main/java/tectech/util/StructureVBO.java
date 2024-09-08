@@ -85,19 +85,23 @@ public class StructureVBO {
                     if (info.getLeft() == Blocks.air) continue;
 
                     FaceVisibility faceInfo = getVisibleFaces(x, y, z);
+
+                    if (faceInfo.isEntireObscured()) continue;
+
                     renderer.setFaceVisibility(faceInfo);
+
+
                     // The floor division is intended to produce proper offsets
                     tess.setTranslation(
                         -structure.length / 2f + x,
                         plane.length / 2f - y, // y needs to be drawn from top to bottom
                         -row.length() / 2f + z);
+
                     renderer.renderBlockAsItem(info.getLeft(), info.getRight(), 1f);
                 }
             }
         }
-        VertexBuffer vertexBuffer = TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
-        final int vboID = VBOManager.generateDisplayLists(1);
-        VBOManager.registerVBO(vboID, vertexBuffer);
-        return vertexBuffer;
+
+        return TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
     }
 }
