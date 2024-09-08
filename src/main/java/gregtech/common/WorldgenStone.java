@@ -40,7 +40,6 @@ public class WorldgenStone extends GTWorldgen {
     public final Block mBlock;
     public final Collection<String> mBiomeList;
     public final boolean mAllowToGenerateinVoid;
-    private final String aTextWorldgen = "worldgen.";
 
     public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
 
