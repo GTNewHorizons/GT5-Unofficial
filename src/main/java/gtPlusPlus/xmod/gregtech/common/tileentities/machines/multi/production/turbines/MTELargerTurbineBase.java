@@ -687,7 +687,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public long maxAmperesOut() {
-        return g;
+        return 16;
     }
 
     @Override
