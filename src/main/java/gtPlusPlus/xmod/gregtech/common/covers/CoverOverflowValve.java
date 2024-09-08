@@ -16,6 +16,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
@@ -26,15 +27,13 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
 public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.OverflowValveData> {
 
     private final int minOverflowPoint = 0;
     private final int maxOverflowPoint;
-
-    private boolean allowfluidOutput = true;
-    private boolean allowfluidInput = true;
 
     public CoverOverflowValve(int maxOverflowPoint) {
         super(OverflowValveData.class);
@@ -43,12 +42,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public OverflowValveData createDataObject() {
-        return new OverflowValveData(0, 0);
+        return new OverflowValveData(0, 0, false, false);
     }
 
     @Override
     public OverflowValveData createDataObject(int aLegacyData) {
-        return new OverflowValveData(0, 0);
+        return new OverflowValveData(0, 0, false, false);
     }
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
@@ -64,7 +63,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     @Override
     protected OverflowValveData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
-        if (data == null) return new OverflowValveData(0, 0);
+        if (data == null) return new OverflowValveData(0, 0, false, false);
 
         if (data.overflowPoint == 0) return data;
 
@@ -110,13 +109,13 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     @Override
     protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, OverflowValveData data, Fluid aFluid,
         ICoverable aTileEntity) {
-        return allowfluidOutput;
+        return data.canFluidOutput;
     }
 
     @Override
     protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, OverflowValveData data, Fluid aFluid,
         ICoverable aTileEntity) {
-        return allowfluidInput;
+        return data.canFluidInput;
     }
 
     @Override
@@ -245,24 +244,91 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
                                 .setPos(startX, startY + spaceY * 3 - 2)
-                                .setSize(width, height)));
+                                .setSize(width, height)))
+                .widget(
+                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                        this::getCoverData,
+                        this::setCoverData,
+                        CoverOverflowValve.this,
+                        this::getClickable,
+                        this::updateData)
+                            .addToggleButton(
+                                0,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                                    .addTooltip(GTUtility.trans("322.2", "Allow fluid Input"))
+                                    .setPos(100, spaceY * 2))
+                            .addToggleButton(
+                                1,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                                    .addTooltip(GTUtility.trans("322.3", "Block fluid Input"))
+                                    .setPos(100 + 20, spaceY * 2))
+                            .addToggleButton(
+                                2,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
+                                    .addTooltip(GTUtility.trans("322.4", "Allow fluid output"))
+                                    .setPos(100, spaceY * 2 + 20))
+                            .addToggleButton(
+                                3,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
+                                    .addTooltip(GTUtility.trans("322.5", "Block fluid output"))
+                                    .setPos(100 + 20, spaceY * 2 + 20)));
+        }
+
+        private boolean getClickable(int id, OverflowValveData data) {
+            return switch (id) {
+                case 0 -> data.canFluidInput;
+                case 1 -> !data.canFluidInput;
+                case 2 -> data.canFluidOutput;
+                case 3 -> !data.canFluidOutput;
+                default -> throw new IllegalStateException("Wrong button id: " + id);
+            };
+        }
+
+        private OverflowValveData updateData(int id, OverflowValveData data) {
+            return switch (id) {
+                case 0 -> {
+                    data.canFluidInput = true;
+                    yield data;
+                }
+                case 1 -> {
+                    data.canFluidInput = false;
+                    yield data;
+                }
+                case 2 -> {
+                    data.canFluidOutput = true;
+                    yield data;
+                }
+                case 3 -> {
+                    data.canFluidOutput = false;
+                    yield data;
+                }
+                default -> throw new IllegalStateException("Wrong button id: " + id);
+            };
         }
     }
 
     public static class OverflowValveData implements ISerializableObject {
 
-        public int overflowPoint;
-        public int voidingRate;
+        private int overflowPoint;
+        private int voidingRate;
+        private boolean canFluidInput;
+        private boolean canFluidOutput;
 
-        public OverflowValveData(int overflowPoint, int voidingRate) {
+        public OverflowValveData(int overflowPoint, int voidingRate, boolean canFluidInput, boolean canFluidOutput) {
             this.overflowPoint = overflowPoint;
             this.voidingRate = voidingRate;
+            this.canFluidInput = canFluidInput;
+            this.canFluidOutput = canFluidOutput;
         }
 
         @Override
         @NotNull
         public ISerializableObject copy() {
-            return new OverflowValveData(overflowPoint, voidingRate);
+            return new OverflowValveData(overflowPoint, voidingRate, canFluidInput, canFluidOutput);
         }
 
         @Override
@@ -271,13 +337,17 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("overflowPoint", overflowPoint);
             tag.setInteger("voidingRate", voidingRate);
+            tag.setBoolean("canFluidInput", canFluidInput);
+            tag.setBoolean("canFluidOutput", canFluidOutput);
             return tag;
         }
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
             aBuf.writeInt(overflowPoint)
-                .writeInt(voidingRate);
+                .writeInt(voidingRate)
+                .writeBoolean(canFluidInput)
+                .writeBoolean(canFluidOutput);
         }
 
         @Override
@@ -285,6 +355,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             if (aNBT instanceof NBTTagCompound tag) {
                 overflowPoint = tag.getInteger("overflowPoint");
                 voidingRate = tag.getInteger("voidingRate");
+                canFluidInput = tag.getBoolean("canFluidInput");
+                canFluidOutput = tag.getBoolean("canFluidOutput");
             }
         }
 
@@ -293,6 +365,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
             overflowPoint = aBuf.readInt();
             voidingRate = aBuf.readInt();
+            canFluidInput = aBuf.readBoolean();
+            canFluidOutput = aBuf.readBoolean();
             return this;
         }
     }
