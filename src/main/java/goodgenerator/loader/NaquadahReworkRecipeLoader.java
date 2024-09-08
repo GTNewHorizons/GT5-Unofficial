@@ -576,6 +576,40 @@ public class NaquadahReworkRecipeLoader {
             .eut(TierEU.RECIPE_IV)
             .addTo(vacuumFreezerRecipes);
     }
+
+    public static String displayRecipe(GTRecipe recipe) {
+        StringBuilder result = new StringBuilder();
+        // item inputs
+        result.append("Item inputs: ");
+        for (ItemStack itemstack : recipe.mInputs) {
+            result.append(itemstack.getUnlocalizedName());
+            result.append(", ");
+        }
+
+        // fluid inputs
+        result.append(" Fluid inputs: ");
+        for (FluidStack fluidStack : recipe.mFluidInputs) {
+            result.append(fluidStack.getUnlocalizedName());
+            result.append(", ");
+        }
+
+        // item outputs
+        result.append(" Item outputs: ");
+        for (ItemStack itemstack : recipe.mOutputs) {
+            result.append(itemstack.getUnlocalizedName());
+            result.append(", ");
+        }
+
+        // fluid outputs
+        result.append(" Fluid outputs: ");
+        for (FluidStack fluidStack : recipe.mFluidOutputs) {
+            result.append(fluidStack.getUnlocalizedName());
+            result.append(", ");
+        }
+
+        return result.toString();
+    }
+
     public static void Remover() {
 
         GTLog.out.print(GoodGenerator.MOD_ID + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
@@ -586,46 +620,20 @@ public class NaquadahReworkRecipeLoader {
         // For Crusher
         for (GTRecipe recipe : RecipeMaps.maceratorRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    if ((OreDictionary.getOreName(oreDictID)
-                        .startsWith("ore")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("rawOre")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("crushed"))
-                        && OreDictionary.getOreName(oreDictID)
-                            .contains("Naq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
-                    }
+            if (!GTUtility.isStackValid(input)) continue;
+
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            for (int oreDictID : oreDict) {
+                String oreDictName = OreDictionary.getOreName(oreDictID);
+                if (!((oreDictName.startsWith("ore") || oreDictName.startsWith("rawOre")
+                    || oreDictName.startsWith("crushed")) && oreDictName.contains("Naq"))) {
+                    continue;
                 }
+
+                processRecipe(remove, reAdd, recipe);
+                break;
             }
+
         }
         RecipeMaps.maceratorRecipes.getBackend()
             .removeRecipes(remove);
@@ -643,42 +651,18 @@ public class NaquadahReworkRecipeLoader {
         // For Washer
         for (GTRecipe recipe : RecipeMaps.oreWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("crushed")
-                        && OreDictionary.getOreName(oreDictID)
-                            .contains("Naq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
-                    }
-                }
+            if (!GTUtility.isStackValid(input)) continue;
+
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            for (int oreDictID : oreDict) {
+                String oredictName = OreDictionary.getOreName(oreDictID);
+                if (!oredictName.startsWith("crushed") || !oredictName.contains("Naq")) continue;
+
+                processRecipe(remove, reAdd, recipe);
+                break;
+
             }
+
         }
         RecipeMaps.oreWasherRecipes.getBackend()
             .removeRecipes(remove);
@@ -696,43 +680,17 @@ public class NaquadahReworkRecipeLoader {
         // For Thermal Centrifuge
         for (GTRecipe recipe : RecipeMaps.thermalCentrifugeRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("crushed")
-                        && OreDictionary.getOreName(oreDictID)
-                            .contains("Naq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
-                    }
-                }
+            if (!GTUtility.isStackValid(input)) continue;
+
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            for (int oreDictID : oreDict) {
+                String oredictName = OreDictionary.getOreName(oreDictID);
+                if (!oredictName.startsWith("crushed") || !oredictName.contains("Naq")) continue;
+
+                processRecipe(remove, reAdd, recipe);
             }
         }
+
         RecipeMaps.thermalCentrifugeRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(RecipeMaps.thermalCentrifugeRecipes::add);
@@ -750,92 +708,85 @@ public class NaquadahReworkRecipeLoader {
         for (GTRecipe recipe : RecipeMaps.centrifugeRecipes.getAllRecipes()) {
             ItemStack input = null;
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                if (checkCombs && input.isItemEqual(GTBees.combs.getStackForType(CombType.DOB))) {
-                    GTRecipe tRecipe = recipe.copy();
-                    boolean modified = false;
-                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                        if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                        if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
-                            tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                tRecipe.mOutputs[i].stackSize * 2L,
-                                naquadahEarth.get(OrePrefixes.dustTiny, 1));
-                            modified = true;
-                        }
-                    }
-                    if (modified) {
-                        reAdd.add(tRecipe);
-                        remove.add(recipe);
-                    }
-                } else for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dustPureNaq")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustImpureNaq")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustSpace")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustNaq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dustTiny, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dustTiny, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dustSmall, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustSmall(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dustSmall, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
+            if (!GTUtility.isStackValid(input)) continue;
+
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            if (checkCombs && input.isItemEqual(GTBees.combs.getStackForType(CombType.DOB))) {
+                GTRecipe tRecipe = recipe.copy();
+                boolean modified = false;
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
+                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2L, naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                        modified = true;
                     }
                 }
+                if (modified) {
+                    GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
+                    reAdd.add(tRecipe);
+                    remove.add(recipe);
+                }
+                continue;
             }
+
+            for (int oreDictID : oreDict) {
+                String oredictName = OreDictionary.getOreName(oreDictID);
+                if (!oredictName.startsWith("dustPureNaq") && !oredictName.startsWith("dustImpureNaq")
+                    && !oredictName.startsWith("dustSpace")
+                    && !oredictName.startsWith("dustNaq")) {
+                    continue;
+                }
+                GTRecipe tRecipe = recipe.copy();
+                boolean modified = false;
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
+                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dustTiny, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dustSmall, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustSmall(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            naquadriaEarth.get(OrePrefixes.dustSmall, 1));
+                    } else {
+                        continue;
+                    }
+
+                    modified = true;
+                }
+                if (modified) {
+                    GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
+                    reAdd.add(tRecipe);
+                    remove.add(recipe);
+                }
+                break;
+
+            }
+
         }
         RecipeMaps.centrifugeRecipes.getBackend()
             .removeRecipes(remove);
@@ -854,92 +805,81 @@ public class NaquadahReworkRecipeLoader {
         for (GTRecipe recipe : RecipeMaps.centrifugeNonCellRecipes.getAllRecipes()) {
             ItemStack input = null;
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                if (checkCombs && input.isItemEqual(GTBees.combs.getStackForType(CombType.DOB))) {
-                    GTRecipe tRecipe = recipe.copy();
-                    boolean modified = false;
-                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                        if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                        if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
-                            tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                tRecipe.mOutputs[i].stackSize * 2L,
-                                naquadahEarth.get(OrePrefixes.dustTiny, 1));
-                            modified = true;
-                        }
-                    }
-                    if (modified) {
-                        reAdd.add(tRecipe);
-                        remove.add(recipe);
-                    }
-                } else for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dustPureNaq")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustImpureNaq")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustSpace")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustNaq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dustTiny, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dustTiny, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dustSmall, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustSmall(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dustSmall, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
+            if (!GTUtility.isStackValid(input)) continue;
+
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            if (checkCombs && input.isItemEqual(GTBees.combs.getStackForType(CombType.DOB))) {
+                GTRecipe tRecipe = recipe.copy();
+                boolean modified = false;
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
+                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2L, naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                        modified = true;
                     }
                 }
+                if (modified) {
+                    GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
+                    reAdd.add(tRecipe);
+                    remove.add(recipe);
+                }
+            } else for (int oreDictID : oreDict) {
+                String oredictName = OreDictionary.getOreName(oreDictID);
+                if (!oredictName.startsWith("dustPureNaq") && !oredictName.startsWith("dustImpureNaq")
+                    && !oredictName.startsWith("dustSpace")
+                    && !oredictName.startsWith("dustNaq")) continue;
+
+                GTRecipe tRecipe = recipe.copy();
+                boolean modified = false;
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
+                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dustTiny, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dustSmall, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustSmall(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            naquadriaEarth.get(OrePrefixes.dustSmall, 1));
+
+                    } else {
+                        continue;
+                    }
+                    modified = true;
+                }
+                if (modified) {
+                    GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
+                    reAdd.add(tRecipe);
+                    remove.add(recipe);
+                }
+                break;
+
             }
+
         }
         RecipeMaps.centrifugeNonCellRecipes.getBackend()
             .removeRecipes(remove);
@@ -957,42 +897,15 @@ public class NaquadahReworkRecipeLoader {
         // For Hammer
         for (GTRecipe recipe : RecipeMaps.hammerRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("crushed")
-                        && OreDictionary.getOreName(oreDictID)
-                            .contains("Naq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize * 2,
-                                    naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
-                    }
-                }
+            if (!GTUtility.isStackValid(input)) continue;
+
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            for (int oreDictID : oreDict) {
+                String oredictName = OreDictionary.getOreName(oreDictID);
+                if (!oredictName.startsWith("crushed") || !oredictName.contains("Naq")) continue;
+                processRecipe(remove, reAdd, recipe);
             }
+
         }
         RecipeMaps.hammerRecipes.getBackend()
             .removeRecipes(remove);
@@ -1037,6 +950,7 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
             if (modified) {
+                GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
                 reAdd.add(tRecipe);
                 remove.add(recipe);
             }
@@ -1084,6 +998,7 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
             if (modified) {
+                GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
                 reAdd.add(tRecipe);
                 remove.add(recipe);
             }
@@ -1101,51 +1016,42 @@ public class NaquadahReworkRecipeLoader {
 
         GTLog.out.print("Multi Chemical Reactor done!\n");
 
-        // For Gt++ Multi Centrifuge
-        // Apparently NEI will break down if one modifies the hash list directly.
-        // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
-        // RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-        // RecipeMaps.centrifugeRecipes,
-        // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
-        // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
-
         // For Simple Washer
         for (GTRecipe recipe : GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
-            if (GTUtility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dustImpureNaq")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustPureNaq")) {
-                        GTRecipe tRecipe = recipe.copy();
-                        boolean modified = false;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility
-                                    .copyAmount(tRecipe.mOutputs[i].stackSize, naquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                    tRecipe.mOutputs[i].stackSize,
-                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                tRecipe.mOutputs[i] = GTUtility
-                                    .copyAmount(tRecipe.mOutputs[i].stackSize, naquadriaEarth.get(OrePrefixes.dust, 1));
-                                modified = true;
-                            }
-                        }
-                        if (modified) {
-                            reAdd.add(tRecipe);
-                            remove.add(recipe);
-                        }
-                        break;
+            if (!GTUtility.isStackValid(input)) continue;
+            int[] oreDict = OreDictionary.getOreIDs(input);
+            for (int oreDictID : oreDict) {
+                String oredictName = OreDictionary.getOreName(oreDictID);
+                if (!oredictName.startsWith("dustImpureNaq") && !oredictName.startsWith("dustPureNaq")) continue;
+
+                GTRecipe tRecipe = recipe.copy();
+                boolean modified = false;
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
+                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize, naquadahEarth.get(OrePrefixes.dust, 1));
+                        modified = true;
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize, enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                        modified = true;
+                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
+                        tRecipe.mOutputs[i] = GTUtility
+                            .copyAmount(tRecipe.mOutputs[i].stackSize, naquadriaEarth.get(OrePrefixes.dust, 1));
+                        modified = true;
                     }
                 }
+                if (modified) {
+                    GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
+                    reAdd.add(tRecipe);
+                    remove.add(recipe);
+                }
+                break;
+
             }
+
         }
         GTPPRecipeMaps.simpleWasherRecipes.getBackend()
             .removeRecipes(remove);
@@ -1174,6 +1080,32 @@ public class NaquadahReworkRecipeLoader {
 
         GTLog.out.print(GoodGenerator.MOD_ID + ": Replace Unknown! ");
         GTLog.out.print("Crafting Table done!\n");
+    }
+
+    private static void processRecipe(HashSet<GTRecipe> remove, HashSet<GTRecipe> reAdd, GTRecipe recipe) {
+        GTRecipe tRecipe = recipe.copy();
+        boolean modified = false;
+        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+            if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
+            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                tRecipe.mOutputs[i] = GTUtility
+                    .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                modified = true;
+            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
+                tRecipe.mOutputs[i] = GTUtility
+                    .copyAmount(tRecipe.mOutputs[i].stackSize * 2, enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                modified = true;
+            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
+                tRecipe.mOutputs[i] = GTUtility
+                    .copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                modified = true;
+            }
+        }
+        if (modified) {
+            GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
+            reAdd.add(tRecipe);
+            remove.add(recipe);
+        }
     }
 
     public static void replaceInCraftTable(Object obj) {
