@@ -515,9 +515,8 @@ public class Godforge implements Runnable {
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHODIUM.getTinyDust(1), 6000);
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().IODINE.getTinyDust(1), 6000);
         exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().HAFNIUM.getTinyDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().CURIUM.getTinyDust(1), 10000);
 
-        // This is here because it cant be solidified
-        exoticModulePlasmaFluidMap.put(new FluidStack(MaterialsElements.getInstance().CURIUM.getFluid(), 1), 10000);
         // Mercury is weird, it has neither dust nor gas, so it needs to be added separately
         exoticModulePlasmaFluidMap.put(Materials.Mercury.getFluid(1), 6000);
 
