@@ -2,21 +2,15 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -26,10 +20,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -43,12 +35,10 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import bartworks.common.loaders.ItemRegistry;
-import kekztech.client.gui.KTUITextures;
-import gregtech.api.GregTechAPI;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
@@ -57,16 +47,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.GTUtility;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import kekztech.client.gui.KTUITextures;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     implements IConstructable, ISurvivalConstructable {
@@ -173,29 +163,29 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public CheckRecipeResult checkProcessing() {
-            startRecipeProcessing();
-            List<FluidStack> inputFluids = getStoredFluids();
-            long containedAntimatter = 0;
-            FluidStack catalystFluid = null;
-            int i = 0;
+        startRecipeProcessing();
+        List<FluidStack> inputFluids = getStoredFluids();
+        long containedAntimatter = 0;
+        FluidStack catalystFluid = null;
+        int i = 0;
 
-            while (i < inputFluids.size()) {
-                FluidStack inputFluid = inputFluids.get(i);
-                if (inputFluid.isFluidEqual(MaterialsUEVplus.Antimatter.getFluid(1))) {
-                    containedAntimatter += inputFluid.amount;
-                } else {
-                    catalystFluid = inputFluid.copy();
-                }
-                // We annihilate everything, even if it was the wrong fluid
-                inputFluid.amount = 0;
-                i++;
+        while (i < inputFluids.size()) {
+            FluidStack inputFluid = inputFluids.get(i);
+            if (inputFluid.isFluidEqual(MaterialsUEVplus.Antimatter.getFluid(1))) {
+                containedAntimatter += inputFluid.amount;
+            } else {
+                catalystFluid = inputFluid.copy();
             }
-            // If i != 2, we iterated more than 2 times and have too many fluids.
-            if (i == 2 && containedAntimatter > 0 && catalystFluid != null) {
-                createEU(containedAntimatter, catalystFluid);
-            }
+            // We annihilate everything, even if it was the wrong fluid
+            inputFluid.amount = 0;
+            i++;
+        }
+        // If i != 2, we iterated more than 2 times and have too many fluids.
+        if (i == 2 && containedAntimatter > 0 && catalystFluid != null) {
+            createEU(containedAntimatter, catalystFluid);
+        }
 
-            endRecipeProcessing();
+        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -216,12 +206,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         long generatedEU = 0;
 
         if (modifier != null) {
-            generatedEU = (long) ((Math.pow(antimatter, modifier) * 1e12)
-                * (Math.min(((float)antimatter / (float)catalystCount), ((float)catalystCount / (float)antimatter))));
+            generatedEU = (long) ((Math.pow(antimatter, modifier) * 1e12) * (Math
+                .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter))));
         }
 
         if (wirelessEnabled && modifier >= 1.03F) {
-            //Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
+            // Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
             long euCapacity = 0;
             for (MTEHatch tHatch : getExoticEnergyHatches()) {
                 if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
@@ -231,7 +221,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             generatedEU = Math.min(generatedEU, euCapacity);
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
         } else {
-            float invHatchCount = 1.0F / (float)mExoticEnergyHatches.size();
+            float invHatchCount = 1.0F / (float) mExoticEnergyHatches.size();
             for (MTEHatch tHatch : getExoticEnergyHatches()) {
                 if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
                     tLaserSource.setEUVar(tLaserSource.getEUVar() + (long) (generatedEU * invHatchCount));
@@ -255,7 +245,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public void construct(ItemStack itemStack, boolean hintsOnly) {
         buildPiece(MAIN_NAME, itemStack, hintsOnly, 17, 41, 0);
     }
-
 
     @Override
     public void saveNBTData(NBTTagCompound nbt) {
@@ -326,27 +315,37 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Antimatter Generator")
-        .addInfo("Annihilating antimatter like it's 2205!")
-        .addSeparator()
-        .addInfo("Generates energy by reacting Semi-Stable Antimatter with matter")
-        .addInfo("Annihilation uses an equal amount of antimatter and matter")
-        .addInfo("Consumes " + EnumChatFormatting.GOLD + "all inputs" + EnumChatFormatting.GRAY + " every processing cycle")
-        .addInfo("Imbalance between antimatter and matter " + EnumChatFormatting.RED + "will waste energy!" + EnumChatFormatting.GRAY)
-        .addInfo("Any EU that does not fit in laser hatches will be " + EnumChatFormatting.RED +  "voided" + EnumChatFormatting.GRAY)
-        .addSeparator()
-        .addInfo("Antimatter base energy value: 1,000,000,000 EU/L")
-        .addInfo("Energy production is exponentially increased depending on the matter used:")
-        .addInfo("Molten Copper: 1.00")
-        .addInfo("Molten SC UIV Base: 1.02")
-        .addInfo("Molten SC UMV Base: 1.03")
-        .addInfo("Molten Black Dwarf Matter: 1.04")
-        .addSeparator()
-        .addInfo("Enable wireless EU mode with screwdriver")
-        .addInfo("Wireless mode requires SC UMV Base or better")
-        .addInfo("Wireless mode uses hatch capacity limit")
-        .addDynamoHatch("1-9, Hint block with dot 4", 4)
-        .addInputHatch("1-6, Hint block with dot 1", 1)
-        .toolTipFinisher("Good Generator");
+            .addInfo("Annihilating antimatter like it's 2205!")
+            .addSeparator()
+            .addInfo("Generates energy by reacting Semi-Stable Antimatter with matter")
+            .addInfo("Annihilation uses an equal amount of antimatter and matter")
+            .addInfo(
+                "Consumes " + EnumChatFormatting.GOLD
+                    + "all inputs"
+                    + EnumChatFormatting.GRAY
+                    + " every processing cycle")
+            .addInfo(
+                "Imbalance between antimatter and matter " + EnumChatFormatting.RED
+                    + "will waste energy!"
+                    + EnumChatFormatting.GRAY)
+            .addInfo(
+                "Any EU that does not fit in laser hatches will be " + EnumChatFormatting.RED
+                    + "voided"
+                    + EnumChatFormatting.GRAY)
+            .addSeparator()
+            .addInfo("Antimatter base energy value: 1,000,000,000 EU/L")
+            .addInfo("Energy production is exponentially increased depending on the matter used:")
+            .addInfo("Molten Copper: 1.00")
+            .addInfo("Molten SC UIV Base: 1.02")
+            .addInfo("Molten SC UMV Base: 1.03")
+            .addInfo("Molten Black Dwarf Matter: 1.04")
+            .addSeparator()
+            .addInfo("Enable wireless EU mode with screwdriver")
+            .addInfo("Wireless mode requires SC UMV Base or better")
+            .addInfo("Wireless mode uses hatch capacity limit")
+            .addDynamoHatch("1-9, Hint block with dot 4", 4)
+            .addInputHatch("1-6, Hint block with dot 1", 1)
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
