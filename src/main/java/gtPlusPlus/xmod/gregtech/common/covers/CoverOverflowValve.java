@@ -230,7 +230,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 .setPos(startX, startY + spaceY * 1 - 2)
                                 .setSize(width, height)))
                 .widget(
-                    new TextWidget(GTUtility.trans("", "Voiding rate: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(GTUtility.trans("322.1", "Voiding rate: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + 1, startY + spaceY * 2 + 1))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)

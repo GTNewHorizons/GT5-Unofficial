@@ -513,6 +513,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_320", "Other players");
         addStringLocalization("Interaction_DESCRIPTION_Index_321", "Only owner");
         addStringLocalization("Interaction_DESCRIPTION_Index_322", "Overflow point: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_322.1", "Voiding rate: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_323", "L");
         addStringLocalization("Interaction_DESCRIPTION_Index_324", "Now");
         addStringLocalization("Interaction_DESCRIPTION_Index_325", "Max");
