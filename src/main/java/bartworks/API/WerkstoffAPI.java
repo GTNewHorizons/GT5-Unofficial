@@ -14,22 +14,13 @@
 package bartworks.API;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 
 public final class WerkstoffAPI {
 
-    @SuppressWarnings("rawtypes")
-    static Class w;
-
-    static {
-        try {
-            w = Class.forName("bartworks.system.material.WerkstoffLoader");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static Werkstoff getWerkstoff(String aName) throws NoSuchFieldException, IllegalAccessException {
-        return (Werkstoff) w.getField(aName)
+        return (Werkstoff) WerkstoffLoader.class.getField(aName)
             .get(null);
     }
+
 }

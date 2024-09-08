@@ -20,7 +20,7 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture, ICo
 
     protected GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2,
         IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTSidedTextureRender");
         mTextures = new ITexture[] { TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
             TextureFactory.of(aIcon1, aRGBa, aAllowAlpha), TextureFactory.of(aIcon2, aRGBa, aAllowAlpha),
             TextureFactory.of(aIcon3, aRGBa, aAllowAlpha), TextureFactory.of(aIcon4, aRGBa, aAllowAlpha),

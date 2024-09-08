@@ -43,6 +43,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
+import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -874,6 +875,20 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialsUEVplus.PhononMedium.getFluid(1000L))
             .eut(TierEU.RECIPE_UIV)
             .duration(2 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                MaterialsUEVplus.TranscendentMetal.getDust(2),
+                GGMaterial.tairitsu.get(OrePrefixes.dust, 2),
+                Materials.Tartarite.getDust(2),
+                TITANSTEEL.getDust(1),
+                Materials.Infinity.getDust(1))
+            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
+            .fluidOutputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(1152))
+            .eut(TierEU.RECIPE_UEV)
+            .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
     }
 

@@ -28,7 +28,7 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
 
     public BioLabNEIHandler(RecipeCategory recipeCategory) {
         super(recipeCategory);
-        if (!BWNEIConfig.sIsAdded) {
+        if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                 GTValues.GT,
                 "NEIPlugins",
@@ -50,7 +50,7 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
             && aResult.getItemDamage() < 3
             && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : this.getCache())
-                if (BWNEIConfig.checkRecipe(aResult, recipe.mOutputs)) this.arecipes.add(recipe);
+                if (NEIBWConfig.checkRecipe(aResult, recipe.mOutputs)) this.arecipes.add(recipe);
         } else {
             super.loadCraftingRecipes(aResult);
         }
@@ -62,7 +62,7 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
             && aResult.getItemDamage() < 3
             && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : this.getCache())
-                if (BWNEIConfig.checkRecipe(aResult, recipe.mInputs)) this.arecipes.add(recipe);
+                if (NEIBWConfig.checkRecipe(aResult, recipe.mInputs)) this.arecipes.add(recipe);
         } else {
             super.loadUsageRecipes(aResult);
         }

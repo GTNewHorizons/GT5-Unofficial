@@ -206,7 +206,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addSeparator()
             .addInfo("Every purification unit has a configuration window to configure maximum parallel amount.")
             .addInfo(
-                "This will only scale purified water I/O and power usage. Other catalysts and outputs are unchanged.")
+                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged.")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -680,7 +680,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .widget(
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));;
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
 
         return row;
     }

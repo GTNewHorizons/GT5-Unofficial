@@ -31,7 +31,7 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
 
     public BioVatNEIHandler(RecipeCategory recipeCategory) {
         super(recipeCategory);
-        if (!BWNEIConfig.sIsAdded) {
+        if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                 GTValues.GT,
                 "NEIPlugins",
@@ -53,7 +53,7 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
             // see constructor of CachedDefaultRecipe on why relx==120 and rely==52 means special slot
             for (PositionedStack stack : recipe.mInputs) {
                 if (stack.relx == 120 && stack.rely == 52
-                    && BWNEIConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
+                    && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
             }
         }
     }

@@ -117,7 +117,7 @@ public class GodforgeMath {
             }
         }
 
-        module.setSpeedBonus((float) speedBonus);
+        module.setSpeedBonus(speedBonus);
     }
 
     public static void calculateMaxParallelForModules(MTEBaseModule module, MTEForgeOfGods godforge) {

@@ -22,11 +22,10 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions({ "bartworks.ASM", "gtPlusPlus.preloader", "gregtech.asm" })
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
-@SuppressWarnings("unused") // loaded by FML
 public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
-    public static final String BWCORE_PLUGIN_NAME = "BartWorks ASM Core Plugin";
     public static File minecraftDir;
+    private static Boolean islwjgl3Present = null;
 
     public GTCorePlugin() {
         // Injection Code taken from CodeChickenLib
@@ -76,4 +75,18 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public List<String> getMixins(Set<String> loadedCoreMods) {
         return Mixin.getEarlyMixins(loadedCoreMods);
     }
+
+    public static boolean islwjgl3Present() {
+        if (islwjgl3Present == null) {
+            try {
+                final String className = "org.lwjgl.system.Platform";
+                islwjgl3Present = ClassLoader.getSystemClassLoader()
+                    .getResource(className) != null;
+            } catch (Exception e) {
+                islwjgl3Present = Boolean.FALSE;
+            }
+        }
+        return islwjgl3Present;
+    }
+
 }

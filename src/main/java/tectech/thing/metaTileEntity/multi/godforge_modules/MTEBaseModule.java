@@ -70,8 +70,8 @@ public class MTEBaseModule extends TTMultiblockBase {
     protected int overclockHeat = 0;
     protected int maximumParallel = 0;
     protected int plasmaTier = 0;
-    protected float processingSpeedBonus = 0;
-    protected float energyDiscount = 0;
+    protected double processingSpeedBonus = 0;
+    protected double energyDiscount = 0;
     protected long processingVoltage = 2_000_000_000;
     protected BigInteger powerTally = BigInteger.ZERO;
     protected long recipeTally = 0;
@@ -155,19 +155,19 @@ public class MTEBaseModule extends TTMultiblockBase {
         return maximumParallel;
     }
 
-    public void setSpeedBonus(float bonus) {
+    public void setSpeedBonus(double bonus) {
         processingSpeedBonus = bonus;
     }
 
-    public float getSpeedBonus() {
+    public double getSpeedBonus() {
         return processingSpeedBonus;
     }
 
-    public void setEnergyDiscount(float discount) {
+    public void setEnergyDiscount(double discount) {
         energyDiscount = discount;
     }
 
-    public float getEnergyDiscount() {
+    public double getEnergyDiscount() {
         return energyDiscount;
     }
 
@@ -199,8 +199,8 @@ public class MTEBaseModule extends TTMultiblockBase {
         isMagmatterCapable = isCapable;
     }
 
-    public float getHeatEnergyDiscount() {
-        return isUpgrade83Unlocked ? 0.92f : 0.95f;
+    public double getHeatEnergyDiscount() {
+        return isUpgrade83Unlocked ? 0.92 : 0.95;
     }
 
     public void setPlasmaTier(int tier) {

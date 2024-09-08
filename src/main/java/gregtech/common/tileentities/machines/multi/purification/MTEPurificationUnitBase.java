@@ -318,7 +318,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public FluidStack getWaterBoostAmount(GTRecipe recipe) {
         // Recipes should always be constructed so that output water is always the first fluid output
         FluidStack outputWater = recipe.mFluidOutputs[0];
-        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID);
+        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
         return new FluidStack(outputWater.getFluid(), amount);
     }
 
@@ -337,11 +337,15 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     /**
      * Consumes all <b>fluid</b> inputs of the current recipe.
+     * Should only scale the first fluid input with water
      */
     public void depleteRecipeInputs() {
-        for (FluidStack input : this.currentRecipe.mFluidInputs) {
+        for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
+            FluidStack input = this.currentRecipe.mFluidInputs[i];
             FluidStack copyWithParallel = input.copy();
-            copyWithParallel.amount = input.amount * effectiveParallel;
+            if (i == 0) {
+                copyWithParallel.amount = input.amount * effectiveParallel;
+            }
             this.depleteInput(copyWithParallel);
         }
     }
@@ -376,8 +380,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
+            fluidOutputs[i].amount *= effectiveParallel;
         }
-        fluidOutputs[0].amount *= effectiveParallel;
         this.mOutputFluids = fluidOutputs;
         this.mOutputItems = this.currentRecipe.mOutputs;
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is

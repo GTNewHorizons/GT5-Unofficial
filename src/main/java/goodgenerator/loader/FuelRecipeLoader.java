@@ -111,7 +111,7 @@ public class FuelRecipeLoader {
                 GGMaterial.orundum.get(OrePrefixes.dust, 64))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
-                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 720))
+                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 240))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(500))
             .duration(8 * SECONDS)
             .eut(75_000_000)
@@ -129,7 +129,7 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 GGMaterial.heavyNaquadahFuel.getFluidOrGas(4000),
                 GGMaterial.lightNaquadahFuel.getFluidOrGas(5000),
-                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 360),
+                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 120),
                 new FluidStack(FluidRegistry.getFluid("molten.chromaticglass"), 6480))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(10 * TICKS)

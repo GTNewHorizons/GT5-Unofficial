@@ -342,7 +342,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("GT_MetaTileEntity_WorldAccelerator.onPostTick.crash\n" + e.getMessage());
+            GTLog.err.println("MTEWorldAccelerator.onPostTick.crash\n" + e.getMessage());
         }
     }
 
@@ -367,7 +367,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("GT_MetaTileEntity_WorldAccelerator.doAccelerateTileEntities.crash\n" + e.getMessage());
+            GTLog.err.println("MTEWorldAccelerator.doAccelerateTileEntities.crash\n" + e.getMessage());
         }
     }
 
@@ -464,7 +464,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("GT_MetaTileEntity_WorldAccelerator.tryTickBlock.crash\n" + e.getMessage());
+            GTLog.err.println("MTEWorldAccelerator.tryTickBlock.crash\n" + e.getMessage());
         }
     }
 }
