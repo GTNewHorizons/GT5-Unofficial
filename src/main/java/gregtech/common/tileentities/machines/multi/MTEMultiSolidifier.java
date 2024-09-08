@@ -1,9 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
-import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
-import static gregtech.api.enums.GTValues.authorBaps;
+import static gregtech.api.enums.GTValues.*;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -172,22 +170,35 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
+            .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Starts with 4 Parallels")
             .addInfo("Gain 1.5 Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
+            .addInfo(AuthorOmdaCZ)
             .addInfo(
-                AuthorOmdaCZ + " with help of "
-                    + AuthorFourIsTheNumber
+                "With the Help Of" + " "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Four"
+                    + EnumChatFormatting.RESET
+                    + ", "
                     + EnumChatFormatting.AQUA
-                    + ", GDCloud "
-                    + "& "
-                    + authorBaps)
+                    + "GDCloud"
+                    + EnumChatFormatting.RESET
+                    + ", "
+                    + EnumChatFormatting.GOLD
+                    + "Ba"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "ps"
+                    + EnumChatFormatting.RESET
+                    + " & "
+                    + EnumChatFormatting.DARK_AQUA
+                    + "TheEpicGamer274")
             .addSeparator()
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Solidifier Casing", 146, true)
-            .addCasingInfoMin("Radiator Casing", 18, true)
+            .addCasingInfoMin("Solidifier Casing", 146, false)
+            .addCasingInfoMin("Radiator Casing", 18, false)
             .addCasingInfoMin("Heat Proof Casing", 4, false)
             .addCasingInfoMin("Solid Steel Casing", 4, false)
             .addInputBus("Any Casing", 1)
@@ -297,23 +308,29 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
             @NotNull
             @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult check = super.process();
+                if (check == CheckRecipeResultRegistry.NO_RECIPE) speedup = 1;
+                return check;
+            }
+
+            @NotNull
+            @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setEuModifier(0.8F);
     }
 
     private float speedup = 1;
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % 20 == 0) {
-            if (this.maxProgresstime() != 0 && speedup <= 3) {
-                speedup += 0.2F;
-            } else speedup = 1;
+    public void onRunningTick(ItemStack aStack, long aTick) {
+        if (aTick % 20 == 0 && speedup < 3) {
+            speedup += 0.2F;
         }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
+        super.onRunningTick(aStack);
     }
 
     public int getMaxParallelRecipes() {
@@ -366,7 +383,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        // Copied all of this from LPF. Surely it works fine
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
