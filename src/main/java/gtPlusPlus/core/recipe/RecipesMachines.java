@@ -2777,7 +2777,7 @@ public class RecipesMachines {
                     GregtechItemList.Casing_Adv_BlastFurnace.get(1),
                     MaterialsAlloy.MARAGING250.getPlate(4),
                     MaterialsAlloy.MARAGING300.getGear(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2),
                     GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
                 .duration(2 * SECONDS + 10 * TICKS)
@@ -2874,29 +2874,21 @@ public class RecipesMachines {
                 CI.getTieredCircuit(5),
                 "plateStaballoy",
                 GregtechItemList.Industrial_Mixer.get(1));
-        }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialMultiMachine) {
-            ItemStack plate = MaterialsAlloy.STABALLOY.getPlate(1);
-
-            ItemStack o_Compressor = ItemList.Machine_IV_Compressor.get(1);
-            ItemStack o_Lathe = ItemList.Machine_IV_Lathe.get(1);
-            ItemStack o_Electromagnet = ItemList.Machine_IV_Polarizer.get(1);
-            ItemStack o_Fermenter = ItemList.Machine_IV_Fermenter.get(1);
-            ItemStack o_Distillery = ItemList.Machine_IV_FluidExtractor.get(1);
-            ItemStack o_Extractor = ItemList.Machine_IV_Extractor.get(1);
+            final ItemStack staballoyPlate = MaterialsAlloy.STABALLOY.getPlate(1);
 
             RecipeUtils.addShapedRecipe(
-                plate,
+                staballoyPlate,
                 CI.craftingToolHammer_Hard,
-                plate,
+                staballoyPlate,
                 "plateStainlessSteel",
                 "frameGtZirconiumCarbide",
                 "plateStainlessSteel",
-                plate,
+                staballoyPlate,
                 CI.craftingToolWrench,
-                plate,
+                staballoyPlate,
                 GregtechItemList.Casing_Multi_Use.get(1));
+
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialsAlloy.STABALLOY.getPlate(4),
@@ -2907,18 +2899,6 @@ public class RecipesMachines {
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(assemblerRecipes);
-
-            RecipeUtils.addShapedRecipe(
-                o_Compressor,
-                o_Lathe,
-                o_Electromagnet,
-                plate,
-                ItemUtils.getSimpleStack(ModBlocks.blockProjectTable),
-                plate,
-                o_Fermenter,
-                o_Distillery,
-                o_Extractor,
-                GregtechItemList.Industrial_MultiMachine.get(1));
         }
 
         // Drilling Platform Casings

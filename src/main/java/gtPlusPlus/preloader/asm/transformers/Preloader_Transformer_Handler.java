@@ -8,7 +8,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.PreloaderLogger;
 import gtPlusPlus.preloader.asm.AsmConfig;
@@ -48,9 +48,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         // Fix LWJGL index array out of bounds on keybinding IDs
         if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS))
             && AsmConfig.enabledLwjglKeybindingFix
-            // Do not transform if using lwjgl3
-            && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
-            boolean isClientSettingsClass = !transformedName.equals("org.lwjgl.input.Keyboard");
+            && !GTCorePlugin.islwjgl3Present()) {
+            boolean isClientSettingsClass = !transformedName.equals(LWJGL_KEYBOARD);
             PreloaderLogger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
             return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter()
                 .toByteArray();

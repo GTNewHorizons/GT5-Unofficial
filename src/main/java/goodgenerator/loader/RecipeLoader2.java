@@ -4,7 +4,6 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorR
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -416,7 +415,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_ZPM.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 1L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 ItemList.Quantum_Tank_EV.get(32),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 8),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.InfinityCatalyst, 8),
@@ -436,7 +435,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UV.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_EV.get(64),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 16),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 24),
@@ -456,7 +455,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_IV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 36),
@@ -477,7 +476,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4L, 0),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(4),
                 ItemList.Quantum_Tank_IV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 24),
@@ -648,12 +647,12 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UIV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                     GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
-                    Materials.Lubricant.getFluid(46080))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T9.get(1))
                 .eut(TierEU.RECIPE_UMV)
                 .duration(50 * SECONDS)
@@ -669,13 +668,13 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UMV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 10))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(14400),
                     MaterialsUEVplus.TranscendentMetal.getMolten(1440),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
-                    Materials.Lubricant.getFluid(46080))
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T10.get(1))
                 .eut(TierEU.RECIPE_UXV)
                 .duration(50 * SECONDS)
@@ -1510,7 +1509,7 @@ public class RecipeLoader2 {
 
         // Compact MK4 Fusion Coil
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(4, 1))
+            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(3, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 1152),
@@ -1809,6 +1808,15 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(36))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .addTo(fusionRecipes);
+
+        // Mk5 recipe
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Copper.getPlasma(288), WerkstoffLoader.Oganesson.getFluidOrGas(500))
+            .fluidOutputs(GGMaterial.metastableOganesson.getMolten(288))
+            .eut(TierEU.RECIPE_UEV)
+            .duration(5 * SECONDS)
             .metadata(FUSION_THRESHOLD, 1_000_000_000)
             .addTo(fusionRecipes);
 

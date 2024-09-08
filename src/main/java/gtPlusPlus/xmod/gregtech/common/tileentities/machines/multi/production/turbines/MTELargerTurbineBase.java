@@ -267,7 +267,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchTurbine aTurbineHatch) {
-            log("Found GT_MetaTileEntity_Hatch_Turbine");
+            log("Found MTEHatchTurbine");
             updateTexture(aTileEntity, aBaseCasingIndex);
             IGregTechTileEntity g = this.getBaseMetaTileEntity();
             if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {

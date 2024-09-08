@@ -126,7 +126,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Constructor} object.
-     * 
+     *
      * @param aClass - Class containing the Constructor.
      * @param aTypes - Varags Class Types for objects constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
@@ -155,7 +155,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Class} object.
-     * 
+     *
      * @param aClassCanonicalName - The canonical name of the underlying class.
      * @return - Valid, {@link Class} object, or {@link null}.
      */
@@ -176,7 +176,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object. Wraps {@link #getMethod(Class, String, Class...)}.
-     * 
+     *
      * @param aObject     - Object containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
      * @param aTypes      - Class Array of Types for {@link Method}'s constructor.
@@ -188,7 +188,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object.
-     * 
+     *
      * @param aClass      - Class containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
      * @param aTypes      - Varags Class Types for {@link Method}'s constructor.
@@ -217,7 +217,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * 
+     *
      * @param aClass     - Class containing the Method.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
@@ -246,7 +246,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * 
+     *
      * @param aInstance  - {@link Object} to get the field instance from.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
@@ -286,7 +286,7 @@ public class ReflectionUtils {
     /**
      * Get the method name for a depth in call stack. <br />
      * Utility function
-     * 
+     *
      * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
      * @return Method name
      */
@@ -321,14 +321,6 @@ public class ReflectionUtils {
         }
 
         return loaded > 0;
-    }
-
-    public static void loadClass(String aClassName) {
-        try {
-            Class.forName(aClassName, true, ReflectionUtils.class.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {

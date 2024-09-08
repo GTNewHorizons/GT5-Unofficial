@@ -3,6 +3,7 @@ package goodgenerator.loader;
 import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 
 import java.util.ArrayList;
@@ -333,8 +334,8 @@ public class ComponentAssemblyLineRecipeLoader {
 
     /**
      * Transforms each {@code ItemStack}, if possible, into a more compact form. For example, a stack of 16 1x cables,
-     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar and
-     * neutronium nanite conversion.
+     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar,
+     * proto-halkonite fine wire and neutronium nanite conversion.
      */
     private static ArrayList<ItemStack> compactItems(List<ItemStack> items, int tier) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
@@ -376,6 +377,19 @@ public class ComponentAssemblyLineRecipeLoader {
                     multiplyAndSplitIntoStacks(
                         GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
                         totalItems / 16));
+                isCompacted = true;
+            }
+            // Proto-Halkonite cannot be molten into a fluid, so instead replace it with an equivalent amount of dense
+            // plates
+            if (GTUtility.areStacksEqual(
+                itemstack,
+                GTOreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.ProtoHalkonite, 1))) {
+                // Superdense plate is 64 plates
+                int superDensePlateAmount = (int) (((totalItems * OrePrefixes.wireFine.mMaterialAmount) / M) / 64);
+                stacks.addAll(
+                    multiplyAndSplitIntoStacks(
+                        GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.ProtoHalkonite, 1),
+                        superDensePlateAmount));
                 isCompacted = true;
             }
             if (!isCompacted) stacks.addAll(multiplyAndSplitIntoStacks(itemstack, totalItems));

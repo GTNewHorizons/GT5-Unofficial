@@ -88,9 +88,11 @@ import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
@@ -633,6 +635,7 @@ public class GTClient extends GTProxy implements Runnable {
         new LaserRenderer();
         new MeteorMinerRenderer();
         new WormholeRenderer();
+        new BlackholeRenderer();
 
         metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
@@ -645,6 +648,7 @@ public class GTClient extends GTProxy implements Runnable {
         new FlaskRenderer();
         new FluidDisplayStackRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
+        MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
     }
 
     @Override
@@ -777,7 +781,7 @@ public class GTClient extends GTProxy implements Runnable {
 
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
-        if (GregTech.ID.equals(e.modID) && "kekztech/client".equals(e.configID)) {
+        if (GregTech.ID.equals(e.modID) && "client".equals(e.configID)) {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
             GTPreLoad.loadClientConfig();

@@ -120,30 +120,26 @@ public class MTEHatchNaquadah extends MTEHatchInput {
 
     private static String[] aDescCache = new String[3];
 
-    private String formatFluidString(FluidStack f) {
-        FluidStack mLockedStack = f;
-        Integer mLockedTemp = 0;;
-        String mTempMod = "" + EnumChatFormatting.RESET;
-        mLockedTemp = mLockedStack.getFluid()
+    private String formatFluidString(FluidStack fluidStack) {
+        String mTempMod = EnumChatFormatting.RESET.toString();
+        int mLockedTemp = fluidStack.getFluid()
             .getTemperature();
-        if (mLockedTemp != null) {
-            if (mLockedTemp <= -3000) {
-                mTempMod = "" + EnumChatFormatting.DARK_PURPLE;
-            } else if (mLockedTemp >= -2999 && mLockedTemp <= -500) {
-                mTempMod = "" + EnumChatFormatting.DARK_BLUE;
-            } else if (mLockedTemp >= -499 && mLockedTemp <= -50) {
-                mTempMod = "" + EnumChatFormatting.BLUE;
-            } else if (mLockedTemp >= 30 && mLockedTemp <= 300) {
-                mTempMod = "" + EnumChatFormatting.AQUA;
-            } else if (mLockedTemp >= 301 && mLockedTemp <= 800) {
-                mTempMod = "" + EnumChatFormatting.YELLOW;
-            } else if (mLockedTemp >= 801 && mLockedTemp <= 1500) {
-                mTempMod = "" + EnumChatFormatting.GOLD;
-            } else if (mLockedTemp >= 1501) {
-                mTempMod = "" + EnumChatFormatting.RED;
-            }
+        if (mLockedTemp <= -3000) {
+            mTempMod = "" + EnumChatFormatting.DARK_PURPLE;
+        } else if (mLockedTemp <= -500) {
+            mTempMod = "" + EnumChatFormatting.DARK_BLUE;
+        } else if (mLockedTemp <= -50) {
+            mTempMod = "" + EnumChatFormatting.BLUE;
+        } else if (mLockedTemp >= 30 && mLockedTemp <= 300) {
+            mTempMod = "" + EnumChatFormatting.AQUA;
+        } else if (mLockedTemp >= 301 && mLockedTemp <= 800) {
+            mTempMod = "" + EnumChatFormatting.YELLOW;
+        } else if (mLockedTemp >= 801 && mLockedTemp <= 1500) {
+            mTempMod = "" + EnumChatFormatting.GOLD;
+        } else if (mLockedTemp >= 1501) {
+            mTempMod = "" + EnumChatFormatting.RED;
         }
-        return mTempMod + mLockedStack.getLocalizedName();
+        return mTempMod + fluidStack.getLocalizedName();
     }
 
     @Override

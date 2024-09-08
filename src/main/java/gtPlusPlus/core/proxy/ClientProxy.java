@@ -46,7 +46,7 @@ import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.nei.GTPPNEIConfig;
+import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.CapeRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
@@ -97,7 +97,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
         new FlaskRenderer();
 
-        MinecraftForge.EVENT_BUS.register(new GTPPNEIConfig());
+        MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
 
         super.init(e);
     }

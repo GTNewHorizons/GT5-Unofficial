@@ -50,7 +50,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     implements ISurvivalConstructable {
 
     private int casingTier;
-    private float speedBonus;
+    private double speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEComponentAssemblyLine>builder()
@@ -321,7 +321,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                speedBonus = (float) (1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue));
+                speedBonus = 1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue);
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus);
             }
         };

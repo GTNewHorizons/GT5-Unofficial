@@ -195,6 +195,7 @@ public enum IDMetaItem01 {
     Spray_Color_Remover(465),
     Spray_Color_Used_Remover(466),
     Spray_Color_Remover_Empty(467),
+    Spray_Color_Infinite(468),
     Tool_Matches(471),
     Tool_MatchBox_Used(472),
     Tool_MatchBox_Full(473),

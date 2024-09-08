@@ -571,7 +571,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
-                    .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setEUtDiscount(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 4.0 : 2.0);
             }
@@ -590,8 +590,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return !mOCTier1 && !mOCTier2;
     }
 
-    private float getDurationMultiplierFromRoughness() {
-        return (float) Math.pow(mRoughnessMultiplier, 2);
+    private double getDurationMultiplierFromRoughness() {
+        return Math.pow(mRoughnessMultiplier, 2);
     }
 
     private int ticker = 0;

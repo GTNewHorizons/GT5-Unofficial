@@ -316,8 +316,8 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
             .setEUt(tEnergy)
             .setDuration(tRecipe.mDuration)
-            .setEUtDiscount(0.75F)
-            .setSpeedBoost(1F / 3F)
+            .setEUtDiscount(0.75)
+            .setSpeedBoost(1 / 3.0)
             .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
             .calculate();
         lEUt = -calculator.getConsumption();
