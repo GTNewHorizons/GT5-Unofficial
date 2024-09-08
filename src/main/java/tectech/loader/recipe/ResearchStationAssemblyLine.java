@@ -2208,8 +2208,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator
                     .get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 6L),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagMatter, 6L),
-                ItemList.Electric_Motor_UXV.get(2L),
-                ItemList.Electric_Piston_UXV.get(1L), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L },
+                ItemList.Electric_Motor_UXV.get(2L), ItemList.Electric_Piston_UXV.get(1L),
+                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L },
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 8L },
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 12L),
