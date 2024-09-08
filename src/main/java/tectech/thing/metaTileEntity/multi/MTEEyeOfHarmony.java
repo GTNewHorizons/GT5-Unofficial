@@ -1702,7 +1702,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             if (nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG) > 0) {
                 tooltip.add(
                     1,
-                    GTLanguageManager.addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Array: ")
+                    GTLanguageManager.addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Arrays: ")
                         + AQUA
                         + formatNumbers(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
             }
