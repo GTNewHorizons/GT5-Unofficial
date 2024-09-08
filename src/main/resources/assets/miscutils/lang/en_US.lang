@@ -1899,7 +1899,7 @@ item.itemBufferCore6.name=Energy Core [IV].
 item.itemBufferCore7.name=Energy Core [LuV].
 item.itemBufferCore8.name=Energy Core [ZPM].
 item.itemBufferCore9.name=Energy Core [UV].
-item.itemBufferCore10.name=Energy Core [MAX].
+item.itemBufferCore10.name=Energy Core [UHV].
 item.itembookgt.name=§oThermal Boiler Manual
 
 // Everglade Items
@@ -2286,16 +2286,16 @@ item.itemDustLautarite.name=Lautarite Dust
 item.itemDustTinyLautarite.name=Tiny Pile of Lautarite Dust
 item.itemDustSmallLautarite.name=Small Pile of Lautarite Dust
 
-tile.OreBariteRd.name=Barite (Rd) Ore
-item.crushedBariteRd.name=Crushed Barite (Rd) Ore
-item.oreRawBariteRd.name=Raw Barite (Rd) Ore
-item.crushedCentrifugedBariteRd.name=Centrifuged Crushed Barite (Rd) Ore
-item.crushedPurifiedBariteRd.name=Purified Crushed Barite (Rd) Ore
-item.dustImpureBariteRd.name=Impure Barite (Rd) Dust
-item.dustPureBariteRd.name=Purified Barite (Rd) Dust
-item.itemDustBariteRd.name=Barite (Rd) Dust
-item.itemDustTinyBariteRd.name=Tiny Pile of Barite (Rd) Dust
-item.itemDustSmallBariteRd.name=Small Pile of Barite (Rd) Dust
+tile.OreBariteRd.name=Barite (Ra) Ore
+item.crushedBariteRd.name=Crushed Barite (Ra) Ore
+item.oreRawBariteRd.name=Raw Barite (Ra) Ore
+item.crushedCentrifugedBariteRd.name=Centrifuged Crushed Barite (Ra) Ore
+item.crushedPurifiedBariteRd.name=Purified Crushed Barite (Ra) Ore
+item.dustImpureBariteRd.name=Impure Barite (Ra) Dust
+item.dustPureBariteRd.name=Purified Barite (Ra) Dust
+item.itemDustBariteRd.name=Barite (Ra) Dust
+item.itemDustTinyBariteRd.name=Tiny Pile of Barite (Ra) Dust
+item.itemDustSmallBariteRd.name=Small Pile of Barite (Ra) Dust
 
 tile.OreHoneaite.name=Honeaite Ore
 item.crushedHoneaite.name=Crushed Honeaite Ore
@@ -2878,7 +2878,7 @@ tile.playerDoorWood.name=Wooden Auto-Door
 item.GTPP.BattPack.06.name=Charge Pack [LuV]
 item.GTPP.BattPack.07.name=Charge Pack [ZPM]
 item.GTPP.BattPack.08.name=Charge Pack [UV]
-item.GTPP.BattPack.09.name=Charge Pack [MAX]
+item.GTPP.BattPack.09.name=Charge Pack [UHV]
 
 
 //Added 13/3/19
