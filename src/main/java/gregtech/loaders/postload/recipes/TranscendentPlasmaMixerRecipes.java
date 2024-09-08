@@ -126,8 +126,9 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Plutonium241.getPlasma(1000L),
                 MaterialsUEVplus.RawStarMatter.getFluid(25L))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000L))
-            .duration(200)
+            .duration(100)
             .eut(STELLAR_EU_PER_HALF_L)
+            .metadata(GTRecipeConstants.EU_MULTIPLIER, 20)
             .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
