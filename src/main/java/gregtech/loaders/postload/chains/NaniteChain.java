@@ -278,7 +278,7 @@ public class NaniteChain {
                 MaterialsUEVplus.PrimordialMatter.getFluid(128_000))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(16 * MINUTES + 40 * SECONDS)
-            .eut(2_000_000_000)
+            .eut(TierEU.RECIPE_MAX)
             .addTo(nanoForgeRecipes);
     }
 }
