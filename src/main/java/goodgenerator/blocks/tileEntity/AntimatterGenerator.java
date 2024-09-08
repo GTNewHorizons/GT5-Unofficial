@@ -42,8 +42,9 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-
+import bartworks.common.loaders.ItemRegistry;
 import kekztech.client.gui.KTUITextures;
+import gregtech.api.GregTechAPI;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
@@ -85,27 +86,29 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         protected IStructureDefinition<AntimatterGenerator> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
-                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
-                .addElement('B', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
-                .addElement('C', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
-                .addElement('E', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
+                .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
+                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1)))) // Black Casing
+                .addElement('G', lazy(x -> ofBlock(x.getCoilBlock(1), x.getCoilMeta(1)))) // Annihilation Coil
+                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(2), x.getCoilMeta(2)))) // Containment Coil
+                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2)))) // White Casing
+                .addElement('A', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta()))) // Glass
+                .addElement('E', lazy(x -> ofBlock(GregTechAPI.sBlockCasings9, 1))) // Filter Casing
                 .addElement(
-                    'F',
+                    'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterGenerator>builder()
                             .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterGenerator::addLaserSource)
                             .casingIndex(x.textureIndex(2))
                             .dot(1)
-                            .build()))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
-                    'G',
+                    'I',
                     lazy(
                         x -> buildHatchAdder(AntimatterGenerator.class).atLeast(HatchElement.InputHatch)
                             .casingIndex(x.textureIndex(1))
                             .dot(2)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                            .buildAndChain(x.getCasingBlock(1), x.getCasingMeta(1))))
                 .build();
         }
     };
@@ -129,7 +132,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDynamoTunnel tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mExoticEnergyHatches.add(tHatch);
         }
@@ -159,7 +161,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
             + GTUtility.formatNumbers(Math.abs(this.trueOutput))
-            + GT_Utility.formatNumbers(Math.abs(this.trueOutput))
             + EnumChatFormatting.RESET
             + EnumChatFormatting.RESET
             + " Efficiency: "
@@ -181,7 +182,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             while (i < inputFluids.size()) {
                 FluidStack inputFluid = inputFluids.get(i);
                 if (inputFluid.isFluidEqual(MaterialsUEVplus.Antimatter.getFluid(1))) {
-                    System.out.format("Found %d Antimatter\n", inputFluid.amount);
                     containedAntimatter += inputFluid.amount;
                 } else {
                     catalystFluid = inputFluid.copy();
@@ -190,7 +190,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 inputFluid.amount = 0;
                 i++;
             }
-            System.out.format("i = %d\n", i);
             // If i != 2, we iterated more than 2 times and have too many fluids.
             if (i == 2 && containedAntimatter > 0 && catalystFluid != null) {
                 createEU(containedAntimatter, catalystFluid);
@@ -213,7 +212,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         } else if (catalyst.isFluidEqual(MaterialsUEVplus.BlackDwarfMatter.getMolten(1L))) {
             modifier = 1.04F;
         }
-        System.out.format("Found %d of Catalyst at EXP of %f\n", catalyst.amount, modifier);
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
 
@@ -221,9 +219,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             generatedEU = (long) ((Math.pow(antimatter, modifier) * 1e12)
                 * (Math.min(((float)antimatter / (float)catalystCount), ((float)catalystCount / (float)antimatter))));
         }
-
-
-        System.out.format("Created %d EU\n", generatedEU);
 
         if (wirelessEnabled && modifier >= 1.03F) {
             //Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
@@ -235,7 +230,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             }
             generatedEU = Math.min(generatedEU, euCapacity);
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
-            System.out.format("Clamped to %d EU\n", generatedEU);
         } else {
             float invHatchCount = 1.0F / (float)mExoticEnergyHatches.size();
             for (MTEHatch tHatch : getExoticEnergyHatches()) {
@@ -248,18 +242,18 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 17, 27, 16) && mExoticEnergyHatches.size() == 60 && mInputHatches.size() == 2;
+        return checkPiece(MAIN_NAME, 17, 41, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 27, 16, elementBudget, env, false, true);
+        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, elementBudget, env, false, true);
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        buildPiece(MAIN_NAME, itemStack, hintsOnly, 17, 27, 16);
+        buildPiece(MAIN_NAME, itemStack, hintsOnly, 17, 41, 0);
     }
 
 
@@ -307,7 +301,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         wirelessEnabled = !wirelessEnabled;
         GTUtility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wirelessEnabled ? "enabled." : "disabled."));
         if (wirelessEnabled) {
-            GTUtility.sendChatToPlayer(aPlayer, "Wireless only works with UMV Superconductor or better.");
+            GTUtility.sendChatToPlayer(aPlayer, "Wireless only works with UMV Superconductor Base or better.");
         }
     }
 
@@ -332,14 +326,27 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Antimatter Generator")
-            .addInfo("Controller block for the Shielded Lagrangian Annihilation Matrix")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
-            .beginStructureBlock(35, 31, 35, false)
-            .addController("Front bottom")
-            .addInfo("No crashy please :3")
-            .toolTipFinisher("Good Generator");
+        .addInfo("Annihilating antimatter like it's 2205!")
+        .addSeparator()
+        .addInfo("Generates energy by reacting Semi-Stable Antimatter with matter")
+        .addInfo("Annihilation uses an equal amount of antimatter and matter")
+        .addInfo("Consumes " + EnumChatFormatting.GOLD + "all inputs" + EnumChatFormatting.GRAY + " every processing cycle")
+        .addInfo("Imbalance between antimatter and matter " + EnumChatFormatting.RED + "will waste energy!" + EnumChatFormatting.GRAY)
+        .addInfo("Any EU that does not fit in laser hatches will be " + EnumChatFormatting.RED +  "voided" + EnumChatFormatting.GRAY)
+        .addSeparator()
+        .addInfo("Antimatter base energy value: 1,000,000,000 EU/L")
+        .addInfo("Energy production is exponentially increased depending on the matter used:")
+        .addInfo("Molten Copper: 1.00")
+        .addInfo("Molten SC UIV Base: 1.02")
+        .addInfo("Molten SC UMV Base: 1.03")
+        .addInfo("Molten Black Dwarf Matter: 1.04")
+        .addSeparator()
+        .addInfo("Enable wireless EU mode with screwdriver")
+        .addInfo("Wireless mode requires SC UMV Base or better")
+        .addInfo("Wireless mode uses hatch capacity limit")
+        .addDynamoHatch("1-9, Hint block with dot 4", 4)
+        .addInputHatch("1-6, Hint block with dot 1", 1)
+        .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -416,12 +423,26 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .build() };
     }
 
-    public Block getCoilBlock() {
-        return Loaders.antimatterAnnihilationMatrix;
+    public Block getCoilBlock(int type) {
+        switch (type) {
+            case 1:
+                return Loaders.antimatterAnnihilationMatrix;
+            case 2:
+                return Loaders.protomatterActivationCoil;
+            default:
+                return Loaders.antimatterAnnihilationMatrix;
+        }
     }
 
-    public int getCoilMeta() {
-        return 0;
+    public int getCoilMeta(int type) {
+        switch (type) {
+            case 1:
+                return 0;
+            case 2:
+                return 0;
+            default:
+                return 0;
+        }
     }
 
     public Block getCasingBlock(int type) {
@@ -451,6 +472,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public int getFrameMeta() {
+        return 0;
+    }
+
+    public Block getGlassBlock() {
+        return ItemRegistry.bw_realglas2;
+    }
+
+    public int getGlassMeta() {
         return 0;
     }
 

@@ -415,6 +415,7 @@ public class Loaders {
         GameRegistry.registerBlock(magneticFluxCasing, GGItemBlocks.class, "magneticFluxCasing");
         GameRegistry.registerBlock(protomatterActivationCoil, GGItemBlocks.class, "protomatterActivationCoil");
         GameRegistry.registerBlock(antimatterAnnihilationMatrix, GGItemBlocks.class, "antimatterAnnihilationMatrix");
+        GameRegistry.registerBlock(gravityStabilizationCasing, GGItemBlocks.class, "gravityStabilizationCasing");
         GameRegistry.registerBlock(antimatterRenderBlock, "antimatterRenderBlock");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
