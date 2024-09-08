@@ -82,52 +82,43 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     STRUCTURE_PIECE_MAIN,
                     (transpose(
                         // spotless:off
-                new String[][]{
-                    {"               ","               ","               ","               ","               ","               ","       D       ","      D D      ","       D       ","               ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","       D       ","      D D      ","     D   D     ","      D D      ","       D       ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","       D       ","     D   D     ","               ","    D     D    ","               ","     D   D     ","       D       ","               ","               ","               ","               "},
-                    {"               ","               ","               ","       D       ","    D     D    ","               ","               ","   D   R   D   ","               ","               ","    D     D    ","       D       ","               ","               ","               "},
-                    {"               ","               ","       D       ","   D       D   ","               ","               ","               ","  D    B    D  ","               ","               ","               ","   D       D   ","       D       ","               ","               "},
-                    {"               ","       D       ","  D         D  ","               ","               ","               ","       C       "," D    CBC    D ","       C       ","               ","               ","               ","  D         D  ","       D       ","               "},
-                    {"  DDDDDDDDDDD  "," DDFFFFFFFFFDD ","DDFF       FFDD","DFF         FFD","DF           FD","DF           FD","DF     C     FD","DF    CBC    FD","DF     C     FD","DF           FD","DF           FD","DFF         FFD","DDFF       FFDD"," DDFFFFFFFFFDD ","  DDDDDDDDDDD  "},
-                    {"               ","       D       ","    FFFFFFF    ","   FF     FF   ","  FF       FF  ","  F         F  ","  F    C    F  "," DF   CBC   FD ","  F    C    F  ","  F         F  ","  FF       FF  ","   FF     FF   ","    FFFFFFF    ","       D       ","               "},
-                    {"               ","               ","       D       ","     FFFFF     ","    FF   FF    ","   FF  C  FF   ","   F  CCC  F   ","  DF CCBCC FD  ","   F  CCC  F   ","   FF  C  FF   ","    FF   FF    ","     FFFFF     ","       D       ","               ","               "},
-                    {"               ","               ","               ","       D       ","      FFF      ","     FFFFF     ","    FFFFFFF    ","   DFFFGFFFD   ","    FFFFFFF    ","     FFFFF     ","      FFF      ","       D       ","               ","               ","               "},
-                    {"               ","               ","               ","               ","       D       ","      DDD      ","     DEEED     ","    DDEGEDD    ","     DEEED     ","      DDD      ","       D       ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","               ","      EEE      ","      EGE      ","      EEE      ","               ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","               ","      EEE      ","      EGE      ","      EEE      ","               ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","               ","     EEAEE     ","     EEGEE     ","     EEEEE     ","      EEE      ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","               ","    EE A EE    ","    EEAGAEE    ","    EE A EE    ","      EEE      ","      EEE      ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","       J       ","       A       ","   EE  A  EE   ","   EE AGA EE   ","   EE  A  EE   ","               ","      EEE      ","      EEE      ","               ","               ","               "},
-                    {"               ","               ","               ","               ","      J~J      ","      AGA      ","  EE  AGA  EE  ","  EE  AGA  EE  ","  EE   A   EE  ","               ","               ","      EEE      ","      EEE      ","               ","               "},
-                    {"               ","               ","               ","               ","       I       ","       A       "," HHH   A   HHH "," HHH   A   HHH "," HHH       HHH ","               ","               ","      HHH      ","      HHH      ","      HHH      ","               "}
-                // spotless:on
-                        })))
+                        new String[][]{
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         D         ","        D D        ","         D         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         D         ","        D D        ","       D   D       ","        D D        ","         D         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","         D         ","       D   D       ","                   ","      D     D      ","                   ","       D   D       ","         D         ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","         D         ","      D     D      ","                   ","                   ","     D   G   D     ","                   ","                   ","      D     D      ","         D         ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","         D         ","     D       D     ","                   ","                   ","    D              ","    D    B    D    ","                   ","                   ","                   ","     D       D     ","         D         ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","         D         ","    D         D    ","                   ","                   ","                   ","         C         ","   D    CBC    D   ","         C         ","                   ","                   ","                   ","    D         D    ","         D         ","                   ","                   ","                   "},
+                            {"                   ","                   ","    DDDDDDDDDDD    ","   DDFFFFFFFFFDD   ","  DDFF       FFDD  ","  DFF         FFD  ","  DF           FD  ","  DF           FD  ","  DF     C     FD  ","  DF    CBC    FD  ","  DF     C     FD  ","  DF           FD  ","  DF           FD  ","  DFF         FFD  ","  DDFF       FFDD  ","   DDFFFFFFFFFDD   ","    DDDDDDDDDDD    ","                   ","                   "},
+                            {"                   ","                   ","                   ","         D         ","      FFFFFFF      ","     FF     FF     ","    FF       FF    ","    F         F    ","    F    C    F    ","   DF   CBC   FD   ","    F    C    F    ","    F         F    ","    FF       FF    ","     FF     FF     ","      FFFFFFF      ","         D         ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","         D         ","       FFFFF       ","      FF   FF      ","     FF  C  FF     ","     F  CCC  F     ","    DF CCBCC FD    ","     F  CCC  F     ","     FF  C  FF     ","      FF   FF      ","       FFFFF       ","         D         ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","         D         ","        FFF        ","       FFFFF       ","      FFFFFFF      ","     DFFFBFFFD     ","      FFFFFFF      ","       FFFFF       ","        FFF        ","         D         ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","         D         ","        DDD        ","       DEAED       ","      DDABADD      ","       DEAED       ","        DDD        ","         D         ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","        EAE        ","        ABA        ","        EAE        ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","        EAE        ","        ABA        ","        EAE        ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","        H~H        ","       HEEEH       ","       HEBEH       ","       HEEEH       ","        HHH        ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","        EEE        ","       EEEEE       ","      EEBBBEE      ","      EEBBBEE      ","      EEBBBEE      ","       EEEEE       ","        EEE        ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","        E E        ","       E   E       ","      A     A      ","     E       E     ","    E         E    ","                   ","    E         E    ","     E       E     ","      A     A      ","       E   E       ","        E E        ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","        E E        ","                   ","       E   E       ","      A     A      ","     E       E     ","   E           E   ","                   ","   E           E   ","     E       E     ","      A     A      ","       E   E       ","                   ","        E E        ","                   ","                   ","                   "},
+                            {"                   ","                   ","        E E        ","                   ","                   ","       E   E       ","      A     A      ","     E       E     ","  E             E  ","                   ","  E             E  ","     E       E     ","      A     A      ","       E   E       ","                   ","                   ","        E E        ","                   ","                   "},
+                            {"         E         ","        E E        ","       E   E       ","       E   E       ","       E   E       ","      E     E      ","     EE     EE     ","  EEE         EEE  "," E               E ","E                 E"," E               E ","  EEE         EEE  ","     EE     EE     ","      E     E      ","       E   E       ","       E   E       ","       E   E       ","        E E        ","         E         "}
+                        }))) // spotless:on
                 .addElement('A', Glasses.chainAllGlasses())
                 .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
                 .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
                 .addElement('D', ofFrame(Materials.StainlessSteel))
+                .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
+                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
+                .addElement('G', ofBlock(GregTechAPI.sLaserBeaconRender, 0))
                 .addElement(
                     'H',
-                    buildHatchAdder(MTEMeteorMiner.class).atLeast(OutputBus, Energy)
+                    buildHatchAdder(MTEMeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .dot(1)
                         .buildAndChain(
                             onElementPass(
                                 MTEMeteorMiner::onCasingAdded,
                                 ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
-                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
-                .addElement('G', ofBlock(GregTechAPI.sBlockCasings1, 15))
-                .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
-                .addElement(
-                    'I',
-                    buildHatchAdder(MTEMeteorMiner.class).atLeast(Maintenance)
-                        .casingIndex(TAE.getIndexFromPage(0, 8))
-                        .dot(2)
-                        .buildAndChain(
-                            onElementPass(MTEMeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockCasings4Misc, 2))))
-                .addElement('J', ofBlock(ModBlocks.blockCasings4Misc, 2))
-                .addElement('R', ofBlock(GregTechAPI.sLaserBeaconRender, 0))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -174,13 +165,13 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 16, 4);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 9, 13, 7);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 16, 4, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 9, 13, 7, elementBudget, env, false, true);
     }
 
     @Override
@@ -238,7 +229,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Finally some good Meteors!")
             .addInfo(AuthorTotto)
             .addSeparator()
-            .beginStructureBlock(15, 18, 15, false)
+            .beginStructureBlock(19, 19, 19, false)
             .addController("Second Layer Center")
             .addOutputBus("Any Structural Solar Casing", 1)
             .addEnergyHatch("Any Structural Solar Casing", 1)
@@ -251,7 +242,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         this.setStartCoords();
         if (w.getTileEntity(
             xStart,
-            getBaseMetaTileEntity().getYCoord() + 13,
+            getBaseMetaTileEntity().getYCoord() + 10,
             zStart) instanceof TileEntityLaserBeacon laser) {
             renderer = laser;
             renderer.setRotationFields(getDirection(), getRotation(), getFlip());
@@ -279,7 +270,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         aCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 16, 4) && !mEnergyHatches.isEmpty()
+        return checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) && !mEnergyHatches.isEmpty()
             && mMaintenanceHatches.size() == 1
             && findLaserRenderer(getBaseMetaTileEntity().getWorld());
     }
@@ -452,12 +443,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         ForgeDirection facing = getBaseMetaTileEntity().getBackFacing();
         if (facing == ForgeDirection.NORTH || facing == ForgeDirection.SOUTH) {
             xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
-            zStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+            zStart = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
         } else {
-            xStart = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
+            xStart = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
             zStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
         }
-        yStart = 48 + getBaseMetaTileEntity().getYCoord();
+        yStart = 45 + getBaseMetaTileEntity().getYCoord();
     }
 
     private void setReady() {
