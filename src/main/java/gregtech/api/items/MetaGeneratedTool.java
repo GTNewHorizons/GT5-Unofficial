@@ -450,7 +450,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + String.format(
                             transItem("005", "Base Efficiency: %s"),
-                            "" + EnumChatFormatting.BLUE + (int) (turbine.getEfficiency() * 100))
+                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
                 aList.add(
