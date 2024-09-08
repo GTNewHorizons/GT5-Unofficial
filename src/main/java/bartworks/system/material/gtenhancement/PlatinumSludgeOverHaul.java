@@ -735,32 +735,29 @@ public class PlatinumSludgeOverHaul {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void replacePureElements() {
         // furnace
-        for (Object entry : FurnaceRecipes.smelting()
-            .getSmeltingList()
-            .entrySet()) {
+        for (Object entry : FurnaceRecipes.smelting().getSmeltingList().entrySet()) {
             Map.Entry realEntry = (Map.Entry) entry;
-            if (GTUtility.isStackValid(realEntry.getKey())
-                && BWUtil.checkStackAndPrefix((ItemStack) realEntry.getKey())) {
-                ItemData association = GTOreDictUnificator.getAssociation((ItemStack) realEntry.getKey());
-                if (!dust.equals(association.mPrefix) && !dustTiny.equals(association.mPrefix)
-                    || !association.mMaterial.mMaterial.equals(Materials.Platinum))
-                    if (GTUtility.isStackValid(realEntry.getValue())
-                        && BWUtil.checkStackAndPrefix((ItemStack) realEntry.getValue())) {
-                            ItemData ass = GTOreDictUnificator.getAssociation((ItemStack) realEntry.getValue());
-                            if (ass.mMaterial.mMaterial.equals(Materials.Platinum))
-                                if (!PlatinumSludgeOverHaul.isInBlackList((ItemStack) realEntry.getKey()))
-                                    realEntry.setValue(
-                                        PTMetallicPowder.get(
-                                            ass.mPrefix == nugget ? dustTiny : dust,
-                                            ((ItemStack) realEntry.getValue()).stackSize * 2));
-                            else if (ass.mMaterial.mMaterial.equals(Materials.Palladium))
-                                if (!PlatinumSludgeOverHaul.isInBlackList((ItemStack) realEntry.getKey()))
-                                    realEntry.setValue(
-                                        PDMetallicPowder.get(
-                                            ass.mPrefix == nugget ? dustTiny : dust,
-                                            ((ItemStack) realEntry.getValue()).stackSize * 2));
-                        }
-            }
+            if (!GTUtility.isStackValid(realEntry.getKey())) continue;
+            if (!BWUtil.checkStackAndPrefix((ItemStack) realEntry.getKey())) continue;
+
+            ItemData association = GTOreDictUnificator.getAssociation((ItemStack) realEntry.getKey());
+            boolean isDust = dust.equals(association.mPrefix) || dustTiny.equals(association.mPrefix);
+            ItemStack stack = (ItemStack) realEntry.getValue();
+            if (isDust && association.mMaterial.mMaterial.equals(Materials.Platinum)) continue;
+
+            if (!GTUtility.isStackValid(stack)) continue;
+            if (!BWUtil.checkStackAndPrefix(stack)) continue;
+
+            ItemData ass = GTOreDictUnificator.getAssociation(stack);
+            OrePrefixes prefix = ass.mPrefix == nugget ? dustTiny : dust;
+            boolean isPlatinumOrPalladium = ass.mMaterial.mMaterial.equals(Materials.Platinum) || ass.mMaterial.mMaterial.equals(Materials.Palladium);
+
+            if (!isPlatinumOrPalladium) continue;
+
+            Werkstoff mat = (ass.mMaterial.mMaterial.equals(Materials.Platinum)) ? PTMetallicPowder : PDMetallicPowder;
+
+            if (PlatinumSludgeOverHaul.isInBlackList((ItemStack) realEntry.getKey())) continue;
+            realEntry.setValue(mat.get(prefix, stack.stackSize * 2));
         }
         // vanilla crafting
         CraftingManager.getInstance()
