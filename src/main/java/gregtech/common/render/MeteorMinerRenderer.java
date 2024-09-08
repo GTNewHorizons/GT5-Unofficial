@@ -22,7 +22,7 @@ public class MeteorMinerRenderer extends TileEntitySpecialRenderer {
 
     private void renderFakeLine(TileEntityLaserBeacon laser, double x, double y1, double z, double y2) {
         Tessellator tessellator = Tessellator.instance;
-        // tessellator.setColorRGBA_F(laser.getRed(), laser.getGreen(), laser.getBlue(), lineOpacity);
+        tessellator.setColorRGBA_F(laser.getRed(), laser.getGreen(), laser.getBlue(), lineOpacity);
         double x1 = x - lineRadius;
         double x2 = x + lineRadius;
         double z1 = z - lineRadius;
@@ -98,7 +98,8 @@ public class MeteorMinerRenderer extends TileEntitySpecialRenderer {
             GL11.glRotated(ltile.rotationAngle, ltile.rotAxisX, ltile.rotAxisY, ltile.rotAxisZ);
             GL11.glTranslated(-x - 0.5, -y - 0.5, -z - 0.5);
 
-            renderFakeLine(ltile, x + 0.5, y + 35.5, z + 0.5, y + 0.5);
+            double range = ltile.getRange();
+            renderFakeLine(ltile, x + 0.5, y + 35.5 + range, z + 0.5, y + 0.5);
 
             GL11.glPopAttrib();
             GL11.glPopMatrix();

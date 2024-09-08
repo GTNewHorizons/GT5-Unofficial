@@ -70,7 +70,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private int xStart, yStart, zStart;
     private boolean isStartInitialized = false;
     private boolean hasFinished = true;
-    private boolean isObserving = true;
     private boolean isWaiting = false;
     private boolean isResetting = false;
     Collection<ItemStack> res = new HashSet<>();
@@ -328,7 +327,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         aNBT.setInteger("zStart", zStart);
         aNBT.setBoolean("isStartInitialized", isStartInitialized);
         aNBT.setBoolean("hasFinished", hasFinished);
-        aNBT.setBoolean("isObserving", isObserving);
         aNBT.setBoolean("isWaiting", isWaiting);
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
     }
@@ -345,7 +343,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         zStart = aNBT.getInteger("zStart");
         isStartInitialized = aNBT.getBoolean("isStartInitialized");
         hasFinished = aNBT.getBoolean("hasFinished");
-        isObserving = aNBT.getBoolean("isObserving");
         isWaiting = aNBT.getBoolean("isWaiting");
         stopAllRendering = aNBT.getBoolean("stopAllRendering");
     }
@@ -353,7 +350,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private void reset() {
         this.isResetting = false;
         this.hasFinished = true;
-        this.isObserving = true;
         this.isWaiting = false;
         currentRadius = MAX_RADIUS;
         this.initializeDrillPos();
@@ -388,7 +384,14 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             this.initializeDrillPos();
         }
 
-        if (hasFinished && isObserving) {
+        if (!hasFinished) {
+            renderer.setShouldRender(true);
+            renderer.setRange((double) this.currentRadius);
+            this.startMining(this.xDrill, this.yDrill);
+            mOutputItems = res.toArray(new ItemStack[0]);
+            res.clear();
+            this.moveToNextColumn();
+        } else {
             renderer.setShouldRender(false);
             this.isWaiting = true;
             this.setElectricityStats();
@@ -401,33 +404,20 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             } else return SimpleCheckRecipeResult.ofSuccess("meteor_waiting");
         }
 
-        if (!hasFinished) {
-            renderer.setShouldRender(true);
-            this.startMining(this.xDrill, this.zDrill);
-            mOutputItems = res.toArray(new ItemStack[0]);
-            res.clear();
-            this.moveToNextColumn();
-        } else {
-            renderer.setShouldRender(false);
-            this.isStartInitialized = false;
-            stopMachine(ShutDownReasonRegistry.NONE);
-            return SimpleCheckRecipeResult.ofFailure("drill_exhausted");
-        }
-
         return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
     }
 
-    private void startMining(int currentX, int currentZ) {
+    private void startMining(int currentX, int currentY) {
         while (getBaseMetaTileEntity().getWorld()
-            .isAirBlock(currentX, this.yStart, currentZ)) {
+            .isAirBlock(currentX, currentY, this.zStart)) {
             this.moveToNextColumn();
             if (this.hasFinished) return;
             currentX = this.xDrill;
-            currentZ = this.zDrill;
+            currentY = this.yDrill;
         }
         int opposite = 0;
-        for (int y = -currentRadius; y <= (currentRadius - opposite); y++) {
-            int currentY = this.yStart + y;
+        for (int z = -currentRadius; z <= (currentRadius - opposite); z++) {
+            int currentZ = this.zStart + z;
             if (!getBaseMetaTileEntity().getWorld()
                 .isAirBlock(currentX, currentY, currentZ)) {
                 Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
@@ -446,9 +436,9 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private void moveToNextColumn() {
         if (this.xDrill <= this.xStart + currentRadius) {
             this.xDrill++;
-        } else if (this.zDrill <= this.zStart + currentRadius) {
+        } else if (this.yDrill <= this.yStart + currentRadius) {
             this.xDrill = this.xStart - currentRadius;
-            this.zDrill++;
+            this.yDrill++;
         } else {
             this.hasFinished = true;
         }
@@ -477,7 +467,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     private void initializeDrillPos() {
         this.xDrill = this.xStart - currentRadius;
-        this.yDrill = this.yStart;
+        this.yDrill = this.yStart - currentRadius;
         this.zDrill = this.zStart - currentRadius;
 
         this.isStartInitialized = true;
