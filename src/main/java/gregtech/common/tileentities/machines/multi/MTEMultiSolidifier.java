@@ -350,16 +350,17 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 
         super.onPostTick(aBaseMetaTileEntity, aTick);
-            if (aBaseMetaTileEntity.isServerSide()) {
-                if (mMaxProgresstime == 0 && speedup > 1) {
-                    tickcounts++;
-                    if (tickcounts % 5 == 0) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (mMaxProgresstime == 0 && speedup > 1) {
+                tickcounts++;
+                if (tickcounts % 5 == 0) {
                     tickcounts = 0;
                     speedup = (float) Math.max(1, speedup - decay_rate);
                 }
             }
         }
     }
+
     public int getMaxParallelRecipes() {
         return 4 + (mWidth * 3) * GTUtility.getTier(this.getMaxInputVoltage());
     }
