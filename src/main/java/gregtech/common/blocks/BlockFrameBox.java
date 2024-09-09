@@ -11,6 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -183,7 +184,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 4;
+        return 3;
     }
 
     @Override
@@ -234,6 +235,11 @@ public class BlockFrameBox extends BlockContainer {
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
+        return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
     }
 
     @Override
