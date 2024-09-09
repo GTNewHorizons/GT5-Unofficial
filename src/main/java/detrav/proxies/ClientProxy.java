@@ -13,6 +13,7 @@ import detrav.gui.DetravScannerGUI;
 public class ClientProxy extends CommonProxy {
 
     public ClientProxy() {
+        // if removed, textures are somehow not loaded in the game.
         int test = Textures01.mTextures.length;
     }
 
