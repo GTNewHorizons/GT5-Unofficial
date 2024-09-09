@@ -35,6 +35,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TurbineStatCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 
 public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTELargeTurbineBase>
@@ -79,6 +81,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     protected int storedFluid = 0;
     protected int counter = 0;
     protected boolean looseFit = false;
+    protected int overflowMultiplier = 0;
     protected long maxPower = 0;
 
     public MTELargeTurbineBase(int aID, String aName, String aNameRegional) {
@@ -140,11 +143,17 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
         if ((counter & 7) == 0 && (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool)
             || controllerSlot.getItemDamage() < 170
             || controllerSlot.getItemDamage() > 179)) {
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
+
+        TurbineStatCalculator turbine = new TurbineStatCalculator(
+            (MetaGeneratedTool) controllerSlot.getItem(),
+            controllerSlot);
+
         ArrayList<FluidStack> tFluids = getStoredFluids();
-        if (tFluids.size() > 0) {
+        if (!tFluids.isEmpty()) {
+
             if (baseEff == 0 || optFlow == 0
                 || counter >= 512
                 || this.getBaseMetaTileEntity()
@@ -152,17 +161,13 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = GTUtility.safeInt(
-                    (long) ((5F + ((MetaGeneratedTool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
-                        * 1000F));
-                optFlow = GTUtility.safeInt(
-                    (long) Math.max(
-                        Float.MIN_NORMAL,
-                        ((MetaGeneratedTool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mToolSpeed
-                            * 50));
+                baseEff = (int) turbine.getEfficiency();
+                optFlow = (int) turbine.getOptimalFlow();
+
+                overflowMultiplier = turbine.getOverflowEfficiency();
+
                 if (optFlow <= 0 || baseEff <= 0) {
-                    stopMachine(); // in case the turbine got removed
+                    stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
                     return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 }
             } else {
@@ -170,8 +175,8 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff); // How much the turbine should be producing with this
-                                                                  // flow
+        int newPower = fluidIntoPower(tFluids, turbine); // How much the turbine should be producing with this
+                                                         // flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in
@@ -197,7 +202,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
         }
     }
 
-    public abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff);
+    public abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
