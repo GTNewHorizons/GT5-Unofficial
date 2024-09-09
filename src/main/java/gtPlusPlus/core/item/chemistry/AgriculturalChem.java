@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.Optional;
 import forestry.core.items.ItemForestryBonemeal;
 import forestry.core.items.ItemRegistryCore;
 import forestry.plugins.PluginCore;
@@ -544,22 +545,7 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
 
         // Dehydrate Organise Fert to Normal Fert.
-        if (Mods.Forestry.isModLoaded()) {
-            ItemRegistryCore aItemRegInstance = PluginCore.items;
-            if (aItemRegInstance != null) {
-                ItemForestryBonemeal fertilizerCompound = aItemRegInstance.fertilizerCompound;
-                aFertForestry = ItemUtils.getSimpleStack(fertilizerCompound);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
-                    .itemOutputs(ItemUtils.getSimpleStack(fertilizerCompound, 3), aManureByprod, aManureByprod)
-                    .outputChances(100_00, 20_00, 20_00)
-                    .eut(240)
-                    .duration(20 * SECONDS)
-                    .addTo(chemicalDehydratorRecipes);
-
-            }
-        }
+        addMiscForestryRecipes();
 
         /*
          * IC2 Support
@@ -638,6 +624,26 @@ public class AgriculturalChem extends ItemPackage {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
+    }
+
+    @Optional.Method(modid = Mods.Names.FORESTRY)
+    private static void addMiscForestryRecipes() {
+        ItemStack aDustOrganicFert = ItemUtils.getSimpleStack(dustOrganicFertilizer, 1);
+        ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
+
+        ItemRegistryCore aItemRegInstance = PluginCore.items;
+        if (aItemRegInstance != null) {
+            ItemForestryBonemeal fertilizerCompound = aItemRegInstance.fertilizerCompound;
+            aFertForestry = ItemUtils.getSimpleStack(fertilizerCompound);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+                .itemOutputs(ItemUtils.getSimpleStack(fertilizerCompound, 3), aManureByprod, aManureByprod)
+                .outputChances(100_00, 20_00, 20_00)
+                .eut(240)
+                .duration(20 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+        }
     }
 
     @Override

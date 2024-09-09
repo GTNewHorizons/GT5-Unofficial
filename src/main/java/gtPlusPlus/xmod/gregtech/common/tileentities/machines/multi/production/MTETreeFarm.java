@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
@@ -458,7 +459,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                         || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
                 }
-                if (tool instanceof IToolGrafter && tool.isDamageable()) {
+                if (Forestry.isModLoaded() && tool instanceof IToolGrafter && tool.isDamageable()) {
                     return 3;
                 }
                 break;
@@ -578,7 +579,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      */
     private static EnumMap<Mode, ItemStack> getOutputsForSapling(ItemStack sapling) {
         String registryName = Item.itemRegistry.getNameForObject(sapling.getItem());
-        if ("Forestry:sapling".equals(registryName)) {
+        if (Forestry.isModLoaded() && "Forestry:sapling".equals(registryName)) {
             return getOutputsForForestrySapling(sapling);
         } else {
             return treeProductsMap.get(registryName + ":" + sapling.getItemDamage());
