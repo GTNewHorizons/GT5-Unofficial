@@ -101,7 +101,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
     			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
-
     			.build();
     }
     //spotless:on

@@ -57,8 +57,6 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
                 GTUtility.formatNumbers(
                     (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
         recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut * ampere) + " EU/t");
-        recipeInfo.drawText(trans("154", "Voltage: ") + GTUtility.formatNumbers(eut) + " EU/t");
-        recipeInfo.drawText(trans("155", "Amperage: ") + GTUtility.formatNumbers(ampere));
         recipeInfo
             .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
         recipeInfo.drawText(
