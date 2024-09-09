@@ -178,18 +178,17 @@ public class GodforgeMath {
             }
         }
 
-        int maxParallel = (int) (baseParallel * node53
-            * fuelFactorMultiplier
-            * heatMultiplier
-            * upgradeAmountMultiplier);
+        float totalBonuses = node53 * fuelFactorMultiplier * heatMultiplier * upgradeAmountMultiplier;
 
         if (module instanceof MTEExoticModule) {
             if (godforge.isUpgradeActive(25)) {
-                maxParallel = (int) Math.max(Math.sqrt(maxParallel), 36);
+                totalBonuses = (float) Math.sqrt(totalBonuses);
             } else {
-                maxParallel = baseParallel;
+                totalBonuses = 1;
             }
         }
+
+        int maxParallel = (int) (baseParallel * totalBonuses);
 
         module.setMaxParallel(maxParallel);
     }
