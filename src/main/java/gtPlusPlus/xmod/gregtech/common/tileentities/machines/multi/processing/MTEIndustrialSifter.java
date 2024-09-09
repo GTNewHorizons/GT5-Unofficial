@@ -14,7 +14,11 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -204,5 +208,11 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     @Override
     public boolean isOverclockerUpgradable() {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_SIFTER_LOOP.resourceLocation;
     }
 }
