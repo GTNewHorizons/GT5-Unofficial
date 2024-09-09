@@ -1,5 +1,15 @@
 package detrav.items.processing;
 
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -23,107 +33,109 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         ItemStack aStack) {
         if (!aPrefix.doGenerateItem(material)) return;
         if (DetravScannerMod.DEBUG_ENABLED) return;
-        try {
-            // ULV disabled
-            // GTModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, aMaterial,
-            // Materials.Lead, null), GTModHandler.RecipeBits.DISMANTLEABLE |
-            // GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED, new
-            // Object[]{"SHE","CPC","PXP",'E',OreDictionary.getOres("cellSulfuricAcid").get(0),'S',OreDictionary.getOres("cellHydroxide").get(0),'H',OrePrefixes.toolHeadDrill.get(aMaterial),'P',OrePrefixes.plate.get(aMaterial),'C',OrePrefixes.circuit.get(Materials.Primitive),'X',gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Sensor_ULV});
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(2, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellHydroxide")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Basic), 'X', ItemList.Sensor_LV });
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(4, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellHydroxide")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Good), 'X', ItemList.Sensor_MV });
 
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(6, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellSodiumPersulfate")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Advanced), 'X', ItemList.Sensor_HV });
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(8, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellSodiumPersulfate")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Data), 'X', ItemList.Sensor_EV });
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(10, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellSodiumPersulfate")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Elite), 'X', ItemList.Sensor_IV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerLV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellHydroxide")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.LV), 'X', ItemList.Sensor_LV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerMV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellHydroxide")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.MV), 'X', ItemList.Sensor_MV });
 
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(12, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellLithiumPeroxide")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Master), 'X', ItemList.Sensor_LuV });
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(14, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellLithiumPeroxide")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Ultimate), 'X', ItemList.Sensor_ZPM });
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(16, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellLithiumPeroxide")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.SuperconductorUHV), 'X', ItemList.Sensor_UV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerHV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellSodiumPersulfate")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.HV), 'X', ItemList.Sensor_HV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerEV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellSodiumPersulfate")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.EV), 'X', ItemList.Sensor_EV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerIV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellSodiumPersulfate")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.IV), 'X', ItemList.Sensor_IV });
 
-            GTModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(18, 1, material, Materials.Steel, null),
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                    | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                    .get(0), 'S',
-                    OreDictionary.getOres("cellHydrogenPeroxide")
-                        .get(0),
-                    'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
-                    OrePrefixes.circuit.get(Materials.Infinite), 'X', ItemList.Sensor_UHV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerLuV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellLithiumPeroxide")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.LuV), 'X', ItemList.Sensor_LuV });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerZPM.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellLithiumPeroxide")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.ZPM), 'X', ItemList.Sensor_ZPM });
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerUV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellLithiumPeroxide")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.UV), 'X', ItemList.Sensor_UV });
 
-        } catch (Exception ignored) {}
+        GTModHandler.addCraftingRecipe(
+            DetravMetaGeneratedTool01.INSTANCE
+                .getToolWithStats(ProspectorScannerUHV.ID, 1, material, Materials.Steel, null),
+            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
+                .get(0), 'S',
+                OreDictionary.getOres("cellHydrogenPeroxide")
+                    .get(0),
+                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                OrePrefixes.circuit.get(Materials.UHV), 'X', ItemList.Sensor_UHV });
 
     }
 }
