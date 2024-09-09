@@ -369,7 +369,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedup", speedup);
         tag.setInteger("parallels", getMaxParallelRecipes());
@@ -380,12 +381,14 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
-            + EnumChatFormatting.WHITE
-            + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+                + EnumChatFormatting.WHITE
+                + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
         currentTip.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE + tag.getInteger("parallels"));
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("parallels"));
     }
 
     @Override
