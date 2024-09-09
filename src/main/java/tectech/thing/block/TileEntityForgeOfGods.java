@@ -112,16 +112,6 @@ public class TileEntityForgeOfGods extends TileEntity {
     }
 
     public void setRenderRotation(Rotation rotation, ForgeDirection direction) {
-        // System.out.println(rotation);
-        System.out.println(direction);
-        /*
-         * switch (rotation) {
-         * case NORMAL -> rotAngle = 0;
-         * case CLOCKWISE -> rotAngle = 90;
-         * case COUNTER_CLOCKWISE -> rotAngle = -90;
-         * case UPSIDE_DOWN -> rotAngle = 180;
-         * }
-         */
         switch (direction) {
             case SOUTH -> rotAngle = 90;
             case NORTH -> rotAngle = 90;
@@ -133,9 +123,6 @@ public class TileEntityForgeOfGods extends TileEntity {
         rotAxisX = 0;
         rotAxisY = direction.offsetZ + direction.offsetX;
         rotAxisZ = direction.offsetY;
-        System.out.println(direction.offsetX);
-        System.out.println(direction.offsetY);
-        System.out.println(direction.offsetZ);
 
         updateToClient();
     }
