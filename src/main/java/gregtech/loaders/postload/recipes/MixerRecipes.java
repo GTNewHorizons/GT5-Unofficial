@@ -12,6 +12,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -1642,7 +1643,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .noOptimize()
-                .addTo(mixerRecipes);
+                .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(10))
@@ -1656,7 +1657,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .noOptimize()
-                .addTo(mixerRecipes);
+                .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(11))
@@ -1670,7 +1671,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .noOptimize()
-                .addTo(mixerRecipes);
+                .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(12))
@@ -1684,7 +1685,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .noOptimize()
-                .addTo(mixerRecipes);
+                .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(13))
@@ -1698,7 +1699,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .noOptimize()
-                .addTo(mixerRecipes);
+                .addTo(mixerNonCellRecipes);
         }
 
         GTValues.RA.stdBuilder()
