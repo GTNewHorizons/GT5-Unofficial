@@ -53,7 +53,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -286,8 +285,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         tt.addMachineType("Compressor/Advanced Neutronium Compressor")
             .addInfo("Controller Block for the Semi-Stable Black Hole Containment Field")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
-            .addInfo("No longer requires heat management to perform superdense compression")
-            .addInfo("Can create advanced singularities!")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE
+                    + "No longer requires heat management to perform superdense compression")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
@@ -313,7 +314,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + "halted"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " by inserting 1 L/s of spacetime")
+                    + " by inserting 1 L/s of spacetime into specific hatches")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "30"
@@ -336,7 +337,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.GRAY
                     + " if it becomes unstable")
             .addInfo("400% faster than singleblock machines of the same voltage")
-            .addInfo("Only uses 70% of the EU/t normally required - does not overclock above energy hatch tier")
+            .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
             .addInfo(
                 EnumChatFormatting.RED + "2x/4x"
@@ -344,7 +345,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
-            .addInfo("Accepts one " + TT + " energy hatch")
+            .addInfo("Accepts " + TT + " energy hatches")
+            .addInfo(
+                EnumChatFormatting.RED
+                    + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier.")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addInfo("Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade")
             .addSeparator()
@@ -389,15 +393,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
         if (mCasingAmount < 950) return false;
 
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (mExoticEnergyHatches.size() > 1) return false;
-            energyHatchTier = mExoticEnergyHatches.get(0).mTier;
-        } else if (!mEnergyHatches.isEmpty()) {
-            byte tier = mEnergyHatches.get(0).mTier;
-            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier < tier) tier = hatch.mTier;
-            energyHatchTier = tier;
-        }
-
         return true;
     }
 
@@ -427,6 +422,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("blackHoleStatus", blackHoleStatus);
         tag.setFloat("blackHoleStability", blackHoleStability);
+        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
@@ -434,6 +430,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
                 currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
@@ -447,8 +447,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
-
-    byte energyHatchTier = 0;
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
@@ -484,7 +482,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                int ocs = energyHatchTier - GTUtility.getTier(recipe.mEUt);
+                int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
                 if (ocs < 0) ocs = 0;
                 return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
@@ -495,6 +493,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     .setAmperageOC(amperageOC)
                     .setDurationDecreasePerOC(overClockTimeReduction)
                     .setEUtIncreasePerOC(overClockPowerIncrease)
+                    .setParallel(getMaxParallelRecipes())
                     .limitOverclockCount(ocs);
             }
 
@@ -510,6 +509,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 0 && (blackHoleStatus == 3)) {
                     setSpeedBonus(5F);
                 }
+
+                // Cap recipes to energy hatch + 1
+                if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt) - 1)
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return super.validateRecipe(recipe);
             }
 
