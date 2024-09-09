@@ -17,7 +17,6 @@ public class GGConfigLoader {
     public static int[] NaquadahFuelTime = new int[] { 100, 500, 150, 60, 70, 80, 100, 160, 240 };
     public static int[] CoolantEfficiency = new int[] { 500, 275, 150, 105 };
     public static int[] ExcitedLiquidCoe = new int[] { 64, 16, 4, 3, 2 };
-    public static boolean EnableNaquadahRework = true;
 
     public static void run() {
         loadCategory();
@@ -103,9 +102,6 @@ public class GGConfigLoader {
             GG_Config.get("LargeNaquadahReactor", "Liquid Air Consumption Per Second", LiquidAirConsumptionPerSecond)
                 .getInt(),
             0);
-
-        EnableNaquadahRework = GG_Config.get("NaquadahRework", "Enable Naquadah Rework", EnableNaquadahRework)
-            .getBoolean();
 
         if (GG_Config.hasChanged()) GG_Config.save();
     }

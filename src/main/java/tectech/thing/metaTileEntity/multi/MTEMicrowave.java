@@ -173,14 +173,11 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                 if (entity instanceof Entity) {
                     if (tickedStuff.add((Entity) entity)) {
                         if (inside && entity instanceof EntityItem) {
-                            GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipe(
-                                mte,
-                                null,
-                                true,
-                                128,
-                                null,
-                                null,
-                                new ItemStack[] { ((EntityItem) entity).getEntityItem() });
+                            GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipeQuery()
+                                .items(((EntityItem) entity).getEntityItem())
+                                .voltage(128)
+                                .notUnificated(true)
+                                .find();
                             if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
                                 itemsToOutput.add(((EntityItem) entity).getEntityItem());
                             } else {
