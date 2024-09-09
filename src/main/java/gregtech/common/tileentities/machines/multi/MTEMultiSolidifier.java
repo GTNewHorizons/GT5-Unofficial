@@ -67,6 +67,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected final String MS_RIGHT_MID = mName + "rightmid";
     protected final String MS_END = mName + "end";
 
+    private final int PARALLELS_PER_WIDTH = 3;
+
     private byte glassTier = 0;
     private static final double decay_rate = 0.025;
 
@@ -179,7 +181,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Starts with 4 Parallels")
-            .addInfo("Gain 3 Parallels per Width Expansion and Multiplied by Voltage Tier")
+            .addInfo("Gain " + PARALLELS_PER_WIDTH + " Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addInfo(AuthorOmdaCZ)
@@ -362,7 +364,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * 3) * GTUtility.getTier(this.getMaxInputVoltage());
+        return 4 + (mWidth * PARALLELS_PER_WIDTH) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
