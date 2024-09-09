@@ -213,7 +213,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             builder
                 .widget(
                     new TextWidget(GTUtility.trans("322", "Overflow point: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + 1, startY + spaceY * 0))
+                        .setPos(startX + 93 - 20 - 22, startY + spaceY * 0 + 12))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -226,11 +226,11 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
-                                .setPos(startX, startY + spaceY * 1 - 2)
+                                .setPos(startX + 92 - 20 - 21, startY + spaceY * 1 + 10)
                                 .setSize(width, height)))
                 .widget(
                     new TextWidget(GTUtility.trans("322.1", "Voiding rate: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + 1, startY + spaceY * 2 + 1))
+                        .setPos(startX + 93 - 21 - 20 + 7 - 2, startY + spaceY * 2 + 13 + 20 - 3))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -243,7 +243,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
-                                .setPos(startX, startY + spaceY * 3 - 2)
+                                .setPos(startX + 92 - 21 - 20, startY + spaceY * 3 + 10 + 21 - 3)
                                 .setSize(width, height)))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
@@ -257,25 +257,25 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
                                     .addTooltip(GTUtility.trans("322.2", "Allow fluid Input"))
-                                    .setPos(100, spaceY * 2))
+                                    .setPos(118 - 97, spaceY * 3 + 3 - 16 + 45 + 1))
                             .addToggleButton(
                                 1,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
                                     .addTooltip(GTUtility.trans("322.3", "Block fluid Input"))
-                                    .setPos(100 + 20, spaceY * 2))
+                                    .setPos(100 - 96, spaceY * 3 + 3 - 16 + 45 + 1))
                             .addToggleButton(
                                 2,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
                                     .addTooltip(GTUtility.trans("322.4", "Allow fluid output"))
-                                    .setPos(100, spaceY * 2 + 20))
+                                    .setPos(118 - 97, spaceY * 4 + 9 - 16 + 44 + 1))
                             .addToggleButton(
                                 3,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
                                     .addTooltip(GTUtility.trans("322.5", "Block fluid output"))
-                                    .setPos(100 + 20, spaceY * 2 + 20)));
+                                    .setPos(100 - 96, spaceY * 4 + 9 - 16 + 44 + 1)));
         }
 
         private boolean getClickable(int id, OverflowValveData data) {
