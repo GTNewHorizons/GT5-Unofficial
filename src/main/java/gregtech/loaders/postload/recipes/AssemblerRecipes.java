@@ -35,6 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -3549,6 +3550,28 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Relativistic_Heat_Capacitor.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_UV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Americium, 2),
+                ItemList.Field_Generator_UV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Longasssuperconductornameforuhvwire, 2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2))
+            .itemOutputs(ItemList.Generator_Plasma_UV.get(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_UIV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 4))
+            .itemOutputs(ItemRegistry.energyDistributor[11])
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
     }
 
