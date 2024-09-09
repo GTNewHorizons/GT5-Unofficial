@@ -2100,7 +2100,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.FluidRegulator_UHV.set(
             addItem(
                 FluidRegulator_UHV.ID,
-                 "Fluid Regulator (UHV)",
+                "Fluid Regulator (UHV)",
                 FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2));
         ItemList.FluidRegulator_UEV.set(
             addItem(
