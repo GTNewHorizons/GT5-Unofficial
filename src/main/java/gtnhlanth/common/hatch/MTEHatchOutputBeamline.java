@@ -83,14 +83,53 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         IConnectsToBeamline current = this, source = this, next;
         int range = 0;
-        while ((next = current.getNext(source)) != null && range++ < 100) {
-            if (next instanceof MTEHatchInputBeamline) {
-                ((MTEHatchInputBeamline) next).setContents(q);
-                break;
+
+        ForgeDirection front = this.getBaseMetaTileEntity()
+            .getFrontFacing();
+
+        for (int distance = 1; distance <= 129; distance++) { // 128 pipes max
+
+            IGregTechTileEntity nextTE = (IGregTechTileEntity) this.getBaseMetaTileEntity()
+                .getTileEntityAtSideAndDistance(front, distance); // Straight line transmission only
+
+            if (nextTE == null) {
+                return;
             }
-            source = current;
-            current = next;
+
+            IMetaTileEntity nextMeta = nextTE.getMetaTileEntity();
+
+            if (nextMeta == null || !(nextMeta instanceof IConnectsToBeamline)) { // Non-beamliney block
+                return;
+            }
+
+            if (((IConnectsToBeamline) nextMeta) instanceof MTEHatchInputBeamline) {
+                ((MTEHatchInputBeamline) nextMeta).setContents(q); // Reached another multi
+                break;
+
+            } else if (((IConnectsToBeamline) nextMeta) instanceof MTEBeamlinePipe) { // Another pipe follows
+
+                if (((MTEBeamlinePipe) nextMeta).isDataInputFacing(front.getOpposite())) { // Connected to previous pipe
+                    ((MTEBeamlinePipe) nextMeta).markUsed();
+                } else {
+                    return;
+                }
+
+            } else {
+                return;
+            }
+
         }
+
+        /*
+         * while ((next = current.getNext(source)) != null && range++ < 100) {
+         * if (next instanceof TileHatchInputBeamline) {
+         * ((TileHatchInputBeamline) next).setContents(q);
+         * break;
+         * }
+         * source = current;
+         * current = next;
+         * }
+         */
         q = null;
     }
 

@@ -338,7 +338,7 @@ public class RecipeLoader {
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
                 .itemInputs(
                     LegendaryUltimateTea.get(0),
-                    GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
+                    gregtech.api.enums.ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
