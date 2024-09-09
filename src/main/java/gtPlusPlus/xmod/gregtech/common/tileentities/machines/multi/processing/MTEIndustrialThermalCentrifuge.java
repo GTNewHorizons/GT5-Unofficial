@@ -11,6 +11,9 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -33,6 +36,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.util.ResourceLocation;
 
 public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndustrialThermalCentrifuge>
     implements ISurvivalConstructable {
@@ -179,5 +183,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(16);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_THERMAL_CENTRIFUGE_LOOP.resourceLocation;
     }
 }
