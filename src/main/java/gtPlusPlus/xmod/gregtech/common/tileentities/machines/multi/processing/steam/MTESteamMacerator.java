@@ -255,7 +255,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33)
+                    .setEUtDiscount(1.33 * tierMachine)
                     .setSpeedBoost(1.5 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
@@ -274,7 +274,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             .addInfo("33.3% faster than the single block Steam Macerator")
             .addInfo("Uses only 66.6% of the steam/s that the single block Steam Macerator uses")
             .addInfo("Processes 8x parallel")
-            .addInfo("Steel Tier 2x speed")
+            .addInfo("Steel Tier 2x speed and 2x steam consumes")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)

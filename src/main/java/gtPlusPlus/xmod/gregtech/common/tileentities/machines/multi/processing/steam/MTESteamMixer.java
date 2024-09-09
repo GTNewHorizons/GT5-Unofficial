@@ -310,7 +310,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33)
+                    .setEUtDiscount(1.33 * tierMachine)
                     .setSpeedBoost(1.5 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
@@ -329,7 +329,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             .addInfo("33.3% faster than a single block steam machine would run")
             .addInfo("Uses only 66.6% of the steam/s that a single block steam machine would use")
             .addInfo("Processes 8x parallel")
-            .addInfo("Steel Tier 2x speed")
+            .addInfo("Steel Tier 2x speed and 2x steam consumes")
             .addSeparator()
             .beginStructureBlock(7, 6, 7, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
