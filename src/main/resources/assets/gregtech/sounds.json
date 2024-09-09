@@ -141,5 +141,113 @@
         "stream": false
       }
     ]
+  },
+  "machines.MultiPreciseLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiPreciseLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiOreWasherPlantLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiOreWasherPlantLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiMegaVacuumFreezerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiMegaVacuumFreezerLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiVacuumFreezerFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiVacuumFreezerLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiExtremeEntityCrusherFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiExtremeEntityCrusherFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiCuttingMachineFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiCuttingMachineFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiArcFurnaceFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiArcFurnaceFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiMegaIndustrialApiaryFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiMegaIndustrialApiaryFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiAlgaeFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiAlgaeFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiThermalCentrifugeFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiThermalCentrifugeFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiSifterFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiSifterFLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MultiEyeOfHarmonyFLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MultiEyeOfHarmonyFLoop",
+        "stream": false
+      }
+    ]
   }
 }
