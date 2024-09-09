@@ -367,8 +367,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             this.depleteInput(inputWater);
         }
 
-        // Consume inputs
-        this.depleteRecipeInputs();
+        // Consume inputs, only if debug mode is off
+        if (!getController().debugModeOn()) {
+            this.depleteRecipeInputs();
+        }
         // Initialize recipe and progress information.
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
@@ -414,13 +416,16 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public void endCycle() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        // First see if the recipe succeeded. For some reason random.nextFloat does not compile, so we use this
-        // hack instead.
-        float successRoll = random.nextInt(0, 10000) / 100.0f;
-        if (successRoll <= calculateFinalSuccessChance()) {
-            addRecipeOutputs();
-        } else {
-            onRecipeFail();
+        // Only add output if debug mode was not on
+        if (!getController().debugModeOn()) {
+            // First see if the recipe succeeded. For some reason random.nextFloat does not compile, so we use this
+            // hack instead.
+            float successRoll = random.nextInt(0, 10000) / 100.0f;
+            if (successRoll <= calculateFinalSuccessChance()) {
+                addRecipeOutputs();
+            } else {
+                onRecipeFail();
+            }
         }
 
         // Reset recipe values for next iteration

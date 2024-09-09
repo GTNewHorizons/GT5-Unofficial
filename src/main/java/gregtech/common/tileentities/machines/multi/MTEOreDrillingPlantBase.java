@@ -501,8 +501,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 outputItems.add(multiplyStackSize(currentItem));
                 return;
             }
-            GTRecipe tRecipe = RecipeMaps.maceratorRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, voltage, null, currentItem);
+            GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .items(currentItem)
+                .voltage(voltage)
+                .find();
             if (tRecipe == null) {
                 outputItems.add(currentItem);
                 return;

@@ -1,5 +1,7 @@
 package detrav.items.behaviours;
 
+import static gregtech.api.enums.Mods.VisualProspecting;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +32,6 @@ import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
@@ -64,7 +65,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
         SplittableRandom aRandom = new SplittableRandom();
-        int chance = ((1 + aStack.getItemDamage()) * 8) > 100 ? 100 : (1 + aStack.getItemDamage()) * 8;
+        int chance = Math.min(((1 + aStack.getItemDamage()) * 8), 100);
 
         if (aWorld.isRemote) return false;
 
@@ -82,7 +83,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
 
-                if (Mods.VisualProspecting.isModLoaded()) {
+                if (VisualProspecting.isModLoaded()) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,
                         new ArrayList<>(),
@@ -213,7 +214,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             aPlayer.addChatMessage(msg);
         }
 
-        if (Mods.VisualProspecting.isModLoaded()) {
+        if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -249,7 +250,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             addChatMassageByValue(aPlayer, value, key);
         }
 
-        if (Mods.VisualProspecting.isModLoaded()) {
+        if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -266,8 +267,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                                                                                           // aTileEntity)
     {
         if (aTileEntity != null) {
-            if (aTileEntity instanceof TileEntityOres) {
-                TileEntityOres gt_entity = (TileEntityOres) aTileEntity;
+            if (aTileEntity instanceof TileEntityOres gt_entity) {
                 short meta = gt_entity.getMetaData();
                 String format = LanguageRegistry.instance()
                     .getStringLocalization("gt.blockores." + meta + ".name");
@@ -414,7 +414,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
     }
 
-    public static int getPolution(World aWorld, int aX, int aZ) {
+    public static int getPollution(World aWorld, int aX, int aZ) {
         return Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
     }
 }
