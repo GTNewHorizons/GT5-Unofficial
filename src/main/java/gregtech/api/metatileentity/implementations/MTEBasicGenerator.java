@@ -305,7 +305,9 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     public long getFuelValue(ItemStack aStack, boolean aLong) {
         if (GTUtility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
-        GTRecipe tFuel = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+        GTRecipe tFuel = getRecipeMap().findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel == null) return 0;
 
         long liters = 10L; // 1000mb/100
@@ -314,7 +316,9 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     public ItemStack getEmptyContainer(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack) || getRecipeMap() == null) return null;
-        GTRecipe tFuel = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+        GTRecipe tFuel = getRecipeMap().findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel != null) return GTUtility.copyOrNull(tFuel.getOutput(0));
         return GTUtility.getContainerItem(aStack, true);
     }
