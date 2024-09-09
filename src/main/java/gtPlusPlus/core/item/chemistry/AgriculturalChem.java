@@ -545,7 +545,9 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
 
         // Dehydrate Organise Fert to Normal Fert.
-        addMiscForestryRecipes();
+        if (Mods.Forestry.isModLoaded()) {
+            addMiscForestryRecipes();
+        }
 
         /*
          * IC2 Support
