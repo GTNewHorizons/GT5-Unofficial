@@ -74,6 +74,8 @@ public enum SoundResource {
     GT_MACHINES_MULTI_LATHE_LOOP(241, GregTech.ID, "machines.MultiLatheLoop"),
     GT_MACHINES_MULTI_AUTOCLAVE_LOOP(242, GregTech.ID, "machines.MultiAutoclaveLoop"),
 
+    GT_SPRAYCAN_SHAKE(243, GregTech.ID, "items.spraycan"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 

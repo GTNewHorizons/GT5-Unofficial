@@ -493,9 +493,14 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Accelerator")
             .addInfo("Controller block for the Synchrotron")
-            .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation")
+            .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,")
+            .addInfo("in the form of photons")
+            .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")
+            .addInfo("Minimum input focus: " + MIN_INPUT_FOCUS)
             .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+
+            .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Valid Coolants:");
 
         // Valid coolant list
@@ -854,10 +859,13 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     private static float getVoltageFactor(long mEU, int antennaTier) {
 
         // float factor = (float) Math.pow(1.00004, -mEU * Math.pow(antennaTier, 1.0/3.0) + 80000);
-        float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly improves
-                                                                                                   // with higher tier
-                                                                                                   // antenna
-        return (float) Math.max(1.0, factor);
+        // float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly
+        // improves
+        // with higher tier
+        // antenna
+        float factor = (float) (Math.sqrt(mEU) / 1500);
+
+        return factor;
 
     }
 
@@ -893,11 +901,11 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
 
     // Punny, right?
     private static float getOutputRatetio(float voltageFactor, int antennaTier) {
-        return (float) (voltageFactor / (10 / Math.pow(2.5, antennaTier))); // Scale ratio with antenna tier, such a
-                                                                            // high
-                                                                            // exponential should be fine so long as
-                                                                            // there
-                                                                            // are only few antenna tiers
+        return (float) (voltageFactor / (10.0 / Math.pow(2.5, antennaTier))); // Scale ratio with antenna tier, such a
+                                                                              // high
+                                                                              // exponential should be fine so long as
+                                                                              // there
+                                                                              // are only few antenna tiers
     }
 
     @Override
