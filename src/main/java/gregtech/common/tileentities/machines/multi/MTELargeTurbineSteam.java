@@ -11,7 +11,6 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,12 +25,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 
 public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     private int excessWater;
     private boolean achievement = false;
-    private boolean looseFit = false;
 
     public MTELargeTurbineSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -111,13 +110,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency,
-        float[] flowMultipliers) {
-        if (looseFit) {
-            float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-            aOptFlow = GTUtility.safeInt((long) calculatedFlow[0]);
-            aBaseEff = GTUtility.safeInt((long) calculatedFlow[1]);
-        }
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
@@ -131,8 +124,8 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         // - 200% if it is 2
         // - 250% if it is 3
         // Variable required outside of loop for multi-hatch scenarios.
-        this.realOptFlow = aOptFlow * flowMultipliers[0];
-        int remainingFlow = GTUtility.safeInt((long) (realOptFlow * (0.5f * overflowMultiplier + 1)));
+        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        int remainingFlow = GTUtility.safeInt((long) (realOptFlow * (0.5f * turbine.getOverflowEfficiency() + 1)));
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and
@@ -163,14 +156,19 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         int waterToOutput = condenseSteam(totalFlow);
         addOutput(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
-            tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 20000L);
+            tEU = GTUtility.safeInt(
+                (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f));
         } else {
             float efficiency = getOverflowEfficiency(
                 totalFlow,
                 (GTUtility.safeInt((long) realOptFlow)),
                 overflowMultiplier);
             tEU *= efficiency;
-            tEU = Math.max(1, GTUtility.safeInt((long) tEU * (long) aBaseEff / 20000L));
+            tEU = Math.max(
+                1,
+                GTUtility.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())
+                        * 0.5f)));
         }
 
         // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
@@ -201,51 +199,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         }
 
         return efficiency;
-    }
-
-    public static float[] calculateLooseFlow(float aOptFlow, float aBaseEff) {
-        aOptFlow *= 4f;
-        if (aBaseEff >= 26000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 8000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.6f;
-        } else if (aBaseEff > 22000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 7000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.65f;
-        } else if (aBaseEff > 18000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 6000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.70f;
-        } else if (aBaseEff > 14000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 5000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.75f;
-        } else if (aBaseEff > 10000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 4000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.8f;
-        } else if (aBaseEff > 6000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 3000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.85f;
-        } else {
-            aBaseEff = aBaseEff * 0.9f;
-        }
-
-        if (aBaseEff % 100 != 0) {
-            aBaseEff -= aBaseEff % 100;
-        }
-
-        float[] looseFlow = new float[2];
-        looseFlow[0] = aOptFlow;
-        looseFlow[1] = aBaseEff;
-        return looseFlow;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
-                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
-        }
     }
 
     @Override

@@ -66,7 +66,7 @@ dependencies {
     // this is required because forestry is an hidden hard dep, revert this if you fixed the hidden hard dep
     implementation("com.github.GTNewHorizons:ForestryMC:4.9.10:dev") { transitive = false }
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta5:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta6:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.2:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.17:dev") { transitive = false }
