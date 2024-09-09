@@ -68,6 +68,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected final String MS_END = mName + "end";
 
     private byte glassTier = 0;
+    private static final double decay_rate = 0.025;
 
     private final String STRUCTURE_PIECE_MAIN = "main";
     private final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
@@ -175,9 +176,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         tt.addMachineType("Fluid Solidifier")
             .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
+            .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Starts with 4 Parallels")
-            .addInfo("Gain 1.5 Parallels per Width Expansion and Multiplied by Voltage Tier")
+            .addInfo("Gain 3 Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addInfo(AuthorOmdaCZ)
@@ -219,7 +221,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
         // max Width, minimal mid-pieces to build on each side
-        int tTotalWidth = Math.min(6, stackSize.stackSize + 3);
+        int tTotalWidth = Math.min(stackSize.stackSize + 1, 6);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             // horizontal offset 3 from controller and number of pieces times width of each piece
             buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0);
@@ -342,8 +344,24 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         return super.onRunningTick(aStack);
     }
 
+    private int tickcounts = 0;
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+            if (aBaseMetaTileEntity.isServerSide()) {
+                if (mMaxProgresstime == 0 && speedup > 1) {
+                    tickcounts++;
+                    if (tickcounts % 5 == 0) {
+                    tickcounts = 0;
+                    speedup = (float) Math.max(1, speedup - decay_rate);
+                }
+            }
+        }
+    }
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * 3 / 2) * GTUtility.getTier(this.getMaxInputVoltage());
+        return 4 + (mWidth * 3) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
