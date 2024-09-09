@@ -526,6 +526,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (blackHoleStatus != 2) {
+            mOutputItems = null;
+            mOutputFluids = null;
+        }
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
