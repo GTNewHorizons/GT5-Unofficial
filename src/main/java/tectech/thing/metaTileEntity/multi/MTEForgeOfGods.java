@@ -51,9 +51,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -73,6 +73,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
@@ -2170,25 +2171,26 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setPos(5, 82)
             .setSize(179, 16));
 
+        IItemHandlerModifiable upgradeMatsHandler = new ItemStackHandler(12);
         int uniqueItems = inputs.length;
         for (int i = 0; i < 12; i++) {
             int index = i;
             int cleanDiv4 = index / 4;
             if (i < uniqueItems) {
+                ItemStack stack = inputs[index];
+                if (stack != null) {
+                    stack = stack.copy();
+                    stack.stackSize = 1;
+                    upgradeMatsHandler.setStackInSlot(index, stack);
+                }
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
                         .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
                         .setSize(18, 18));
                 columnList.get(cleanDiv4)
                     .addChild(
-                        new ItemDrawable().setItem(inputs[index])
-                            .asWidget()
-                            .dynamicTooltip(() -> {
-                                List<String> tooltip = new ArrayList<>();
-                                tooltip.add(inputs[index] != null ? inputs[index].getDisplayName() : "");
-                                return tooltip;
-                            })
-                            .setSize(16, 16));
+                        new SlotWidget(upgradeMatsHandler, index).setAccess(false, false)
+                            .disableInteraction());
                 columnList.get(cleanDiv4 + 3)
                     .addChild(
                         new TextWidget("x" + inputs[i].stackSize).setTextAlignment(Alignment.CenterLeft)
@@ -2204,9 +2206,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         int counter = 0;
         for (DynamicPositionedColumn column : columnList) {
-            int spacing = 2;
-            int xCord = 1 + counter * 36;
-            int yCord = 1;
+            int spacing = 0;
+            int xCord = counter * 36;
+            int yCord = 0;
             if (counter > 2) {
                 spacing = 10;
                 xCord = 19 + (counter - 3) * 36;
