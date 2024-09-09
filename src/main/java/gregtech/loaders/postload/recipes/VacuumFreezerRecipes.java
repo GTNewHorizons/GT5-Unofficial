@@ -435,7 +435,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1296L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 9L))
             .fluidOutputs(MaterialsUEVplus.Creon.getMolten(1296L))
-            .duration(40 * SECONDS)
+            .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(vacuumFreezerRecipes);
     }
