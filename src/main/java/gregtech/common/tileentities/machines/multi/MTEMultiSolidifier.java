@@ -16,8 +16,13 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -325,12 +330,16 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     private float speedup = 1;
+    private int tickcount = 0;
 
-    public void onRunningTick(ItemStack aStack, long aTick) {
-        if (aTick % 20 == 0 && speedup < 3) {
-            speedup += 0.2F;
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        tickcount++;
+        if (tickcount % 10 == 0 && speedup < 3) {
+            tickcount = 0;
+            speedup += 0.025F;
         }
-        super.onRunningTick(aStack);
+        return super.onRunningTick(aStack);
     }
 
     public int getMaxParallelRecipes() {
@@ -348,9 +357,35 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("speedup")) speedup = aNBT.getFloat("speedup");
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setFloat("speedup", speedup);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setFloat("speedup", speedup);
+        tag.setInteger("parallels", getMaxParallelRecipes());
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+            + EnumChatFormatting.WHITE
+            + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE + tag.getInteger("parallels"));
     }
 
     @Override
