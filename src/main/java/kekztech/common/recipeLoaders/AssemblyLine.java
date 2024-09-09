@@ -1,7 +1,6 @@
 package kekztech.common.recipeLoaders;
 
 import static goodgenerator.loader.Loaders.huiCircuit;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -86,7 +85,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 2 * HOURS + 40 * MINUTES)
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(1),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 1),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
@@ -107,7 +106,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 2 * HOURS + 13 * MINUTES + 20 * SECONDS)
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(4),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.ProtoHalkonite, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
@@ -129,7 +128,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 2 * HOURS + 46 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(16),
-                GTModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4),
+                ItemList.Machine_Multi_NeutroniumCompressor.get(4),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, MaterialsUEVplus.SpaceTime, 3),
