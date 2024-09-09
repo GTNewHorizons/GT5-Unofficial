@@ -2421,7 +2421,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
                 32, // amperage
-                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
+                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(64),
                     // Cosmic neutronium block.
                     getModItem(Avaritia.ID, "Resource_Block", 64, 0),
                     GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -2892,7 +2892,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
                 32, // amperage
-                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
+                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(64),
                     // Cosmic neutronium block.
                     getModItem(Avaritia.ID, "Resource_Block", 64, 0),
                     GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -3688,18 +3688,24 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UMV,
                 64,
                 new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SixPhasedCopper, 4),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.CosmicNeutronium, 16),
-                    GGMaterial.tairitsu.get(OrePrefixes.plateDense, 16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 2),
+                    MaterialsAlloy.QUANTUM.getPlate(16),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.InfinityCatalyst, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.BlackPlutonium, 2),
                     getModItem(EternalSingularity.ID, "combined_singularity", 1L, 2),
-                    getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
-                    ItemRefer.Advanced_Radiation_Protection_Plate.get(64),
-                    GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Mellion, 16),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUIVBase, 8),
                     GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 16),
-                    MaterialsAlloy.QUANTUM.getPlate(16), MaterialsAlloy.ABYSSAL.getFrameBox(4) },
+                    GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Mellion, 16),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUEVBase, 8),
+                    getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.TranscendentMetal, 2),
+                    MaterialsAlloy.TITANSTEEL.getFrameBox(4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.ProtoHalkonite, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 2),
+                    MaterialsAlloy.ABYSSAL.getFrameBox(4) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(128 * 144),
-                    Materials.Bedrockium.getMolten(16_384 * 144), Materials.Neutronium.getMolten(2_048 * 144) },
+                    Materials.Bedrockium.getMolten(16_384 * 144), CELESTIAL_TUNGSTEN.getFluidStack(2_048 * 144),
+                    Materials.Neutronium.getMolten(2_048 * 144) },
                 CustomItemList.Godforge_SingularityShieldingCasing.get(4),
                 30 * SECONDS,
                 (int) TierEU.RECIPE_UIV);
