@@ -202,7 +202,10 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         byte tTier = (byte) Math.max(0, GTUtility.getTier(tVoltage));
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
-            GTRecipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, GTValues.V[tTier], tFluids);
+            GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
+                .fluids(tFluids)
+                .voltage(GTValues.V[tTier])
+                .find();
             if (tRecipe != null) {
                 FluidStack[] possibleOutputs = getPossibleByproductsOfSparge(
                     tRecipe.mFluidInputs[0],

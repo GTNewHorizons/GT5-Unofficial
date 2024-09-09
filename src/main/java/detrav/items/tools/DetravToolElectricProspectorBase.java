@@ -18,8 +18,8 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
-import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -83,7 +83,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     public String getBreakingSound() {
-        return (String) GregTechAPI.sSoundList.get(0);
+        return SoundResource.RANDOM_BREAK.toString();
     }
 
     @Override

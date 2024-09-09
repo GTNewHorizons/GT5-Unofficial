@@ -54,6 +54,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -2448,7 +2449,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
-        builder.widget(screenElements);
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements.setPos(10, 0))
+                .setPos(0, 7)
+                .setSize(190, 79));
 
         setMachineModeIcons();
         builder.widget(createPowerSwitchButton(builder))
