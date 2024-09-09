@@ -411,9 +411,11 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             if (!initialized) return;
         }
 
-        float timer = forgeTile.getWorldObj()
-            .getWorldInfo()
-            .getWorldTotalTime() % (20 * 36000) + timeSinceLastTick;
+        //Based on system time to prevent tps issues from causing stutters
+        //Need to look into different timing system to prevent stutters based on tps issues
+        //But prevent bypassing the pause menu
+        long millis = System.currentTimeMillis()%(1000 * 36000);
+        float timer = millis/(50f); //to ticks
 
         RenderEntireStar(forgeTile, x, y, z, timer);
         RenderRings(forgeTile, x, y, z, timer);
