@@ -129,7 +129,7 @@ public class BlockFrameBox extends BlockContainer {
         if (te instanceof BaseMetaPipeEntity baseTileEntity) {
             // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
             // This happens on world load for some reason
-            if (baseTileEntity.getMetaTileEntity() == null) {
+            if (!worldIn.isRemote && baseTileEntity.getMetaTileEntity() == null) {
                 createFrame(worldIn, x, y, z, baseTileEntity);
             }
             return baseTileEntity.onRightclick(player, direction, subX, subY, subZ);
@@ -139,6 +139,7 @@ public class BlockFrameBox extends BlockContainer {
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
+            if (worldIn.isRemote) return true;
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
             newTileEntity.onRightclick(player, direction, subX, subY, subZ);
             return true;
@@ -210,6 +211,8 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
+        if (aWorld.isRemote) return;
+
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
             gtTE.onBlockDestroyed();
