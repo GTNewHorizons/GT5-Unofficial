@@ -7088,18 +7088,6 @@ public class AssemblerRecipes implements Runnable {
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.SpaceTime, 22),
-                ItemList.Electric_Pump_UMV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 36000))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
-            .addTo(assemblerRecipes);
     }
 
     public void withGTNHLanthAndGTPP() {
