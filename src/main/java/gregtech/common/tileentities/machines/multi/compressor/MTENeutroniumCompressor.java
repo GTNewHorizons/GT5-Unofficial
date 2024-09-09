@@ -40,6 +40,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -207,7 +208,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > 0) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
                     return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 }
                 return super.validateRecipe(recipe);
