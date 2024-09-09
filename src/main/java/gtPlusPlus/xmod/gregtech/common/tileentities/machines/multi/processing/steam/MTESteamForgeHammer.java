@@ -325,7 +325,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             .addInfo("33.3% faster than the single block Steam Forge Hammer")
             .addInfo("Uses only 66.6% of the steam/s that the single block Forge Hammer uses")
             .addInfo("Processes 8x parallel")
-            .addInfo("Steel Tier 2x speed and 2x steam consumes")
+            .addInfo("Steel tier produces at twice the speed but with twice the steam consumption")
             .addSeparator()
             .beginStructureBlock(6, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
