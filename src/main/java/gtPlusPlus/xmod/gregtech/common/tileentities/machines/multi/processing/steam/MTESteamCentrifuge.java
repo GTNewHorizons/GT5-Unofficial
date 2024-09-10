@@ -287,7 +287,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
 
     @Override
     public int getMaxParallelRecipes() {
-        return tierMachine == 1 ? 8 : 16;
+        return 8;
     }
 
     @Override
@@ -312,15 +312,15 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33)
-                    .setSpeedBoost(1.5);
+                    .setEUtDiscount(1.33 * tierMachine)
+                    .setSpeedBoost(1.5 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getTierRecipes() {
-        return tierMachine == 1 ? 1 : 2;
+        return 1;
     }
 
     @Override
@@ -330,9 +330,8 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             .addInfo("Controller Block for the Steam Centrifuge")
             .addInfo("33.3% faster than a single block steam machine would run")
             .addInfo("Uses only 66.6% of the steam/s that a single block steam machine would use")
-            .addInfo("Bronze tier runs recipes up to LV tier")
-            .addInfo("Steel tier runs recipes up to MV tier")
-            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
+            .addInfo("Processes 8x parallel")
+            .addInfo("Steel tier produces at twice the speed but with twice the steam consumption")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
