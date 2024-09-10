@@ -75,6 +75,11 @@ public class MTESmeltingModule extends MTEBaseModule {
         return Arrays.asList(RecipeMaps.blastFurnaceRecipes, RecipeMaps.furnaceRecipes);
     }
 
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
     long wirelessEUt = 0;
 
     @Override
