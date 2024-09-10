@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
-import java.util.List;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
@@ -35,13 +34,6 @@ public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze impleme
     public MTEBasicMachineSteel(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
-    }
-
-    @Override
-    public List<String> getTooltip() {
-        List<String> tooltip = super.getTooltip();
-        tooltip.add(HPTOOLTIP);
-        return tooltip;
     }
 
     @Override

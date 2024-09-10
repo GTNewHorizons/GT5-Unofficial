@@ -1633,21 +1633,21 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerSteamMachines() {
         ItemList.Machine_Bronze_Furnace.set(
-            new MTESteamFurnaceBronze(STEAM_FURNACE.ID, "bronzemachine.furnace", "Low Pressure Steam Furnace").getStackForm(1L));
+            new MTESteamFurnaceBronze(STEAM_FURNACE.ID, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
         ItemList.Machine_Bronze_Macerator.set(
-            new MTESteamMaceratorBronze(STEAM_MACERATOR.ID, "bronzemachine.macerator", "Low Pressure Steam Macerator")
+            new MTESteamMaceratorBronze(STEAM_MACERATOR.ID, "bronzemachine.macerator", "Steam Macerator")
                 .getStackForm(1L));
         ItemList.Machine_Bronze_Extractor.set(
-            new MTESteamExtractorBronze(STEAM_EXTRACTOR.ID, "bronzemachine.extractor", "Low Pressure Steam Extractor")
+            new MTESteamExtractorBronze(STEAM_EXTRACTOR.ID, "bronzemachine.extractor", "Steam Extractor")
                 .getStackForm(1L));
         ItemList.Machine_Bronze_Hammer.set(
-            new MTESteamForgeHammerBronze(STEAM_FORGE_HAMMER.ID, "bronzemachine.hammer", "Low Pressure Steam Forge Hammer")
+            new MTESteamForgeHammerBronze(STEAM_FORGE_HAMMER.ID, "bronzemachine.hammer", "Steam Forge Hammer")
                 .getStackForm(1L));
         ItemList.Machine_Bronze_Compressor.set(
-            new MTESteamCompressorBronze(STEAM_COMPRESSOR.ID, "bronzemachine.compressor", "Low Pressure Steam Compressor")
+            new MTESteamCompressorBronze(STEAM_COMPRESSOR.ID, "bronzemachine.compressor", "Steam Compressor")
                 .getStackForm(1L));
         ItemList.Machine_Bronze_AlloySmelter.set(
-            new MTESteamAlloySmelterBronze(STEAM_ALLOY_SMELTER.ID, "bronzemachine.alloysmelter", "Low Pressure Steam Alloy Smelter")
+            new MTESteamAlloySmelterBronze(STEAM_ALLOY_SMELTER.ID, "bronzemachine.alloysmelter", "Steam Alloy Smelter")
                 .getStackForm(1L));
 
     }
@@ -10848,17 +10848,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerBoiler() {
         ItemList.Machine_Bronze_Boiler
-            .set(new MTEBoilerBronze(SMALL_COAL_BOILER.ID, "boiler.bronze", "Low Pressure Coal Boiler").getStackForm(1L));
+            .set(new MTEBoilerBronze(SMALL_COAL_BOILER.ID, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));
         ItemList.Machine_Steel_Boiler.set(
-            new MTEBoilerSteel(HIGH_PRESSURE_COAL_BOILER.ID, "boiler.steel", "High Pressure Coal Boiler")
+            new MTEBoilerSteel(HIGH_PRESSURE_COAL_BOILER.ID, "boiler.steel", "Large Coal Boiler")
                 .getStackForm(1L));
         ItemList.Machine_Steel_Boiler_Lava.set(
-            new MTEBoilerLava(HIGH_PRESSURE_LAVA_BOILER.ID, "boiler.lava", "High Pressure Lava Boiler")
+            new MTEBoilerLava(HIGH_PRESSURE_LAVA_BOILER.ID, "boiler.lava", "Reinforced Lava Boiler")
                 .getStackForm(1L));
         ItemList.Machine_Bronze_Boiler_Solar
-            .set(new MTEBoilerSolar(SIMPLE_SOLAR_BOILER.ID, "boiler.solar", "Low Pressure Solar Boiler").getStackForm(1L));
+            .set(new MTEBoilerSolar(SIMPLE_SOLAR_BOILER.ID, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
         ItemList.Machine_HP_Solar.set(
-            new MTEBoilerSolarSteel(HIGH_PRESSURE_SOLAR_BOILER.ID, "boiler.steel.solar", "High Pressure Solar Boiler")
+            new MTEBoilerSolarSteel(HIGH_PRESSURE_SOLAR_BOILER.ID, "boiler.steel.solar", "Advanced Solar Boiler")
                 .getStackForm(1L));
     }
 
