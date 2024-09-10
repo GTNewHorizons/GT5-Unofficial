@@ -24,14 +24,16 @@ import gregtech.api.render.TextureFactory;
  */
 public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze implements IGetTitleColor {
 
+    private static final String HPTOOLTIP = "Items are processed at twice the speed but with twice the steam consumption";
+    
     public MTEBasicMachineSteel(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
-        super(aID, aName, aNameRegional, aDescription, aInputSlotCount, aOutputSlotCount, aHighPressure);
+        super(aID, aName, aNameRegional, aDescription + "\n" + HPTOOLTIP, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
     public MTEBasicMachineSteel(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
-        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
+        super(aName, aDescription + "\n" + HPTOOLTIP, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
     @Override
