@@ -33,7 +33,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.StackUtils;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -401,7 +400,8 @@ public class ComponentAssemblyLineMiscRecipes {
                     .get(OrePrefixes.frameGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
                 GTOreDictUnificator
                     .get(OrePrefixes.plateDense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                GGMaterial.shirabon.get(OrePrefixes.plateDense, 3), ComponentType.Robot_Arm.getComponent(t)
+                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.MagMatter, 3),
+                ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
                     .get(10),
@@ -409,12 +409,11 @@ public class ComponentAssemblyLineMiscRecipes {
                     .get(16),
                 GTOreDictUnificator
                     .get(OrePrefixes.gearGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                GGMaterial.shirabon.get(OrePrefixes.gearGt, 2),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.MagMatter, 2),
                 GTOreDictUnificator
                     .get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 8),
-                GGMaterial.shirabon.get(OrePrefixes.gearGtSmall, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 4), getALCircuit(t, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
             new FluidStack[] { new FluidStack(sold, 144 * t * 4),
                 MaterialsUEVplus.BlackDwarfMatter.getMolten(144 * t * 2), MaterialsUEVplus.Eternity.getMolten(144 * t),
