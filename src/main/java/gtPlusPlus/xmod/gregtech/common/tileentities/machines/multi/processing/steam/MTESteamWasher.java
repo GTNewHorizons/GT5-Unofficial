@@ -394,10 +394,20 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
+        int tierMachine = tag.getInteger("tierMachine");
+        String tierMachineText;
+        if (tierMachine == 1) {
+            tierMachineText = "Low Pressure";
+        } else if (tierMachine == 2) {
+            tierMachineText = "High Pressure";
+        } else {
+            tierMachineText = String.valueOf(tierMachine);
+        }
+
         currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
-                + tag.getInteger("tierMachine")
+                + tierMachineText
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
