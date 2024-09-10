@@ -2030,6 +2030,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         if (unlockedNeighboringUpgrades <= 1) {
                             canFollowupSpareAConnection = false;
                         }
+                        unlockedNeighboringUpgrades = 0;
                     }
 
                     if (!doesFollowupRequireAllPrereqs && followupUpgrades.length > 0 && canFollowupSpareAConnection) {
