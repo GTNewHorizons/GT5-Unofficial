@@ -3216,14 +3216,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Black_Hole_Opener.ID,
                 "Black Hole Seed",
-                "Opens a semi-stable black hole",
+                "Opens a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 64)));
         ItemList.Black_Hole_Closer.set(
             addItem(
                 Black_Hole_Closer.ID,
                 "Black Hole Collapser",
-                "Safely closes a semi-stable black hole",
+                "Safely closes a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
 

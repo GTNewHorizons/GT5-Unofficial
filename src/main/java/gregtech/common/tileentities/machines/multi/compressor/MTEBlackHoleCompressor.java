@@ -283,7 +283,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor/Advanced Neutronium Compressor")
-            .addInfo("Controller Block for the Semi-Stable Black Hole Containment Field")
+            .addInfo("Controller Block for the Pseudostable Black Hole Containment Field")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE
