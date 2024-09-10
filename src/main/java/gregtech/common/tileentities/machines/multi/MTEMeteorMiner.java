@@ -68,6 +68,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private int currentRadius = MAX_RADIUS;
     private int xDrill, yDrill, zDrill;
     private int xStart, yStart, zStart;
+    private int tier = 0;
     private boolean isStartInitialized = false;
     private boolean hasFinished = true;
     private boolean isWaiting = false;
@@ -416,7 +417,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
                     addToOutput(
                         target
-                            .getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 3));
+                            .getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, this.tier));
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
