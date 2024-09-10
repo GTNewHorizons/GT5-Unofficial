@@ -388,7 +388,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             long actualEnergyUsage = tag.getLong("energyUsage");
             if (actualEnergyUsage > 0) {
                 currentTip.add(
-                    StatCollector.translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage)));
+                    StatCollector.translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage * 20)));
             }
         }
         currentTip
