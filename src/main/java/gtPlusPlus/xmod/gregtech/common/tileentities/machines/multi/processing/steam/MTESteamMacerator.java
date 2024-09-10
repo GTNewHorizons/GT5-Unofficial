@@ -274,7 +274,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
-            .addInfo("Items are processed at twice the speed but with twice the steam consumption under High Pressure")
+            .addInfo("Processing Speed & Steam Consumption is doubled under High Pressure")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
