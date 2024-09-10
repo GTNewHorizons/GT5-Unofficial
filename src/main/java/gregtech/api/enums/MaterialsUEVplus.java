@@ -889,7 +889,7 @@ public class MaterialsUEVplus {
         1,
         Dyes._NULL);
 
- public static Materials StargateCrystalSlurry = new MaterialBuilder(
+    public static Materials StargateCrystalSlurry = new MaterialBuilder(
         160,
         new TextureSet("sgcrystalfluid", true),
         "Stargate Crystal Slurry").setName("sgcrystalslurry")
@@ -899,7 +899,6 @@ public class MaterialsUEVplus {
             .setTransparent(false)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_MAX);
-
 
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is

@@ -88,7 +88,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.23-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
-    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.6.23-GTNH:dev') {transitive =  false}
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.6.25-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.6.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
