@@ -19,7 +19,6 @@ import static gregtech.api.enums.Mods.CropsPlusPlus;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -32,7 +31,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -195,17 +193,5 @@ public class BioRecipeLoader {
             .addTo(bacterialVatRecipes);
     }
 
-    public static void runOnServerStarted() {
-        RecipeMaps.fermentingRecipes.getAllRecipes()
-            .forEach(
-                recipe -> GTValues.RA.stdBuilder()
-                    .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                    .fluidInputs(recipe.mFluidInputs)
-                    .fluidOutputs(recipe.mFluidOutputs)
-                    .duration(recipe.mDuration)
-                    .eut(recipe.mEUt)
-                    .metadata(SIEVERTS, (int) GTUtility.getTier(recipe.mEUt))
-                    .addTo(bacterialVatRecipes));
-
-    }
+    public static void runOnServerStarted() {}
 }
