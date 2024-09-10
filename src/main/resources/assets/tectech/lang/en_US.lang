@@ -884,6 +884,7 @@ achievement.gt.stabilisation_field_generator.8=Gallifreyan Stabilisation Field G
 
 # Forge of the Gods / Godforge
 fog.upgrade.confirm=Construct
+fog.upgrade.respec=Respec
 
 fog.upgrade.tt.0=upgrade start
 fog.upgrade.tt.1=Improved Gravitational Convection Coils
