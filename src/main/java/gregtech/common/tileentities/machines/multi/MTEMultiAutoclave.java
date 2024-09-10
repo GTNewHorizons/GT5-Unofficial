@@ -20,6 +20,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLA
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -193,16 +195,20 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return STRUCTURE_DEFINITION;
     }
 
+    private static final String TOOLTIP_BAR = GOLD
+        + "---------------------------------------------------------------------------------------";
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Autoclave")
+            .addInfo(TOOLTIP_BAR)
             .addInfo("Controller Block for the Industrial Autoclave.")
-            .addInfo("Gains 12 parallels per item pipe casing tier.")
-            .addInfo("Each pipe casing (bronze, steel, titanium, tungstensteel)")
-            .addInfo("decreases the EU usageby 1/pipe tier.")
-            .addInfo("Heating Coils increase speed by 1/((tier + 1) / 2).")
-            .addInfo("Needs a minimum of 128 Pressure Containment Casings.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("Processes 12 items per Item Pipe Casing Tier.")
+            .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
+            .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
+            .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 7, 9, true)
