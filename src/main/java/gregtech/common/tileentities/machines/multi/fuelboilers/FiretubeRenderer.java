@@ -35,12 +35,18 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
     private static boolean isShaderInit;
     private static final WavefrontObject steamBoxObj = new WavefrontObject(new ResourceLocation("gregtech", "models/firetube.obj"));
     private static final int BYTES_P_FLOAT = 4;
+    private static final int TYPE_W = 1;
     private static final int POS_W = 3; // three floats for a XYZ
     private static final int UV_W = 2; // two floats for a UV
-    private static final int STRIDE = POS_W + UV_W;
+    private static final int STRIDE = POS_W + UV_W + TYPE_W;
     // 6 faces, two tris per, 3 vertices per, five floats per
+    // Every float here could probably be shrunk to 2 bits, but that seems overkill for a single small model.
     private static final float[] steamBoxTris = new float[6 * 2 * 3 * STRIDE];
     private static final int VERTEX_COUNT = steamBoxTris.length / STRIDE;
+
+    private static final float CLOUD_COUNT = 8;
+    private static final float CLOUD_MAXU = 64f / 128f;
+    private static final float CLOUD_MAXV = 8f / 128f;
 
     private static int aPos;
     private static int aUV;
@@ -61,7 +67,9 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
         ClientRegistry.bindTileEntitySpecialRenderer(Tile.class, this);
     }
 
-    private static int addTri(Vertex[] vs, TextureCoordinate[] tcs, int offset, int i) {
+    // Using separate VBOs for the water, steam, and particles would save 24 bytes per tri, roughly.
+    // This isn't *nothing*, but that is left as an exercise to some future reader who isn't dealing with GL21 hell.
+    private static int addTri(Vertex[] vs, TextureCoordinate[] tcs, int offset, int i, int type) {
         for (int ii = 0; ii < 3; ++ii) {
             final Vertex v = vs[(ii + offset) % 4];
             steamBoxTris[i++] = v.x;
@@ -71,6 +79,8 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
             final TextureCoordinate tc = tcs[(ii + offset) % 4];
             steamBoxTris[i++] = tc.u;
             steamBoxTris[i++] = tc.v;
+
+            steamBoxTris[i++] = type;
         }
         return i;
     }
@@ -83,27 +93,38 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
 
             if (!isShaderInit) {
 
-                // The water texture is 32x1024 - write the first 16x16 slice as the base UVs, but upload the max size
-                // to the shader too. Then, the shader can animate by switching between which slice is being shown
                 final IIcon waterFlow = Blocks.flowing_water.getBlockTextureFromSide(2);
                 final float minU = waterFlow.getMinU();
                 final float maxU = waterFlow.getMaxU();
                 final float minV = waterFlow.getMinV();
-
-                // Stop at 61/64 of the way to the bottom, since we display a 3-long slice
-                final float maxV = waterFlow.getMaxV(); // * 61 / 64;
+                final float maxV = waterFlow.getMaxV();
 
                 final float dU = maxU - minU;
                 final float dV = maxV - minV;
 
                 // Read the .obj to a float array
+                // Also ID them - 0 is water, 1 is steam, 2+ is a steam particle plane
                 int i = 0;
+                int primitiveType = 0;
                 for (final GroupObject go : steamBoxObj.groupObjects) {
                     for (final Face f : go.faces) {
-                        i = addTri(f.vertices, f.textureCoordinates, 0, i);
-                        i = addTri(f.vertices, f.textureCoordinates, 2, i);
+                        i = addTri(f.vertices, f.textureCoordinates, 0, i, primitiveType);
+                        i = addTri(f.vertices, f.textureCoordinates, 2, i, primitiveType);
                     }
+                    ++primitiveType;
                 }
+
+                /**
+                 * Each steam particle spawns, grows to max size as it floats to the top, then gets hangs around at the
+                 * outlet before disappearing. Since each steam particle is merely placed on a quad, and the height
+                 * tracks with the age, we need only send the XY of each particle, plus a Z to indicate which plane it's
+                 * on. 24 bytes per particle, however, would be overkill - that's half a vertex worth, and if there's,
+                 * say, 8 particles on each plane it means that's equivalent to 24 extra vertices, the same as the
+                 * planes themselves. Using one byte for each coord is much cheaper.
+                 *
+                 * Further packing to 4 bits per Z is possible, but requires vertices to be sent in pairs to maintain
+                 * byte alignment. 3 bits is also possible, but requires packing 8 vertices.
+                 */
 
                 steamProgram = new ShaderProgram(
                     "gregtech",

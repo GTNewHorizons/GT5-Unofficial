@@ -8,6 +8,7 @@ uniform sampler2D u_BlockAtlas;
 
 varying vec2 uv;
 varying float y;
+flat int type;
 
 // The color multiplier applied to water in plains, #F3F3F3
 //const vec4 colorMult = vec4(63 / 255.0, 118 / 255.0, 228.0 / 255.0, 1.0);
@@ -16,7 +17,7 @@ const vec4 colorMult = vec4(243.0 / 255.0, 243.0 / 255.0, 243.0 / 255.0, 1.0);
 void main() {
 
     // Lerp between u-U based on time
-    float u = u_minUV.x;
+    float u = u_minUV.x + (type / 10000000);
     float v = u_minUV.y;
     float dU = u_dUV.x;
     float dV = u_dUV.y;
