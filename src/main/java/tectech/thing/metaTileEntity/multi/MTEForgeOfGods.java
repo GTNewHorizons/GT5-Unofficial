@@ -2051,10 +2051,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         return new IDrawable[] { GTUITextures.BUTTON_STANDARD };
                     }
                 })
-                .addTooltip(translateToLocal("fog.upgrade.confirm"))
+                .dynamicTooltip(this::constructionStatus)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
                 .addChild(
-                    new TextWidget(translateToLocal("fog.upgrade.confirm")).setTextAlignment(Alignment.Center)
+                    TextWidget.dynamicText(this::constructionStatusText)
+                        .setTextAlignment(Alignment.Center)
                         .setScale(0.7f)
                         .setMaxWidth(36)
                         .setPos(3, 5))
@@ -3002,6 +3003,18 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private Text inversionInfoText() {
         return inversion ? new Text(translateToLocal("gt.blockmachines.multimachine.FOG.inversioninfotext"))
             : new Text("");
+    }
+
+    private Text constructionStatusText() {
+        return upgrades[currentUpgradeID] ? new Text(translateToLocal("fog.upgrade.respec"))
+            : new Text(translateToLocal("fog.upgrade.confirm"));
+    }
+
+    private List<String> constructionStatus() {
+        if (upgrades[currentUpgradeID]) {
+            return ImmutableList.of(translateToLocal("fog.upgrade.respec"));
+        }
+        return ImmutableList.of(translateToLocal("fog.upgrade.confirm"));
     }
 
     private List<String> upgradeMaterialRequirements() {
