@@ -1,9 +1,13 @@
 package gregtech.api.util;
 
+import java.util.Map;
+import java.util.Set;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -12,15 +16,16 @@ import gregtech.api.interfaces.internal.IGTCraftingRecipe;
 
 public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCraftingRecipe {
 
-    public final boolean mRemovableByGT, mKeepingNBT;
+    public final boolean mRemovableByGT, mKeepingNBT, overwriteNBT;
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
-    public GTShapelessRecipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT,
+    public GTShapelessRecipe(ItemStack aResult, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
         Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         super(aResult, aRecipe);
         mEnchantmentsAdded = aEnchantmentsAdded;
         mEnchantmentLevelsAdded = aEnchantmentLevelsAdded;
+        this.overwriteNBT = overwriteNBT;
         mRemovableByGT = aRemovableByGT;
         mKeepingNBT = aKeepingNBT;
     }
@@ -63,6 +68,26 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
                             .getTagCompound()
                             .copy());
                     break;
+                }
+            }
+
+            // Overwrite NBT
+            if (overwriteNBT) {
+                for (int i = 0; i < aGrid.getSizeInventory(); i++) {
+                    ItemStack item = aGrid.getStackInSlot(i);
+                    if (GTUtility.areStacksEqual(item, rStack, true) && item.hasTagCompound()) {
+                        NBTTagCompound inputNBT = (NBTTagCompound) item.getTagCompound()
+                            .copy();
+                        if (rStack.hasTagCompound()) {
+                            @SuppressWarnings("unchecked")
+                            Set<Map.Entry<String, NBTBase>> set = rStack.getTagCompound().tagMap.entrySet();
+                            for (Map.Entry<String, NBTBase> e : set) {
+                                inputNBT.setTag(e.getKey(), e.getValue());
+                            }
+                        }
+                        rStack.setTagCompound(inputNBT);
+                        break;
+                    }
                 }
             }
 
