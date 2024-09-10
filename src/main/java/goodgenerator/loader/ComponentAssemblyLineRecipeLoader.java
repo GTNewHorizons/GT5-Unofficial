@@ -186,7 +186,7 @@ public class ComponentAssemblyLineRecipeLoader {
     }
 
     private static void addFinalRecipes(Pair<ItemList, Integer> info, ArrayList<ItemStack> fixedInputs,
-                                        ArrayList<FluidStack> fixedFluids, GTRecipe.RecipeAssemblyLine recipe) {
+        ArrayList<FluidStack> fixedFluids, GTRecipe.RecipeAssemblyLine recipe) {
         GTValues.RA.stdBuilder()
             .itemInputs(fixedInputs.toArray(new ItemStack[0]))
             .itemOutputs(
@@ -502,13 +502,20 @@ public class ComponentAssemblyLineRecipeLoader {
 
         for (int i = 0; i < fluidInputs.size(); i++) {
             FluidStack stack = fluidInputs.get(i);
-            if (stack.getFluid().equals(FluidRegistry.getFluid("protohalkonitebase"))) {
+            if (stack.getFluid()
+                .equals(FluidRegistry.getFluid("protohalkonitebase"))) {
                 phkIndex = i;
-            } else if (stack.getFluid().equals(FluidRegistry.getFluid("molten.infinity"))) {
+            }
+            if (stack.getFluid()
+                .equals(FluidRegistry.getFluid("molten.infinity"))) {
                 infinityIndex = i;
-            } else if (stack.getFluid().equals(FluidRegistry.getFluid("molten.creon"))) {
+            }
+            if (stack.getFluid()
+                .equals(FluidRegistry.getFluid("molten.creon"))) {
                 creonIndex = i;
-            } else if (stack.getFluid().equals(FluidRegistry.getFluid("molten.mellion"))) {
+            }
+            if (stack.getFluid()
+                .equals(FluidRegistry.getFluid("molten.mellion"))) {
                 mellionIndex = i;
             }
         }
@@ -534,8 +541,7 @@ public class ComponentAssemblyLineRecipeLoader {
             // creon + mellion recipe
             ArrayList<FluidStack> creonMellionRecipe = new ArrayList<>(fluidInputs);
             // adjust phk amount
-            creonMellionRecipe.set(phkIndex, MaterialsUEVplus.MoltenProtoHalkoniteBase
-                .getFluid(originalPhk / 2));
+            creonMellionRecipe.set(phkIndex, MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(originalPhk / 2));
 
             if (creonIndex != -1) {
                 // add to the stack
@@ -549,7 +555,8 @@ public class ComponentAssemblyLineRecipeLoader {
             if (mellionIndex != -1) {
                 // add to the stack
                 int originalMellion = creonMellionRecipe.get(mellionIndex).amount;
-                creonMellionRecipe.set(mellionIndex, MaterialsUEVplus.Mellion.getMolten(originalMellion + originalPhk / 2));
+                creonMellionRecipe
+                    .set(mellionIndex, MaterialsUEVplus.Mellion.getMolten(originalMellion + originalPhk / 2));
             } else {
                 // add a new stack
                 creonMellionRecipe.add(MaterialsUEVplus.Mellion.getMolten(originalPhk / 2));
