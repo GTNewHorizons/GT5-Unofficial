@@ -24,23 +24,23 @@ import gregtech.api.render.TextureFactory;
  */
 public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze implements IGetTitleColor {
 
-    private static final String HPTOOLTIP = "Items are processed at twice the speed but with twice the steam consumption";
+    private static final String HPTOOLTIP = "Processing Speed & Steam Consumption is doubled under High Pressure";
     
     public MTEBasicMachineSteel(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
-        super(aID, aName, aNameRegional, aDescription + "\n" + HPTOOLTIP, aInputSlotCount, aOutputSlotCount, aHighPressure);
+        super(aID, aName, aNameRegional, aDescription, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
     public MTEBasicMachineSteel(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
-        super(aName, appendTooltip(aDescription), aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
+        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
-    private static String[] appendTooltip(String[] aDescription) {
-        String[] newDescription = new String[aDescription.length + 1];
-        System.arraycopy(aDescription, 0, newDescription, 0, aDescription.length);
-        newDescription[aDescription.length] = HPTOOLTIP;
-        return newDescription;
+    @Override
+    public List<String> getTooltip() {
+        List<String> tooltip = super.getTooltip();
+        tooltip.add(HPTOOLTIP);
+        return tooltip;
     }
 
     @Override
