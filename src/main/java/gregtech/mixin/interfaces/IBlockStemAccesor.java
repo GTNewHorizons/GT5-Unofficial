@@ -1,4 +1,4 @@
-package kubatech.api;
+package gregtech.mixin.interfaces;
 
 import net.minecraft.block.Block;
 

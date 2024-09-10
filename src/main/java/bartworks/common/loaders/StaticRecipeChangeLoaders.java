@@ -13,9 +13,7 @@
 
 package bartworks.common.loaders;
 
-import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.enums.TickTime.TICK;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,12 +43,9 @@ import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -534,29 +528,7 @@ public class StaticRecipeChangeLoaders {
     }
 
     public static void addElectricImplosionCompressorRecipes() {
-        RecipeMaps.implosionRecipes.getAllRecipes()
-            .stream()
-            .filter(e -> e.mInputs != null)
-            .forEach(
-                recipe -> GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        Arrays.stream(recipe.mInputs)
-                            .filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e))
-                            .distinct()
-                            .toArray(ItemStack[]::new))
-                    .itemOutputs(recipe.mOutputs)
-                    .duration(1 * TICK)
-                    .eut(TierEU.RECIPE_UEV)
-                    .addTo(electricImplosionCompressorRecipes));
-
         // Custom EIC recipes.
         new ElectricImplosionCompressorRecipes().run();
-    }
-
-    private static boolean checkForExplosives(ItemStack input) {
-        return GTUtility.areStacksEqual(input, new ItemStack(Blocks.tnt))
-            || GTUtility.areStacksEqual(input, GTModHandler.getIC2Item("industrialTnt", 1L))
-            || GTUtility.areStacksEqual(input, GTModHandler.getIC2Item("dynamite", 1L))
-            || GTUtility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L));
     }
 }

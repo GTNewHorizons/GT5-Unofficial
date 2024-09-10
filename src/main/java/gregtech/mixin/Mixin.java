@@ -46,12 +46,13 @@ public enum Mixin {
             .setApplyIf(() -> ConfigHandler.enabledPatches[3])
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
-    CraftingRecipeAccessorMixin(new Builder("Add accessors to crafting recipe types")
+    VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
             "minecraft.VanillaShapedRecipeMixin",
             "minecraft.VanillaShapelessRecipeMixin",
             "minecraft.ForgeShapedRecipeMixin",
-            "minecraft.ForgeShapelessRecipeMixin")
+            "minecraft.ForgeShapelessRecipeMixin",
+            "minecraft.PotionMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
