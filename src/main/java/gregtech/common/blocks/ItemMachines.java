@@ -373,6 +373,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             if (!(tMetaTile instanceof MTEDigitalTankBase)) {
                 return 0;
             }
+            if (container.stackSize > 1) {
+                return 0;
+            }
             if (container.stackTagCompound == null) container.stackTagCompound = new NBTTagCompound();
             final FluidStack tStoredFluid = getFluid(container);
             final int tCapacity = getCapacity(container);
