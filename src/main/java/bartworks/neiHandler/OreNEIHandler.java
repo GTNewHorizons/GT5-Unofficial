@@ -40,7 +40,7 @@ import gregtech.api.enums.OrePrefixes;
 public class OreNEIHandler extends TemplateRecipeHandler {
 
     public OreNEIHandler() {
-        if (!BWNEIConfig.sIsAdded) {
+        if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                 MainMod.MOD_ID,
                 "NEIPlugins",

@@ -445,6 +445,12 @@ public enum ItemList implements IItemContainer {
     FluidRegulator_LuV,
     FluidRegulator_ZPM,
     FluidRegulator_UV,
+    FluidRegulator_UHV,
+    FluidRegulator_UEV,
+    FluidRegulator_UIV,
+    FluidRegulator_UMV,
+    FluidRegulator_UXV,
+    FluidRegulator_MAX,
 
     Conveyor_Module_LV,
     Conveyor_Module_MV,
@@ -2563,6 +2569,7 @@ public enum ItemList implements IItemContainer {
     Phononic_Seed_Crystal,
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
+    Spray_Color_Infinite,
     // semicolon after the comment to reduce merge conflicts
     ;
 

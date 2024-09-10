@@ -25,7 +25,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.enums.OrePrefixes;
 
-public class BWNEIConfig implements IConfigureNEI {
+public class NEIBWConfig implements IConfigureNEI {
 
     static boolean sIsAdded = true;
 
@@ -77,11 +77,11 @@ public class BWNEIConfig implements IConfigureNEI {
             API.hideItem(stack);
         }
 
-        BWNEIConfig.sIsAdded = false;
+        NEIBWConfig.sIsAdded = false;
         new OreNEIHandler();
         new BioVatNEIHandler(BartWorksRecipeMaps.bacterialVatRecipes.getDefaultRecipeCategory());
         new BioLabNEIHandler(BartWorksRecipeMaps.bioLabRecipes.getDefaultRecipeCategory());
-        BWNEIConfig.sIsAdded = true;
+        NEIBWConfig.sIsAdded = true;
     }
 
     @Override
