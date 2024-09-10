@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -697,7 +698,7 @@ public class CentrifugeRecipes implements Runnable {
             .eut(5)
             .addTo(centrifugeRecipes);
 
-        if (Thaumcraft.isModLoaded()) {
+        if (Thaumcraft.isModLoaded() && Forestry.isModLoaded()) {
             // air
 
             GTValues.RA.stdBuilder()
@@ -771,7 +772,7 @@ public class CentrifugeRecipes implements Runnable {
                 .addTo(centrifugeRecipes);
         }
 
-        if (ExtraUtilities.isModLoaded()) {
+        if (ExtraUtilities.isModLoaded() && Forestry.isModLoaded()) {
             // Caelestis red
 
             GTValues.RA.stdBuilder()
