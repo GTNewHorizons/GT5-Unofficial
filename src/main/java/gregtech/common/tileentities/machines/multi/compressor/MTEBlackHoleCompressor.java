@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -35,7 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -54,6 +52,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -454,33 +453,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
             @NotNull
             @Override
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-
-                // Loop through all items and look for the Activation and Deactivation Catalysts
-                // Deactivation resets stability to 100 and catalyzing cost to 1
-                for (ItemStack inputItem : inputItems) {
-                    if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                        if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
-                            inputItem.stackSize -= 1;
-                            blackHoleStatus = 2;
-                            createRenderBlock();
-                            break;
-                        } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
-                            inputItem.stackSize -= 1;
-                            blackHoleStatus = 1;
-                            blackHoleStability = 100;
-                            catalyzingCostModifier = 1;
-                            rendererTileEntity = null;
-                            destroyRenderBlock();
-                            break;
-                        }
-                    }
-                }
-                return super.findRecipeMatches(map);
-            }
-
-            @NotNull
-            @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
                 if (ocs < 0) ocs = 0;
@@ -500,6 +472,28 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                // Loop through all items and look for the Activation and Deactivation Catalysts
+                // Deactivation resets stability to 100 and catalyzing cost to 1
+                for (MTEHatchInputBus bus : mInputBusses) {
+                    for (ItemStack inputItem : bus.mInventory) {
+                        if (inputItem.getItem() instanceof MetaGeneratedItem01) {
+                            if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                                inputItem.stackSize -= 1;
+                                blackHoleStatus = 2;
+                                createRenderBlock();
+                                break;
+                            } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                                inputItem.stackSize -= 1;
+                                blackHoleStatus = 1;
+                                blackHoleStability = 100;
+                                catalyzingCostModifier = 1;
+                                rendererTileEntity = null;
+                                destroyRenderBlock();
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 // Default speed bonus
                 setSpeedBonus(0.2F);
