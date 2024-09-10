@@ -664,7 +664,7 @@ public final class RecipeMaps {
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
                 && (aOutput1 == null || aOutput1.stackSize <= 6)
                 && (aOutput2 == null || aOutput2.stackSize <= 6)) {
-                // we don't use GT_Utility.mul() here. It does not have the truncating we need here.
+                // we don't use GTUtility.mul() here. It does not have the truncating we need here.
                 aInput1 = multiplyStack(10, aInput1);
                 aInput2 = multiplyStack(10, aInput2);
                 aOutput1 = multiplyStack(10, aOutput1);
@@ -1262,23 +1262,23 @@ public final class RecipeMaps {
 
         // Add fuels above 100 EU/L to the fuel boiler
         dieselFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
-            final FluidStack f = GT_Utility.getFluidForFilledItem(b.getItemInputBasic(0), true);
+            final FluidStack f = GTUtility.getFluidForFilledItem(b.getItemInputBasic(0), true);
             if (f == null) return Collections.emptyList();
             f.amount = 1;
             final int eul = b.getMetadataOrDefault(FUEL_VALUE, 0);
             if (eul < 100) return Collections.emptyList();
-            return GT_Values.RA.stdBuilder()
+            return GTValues.RA.stdBuilder()
                 .fluidInputs(f.copy())
                 .metadata(FUEL_VALUE, eul)
                 .addTo(fuelBoilerFuels);
         }));
         gasTurbineFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
-            final FluidStack f = GT_Utility.getFluidForFilledItem(b.getItemInputBasic(0), true);
+            final FluidStack f = GTUtility.getFluidForFilledItem(b.getItemInputBasic(0), true);
             if (f == null) return Collections.emptyList();
             f.amount = 1;
             final int eul = b.getMetadataOrDefault(FUEL_VALUE, 0);
             if (eul < 100) return Collections.emptyList();
-            return GT_Values.RA.stdBuilder()
+            return GTValues.RA.stdBuilder()
                 .fluidInputs(f.copy())
                 .metadata(FUEL_VALUE, eul)
                 .addTo(fuelBoilerFuels);

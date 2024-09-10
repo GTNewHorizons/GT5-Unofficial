@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi.fuelboilers;
 
-import static gregtech.api.GregTech_API.*;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.AuthorOmni;
+import static gregtech.api.GregTechAPI.*;
+import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.GTValues.AuthorOmni;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import appeng.core.Api;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -28,9 +28,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_StructureUtility;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.common.blocks.BlockCasingsAbstract;
 
 /**
  * TODO: add throttling.
@@ -40,7 +40,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
     // There's only one piece to this structure... for now >:)
     // TODO: multiple boiler chambers + superheater
     private static final String MAIN_PIECE_NAME = "main";
-    private static final int CASING_TEXTURE_INDEX = ((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings2)
+    private static final int CASING_TEXTURE_INDEX = ((BlockCasingsAbstract) sBlockCasings2)
         .getTextureIndex(10);
 
     private static final int X_OFFSET = 1;
@@ -65,7 +65,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         // Fuel in
         .addElement(
             'E',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GTStructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeast(
                     InputHatch.withAdder(
                         (thiz, gtTE, baseCasingIndex) -> thiz
@@ -76,7 +76,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         // Water in
         .addElement(
             'W',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GTStructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeast(
                     InputHatch.withAdder(
                         (thiz, gtTE, baseCasingIndex) -> thiz
@@ -87,7 +87,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         // Pollution out
         .addElement(
             'M',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GTStructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeast(Muffler)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -95,7 +95,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         // Steam out
         .addElement(
             'S',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GTStructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeast(OutputHatch)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -103,7 +103,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         // Tools in
         .addElement(
             'Z',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GTStructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeast(Maintenance)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -168,8 +168,8 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Boiler")
             .addInfo("Controller block for the Large Firetube Boiler")
             .addInfo("Burns fuels to generate steam efficiently")

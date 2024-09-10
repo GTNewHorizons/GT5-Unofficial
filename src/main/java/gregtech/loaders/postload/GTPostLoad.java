@@ -524,7 +524,7 @@ public class GTPostLoad {
 
     public static void makeWaterFilter() {
         RecipeMaps.waterOnly.add(
-            GT_RecipeBuilder.builder()
+            GTRecipeBuilder.builder()
                 .fluidInputs(Materials.Water.getFluid(1))
                 .duration(0)
                 .eut(0)

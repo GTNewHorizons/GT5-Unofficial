@@ -1,13 +1,13 @@
 package gregtech.common.tileentities.machines.multi.fuelboilers;
 
-import static gregtech.api.GregTech_API.sBlockCasings1;
-import static gregtech.api.GregTech_API.sBlockCasings2;
-import static gregtech.api.GregTech_API.sBlockCasings3;
-import static gregtech.api.GregTech_API.sBlockMetal1;
+import static gregtech.api.GregTechAPI.sBlockCasings1;
+import static gregtech.api.GregTechAPI.sBlockCasings2;
+import static gregtech.api.GregTechAPI.sBlockCasings3;
+import static gregtech.api.GregTechAPI.sBlockMetal1;
 import static gregtech.api.recipe.check.CheckRecipeResultRegistry.MISSING_WATER;
 import static gregtech.api.recipe.check.CheckRecipeResultRegistry.NO_FUEL_FOUND;
 import static gregtech.api.recipe.check.CheckRecipeResultRegistry.SUCCESSFUL;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static net.minecraftforge.fluids.FluidRegistry.WATER;
 
 import java.util.ArrayList;
@@ -33,25 +33,25 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 
 /**
  * The base class for fuel-based boilers. These burn fuels (like Benzene or Diesel) into Steam, instead of direct
  * combustion - in exchange for the extra step, they burn more efficiently at 1 EU to 2.4L steam.
  */
-public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+public abstract class FueledBoiler<T extends MTEExtendedPowerMultiBlockBase<T>>
+    extends MTEExtendedPowerMultiBlockBase<T> {
 
     private static final int[] MAX_BHEAT_BY_TIER = { 0, // there is no tier 0!
         50, 100, 200, 500 };
@@ -100,13 +100,13 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
     public @NotNull CheckRecipeResult checkProcessing() {
         // There's gotta be a cleaner way to do this
         final boolean waterFirst = mInputHatches.get(0).mRecipeMap == RecipeMaps.waterOnly;
-        final GT_MetaTileEntity_Hatch_Input waterIn = mInputHatches.get(waterFirst ? 0 : 1);
-        final GT_MetaTileEntity_Hatch_Input fuelIn = mInputHatches.get(waterFirst ? 1 : 0);
+        final MTEHatchInput waterIn = mInputHatches.get(waterFirst ? 0 : 1);
+        final MTEHatchInput fuelIn = mInputHatches.get(waterFirst ? 1 : 0);
 
         waterMax = waterIn.getCapacity();
         heatMax = 100 + MAX_BHEAT_BY_TIER[tier];
 
-        final GT_Recipe r = getRecipeMap().findRecipeQuery()
+        final GTRecipe r = getRecipeMap().findRecipeQuery()
             .fluids(fuelIn.getFluid())
             .find();
         if (r == null) return NO_FUEL_FOUND;
@@ -172,7 +172,7 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         super.onPostTick(thiz, tick);
 
         // Update displayed steam
-        final GT_MetaTileEntity_Hatch_Output s;
+        final MTEHatchOutput s;
         final boolean hasSteamHatch = !mOutputHatches.isEmpty();
         if (hasSteamHatch) {
             s = mOutputHatches.get(0);
@@ -191,7 +191,7 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         final int eut = Math.min(storedEU, getEut(eul));
         storedEU -= eut;
         if (hasSteamHatch && heat >= 100) {
-            final int amt = s.fill(GT_ModHandler.getSteam((long) (eut * 2L * (heat - 100) / (heatMax - 100))), true);
+            final int amt = s.fill(GTModHandler.getSteam((long) (eut * 2L * (heat - 100) / (heatMax - 100))), true);
             if (amt < eut * 2) ventSteam();
             steam += amt;
         }
@@ -226,9 +226,9 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                 .setSize(16, 16)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.BUTTON_STANDARD);
                     // TODO: some flame texture? or steam?
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
                     return ret.toArray(new IDrawable[0]);
                 })
                 .addTooltip("Boiler Monitor")
@@ -239,7 +239,7 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         final int pBarOffset = 30;
         final int pBarPad = 10;
         final ModularWindow.Builder b = ModularWindow.builder(190, 50);
-        b.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        b.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         b.setGuiTint(getGUIColorization());
 
         b.widget(new TextWidget("Boiler Monitor").setPos(5, 5));
@@ -254,9 +254,9 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                             new ProgressBar().setProgress(() -> water / waterMax)
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
-                                    GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
+                                    GTUITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
                                         .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
-                                    GT_UITextures.PROGRESSBAR_BOILER_WATER_R90,
+                                    GTUITextures.PROGRESSBAR_BOILER_WATER_R90,
                                     54)
                                 .setPos(pBarOffset, 0)
                                 .setSizeProvider(
@@ -268,9 +268,9 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                             new ProgressBar().setProgress(() -> heat / heatMax)
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
-                                    GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
+                                    GTUITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
                                         .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
-                                    GT_UITextures.PROGRESSBAR_BOILER_HEAT_R90,
+                                    GTUITextures.PROGRESSBAR_BOILER_HEAT_R90,
                                     54)
                                 .setPos(pBarOffset, 0)
                                 .setSizeProvider(
@@ -282,9 +282,9 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                             new ProgressBar().setProgress(() -> steam / steamMax)
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
-                                    GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
+                                    GTUITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
                                         .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
-                                    GT_UITextures.PROGRESSBAR_BOILER_STEAM_R90,
+                                    GTUITextures.PROGRESSBAR_BOILER_STEAM_R90,
                                     54)
                                 .setPos(pBarOffset, 0)
                                 .setSizeProvider(
@@ -297,14 +297,14 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
     };
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+    protected void setHatchRecipeMap(MTEHatchInput hatch) {
         // Inheriting boilers should set these manually
     }
 
     protected boolean addHatchWithRecipeMap(IGregTechTileEntity te, int baseCasingIndex, RecipeMap<?> map) {
         if (te == null) return false;
         final IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte instanceof final GT_MetaTileEntity_Hatch_Input hatch) {
+        if (mte instanceof final MTEHatchInput hatch) {
             hatch.updateTexture(baseCasingIndex);
             hatch.mRecipeMap = map;
             return mInputHatches.add(hatch);

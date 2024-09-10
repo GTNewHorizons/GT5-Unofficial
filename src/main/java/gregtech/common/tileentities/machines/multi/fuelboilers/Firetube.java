@@ -1,13 +1,17 @@
 package gregtech.common.tileentities.machines.multi.fuelboilers;
 
-import static gregtech.api.GregTech_API.*;
-import static gregtech.api.GregTech_API.sBlockCasings3;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_Values.AuthorOmni;
+import static gregtech.api.GregTechAPI.sBlockCasings1;
+import static gregtech.api.GregTechAPI.sBlockCasings2;
+import static gregtech.api.GregTechAPI.sBlockCasings3;
+import static gregtech.api.GregTechAPI.sBlockMetal1;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.GTValues.AuthorOmni;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -22,7 +26,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import appeng.core.Api;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -30,16 +34,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_StructureUtility;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstructable {
 
     // There's only one piece to this structure... for now >:)
     // TODO: multiple boiler chambers + superheater
     private static final String MAIN_PIECE_NAME = "main";
-    private static final int CASING_TEXTURE_INDEX = ((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings2)
+    private static final int CASING_TEXTURE_INDEX = ((BlockCasingsAbstract) sBlockCasings2)
         .getTextureIndex(10);
 
     private static final int X_OFFSET = 2;
@@ -62,7 +66,7 @@ public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstru
         // Fuel + maint
         .addElement(
             'I',
-            GT_StructureUtility.<Firetube>buildHatchAdder()
+            GTStructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(
                     InputHatch.withAdder(
                         (thiz, gtTE, baseCasingIndex) -> thiz
@@ -80,7 +84,7 @@ public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstru
         // Water in
         .addElement(
             'W',
-            GT_StructureUtility.<Firetube>buildHatchAdder()
+            GTStructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(
                     InputHatch.withAdder(
                         (thiz, gtTE, baseCasingIndex) -> thiz
@@ -105,7 +109,7 @@ public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstru
         // Pollution out
         .addElement(
             'M',
-            GT_StructureUtility.<Firetube>buildHatchAdder()
+            GTStructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(Muffler)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -113,7 +117,7 @@ public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstru
         // Steam out
         .addElement(
             'O',
-            GT_StructureUtility.<Firetube>buildHatchAdder()
+            GTStructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(OutputHatch)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -200,8 +204,8 @@ public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstru
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Boiler")
             .addInfo("Controller block for the Firetube Boiler")
             .addInfo("Burns fuels to generate steam efficiently")
