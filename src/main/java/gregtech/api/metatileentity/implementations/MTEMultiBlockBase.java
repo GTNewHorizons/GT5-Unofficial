@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.IntConsumer;
+import java.util.function.LongConsumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -2494,14 +2494,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        IntConsumer appendRate = (amount) -> {
+        LongConsumer appendRate = (amount) -> {
             double processPerTick = (double) amount / mMaxProgresstime * 20;
+            ret.append(" (");
             if (processPerTick > 1) {
-                ret.append(" (");
                 numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
                 ret.append("/s)");
             } else {
-                ret.append(" (");
                 numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
                 ret.append("s/ea)");
             }
@@ -2511,41 +2510,49 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         int MAX_LINES = 5;
 
         if (mOutputItems != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var item : mOutputItems) {
                 if (item == null) continue;
+                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
                 if (lines >= MAX_LINES) {
                     ret.append("...");
                     return ret.toString();
                 }
                 lines++;
                 ret.append(EnumChatFormatting.AQUA)
-                    .append(item.getDisplayName())
+                    .append(entry.getKey())
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD);
-                numberFormat.format(item.stackSize, ret);
+                numberFormat.format(entry.getValue(), ret);
                 ret.append(EnumChatFormatting.WHITE);
-                appendRate.accept(item.stackSize);
+                appendRate.accept(entry.getValue());
                 ret.append('\n');
             }
         }
         if (mOutputFluids != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var fluid : mOutputFluids) {
                 if (fluid == null) continue;
+                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
                 if (lines >= MAX_LINES) {
                     ret.append("...");
                     return ret.toString();
                 }
                 lines++;
                 ret.append(EnumChatFormatting.AQUA)
-                    .append(fluid.getLocalizedName())
+                    .append(entry.getKey())
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD);
-                numberFormat.format(fluid.amount, ret);
+                numberFormat.format(entry.getValue(), ret);
                 ret.append("L")
                     .append(EnumChatFormatting.WHITE);
-                appendRate.accept(fluid.amount);
+                appendRate.accept(entry.getValue());
                 ret.append('\n');
             }
         }
