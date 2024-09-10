@@ -422,12 +422,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -529,6 +523,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)
             .setEuModifier(0.7F);
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (blackHoleStatus != 2) {
+            mOutputItems = null;
+            mOutputFluids = null;
+        }
+        return super.onRunningTick(aStack);
     }
 
     @Override
