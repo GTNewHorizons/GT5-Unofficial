@@ -15,6 +15,7 @@ public class StoneBuilder {
 
     public StoneBuilder name(String name) {
         this.stoneName = name;
+        this.amount = 1; // if 0, no vein in chunk despite being valid.
         return this;
     }
 

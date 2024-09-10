@@ -224,7 +224,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     @Override
     public int getMaxParallelRecipes() {
-        return tierMachine == 1 ? 8 : 16;
+        return 8;
     }
 
     @Override
@@ -255,15 +255,15 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33)
-                    .setSpeedBoost(1.5);
+                    .setEUtDiscount(1.33 * tierMachine)
+                    .setSpeedBoost(1.5 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getTierRecipes() {
-        return tierMachine == 1 ? 1 : 2;
+        return 1;
     }
 
     @Override
@@ -273,9 +273,8 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             .addInfo("Controller Block for the Steam Macerator")
             .addInfo("33.3% faster than the single block Steam Macerator")
             .addInfo("Uses only 66.6% of the steam/s that the single block Steam Macerator uses")
-            .addInfo("Bronze tier runs recipes up to LV tier")
-            .addInfo("Steel tier runs recipes up to MV tier")
-            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
+            .addInfo("Processes 8x parallel")
+            .addInfo("Steel tier produces at twice the speed but with twice the steam consumption")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
