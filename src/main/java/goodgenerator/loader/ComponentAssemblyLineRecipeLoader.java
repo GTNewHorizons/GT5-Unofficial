@@ -3,7 +3,6 @@ package goodgenerator.loader;
 import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
-import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 
 import java.util.ArrayList;
@@ -178,39 +177,46 @@ public class ComponentAssemblyLineRecipeLoader {
                     if (addProgrammedCircuit) fixedInputs.add(GTUtility.getIntegratedCircuit(componentCircuit));
 
                     addEternityForMHDCSM(fixedFluids);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(fixedInputs.toArray(new ItemStack[0]))
-                        .itemOutputs(
-                            info.getLeft()
-                                .get(OUTPUT_MULTIPLIER))
-                        .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
-                        .duration(recipe.mDuration * INPUT_MULTIPLIER)
-                        .eut(recipe.mEUt)
-                        .metadata(COAL_CASING_TIER, info.getRight())
-                        .noOptimize()
-                        .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
-
-                    // Add a second recipe using Styrene-Butadiene
-                    // Rubber instead of Silicone Rubber.
-                    // This relies on silicone rubber being first in
-                    // @allSyntheticRubber so it's quite fragile, but
-                    // it's also the least invasive change.
-                    if (swapSiliconeForStyreneButadiene(fixedFluids)) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(fixedInputs.toArray(new ItemStack[0]))
-                            .itemOutputs(
-                                info.getLeft()
-                                    .get(OUTPUT_MULTIPLIER))
-                            .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
-                            .duration(recipe.mDuration * INPUT_MULTIPLIER)
-                            .eut(recipe.mEUt)
-                            .metadata(COAL_CASING_TIER, info.getRight())
-                            .noOptimize()
-                            .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
+                    for (ArrayList<FluidStack> finalFluids : addFluidsForProtoHalkonite(fixedFluids)) {
+                        addFinalRecipes(info, fixedInputs, finalFluids, recipe);
                     }
                 }
             }
         });
+    }
+
+    private static void addFinalRecipes(Pair<ItemList, Integer> info, ArrayList<ItemStack> fixedInputs,
+                                        ArrayList<FluidStack> fixedFluids, GTRecipe.RecipeAssemblyLine recipe) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(fixedInputs.toArray(new ItemStack[0]))
+            .itemOutputs(
+                info.getLeft()
+                    .get(OUTPUT_MULTIPLIER))
+            .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
+            .duration(recipe.mDuration * INPUT_MULTIPLIER)
+            .eut(recipe.mEUt)
+            .metadata(COAL_CASING_TIER, info.getRight())
+            .noOptimize()
+            .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
+
+        // Add a second recipe using Styrene-Butadiene
+        // Rubber instead of Silicone Rubber.
+        // This relies on silicone rubber being first in
+        // @allSyntheticRubber so it's quite fragile, but
+        // it's also the least invasive change.
+        if (swapSiliconeForStyreneButadiene(fixedFluids)) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(fixedInputs.toArray(new ItemStack[0]))
+                .itemOutputs(
+                    info.getLeft()
+                        .get(OUTPUT_MULTIPLIER))
+                .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
+                .duration(recipe.mDuration * INPUT_MULTIPLIER)
+                .eut(recipe.mEUt)
+                .metadata(COAL_CASING_TIER, info.getRight())
+                .noOptimize()
+                .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
+        }
     }
 
     /**
@@ -301,6 +307,8 @@ public class ComponentAssemblyLineRecipeLoader {
             if (strippedOreDict.contains("PTMEG")) return FluidRegistry.getFluidStack(
                 "molten.silicone",
                 (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
+            if (strippedOreDict.contains("protohalkonite")) return MaterialsUEVplus.MoltenProtoHalkoniteBase
+                .getFluid((orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
             return FluidRegistry.getFluidStack(
                 "molten." + strippedOreDict.toLowerCase(),
                 (int) (orePrefix.mMaterialAmount / (GTValues.M / 144)) * input.stackSize);
@@ -334,8 +342,8 @@ public class ComponentAssemblyLineRecipeLoader {
 
     /**
      * Transforms each {@code ItemStack}, if possible, into a more compact form. For example, a stack of 16 1x cables,
-     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar,
-     * proto-halkonite fine wire and neutronium nanite conversion.
+     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar
+     * and neutronium nanite conversion.
      */
     private static ArrayList<ItemStack> compactItems(List<ItemStack> items, int tier) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
@@ -377,19 +385,6 @@ public class ComponentAssemblyLineRecipeLoader {
                     multiplyAndSplitIntoStacks(
                         GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
                         totalItems / 16));
-                isCompacted = true;
-            }
-            // Proto-Halkonite cannot be molten into a fluid, so instead replace it with an equivalent amount of dense
-            // plates
-            if (GTUtility.areStacksEqual(
-                itemstack,
-                GTOreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.ProtoHalkonite, 1))) {
-                // Superdense plate is 64 plates
-                int superDensePlateAmount = (int) (((totalItems * OrePrefixes.wireFine.mMaterialAmount) / M) / 64);
-                stacks.addAll(
-                    multiplyAndSplitIntoStacks(
-                        GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.ProtoHalkonite, 1),
-                        superDensePlateAmount));
                 isCompacted = true;
             }
             if (!isCompacted) stacks.addAll(multiplyAndSplitIntoStacks(itemstack, totalItems));
@@ -492,6 +487,79 @@ public class ComponentAssemblyLineRecipeLoader {
             // in their assline recipes and each CoAl recipe has 48x recipe inputs
             fluidInputs.add(MaterialsUEVplus.Eternity.getMolten(mhdcsmAmount - 576 * 48));
         }
+    }
+
+    /**
+     * Handles creating multiple recipes for Proto-Halkonite. It will generate one set of fluid inputs with
+     * the full amount of Infinity + Molten Proto-Halkonite Base, and another recipe with 50% Creon, 50% Mellion,
+     * and half the Molten Proto-Halkonite Base to simulate the Chemical Bath process.
+     */
+    private static ArrayList<ArrayList<FluidStack>> addFluidsForProtoHalkonite(ArrayList<FluidStack> fluidInputs) {
+        int phkIndex = -1;
+        int infinityIndex = -1;
+        int creonIndex = -1;
+        int mellionIndex = -1;
+
+        for (int i = 0; i < fluidInputs.size(); i++) {
+            FluidStack stack = fluidInputs.get(i);
+            if (stack.getFluid().equals(FluidRegistry.getFluid("protohalkonitebase"))) {
+                phkIndex = i;
+            } else if (stack.getFluid().equals(FluidRegistry.getFluid("molten.infinity"))) {
+                infinityIndex = i;
+            } else if (stack.getFluid().equals(FluidRegistry.getFluid("molten.creon"))) {
+                creonIndex = i;
+            } else if (stack.getFluid().equals(FluidRegistry.getFluid("molten.mellion"))) {
+                mellionIndex = i;
+            }
+        }
+
+        ArrayList<ArrayList<FluidStack>> fixedFluidsRecipes = new ArrayList<>();
+
+        if (phkIndex != -1) {
+
+            int originalPhk = fluidInputs.get(phkIndex).amount;
+
+            // infinity recipe
+            ArrayList<FluidStack> infinityRecipe = new ArrayList<>(fluidInputs);
+            if (infinityIndex != -1) {
+                // add to the stack
+                int originalInfinity = infinityRecipe.get(infinityIndex).amount;
+                infinityRecipe.set(infinityIndex, Materials.Infinity.getMolten(originalInfinity + originalPhk));
+            } else {
+                // add a new stack
+                infinityRecipe.add(Materials.Infinity.getMolten(originalPhk));
+            }
+            fixedFluidsRecipes.add(infinityRecipe);
+
+            // creon + mellion recipe
+            ArrayList<FluidStack> creonMellionRecipe = new ArrayList<>(fluidInputs);
+            // adjust phk amount
+            creonMellionRecipe.set(phkIndex, MaterialsUEVplus.MoltenProtoHalkoniteBase
+                .getFluid(originalPhk / 2));
+
+            if (creonIndex != -1) {
+                // add to the stack
+                int originalCreon = creonMellionRecipe.get(creonIndex).amount;
+                creonMellionRecipe.set(creonIndex, MaterialsUEVplus.Creon.getMolten(originalCreon + originalPhk / 2));
+            } else {
+                // add a new stack
+                creonMellionRecipe.add(MaterialsUEVplus.Creon.getMolten(originalPhk / 2));
+            }
+
+            if (mellionIndex != -1) {
+                // add to the stack
+                int originalMellion = creonMellionRecipe.get(mellionIndex).amount;
+                creonMellionRecipe.set(mellionIndex, MaterialsUEVplus.Mellion.getMolten(originalMellion + originalPhk / 2));
+            } else {
+                // add a new stack
+                creonMellionRecipe.add(MaterialsUEVplus.Mellion.getMolten(originalPhk / 2));
+            }
+            fixedFluidsRecipes.add(creonMellionRecipe);
+        } else {
+            fixedFluidsRecipes.add(fluidInputs);
+        }
+
+        return fixedFluidsRecipes;
     }
 
     private static boolean swapSiliconeForStyreneButadiene(ArrayList<FluidStack> fluidInputs) {
