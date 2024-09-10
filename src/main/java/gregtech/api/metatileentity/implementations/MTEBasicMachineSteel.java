@@ -33,7 +33,14 @@ public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze impleme
 
     public MTEBasicMachineSteel(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
-        super(aName, aDescription + "\n" + HPTOOLTIP, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
+        super(aName, appendTooltip(aDescription), aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
+    }
+
+    private static String[] appendTooltip(String[] aDescription) {
+        String[] newDescription = new String[aDescription.length + 1];
+        System.arraycopy(aDescription, 0, newDescription, 0, aDescription.length);
+        newDescription[aDescription.length] = HPTOOLTIP;
+        return newDescription;
     }
 
     @Override
