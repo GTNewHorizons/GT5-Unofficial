@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -28,8 +29,9 @@ import gregtech.api.render.TextureFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatch {
+public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatch, IDataCopyable {
 
+    public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
@@ -217,6 +219,38 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             return master.onRightclick(master.getBaseMetaTileEntity(), aPlayer);
         }
         return false;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        if (nbt.hasKey("master")) {
+            NBTTagCompound masterNBT = nbt.getCompoundTag("master");
+            masterX = masterNBT.getInteger("x");
+            masterY = masterNBT.getInteger("y");
+            masterZ = masterNBT.getInteger("z");
+            masterSet = true;
+        }
+        return true;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        if (masterSet) {
+            NBTTagCompound masterNBT = new NBTTagCompound();
+            masterNBT.setInteger("x", masterX);
+            masterNBT.setInteger("y", masterY);
+            masterNBT.setInteger("z", masterZ);
+            tag.setTag("master", masterNBT);
+        }
+        return tag;
     }
 
     @Override
