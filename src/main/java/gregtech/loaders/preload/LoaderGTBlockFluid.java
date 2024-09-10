@@ -1313,6 +1313,24 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Infinity, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("antimatter")
+            .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, -1)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.Antimatter)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Antimatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("protomatter")
+            .withLocalizedName(MaterialsUEVplus.Protomatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 1)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.Protomatter)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
