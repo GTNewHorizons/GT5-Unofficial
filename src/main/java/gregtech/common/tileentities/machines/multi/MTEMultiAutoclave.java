@@ -208,7 +208,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addInfo("Processes 12 items per Item Pipe Casing Tier.")
             .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
             .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
-            .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage")
+            .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 7, 9, true)
