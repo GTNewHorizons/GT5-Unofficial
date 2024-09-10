@@ -264,7 +264,21 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0);
+
+        if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0)) {
+            return false;
+        }
+
+        if (this instanceof MTEExoticModule) {
+            if (mOutputHatches.size() < 1) {
+                return false;
+            }
+            if (mOutputBusses.size() < 1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
