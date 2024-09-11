@@ -175,6 +175,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             NBTTagCompound inInventory = event.player.inventory.getCurrentItem().getTagCompound();
             NBTTagCompound using = (NBTTagCompound)event.player.getItemInUse().getTagCompound().copy();
 
+            using.setDouble("charge", inInventory.getDouble("charge"));
+
             // only the charge has changed
             if(inInventory.equals(using)) {
                 event.player.setItemInUse(event.player.inventory.getCurrentItem(), event.player.getItemInUseCount());
@@ -195,13 +197,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc, boolean advancedItemTooltips) {
         var state = getState(itemStack);
 
-        addInfoLine(desc, "Coordinate A: %s", state.config.coordA);
-        addInfoLine(desc, "Coordinate B: %s", state.config.coordB);
-
-        addInfoLine(desc, "Corner block: %s", state.config.getCorners(), ItemStack::getDisplayName);
-        addInfoLine(desc, "Edge block: %s", state.config.getEdges(), ItemStack::getDisplayName);
-        addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
-        addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
+        if (!GuiScreen.isShiftKeyDown()) {
+            desc.add("Hold shift for more information.");
+        } else {
+            addInfoLine(desc, "Coordinate A: %s", state.config.coordA);
+            addInfoLine(desc, "Coordinate B: %s", state.config.coordB);
+    
+            addInfoLine(desc, "Corner block: %s", state.config.getCorners(), ItemStack::getDisplayName);
+            addInfoLine(desc, "Edge block: %s", state.config.getEdges(), ItemStack::getDisplayName);
+            addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
+            addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
+        }
     }
 
     private <T> void addInfoLine(List<String> desc, String format, T value) {
@@ -218,6 +224,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float subX, float subY, float subZ) {
+        if(player.getItemInUse() != null && player.getItemInUse().getItem() == this) {
+            return false;
+        }
+
         var state = getState(itemStack);
         
         if(state.config.action == PendingAction.SELECTING_BLOCK) {
@@ -322,6 +332,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
+        if(player.getItemInUse() != null && player.getItemInUse().getItem() == this) {
+            return itemStackIn;
+        }
+
         var state = getState(itemStackIn);
 
         if(state.config.action == PendingAction.MOVING_COORDS) {
@@ -406,7 +420,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public void setEncryptionKey(ItemStack item, String encKey, String name) {
         withState(item, state -> {
             try {
-                state.encKey = "0x" + Long.toHexString(Long.parseLong(encKey));
+                state.encKey = Long.toHexString(Long.parseLong(encKey));
             } catch (NumberFormatException e) {
                 state.encKey = null;
             }
@@ -732,25 +746,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             boolean isAValid = coordA != null && coordA.worldId == player.worldObj.provider.dimensionId;
             boolean isBValid = coordB != null && coordB.worldId == player.worldObj.provider.dimensionId;
 
-            if(!isAValid || !isBValid) {
-                if(isAValid) {
-                    Objects.requireNonNull(coordA);
-                    drawBox(player, player.worldObj, coordA.x, coordA.y, coordA.z, event.partialTicks);
-                }
+            if(isAValid) {
+                Objects.requireNonNull(coordA);
+                drawBox(player, player.worldObj, coordA.x, coordA.y, coordA.z, event.partialTicks);
+            }
 
-                if(isBValid) {
-                    Objects.requireNonNull(coordB);
-                    drawBox(player, player.worldObj, coordB.x, coordB.y, coordB.z, event.partialTicks);
-                }
-            } else {
-                if(GuiScreen.isShiftKeyDown() || state.config.action == PendingAction.MOVING_COORDS) {
-                    Objects.requireNonNull(coordA);
-                    Objects.requireNonNull(coordB);
+            if(isBValid) {
+                Objects.requireNonNull(coordB);
+                drawBox(player, player.worldObj, coordB.x, coordB.y, coordB.z, event.partialTicks);
+            }
 
-                    drawBox(player, player.worldObj, coordA.x, coordA.y, coordA.z, event.partialTicks);
-                    drawBox(player, player.worldObj, coordB.x, coordB.y, coordB.z, event.partialTicks);
-                }
-
+            if(isAValid && isBValid) {
                 var spawn =
                     (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS ||
                     !Objects.equals(DRAWN_CONFIG, state.config);

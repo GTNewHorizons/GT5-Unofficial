@@ -10,6 +10,10 @@ import java.util.concurrent.Future;
 
 import org.spongepowered.include.com.google.common.base.Objects;
 
+import appeng.api.config.Actionable;
+import appeng.api.networking.security.PlayerSource;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.util.item.AEItemStack;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GTUtility;
@@ -111,8 +115,6 @@ public class PendingBuild {
             int existingMeta = world.getBlockMetadata(x, y, z);
 
             if(existing == block && existingMeta == next.metadata) {
-                applyNBT(next);
-
                 pendingBlocks.removeFirst();
                 continue;
             }
@@ -176,11 +178,7 @@ public class PendingBuild {
                 }
             }
     
-            for(var drop : splitDrops) {
-                if (!placingPlayer.inventory.addItemStackToInventory(drop)) {
-                    world.spawnEntityInWorld(new EntityItem(world, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, drop));
-                }
-            }
+            giveItems(splitDrops.toArray(new ItemStack[0]));
         }
 
         if(list.isEmpty()) {
@@ -194,12 +192,12 @@ public class PendingBuild {
             return;
         }
 
-        if (list.get(0).block != null) {
-            ItemStack item = new ItemStack(list.get(0).block, list.size());
+        ItemStack item = new ItemStack(list.get(0).block, list.size());
+        if (item.getItem() != null) {
             item.setTagCompound(list.get(0).nbt);
     
             if(!tryConsumeItems(item)) {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not find item: " + item.getDisplayName()));
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not find item, it will be skipped. (" + item.stackSize + " x " + item.getDisplayName() + ")"));
                 player.setItemInUse(null, 0);
                 return;
             }
@@ -209,25 +207,68 @@ public class PendingBuild {
             world.setBlock(pending.x, pending.y, pending.z, pending.block, pending.metadata, 3);
         }
 
-        GTUtility.sendSoundToPlayers(
-            world,
-            SoundResource.MOB_ENDERMEN_PORTAL,
-            1.0F,
-            -1,
-            (int) (player.posX + 0.5),
-            (int) (player.posY + 0.5),
-            (int) (player.posZ + 0.5));
+        if (list.size() > 0) {
+            GTUtility.sendSoundToPlayers(
+                world,
+                SoundResource.MOB_ENDERMEN_PORTAL,
+                1.0F,
+                -1,
+                (int) (player.posX + 0.5),
+                (int) (player.posY + 0.5),
+                (int) (player.posZ + 0.5));
+        }
     }
 
     private boolean tryConsumeItems(ItemStack... items) {
         if(placingPlayer.capabilities.isCreativeMode) {
             return true;
         } else {
-            if(!consumeItemsFromPlayer(items, true)) {
-                return false;
+            if(consumeItemsFromPlayer(items, true)) {
+                consumeItemsFromPlayer(items, false);
+
+                return true;
             }
 
-            return consumeItemsFromPlayer(items, false);
+            if(consumeItemsFromAE(items, true)) {
+                consumeItemsFromAE(items, false);
+
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    public void giveItems(ItemStack... items) {
+        if (manipulator.encKey != null && !manipulator.hasMEConnection()) {
+            manipulator.connectToMESystem();
+        }
+
+        for (ItemStack item : items) {
+            if (manipulator.hasMEConnection()) {
+                IAEItemStack result = manipulator.storageGrid.getItemInventory().injectItems(
+                    AEItemStack.create(item),
+                    Actionable.MODULATE,
+                    new PlayerSource(placingPlayer, manipulator.securityTerminal));
+    
+                if (result != null) {
+                    item.stackSize = (int) result.getStackSize();
+                } else {
+                    item.stackSize = 0;
+                }
+            }
+    
+            if (item.stackSize <= 0) {
+                continue;
+            }
+
+            placingPlayer.inventory.addItemStackToInventory(item);
+
+            if (item.stackSize <= 0) {
+                continue;
+            }
+
+            placingPlayer.worldObj.spawnEntityInWorld(new EntityItem(placingPlayer.worldObj, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, item));
         }
     }
 
@@ -252,11 +293,7 @@ public class PendingBuild {
             for(int i = 0; i < inv.length; i++) {
                 ItemStack slot = inv[i];
 
-                if (slot == null) {
-                    int toRemove = Math.min(item.getMaxStackSize(), item.stackSize);
-
-                    inv[i] = item.splitStack(toRemove);
-                } else if(areStacksBasicallyEqual(item, slot)) {
+                if (slot != null && areStacksBasicallyEqual(item, slot)) {
                     int toRemove = Math.min(slot.stackSize, item.stackSize);
 
                     slot.stackSize -= toRemove;
@@ -273,6 +310,31 @@ public class PendingBuild {
             }
 
             if(item.stackSize > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean consumeItemsFromAE(ItemStack[] items, boolean simulate) {
+        if (manipulator.encKey == null) {
+            return false;
+        }
+
+        if (!manipulator.hasMEConnection()) {
+            if (!manipulator.connectToMESystem()) {
+                return false;
+            }
+        }
+
+        for (ItemStack item : items) {
+            IAEItemStack result = manipulator.storageGrid.getItemInventory().extractItems(
+                AEItemStack.create(item),
+                simulate ? Actionable.SIMULATE : Actionable.MODULATE,
+                new PlayerSource(placingPlayer, manipulator.securityTerminal));
+
+            if (result == null || result.getStackSize() == 0) {
                 return false;
             }
         }
@@ -337,9 +399,5 @@ public class PendingBuild {
         }
 
         world.setBlock(x, y, z, Blocks.air);
-    }
-
-    private void applyNBT(PendingBlock block) {
-
     }
 }
