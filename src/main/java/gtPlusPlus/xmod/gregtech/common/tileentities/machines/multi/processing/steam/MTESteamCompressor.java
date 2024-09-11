@@ -256,8 +256,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33 * tierMachine)
-                    .setSpeedBoost(1.5 / tierMachine);
+                    .setEUtDiscount(1.25 * tierMachine)
+                    .setSpeedBoost(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
@@ -271,11 +271,11 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Compressor")
-            .addInfo("33.3% faster than the single block Steam Compressor")
-            .addInfo("Uses only 66.6% of the steam/s that the single block Steam Compressor uses")
-            .addInfo("Processes 8x parallel")
-            .addInfo("Steel tier produces at twice the speed but with twice the steam consumption")
+            .addInfo("Controller Block for the Steam Squasher")
+            .addInfo("25% faster than using single block steam machines of the same pressure")
+            .addInfo("Only consumes steam at 62.5% of the L/s normally required")
+            .addInfo("Processes up to 8 items at once")
+            .addInfo("Processing Speed & Steam Consumption is doubled under High Pressure")
             .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -287,10 +287,10 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
                     + EnumChatFormatting.GRAY
                     + " Any casing")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
             .addStructureInfo("")
@@ -312,10 +312,20 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
+        int tierMachine = tag.getInteger("tierMachine");
+        String tierMachineText;
+        if (tierMachine == 1) {
+            tierMachineText = "Basic";
+        } else if (tierMachine == 2) {
+            tierMachineText = "High Pressure";
+        } else {
+            tierMachineText = String.valueOf(tierMachine);
+        }
+
         currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
-                + tag.getInteger("tierMachine")
+                + tierMachineText
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
