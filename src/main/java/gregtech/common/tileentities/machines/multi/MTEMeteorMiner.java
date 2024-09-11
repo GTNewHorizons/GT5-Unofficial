@@ -416,8 +416,13 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 if (target.getBlockHardness(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ) > 0) {
                     final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
                     addToOutput(
-                        target
-                            .getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, this.tier));
+                        target.getDrops(
+                            getBaseMetaTileEntity().getWorld(),
+                            currentX,
+                            currentY,
+                            currentZ,
+                            blockMeta,
+                            this.tier));
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
