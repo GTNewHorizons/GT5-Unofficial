@@ -1034,6 +1034,7 @@ fog.button.materialrequirementsmet.tooltip=All materials supplied
 fog.button.materialrequirements.tooltip.clickhere=Click to open material insertion window
 fog.button.ejection.tooltip=Toggle Graviton Shard Ejection
 fog.button.formatting.tooltip=Toggle Number Formatting
+fog.button.exoticinputs.tooltip=Click to display expected inputs
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1075,6 +1076,7 @@ gt.blockmachines.multimachine.FOG.milestonecomplete=Milestone Complete
 gt.blockmachines.multimachine.FOG.milestoneinfo=View Milestone Progress
 gt.blockmachines.multimachine.FOG.inversionactive=Inversion Active
 gt.blockmachines.multimachine.FOG.inversion=Inversion
+gt.blockmachines.multimachine.FOG.expectedinputs=Expected Inputs
 gt.blockmachines.multimachine.FOG.inversioninfotext=Once all milestones of the Forge reach tier 7,  inversion activates. This uncaps the maximum tier of all milestones and allows to scale infinitely. The scaling of each milestone changes from exponential to linear, but the granted graviton shard amount keeps increasing. The amount of progress needed for each subsequent milestone is as much as needed for the 7th tier of each milestone. The Composition milestone is once again an exception, as that continues to scale by 1 each tier, with it's own formula for calculating progress. Each module type is given a value, ranging from 1 for the Helioflare Power Forge to 5 for the Heliofusion Exoticizer in magmatter mode, then the amount of each module present is substracted by 1 and multiplied by its value. These values are added up and divided by 5, this is the final milestone tier on top of the base 7.
 gt.blockmachines.multimachine.FOG.powermilestone=Charge
 gt.blockmachines.multimachine.FOG.recipemilestone=Conversion
