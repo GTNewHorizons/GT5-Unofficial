@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.common.config.machinestats.MachineStats;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.enchantment.Enchantment;
@@ -64,7 +65,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.config.machinestats.ConfigMachines;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.AspectSourceHelper;
@@ -111,7 +111,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
      * Populates static variables dependant on config settings
      */
     private static void sharedConfigLoad() {
-        sAllowMultipleEggs = ConfigMachines.allowMultipleEggs;
+        sAllowMultipleEggs = MachineStats.machines.allowMultipleEggs;
         if (Thaumcraft.isModLoaded()) {
             for (Aspect tAspect : Aspect.aspects.values()) {
                 // noinspection UnstableApiUsage

@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.config.machinestats.MachineStats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -54,7 +55,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.config.machinestats.ConfigMassFabricator;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -145,10 +145,10 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     public void onConfigLoad() {
         super.onConfigLoad();
-        sDurationMultiplier = ConfigMassFabricator.durationMultiplier;
-        sUUAperUUM = ConfigMassFabricator.UUAPerUUM;
-        sUUASpeedBonus = ConfigMassFabricator.UUASpeedBonus;
-        sRequiresUUA = ConfigMassFabricator.requiresUUA;
+        sDurationMultiplier = MachineStats.massFabricator.durationMultiplier;
+        sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
+        sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
+        sRequiresUUA = MachineStats.massFabricator.requiresUUA;
     }
 
     public static boolean sInit = false;

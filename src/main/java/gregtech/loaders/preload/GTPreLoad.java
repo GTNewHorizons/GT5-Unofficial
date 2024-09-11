@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
+import gregtech.common.config.machinestats.MachineStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -520,7 +521,7 @@ public class GTPreLoad {
         GregTechAPI.mRFExplosions = gregtech.common.config.opstuff.ConfigGeneral.RFExplosions;
 
         // MachineStats.cfg
-        GTMod.gregtechproxy.mForceFreeFace = gregtech.common.config.machinestats.ConfigMachines.forceFreeFace;
+        GTMod.gregtechproxy.mForceFreeFace = MachineStats.machines.forceFreeFace;
 
         // ore_drop_behavior
         try {

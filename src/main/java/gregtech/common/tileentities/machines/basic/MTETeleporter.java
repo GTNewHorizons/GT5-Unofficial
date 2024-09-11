@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES_GL
 import java.util.List;
 import java.util.function.Consumer;
 
+import gregtech.common.config.machinestats.MachineStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
@@ -61,7 +62,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.machinestats.ConfigTeleporter;
 
 public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -245,9 +245,9 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
 
     @Override
     public void onConfigLoad() {
-        sInterDimensionalTeleportAllowed = ConfigTeleporter.interDimensionalTPAllowed;
-        sPassiveEnergyDrain = ConfigTeleporter.passiveEnergyDrain;
-        sPowerMultiplyer = ConfigTeleporter.powerMultiplier;
+        sInterDimensionalTeleportAllowed = MachineStats.teleporter.interDimensionalTPAllowed;
+        sPassiveEnergyDrain = MachineStats.teleporter.passiveEnergyDrain;
+        sPowerMultiplyer = MachineStats.teleporter.powerMultiplier;
         sFPowerMultiplyer = sPowerMultiplyer / 100.0;
     }
 

@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
+import gregtech.common.config.machinestats.MachineStats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -83,11 +84,6 @@ import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
 import gregtech.common.RecipeAdder;
-import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
-import gregtech.common.config.machinestats.ConfigMassFabricator;
-import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
-import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
-import gregtech.common.config.machinestats.ConfigTeleporter;
 import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.misc.GTCommand;
@@ -186,12 +182,7 @@ public class GTMod implements IGTMod {
             ConfigurationManager.registerConfig(Gregtech.class);
 
             // MachineStats.cfg
-            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
-            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
-            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
-            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
-            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
-            ConfigurationManager.registerConfig(ConfigTeleporter.class);
+            ConfigurationManager.registerConfig(MachineStats.class);
 
             // OverPoweredStuff
             ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
