@@ -499,6 +499,7 @@ public class ComponentAssemblyLineRecipeLoader {
         int infinityIndex = -1;
         int creonIndex = -1;
         int mellionIndex = -1;
+        int superfluidIndex = -1;
 
         for (int i = 0; i < fluidInputs.size(); i++) {
             FluidStack stack = fluidInputs.get(i);
@@ -517,6 +518,10 @@ public class ComponentAssemblyLineRecipeLoader {
             if (stack.getFluid()
                 .equals(FluidRegistry.getFluid("molten.mellion"))) {
                 mellionIndex = i;
+            }
+            if (stack.getFluid()
+                .equals(FluidRegistry.getFluid("dimensionallyshiftedsuperfluid"))) {
+                superfluidIndex = i;
             }
         }
 
@@ -562,6 +567,20 @@ public class ComponentAssemblyLineRecipeLoader {
                 creonMellionRecipe.add(MaterialsUEVplus.Mellion.getMolten(originalPhk / 2));
             }
             fixedFluidsRecipes.add(creonMellionRecipe);
+
+            // Add superfluid to each recipe to mirror the vacuum freezer cost
+            for (ArrayList<FluidStack> fluids : fixedFluidsRecipes) {
+                if (superfluidIndex != -1) {
+                    // add to the stack
+                    int originalSuperfluid = fluids.get(superfluidIndex).amount;
+                    fluids.set(
+                        superfluidIndex,
+                        MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(originalSuperfluid + originalPhk / 4));
+                } else {
+                    // add a new stack
+                    fluids.add(MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(originalPhk / 4));
+                }
+            }
         } else {
             fixedFluidsRecipes.add(fluidInputs);
         }
