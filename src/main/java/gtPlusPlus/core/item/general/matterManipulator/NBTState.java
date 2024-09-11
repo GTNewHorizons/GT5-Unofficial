@@ -8,9 +8,10 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.joml.Vector3d;
+import org.joml.Vector3i;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,16 +19,17 @@ import com.google.gson.JsonPrimitive;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.tile.misc.TileSecurity;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -44,12 +46,15 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 class NBTState {
 
-    static final Gson GSON = new Gson();
+    static final Gson GSON = new GsonBuilder().create();
 
     public NBTState.Config config = new NBTState.Config();
 
@@ -349,11 +354,11 @@ class NBTState {
         public BlockSelectMode blockSelectMode = BlockSelectMode.ALL;
         public BlockRemoveMode removeMode = BlockRemoveMode.NONE;
         public PlaceMode placeMode = PlaceMode.GEOMETRY;
+        public Shape shape = Shape.LINE;
     
         public Location coordA, coordB;
-        public Region copy, cut, paste;
-        public Vector3d coordAStart, coordBStart;
-        public Shape shape = Shape.LINE;
+        public Vector3i coordAOffset, coordBOffset;
+        
         public JsonElement corners, edges, faces, volumes;
 
         private static JsonElement saveStack(ItemStack stack) {
@@ -395,42 +400,95 @@ class NBTState {
         public ItemStack getVolumes() {
             return loadStack(volumes);
         }
-    
-        public void updateCoords(EntityPlayer player) {
-            if(coordAStart != null) {
-                coordA = new Location(
-                    player.worldObj,
-                    (int)((double)coordA.x - coordAStart.x + player.posX + 0.5),
-                    (int)((double)coordA.y - coordAStart.y + player.posY + 0.5),
-                    (int)((double)coordA.z - coordAStart.z + player.posZ + 0.5)
-                );
+
+        public static MovingObjectPosition getHitResult(EntityPlayer player) {
+            double reachDistance = player instanceof EntityPlayerMP mp
+                ? mp.theItemInWorldManager.getBlockReachDistance()
+                : GTUtility.getClientReachDistance();
+
+            Vec3 posVec = player.getPosition(0).addVector(0, player.getEyeHeight(), 0);
+
+            Vec3 lookVec = player.getLook(0);
+
+            Vec3 modifiedPosVec = posVec
+                .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+
+            return player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+        }
+
+        public static Vector3i getLookingAtLocation(EntityPlayer player) {
+            double reachDistance = player instanceof EntityPlayerMP mp
+                ? mp.theItemInWorldManager.getBlockReachDistance()
+                : GTUtility.getClientReachDistance();
+
+            Vec3 posVec = player.getPosition(0);
+
+            Vec3 lookVec = player.getLook(0);
+
+            Vec3 modifiedPosVec = posVec
+                .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+
+            var hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+
+            Vector3i target;
+
+            if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
+                target = new Vector3i(hit.blockX, hit.blockY, hit.blockZ);
+
+                if (!player.isSneaking()) {
+                    var dir = DirectionUtil.fromSide(hit.sideHit);
+                    target.add(dir.offsetX, dir.offsetY, dir.offsetZ);
+                }
+            } else {
+                target = new Vector3i((int) modifiedPosVec.xCoord, (int) modifiedPosVec.yCoord, (int) modifiedPosVec.zCoord - 1);
             }
+
+            return target;
+        }
+
+        public Location getCoordA(EntityPlayer player) {
+            if (coordAOffset == null) {
+                return coordA;
+            } else {
+                Vector3i lookingAt = getLookingAtLocation(player);
+                lookingAt.add(coordAOffset);
     
-            if(coordBStart != null) {
-                coordB = new Location(
-                    player.worldObj,
-                    (int)((double)coordB.x - coordBStart.x + player.posX + 0.5),
-                    (int)((double)coordB.y - coordBStart.y + player.posY + 0.5),
-                    (int)((double)coordB.z - coordBStart.z + player.posZ + 0.5)
-                );
+                return new Location(player.worldObj, lookingAt);
             }
         }
+
+        public Location getCoordB(EntityPlayer player) {
+            if (coordBOffset == null) {
+                return coordB;
+            } else {
+                Vector3i lookingAt = getLookingAtLocation(player);
+                lookingAt.add(coordBOffset);
     
+                return new Location(player.worldObj, lookingAt);
+            }
+        }
+
         @Override
         public int hashCode() {
             final int prime = 31;
             int result = 1;
+            result = prime * result + ((action == null) ? 0 : action.hashCode());
+            result = prime * result + ((coordMode == null) ? 0 : coordMode.hashCode());
+            result = prime * result + ((blockSelectMode == null) ? 0 : blockSelectMode.hashCode());
+            result = prime * result + ((removeMode == null) ? 0 : removeMode.hashCode());
+            result = prime * result + ((placeMode == null) ? 0 : placeMode.hashCode());
+            result = prime * result + ((shape == null) ? 0 : shape.hashCode());
             result = prime * result + ((coordA == null) ? 0 : coordA.hashCode());
             result = prime * result + ((coordB == null) ? 0 : coordB.hashCode());
-            result = prime * result + ((shape == null) ? 0 : shape.hashCode());
-            result = prime * result + ((coordMode == null) ? 0 : coordMode.hashCode());
+            result = prime * result + ((coordAOffset == null) ? 0 : coordAOffset.hashCode());
+            result = prime * result + ((coordBOffset == null) ? 0 : coordBOffset.hashCode());
             result = prime * result + ((corners == null) ? 0 : corners.hashCode());
             result = prime * result + ((edges == null) ? 0 : edges.hashCode());
             result = prime * result + ((faces == null) ? 0 : faces.hashCode());
             result = prime * result + ((volumes == null) ? 0 : volumes.hashCode());
             return result;
         }
-    
+
         @Override
         public boolean equals(Object obj) {
             if (this == obj)
@@ -440,6 +498,18 @@ class NBTState {
             if (getClass() != obj.getClass())
                 return false;
             Config other = (Config) obj;
+            if (action != other.action)
+                return false;
+            if (coordMode != other.coordMode)
+                return false;
+            if (blockSelectMode != other.blockSelectMode)
+                return false;
+            if (removeMode != other.removeMode)
+                return false;
+            if (placeMode != other.placeMode)
+                return false;
+            if (shape != other.shape)
+                return false;
             if (coordA == null) {
                 if (other.coordA != null)
                     return false;
@@ -450,9 +520,15 @@ class NBTState {
                     return false;
             } else if (!coordB.equals(other.coordB))
                 return false;
-            if (shape != other.shape)
+            if (coordAOffset == null) {
+                if (other.coordAOffset != null)
+                    return false;
+            } else if (!coordAOffset.equals(other.coordAOffset))
                 return false;
-            if (coordMode != other.coordMode)
+            if (coordBOffset == null) {
+                if (other.coordBOffset != null)
+                    return false;
+            } else if (!coordBOffset.equals(other.coordBOffset))
                 return false;
             if (corners == null) {
                 if (other.corners != null)
@@ -476,6 +552,7 @@ class NBTState {
                 return false;
             return true;
         }
+
     }
 
     static enum Shape {
@@ -485,14 +562,15 @@ class NBTState {
     }
 
     static enum PendingAction {
-        MOVING_COORDS,
-        SELECTING_BLOCK,
+        GEOM_MOVING_COORDS,
+        GEOM_SELECTING_BLOCK,
     }
 
     static enum CoordMode {
         SET_INTERLEAVED,
         SET_A,
         SET_B,
+        SET_PASTE,
     }
 
     static enum BlockSelectMode {
@@ -511,7 +589,9 @@ class NBTState {
 
     static enum PlaceMode {
         GEOMETRY,
-        COPYING
+        MOVING,
+        COPYING,
+        DEBUGGING
     }
 
     static class PendingBlock extends Location {
@@ -571,15 +651,24 @@ class NBTState {
         }
 
         public Location(@Nonnull World world, int x, int y, int z) {
-            this.worldId = world.provider.dimensionId;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this(world.provider.dimensionId, x, y, z);
+        }
+
+        public Location(@Nonnull World world, Vector3i v) {
+            this(world, v.x, v.y, v.z);
         }
 
         @Override
         public String toString() {
             return String.format("X=%,d Y=%,d Z=%,d", x, y, z);
+        }
+
+        public Vector3i toVec() {
+            return new Vector3i(x, y, z);
+        }
+
+        public boolean isInWorld(@Nonnull World world) {
+            return world.provider.dimensionId == worldId;
         }
 
         public @Nullable World getWorld() {
@@ -607,6 +696,17 @@ class NBTState {
             this.y += dir.offsetY;
             this.z += dir.offsetZ;
             return this;
+        }
+
+        public Location offset(int dx, int dy, int dz) {
+            this.x += dx;
+            this.y += dy;
+            this.z += dz;
+            return this;
+        }
+
+        public Location clone() {
+            return new Location(worldId, x, y, z);
         }
 
         @Override
