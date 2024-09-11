@@ -221,10 +221,6 @@ public class GregTechAPI {
      */
     @SideOnly(Side.CLIENT)
     public static IIconRegister sBlockIcons, sItemIcons;
-    /**
-     * The Configuration Objects
-     */
-    public static GTConfig NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**

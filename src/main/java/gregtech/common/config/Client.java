@@ -4,6 +4,8 @@ import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 
+import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
 
@@ -145,6 +147,22 @@ public class Client {
 
         @Config.Comment("Recipe category section")
         public final RecipeCategories recipeCategories = new RecipeCategories();
+
+        @Config.Comment("if true, shows the recipes using seconds (as opposed to ticks).")
+        @Config.DefaultBoolean(true)
+        public boolean NEIRecipeSecondMode;
+
+        @Config.Comment("if true, shows the mod which added the recipe.")
+        @Config.DefaultBoolean(false)
+        public boolean NEIRecipeOwner;
+
+        @Config.Comment("if true, show the stacktrace related to the recipe addition.")
+        @Config.DefaultBoolean(false)
+        public boolean NEIRecipeOwnerStackTrace;
+
+        @Config.Comment("if true, show original voltage when overclocked.")
+        @Config.DefaultBoolean(false)
+        public boolean NEIOriginalVoltage;
 
         @Config.LangKey("GT5U.gui.config.client.nei.recipe_categories")
         public static class RecipeCategories {

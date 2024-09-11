@@ -137,10 +137,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile = new Configuration(tFile);
         GTConfig.undergroundFluidsFile.load();
         GTConfig.undergroundFluidsFile.save();
-
-        GregTechAPI.NEIClientFIle = new GTConfig(
-            new Configuration(new File(new File(configDir, "GregTech"), "NEIClient.cfg")));
-
     }
 
     public static void createLogFiles(File parentFile) {
@@ -586,11 +582,10 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mTooltipShiftVerbosity = Client.iface.tooltipShiftVerbosity;
         GTMod.gregtechproxy.mTitleTabStyle = Client.iface.titleTabStyle;
 
-        GTMod.gregtechproxy.mNEIRecipeSecondMode = GregTechAPI.NEIClientFIle.get("nei", "RecipeSecondMode", true);
-        GTMod.gregtechproxy.mNEIRecipeOwner = GregTechAPI.NEIClientFIle.get("nei", "RecipeOwner", false);
-        GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace = GregTechAPI.NEIClientFIle
-            .get("nei", "RecipeOwnerStackTrace", false);
-        GTMod.gregtechproxy.mNEIOriginalVoltage = GregTechAPI.NEIClientFIle.get("nei", "OriginalVoltage", false);
+        GTMod.gregtechproxy.mNEIRecipeSecondMode = Client.nei.NEIRecipeSecondMode;
+        GTMod.gregtechproxy.mNEIRecipeOwner = Client.nei.NEIRecipeOwner;
+        GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace = Client.nei.NEIRecipeOwnerStackTrace;
+        GTMod.gregtechproxy.mNEIOriginalVoltage = Client.nei.NEIOriginalVoltage;
 
         GTMod.gregtechproxy.mWailaTransformerVoltageTier = Client.waila.wailaTransformerVoltageTier;
         GTMod.gregtechproxy.wailaAverageNS = Client.waila.wailaAverageNS;
