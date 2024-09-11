@@ -42,6 +42,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import tectech.loader.TecTechConfig;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 
@@ -49,7 +50,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
-    private boolean debug = false;
+    private boolean debug = TecTechConfig.DEBUG_MODE;
     private int inputMaxParallel = 0;
 
     public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
@@ -201,9 +202,16 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 + formatNumbers(mMaxProgresstime / 20)
                 + RESET
                 + " s");
-        str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
+        str.add(
+            "Currently using: " + RED
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0")
+                + RESET
+                + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
-        str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
+        str.add(
+            YELLOW + "Current Parallel: "
+                + RESET
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0"));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
         str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
         str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));
