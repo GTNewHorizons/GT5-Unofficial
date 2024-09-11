@@ -178,7 +178,7 @@ public class PendingBuild {
                 }
             }
     
-            giveItems(splitDrops.toArray(new ItemStack[0]));
+            givePlayerItems(splitDrops.toArray(new ItemStack[0]));
         }
 
         if(list.isEmpty()) {
@@ -219,7 +219,7 @@ public class PendingBuild {
         }
     }
 
-    private boolean tryConsumeItems(ItemStack... items) {
+    public boolean tryConsumeItems(ItemStack... items) {
         if(placingPlayer.capabilities.isCreativeMode) {
             return true;
         } else {
@@ -239,7 +239,7 @@ public class PendingBuild {
         }
     }
 
-    public void giveItems(ItemStack... items) {
+    public void givePlayerItems(ItemStack... items) {
         if (manipulator.encKey != null && !manipulator.hasMEConnection()) {
             manipulator.connectToMESystem();
         }
@@ -366,10 +366,8 @@ public class PendingBuild {
         }
     }
 
-    private boolean tryConsumePower(ItemStack stack, PendingBlock pendingBlock) {
+    public boolean tryConsumePower(ItemStack stack, PendingBlock pendingBlock) {
         double euUsage = 1.0;
-
-        euUsage *= placingPlayer.getDistanceSq(pendingBlock.x, pendingBlock.y, pendingBlock.z) * EU_PER_BLOCK;
 
         try {
             if((boolean)IS_BLOCK_CONTAINER.invoke(pendingBlock.block)) {
@@ -378,6 +376,12 @@ public class PendingBuild {
         } catch (Throwable e) {
             GTMod.GT_FML_LOGGER.error("Could not get Block.isBlockContainer field", e);
         }
+
+        return tryConsumePower(stack, pendingBlock.x, pendingBlock.y, pendingBlock.z, euUsage);
+    }
+
+    public boolean tryConsumePower(ItemStack stack, double x, double y, double z, double euUsage) {
+        euUsage *= placingPlayer.getDistanceSq(x, y, z);
 
         return ElectricItem.manager.use(stack, euUsage, placingPlayer);
     }
