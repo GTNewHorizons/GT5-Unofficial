@@ -23,7 +23,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
-import codechicken.nei.util.NBTJson;
+import appeng.tile.misc.TileSecurity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -56,6 +56,8 @@ class NBTState {
     public String encKey;
     public double charge;
 
+    public transient TileSecurity securityTerminal;
+    public transient IGridNode gridNode;
     public transient IGrid grid;
     public transient IStorageGrid storageGrid;
     public transient IMEMonitor<IAEItemStack> itemStorage;
@@ -74,7 +76,7 @@ class NBTState {
     }
 
     public boolean hasMEConnection() {
-        return encKey != null && grid != null && storageGrid != null && itemStorage != null;
+        return encKey != null && securityTerminal != null && gridNode != null && grid != null && storageGrid != null && itemStorage != null;
     }
 
     public boolean connectToMESystem() {
@@ -87,17 +89,18 @@ class NBTState {
         long addr = 0;
 
         try {
-            addr = Long.parseLong(encKey);
+            addr = Long.parseLong(encKey, 16);
         } catch (NumberFormatException e) {
             return false;
         }
 
         var grid = AEApi.instance().registries().locatable().getLocatableBy(addr);
 
-        if(grid instanceof IGridHost gridHost) {
-            IGridNode node = gridHost.getGridNode(ForgeDirection.UNKNOWN);
-            if(node != null) {
-                this.grid = node.getGrid();
+        if(grid instanceof TileSecurity security) {
+            this.securityTerminal = security;
+            this.gridNode = security.getGridNode(ForgeDirection.UNKNOWN);
+            if(this.gridNode != null) {
+                this.grid = this.gridNode.getGrid();
                 this.storageGrid = this.grid.getCache(IStorageGrid.class);
                 if(this.storageGrid != null) {
                     this.itemStorage = this.storageGrid.getItemInventory();
@@ -354,11 +357,11 @@ class NBTState {
         public JsonElement corners, edges, faces, volumes;
 
         private static JsonElement saveStack(ItemStack stack) {
-            return stack == null ? null : NBTJson.toJsonObject(stack.writeToNBT(new NBTTagCompound()));
+            return stack == null ? null : toJsonObject(stack.writeToNBT(new NBTTagCompound()));
         }
     
         private static ItemStack loadStack(JsonElement stack) {
-            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound)NBTJson.toNbt(stack));
+            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound)toNbt(stack));
         }
     
         public void setCorners(ItemStack corners) {
