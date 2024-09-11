@@ -438,14 +438,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.RESET
                 + " %" /* 8 */
         };
-        if (!this.getClass()
-            .getName()
-            .contains("Steam"))
-            ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.safeInt((long) realOptFlow)
-                + EnumChatFormatting.RESET
-                + " L/t";
         return ret;
     }
 
@@ -454,6 +446,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             : this.getMaxEfficiency(mInventory[1]) > 0;
     }
 
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;

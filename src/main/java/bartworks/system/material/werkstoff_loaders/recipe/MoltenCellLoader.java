@@ -32,11 +32,9 @@ import static gregtech.api.enums.OrePrefixes.rotor;
 import static gregtech.api.enums.OrePrefixes.screw;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Objects;
 
@@ -331,22 +329,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
             .registerFluidContainer(werkstoff.getMolten(144), werkstoff.get(cellMolten), Materials.Empty.getCells(1));
         GTUtility.addFluidContainerData(data);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(werkstoff.get(cellMolten))
-            .fluidInputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144))
-            .duration(2 * TICKS)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(cellMolten))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144))
-            .duration(2 * TICKS)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
-
         if (!Forestry.isModLoaded()) return;
 
         final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
@@ -358,13 +340,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
             werkstoff.get(capsuleMolten),
             GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
         GTUtility.addFluidContainerData(emptyData);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(capsuleMolten))
-            .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144))
-            .duration(2 * TICKS)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
 
     }
 }
