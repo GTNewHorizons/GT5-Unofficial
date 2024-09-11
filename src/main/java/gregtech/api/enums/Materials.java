@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.config.gregtech.Gregtech;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -34,7 +35,6 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.gregtech.ConfigHarvestLevel;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -2669,9 +2669,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHarvestLevels() {
-        GTMod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
-        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
-        GTMod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
+        GTMod.gregtechproxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
+        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
+        GTMod.gregtechproxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {

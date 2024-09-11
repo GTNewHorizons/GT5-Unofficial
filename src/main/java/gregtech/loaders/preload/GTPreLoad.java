@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import gregtech.common.config.client.Client;
+import gregtech.common.config.gregtech.Gregtech;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -48,12 +49,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
-import gregtech.common.config.gregtech.ConfigDebug;
-import gregtech.common.config.gregtech.ConfigFeatures;
-import gregtech.common.config.gregtech.ConfigGeneral;
-import gregtech.common.config.gregtech.ConfigMachines;
-import gregtech.common.config.gregtech.ConfigOreDropBehavior;
-import gregtech.common.config.gregtech.ConfigPollution;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 
@@ -162,7 +157,7 @@ public class GTPreLoad {
             GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
         } catch (FileNotFoundException ignored) {}
 
-        if (ConfigGeneral.loggingOreDict) {
+        if (Gregtech.general.loggingOreDict) {
             GTLog.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
             if (!GTLog.mOreDictLogFile.exists()) {
                 try {
@@ -181,7 +176,7 @@ public class GTPreLoad {
             GTLog.ore.println("******************************************************************************");
             tList.forEach(GTLog.ore::println);
         }
-        if (ConfigGeneral.loggingExplosions) {
+        if (Gregtech.general.loggingExplosions) {
             GTLog.mExplosionLog = new File(parentFile, "logs/Explosion.log");
             if (!GTLog.mExplosionLog.exists()) {
                 try {
@@ -193,7 +188,7 @@ public class GTPreLoad {
             } catch (Throwable ignored) {}
         }
 
-        if (ConfigGeneral.loggingPlayerActicity) {
+        if (Gregtech.general.loggingPlayerActicity) {
             GTLog.mPlayerActivityLogFile = new File(parentFile, "logs/PlayerActivity.log");
             if (!GTLog.mPlayerActivityLogFile.exists()) {
                 try {
@@ -369,124 +364,124 @@ public class GTPreLoad {
 
     public static void loadConfig() {
         // general
-        GTValues.D1 = ConfigDebug.D1;
-        GTValues.D2 = ConfigDebug.D2;
-        GTValues.allow_broken_recipemap = ConfigDebug.allowBrokenRecipeMap;
-        GTValues.debugCleanroom = ConfigDebug.debugCleanroom;
-        GTValues.debugDriller = ConfigDebug.debugDriller;
-        GTValues.debugWorldGen = ConfigDebug.debugWorldgen;
-        GTValues.debugOrevein = ConfigDebug.debugOrevein;
-        GTValues.debugSmallOres = ConfigDebug.debugSmallOres;
-        GTValues.debugStones = ConfigDebug.debugStones;
-        GTValues.debugBlockMiner = ConfigDebug.debugBlockMiner;
-        GTValues.debugBlockPump = ConfigDebug.debugBlockPump;
-        GTValues.debugEntityCramming = ConfigDebug.debugEntityCramming;
-        GTValues.debugWorldData = ConfigDebug.debugWorldData;
-        GTValues.oreveinPercentage = ConfigGeneral.oreveinPercentage;
-        GTValues.oreveinAttempts = ConfigGeneral.oreveinAttempts;
-        GTValues.oreveinMaxPlacementAttempts = ConfigGeneral.oreveinMaxPlacementAttempts;
-        GTValues.oreveinPlacerOres = ConfigGeneral.oreveinPlacerOres;
-        GTValues.oreveinPlacerOresMultiplier = ConfigGeneral.oreveinPlacerOresMultiplier;
-        GregTechAPI.TICKS_FOR_LAG_AVERAGING = ConfigGeneral.ticksForLagAveraging;
-        GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = ConfigGeneral.millisecondThesholdUntilLagWarning;
-        GregTechAPI.sTimber = ConfigGeneral.timber;
-        GregTechAPI.sDrinksAlwaysDrinkable = ConfigGeneral.drinksAlwaysDrinkable;
-        GregTechAPI.sDoShowAllItemsInCreative = ConfigGeneral.doShowAllItemsInCreative;
-        GregTechAPI.sMultiThreadedSounds = ConfigGeneral.multiThreadedSounds;
-        GTMod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = ConfigGeneral.maxEqualEntitiesAtOneSpot;
-        GTMod.gregtechproxy.mFlintChance = ConfigGeneral.flintChance;
-        GTMod.gregtechproxy.mItemDespawnTime = ConfigGeneral.itemDespawnTime;
-        GTMod.gregtechproxy.mAllowSmallBoilerAutomation = ConfigGeneral.allowSmallBoilerAutomation;
+        GTValues.D1 = Gregtech.debug.D1;
+        GTValues.D2 = Gregtech.debug.D2;
+        GTValues.allow_broken_recipemap = Gregtech.debug.allowBrokenRecipeMap;
+        GTValues.debugCleanroom = Gregtech.debug.debugCleanroom;
+        GTValues.debugDriller = Gregtech.debug.debugDriller;
+        GTValues.debugWorldGen = Gregtech.debug.debugWorldgen;
+        GTValues.debugOrevein = Gregtech.debug.debugOrevein;
+        GTValues.debugSmallOres = Gregtech.debug.debugSmallOres;
+        GTValues.debugStones = Gregtech.debug.debugStones;
+        GTValues.debugBlockMiner = Gregtech.debug.debugBlockMiner;
+        GTValues.debugBlockPump = Gregtech.debug.debugBlockPump;
+        GTValues.debugEntityCramming = Gregtech.debug.debugEntityCramming;
+        GTValues.debugWorldData = Gregtech.debug.debugWorldData;
+        GTValues.oreveinPercentage = Gregtech.general.oreveinPercentage;
+        GTValues.oreveinAttempts = Gregtech.general.oreveinAttempts;
+        GTValues.oreveinMaxPlacementAttempts = Gregtech.general.oreveinMaxPlacementAttempts;
+        GTValues.oreveinPlacerOres = Gregtech.general.oreveinPlacerOres;
+        GTValues.oreveinPlacerOresMultiplier = Gregtech.general.oreveinPlacerOresMultiplier;
+        GregTechAPI.TICKS_FOR_LAG_AVERAGING = Gregtech.general.ticksForLagAveraging;
+        GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = Gregtech.general.millisecondThesholdUntilLagWarning;
+        GregTechAPI.sTimber = Gregtech.general.timber;
+        GregTechAPI.sDrinksAlwaysDrinkable = Gregtech.general.drinksAlwaysDrinkable;
+        GregTechAPI.sDoShowAllItemsInCreative = Gregtech.general.doShowAllItemsInCreative;
+        GregTechAPI.sMultiThreadedSounds = Gregtech.general.multiThreadedSounds;
+        GTMod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = Gregtech.general.maxEqualEntitiesAtOneSpot;
+        GTMod.gregtechproxy.mFlintChance = Gregtech.general.flintChance;
+        GTMod.gregtechproxy.mItemDespawnTime = Gregtech.general.itemDespawnTime;
+        GTMod.gregtechproxy.mAllowSmallBoilerAutomation = Gregtech.general.allowSmallBoilerAutomation;
         GTMod.gregtechproxy.mDisableVanillaOres = gregtech.common.config.worldgen.ConfigGeneral.disableVanillaOres;
-        GTMod.gregtechproxy.mIncreaseDungeonLoot = ConfigGeneral.increaseDungeonLoot;
-        GTMod.gregtechproxy.mAxeWhenAdventure = ConfigGeneral.axeWhenAdventure;
-        GTMod.gregtechproxy.mSurvivalIntoAdventure = ConfigGeneral.survivalIntoAdventure;
-        GTMod.gregtechproxy.mHungerEffect = ConfigGeneral.hungerEffect;
-        GTMod.gregtechproxy.mInventoryUnification = ConfigGeneral.inventoryUnification;
-        GTMod.gregtechproxy.mGTBees = ConfigGeneral.GTBees;
-        GTMod.gregtechproxy.mCraftingUnification = ConfigGeneral.craftingUnification;
-        GTMod.gregtechproxy.mNerfedWoodPlank = ConfigGeneral.nerfedWoodPlank;
-        GTMod.gregtechproxy.mNerfedVanillaTools = ConfigGeneral.nerfedVanillaTools;
-        GTMod.gregtechproxy.mAchievements = ConfigGeneral.achievements;
-        GTMod.gregtechproxy.mHideUnusedOres = ConfigGeneral.hideUnusedOres;
-        GTMod.gregtechproxy.mEnableAllMaterials = ConfigGeneral.enableAllMaterials;
-        GTMod.gregtechproxy.mExplosionItemDrop = ConfigGeneral.explosionItemDrop;
-        GTMod.gregtechproxy.mEnableCleanroom = ConfigGeneral.enableCleanroom;
-        GTMod.gregtechproxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && ConfigGeneral.lowGravProcessing;
-        GTMod.gregtechproxy.mCropNeedBlock = ConfigGeneral.cropNeedBlock;
-        GTMod.gregtechproxy.mAMHInteraction = ConfigGeneral.autoMaintenaceHatchesInteraction;
-        GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = ConfigGeneral.mixedOreOnlyYieldsTwoThirdsOfPureOre;
-        GTMod.gregtechproxy.mRichOreYieldMultiplier = ConfigGeneral.richOreYieldMultiplier;
-        GTMod.gregtechproxy.mNetherOreYieldMultiplier = ConfigGeneral.netherOreYieldMultiplier;
-        GTMod.gregtechproxy.mEndOreYieldMultiplier = ConfigGeneral.endOreYieldMultiplier;
-        GTMod.gregtechproxy.gt6Pipe = ConfigGeneral.gt6Pipe;
-        GTMod.gregtechproxy.gt6Cable = ConfigGeneral.gt6Cable;
-        GTMod.gregtechproxy.ic2EnergySourceCompat = ConfigGeneral.ic2EnergySourceCompat;
-        GTMod.gregtechproxy.costlyCableConnection = ConfigGeneral.costlyCableConnection;
-        GTMod.gregtechproxy.crashOnNullRecipeInput = ConfigGeneral.crashOnNullRecipeInput;
+        GTMod.gregtechproxy.mIncreaseDungeonLoot = Gregtech.general.increaseDungeonLoot;
+        GTMod.gregtechproxy.mAxeWhenAdventure = Gregtech.general.axeWhenAdventure;
+        GTMod.gregtechproxy.mSurvivalIntoAdventure = Gregtech.general.survivalIntoAdventure;
+        GTMod.gregtechproxy.mHungerEffect = Gregtech.general.hungerEffect;
+        GTMod.gregtechproxy.mInventoryUnification = Gregtech.general.inventoryUnification;
+        GTMod.gregtechproxy.mGTBees = Gregtech.general.GTBees;
+        GTMod.gregtechproxy.mCraftingUnification = Gregtech.general.craftingUnification;
+        GTMod.gregtechproxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
+        GTMod.gregtechproxy.mNerfedVanillaTools = Gregtech.general.nerfedVanillaTools;
+        GTMod.gregtechproxy.mAchievements = Gregtech.general.achievements;
+        GTMod.gregtechproxy.mHideUnusedOres = Gregtech.general.hideUnusedOres;
+        GTMod.gregtechproxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
+        GTMod.gregtechproxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
+        GTMod.gregtechproxy.mEnableCleanroom = Gregtech.general.enableCleanroom;
+        GTMod.gregtechproxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && Gregtech.general.lowGravProcessing;
+        GTMod.gregtechproxy.mCropNeedBlock = Gregtech.general.cropNeedBlock;
+        GTMod.gregtechproxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
+        GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
+        GTMod.gregtechproxy.mRichOreYieldMultiplier = Gregtech.general.richOreYieldMultiplier;
+        GTMod.gregtechproxy.mNetherOreYieldMultiplier = Gregtech.general.netherOreYieldMultiplier;
+        GTMod.gregtechproxy.mEndOreYieldMultiplier = Gregtech.general.endOreYieldMultiplier;
+        GTMod.gregtechproxy.gt6Pipe = Gregtech.general.gt6Pipe;
+        GTMod.gregtechproxy.gt6Cable = Gregtech.general.gt6Cable;
+        GTMod.gregtechproxy.ic2EnergySourceCompat = Gregtech.general.ic2EnergySourceCompat;
+        GTMod.gregtechproxy.costlyCableConnection = Gregtech.general.costlyCableConnection;
+        GTMod.gregtechproxy.crashOnNullRecipeInput = Gregtech.general.crashOnNullRecipeInput;
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             GTMod.gregtechproxy.crashOnNullRecipeInput = false; // Use flags in GTRecipeBuilder instead!
         }
-        GTLanguageManager.i18nPlaceholder = ConfigGeneral.i18nPlaceholder;
-        MTELongDistancePipelineBase.minimalDistancePoints = ConfigGeneral.minimalDistancePoints;
-        GTValues.mCTMEnabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMWhitelist));
-        GTValues.mCTMDisabledBlock.addAll(Arrays.asList(ConfigGeneral.CTMBlacklist));
-        if (ConfigGeneral.harderMobSpawner) {
+        GTLanguageManager.i18nPlaceholder = Gregtech.general.i18nPlaceholder;
+        MTELongDistancePipelineBase.minimalDistancePoints = Gregtech.general.minimalDistancePoints;
+        GTValues.mCTMEnabledBlock.addAll(Arrays.asList(Gregtech.general.CTMWhitelist));
+        GTValues.mCTMDisabledBlock.addAll(Arrays.asList(Gregtech.general.CTMBlacklist));
+        if (Gregtech.general.harderMobSpawner) {
             Blocks.mob_spawner.setHardness(500.0F)
                 .setResistance(6000000.0F);
         }
 
         // machines
-        GTValues.ticksBetweenSounds = ConfigMachines.ticksBetweenSounds;
-        GTValues.blacklistedTileEntiyClassNamesForWA = ConfigMachines.blacklistedTileEntiyClassNamesForWA;
-        GTValues.cleanroomGlass = ConfigMachines.cleanroomGlass;
-        GTValues.enableChunkloaders = ConfigMachines.enableChunkloaders;
-        GTValues.alwaysReloadChunkloaders = ConfigMachines.alwaysReloadChunkloaders;
-        GTValues.debugChunkloaders = ConfigDebug.debugChunkloaders;
-        GTValues.disableDigitalChestsExternalAccess = ConfigMachines.disableDigitalChestsExternalAccess;
-        GTValues.enableMultiTileEntities = ConfigMachines.enableMultiTileEntities
+        GTValues.ticksBetweenSounds = Gregtech.machines.ticksBetweenSounds;
+        GTValues.blacklistedTileEntiyClassNamesForWA = Gregtech.machines.blacklistedTileEntiyClassNamesForWA;
+        GTValues.cleanroomGlass = Gregtech.machines.cleanroomGlass;
+        GTValues.enableChunkloaders = Gregtech.machines.enableChunkloaders;
+        GTValues.alwaysReloadChunkloaders = Gregtech.machines.alwaysReloadChunkloaders;
+        GTValues.debugChunkloaders = Gregtech.debug.debugChunkloaders;
+        GTValues.disableDigitalChestsExternalAccess = Gregtech.machines.disableDigitalChestsExternalAccess;
+        GTValues.enableMultiTileEntities = Gregtech.machines.enableMultiTileEntities
             || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-        GregTechAPI.sMachineExplosions = ConfigMachines.machineExplosions;
-        GregTechAPI.sMachineFlammable = ConfigMachines.machineFlammable;
-        GregTechAPI.sMachineNonWrenchExplosions = ConfigMachines.machineNonWrenchExplosions;
-        GregTechAPI.sMachineWireFire = ConfigMachines.machineWireFire;
-        GregTechAPI.sMachineFireExplosions = ConfigMachines.machineFireExplosions;
-        GregTechAPI.sMachineRainExplosions = ConfigMachines.machineRainExplosions;
-        GregTechAPI.sMachineThunderExplosions = ConfigMachines.machineThunderExplosions;
-        GregTechAPI.sColoredGUI = ConfigMachines.coloredGUI;
-        GregTechAPI.sMachineMetalGUI = ConfigMachines.machineMetalGUI;
+        GregTechAPI.sMachineExplosions = Gregtech.machines.machineExplosions;
+        GregTechAPI.sMachineFlammable = Gregtech.machines.machineFlammable;
+        GregTechAPI.sMachineNonWrenchExplosions = Gregtech.machines.machineNonWrenchExplosions;
+        GregTechAPI.sMachineWireFire = Gregtech.machines.machineWireFire;
+        GregTechAPI.sMachineFireExplosions = Gregtech.machines.machineFireExplosions;
+        GregTechAPI.sMachineRainExplosions = Gregtech.machines.machineRainExplosions;
+        GregTechAPI.sMachineThunderExplosions = Gregtech.machines.machineThunderExplosions;
+        GregTechAPI.sColoredGUI = Gregtech.machines.coloredGUI;
+        GregTechAPI.sMachineMetalGUI = Gregtech.machines.machineMetalGUI;
         // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTechAPI.sUseMachineMetal = ConfigMachines.useMachineMetal;
+        GregTechAPI.sUseMachineMetal = Gregtech.machines.useMachineMetal;
 
         // client
         loadClientConfig();
 
         // Pollution
-        GTMod.gregtechproxy.mPollution = ConfigPollution.pollution;
-        GTMod.gregtechproxy.mPollutionSmogLimit = ConfigPollution.pollutionSmogLimit;
-        GTMod.gregtechproxy.mPollutionPoisonLimit = ConfigPollution.pollutionPoisonLimit;
-        GTMod.gregtechproxy.mPollutionVegetationLimit = ConfigPollution.pollutionVegetationLimit;
-        GTMod.gregtechproxy.mPollutionSourRainLimit = ConfigPollution.pollutionSourRainLimit;
-        GTMod.gregtechproxy.mPollutionOnExplosion = ConfigPollution.pollutionOnExplosion;
-        GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond = ConfigPollution.pollutionPrimitveBlastFurnacePerSecond;
-        GTMod.gregtechproxy.mPollutionCharcoalPitPerSecond = ConfigPollution.pollutionCharcoalPitPerSecond;
-        GTMod.gregtechproxy.mPollutionEBFPerSecond = ConfigPollution.pollutionEBFPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond = ConfigPollution.pollutionLargeCombustionEnginePerSecond;
-        GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond = ConfigPollution.pollutionExtremeCombustionEnginePerSecond;
-        GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond = ConfigPollution.pollutionImplosionCompressorPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond = ConfigPollution.pollutionLargeBronzeBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond = ConfigPollution.pollutionLargeSteelBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond = ConfigPollution.pollutionLargeTitaniumBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond = ConfigPollution.pollutionLargeTungstenSteelBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionReleasedByThrottle = ConfigPollution.pollutionReleasedByThrottle;
-        GTMod.gregtechproxy.mPollutionLargeGasTurbinePerSecond = ConfigPollution.pollutionLargeGasTurbinePerSecond;
-        GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond = ConfigPollution.pollutionMultiSmelterPerSecond;
-        GTMod.gregtechproxy.mPollutionPyrolyseOvenPerSecond = ConfigPollution.pollutionPyrolyseOvenPerSecond;
-        GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond = ConfigPollution.pollutionSmallCoalBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = ConfigPollution.pollutionHighPressureLavaBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = ConfigPollution.pollutionHighPressureCoalBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = ConfigPollution.pollutionBaseDieselGeneratorPerSecond;
-        double[] mPollutionDieselGeneratorReleasedByTier = ConfigPollution.pollutionDieselGeneratorReleasedByTier;
+        GTMod.gregtechproxy.mPollution = Gregtech.pollution.pollution;
+        GTMod.gregtechproxy.mPollutionSmogLimit = Gregtech.pollution.pollutionSmogLimit;
+        GTMod.gregtechproxy.mPollutionPoisonLimit = Gregtech.pollution.pollutionPoisonLimit;
+        GTMod.gregtechproxy.mPollutionVegetationLimit = Gregtech.pollution.pollutionVegetationLimit;
+        GTMod.gregtechproxy.mPollutionSourRainLimit = Gregtech.pollution.pollutionSourRainLimit;
+        GTMod.gregtechproxy.mPollutionOnExplosion = Gregtech.pollution.pollutionOnExplosion;
+        GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond = Gregtech.pollution.pollutionPrimitveBlastFurnacePerSecond;
+        GTMod.gregtechproxy.mPollutionCharcoalPitPerSecond = Gregtech.pollution.pollutionCharcoalPitPerSecond;
+        GTMod.gregtechproxy.mPollutionEBFPerSecond = Gregtech.pollution.pollutionEBFPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond = Gregtech.pollution.pollutionLargeCombustionEnginePerSecond;
+        GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond = Gregtech.pollution.pollutionExtremeCombustionEnginePerSecond;
+        GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond = Gregtech.pollution.pollutionImplosionCompressorPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond = Gregtech.pollution.pollutionLargeBronzeBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond = Gregtech.pollution.pollutionLargeSteelBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond = Gregtech.pollution.pollutionLargeTitaniumBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond = Gregtech.pollution.pollutionLargeTungstenSteelBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionReleasedByThrottle = Gregtech.pollution.pollutionReleasedByThrottle;
+        GTMod.gregtechproxy.mPollutionLargeGasTurbinePerSecond = Gregtech.pollution.pollutionLargeGasTurbinePerSecond;
+        GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond = Gregtech.pollution.pollutionMultiSmelterPerSecond;
+        GTMod.gregtechproxy.mPollutionPyrolyseOvenPerSecond = Gregtech.pollution.pollutionPyrolyseOvenPerSecond;
+        GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond = Gregtech.pollution.pollutionSmallCoalBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = Gregtech.pollution.pollutionHighPressureLavaBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = Gregtech.pollution.pollutionHighPressureCoalBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = Gregtech.pollution.pollutionBaseDieselGeneratorPerSecond;
+        double[] mPollutionDieselGeneratorReleasedByTier = Gregtech.pollution.pollutionDieselGeneratorReleasedByTier;
         if (mPollutionDieselGeneratorReleasedByTier.length
             == GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
@@ -494,8 +489,8 @@ public class GTPreLoad {
             GT_FML_LOGGER
                 .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
-        GTMod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = ConfigPollution.pollutionBaseGasTurbinePerSecond;
-        double[] mPollutionGasTurbineReleasedByTier = ConfigPollution.pollutionGasTurbineReleasedByTier;
+        GTMod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = Gregtech.pollution.pollutionBaseGasTurbinePerSecond;
+        double[] mPollutionGasTurbineReleasedByTier = Gregtech.pollution.pollutionGasTurbineReleasedByTier;
         if (mPollutionGasTurbineReleasedByTier.length
             == GTMod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
             GTMod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
@@ -529,27 +524,27 @@ public class GTPreLoad {
 
         // ore_drop_behavior
         try {
-            GTLog.out.println("Trying to set it to: " + ConfigOreDropBehavior.setting);
-            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(ConfigOreDropBehavior.setting);
+            GTLog.out.println("Trying to set it to: " + Gregtech.oreDropBehavior.setting);
+            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(Gregtech.oreDropBehavior.setting);
         } catch (IllegalArgumentException e) {
             GTLog.err.println(e);
             GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.FortuneItem;
         }
 
         // features
-        GTMod.gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, ConfigFeatures.upgradeStackSize));
+        GTMod.gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
         for (OrePrefixes tPrefix : OrePrefixes.values()) {
             if (tPrefix.mIsUsedForOreProcessing) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, ConfigFeatures.maxOreStackSize)));
+                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, Gregtech.features.maxOreStackSize)));
             } else if (tPrefix == OrePrefixes.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxPlankStackSize)));
+                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxPlankStackSize)));
             } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
                 || (tPrefix == OrePrefixes.treeSapling)
                 || (tPrefix == OrePrefixes.log)) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, ConfigFeatures.maxLogStackSize)));
+                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
                 } else if (tPrefix.mIsUsedForBlocks) {
                     tPrefix.mDefaultStackSize = ((byte) Math
-                        .min(64, Math.max(16, ConfigFeatures.maxOtherBlocksStackSize)));
+                        .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
                 }
         }
 
