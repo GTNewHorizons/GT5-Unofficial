@@ -37,9 +37,9 @@ public class RadialMenu extends Widget implements Interactable {
         double weightSum = 0;
 
         for(var option : options) {
-            option.isDisabled = option.disabled.getAsBoolean();
+            option.isHidden = option.hidden.getAsBoolean();
 
-            if (!option.isDisabled) {
+            if (!option.isHidden) {
                 weightSum += option.weight;
             }
         }
@@ -49,7 +49,7 @@ public class RadialMenu extends Widget implements Interactable {
         for(int i = 0; i < options.size(); i++) {
             var option = options.get(i);
 
-            if (option.isDisabled) {
+            if (option.isHidden) {
                 option.startTheta = 0;
                 option.endTheta = 0;
                 continue;
@@ -96,7 +96,7 @@ public class RadialMenu extends Widget implements Interactable {
         var mouseTheta = mouse.y;
 
         for(var option : options) {
-            if (option.isDisabled) {
+            if (option.isHidden) {
                 continue;
             }
             
@@ -131,7 +131,7 @@ public class RadialMenu extends Widget implements Interactable {
         GlStateManager.popMatrix();
 
         for(var option : options) {
-            if (option.isDisabled) {
+            if (option.isHidden) {
                 continue;
             }
 
@@ -157,7 +157,7 @@ public class RadialMenu extends Widget implements Interactable {
                 isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
 
             if(isHoveredOver) {
-                if(option.disabled.getAsBoolean()) {
+                if(option.hidden.getAsBoolean()) {
                     return ClickResult.ACKNOWLEDGED;
                 } else {
                     option.onClick.onClick(this, option, mouseButton, doubleClick);
@@ -261,9 +261,9 @@ public class RadialMenu extends Widget implements Interactable {
         public Supplier<String> label;
         public double weight = 1;
 
-        public BooleanSupplier disabled = () -> false;
+        public BooleanSupplier hidden = () -> false;
 
-        boolean isDisabled;
+        boolean isHidden;
 
         public RadialMenuClickHandler onClick;
 
