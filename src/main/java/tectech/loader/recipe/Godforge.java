@@ -177,9 +177,10 @@ public class Godforge implements Runnable {
             {
                 // Single step
                 ItemStack[] solids_t1_1step = { Materials.Lead.getDust(1), Materials.Plutonium241.getDust(1),
-                    Materials.Thorium.getDust(1) };
+                    Materials.Thorium.getDust(1), Materials.Naquadria.getDust(1) };
                 FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(144),
-                    Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144) };
+                    Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144),
+                    Materials.Naquadria.getPlasma(144) };
 
                 for (int i = 0; i < solids_t1_1step.length; i++) {
                     boolean multistep = false;

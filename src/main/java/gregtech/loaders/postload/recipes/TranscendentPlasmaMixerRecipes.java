@@ -123,7 +123,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Tin.getPlasma(1000),
                 Materials.Lead.getPlasma(1000),
                 Materials.Thorium.getPlasma(1000),
-                Materials.Plutonium241.getPlasma(1000L),
+                Materials.Naquadria.getPlasma(1000L),
                 MaterialsUEVplus.RawStarMatter.getFluid(25L))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000L))
             .duration(100)
