@@ -509,7 +509,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.enableUndergroundGravelGen = gregtech.common.config.worldgen.ConfigGeneral.generateUndergroundGravelGen;
         GTMod.gregtechproxy.enableUndergroundDirtGen = gregtech.common.config.worldgen.ConfigGeneral.generateUndergroundDirtGen;
         GTMod.gregtechproxy.enableBlackGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateBlackGraniteOres;
-        GTMod.gregtechproxy.enableRedGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateBlackGraniteOres;
+        GTMod.gregtechproxy.enableRedGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateRedGraniteOres;
         GTMod.gregtechproxy.enableMarbleOres = gregtech.common.config.worldgen.ConfigGeneral.generateMarbleOres;
         GTMod.gregtechproxy.enableBasaltOres = gregtech.common.config.worldgen.ConfigGeneral.generateBasaltOres;
 
