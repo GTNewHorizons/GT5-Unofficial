@@ -9,7 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
 import java.util.function.Consumer;
 
-import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.MachineStats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

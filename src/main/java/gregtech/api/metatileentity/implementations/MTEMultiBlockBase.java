@@ -22,7 +22,7 @@ import java.util.function.LongConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.MachineStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

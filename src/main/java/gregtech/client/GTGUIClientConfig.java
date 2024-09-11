@@ -2,10 +2,10 @@ package gregtech.client;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import gregtech.common.config.client.Client;
-import gregtech.common.config.gregtech.Gregtech;
-import gregtech.common.config.machinestats.MachineStats;
-import gregtech.common.config.worldgen.Worldgen;
+import gregtech.common.config.Client;
+import gregtech.common.config.Gregtech;
+import gregtech.common.config.MachineStats;
+import gregtech.common.config.Worldgen;
 import net.minecraft.client.gui.GuiScreen;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;

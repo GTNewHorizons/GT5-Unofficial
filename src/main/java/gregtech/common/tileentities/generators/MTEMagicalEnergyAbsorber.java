@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.MachineStats;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.enchantment.Enchantment;

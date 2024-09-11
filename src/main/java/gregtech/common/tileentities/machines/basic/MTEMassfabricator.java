@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.MachineStats;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;

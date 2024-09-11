@@ -1,4 +1,4 @@
-package gregtech.common.config.other;
+package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 

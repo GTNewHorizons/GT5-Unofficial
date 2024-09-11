@@ -12,7 +12,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.common.config.worldgen.Worldgen;
+import gregtech.common.config.Worldgen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;

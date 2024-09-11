@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.config.gregtech.Gregtech;
+import gregtech.common.config.Gregtech;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;

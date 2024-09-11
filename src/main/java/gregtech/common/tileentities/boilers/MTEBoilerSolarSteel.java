@@ -7,7 +7,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.MachineStats;
 
 public class MTEBoilerSolarSteel extends MTEBoilerSolar {
 

@@ -1,4 +1,4 @@
-package gregtech.common.config.gregtech;
+package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;

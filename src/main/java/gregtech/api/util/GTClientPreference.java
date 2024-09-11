@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import gregtech.common.config.client.Client;
+import gregtech.common.config.Client;
 
 public class GTClientPreference {
 

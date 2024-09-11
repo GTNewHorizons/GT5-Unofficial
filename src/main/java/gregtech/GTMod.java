@@ -15,12 +15,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import gregtech.common.config.client.Client;
-import gregtech.common.config.gregtech.Gregtech;
-import gregtech.common.config.machinestats.MachineStats;
-import gregtech.common.config.opstuff.OPStuff;
-import gregtech.common.config.other.Other;
-import gregtech.common.config.worldgen.Worldgen;
+import gregtech.common.config.Client;
+import gregtech.common.config.Gregtech;
+import gregtech.common.config.MachineStats;
+import gregtech.common.config.OPStuff;
+import gregtech.common.config.Other;
+import gregtech.common.config.Worldgen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

@@ -500,7 +500,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.Other;
+import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;

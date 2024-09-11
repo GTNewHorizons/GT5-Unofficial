@@ -16,7 +16,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.config.other.Other;
+import gregtech.common.config.Other;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 

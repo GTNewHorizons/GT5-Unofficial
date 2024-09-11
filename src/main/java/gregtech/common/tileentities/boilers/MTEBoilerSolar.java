@@ -5,7 +5,7 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
-import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.MachineStats;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

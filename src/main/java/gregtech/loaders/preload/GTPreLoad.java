@@ -18,11 +18,11 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.config.client.Client;
-import gregtech.common.config.gregtech.Gregtech;
-import gregtech.common.config.machinestats.MachineStats;
-import gregtech.common.config.opstuff.OPStuff;
-import gregtech.common.config.worldgen.Worldgen;
+import gregtech.common.config.Client;
+import gregtech.common.config.Gregtech;
+import gregtech.common.config.MachineStats;
+import gregtech.common.config.OPStuff;
+import gregtech.common.config.Worldgen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;

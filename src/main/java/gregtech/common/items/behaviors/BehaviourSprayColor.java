@@ -25,7 +25,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.Other;
+import gregtech.common.config.Other;
 
 public class BehaviourSprayColor extends BehaviourNone {
 

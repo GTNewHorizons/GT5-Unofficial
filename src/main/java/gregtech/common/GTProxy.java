@@ -163,7 +163,7 @@ import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.config.opstuff.OPStuff;
+import gregtech.common.config.OPStuff;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedTool01;
