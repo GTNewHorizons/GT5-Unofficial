@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.config.client.Client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -48,6 +47,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
+import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;

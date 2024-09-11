@@ -1,13 +1,10 @@
 package gregtech.common.config.client;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(
-    modid = Mods.Names.GREG_TECH,
-    category = "Client",
-    configSubDirectory = "GregTech",
-    filename = "Client")
+@Config(modid = Mods.Names.GREG_TECH, category = "Client", configSubDirectory = "GregTech", filename = "Client")
 public class Client {
 
     @Config.Comment("Color Modulation section")
@@ -67,6 +64,7 @@ public class Client {
         @Config.DefaultInt(0)
         public int titleTabStyle;
     }
+
     public static class Preference {
 
         @Config.Comment("if true, input filter will initially be on when input buses are placed in the world.")

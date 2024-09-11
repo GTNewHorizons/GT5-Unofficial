@@ -15,7 +15,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import gregtech.common.config.client.Client;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -82,6 +81,7 @@ import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
 import gregtech.common.RecipeAdder;
+import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
