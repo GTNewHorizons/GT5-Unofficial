@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
 import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.worldgen.Worldgen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -393,7 +394,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mFlintChance = Gregtech.general.flintChance;
         GTMod.gregtechproxy.mItemDespawnTime = Gregtech.general.itemDespawnTime;
         GTMod.gregtechproxy.mAllowSmallBoilerAutomation = Gregtech.general.allowSmallBoilerAutomation;
-        GTMod.gregtechproxy.mDisableVanillaOres = gregtech.common.config.worldgen.ConfigGeneral.disableVanillaOres;
+        GTMod.gregtechproxy.mDisableVanillaOres = Worldgen.general.disableVanillaOres;
         GTMod.gregtechproxy.mIncreaseDungeonLoot = Gregtech.general.increaseDungeonLoot;
         GTMod.gregtechproxy.mAxeWhenAdventure = Gregtech.general.axeWhenAdventure;
         GTMod.gregtechproxy.mSurvivalIntoAdventure = Gregtech.general.survivalIntoAdventure;
@@ -506,12 +507,12 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mUndergroundOil.getConfig(GTConfig.undergroundFluidsFile, "undergroundfluid");
 
         // Worldgeneration.cfg
-        GTMod.gregtechproxy.enableUndergroundGravelGen = gregtech.common.config.worldgen.ConfigGeneral.generateUndergroundGravelGen;
-        GTMod.gregtechproxy.enableUndergroundDirtGen = gregtech.common.config.worldgen.ConfigGeneral.generateUndergroundDirtGen;
-        GTMod.gregtechproxy.enableBlackGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateBlackGraniteOres;
-        GTMod.gregtechproxy.enableRedGraniteOres = gregtech.common.config.worldgen.ConfigGeneral.generateRedGraniteOres;
-        GTMod.gregtechproxy.enableMarbleOres = gregtech.common.config.worldgen.ConfigGeneral.generateMarbleOres;
-        GTMod.gregtechproxy.enableBasaltOres = gregtech.common.config.worldgen.ConfigGeneral.generateBasaltOres;
+        GTMod.gregtechproxy.enableUndergroundGravelGen = Worldgen.general.generateUndergroundGravelGen;
+        GTMod.gregtechproxy.enableUndergroundDirtGen = Worldgen.general.generateUndergroundDirtGen;
+        GTMod.gregtechproxy.enableBlackGraniteOres = Worldgen.general.generateBlackGraniteOres;
+        GTMod.gregtechproxy.enableRedGraniteOres = Worldgen.general.generateRedGraniteOres;
+        GTMod.gregtechproxy.enableMarbleOres = Worldgen.general.generateMarbleOres;
+        GTMod.gregtechproxy.enableBasaltOres = Worldgen.general.generateBasaltOres;
 
         // OverpoweredStuff.cfg
         GregTechAPI.mOutputRF = gregtech.common.config.opstuff.ConfigGeneral.outputRF;

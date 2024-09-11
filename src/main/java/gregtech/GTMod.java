@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
 import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.worldgen.Worldgen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -84,7 +85,6 @@ import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
 import gregtech.common.RecipeAdder;
-import gregtech.common.config.worldgen.ConfigEndAsteroids;
 import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
@@ -191,8 +191,7 @@ public class GTMod implements IGTMod {
             ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
 
             // WorldGeneration
-            ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
-            ConfigurationManager.registerConfig(gregtech.common.config.worldgen.ConfigGeneral.class);
+            ConfigurationManager.registerConfig(Worldgen.class);
 
         } catch (ConfigException e) {
             throw new RuntimeException(e);

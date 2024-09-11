@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
 import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.worldgen.Worldgen;
 import net.minecraft.client.gui.GuiScreen;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -20,6 +21,7 @@ public class GTGUIClientConfig extends SimpleGuiConfig {
             true,
             Client.class,
             Gregtech.class,
-            MachineStats.class);
+            MachineStats.class,
+            Worldgen.class);
     }
 }
