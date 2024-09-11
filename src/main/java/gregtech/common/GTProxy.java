@@ -163,7 +163,7 @@ import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.config.opstuff.ConfigGeneral;
+import gregtech.common.config.opstuff.OPStuff;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -824,8 +824,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTLog.ore.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
-        this.mIgnoreTcon = ConfigGeneral.ignoreTinkerConstruct;
-        this.replicatorExponent = ConfigGeneral.replicatorExponent;
+        this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
+        this.replicatorExponent = OPStuff.replicatorExponent;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {

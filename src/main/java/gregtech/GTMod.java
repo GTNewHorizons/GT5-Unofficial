@@ -18,6 +18,8 @@ import java.util.function.Predicate;
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
 import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.opstuff.OPStuff;
+import gregtech.common.config.other.Other;
 import gregtech.common.config.worldgen.Worldgen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -185,10 +187,10 @@ public class GTMod implements IGTMod {
             ConfigurationManager.registerConfig(MachineStats.class);
 
             // OverPoweredStuff
-            ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
+            ConfigurationManager.registerConfig(OPStuff.class);
 
             // Other
-            ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
+            ConfigurationManager.registerConfig(Other.class);
 
             // WorldGeneration
             ConfigurationManager.registerConfig(Worldgen.class);

@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import gregtech.common.config.client.Client;
 import gregtech.common.config.gregtech.Gregtech;
 import gregtech.common.config.machinestats.MachineStats;
+import gregtech.common.config.opstuff.OPStuff;
 import gregtech.common.config.worldgen.Worldgen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -515,11 +516,11 @@ public class GTPreLoad {
         GTMod.gregtechproxy.enableBasaltOres = Worldgen.general.generateBasaltOres;
 
         // OverpoweredStuff.cfg
-        GregTechAPI.mOutputRF = gregtech.common.config.opstuff.ConfigGeneral.outputRF;
-        GregTechAPI.mInputRF = gregtech.common.config.opstuff.ConfigGeneral.inputRF;
-        GregTechAPI.mEUtoRF = gregtech.common.config.opstuff.ConfigGeneral.howMuchRFWith100EUInInput;
-        GregTechAPI.mRFtoEU = gregtech.common.config.opstuff.ConfigGeneral.howMuchEUWith100RFInInput;
-        GregTechAPI.mRFExplosions = gregtech.common.config.opstuff.ConfigGeneral.RFExplosions;
+        GregTechAPI.mOutputRF = OPStuff.outputRF;
+        GregTechAPI.mInputRF = OPStuff.inputRF;
+        GregTechAPI.mEUtoRF = OPStuff.howMuchRFWith100EUInInput;
+        GregTechAPI.mRFtoEU = OPStuff.howMuchEUWith100RFInInput;
+        GregTechAPI.mRFExplosions = OPStuff.RFExplosions;
 
         // MachineStats.cfg
         GTMod.gregtechproxy.mForceFreeFace = MachineStats.machines.forceFreeFace;
