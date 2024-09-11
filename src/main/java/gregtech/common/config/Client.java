@@ -1,8 +1,11 @@
 package gregtech.common.config;
 
+import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
+
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
+import gregtech.api.recipe.RecipeCategorySetting;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
 public class Client {
@@ -26,6 +29,10 @@ public class Client {
     @Config.Comment("Waila section")
     @Config.LangKey("GT5U.gui.config.client.waila")
     public static final Waila waila = new Waila();
+
+    @Config.Comment("NEI section")
+    @Config.LangKey("GT5U.gui.config.client.nei")
+    public static final NEI nei = new NEI();
 
     public static class ColorModulation {
 
@@ -117,7 +124,6 @@ public class Client {
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
         public boolean useBlockUpdateHandler;
-
     }
 
     public static class Waila {
@@ -132,5 +138,55 @@ public class Client {
         @Config.Comment("if true, enables showing voltage tier of transformer for Waila, instead of raw voltage number.")
         @Config.DefaultBoolean(false)
         public boolean wailaAverageNS;
+    }
+
+    public static class NEI {
+
+        @Config.Comment("Recipe category section")
+        @Config.LangKey("GT5U.gui.config.client.nei.recipe_categories")
+        public final RecipeCategories recipeCategories = new RecipeCategories();
+
+        public static class RecipeCategories {
+
+            @Config.LangKey("gt.recipe.category.arc_furnace_recycling")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting arcFurnaceRecycling = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.plasma_arc_furnace_recycling")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting plasmaArcFurnaceRecycling = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.macerator_recycling")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting maceratorRecycling = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.fluid_extractor_recycling")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting fluidExtractorRecycling = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.alloy_smelter_recycling")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting alloySmelterRecycling = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.alloy_smelter_molding")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting alloySmelterMolding = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.forge_hammer_recycling")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting forgeHammerRecycling = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.tic_part_extruding")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting ticPartExtruding = ENABLE;
+
+            @Config.LangKey("gt.recipe.category.tic_bolt_molding")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting ticBoltMolding = ENABLE;
+
+            @Config.LangKey("gtpp.recipe.category.abs_non_alloy_recipes")
+            @Config.DefaultEnum("ENABLE")
+            public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
+        }
     }
 }

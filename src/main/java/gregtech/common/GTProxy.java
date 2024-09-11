@@ -145,8 +145,6 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeCategory;
-import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
@@ -718,8 +716,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
      * This enables the blue charge bar for an electric item's charge
      */
     public boolean mRenderItemChargeBar = true;
-
-    public final Map<RecipeCategory, RecipeCategorySetting> recipeCategorySettings = new HashMap<>();
 
     /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number

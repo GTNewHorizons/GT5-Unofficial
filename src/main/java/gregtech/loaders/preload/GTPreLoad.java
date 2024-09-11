@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,17 +28,12 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.discovery.ASMDataTable;
-import cpw.mods.fml.common.discovery.ModDiscoverer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.recipe.RecipeCategory;
-import gregtech.api.recipe.RecipeCategoryHolder;
-import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -598,52 +592,9 @@ public class GTPreLoad {
             .get("nei", "RecipeOwnerStackTrace", false);
         GTMod.gregtechproxy.mNEIOriginalVoltage = GregTechAPI.NEIClientFIle.get("nei", "OriginalVoltage", false);
 
-        GTMod.gregtechproxy.recipeCategorySettings.clear();
-        for (RecipeCategory recipeCategory : findRecipeCategories()) {
-            RecipeCategorySetting setting = RecipeCategorySetting.find(
-                GregTechAPI.NEIClientFIle.getWithValidValues(
-                    "nei.recipe_categories",
-                    recipeCategory.unlocalizedName,
-                    RecipeCategorySetting.NAMES,
-                    RecipeCategorySetting.getDefault()
-                        .toName()));
-            GTMod.gregtechproxy.recipeCategorySettings.put(recipeCategory, setting);
-        }
-
         GTMod.gregtechproxy.mWailaTransformerVoltageTier = Client.waila.wailaTransformerVoltageTier;
         GTMod.gregtechproxy.wailaAverageNS = Client.waila.wailaAverageNS;
 
         GTMod.gregtechproxy.reloadNEICache();
-    }
-
-    private static List<RecipeCategory> findRecipeCategories() {
-        List<RecipeCategory> ret = new ArrayList<>();
-        try {
-            Field discovererField = Loader.class.getDeclaredField("discoverer");
-            discovererField.setAccessible(true);
-            ModDiscoverer discoverer = (ModDiscoverer) discovererField.get(Loader.instance());
-            for (ASMDataTable.ASMData asmData : discoverer.getASMTable()
-                .getAll(RecipeCategoryHolder.class.getName())) {
-                try {
-                    Object obj = Class.forName(asmData.getClassName())
-                        .getDeclaredField(asmData.getObjectName())
-                        .get(null);
-                    if (obj instanceof RecipeCategory recipeCategory) {
-                        ret.add(recipeCategory);
-                    } else {
-                        GT_FML_LOGGER.error(
-                            "{}#{} is not an instance of RecipeCategory",
-                            asmData.getClassName(),
-                            asmData.getObjectName());
-                    }
-                } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-                    GT_FML_LOGGER.error("Failed to find RecipeCategory");
-                    GT_FML_LOGGER.catching(e);
-                }
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        return ret;
     }
 }
