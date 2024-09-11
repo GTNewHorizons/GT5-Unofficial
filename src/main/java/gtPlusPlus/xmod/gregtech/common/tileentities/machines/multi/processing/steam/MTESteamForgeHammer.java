@@ -325,7 +325,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
-            .addInfo("Processing Speed & Steam Consumption is doubled under High Pressure")
+            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .addSeparator()
             .beginStructureBlock(6, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -370,21 +370,10 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-
-        int tierMachine = tag.getInteger("tierMachine");
-        String tierMachineText;
-        if (tierMachine == 1) {
-            tierMachineText = "Basic";
-        } else if (tierMachine == 2) {
-            tierMachineText = "High Pressure";
-        } else {
-            tierMachineText = String.valueOf(tierMachine);
-        }
-
         currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
-                + tierMachineText
+                + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "

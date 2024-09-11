@@ -300,7 +300,7 @@ public class Loaders {
         Loaders.SCTurbine = new MTESupercriticalFluidTurbine(
             MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
-            "SC Steam Turbine").getStackForm(1L);
+            "Large Supercritical Steam Turbine").getStackForm(1L);
         Loaders.XHE = new MTEExtremeHeatExchanger(
             MetaTileEntityIDs.ExtremeHeatExchanger.ID,
             "ExtremeHeatExchanger",
