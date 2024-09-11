@@ -11,23 +11,23 @@ import gregtech.api.enums.Mods;
 public class Client {
 
     @Config.Comment("Color Modulation section")
-    @Config.LangKey("GT5U.gui.config.color_modulation")
+    @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static final ColorModulation colorModulation = new ColorModulation();
 
     @Config.Comment("Interface section")
-    @Config.LangKey("GT5U.gui.config.interface")
+    @Config.LangKey("GT5U.gui.config.client.interface")
     public static final Interface iface = new Interface();
 
     @Config.Comment("Preference section")
-    @Config.LangKey("GT5U.gui.config.preference")
+    @Config.LangKey("GT5U.gui.config.client.preference")
     public static final Preference preference = new Preference();
 
     @Config.Comment("Render section")
-    @Config.LangKey("GT5U.gui.config.render")
+    @Config.LangKey("GT5U.gui.config.client.render")
     public static final Render render = new Render();
 
     @Config.Comment("Waila section")
-    @Config.LangKey("GT5U.gui.config.waila")
+    @Config.LangKey("GT5U.gui.config.client.waila")
     public static final Waila waila = new Waila();
 
     public static class ColorModulation {
