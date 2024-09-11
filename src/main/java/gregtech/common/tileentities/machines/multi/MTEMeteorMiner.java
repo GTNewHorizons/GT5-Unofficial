@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -47,6 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -98,7 +101,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                             {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","        EAE        ","        ABA        ","        EAE        ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
                             {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","        EAE        ","        ABA        ","        EAE        ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
                             {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","        H~H        ","       HEEEH       ","       HEBEH       ","       HEEEH       ","        HHH        ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","        EEE        ","       EEEEE       ","      EEBBBEE      ","      EEBBBEE      ","      EEBBBEE      ","       EEEEE       ","        EEE        ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","        EIE        ","       EEEEE       ","      EEBBBEE      ","      EEBBBEE      ","      EEBBBEE      ","       EEEEE       ","        EEE        ","                   ","                   ","                   ","                   ","                   ","                   "},
                             {"                   ","                   ","                   ","                   ","        E E        ","       E   E       ","      A     A      ","     E       E     ","    E         E    ","                   ","    E         E    ","     E       E     ","      A     A      ","       E   E       ","        E E        ","                   ","                   ","                   ","                   "},
                             {"                   ","                   ","                   ","        E E        ","                   ","       E   E       ","      A     A      ","     E       E     ","   E           E   ","                   ","   E           E   ","     E       E     ","      A     A      ","       E   E       ","                   ","        E E        ","                   ","                   ","                   "},
                             {"                   ","                   ","        E E        ","                   ","                   ","       E   E       ","      A     A      ","     E       E     ","  E             E  ","                   ","  E             E  ","     E       E     ","      A     A      ","       E   E       ","                   ","                   ","        E E        ","                   ","                   "},
@@ -115,6 +118,16 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     'H',
                     buildHatchAdder(MTEMeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
+                        .dot(1)
+                        .buildAndChain(
+                            onElementPass(
+                                MTEMeteorMiner::onCasingAdded,
+                                ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
+                .addElement(
+                    'I',
+                    buildHatchAdder(MTEMeteorMiner.class)
+                        .atLeast(ImmutableMap.of(InputBus.withAdder(MTEMeteorMiner::addInjector), 1))
+                        .casingIndex(TAE.getIndexFromPage(1, 10))
                         .dot(1)
                         .buildAndChain(
                             onElementPass(
@@ -162,6 +175,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     private void onCasingAdded() {
         aCasingAmount++;
+    }
+
+    private boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (!(aMetaTileEntity instanceof MTEHatchInputBus bus)) return false;
+        if (bus.getTierForStructure() > 0) return false;
+        bus.updateTexture(aBaseCasingIndex);
+        return mInputBusses.add(bus);
     }
 
     @Override
@@ -220,21 +242,26 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         tt.addMachineType("Miner")
             .addInfo("Controller Block for the Meteor Miner!")
             .addInfo(
-                "To work properly the Superconducting Coils must be placed 32 blocks below the center of the meteor,")
-            .addInfo("it will mine in a radius of 24 blocks in each direction from the center of the meteor.")
+                "To work properly the center of the meteor has to be 32 blocks above the highest block of the multi.")
+            .addInfo("The laser will mine in a radius of 24 blocks in each direction from the center of the meteor.")
             .addInfo("All the chunks involved must be chunkloaded.")
-            .addInfo("The multi will autoset its radius based on the meteorite,")
+            .addInfo("The laser will autoset its radius based on the meteorite,")
             .addInfo("if it doesn't find any it will wait for a meteor to spawn, considering the block")
             .addInfo("right above the center of the meteor (like Warded Glass).")
             .addInfo("The reset button will restart the machine without optimizing the radius.")
+            .addInfo("Default Fortune is 0, it can be increased by putting in the input bus special pickaxes:")
+            .addInfo("Fortune I: Bound Pickaxe")
+            .addInfo("Fortune II: Pickaxe of the Core")
+            .addInfo("Fortune III: Terra Shatterer")
             .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Finally some good Meteors!")
             .addInfo(AuthorTotto)
             .addSeparator()
             .beginStructureBlock(19, 19, 19, false)
             .addController("Second Layer Center")
-            .addOutputBus("Any Structural Solar Casing", 1)
-            .addEnergyHatch("Any Structural Solar Casing", 1)
-            .addMaintenanceHatch("Below the Controller", 2)
+            .addOutputBus("Any Structural Solar Casing around the controller", 1)
+            .addEnergyHatch("Any Structural Solar Casing around the controller", 1)
+            .addMaintenanceHatch("Any Structural Solar Casing around the controller", 1)
+            .addInputBus("Below the controller", 2)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -272,6 +299,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         aCasingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) && !mEnergyHatches.isEmpty()
+            && !mInputBusses.isEmpty()
             && mMaintenanceHatches.size() == 1
             && findLaserRenderer(getBaseMetaTileEntity().getWorld());
     }
@@ -305,6 +333,23 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     protected int getZDrill() {
         return zDrill;
+    }
+
+    private void setTier() {
+        if (!mInputBusses.isEmpty()) {
+            Optional<ItemStack> input = Optional.ofNullable(
+                mInputBusses.get(0)
+                    .getInventoryHandler()
+                    .getStackInSlot(0));
+            if (input.isPresent()) {
+                String name = input.get()
+                    .getDisplayName();
+                this.tier = name.equals("Terra Shatterer") ? 3
+                    : name.equals("Pickaxe of the Core") ? 2 : name.equals("Bound Pickaxe") ? 1 : 0;
+                return;
+            }
+        }
+        this.tier = 0;
     }
 
     @Override
@@ -379,6 +424,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         if (!hasFinished) {
             renderer.setShouldRender(true);
             renderer.setRange((double) this.currentRadius);
+            this.setTier();
             this.startMining(this.xDrill, this.yDrill);
             mOutputItems = res.toArray(new ItemStack[0]);
             res.clear();
