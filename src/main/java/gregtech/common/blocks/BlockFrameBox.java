@@ -126,10 +126,11 @@ public class BlockFrameBox extends BlockContainer {
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         // If this block already holds a TE, just forward the call
         TileEntity te = worldIn.getTileEntity(x, y, z);
+
         if (te instanceof BaseMetaPipeEntity baseTileEntity) {
             // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
             // This happens on world load for some reason
-            if (!worldIn.isRemote && baseTileEntity.getMetaTileEntity() == null) {
+            if (baseTileEntity.getMetaTileEntity() == null) {
                 createFrame(worldIn, x, y, z, baseTileEntity);
             }
             return baseTileEntity.onRightclick(player, direction, subX, subY, subZ);
@@ -139,10 +140,8 @@ public class BlockFrameBox extends BlockContainer {
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
-            if (worldIn.isRemote) return true;
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
-            newTileEntity.onRightclick(player, direction, subX, subY, subZ);
-            return true;
+            return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
         return false;
