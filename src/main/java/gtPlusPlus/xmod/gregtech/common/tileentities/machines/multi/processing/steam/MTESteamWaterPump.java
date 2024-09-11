@@ -321,10 +321,20 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
+        int tierMachine = tag.getInteger("mSetTier");
+        String tierMachineText;
+        if (tierMachine == 1) {
+            tierMachineText = "Bronze";
+        } else if (tierMachine == 2) {
+            tierMachineText = "Steel";
+        } else {
+            tierMachineText = String.valueOf(tierMachine);
+        }
+
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.BLUE
-                + tag.getInteger("mSetTier")
+                + tierMachineText
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.biomes.humidity") + " "

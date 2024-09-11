@@ -24,6 +24,8 @@ import gregtech.api.render.TextureFactory;
  */
 public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze implements IGetTitleColor {
 
+    private static final String HPTOOLTIP = "Processing Speed & Steam Consumption is doubled under High Pressure";
+
     public MTEBasicMachineSteel(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
         super(aID, aName, aNameRegional, aDescription, aInputSlotCount, aOutputSlotCount, aHighPressure);
