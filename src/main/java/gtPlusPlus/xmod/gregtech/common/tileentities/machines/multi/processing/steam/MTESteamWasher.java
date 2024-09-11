@@ -397,7 +397,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         int tierMachine = tag.getInteger("tierMachine");
         String tierMachineText;
         if (tierMachine == 1) {
-            tierMachineText = "Low Pressure";
+            tierMachineText = "Basic";
         } else if (tierMachine == 2) {
             tierMachineText = "High Pressure";
         } else {
