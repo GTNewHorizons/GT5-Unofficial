@@ -41,11 +41,12 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
             0,
             new String[] { CommonValues.TEC_MARK_GENERAL,
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + EnumChatFormatting.YELLOW
                     + GTUtility.formatNumbers(aAmp * V[aTier])
                     + EnumChatFormatting.RESET
-                    + " EU/t" },
+                    + " EU/t", },
             aAmp); // Energy injecting terminal for Multiblocks
         TTUtility.setTier(aTier, this);
     }
@@ -154,9 +155,10 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-        return true;
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
