@@ -3,6 +3,8 @@ package gtPlusPlus.core.item.general.matterManipulator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -62,6 +64,11 @@ public class RadialMenuBuilder {
         return branch;
     }
 
+    public RadialMenuBuilder pipe(Consumer<RadialMenuBuilder> fn) {
+        fn.accept(this);
+        return this;
+    }
+
     public RadialMenu build() {
         RadialMenu menu = new RadialMenu();
 
@@ -82,7 +89,7 @@ public class RadialMenuBuilder {
 
         public Supplier<String> label;
         public double weight = 1;
-        public BooleanSupplier disabled = () -> false;
+        public BooleanSupplier hidden = () -> false;
         
         public RadialMenuOptionBuilder(UIBuildContext buildContext, Parent parent) {
             this.buildContext = buildContext;
@@ -119,13 +126,13 @@ public class RadialMenuBuilder {
             return this;
         }
 
-        public RadialMenuOptionBuilderLeaf<Parent> disabled(boolean disabled) {
-            this.disabled = () -> disabled;
+        public RadialMenuOptionBuilderLeaf<Parent> hidden(boolean hidden) {
+            this.hidden = () -> hidden;
             return this;
         }
 
-        public RadialMenuOptionBuilderLeaf<Parent> disabled(BooleanSupplier disabled) {
-            this.disabled = disabled;
+        public RadialMenuOptionBuilderLeaf<Parent> hidden(BooleanSupplier hidden) {
+            this.hidden = hidden;
             return this;
         }
 
@@ -168,7 +175,7 @@ public class RadialMenuBuilder {
 
             opt.label = this.label;
             opt.weight = this.weight;
-            opt.disabled = this.disabled;
+            opt.hidden = this.hidden;
             opt.onClick = onClicked;
 
             menu.options.add(opt);
@@ -198,13 +205,13 @@ public class RadialMenuBuilder {
             return this;
         }
 
-        public RadialMenuOptionBuilderBranch<Parent> disabled(boolean disabled) {
-            this.disabled = () -> disabled;
+        public RadialMenuOptionBuilderBranch<Parent> hidden(boolean hidden) {
+            this.hidden = () -> hidden;
             return this;
         }
 
-        public RadialMenuOptionBuilderBranch<Parent> disabled(BooleanSupplier disabled) {
-            this.disabled = disabled;
+        public RadialMenuOptionBuilderBranch<Parent> hidden(BooleanSupplier hidden) {
+            this.hidden = hidden;
             return this;
         }
 
@@ -231,7 +238,7 @@ public class RadialMenuBuilder {
 
             opt.label = this.label;
             opt.weight = this.weight;
-            opt.disabled = this.disabled;
+            opt.hidden = this.hidden;
             opt.onClick = (_1, option, mouseButton, doubleClicked) -> {
                 menu.options.clear();
 

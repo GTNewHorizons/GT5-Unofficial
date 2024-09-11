@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -15,7 +14,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.joml.Vector3d;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 
@@ -35,19 +35,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockRemoveMode;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockSelectMode;
+import gtPlusPlus.core.item.general.matterManipulator.NBTState.Config;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.CoordMode;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.Location;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingAction;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PlaceMode;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.Region;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -63,11 +61,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -223,140 +221,150 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float subX, float subY, float subZ) {
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if(player.getItemInUse() != null && player.getItemInUse().getItem() == this) {
-            return false;
+            return itemStack;
         }
 
-        var state = getState(itemStack);
-        
-        if(state.config.action == PendingAction.SELECTING_BLOCK) {
-            var hit = Minecraft.getMinecraft().objectMouseOver;
+        MovingObjectPosition hit = Config.getHitResult(player);
 
-            Optional<ItemStack> selected = null;
+        if (hit != null && hit.typeOfHit != MovingObjectType.BLOCK) {
+            hit = null;
+        }
 
-            if(hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-                var block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-    
-                selected = Optional.ofNullable(block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player));
-            } else if(hit == null || hit.typeOfHit == MovingObjectType.MISS) {
-                selected = Optional.empty();
+        NBTState state = getState(itemStack);
+
+        if (state.config.action != null) {
+            if (handleAction(itemStack, world, player, hit, state)) {
+                return itemStack;
             }
+        }
+        
+        if (player.isSneaking()) {
+            player.setItemInUse(itemStack, Integer.MAX_VALUE);
+        } else {
+            if (hit == null) {
+                if(world.isRemote) {
+                    UIInfos.openClientUI(player, this::createWindow);
+                }
+            } else {
+                Location location = new Location(world, hit.blockX, hit.blockY, hit.blockZ);
 
-            if(selected != null) {
+                if(!player.isSneaking()) {
+                    location.offset(DirectionUtil.fromSide(hit.sideHit));
+                }
+
+                switch(state.config.coordMode) {
+                    case SET_A: {
+                        state.config.coordA = location;
+                        break;
+                    }
+                    case SET_B: {
+                        state.config.coordB = location;
+                        break;
+                    }
+                    case SET_INTERLEAVED: {
+                        if(state.config.coordB != null) {
+                            state.config.coordA = location;
+                            state.config.coordB = null;
+                        } else {
+                            state.config.coordB = location;
+                        }
+
+                        break;
+                    }
+                    case SET_PASTE: {
+
+                        break;
+                    }
+                }
+
+                if (!world.isRemote) {
+                    setState(itemStack, state);
+                }
+            }
+        }
+
+        return itemStack;
+    }
+
+    private boolean handleAction(ItemStack itemStack, World world, EntityPlayer player, @Nullable MovingObjectPosition hit, NBTState state) {
+        switch (state.config.action) {
+            case GEOM_MOVING_COORDS: {
+                state.config.coordA = state.config.getCoordA(player);
+                state.config.coordB = state.config.getCoordB(player);
+                state.config.action = null;
+                state.config.coordAOffset = null;
+                state.config.coordBOffset = null;
+    
+                if(world.isRemote) {
+                    setState(itemStack, state);
+                }
+
+                return true;
+            }
+            case GEOM_SELECTING_BLOCK: {
+                state.config.action = null;
+
+                ItemStack selected = null;
+    
+                if(hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
+                    var block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
+        
+                    selected = block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player);
+                }
+
+                String what = null;
+    
                 switch(state.config.blockSelectMode) {
                     case CORNERS: {
-                        state.config.setCorners(selected.orElse(null));
-                        if(!world.isRemote) {
-                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set corners to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
-                        }
+                        state.config.setCorners(selected);
+                        what = "corners";
                         break;
                     }
                     case EDGES: {
-                        state.config.setEdges(selected.orElse(null));
-                        if(!world.isRemote) {
-                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set edges to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
-                        }
+                        state.config.setEdges(selected);
+                        what = "edges";
                         break;
                     }
                     case FACES: {
-                        state.config.setFaces(selected.orElse(null));
-                        if(!world.isRemote) {
-                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set faces to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
-                        }
+                        state.config.setFaces(selected);
+                        what = "faces";
                         break;
                     }
                     case VOLUMES: {
-                        state.config.setVolumes(selected.orElse(null));
-                        if(!world.isRemote) {
-                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set volumes to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
-                        }
+                        state.config.setVolumes(selected);
+                        what = "volumes";
                         break;
                     }
                     case ALL: {
-                        state.config.setCorners(selected.orElse(null));
-                        state.config.setEdges(selected.orElse(null));
-                        state.config.setFaces(selected.orElse(null));
-                        state.config.setVolumes(selected.orElse(null));
-                        if(!world.isRemote) {
-                            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Set all blocks to: " + selected.map(ItemStack::getDisplayName).orElse("nothing")));
-                        }
+                        state.config.setCorners(selected);
+                        state.config.setEdges(selected);
+                        state.config.setFaces(selected);
+                        state.config.setVolumes(selected);
+                        what = "all blocks";
                         break;
                     }
                 }
-            }
 
-            state.config.action = null;
-        } else if(state.config.action == null) {
-            switch(state.config.coordMode) {
-                case SET_A: {
-                    state.config.coordA = new Location(world, x, y, z);
-
-                    if(!player.isSneaking()) {
-                        state.config.coordA.offset(DirectionUtil.fromSide(side));
-                    }
-                    break;
+                if(!world.isRemote) {
+                    player.addChatMessage(new ChatComponentText(String.format(
+                        "%s%sSet %s to: %s",
+                        EnumChatFormatting.ITALIC, EnumChatFormatting.GRAY,
+                        what,
+                        selected == null ? "nothing" : selected.getDisplayName()
+                    )));
                 }
-                case SET_B: {
-                    state.config.coordB = new Location(world, x, y, z);
 
-                    if(!player.isSneaking()) {
-                        state.config.coordB.offset(DirectionUtil.fromSide(side));
-                    }
-                    break;
+                if(world.isRemote) {
+                    setState(itemStack, state);
                 }
-                case SET_INTERLEAVED: {
-                    if(state.config.coordB != null) {
-                        state.config.coordA = new Location(world, x, y, z);
-                        state.config.coordB = null;
 
-                        if(!player.isSneaking()) {
-                            state.config.coordA.offset(DirectionUtil.fromSide(side));
-                        }
-                    } else {
-                        state.config.coordB = new Location(world, x, y, z);
-
-                        if(!player.isSneaking()) {
-                            state.config.coordB.offset(DirectionUtil.fromSide(side));
-                        }
-                    }
-                    break;
-                }
+                return true;
             }
         }
 
-        setState(itemStack, state);
-
-        return true;
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
-        if(player.getItemInUse() != null && player.getItemInUse().getItem() == this) {
-            return itemStackIn;
-        }
-
-        var state = getState(itemStackIn);
-
-        if(state.config.action == PendingAction.MOVING_COORDS) {
-            state.config.updateCoords(player);
-
-            state.config.coordAStart = null;
-            state.config.coordBStart = null;
-            state.config.action = null;
-
-            if(worldIn.isRemote) {
-                setState(itemStackIn, state);
-            }
-        } else if (player.isSneaking()) {
-            player.setItemInUse(itemStackIn, Integer.MAX_VALUE);
-        } else {
-            if(worldIn.isRemote) {
-                UIInfos.openClientUI(player, this::createWindow);
-            }
-        }
-
-        return itemStackIn;
+        return false;
     }
 
     @Override
@@ -456,73 +464,21 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
         return new RadialMenuBuilder(buildContext)
             .innerIcon(new ItemStack(this))
-            .branch()
-                .label("Move Coords")
-                .option()
-                    .label("Set Coord A")
-                    .onClicked(() -> {
-                        withState(heldStack, state -> {
-                            state.config.coordMode = CoordMode.SET_A;
-                            state.config.action = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Set Coord B")
-                    .onClicked(() -> {
-                        withState(heldStack, state -> {
-                            state.config.coordMode = CoordMode.SET_B;
-                            state.config.action = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Set Both")
-                    .onClicked(() -> {
-                        withState(heldStack, state -> {
-                            state.config.coordMode = CoordMode.SET_INTERLEAVED;
-                            state.config.action = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Move Coord A")
-                    .onClicked(() -> {
-                        withState(heldStack, state -> {
-                            state.config.action = PendingAction.MOVING_COORDS;
+            .pipe(builder -> {
+                addCommonOptions(builder, buildContext, heldStack);
+            })
+            .pipe(builder -> {
+                switch (initialState.config.placeMode) {
+                    case GEOMETRY -> addGeometryOptions(builder, buildContext, heldStack);
+                    case COPYING -> addCopyingOptions(builder, buildContext, heldStack);
+                    case MOVING -> addMovingOptions(builder, buildContext, heldStack);
+                    case DEBUGGING -> addDebuggingOptions(builder, buildContext, heldStack);
+                }
+            });
+    }
 
-                            var player = buildContext.getPlayer();
-                            state.config.coordAStart = new Vector3d(player.posX, player.posY, player.posZ);
-                            state.config.coordBStart = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Move Coord B")
-                    .onClicked(() -> {
-                        withState(heldStack, state -> {
-                            state.config.action = PendingAction.MOVING_COORDS;
-
-                            var player = buildContext.getPlayer();
-                            state.config.coordAStart = null;
-                            state.config.coordBStart = new Vector3d(player.posX, player.posY, player.posZ);
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Move Both")
-                    .onClicked(() -> {
-                        withState(heldStack, state -> {
-                            state.config.action = PendingAction.MOVING_COORDS;
-
-                            var player = buildContext.getPlayer();
-                            state.config.coordAStart = new Vector3d(player.posX, player.posY, player.posZ);
-                            state.config.coordBStart = new Vector3d(player.posX, player.posY, player.posZ);
-                        });
-                    })
-                .done()
-            .done()
-            .branch()
+    private void addCommonOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+        builder.branch()
                 .label("Set Mode")
                 .branch()
                     .label("Set Remove Mode")
@@ -554,22 +510,40 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .option()
                     .label("Geometry")
                     .onClicked(() -> {
-
+                        withState(heldStack, state -> {
+                            state.config.placeMode = PlaceMode.GEOMETRY;
+                        });
                     })
                 .done()
                 .option()
-                    .label("Cut + Paste")
+                    .label("Moving")
                     .onClicked(() -> {
-
+                        withState(heldStack, state -> {
+                            state.config.placeMode = PlaceMode.MOVING;
+                        });
                     })
                 .done()
                 .option()
-                    .label("Copy + Paste")
+                    .label("Copying")
                     .onClicked(() -> {
-                        
+                        withState(heldStack, state -> {
+                            state.config.placeMode = PlaceMode.COPYING;
+                        });
                     })
                 .done()
-            .done()
+                .option()
+                    .label("Debugging")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            state.config.placeMode = PlaceMode.DEBUGGING;
+                        });
+                    })
+                .done()
+            .done();
+    }
+
+    private void addGeometryOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+        builder
             .branch()
                 .label("Select Blocks")
                 .option()
@@ -577,7 +551,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     .onClicked(() -> {
                         withState(heldStack, state -> {
                             state.config.blockSelectMode = BlockSelectMode.CORNERS;
-                            state.config.action = PendingAction.SELECTING_BLOCK;
+                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
                         });
                     })
                 .done()
@@ -586,7 +560,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     .onClicked(() -> {
                         withState(heldStack, state -> {
                             state.config.blockSelectMode = BlockSelectMode.EDGES;
-                            state.config.action = PendingAction.SELECTING_BLOCK;
+                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
                         });
                     })
                 .done()
@@ -595,7 +569,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     .onClicked(() -> {
                         withState(heldStack, state -> {
                             state.config.blockSelectMode = BlockSelectMode.FACES;
-                            state.config.action = PendingAction.SELECTING_BLOCK;
+                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
                         });
                     })
                 .done()
@@ -604,7 +578,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     .onClicked(() -> {
                         withState(heldStack, state -> {
                             state.config.blockSelectMode = BlockSelectMode.VOLUMES;
-                            state.config.action = PendingAction.SELECTING_BLOCK;
+                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
                         });
                     })
                 .done()
@@ -613,7 +587,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     .onClicked(() -> {
                         withState(heldStack, state -> {
                             state.config.blockSelectMode = BlockSelectMode.ALL;
-                            state.config.action = PendingAction.SELECTING_BLOCK;
+                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
                         });
                     })
                 .done()
@@ -658,61 +632,89 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
             .done()
             .branch()
-                .label("Copy & Paste")
-                .disabled(initialState.config.placeMode != PlaceMode.COPYING)
+                .label("Change Coords")
                 .option()
-                    .label("Mark Cut Region")
+                    .label("Set Coord A")
                     .onClicked(() -> {
                         withState(heldStack, state -> {
-                            if (state.config.coordA == null || state.config.coordB == null) {
-                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "A & B must be set."));
-                            } else {
-                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Set cut region."));
-                                
-                                if (state.config.copy != null) {
-                                    buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Cleared copy region."));
-                                }
-
-                                state.config.cut = new Region(state.config.coordA, state.config.coordB);
-                                state.config.copy = null;
-                            }
+                            state.config.coordMode = CoordMode.SET_A;
+                            state.config.action = null;
                         });
                     })
                 .done()
                 .option()
-                    .label("Mark Copy Region")
+                    .label("Set Coord B")
                     .onClicked(() -> {
                         withState(heldStack, state -> {
-                            if (state.config.coordA == null || state.config.coordB == null) {
-                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "A & B must be set."));
-                            } else {
-                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Set copy region."));
-                                
-                                if (state.config.cut != null) {
-                                    buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Cleared cut region."));
-                                }
-
-                                state.config.copy = new Region(state.config.coordA, state.config.coordB);
-                                state.config.cut = null;
-                            }
+                            state.config.coordMode = CoordMode.SET_B;
+                            state.config.action = null;
                         });
                     })
                 .done()
                 .option()
-                    .label("Mark Paste Region")
+                    .label("Set Both")
                     .onClicked(() -> {
                         withState(heldStack, state -> {
-                            if (state.config.coordA == null || state.config.coordB == null) {
-                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "A & B must be set."));
+                            state.config.coordMode = CoordMode.SET_INTERLEAVED;
+                            state.config.action = null;
+                        });
+                    })
+                .done()
+                .option()
+                    .label("Move Coord A")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            state.config.action = PendingAction.GEOM_MOVING_COORDS;
+                            state.config.coordAOffset = new Vector3i();
+                            state.config.coordBOffset = null;
+                        });
+                    })
+                .done()
+                .option()
+                    .label("Move Coord B")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            state.config.action = PendingAction.GEOM_MOVING_COORDS;
+                            state.config.coordAOffset = null;
+                            state.config.coordBOffset = new Vector3i();
+                        });
+                    })
+                .done()
+                .option()
+                    .label("Move Both")
+                    .onClicked(() -> {
+                        withState(heldStack, state -> {
+                            state.config.action = PendingAction.GEOM_MOVING_COORDS;
+
+                            Vector3i lookingAt = Config.getLookingAtLocation(buildContext.getPlayer());
+
+                            if (state.config.coordA == null) {
+                                state.config.coordAOffset = null;
                             } else {
-                                buildContext.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC + "Set paste region."));
-                                
-                                state.config.paste = new Region(state.config.coordA, state.config.coordB);
+                                state.config.coordAOffset = state.config.coordA.toVec().sub(lookingAt);
+                            }
+
+                            if (state.config.coordB == null) {
+                                state.config.coordBOffset = null;
+                            } else {
+                                state.config.coordBOffset = state.config.coordB.toVec().sub(lookingAt);
                             }
                         });
                     })
                 .done()
             .done();
+    }
+
+    private void addCopyingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+
+    }
+
+    private void addMovingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+
+    }
+
+    private void addDebuggingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+
     }
 
     //#endregion
@@ -736,15 +738,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if(held != null && held.getItem() == this) {
             var state = getState(held);
 
-            if(state.config.action == PendingAction.MOVING_COORDS) {
-                state.config.updateCoords(player);
-            }
+            var coordA = state.config.getCoordA(player);
+            var coordB = state.config.getCoordB(player);
 
-            var coordA = state.config.coordA;
-            var coordB = state.config.coordB;
-
-            boolean isAValid = coordA != null && coordA.worldId == player.worldObj.provider.dimensionId;
-            boolean isBValid = coordB != null && coordB.worldId == player.worldObj.provider.dimensionId;
+            boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
+            boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
 
             if(isAValid) {
                 Objects.requireNonNull(coordA);
@@ -757,6 +755,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
 
             if(isAValid && isBValid) {
+                Objects.requireNonNull(coordA);
+                Objects.requireNonNull(coordB);
+
                 var spawn =
                     (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS ||
                     !Objects.equals(DRAWN_CONFIG, state.config);
@@ -780,12 +781,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
                     StructureLibAPI.endHinting(player.worldObj);
 
-                    int x1 = state.config.coordA.x;
-                    int y1 = state.config.coordA.y;
-                    int z1 = state.config.coordA.z;
-                    int x2 = state.config.coordB.x;
-                    int y2 = state.config.coordB.y;
-                    int z2 = state.config.coordB.z;
+                    int x1 = coordA.x;
+                    int y1 = coordA.y;
+                    int z1 = coordA.z;
+                    int x2 = coordB.x;
+                    int y2 = coordB.y;
+                    int z2 = coordB.z;
             
                     int minX = Math.min(x1, x2);
                     int minY = Math.min(y1, y2);
