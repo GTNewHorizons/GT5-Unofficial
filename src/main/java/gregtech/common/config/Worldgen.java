@@ -9,11 +9,13 @@ import gregtech.api.enums.Mods;
     category = "worldgen",
     configSubDirectory = "GregTech",
     filename = "WorldGeneration")
+@Config.LangKey("GT5U.gui.config.worldgen")
 public class Worldgen {
 
     public static General general = new General();
     public static EndAsteroids endAsteroids = new EndAsteroids();
 
+    @Config.LangKey("GT5U.gui.config.worldgen.end_asteroids")
     public static class EndAsteroids {
 
         @Config.Comment("The maximum size for the end asteroids.")
@@ -37,6 +39,7 @@ public class Worldgen {
         public boolean generateEndAsteroids;
     }
 
+    @Config.LangKey("GT5U.gui.config.worldgen.general")
     public static class General {
 
         @Config.Comment("if true, enables basalt ore gen.")

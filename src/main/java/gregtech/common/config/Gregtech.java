@@ -5,36 +5,31 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 
     @Config.Comment("Debug section")
-    @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static final Debug debug = new Debug();
 
     @Config.Comment("Features section")
-    @Config.LangKey("GT5U.gui.config.gregtech.features")
     public static final Features features = new Features();
 
     @Config.Comment("General section")
-    @Config.LangKey("GT5U.gui.config.gregtech.general")
     public static final General general = new General();
 
     @Config.Comment("Harvest level section")
-    @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")
     public static final HarvestLevel harvestLevel = new HarvestLevel();
 
     @Config.Comment("Machines section")
-    @Config.LangKey("GT5U.gui.config.gregtech.machines")
     public static final Machines machines = new Machines();
 
     @Config.Comment("Ore drop behavior section")
-    @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
     public static final OreDropBehavior oreDropBehavior = new OreDropBehavior();
 
     @Config.Comment("Pollution section")
-    @Config.LangKey("GT5U.gui.config.gregtech.pollution")
     public static final Pollution pollution = new Pollution();
 
+    @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static class Debug {
 
         @Config.Comment("enable D1 flag (a set of debug logs)")
@@ -108,6 +103,7 @@ public class Gregtech {
         public boolean debugChunkloaders;
     }
 
+    @Config.LangKey("GT5U.gui.config.gregtech.features")
     public static class Features {
 
         @Config.Comment("Controls the stacksize of tree related blocks.")
@@ -136,6 +132,7 @@ public class Gregtech {
         public int upgradeStackSize;
     }
 
+    @Config.LangKey("GT5U.gui.config.gregtech.general")
     public static class General {
 
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
@@ -384,6 +381,7 @@ public class Gregtech {
         public boolean loggingPlayerActicity;
     }
 
+    @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")
     public static class HarvestLevel {
 
         @Config.Comment("Activate Harvest Level Change")
@@ -402,6 +400,7 @@ public class Gregtech {
         public int graniteHarvestLevel;
     }
 
+    @Config.LangKey("GT5U.gui.config.gregtech.machines")
     public static class Machines {
 
         @Config.Comment("Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to mitigate lag and FPS drops.")
@@ -544,6 +543,7 @@ public class Gregtech {
         public boolean enableMultiTileEntities;
     }
 
+    @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
     public static class OreDropBehavior {
 
         @Config.Comment({ "Settings:",
@@ -558,6 +558,7 @@ public class Gregtech {
         public String setting;
     }
 
+    @Config.LangKey("GT5U.gui.config.gregtech.pollution")
     public static class Pollution {
 
         @Config.Comment("if true, enables pollution in the game.")

@@ -9,32 +9,28 @@ import gregtech.api.enums.Mods;
     category = "machine_stats",
     configSubDirectory = "GregTech",
     filename = "MachineStats")
+@Config.LangKey("GT5U.gui.config.machine_stats")
 public class MachineStats {
 
     @Config.Comment("Bronze solar boiler section")
-    @Config.LangKey("GT5U.gui.config.machine_stats.bronze_solar_boiler")
     public static BronzeSolarBoiler bronzeSolarBoiler = new BronzeSolarBoiler();
 
     @Config.Comment("Steel solar boiler section")
-    @Config.LangKey("GT5U.gui.config.machine_stats.steel_solar_boiler")
     public static SteelSolarBoiler steelSolarBoiler = new SteelSolarBoiler();
 
     @Config.Comment("Machines section")
-    @Config.LangKey("GT5U.gui.config.machine_stats.machines")
     public static Machines machines = new Machines();
 
     @Config.Comment("Mass fabricator section")
-    @Config.LangKey("GT5U.gui.config.machine_stats.mass_fabricator")
     public static MassFabricator massFabricator = new MassFabricator();
 
     @Config.Comment("Microwave energy transmitter section")
-    @Config.LangKey("GT5U.gui.config.machine_stats.microwave_energy_transmitter")
     public static MicrowaveEnergyTransmitter microwaveEnergyTransmitter = new MicrowaveEnergyTransmitter();
 
     @Config.Comment("Teleporter section")
-    @Config.LangKey("GT5U.gui.config.machine_stats.teleporter")
     public static Teleporter teleporter = new Teleporter();
 
+    @Config.LangKey("GT5U.gui.config.machine_stats.bronze_solar_boiler")
     public static class BronzeSolarBoiler {
 
         @Config.Comment({ "Number of run-time ticks before boiler starts calcification.",
@@ -57,6 +53,7 @@ public class MachineStats {
         public int minOutputPerSecond;
     }
 
+    @Config.LangKey("GT5U.gui.config.machine_stats.steel_solar_boiler")
     public static class SteelSolarBoiler {
 
         @Config.Comment({ "Number of run-time ticks before boiler starts calcification.",
@@ -79,6 +76,7 @@ public class MachineStats {
         public int minOutputPerSecond;
     }
 
+    @Config.LangKey("GT5U.gui.config.machine_stats.machines")
     public static class Machines {
 
         @Config.Comment("Controls the damageFactorLow variable in the maintenance damage equation.")
@@ -107,6 +105,7 @@ public class MachineStats {
         public boolean forceFreeFace;
     }
 
+    @Config.LangKey("GT5U.gui.config.machine_stats.mass_fabricator")
     public static class MassFabricator {
 
         @Config.Comment("if true, requires UUA to run the mass fab.")
@@ -130,6 +129,7 @@ public class MachineStats {
         public int UUASpeedBonus;
     }
 
+    @Config.LangKey("GT5U.gui.config.machine_stats.microwave_energy_transmitter")
     public static class MicrowaveEnergyTransmitter {
 
         @Config.Comment("if true, it has a passive energy loss.")
@@ -148,6 +148,7 @@ public class MachineStats {
         public int maxLossDistance;
     }
 
+    @Config.LangKey("GT5U.gui.config.machine_stats.teleporter")
     public static class Teleporter {
 
         @Config.Comment("if true, allows interdim tp")

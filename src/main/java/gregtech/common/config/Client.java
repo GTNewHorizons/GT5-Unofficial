@@ -8,32 +8,28 @@ import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
+@Config.LangKey("GT5U.gui.config.client")
 public class Client {
 
     @Config.Comment("Color Modulation section")
-    @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static final ColorModulation colorModulation = new ColorModulation();
 
     @Config.Comment("Interface section")
-    @Config.LangKey("GT5U.gui.config.client.interface")
     public static final Interface iface = new Interface();
 
     @Config.Comment("Preference section")
-    @Config.LangKey("GT5U.gui.config.client.preference")
     public static final Preference preference = new Preference();
 
     @Config.Comment("Render section")
-    @Config.LangKey("GT5U.gui.config.client.render")
     public static final Render render = new Render();
 
     @Config.Comment("Waila section")
-    @Config.LangKey("GT5U.gui.config.client.waila")
     public static final Waila waila = new Waila();
 
     @Config.Comment("NEI section")
-    @Config.LangKey("GT5U.gui.config.client.nei")
     public static final NEI nei = new NEI();
 
+    @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static class ColorModulation {
 
         @Config.Comment("hex value for the cable insulation color modulation.")
@@ -49,6 +45,7 @@ public class Client {
         public String machineMetal;
     }
 
+    @Config.LangKey("GT5U.gui.config.client.interface")
     public static class Interface {
 
         @Config.Comment("if true, makes cover tabs visible on GregTech machines.")
@@ -72,6 +69,7 @@ public class Client {
         public int titleTabStyle;
     }
 
+    @Config.LangKey("GT5U.gui.config.client.preference")
     public static class Preference {
 
         @Config.Comment("if true, input filter will initially be on when input buses are placed in the world.")
@@ -87,6 +85,7 @@ public class Client {
         public boolean singleBlockInitialFilter;
     }
 
+    @Config.LangKey("GT5U.gui.config.client.render")
     public static class Render {
 
         @Config.Comment("if true, enables ambient-occlusion smooth lighting on tiles.")
@@ -126,6 +125,7 @@ public class Client {
         public boolean useBlockUpdateHandler;
     }
 
+    @Config.LangKey("GT5U.gui.config.client.waila")
     public static class Waila {
 
         /**
@@ -140,12 +140,13 @@ public class Client {
         public boolean wailaAverageNS;
     }
 
+    @Config.LangKey("GT5U.gui.config.client.nei")
     public static class NEI {
 
         @Config.Comment("Recipe category section")
-        @Config.LangKey("GT5U.gui.config.client.nei.recipe_categories")
         public final RecipeCategories recipeCategories = new RecipeCategories();
 
+        @Config.LangKey("GT5U.gui.config.client.nei.recipe_categories")
         public static class RecipeCategories {
 
             @Config.LangKey("gt.recipe.category.arc_furnace_recycling")
