@@ -7,7 +7,7 @@ enum DirectionUtil {
     North(0, 0, -1, 2),
     South(0, 0, 1, 3),
     West(-1, 0, 0, 4),
-    East(1, 0, 0, 3);
+    East(1, 0, 0, 5);
 
     public final int offsetX;
     public final int offsetY;
