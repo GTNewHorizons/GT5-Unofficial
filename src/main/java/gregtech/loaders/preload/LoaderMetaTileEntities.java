@@ -2376,11 +2376,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESteamMaceratorSteel(HP_STEAM_MACERATOR.ID, "hpmachine.macerator", "High Pressure Steam Macerator")
                 .getStackForm(1L));
         ItemList.Machine_HP_Hammer.set(
-            new MTESteamForgeHammerSteel(HP_STEAM_FORGE_HAMMER.ID, "hpmachine.hammer", "High Pressure Steam Forge Hammer")
-                .getStackForm(1L));
+            new MTESteamForgeHammerSteel(
+                HP_STEAM_FORGE_HAMMER.ID,
+                "hpmachine.hammer",
+                "High Pressure Steam Forge Hammer").getStackForm(1L));
         ItemList.Machine_HP_Compressor.set(
-            new MTESteamCompressorSteel(HP_STEAM_COMPRESSOR.ID, "hpmachine.compressor", "High Pressure Steam Compressor")
-                .getStackForm(1L));
+            new MTESteamCompressorSteel(
+                HP_STEAM_COMPRESSOR.ID,
+                "hpmachine.compressor",
+                "High Pressure Steam Compressor").getStackForm(1L));
         ItemList.Machine_HP_AlloySmelter.set(
             new MTESteamAlloySmelterSteel(
                 HP_STEAM_ALLOY_SMELTER.ID,
@@ -10850,11 +10854,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Bronze_Boiler
             .set(new MTEBoilerBronze(SMALL_COAL_BOILER.ID, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));
         ItemList.Machine_Steel_Boiler.set(
-            new MTEBoilerSteel(HIGH_PRESSURE_COAL_BOILER.ID, "boiler.steel", "Large Coal Boiler")
-                .getStackForm(1L));
+            new MTEBoilerSteel(HIGH_PRESSURE_COAL_BOILER.ID, "boiler.steel", "Large Coal Boiler").getStackForm(1L));
         ItemList.Machine_Steel_Boiler_Lava.set(
-            new MTEBoilerLava(HIGH_PRESSURE_LAVA_BOILER.ID, "boiler.lava", "Reinforced Lava Boiler")
-                .getStackForm(1L));
+            new MTEBoilerLava(HIGH_PRESSURE_LAVA_BOILER.ID, "boiler.lava", "Reinforced Lava Boiler").getStackForm(1L));
         ItemList.Machine_Bronze_Boiler_Solar
             .set(new MTEBoilerSolar(SIMPLE_SOLAR_BOILER.ID, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
         ItemList.Machine_HP_Solar.set(
