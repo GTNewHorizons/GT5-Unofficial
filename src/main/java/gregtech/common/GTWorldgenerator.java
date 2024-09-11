@@ -12,7 +12,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.common.config.Worldgen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,6 +34,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.config.Worldgen;
 
 public class GTWorldgenerator implements IWorldGenerator {
 

@@ -1,6 +1,7 @@
 package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
 @Config(
@@ -9,6 +10,7 @@ import gregtech.api.enums.Mods;
     configSubDirectory = "GregTech",
     filename = "MachineStats")
 public class MachineStats {
+
     @Config.Comment("Bronze solar boiler section")
     @Config.LangKey("GT5U.gui.config.machine_stats.bronze_solar_boiler")
     public static BronzeSolarBoiler bronzeSolarBoiler = new BronzeSolarBoiler();
@@ -54,6 +56,7 @@ public class MachineStats {
         @Config.RequiresMcRestart
         public int minOutputPerSecond;
     }
+
     public static class SteelSolarBoiler {
 
         @Config.Comment({ "Number of run-time ticks before boiler starts calcification.",
@@ -75,6 +78,7 @@ public class MachineStats {
         @Config.RequiresMcRestart
         public int minOutputPerSecond;
     }
+
     public static class Machines {
 
         @Config.Comment("Controls the damageFactorLow variable in the maintenance damage equation.")
@@ -102,6 +106,7 @@ public class MachineStats {
         @Config.RequiresMcRestart
         public boolean forceFreeFace;
     }
+
     public static class MassFabricator {
 
         @Config.Comment("if true, requires UUA to run the mass fab.")
@@ -124,6 +129,7 @@ public class MachineStats {
         @Config.RequiresMcRestart
         public int UUASpeedBonus;
     }
+
     public static class MicrowaveEnergyTransmitter {
 
         @Config.Comment("if true, it has a passive energy loss.")
@@ -141,6 +147,7 @@ public class MachineStats {
         @Config.RequiresMcRestart
         public int maxLossDistance;
     }
+
     public static class Teleporter {
 
         @Config.Comment("if true, allows interdim tp")

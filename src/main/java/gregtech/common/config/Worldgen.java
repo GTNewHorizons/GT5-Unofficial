@@ -38,6 +38,7 @@ public class Worldgen {
     }
 
     public static class General {
+
         @Config.Comment("if true, enables basalt ore gen.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

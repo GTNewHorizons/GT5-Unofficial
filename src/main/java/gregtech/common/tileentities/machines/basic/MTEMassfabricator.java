@@ -22,7 +22,6 @@ import java.util.Arrays;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.common.config.MachineStats;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
@@ -43,6 +42,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.config.MachineStats;
 
 public class MTEMassfabricator extends MTEBasicMachine {
 
