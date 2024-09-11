@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import gregtech.common.config.client.Client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -47,10 +48,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
-import gregtech.common.config.client.ConfigColorModulation;
-import gregtech.common.config.client.ConfigInterface;
-import gregtech.common.config.client.ConfigRender;
-import gregtech.common.config.client.ConfigWaila;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
@@ -571,9 +568,9 @@ public class GTPreLoad {
             .forEach(dye -> {
                 switch (dye.toString()
                     .toLowerCase()) {
-                    case "cable_insulation" -> parseHex(dye, ConfigColorModulation.cableInsulation);
-                    case "construction_foam" -> parseHex(dye, ConfigColorModulation.constructionFoam);
-                    case "machine_metal" -> parseHex(dye, ConfigColorModulation.machineMetal);
+                    case "cable_insulation" -> parseHex(dye, Client.colorModulation.cableInsulation);
+                    case "construction_foam" -> parseHex(dye, Client.colorModulation.constructionFoam);
+                    case "machine_metal" -> parseHex(dye, Client.colorModulation.machineMetal);
                     default -> {
                         GT_FML_LOGGER.warn(
                             "unknown color modulation entry: " + dye
@@ -581,21 +578,21 @@ public class GTPreLoad {
                     }
                 }
             });
-        GTMod.gregtechproxy.mRenderTileAmbientOcclusion = ConfigRender.renderTileAmbientOcclusion;
-        GTMod.gregtechproxy.mRenderGlowTextures = ConfigRender.renderGlowTextures;
-        GTMod.gregtechproxy.mRenderFlippedMachinesFlipped = ConfigRender.renderFlippedMachinesFlipped;
-        GTMod.gregtechproxy.mRenderIndicatorsOnHatch = ConfigRender.renderIndicatorsOnHatch;
-        GTMod.gregtechproxy.mRenderDirtParticles = ConfigRender.renderDirtParticles;
-        GTMod.gregtechproxy.mRenderPollutionFog = ConfigRender.renderPollutionFog;
-        GTMod.gregtechproxy.mRenderItemDurabilityBar = ConfigRender.renderItemDurabilityBar;
-        GTMod.gregtechproxy.mRenderItemChargeBar = ConfigRender.renderItemChargeBar;
-        GTMod.gregtechproxy.mUseBlockUpdateHandler = ConfigRender.useBlockUpdateHandler;
+        GTMod.gregtechproxy.mRenderTileAmbientOcclusion = Client.render.renderTileAmbientOcclusion;
+        GTMod.gregtechproxy.mRenderGlowTextures = Client.render.renderGlowTextures;
+        GTMod.gregtechproxy.mRenderFlippedMachinesFlipped = Client.render.renderFlippedMachinesFlipped;
+        GTMod.gregtechproxy.mRenderIndicatorsOnHatch = Client.render.renderIndicatorsOnHatch;
+        GTMod.gregtechproxy.mRenderDirtParticles = Client.render.renderDirtParticles;
+        GTMod.gregtechproxy.mRenderPollutionFog = Client.render.renderPollutionFog;
+        GTMod.gregtechproxy.mRenderItemDurabilityBar = Client.render.renderItemDurabilityBar;
+        GTMod.gregtechproxy.mRenderItemChargeBar = Client.render.renderItemChargeBar;
+        GTMod.gregtechproxy.mUseBlockUpdateHandler = Client.render.useBlockUpdateHandler;
 
-        GTMod.gregtechproxy.mCoverTabsVisible = ConfigInterface.coverTabsVisible;
-        GTMod.gregtechproxy.mCoverTabsFlipped = ConfigInterface.coverTabsFlipped;
-        GTMod.gregtechproxy.mTooltipVerbosity = ConfigInterface.tooltipVerbosity;
-        GTMod.gregtechproxy.mTooltipShiftVerbosity = ConfigInterface.tooltipShiftVerbosity;
-        GTMod.gregtechproxy.mTitleTabStyle = ConfigInterface.titleTabStyle;
+        GTMod.gregtechproxy.mCoverTabsVisible = Client.iface.coverTabsVisible;
+        GTMod.gregtechproxy.mCoverTabsFlipped = Client.iface.coverTabsFlipped;
+        GTMod.gregtechproxy.mTooltipVerbosity = Client.iface.tooltipVerbosity;
+        GTMod.gregtechproxy.mTooltipShiftVerbosity = Client.iface.tooltipShiftVerbosity;
+        GTMod.gregtechproxy.mTitleTabStyle = Client.iface.titleTabStyle;
 
         GTMod.gregtechproxy.mNEIRecipeSecondMode = GregTechAPI.NEIClientFIle.get("nei", "RecipeSecondMode", true);
         GTMod.gregtechproxy.mNEIRecipeOwner = GregTechAPI.NEIClientFIle.get("nei", "RecipeOwner", false);
@@ -615,8 +612,8 @@ public class GTPreLoad {
             GTMod.gregtechproxy.recipeCategorySettings.put(recipeCategory, setting);
         }
 
-        GTMod.gregtechproxy.mWailaTransformerVoltageTier = ConfigWaila.wailaTransformerVoltageTier;
-        GTMod.gregtechproxy.wailaAverageNS = ConfigWaila.wailaAverageNS;
+        GTMod.gregtechproxy.mWailaTransformerVoltageTier = Client.waila.wailaTransformerVoltageTier;
+        GTMod.gregtechproxy.wailaAverageNS = Client.waila.wailaAverageNS;
 
         GTMod.gregtechproxy.reloadNEICache();
     }

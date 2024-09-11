@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.common.config.client.Client;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -81,11 +82,6 @@ import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
 import gregtech.common.RecipeAdder;
-import gregtech.common.config.client.ConfigColorModulation;
-import gregtech.common.config.client.ConfigInterface;
-import gregtech.common.config.client.ConfigPreference;
-import gregtech.common.config.client.ConfigRender;
-import gregtech.common.config.client.ConfigWaila;
 import gregtech.common.config.gregtech.ConfigDebug;
 import gregtech.common.config.gregtech.ConfigFeatures;
 import gregtech.common.config.gregtech.ConfigGeneral;
@@ -190,11 +186,7 @@ public class GTMod implements IGTMod {
     static {
         try {
             // Client
-            ConfigurationManager.registerConfig(ConfigColorModulation.class);
-            ConfigurationManager.registerConfig(ConfigInterface.class);
-            ConfigurationManager.registerConfig(ConfigPreference.class);
-            ConfigurationManager.registerConfig(ConfigRender.class);
-            ConfigurationManager.registerConfig(ConfigWaila.class);
+            ConfigurationManager.registerConfig(Client.class);
 
             // GregTech.cfg
             ConfigurationManager.registerConfig(ConfigDebug.class);
