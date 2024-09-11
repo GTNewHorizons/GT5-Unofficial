@@ -1,10 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -19,7 +17,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -31,8 +28,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
 public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
-
-    private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
 
     public MTELargerTurbinePlasma(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -131,11 +126,6 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             if (tFluids.size() > 0) {
-                for (FluidStack fluid : tFluids) {
-                    if (fluid != null && BLACKLIST.contains(fluid.getFluid())) {
-                        return SimpleCheckRecipeResult.ofFailure("fuel_blacklisted");
-                    }
-                }
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
                     || this.getBaseMetaTileEntity()
@@ -191,10 +181,10 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
             long difference = newPower - this.lEUt; // difference between current output and new output
 
-            // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
-            // difference in power level (per tick)
+            // Magic numbers: can always change by at least 200 eu/s, but otherwise by at most 20 percent of the
+            // difference in power level (per second)
             // This is how much the turbine can actually change during this tick
-            int maxChangeAllowed = Math.max(10, GTUtility.safeInt((long) Math.abs(difference) / 100));
+            int maxChangeAllowed = Math.max(200, GTUtility.safeInt((long) Math.abs(difference) / 5));
 
             if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
                 // change
