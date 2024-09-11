@@ -5,7 +5,7 @@ import gregtech.api.enums.Mods;
 
 @Config(
     modid = Mods.Names.GREG_TECH,
-    category = "Client",
+    category = "client",
     configSubDirectory = "GregTech",
     filename = "Client")
 public class Client {
